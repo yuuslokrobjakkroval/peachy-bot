@@ -27,13 +27,14 @@ class Balance extends Command {
   }
   async run(client, ctx, args) {
     let data = await Currency.findOne({ userId: ctx.author.id });
-    if (!data)
-      await Currency.create({
+    if (!data) {
+      data = await Currency.create({
         userId: ctx.author.id,
         balance: 500,
         bank: 0,
         bankSpace: 5000,
       });
+    }
 
     let embed = this.client.embed();
     let balance = data.balance;

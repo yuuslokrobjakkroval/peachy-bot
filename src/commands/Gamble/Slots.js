@@ -54,13 +54,15 @@ class Slots extends Command {
 		}
 
 		let data = await Currency.findOne({ userId: ctx.author.id });
-		if (!data)
-			await Currency.create({
+
+		if (!data) {
+			data = await Currency.create({
 				userId: ctx.author.id,
 				balance: 500,
 				bank: 0,
 				bankSpace: 5000,
 			});
+		}
 
 		if (all) {
 			amount = Math.min(data.balance, 250000);
