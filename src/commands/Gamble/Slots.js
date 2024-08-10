@@ -93,18 +93,21 @@ class Slots extends Command {
 	 	if (rand <= 65) {
 			win = amount * 2;
 			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
+		} else if (rand <= 55) {
+			win = 0;
+			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
 		} else if (rand <= 48) {
 			win = amount * 10;
-			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
+			rslots = [SLOTS[5], SLOTS[5], SLOTS[5]];
 		} else if (rand <= 45) {
 			win = amount * 4;
-			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
+			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
 		} else if (rand <= 30) {
 			win = amount;
 			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
 		} else if (rand <= 20) {
 			win = amount * 3;
-			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
+			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
 		} else {
 			win = 0;
 			rslots = getUniqueSlots();

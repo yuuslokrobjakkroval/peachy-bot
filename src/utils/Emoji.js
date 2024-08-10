@@ -34,7 +34,7 @@ const GUARDIAN = '<:GUARDIAN:1271718096503046217>';
 const HERALD = '<:HERALD:1271718105839697950>';
 
 
-const SLOTS = [COFFEE, HEART, CAKE, MILK, PEACHY];
+const SLOTS = [COFFEE, HEART, CAKE, MILK, PEACHY, COIN];
 
 function getEmojiForTime() {
     const now = new Date();
