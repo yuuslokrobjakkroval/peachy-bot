@@ -1,5 +1,5 @@
-const { Command } = require("../../structures/index.js");
-const Currency = require("../../schemas/currency.js");
+const { Command } = require("../../structures");
+const Currency = require("../../schemas/user");
 const numeral = require("numeral");
 const { TITLE , COIN} = require("../../utils/Emoji");
 
@@ -31,8 +31,6 @@ class Balance extends Command {
       data = await Currency.create({
         userId: ctx.author.id,
         balance: 500,
-        bank: 0,
-        bankSpace: 5000,
       });
     }
 

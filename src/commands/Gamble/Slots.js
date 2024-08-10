@@ -1,5 +1,5 @@
-const { Command } = require("../../structures/index.js");
-const Currency = require("../../schemas/currency.js");
+const { Command } = require("../../structures");
+const Currency = require("../../schemas/user");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
 const { SLOTS, SPIN, COIN, TITLE } = require("../../utils/Emoji");
@@ -17,7 +17,7 @@ class Slots extends Command {
 			},
 			category: "gamble",
 			aliases: ["slots", "slot", "s"],
-			cooldown: 1,
+			cooldown: 3,
 			args: true,
 			permissions: {
 				dev: false,
@@ -54,15 +54,11 @@ class Slots extends Command {
 		}
 
 		let data = await Currency.findOne({ userId: ctx.author.id });
-
-		if (!data) {
-			data = await Currency.create({
+		if (!data)
+			await Currency.create({
 				userId: ctx.author.id,
 				balance: 500,
-				bank: 0,
-				bankSpace: 5000,
 			});
-		}
 
 		if (all) {
 			amount = Math.min(data.balance, 250000);
@@ -89,23 +85,22 @@ class Slots extends Command {
 			return slotsCopy.slice(0, 3);
 		}
 
-		console.log(rand);
-		if (rand <= 18) { // 18% chance of Small Win (amount)
-			win = amount;
+		if (rand <= 15) {
+			win = amount * 10;
+			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
+		} else if (rand <= 30) {
+			win = amount * 4;
+			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
+		} else if (rand <= 45) {
+			win = amount * 3;
 			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
-		} else if (rand <= 31) { // 13% chance of Small Win (amount * 2)
+		} else if (rand <= 55) {
 			win = amount * 2;
 			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
-		} else if (rand <= 39.5) { // 8.5% chance of Medium Win (amount * 3)
-			win = amount * 3;
-			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
-		} else if (rand <= 45.25) { // 5.75% chance of Larger Win (amount * 4)
-			win = amount * 4;
-			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
-		} else if (rand <= 47.75) { // 2.5% chance of Big Win (amount * 10)
-			win = amount * 10;
-			rslots = [SLOTS[5], SLOTS[5], SLOTS[5]];
-		} else { // 52% chance of Unique Slots
+		} else if (rand <= 65) {
+			win = amount;
+			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
+		} else {
 			win = 0;
 			rslots = getUniqueSlots();
 		}

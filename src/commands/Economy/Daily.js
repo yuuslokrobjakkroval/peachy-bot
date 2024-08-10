@@ -1,6 +1,6 @@
-const { Command } = require("../../structures/index.js");
+const { Command } = require("../../structures");
 const numeral = require("numeral");
-const Currency = require("../../schemas/currency.js");
+const Currency = require("../../schemas/user");
 const { COIN, getEmojiForTime } = require("../../utils/Emoji");
 
 const cooldowns = {};
@@ -51,8 +51,6 @@ class Daily extends Command {
       await Currency.create({
         userId: ctx.author.id,
         balance: dailyAmount,
-        bank: 0,
-        bankSpace: 5000,
       });
     } else {
       await Currency.updateOne({ userId }, { $inc: { balance: dailyAmount } }, { upsert: true });

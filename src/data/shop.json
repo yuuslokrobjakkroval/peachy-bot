@@ -4,13 +4,13 @@
     "name": "Galaxy Cover",
     "description": "A stunning galaxy cover photo.",
     "price": "100",
-    "imageUrl": "./images/Background.jpg"
+    "image": "./images/Background.jpg"
   },
   {
     "id": "2",
     "name": "Sunset Cover",
     "description": "A beautiful sunset cover photo.",
     "price": "150",
-    "imageUrl": "./images/Background_01.jpg"
+    "image": "data/images/data"
   }
 ]

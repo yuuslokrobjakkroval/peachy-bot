@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const Currency = require("../../schemas/currency");
+const Currency = require("../../schemas/user");
 const config = require("../../config.js");
 const numeral = require("numeral");
 const { SKYREALM } = require("../../utils/Emoji");

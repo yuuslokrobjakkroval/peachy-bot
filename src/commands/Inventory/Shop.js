@@ -41,10 +41,9 @@ class Shop extends Command {
                 value: `${item.description}\nPrice: ${item.price}`,
                 inline: false,
             })
-                .setImage(item.imageUrl);  // Set the image for the item
+                .setImage(item.images);
         });
 
-        // Create action rows with buttons for each item
         const actionRows = [];
         shopItems.forEach(item => {
             const row = new ActionRowBuilder()
@@ -57,7 +56,6 @@ class Shop extends Command {
             actionRows.push(row);
         });
 
-        // Send the embed and buttons
         return await ctx.sendMessage({
             embeds: [embed],
             components: actionRows,

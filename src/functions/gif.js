@@ -718,10 +718,7 @@ module.exports = {
     giveaway_gif: 'https://cdn.discordapp.com/attachments/1196854994880712794/1211648765451173888/BABI.png?ex=65eef6d9&is=65dc81d9&hm=068395a9902b14e87a4358b02164705540684ac799ead54f9392b7ea936d1e4f&',
 
 //*Profile background
-    profile_background: 'image/social/profile_background.png',
-    profile_background_with_relationship: 'image/social/profile_background_with_relationship.png',
-
-    profile_background_premium: 'image/social/profile_background_premium.png',
+    profile_single_background: 'src/data/images/cover/Background_15.jpg',
 
 //*kla klok
     kda: 'https://cdn.discordapp.com/attachments/1210961372108824636/1210961572445298738/kk_ryuuki.bg.png?ex=65ec76d9&is=65da01d9&hm=12fedb3ea29dccb6f1d3f51a075870a225ca00f3eb99836c591825ded25fd1c9&',

@@ -6,7 +6,7 @@ const syms = sym;
 const sym3 = '```';
 const one_second = 1000;
 const mongoose = require('mongoose');
-const { userSchema } = require('../users/user');
+const { userSchema } = require('../schemas/user');
 const User = mongoose.model('User', userSchema);
 const gif = require('../functions/gif');
 const { createCanvas, loadImage } = require('canvas');
@@ -364,8 +364,7 @@ function getFiles(commandFiles, dir){
 }
 
 async function getUser(id) {
-    let userData = await User.findOne({ userId: id });
-    return userData;
+    return User.findOne({userId: id});
 }
 
 function SimpleEmbed(text){

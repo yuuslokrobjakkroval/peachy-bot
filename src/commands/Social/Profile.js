@@ -1,12 +1,6 @@
-const { cooldown, gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, labelButton, twoButton, getCollectionButton } = require('../../functions/function');
-const moment = require('moment-timezone');
 const { Command } = require("../../structures");
-
-const cooldowns = new Map();
-let CDT = 60_000;
-let getId = [];
-let cdId = [];
-let prem = [];
+const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, labelButton, twoButton, getCollectionButton } = require('../../functions/function');
+const moment = require('moment-timezone');
 
 class Profile extends Command {
     constructor(client) {
@@ -18,9 +12,9 @@ class Profile extends Command {
                 usage: "PROFILE <set> <aboutme/relationship> [details]",
             },
             category: "social",
-            aliases: ["profile", "pf", 'p'],
-            cooldown: 3,
-            args: true,
+            aliases: ["profile", "pf"],
+            cooldown: 1,
+            args: false,
             permissions: {
                 dev: false,
                 client: ["SendMessages", "ViewChannel", "EmbedLinks"],
@@ -39,7 +33,7 @@ class Profile extends Command {
                 },
                 {
                     name: 'type',
-                    description: 'The type of setting (aboutme/relationship)',
+                    description: 'The type of setting (about me/relationship)',
                     type: 'STRING',
                     required: true,
                     choices: [
@@ -57,147 +51,186 @@ class Profile extends Command {
         });
     }
 
-    async run(client, message, args) {
+    async run(client, ctx, args) {
         try {
-            const user = message.author;
+            const user = ctx.author;
             const userData = await getUser(user.id);
 
-            // if (userData?.premium?.premium_bool && !prem.includes(user.id)) {
-            //     prem.push(user.id);
-            // }
-
-            if (cooldown(user.id, getId, cdId, CDT, message, cooldowns, prem)) {
-                return;
-            }
-
-            const action = args[0];
-            const type = args[1];
-            const details = args.slice(2).join(' ');
-
-            if (action === 'set') {
-                if (type === 'aboutme') {
-                    if (details.length > 30) {
-                        return message.channel.send({ embeds: [SimpleEmbed(`<@${user.id}> Your about me is more than 30 letters.`)] });
+            if (args[0]) {
+                // If the command is to set 'aboutme'
+                if (args[0] === 'set' && args[1] === 'aboutme') {
+                    const command = ctx?.message?.content;
+                    const text = `${command?.slice(command.indexOf(args[2]))}`;
+                    if (text.length > 50) {
+                        return ctx.channel.send({embeds: [SimpleEmbed(`<@${user.id}> your about me is more than 30 letters.`)]});
                     }
-                    userData.about_me = details;
+                    userData.about_me = text;
                     await userData.save();
-                    return message.channel.send({ embeds: [SimpleEmbed(`Now <@${user.id}> has changed about me to **${details}**`)] });
-                } else if (type === 'relationship') {
-                    await handleRelationshipUpdate(message, user, userData, details);
+                    return ctx.channel.send({embeds: [SimpleEmbed(`Now <@${user.id}> has changed their about me to **${text}**`)]});
+
+                    // If the command is to set 'relationship'
+                } else if (args[0] === 'set' && args[1] === 'relationship') {
+                    const mention = ctx.message.mentions.users.first();
+                    if (mention) {
+                        if (mention.id === userData.relationship_partner_id) {
+                            return ctx.channel.send({embeds: [SimpleEmbed(`<@${user.id}> and <@${mention.id}> are already in a relationship❤️`)]});
+                        }
+
+                        const embed = this.client.embed()
+                            .setAuthor({
+                                name: `<@${user.id}>, you and <@${mention.id}> are about to get married`,
+                                iconURL: user.displayAvatarURL()
+                            })
+                            .setColor("Random")
+                            .setDescription(`💝💖💘 God bless the two of you ❤️💞💓\n\n<@${mention.id}>, do you agree with <@${user.id}>?`)
+                            .setTimestamp();
+
+                        const confirmButton = labelButton('confirm_button', '✅ Confirm', ButtonStyle.Success);
+                        const cancelButton = labelButton('cancel_button', '❎ Cancel', ButtonStyle.Danger);
+                        const allButtons = twoButton(confirmButton, cancelButton);
+
+                        const messageEmbed = await ctx.channel.send({embeds: [embed], components: [allButtons]});
+                        const collector = getCollectionButton(messageEmbed, 30000);
+
+                        collector.on('end', (collected, reason) => {
+                            if (reason === 'time') {
+                                confirmButton.setDisabled(true);
+                                cancelButton.setDisabled(true);
+                                messageEmbed.edit({embeds: [embed.setColor('#3D3D3D')], components: [allButtons]});
+                            }
+                        });
+
+                        collector.on('collect', async (interaction) => {
+                            if (interaction.user.id !== mention.id) {
+                                await interaction.reply({content: 'This button is not for you!', ephemeral: true});
+                                return;
+                            }
+
+                            if (interaction.customId === 'confirm_button') {
+                                try {
+                                    const partnerData = await getUser(mention.id);
+                                    const now = moment.tz('Asia/Phnom_Penh');
+                                    const dateOfStart = now.format('DD-MM-YYYY');
+                                    userData.relationship_partner_id = mention.id;
+                                    userData.date_of_start_relationship = dateOfStart;
+                                    partnerData.relationship_partner_id = user.id;
+                                    partnerData.date_of_start_relationship = dateOfStart;
+
+                                    await Promise.all([userData.save(), partnerData.save()]);
+
+                                    messageEmbed.edit({
+                                        embeds: [SimpleEmbed(`💓💞❤️💘** Congratulations! You are now a couple**💖💝❣️💗\n **Husband**: <@${user.id}> ==> **Wife**: <@${mention.id}>`)],
+                                        components: []
+                                    });
+                                    collector.stop();
+                                } catch (error) {
+                                    console.error(`Error saving relationship data: ${error}`);
+                                }
+                            }
+
+                            if (interaction.customId === 'cancel_button') {
+                                messageEmbed.edit({
+                                    embeds: [SimpleEmbed(`<@${mention.id}> has rejected the proposal.`)],
+                                    components: []
+                                });
+                                collector.stop();
+                            }
+                        });
+
+                    } else {
+                        return ctx.channel.send({embeds: [SimpleEmbed(`<@${user.id}> please mention your partner.`)]});
+                    }
                 }
             } else {
-                await sendProfileCard(message, user, userData, client);
-            }
+                    // Display profile information
+                    const username = user.username;
+                    const aboutMe = userData.about_me || 'Not set';
+                    let relationshipStatus = "Single";
 
-        } catch (error) {
-            console.error(`An error occurred: ${error}`);
-            message.channel.send({ content: 'An error occurred while processing your request.' });
-        }
-    }
-}
+                    if (userData.relationship_partner_id) {
+                        try {
+                            const partner = await client.users.fetch(userData.relationship_partner_id);
+                            relationshipStatus = partner.username;
+                        } catch (error) {
+                            console.error(`Error fetching partner data: ${error}`);
+                            relationshipStatus = "Single";
+                        }
+                    }
 
-async function handleRelationshipUpdate(message, user, userData, details) {
-    const mention = message.mentions.users.first();
-    if (mention) {
-        if (mention.id === userData.relationship_partner_id) {
-            return message.channel.send({ embeds: [SimpleEmbed(`<@${user.id}> and <@${mention.id}> are already married❤️`)] });
-        }
+                    const avatarURL = user.displayAvatarURL({extension: 'png', size: 256});
 
-        const embed = new customEmbed()
-            .setAuthor({ name: `${user.username}, you and ${mention.username} are about to get married`, iconURL: user.displayAvatarURL() })
-            .setColor("RANDOM")
-            .setDescription(`💝💖💘God will bless both of you❤️💞💓\n\n<@${mention.id}>, do you agree with <@${user.id}>?`)
-            .setTimestamp();
+                    // Create canvas for profile image
+                    const width = 480;
+                    const height = 250;
+                    const canvas = createCanvas(width, height);
+                    const ctxCanvas = canvas.getContext('2d');
 
-        const confirmButton = labelButton('confirm_button', '✅ Confirm', ButtonStyle.Success);
-        const cancelButton = labelButton('cancel_button', '❎ Cancel', ButtonStyle.Danger);
-        const allButtons = twoButton(confirmButton, cancelButton);
+                    // Draw background
+                    // const backgroundImage = userData.relationship_partner_id ? gif.profile_single_background : gif.profile_relationship_background;
+                    try {
+                        const background = await loadImage(gif.profile_single_background);
+                        ctxCanvas.drawImage(background, 0, 0, width, height);
+                    } catch (error) {
+                        console.error(`Error loading background image: ${error}`);
+                    }
 
-        const messageEmbed = await message.channel.send({ embeds: [embed], components: [allButtons] });
+                    // Draw user avatar
+                    try {
+                        const avatar = await loadImage(avatarURL);
+                        const avatarSize = 100;
+                        ctxCanvas.drawImage(avatar, 20, 20, avatarSize, avatarSize);
+                    } catch (error) {
+                        console.error(`Error loading user avatar: ${error}`);
+                    }
 
-        const collector = getCollectionButton(messageEmbed, 30000);
+                    // Draw partner avatar if in a relationship
+                    if (userData.relationship_partner_id) {
+                        try {
+                            console.log(userData)
+                            const partner = await client.users.fetch(userData.relationship_partner_id);
+                            const partnerAvatarURL = partner.displayAvatarURL({extension: 'png', size: 256});
+                            const partnerAvatar = await loadImage(partnerAvatarURL);
+                            const avatarSize = 100;
+                            ctxCanvas.drawImage(partnerAvatar, 360, 20, avatarSize, avatarSize);
+                            ctxCanvas.font = '20px sans-serif';
+                            ctxCanvas.fillStyle = '#ffffff';
+                            ctxCanvas.fillText(userData.date_of_start_relationship, 188, 245);
+                        } catch (error) {
+                            console.error(`Error loading partner avatar: ${error}`);
+                        }
+                    }
 
-        collector.on('end', (collected, reason) => {
-            if (reason === 'time') {
-                confirmButton.setDisabled(true);
-                cancelButton.setDisabled(true);
-                messageEmbed.edit({ embeds: [embed.setColor('#3D3D3D')], components: [allButtons] });
-            }
-        });
+                    // Draw username
+                    ctxCanvas.font = '28px sans-serif';
+                    ctxCanvas.fillStyle = '#FF0000';
+                    ctxCanvas.fillText(username, 140, 50);
 
-        collector.on('collect', async (interaction) => {
-            if (interaction.member.user.id !== mention.id) {
-                await interaction.reply({ content: 'This button is not for you!', ephemeral: true });
-                return;
-            }
+                    // Draw "About Me"
+                    ctxCanvas.font = '20px sans-serif';
+                    ctxCanvas.fillStyle = '#FF0000';
+                    ctxCanvas.fillText(`About Me:`, 140, 90);
+                    ctxCanvas.fillText(aboutMe, 140, 120);
 
-            if (interaction.customId === 'confirm_button') {
-                try {
-                    const partnerData = await getUser(mention.id);
-                    const now = moment.tz('Asia/Phnom_Penh');
-                    const dateOfStartRelationships = now.format('DD-MM-YYYY');
-                    userData.relationship_partner_id = mention.id;
-                    userData.date_of_start_relationship = dateOfStartRelationships;
-                    partnerData.relationship_partner_id = user.id;
-                    partnerData.date_of_start_relationship = dateOfStartRelationships;
-                    await userData.save();
-                    await partnerData.save();
-                    messageEmbed.edit({ embeds: [SimpleEmbed(`💓💞❤️💘Congratulations, you are now a couple! 💖💝❣️💗\n**Husband**: <@${user.id}> ==> **Wife**: <@${mention.id}>`)], components: [] });
-                } catch (error) {
-                    console.error(`Error while updating relationship: ${error}`);
+                    // Draw "Relationship Status"
+                    ctxCanvas.font = '20px sans-serif';
+                    ctxCanvas.fillStyle = '#FF0000';
+                    ctxCanvas.fillText(`Relationship Status:`, 140, 160);
+                    ctxCanvas.fillText(relationshipStatus, 140, 190);
+
+                    // Convert canvas to buffer and send as attachment
+                    const buffer = canvas.toBuffer();
+                    const attachment = {files: [{attachment: buffer, name: 'profile.png'}]};
+                    await ctx.channel.send(attachment);
                 }
-            } else if (interaction.customId === 'cancel_button') {
-                messageEmbed.edit({ embeds: [SimpleEmbed(`<@${mention.id}> has rejected. Sad!`)], components: [] });
+            } catch(error){
+                // Log the full error stack to understand where it came from
+                console.error(`Error in profile command: ${error.stack}`);
+
+                // Provide feedback to the user if possible
+                ctx.channel.send({content: 'An error occurred while processing the command. Please try again later.'});
             }
-        });
-    } else {
-        return message.channel.send({ embeds: [SimpleEmbed(`<@${user.id}> Please mention your lover.`)] });
-    }
-}
+        }
 
-async function sendProfileCard(message, user, userData, client) {
-    const username = user.username;
-    const aboutMe = userData.about_me;
-    let relationshipStatus = "Single";
-
-    if (userData.relationship_partner_id) {
-        const partner = await client.users.fetch(userData.relationship_partner_id);
-        relationshipStatus = partner.username;
-    }
-
-    const avatarURL = user.displayAvatarURL({ extension: 'png', size: 256 });
-    const canvas = createCanvas(480, 250);
-    const ctx = canvas.getContext('2d');
-
-    const backgroundImage = userData.relationship_partner_id ? gif.profile_background_with_relationship : gif.profile_background;
-    const background = await loadImage(backgroundImage);
-    ctx.drawImage(background, 0, 0, 480, 250);
-
-    const avatar = await loadImage(avatarURL);
-    ctx.drawImage(avatar, 20, 20, 100, 100);
-
-    if (userData.relationship_partner_id) {
-        const partner = await client.users.fetch(userData.relationship_partner_id);
-        const partnerAvatar = await loadImage(partner.displayAvatarURL({ extension: 'png', size: 256 }));
-        ctx.drawImage(partnerAvatar, 360, 20, 100, 100);
-        ctx.fillText(userData.date_of_start_relationship, 188, 245);
-    }
-
-    ctx.font = '28px sans-serif';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText(username, 140, 50);
-
-    ctx.font = '20px sans-serif';
-    ctx.fillStyle = '#ffffff';
-    ctx.fillText('About Me:', 140, 90);
-    ctx.fillText(aboutMe, 140, 120);
-
-    ctx.fillText('Relationship Status:', 140, 160);
-    ctx.fillText(relationshipStatus, 140, 190);
-
-    const buffer = canvas.toBuffer();
-    const attachment = { files: [{ attachment: buffer, name: 'profile.png' }] };
-    message.channel.send(attachment);
 }
 
 module.exports = Profile;

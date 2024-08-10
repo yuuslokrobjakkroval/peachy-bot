@@ -1,7 +1,6 @@
 const { Command } = require("../../structures");
-const { MessageEmbed } = require('discord.js');
 const { COIN } = require('../../utils/Emoji.js');
-const Currency = require("../../schemas/currency");
+const Currency = require("../../schemas/user");
 
 const maxBet = 250000;
 
@@ -77,7 +76,7 @@ class Coinflip extends Command {
 
         await user.save();
 
-        const content = `Coinflip` + description
+        const content = `Coinflip ` + description
         await ctx.sendMessage({ content: content });
     }
 }
