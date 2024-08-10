@@ -1,4 +1,7 @@
 const { Command } = require("../../structures/index.js");
+const { TITLE, PEACHYISP, BANANA, INVENTORY, GAMBLING, INFO, SOCIAL } = require("../../utils/Emoji");
+
+const CATEGORIES = [BANANA, INVENTORY, GAMBLING, INFO, SOCIAL];
 class Help extends Command {
   constructor(client) {
     super(client, {
@@ -50,22 +53,21 @@ class Help extends Command {
       .filter((value, index, self) => self.indexOf(value) === index);
     if (!args[0]) {
       const fildes = [];
-      categories.forEach((category) => {
+      categories.forEach((category, i) => {
         fildes.push({
-          name: category,
+          name: `**${CATEGORIES[i]} ${category.toUpperCase()}**`,
           value: commands
             .filter((cmd) => cmd.category === category)
-            .map((cmd) => `\`${cmd.name}\``)
+            .map((cmd, i) => `\`${cmd.name}\``)
             .join(", "),
           inline: false,
         });
       });
       const helpEmbed = embed
         .setColor(this.client.color.main)
-        .setTitle("Help Menu")
-        .setDescription(
-          `Hey there! I'm ${this.client.user.username}, a music bot made with [WaveMusic](https://github.com/brblacky/WaveMusic) and Discord. You can use \`${prefix}help <command>\` to get more info on a command.`
-        )
+        .setTitle(`**${TITLE} Help Menu ${TITLE}**`)
+          .setDescription(`Hey there! I'm **${this.client.user.username}** ${PEACHYISP},\n` +
+              `You can use \`${prefix}help <command>\` to get more info on a command.`)
         .setFooter({
           text: `Use ${prefix}help <command> for more info on a command`,
         });
