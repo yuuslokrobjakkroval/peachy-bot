@@ -90,21 +90,21 @@ class Slots extends Command {
 		}
 
 		console.log(rand)
-		if (rand <= 47.5) {
-			win = amount * 10;
-			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
+		if (rand <= 45) {
+			win = amount;
+			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
+		} else if (rand <= 20) {
+			win = amount * 2;
+			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
+		} else if (rand <= 40) {
+			win = amount * 3;
+			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
 		} else if (rand <= 46) {
 			win = amount * 4;
 			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
-		} else if (rand <= 43) {
-			win = amount * 3;
-			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
-		} else if (rand <= 35) {
-			win = amount * 2;
-			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
-		} else if (rand <= 25) {
-			win = amount;
-			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
+		} else if (rand <= 47.5) {
+			win = amount * 10;
+			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
 		} else {
 			win = 0;
 			rslots = getUniqueSlots();
