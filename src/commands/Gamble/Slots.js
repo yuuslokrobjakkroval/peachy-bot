@@ -94,7 +94,7 @@ class Slots extends Command {
 			win = amount * 2;
 			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
 		} else if (rand <= 55) {
-			win = 0;
+			win = amount;
 			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
 		} else if (rand <= 48) {
 			win = amount * 10;
@@ -103,7 +103,7 @@ class Slots extends Command {
 			win = amount * 4;
 			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
 		} else if (rand <= 30) {
-			win = amount;
+			win = 0;
 			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
 		} else if (rand <= 20) {
 			win = amount * 3;
