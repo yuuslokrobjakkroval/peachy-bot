@@ -89,29 +89,27 @@ class Slots extends Command {
 			return slotsCopy.slice(0, 3);
 		}
 
-		console.log(rand)
-	 	if (rand <= 65) {
-			win = amount * 2;
-			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
-		} else if (rand <= 55) {
+		console.log(rand);
+		if (rand <= 20) { // 10% chance of small win
 			win = amount;
-			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
-		} else if (rand <= 48) {
-			win = amount * 10;
-			rslots = [SLOTS[5], SLOTS[5], SLOTS[5]];
-		} else if (rand <= 45) {
-			win = amount * 4;
-			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
-		} else if (rand <= 30) {
-			win = 0;
-			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
-		} else if (rand <= 20) {
+			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]]; // Example slot
+		} else if (rand <= 28) { // 10% chance of small win
+			win = amount * 2;
+			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]]; // Example slot
+		} else if (rand <= 37.5) { // 15% chance of medium win
 			win = amount * 3;
-			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
-		} else {
+			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]]; // Example slot
+		} else if (rand <= 48.5) { // 15% chance of larger win
+			win = amount * 4;
+			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]]; // Example slot
+		} else if (rand <= 55.5) { // 10% chance of big win
+			win = amount * 10;
+			rslots = [SLOTS[5], SLOTS[5], SLOTS[5]]; // Example slot
+		} else { // 30% chance of unique slots
 			win = 0;
 			rslots = getUniqueSlots();
 		}
+
 
 		await Currency.updateOne({ userId: ctx.author.id }, { $inc: { balance: win - amount } });
 
