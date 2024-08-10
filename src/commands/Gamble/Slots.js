@@ -17,7 +17,7 @@ class Slots extends Command {
 			},
 			category: "gamble",
 			aliases: ["slots", "slot", "s"],
-			cooldown: 3,
+			cooldown: 1,
 			args: true,
 			permissions: {
 				dev: false,
@@ -89,19 +89,19 @@ class Slots extends Command {
 			return slotsCopy.slice(0, 3);
 		}
 
-		if (rand <= 15) {
+		if (rand <= 48) {
 			win = amount * 10;
 			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
-		} else if (rand <= 30) {
+		} else if (rand <= 45) {
 			win = amount * 4;
 			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
-		} else if (rand <= 45) {
+		} else if (rand <= 40) {
 			win = amount * 3;
 			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
-		} else if (rand <= 55) {
+		} else if (rand <= 30) {
 			win = amount * 2;
 			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
-		} else if (rand <= 65) {
+		} else if (rand <= 20) {
 			win = amount;
 			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
 		} else {
