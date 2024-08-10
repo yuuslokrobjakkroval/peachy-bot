@@ -33,13 +33,6 @@ class Daily extends Command {
     const minDailyAmount = 100000;
     const maxDailyAmount = 400000;
     const cooldownTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-    let data = await Currency.findOne({ userId });
-
-    if (!data) {
-      data = { balance: 0 };
-    }
-
     const lastDailyTime = cooldowns[userId] || 0;
     const currentTime = Date.now();
 
@@ -53,7 +46,17 @@ class Daily extends Command {
 
     const dailyAmount = Math.floor(Math.random() * (maxDailyAmount - minDailyAmount + 1)) + minDailyAmount;
 
-    await Currency.updateOne({ userId }, { $inc: { balance: dailyAmount } }, { upsert: true });
+    let user = await Currency.findOne({ userId });
+    if (!user) {
+      await Currency.create({
+        userId: ctx.author.id,
+        balance: dailyAmount,
+        bank: 0,
+        bankSpace: 5000,
+      });
+    } else {
+      await Currency.updateOne({ userId }, { $inc: { balance: dailyAmount } }, { upsert: true });
+    }
 
     cooldowns[userId] = currentTime;
 
