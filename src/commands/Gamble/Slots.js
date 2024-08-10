@@ -90,26 +90,25 @@ class Slots extends Command {
 		}
 
 		console.log(rand);
-		if (rand <= 15) { // 15%
+		if (rand <= 18) { // 18% chance of Small Win (amount)
 			win = amount;
 			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
-		} else if (rand <= 28) { // 13%
+		} else if (rand <= 31) { // 13% chance of Small Win (amount * 2)
 			win = amount * 2;
 			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
-		} else if (rand <= 39.5) { // 9.5%
+		} else if (rand <= 39.5) { // 8.5% chance of Medium Win (amount * 3)
 			win = amount * 3;
 			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
-		} else if (rand <= 45.5) { // 6%
+		} else if (rand <= 45.25) { // 5.75% chance of Larger Win (amount * 4)
 			win = amount * 4;
 			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
-		} else if (rand <= 48) { // 2.5%
+		} else if (rand <= 47.75) { // 2.5% chance of Big Win (amount * 10)
 			win = amount * 10;
 			rslots = [SLOTS[5], SLOTS[5], SLOTS[5]];
-		} else { // 44%
+		} else { // 52% chance of Unique Slots
 			win = 0;
 			rslots = getUniqueSlots();
 		}
-
 
 		await Currency.updateOne({ userId: ctx.author.id }, { $inc: { balance: win - amount } });
 
