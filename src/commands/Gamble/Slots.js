@@ -93,7 +93,7 @@ class Slots extends Command {
 		if (rand <= 45) {
 			win = amount;
 			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
-		} else if (rand <= 20) {
+		} else if (rand <= 30) {
 			win = amount * 2;
 			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
 		} else if (rand <= 40) {
