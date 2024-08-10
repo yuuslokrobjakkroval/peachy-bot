@@ -49,10 +49,10 @@ class Invite extends Command {
         .setURL(
           `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=8&integration_type=0&scope=bot+applications.commands`
         ),
-      new ButtonBuilder()
-        .setLabel("My Server")
-        .setStyle(ButtonStyle.Link)
-        .setURL("https://discord.gg/FwsFRkXCSj")
+      // new ButtonBuilder()
+      //   .setLabel("My Server")
+      //   .setStyle(ButtonStyle.Link)
+      //   .setURL("https://discord.gg/FwsFRkXCSj")
     );
 
     return await ctx.sendMessage({

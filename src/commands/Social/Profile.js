@@ -166,9 +166,17 @@ class Profile extends Command {
                     const ctxCanvas = canvas.getContext('2d');
 
                     // Draw background
-                    // const backgroundImage = userData.relationship_partner_id ? gif.profile_single_background : gif.profile_relationship_background;
+                    let backgroundImage;
+                    if(userData.gender === 'male'){
+                        backgroundImage =  gif.profile_male_background;
+                    } else if (userData.gender === 'female') {
+                        backgroundImage =  gif.profile_female_background;
+                    } else {
+                        backgroundImage =  gif.profile_no_gender_background;
+                    }
+
                     try {
-                        const background = await loadImage(gif.profile_single_background);
+                        const background = await loadImage(backgroundImage);
                         ctxCanvas.drawImage(background, 0, 0, width, height);
                     } catch (error) {
                         console.error(`Error loading background image: ${error}`);

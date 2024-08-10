@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const Currency = require("../../schemas/user");
+const User = require("../../schemas/user");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
 const { SLOTS, SPIN, COIN, TITLE } = require("../../utils/Emoji");
@@ -53,9 +53,9 @@ class Slots extends Command {
 			return ctx.sendMessage({ content: ", that... that's not how it works.", ephemeral: true });
 		}
 
-		let data = await Currency.findOne({ userId: ctx.author.id });
+		let data = await User.findOne({ userId: ctx.author.id });
 		if (!data)
-			await Currency.create({
+			await User.create({
 				userId: ctx.author.id,
 				balance: 500,
 			});
@@ -70,58 +70,85 @@ class Slots extends Command {
 
 		if (amount > maxBet) amount = maxBet;
 
+		// ===================================== > Decide Results < ===================================== \\
+		let rslots = [];
 		let rand = (await random(1, 1000)) / 10;
 		let win = 0;
-		let rslots = [];
-
-		function getUniqueSlots() {
-			const slotsCopy = [...SLOTS];
-
-			for (let i = slotsCopy.length - 1; i > 0; i--) {
-				const j = Math.floor(Math.random() * (i + 1));
-				[slotsCopy[i], slotsCopy[j]] = [slotsCopy[j], slotsCopy[i]];
-			}
-
-			return slotsCopy.slice(0, 3);
-		}
-
-		if (rand <= 15) {
-			win = amount * 10;
-			rslots = [SLOTS[4], SLOTS[4], SLOTS[4]];
-		} else if (rand <= 30) {
-			win = amount * 4;
-			rslots = [SLOTS[3], SLOTS[3], SLOTS[3]];
-		} else if (rand <= 45) {
-			win = amount * 3;
-			rslots = [SLOTS[2], SLOTS[2], SLOTS[2]];
-		} else if (rand <= 55) {
-			win = amount * 2;
-			rslots = [SLOTS[1], SLOTS[1], SLOTS[1]];
-		} else if (rand <= 65) {
+		
+		if (rand <= 18) { // 18%
 			win = amount;
-			rslots = [SLOTS[0], SLOTS[0], SLOTS[0]];
-		} else {
+			rslots.push(SLOTS[0]);
+			rslots.push(SLOTS[0]);
+			rslots.push(SLOTS[0]);
+		} else if (rand <= 31) { // 13%
+			win = amount * 2;
+			rslots.push(SLOTS[1]);
+			rslots.push(SLOTS[1]);
+			rslots.push(SLOTS[1]);
+		} else if (rand <= 39.5) { // 8%
+			win = amount * 3;
+			rslots.push(SLOTS[2]);
+			rslots.push(SLOTS[2]);
+			rslots.push(SLOTS[2]);
+		} else if (rand <= 45) { // 6.5%
 			win = 0;
-			rslots = getUniqueSlots();
+			rslots.push(SLOTS[5]);
+			rslots.push(SLOTS[5]);
+			rslots.push(SLOTS[5]);
+		} else if (rand <= 50.75) { // 5.75%
+			win = amount * 4;
+			rslots.push(SLOTS[3]);
+			rslots.push(SLOTS[3]);
+			rslots.push(SLOTS[3]);
+		} else if (rand <= 53.25) { // 2.5%
+			win = amount * 10;
+			rslots.push(SLOTS[4]);
+			rslots.push(SLOTS[4]);
+			rslots.push(SLOTS[4]);
+		} else { // 45.5%
+			let slot1 = Math.floor(Math.random() * SLOTS.length);
+			let slot2 = Math.floor(Math.random() * SLOTS.length);
+			let slot3 = Math.floor(Math.random() * SLOTS.length);
+			if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+			if (slot3 === slot1 || slot3 === slot2) slot3 = (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+			rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
 		}
 
-		await Currency.updateOne({ userId: ctx.author.id }, { $inc: { balance: win - amount } });
-
-		let winmsg = win === 0 ? `and lost \`${numeral(amount).format()}\`` : `and won \`${numeral(win).format()}\``;
-
-		const spinContent = `${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE} \n` +
-			`**\`[\` ${SPIN} ${SPIN} ${SPIN} \`]\`** ** ${ctx.author.globalName} ** \n` +
+		let content = `${TITLE} 𝐒𝐋𝐎𝐓𝐒  ${TITLE}\n` +
+			`**\`[\` ${SPIN} ${SPIN} ${SPIN} \`]\`** ** ${ctx.author.displayName} ** \n` +
 			`**\`|        |\` You bet \`${numeral(amount).format()}\` ${COIN}**\n` +
 			`**\`|        |\`**`;
 
-		const spinMessage = await ctx.sendMessage({ content: spinContent });
+		await User.updateOne({ userId: ctx.author.id }, { $inc: { balance: win - amount } });
+		await ctx.sendMessage({ content: content });
 
-		setTimeout(async () => {
-			const resultContent = `${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE} \n` +
-				`**\`[\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`]\`** ** ${ctx.author.globalName} ** \n` +
+
+
+		let winmsg = win === 0 ? `and lost \`${numeral(amount).format()}\`` : `and won \`${numeral(win).format()}\``;
+
+		setTimeout(async function () {
+			let content = `${TITLE} 𝐒𝐋𝐎𝐓𝐒  ${TITLE}\n` +
+				`**\`[\` ${rslots[0]} ${SPIN} ${SPIN} \`]\`** ** ${ctx.author.displayName} ** \n` +
 				`**\`|        |\` You bet \`${numeral(amount).format()}\` ${COIN}**\n` +
-				`**\`|        |\` ${winmsg} ${COIN}**`;
-			await spinMessage.edit({ content: resultContent });
+				`**\`|        |\`**`;
+
+			await ctx.editMessage({ content: content });
+			setTimeout(async function () {
+				let content = `${TITLE} 𝐒𝐋𝐎𝐓𝐒  ${TITLE}\n` +
+					`**\`[\` ${rslots[0]} ${SPIN} ${rslots[2]} \`]\`** ** ${ctx.author.displayName} ** \n` +
+					`**\`|        |\` You bet \`${numeral(amount).format()}\` ${COIN}**\n` +
+					`**\`|        |\`**`;
+
+				await ctx.editMessage({ content: content });
+				setTimeout(async function () {
+					let content = `${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE} \n` +
+						`**\`[\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`]\`** ** ${ctx.author.displayName} ** \n` +
+						`**\`|        |\` You bet \`${numeral(amount).format()}\` ${COIN}**\n` +
+						`**\`|        |\` ${winmsg} ${COIN}**`;
+
+					await ctx.editMessage({ content: content });
+				}, 1000);
+			}, 700);
 		}, 1000);
 	}
 }
