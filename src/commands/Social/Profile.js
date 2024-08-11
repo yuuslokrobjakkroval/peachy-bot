@@ -1,8 +1,17 @@
 const { Command } = require("../../structures");
-const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiButton, twoButton, getCollectionButton } = require('../../functions/function');
+const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiButton, twoButton, getCollectionButton,
+    formatCapitalize
+} = require('../../functions/function');
 const moment = require('moment-timezone');
 const config = require('../../config');
-const { TITLE, RELATIONSHIPHEART, YES, NO } = require('../../utils/Emoji');
+const { TITLE, RELATIONSHIPHEART, YES, NO , CATCAKE, HEARTCAKE} = require('../../utils/Emoji');
+const CAKE = [CATCAKE, HEARTCAKE]
+
+function getRandomElement(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+const randomCake = getRandomElement(CAKE);
 
 class Profile extends Command {
     constructor(client) {
@@ -182,17 +191,26 @@ class Profile extends Command {
                         }
                         userData.bio = text;
                         await userData.save();
-                        return ctx.channel.send({embeds: [SimpleEmbed(`Now <@${user.id}> has changed their bio to **${text}**`)]});
+
+                        const embed = this.client.embed()
+                            .setColor(config.color.main)
+                            .setTitle(`**${TITLE} Bio ${TITLE}**\n`)
+                            .setDescription(`Now <@${user.id}> has changed their bio to **${text}.**`);
+                        await ctx.channel.send({ embeds: [embed] });
 
                     } else if (args[0] === 'set' && args[1] === 'username') {
                         const command = ctx?.message?.content;
                         const text = `${command?.slice(command.indexOf(args[2]))}`;
                         if (text.length > 10) {
-                            return ctx.channel.send({embeds: [SimpleEmbed(`<@${user.id}> your about me is more than 10 characters.`)]});
+                            return ctx.channel.send({embeds: [SimpleEmbed(`<@${user.id}> your username is more than 10 characters.`)]});
                         }
                         userData.username = text;
                         await userData.save();
-                        return ctx.channel.send({embeds: [SimpleEmbed(`Now <@${user.id}> has changed their username to **${text}**`)]});
+                        const embed = this.client.embed()
+                            .setColor(config.color.main)
+                            .setTitle(`**${TITLE} Username ${TITLE}**\n`)
+                            .setDescription(`Now <@${user.id}> has changed their username to **${text}.**`);
+                        await ctx.channel.send({ embeds: [embed] });
 
                     } else if ((args[0] === 'set' && args[1] === 'bd') || args[1] === 'birthday') {
                         const command = ctx?.message?.content;
@@ -215,7 +233,13 @@ class Profile extends Command {
 
                         userData.dateOfBirth = text;
                         await userData.save();
-                        return ctx.channel.send({embeds: [SimpleEmbed(`Now <@${user.id}> has set their birthday to **${text}**`)]});
+
+                        const embed = this.client.embed()
+                            .setColor(config.color.main)
+                            .setTitle(`**${TITLE} Birthday ${TITLE}**\n`)
+                            .setDescription(`Now <@${user.id}> has set their birthday to **${text} ${randomCake}.**`);
+                        await ctx.channel.send({ embeds: [embed] });
+
                     } else if (args[0] === 'set' && args[1] === 'relationship') {
                         const mention = ctx.message.mentions.users.first();
                         if (mention) {
@@ -266,7 +290,7 @@ class Profile extends Command {
                                         await Promise.all([userData.save(), partnerData.save()]);
 
                                         messageEmbed.edit({
-                                            embeds: [SimpleEmbed(`💓💞❤️💘 **Congratulations! You are now a couple** 💖💝❣️💗\n <@${user.id}> ${RELATIONSHIPHEART} <@${mention.id}>`)],
+                                            embeds: [SimpleEmbed(`💓💞❤️💘 **Congratulations! You are now a couple** 💖💝❣️💗\n <@${user.id}> ${RELATIONSHIPHEART} <@${mention.id}>.`)],
                                             components: []
                                         });
                                         collector.stop();

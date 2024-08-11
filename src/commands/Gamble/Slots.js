@@ -17,7 +17,7 @@ class Slots extends Command {
 			},
 			category: "gamble",
 			aliases: ["slots", "slot", "s"],
-			cooldown: 3,
+			cooldown: 1,
 			args: true,
 			permissions: {
 				dev: false,
@@ -70,36 +70,36 @@ class Slots extends Command {
 		let rand = (await random(1, 1000)) / 10;
 		let win = 0;
 		
-		if (rand <= 18) { // 18%
+		if (rand <= 20) { // 20%
 			win = amount;
-			rslots.push(SLOTS[0]);
-			rslots.push(SLOTS[0]);
-			rslots.push(SLOTS[0]);
-		} else if (rand <= 31) { // 13%
+			rslots.push(SLOTS[1]);
+			rslots.push(SLOTS[1]);
+			rslots.push(SLOTS[1]);
+		} else if (rand <= 33) { // 13%
 			win = amount * 2;
-			rslots.push(SLOTS[1]);
-			rslots.push(SLOTS[1]);
-			rslots.push(SLOTS[1]);
-		} else if (rand <= 39.5) { // 8%
+			rslots.push(SLOTS[2]);
+			rslots.push(SLOTS[2]);
+			rslots.push(SLOTS[2]);
+		} else if (rand <= 41.5) { // 8.5%
 			win = amount * 3;
-			rslots.push(SLOTS[2]);
-			rslots.push(SLOTS[2]);
-			rslots.push(SLOTS[2]);
-		} else if (rand <= 45) { // 6.5%
+			rslots.push(SLOTS[3]);
+			rslots.push(SLOTS[3]);
+			rslots.push(SLOTS[3]);
+		} else if (rand <= 48) { // 7.5%
 			win = 0;
-			rslots.push(SLOTS[5]);
-			rslots.push(SLOTS[5]);
-			rslots.push(SLOTS[5]);
-		} else if (rand <= 50.75) { // 5.75%
+			rslots.push(SLOTS[0]);
+			rslots.push(SLOTS[0]);
+			rslots.push(SLOTS[0]);
+		} else if (rand <= 51.75) { // 3.75%
 			win = amount * 4;
-			rslots.push(SLOTS[3]);
-			rslots.push(SLOTS[3]);
-			rslots.push(SLOTS[3]);
-		} else if (rand <= 53.25) { // 2.5%
+			rslots.push(SLOTS[4]);
+			rslots.push(SLOTS[4]);
+			rslots.push(SLOTS[4]);
+		} else if (rand <= 53.25) { // 1.5%
 			win = amount * 10;
-			rslots.push(SLOTS[4]);
-			rslots.push(SLOTS[4]);
-			rslots.push(SLOTS[4]);
+			rslots.push(SLOTS[5]);
+			rslots.push(SLOTS[5]);
+			rslots.push(SLOTS[5]);
 		} else { // 45.5%
 			let slot1 = Math.floor(Math.random() * SLOTS.length);
 			let slot2 = Math.floor(Math.random() * SLOTS.length);

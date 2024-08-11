@@ -18,6 +18,12 @@ const NIGHT = '<a:NIGHT:1271717918182215704>';
 const RELATIONSHIPHEART = '<a:RELATIONSHIPHEART:1272015898676301834>';
 const YES = '<:YES:1272015874093617234>';
 const NO = '<:NO:1272015860181237823>';
+const CATCAKE = '<:CATCAKE:1272072459004285011>';
+
+// BIRTHDAY
+const BIRTHDAY = '<a:BIRTHDAY:1272072532140359744>';
+const CAKEBIRTHDAY = '<:CAKEBIRTHDAY:1272072520874328216>';
+const HEARTCAKE = '<:HEARTCAKE:1272072470362329193>';
 
 // GENDER
 const MALE = '<:MALE:1272052754726256661>';
@@ -61,7 +67,7 @@ function getEmojiForTime() {
     const hours = now.getHours();
 
     // Define day and night times
-    const isDaytime = hours >= 0 && hours < 10; // From 6 AM to 6 PM
+    const isDaytime = hours >= 6 && hours < 18; // From 6 AM to 6 PM
 
     return isDaytime ? DAY : NIGHT;
 }
@@ -78,6 +84,11 @@ module.exports = {
     RELATIONSHIPHEART,
     YES,
     NO,
+    CATCAKE,
+    HEARTCAKE,
+
+    BIRTHDAY,
+    CAKEBIRTHDAY,
 
     MALE,
     FEMALE,

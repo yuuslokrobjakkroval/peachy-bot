@@ -32,6 +32,7 @@
     "fontkit": "^2.0.4",
     "moment-timezone": "^0.5.45",
     "mongoose": "^8.5.2",
+    "node-cron": "^3.0.3",
     "numeral": "^2.0.6",
     "random-number-csprng": "^1.0.2",
     "redis": "^4.6.15",

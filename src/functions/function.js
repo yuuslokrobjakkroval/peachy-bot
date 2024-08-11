@@ -10,6 +10,10 @@ const { userSchema } = require('../schemas/user');
 const User = mongoose.model('User', userSchema);
 const gif = require('../functions/gif');
 const { createCanvas, loadImage } = require('canvas');
+const Users = require("../schemas/user");
+const moment = require("moment-timezone");
+const config = require("../config");
+const {TITLE, BIRTHDAY, CAKEBIRTHDAY} = require("../utils/Emoji");
 require('dotenv').config();
 
 const bot = new Client({
@@ -119,6 +123,42 @@ function fiveButton(one, two, three, four, five){
     return new ActionRowBuilder().addComponents(one, two, three, four, five);
 }
 
+async function checkBirthdays(client) {
+    const today = moment().format('DD-MM'); // Format for checking birthdays
+    const allUsers = await Users.find();
+
+    for (const userData of allUsers) {
+        if (userData.dateOfBirth) {
+            const [day, month] = userData.dateOfBirth.split('-').slice(0, 2);
+            if (`${day}-${month}` === today) {
+                if (!userData.birthdayMessageSent) {
+                    try {
+                        const user = await client.users.fetch(userData.userId);
+                        if (user) {
+                            const birthdayChannel = await client.channels.fetch('1272074580797952116');
+
+                            const embed = new EmbedBuilder()
+                                .setColor(config.color.main)
+                                .setTitle(`**${TITLE} Happy Birthday ${BIRTHDAY} ${TITLE}**`)
+                                .setDescription(`Happy Birthday, <@${user.id}>! ${CAKEBIRTHDAY}.`);
+
+                            await birthdayChannel.send({ embeds: [embed] });
+
+                            userData.birthdayMessageSent = true;
+                            await userData.save();
+                        }
+                    } catch (error) {
+                        console.error(`Error sending birthday message: ${error}`);
+                    }
+                }
+            }
+        }
+    }
+}
+
+module.exports = checkBirthdays;
+
+
 function blackjackEmbed(amount, text, body, text2, body2, result, user, color, client){
     if(typeof color == Number){
         color = 'Yellow';
@@ -223,4 +263,4 @@ function stateMAG(statemag, lvl) {
 }
 
 
-module.exports = { formatCapitalize, formatUpperCase, stateMAG, stateMAG, loadImage ,createCanvas ,User, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, gif, advanceEmbed, labelButton, emojiButton, sym, syms, sym3, ButtonStyle, AttachmentBuilder, ComponentType, createCanvas, loadImage, InteractionCollector };
+module.exports = { checkBirthdays, formatCapitalize, formatUpperCase, stateMAG, stateMAG, loadImage ,createCanvas ,User, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, gif, advanceEmbed, labelButton, emojiButton, sym, syms, sym3, ButtonStyle, AttachmentBuilder, ComponentType, createCanvas, loadImage, InteractionCollector };

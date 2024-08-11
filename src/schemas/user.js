@@ -6,6 +6,7 @@ const userSchema = new Schema({
     gender: {type: String, default: ''},
     bio: {type: String, default: ''},
     dateOfBirth: {type: String, default: ''},
+    birthdayMessageSent: { type: Boolean, default: false },
     relationshipStatus: { type: String, default: ''},
     relationshipPartnerId: {type: String, default: ''},
     dateOfStartRelationShip: {type: String, default: ''},

@@ -1,6 +1,6 @@
 module.exports = {
 //*Profile background
-    profile_no_gender_background: 'src/data/images/cover/ocean.jpg',
+    profile_no_gender_background: 'src/data/images/cover/sunrise_river.jpg',
     profile_male_background: 'src/data/images/cover/ocean.jpg',
     profile_female_background: 'src/data/images/cover/angel.jpg',
     lower_profile_background: 'src/data/images/cover/low_background.jpg',
@@ -8,8 +8,8 @@ module.exports = {
 //*coin flip
     coin_flip_gif: '<a:coin_flip:1211695639122149477>',
 
-//*cash
-    cash: '<:yukio_cash:1215312882032574535>',
+// //*cash
+//     cash: '<:yukio_cash:1215312882032574535>',
 
 //*blackjack
     one_red_gif: '<:1_red:1205494615340359730>',

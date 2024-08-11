@@ -1,5 +1,6 @@
 const config = require("../../config.js");
 const { Event } = require("../../structures/index.js");
+const { checkBirthdays } = require('../../functions/function');
 
 class Ready extends Event {
   constructor(client, file) {
@@ -19,6 +20,8 @@ class Ready extends Event {
       ],
       status: config.botStatus,
     });
+
+    await checkBirthdays(this.client);
   }
 }
 
