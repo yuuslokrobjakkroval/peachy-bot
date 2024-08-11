@@ -23,7 +23,7 @@ const handleEmoji = (no) => {
         case 8:
             return HERALD;
         default:
-            return '#'
+            return '';
     }
 }
 
