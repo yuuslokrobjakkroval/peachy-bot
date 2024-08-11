@@ -4,8 +4,8 @@ const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiBu
 } = require('../../functions/function');
 const moment = require('moment-timezone');
 const config = require('../../config');
-const { TITLE, RELATIONSHIPHEART, YES, NO , CATCAKE, HEARTCAKE} = require('../../utils/Emoji');
-const CAKE = [CATCAKE, HEARTCAKE]
+const { TITLE, RELATIONSHIPHEART, YES, NO , CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL} = require('../../utils/Emoji');
+const CAKE = [CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL]
 
 function getRandomElement(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
