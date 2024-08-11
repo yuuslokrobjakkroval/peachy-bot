@@ -20,15 +20,6 @@ module.exports = {
     yellow: 0xffff00,
     main: 0xffc0cb,
   },
-  logs: {
-    logGuild: process.env.LOG_GUILD || "",
-    logError: process.env.LOG_ERROR || "",
-    logReport: process.env.LOG_REPORT || "",
-  },
-  links: {
-    img: process.env.IMG_LINK || "https://i.imgur.com/ud3EWNh.jpg",
-    invite: process.envINVITE_LINK || "",
-  },
   botStatus: process.env.BOT_STATUS || "online",
   botActivity: process.env.BOT_ACTIVITY || "WaveMusic",
   botActivityType: parseInt(process.env.BOT_ACTIVITY_TYPE || "2"),

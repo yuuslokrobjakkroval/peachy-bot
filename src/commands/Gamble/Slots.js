@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const User = require("../../schemas/user");
+const Users = require("../../schemas/user");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
 const { SLOTS, SPIN, COIN, TITLE } = require("../../utils/Emoji");
@@ -12,7 +12,7 @@ class Slots extends Command {
 			name: "slots",
 			description: {
 				content: "Bet your money in the slot machine! Earn up to 10x your money!",
-				examples: ["slots 1000", "slots all"],
+				examples: ["slots all", "slots 1000"],
 				usage: "SLOTS <amount>",
 			},
 			category: "gamble",
@@ -53,18 +53,13 @@ class Slots extends Command {
 			return ctx.sendMessage({ content: ", that... that's not how it works.", ephemeral: true });
 		}
 
-		let data = await User.findOne({ userId: ctx.author.id });
-		if (!data)
-			await User.create({
-				userId: ctx.author.id,
-				balance: 500,
-			});
+		const user = await Users.findOne({ userId: ctx.author.id });
 
 		if (all) {
-			amount = Math.min(data.balance, 250000);
+			amount = Math.min(user.balance, 250000);
 		}
 
-		if (data.balance <= 0 || data.balance < amount) {
+		if (user.balance <= 0 || user.balance < amount) {
 			return ctx.sendMessage({ content: '**🚫 | ' + ctx.author.globalName + "**, You don't have enough coin!", ephemeral: true });
 		}
 
@@ -114,12 +109,12 @@ class Slots extends Command {
 			rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
 		}
 
-		let content = `${TITLE} 𝐒𝐋𝐎𝐓𝐒  ${TITLE}\n` +
+		let content = `**${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE}**\n` +
 			`**\`[\` ${SPIN} ${SPIN} ${SPIN} \`]\`** ** ${ctx.author.displayName} ** \n` +
 			`**\`|        |\` You bet \`${numeral(amount).format()}\` ${COIN}**\n` +
 			`**\`|        |\`**`;
 
-		await User.updateOne({ userId: ctx.author.id }, { $inc: { balance: win - amount } });
+		await Users.updateOne({ userId: ctx.author.id }, { $inc: { balance: win - amount } });
 		await ctx.sendMessage({ content: content });
 
 
@@ -127,21 +122,21 @@ class Slots extends Command {
 		let winmsg = win === 0 ? `and lost \`${numeral(amount).format()}\`` : `and won \`${numeral(win).format()}\``;
 
 		setTimeout(async function () {
-			let content = `${TITLE} 𝐒𝐋𝐎𝐓𝐒  ${TITLE}\n` +
+			let content = `**${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE}**\n` +
 				`**\`[\` ${rslots[0]} ${SPIN} ${SPIN} \`]\`** ** ${ctx.author.displayName} ** \n` +
 				`**\`|        |\` You bet \`${numeral(amount).format()}\` ${COIN}**\n` +
 				`**\`|        |\`**`;
 
 			await ctx.editMessage({ content: content });
 			setTimeout(async function () {
-				let content = `${TITLE} 𝐒𝐋𝐎𝐓𝐒  ${TITLE}\n` +
+				let content = `**${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE}**\n` +
 					`**\`[\` ${rslots[0]} ${SPIN} ${rslots[2]} \`]\`** ** ${ctx.author.displayName} ** \n` +
 					`**\`|        |\` You bet \`${numeral(amount).format()}\` ${COIN}**\n` +
 					`**\`|        |\`**`;
 
 				await ctx.editMessage({ content: content });
 				setTimeout(async function () {
-					let content = `${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE} \n` +
+					let content = `**${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE}**\n` +
 						`**\`[\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`]\`** ** ${ctx.author.displayName} ** \n` +
 						`**\`|        |\` You bet \`${numeral(amount).format()}\` ${COIN}**\n` +
 						`**\`|        |\` ${winmsg} ${COIN}**`;

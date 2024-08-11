@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const Currency = require("../../schemas/user");
+const Users = require("../../schemas/user");
 const config = require("../../config.js");
 const numeral = require("numeral");
 const { COIN, IMMORTAL, IMMORTAL_TITLE, DIVINE, ANCIENT, LEGEND, ARCHON, CRUSADER, GUARDIAN, HERALD } = require("../../utils/Emoji");
@@ -52,11 +52,10 @@ class Ranking extends Command {
 
     async run(client, ctx, args) {
          try {
-            const usersWithBalance = await Currency.find({ balance: { $gt: 0 } }).sort({ balance: -1 }).limit(10);
+            const usersWithBalance = await Users.find({ balance: { $gt: 0 } }).sort({ balance: -1 }).limit(10);
 
             const description = usersWithBalance.map((user, index) => {
                 const member = ctx.guild.members.cache.get(user.userId);
-                console.log(member)
                 return `${handleEmoji(index + 1)} ${member ? member.displayName : 'Unknown User'}\n ${numeral(user.balance.toLocaleString()).format()} coin ${COIN}\n`;
             }).join('\n');
 

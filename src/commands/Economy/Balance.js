@@ -1,7 +1,7 @@
 const { Command } = require("../../structures");
-const Currency = require("../../schemas/user");
+const Users = require("../../schemas/user");
 const numeral = require("numeral");
-const { TITLE , COIN} = require("../../utils/Emoji");
+const { TITLE , COIN, DAILY} = require("../../utils/Emoji");
 
 class Balance extends Command {
   constructor(client) {
@@ -26,23 +26,18 @@ class Balance extends Command {
     });
   }
   async run(client, ctx, args) {
-    let data = await Currency.findOne({ userId: ctx.author.id });
-    if (!data) {
-      data = await Currency.create({
-        userId: ctx.author.id,
-        balance: 500,
-      });
-    }
+    let user = await Users.findOne({ userId: ctx.author.id });
 
     let embed = this.client.embed();
-    let balance = data.balance;
+    let balance = user.balance;
+    let prefix = this.client.config.prefix;
 
     return await ctx.sendMessage({
       embeds: [
         embed
-          .setColor(this.client.color.main)
-            .setTitle(`${TITLE} ${ctx.author.globalName ? ctx.author.globalName : ctx.author.username} ${TITLE}`)
-            .setDescription(`Coin: **${numeral(balance.toLocaleString()).format()} ${COIN}**`),
+            .setColor(this.client.color.main)
+            .setTitle(`**${TITLE} ${ctx.author.globalName ? ctx.author.globalName : ctx.author.username} ${TITLE}**`)
+            .setDescription(`Coin: **${numeral(balance.toLocaleString()).format()} ${COIN}**\n` + `\nClaim your daily reward using **\`${prefix}daily!\`** ${DAILY}`)
       ],
     });
   }

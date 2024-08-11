@@ -9,8 +9,9 @@ const COIN = '<:COIN:1271847141010313277>';
 const SPIN = '<a:SLOTS:1271847492006314097>';
 
 // DAILY
-const DAYSKY = '<a:DAY:1271717892223795250>';
-const NIGHTSKY = '<a:NIGHT:1271717918182215704>';
+const DAILY = '<:DAILY:1272008002228060221>';
+const DAY = '<a:DAY:1271717892223795250>';
+const NIGHT = '<a:NIGHT:1271717918182215704>';
 
 // CUTIE
 const TITLE = '<a:TITLE:1271717032882077766>';
@@ -51,7 +52,7 @@ function getEmojiForTime() {
     // Define day and night times
     const isDaytime = hours >= 0 && hours < 10; // From 6 AM to 6 PM
 
-    return isDaytime ? DAYSKY : NIGHTSKY;
+    return isDaytime ? DAY : NIGHT;
 }
 
 module.exports = {
@@ -68,9 +69,10 @@ module.exports = {
 
     SLOTS,
     SPIN,
-    
-    DAYSKY,
-    NIGHTSKY,
+
+    DAILY,
+    DAY,
+    NIGHT,
     
     RANK_MASTER,
     RANK_DIAMOND,

@@ -1,5 +1,6 @@
 const { ChannelType, Collection, PermissionFlagsBits } = require("discord.js");
 const { Context, Event } = require("../../structures/index.js");
+const User = require("../../schemas/user");
 
 class MessageCreate extends Event {
   constructor(client, file) {
@@ -10,6 +11,13 @@ class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot) return;
+
+    let user = await User.findOne({ userId: message.author.id });
+    if (!user) {
+      await User.create({
+        userId: message.author.id,
+      });
+    }
 
     const prefixes = this.client.config.prefixes.map(p => p);
     const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);

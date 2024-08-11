@@ -1,7 +1,7 @@
 const { Command } = require("../../structures");
 const numeral = require("numeral");
-const Currency = require("../../schemas/user");
-const { COIN, getEmojiForTime } = require("../../utils/Emoji");
+const Users = require("../../schemas/user");
+const { COIN, DAILY, getEmojiForTime } = require("../../utils/Emoji");
 
 const cooldowns = {};
 
@@ -46,21 +46,21 @@ class Daily extends Command {
 
     const dailyAmount = Math.floor(Math.random() * (maxDailyAmount - minDailyAmount + 1)) + minDailyAmount;
 
-    let user = await Currency.findOne({ userId });
+    const user = await Users.findOne({ userId });
     if (!user) {
-      await Currency.create({
+      await Users.create({
         userId: ctx.author.id,
         balance: dailyAmount,
       });
     } else {
-      await Currency.updateOne({ userId }, { $inc: { balance: dailyAmount } }, { upsert: true });
+      await Users.updateOne({ userId }, { $inc: { balance: dailyAmount } }, { upsert: true });
     }
 
     cooldowns[userId] = currentTime;
 
     const embed = this.client.embed()
         .setColor(this.client.color.main)
-        .setTitle(`**${getEmojiForTime()} ${ctx.author.globalName} claimed their daily reward! **`)
+        .setTitle(`**${getEmojiForTime()} ${ctx.author.globalName} claimed their daily ${DAILY} reward!**`)
         .setDescription(`${COIN} **\`+${numeral(dailyAmount).format('0,0')}\`** coins`);
 
     return await ctx.channel.send({ embeds: [embed] });
