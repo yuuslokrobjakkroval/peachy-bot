@@ -90,12 +90,12 @@ class Slots extends Command {
 			rslots.push(SLOTS[0]);
 			rslots.push(SLOTS[0]);
 			rslots.push(SLOTS[0]);
-		} else if (rand <= 51.75) { // 3.75%
+		} else if (rand <= 52.75) { // 3.75%
 			win = amount * 4;
 			rslots.push(SLOTS[4]);
 			rslots.push(SLOTS[4]);
 			rslots.push(SLOTS[4]);
-		} else if (rand <= 53.25) { // 1.5%
+		} else if (rand <= 55.75) { // 1.5%
 			win = amount * 10;
 			rslots.push(SLOTS[5]);
 			rslots.push(SLOTS[5]);
