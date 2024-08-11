@@ -5,6 +5,7 @@ const userSchema = new Schema({
     username: { type: String, default: '' },
     gender: {type: String, default: ''},
     bio: {type: String, default: ''},
+    dateOfBirth: {type: String, default: ''},
     relationshipStatus: { type: String, default: ''},
     relationshipPartnerId: {type: String, default: ''},
     dateOfStartRelationShip: {type: String, default: ''},

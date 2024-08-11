@@ -1,8 +1,9 @@
 module.exports = {
 //*Profile background
-    profile_no_gender_background: 'src/data/images/cover/sunrise.jpg',
-    profile_male_background: 'src/data/images/cover/lofi.jpg',
+    profile_no_gender_background: 'src/data/images/cover/ocean.jpg',
+    profile_male_background: 'src/data/images/cover/ocean.jpg',
     profile_female_background: 'src/data/images/cover/angel.jpg',
+    lower_profile_background: 'src/data/images/cover/low_background.jpg',
 
 //*coin flip
     coin_flip_gif: '<a:coin_flip:1211695639122149477>',

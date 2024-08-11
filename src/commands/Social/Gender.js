@@ -1,5 +1,8 @@
 const { Command } = require("../../structures");
 const User = require("../../schemas/user");
+const config = require("../../config");
+const { TITLE, MALE, FEMALE, GAY} = require("../../utils/Emoji");
+const { formatCapitalize } = require('../../functions/function')
 
 class Gender extends Command {
     constructor(client) {
@@ -7,11 +10,11 @@ class Gender extends Command {
             name: "gender",
             description: {
                 content: "Set your gender.",
-                examples: ["setgender male", "setgender female"],
-                usage: "setgender <gender>",
+                examples: ["gender set male", "gender set female"],
+                usage: ["gender set <gender>", "gd set <gender>"],
             },
             category: "profile",
-            aliases: ["gender", "setgender"],
+            aliases: ["gender", "gd"],
             cooldown: 5,
             args: true,
             permissions: {
@@ -32,24 +35,44 @@ class Gender extends Command {
     }
 
     async run(client, ctx, args) {
-        const gender = args.join(" ").toLowerCase();
+        const user = await User.findOne({ userId: ctx.author.id });
 
-        if (!["male", "female", "non-binary", "other"].includes(gender)) {
-            return ctx.sendMessage({ content: "Please specify a valid gender (male, female, non-binary, other).", ephemeral: true });
+        if (args[0] !== 'set') {
+            return ctx.sendMessage({
+                content: "Please use the command in the format: `gender set <gender>`.",
+                ephemeral: true
+            });
         }
 
-        let user = await User.findOne({ userId: ctx.author.id });
-        if (!user) {
-            user = new User({
-                userId: ctx.author.id,
-                balance: 500, // or any default values you want
-            });
+        const gender = args.slice(1).join(" ").toLowerCase();
+        if (!["male", "female"].includes(gender)) {
+
+            const embed = this.client.embed()
+                .setColor(config.color.main)
+                .setTitle(`**${TITLE} Gender ${TITLE}**\n`)
+                .setDescription("Please specify a valid gender (male, female).");
+            return await ctx.channel.send({ embeds: [embed] });
+        }
+
+        let GENDER;
+
+        if(gender === "male") {
+            GENDER = MALE;
+        } else if (gender === "female") {
+            GENDER = FEMALE;
+        } else {
+            GENDER = GAY;
         }
 
         user.gender = gender;
         await user.save();
 
-        return ctx.sendMessage({ content: `Your gender has been set to \`${gender}\`.`, ephemeral: true });
+        const embed = this.client.embed()
+            .setColor(config.color.main)
+            .setTitle(`**${TITLE} Gender ${TITLE}**\n`)
+            .setDescription(`Your gender has been set to **\`${formatCapitalize(gender)}\`** ${GENDER}.`);
+
+        await ctx.channel.send({ embeds: [embed] });
     }
 }
 
