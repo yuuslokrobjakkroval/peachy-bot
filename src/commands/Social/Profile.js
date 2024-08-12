@@ -135,9 +135,9 @@ class Profile extends Command {
                 } else {
                     if (userData.relationshipStatus === 'bestie') {
                         if (userData.gender === 'male') {
-                            backgroundPath = gif.one_bestie_male_background;
+                            backgroundPath = gif.two_bestie_male_background;
                             } else {
-                            backgroundPath = gif.single_female_background;
+                            backgroundPath = gif.two_relationship_background;
                         }
                     } else {
                         if(userData.userId === '966688007493140591'){
@@ -281,7 +281,7 @@ class Profile extends Command {
                         const mention = ctx.message.mentions.users.first();
                         if (mention) {
                             if (mention.id === userData.relationshipPartnerId) {
-                                return ctx.channel.send({embeds: [SimpleEmbed(`<@${user.id}> and <@${mention.id}> are already in a relationship ${RELATIONSHIPHEART}`)]});
+                                return ctx.channel.send({embeds: [SimpleEmbed(`${user.displayName} and ${mention.displayName} are already in a relationship ${RELATIONSHIPHEART}`)]});
                             }
 
                             const embed = this.client.embed()
@@ -346,7 +346,6 @@ class Profile extends Command {
                                     collector.stop();
                                 }
                             });
-
                         } else {
                             return ctx.channel.send({embeds: [SimpleEmbed(`${user.displayName} please mention your partner.`)]});
                         }
@@ -354,7 +353,7 @@ class Profile extends Command {
                         const mention = ctx.message.mentions.users.first();
                         if (mention) {
                             if (mention.id === userData.relationshipPartnerId) {
-                                return ctx.channel.send({embeds: [SimpleEmbed(`${user.displayName} and ${mention.displayName}> are already in a bestie ${RELATIONSHIPHEART}`)]});
+                                return ctx.channel.send({embeds: [SimpleEmbed(`${user.displayName} and ${mention.displayName} are already in a bestie ${RELATIONSHIPHEART}`)]});
                             }
 
                             const embed = this.client.embed()
