@@ -1,7 +1,7 @@
 {
-  "name": "Skyrealm",
+  "name": "Peachy",
   "version": "2.1.0",
-  "description": "Skyrealm is a discord bot mode by Yuu",
+  "description": "Peachy is a discord bot mode by Yuu",
   "main": "src/index.js",
   "repository": "",
   "author": "Yuu",
