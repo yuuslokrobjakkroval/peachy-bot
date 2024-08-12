@@ -1,15 +1,52 @@
 module.exports = {
-//*Profile background
-    profile_no_gender_background: 'src/data/images/cover/sunrise_river.jpg',
-    profile_male_background: 'src/data/images/cover/ocean.jpg',
-    profile_female_background: 'src/data/images/cover/angel.jpg',
-    lower_profile_background: 'src/data/images/cover/low_background.jpg',
+    // Profile background
 
-//*coin flip
+    // Bestie
+    one_bestie_male_background: 'src/data/images/profile/bestie_male/one.jpeg',
+    two_bestie_male_background: 'src/data/images/profile/bestie_male/two.jpeg',
+
+    one_bestie_female_background: 'src/data/images/profile/bestie_female/one.jpeg',
+    two_bestie_female_background: 'src/data/images/profile/bestie_female/two.jpeg',
+
+    // Marrie
+    one_marrie_background: 'src/data/images/profile/marrie/one.jpeg',
+
+    // Special Relationship
+    one_first_special_background: 'src/data/images/profile/special/one_01.jpeg',
+    one_second_special_background: 'src/data/images/profile/special/one_02.jpeg',
+    two_second_special_background: 'src/data/images/profile/special/two.jpeg',
+
+    // Relationship
+    one_relationship_background: 'src/data/images/profile/relationship/one.jpeg',
+    two_relationship_background: 'src/data/images/profile/relationship/two.jpeg',
+    three_relationship_background: 'src/data/images/profile/relationship/three.jpeg',
+
+    // Special Relationship
+    one_special_single_male_background: 'src/data/images/profile/special_single_male/one.jpeg',
+
+    one_special_single_female_background: 'src/data/images/profile/special_single_female/one.jpeg',
+
+    // Single
+    one_single_male_background: 'src/data/images/profile/single_male/one.jpeg',
+    two_single_male_background: 'src/data/images/profile/single_male/two.jpeg',
+    three_single_male_background: 'src/data/images/profile/single_male/three.jpeg',
+
+    one_single_female_background: 'src/data/images/profile/single_female/one.jpg',
+    two_single_female_background: 'src/data/images/profile/single_female/two.jpeg',
+    three_single_female_background: 'src/data/images/profile/single_female/three.jpeg',
+    four_single_female_background: 'src/data/images/profile/single_female/four.jpeg',
+    five_single_female_background: 'src/data/images/profile/single_female/five.jpeg',
+    six_single_female_background: 'src/data/images/profile/single_female/six.jpeg',
+    seven_single_female_background: 'src/data/images/profile/single_female/seven.jpeg',
+
+    // Normal
+    profile_no_gender_background: 'src/data/images/cover/sunrise_river.jpeg',
+    profile_male_background: 'src/data/images/cover/ocean.jpeg',
+    profile_female_background: 'src/data/images/cover/angel.jpeg',
+    lower_profile_background: 'src/data/images/cover/low_background.jpeg',
+
+// coin flip
     coin_flip_gif: '<a:coin_flip:1211695639122149477>',
-
-// //*cash
-//     cash: '<:yukio_cash:1215312882032574535>',
 
 //*blackjack
     one_red_gif: '<:1_red:1205494615340359730>',

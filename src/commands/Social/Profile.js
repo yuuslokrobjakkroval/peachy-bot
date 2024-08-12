@@ -4,7 +4,7 @@ const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiBu
 } = require('../../functions/function');
 const moment = require('moment-timezone');
 const config = require('../../config');
-const { TITLE, RELATIONSHIPHEART, YES, NO , CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL} = require('../../utils/Emoji');
+const { TITLE, MALE, FEMALE, GAY, RELATIONSHIPHEART, YES, NO , CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL} = require('../../utils/Emoji');
 const CAKE = [CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL]
 
 function getRandomElement(arr) {
@@ -67,123 +67,110 @@ class Profile extends Command {
         try {
             const user = ctx.author;
             const userData = await getUser(user.id);
-            if (!args[0]) {
+            if(!args[0]) {
                 const username = userData.username ? userData.username : user.username;
-                const aboutMe = userData.bio || 'Not Set';
+                const bio = userData.bio || 'Not Set';
                 const birthday = moment(userData.dateOfBirth, 'DD-MM-YYYY').format('DD-MMM-YYYY') || 'Not Set';
-                let relationshipStatus;
-
-                if (userData.relationshipPartnerId) {
-                    try {
-                        const partner = await client.users.fetch(userData.relationshipPartnerId);
-                        relationshipStatus = partner.username;
-                    } catch (error) {
-                        console.error(`Error fetching partner data: ${error}`);
-                        relationshipStatus = "Single";
-                    }
-                } else {
-                    relationshipStatus = 'Not set';
-                }
-
+                const relationshipStatus = userData.relationshipStatus || 'Not Set';
                 const avatarURL = user.displayAvatarURL({ extension: 'png', size: 256 });
-
-                // Create canvas for profile image
-                const width = 1600;
-                const height = 860;
+                const width = 1280;
+                const height = 1280;
                 const canvas = createCanvas(width, height);
                 const ctxCanvas = canvas.getContext('2d');
 
-                // Define heights for the upper and lower parts
-                const upperPartHeight = 560;
-                const lowerPartHeight = height - upperPartHeight;
+                // Load background based on relationship status and gender
+                if (userData.relationshipStatus === 'single') {
+                    let backgroundPath;
+                    if (userData.gender === 'male') {
+                        backgroundPath = gif.two_single_male_background;
+                    } else if (userData.gender === 'female') {
+                        backgroundPath = gif.six_single_female_background;
+                    } else {
+                        backgroundPath = gif.one_single_male_background;
+                    }
+                    try {
+                        const background = await loadImage(backgroundPath);
+                        ctxCanvas.drawImage(background, 0, 0, width, height);
+                    } catch (error) {
+                        console.error(`Error loading background image: ${error}`);
+                    }
 
-                // Draw upper part background (image)
-                let backgroundImage;
-                if(userData.gender === 'male'){
-                    backgroundImage = gif.profile_male_background;
-                } else if (userData.gender === 'female') {
-                    backgroundImage = gif.profile_female_background;
-                } else {
-                    backgroundImage = gif.profile_no_gender_background;
-                }
-
-                try {
-                    const background = await loadImage(backgroundImage);
-                    ctxCanvas.drawImage(background, 0, 0, width, upperPartHeight);
-                } catch (error) {
-                    console.error(`Error loading background image: ${error}`);
-                }
-
-                // Draw user avatar
-                try {
                     const avatar = await loadImage(avatarURL);
-                    const avatarSize = 512;
-                    const radius = avatarSize / 2;
+
+                    // Replace these values with your specific measurements
+                    const existingAvatarX = 446.97;  // X position of the existing avatar
+                    const existingAvatarY = 588.34;  // Y position of the existing avatar
+                    const existingAvatarSize = 386; // Size of the existing avatar
 
                     ctxCanvas.save();
                     ctxCanvas.beginPath();
-                    ctxCanvas.arc(width / 2, upperPartHeight / 2, radius, 0, Math.PI * 2);
+                    ctxCanvas.arc(existingAvatarX + existingAvatarSize / 2, existingAvatarY + existingAvatarSize / 2, existingAvatarSize / 2, 0, Math.PI * 2);
                     ctxCanvas.clip();
 
-                    ctxCanvas.drawImage(avatar, (width - avatarSize) / 2, (upperPartHeight - avatarSize) / 2, avatarSize, avatarSize);
-
+                    ctxCanvas.drawImage(avatar, existingAvatarX, existingAvatarY, existingAvatarSize, existingAvatarSize);
                     ctxCanvas.restore();
-                } catch (error) {
-                    console.error(`Error loading user avatar: ${error}`);
+
+                    // // Username
+                    // ctxCanvas.font = '48px sans-serif';
+                    // ctxCanvas.fillStyle = '#FF0000';
+                    // ctxCanvas.fillText(username, 140, 50);
+                    //
+                    // // Bio
+                    // ctxCanvas.font = '36px sans-serif';
+                    // ctxCanvas.fillStyle = '#FF0000';
+                    // ctxCanvas.fillText(`Bio: ${bio}`, 140, 90);
+                    //
+                    // // Birthday
+                    // ctxCanvas.font = '36px sans-serif';
+                    // ctxCanvas.fillStyle = '#FF0000';
+                    // ctxCanvas.fillText(`Birthday: ${birthday}`, 140, 150);
+                    //
+                    // // Relationship Status
+                    // ctxCanvas.font = '36px sans-serif';
+                    // ctxCanvas.fillStyle = '#FF0000';
+                    // ctxCanvas.fillText(`Relationship: ${relationshipStatus}`, 140, 190);
+
+                    // Convert canvas to buffer and send as attachment
+                    const buffer = canvas.toBuffer();
+                    const attachment = { files: [{ attachment: buffer, name: 'profile.png' }] };
+                    await ctx.channel.send(attachment);
                 }
 
-                try {
-                    const lowerPartBackground = await loadImage(gif.lower_profile_background);
-                    ctxCanvas.drawImage(lowerPartBackground, 0, upperPartHeight, width, lowerPartHeight);
-                } catch (error) {
-                    console.error(`Error loading lower part background image: ${error}`);
-                }
-
-                // Draw partner avatar if in a relationship
-                if (userData.relationshipPartnerId) {
-                    try {
-                        const partner = await client.users.fetch(userData.relationshipPartnerId);
-                        const partnerAvatarURL = partner.displayAvatarURL({ extension: 'png', size: 256 });
-                        const partnerAvatar = await loadImage(partnerAvatarURL);
-                        const partnerAvatarSize = 564;
-                        ctxCanvas.drawImage(partnerAvatar, (width - partnerAvatarSize) / 2, upperPartHeight + 20, partnerAvatarSize, partnerAvatarSize);
-                        ctxCanvas.font = '20px sans-serif';
-                        ctxCanvas.fillStyle = '#ffffff';
-                        ctxCanvas.fillText(userData.dateOfStartRelationShip, 188, upperPartHeight + 245);
-                    } catch (error) {
-                        console.error(`Error loading partner avatar: ${error}`);
-                    }
-                }
-
-                // Draw username
-                ctxCanvas.font = '48px sans-serif';
-                ctxCanvas.fillStyle = '#FF0000';
-                ctxCanvas.fillText(username, 140, upperPartHeight + 50);
-
-                // Draw "Bio"
-                ctxCanvas.font = '36px sans-serif';
-                ctxCanvas.fillStyle = '#FF0000';
-                ctxCanvas.fillText(`Bio: ${aboutMe}`, 140, upperPartHeight + 90);
-
-                // Draw "Birthday"
-                ctxCanvas.font = '36px sans-serif';
-                ctxCanvas.fillStyle = '#FF0000';
-                ctxCanvas.fillText(`Birthday: ${birthday}`, 140, upperPartHeight + 150);
-
-                // Draw "Relationship"
-                ctxCanvas.fontpx= '36px sans-serif';
-                ctxCanvas.fillStyle = '#FF0000';
-                ctxCanvas.fillText(`Relationship: ${relationshipStatus}`, 140, upperPartHeight + 190);
-
-                // Convert canvas to buffer and send as attachment
-                const buffer = canvas.toBuffer();
-                const attachment = { files: [{ attachment: buffer, name: 'profile.png' }] };
-                await ctx.channel.send(attachment);
 
             } else {
-                // Existing command logic for 'set' bio/birthday/relationship
                 if (args[0] && args[1]) {
-                    if (args[0] === 'set' && args[1] === 'bio') {
+                    if (args[0] === 'set' && args[1] === 'gender') {
+                        const gender = args.slice(2).join(" ").toLowerCase();
+                        if (!["male", "female", "gay"].includes(gender)) {
+
+                            const embed = this.client.embed()
+                                .setColor(config.color.main)
+                                .setTitle(`**${TITLE} Gender ${TITLE}**\n`)
+                                .setDescription("Please specify a valid gender (male, female, gay).");
+                            return await ctx.channel.send({embeds: [embed]});
+                        }
+
+                        let GENDER;
+
+                        if (gender === "male") {
+                            GENDER = MALE;
+                        } else if (gender === "female") {
+                            GENDER = FEMALE;
+                        } else {
+                            GENDER = GAY;
+                        }
+
+                        userData.gender = gender;
+                        await userData.save();
+
+                        const embed = this.client.embed()
+                            .setColor(config.color.main)
+                            .setTitle(`**${TITLE} Gender ${TITLE}**\n`)
+                            .setDescription(`Your gender has been set to **\`${formatCapitalize(gender)}\`** ${GENDER}.`);
+
+                        await ctx.channel.send({embeds: [embed]});
+
+                    } else if (args[0] === 'set' && args[1] === 'bio') {
                         const command = ctx?.message?.content;
                         const text = `${command?.slice(command.indexOf(args[2]))}`;
                         if (text.length > 50) {
@@ -196,7 +183,7 @@ class Profile extends Command {
                             .setColor(config.color.main)
                             .setTitle(`**${TITLE} Bio ${TITLE}**\n`)
                             .setDescription(`Now <@${user.id}> has changed their bio to **${text}.**`);
-                        await ctx.channel.send({ embeds: [embed] });
+                        await ctx.channel.send({embeds: [embed]});
 
                     } else if (args[0] === 'set' && args[1] === 'username') {
                         const command = ctx?.message?.content;
@@ -210,7 +197,7 @@ class Profile extends Command {
                             .setColor(config.color.main)
                             .setTitle(`**${TITLE} Username ${TITLE}**\n`)
                             .setDescription(`Now <@${user.id}> has changed their username to **${text}.**`);
-                        await ctx.channel.send({ embeds: [embed] });
+                        await ctx.channel.send({embeds: [embed]});
 
                     } else if ((args[0] === 'set' && args[1] === 'bd') || args[1] === 'birthday') {
                         const command = ctx?.message?.content;
@@ -238,7 +225,7 @@ class Profile extends Command {
                             .setColor(config.color.main)
                             .setTitle(`**${TITLE} Birthday ${TITLE}**\n`)
                             .setDescription(`Now <@${user.id}> has set their birthday to **${text} ${randomCake}.**`);
-                        await ctx.channel.send({ embeds: [embed] });
+                        await ctx.channel.send({embeds: [embed]});
 
                     } else if (args[0] === 'set' && args[1] === 'relationship') {
                         const mention = ctx.message.mentions.users.first();
@@ -249,7 +236,7 @@ class Profile extends Command {
 
                             const embed = this.client.embed()
                                 .setAuthor({
-                                    name: `<@${user.id}>, you and <@${mention.id}> are about to get married`,
+                                    name: `${user.displayName} and ${mention.displayName} are about to get married`,
                                     iconURL: user.displayAvatarURL()
                                 })
                                 .setColor("Random")
@@ -282,8 +269,10 @@ class Profile extends Command {
                                         const partnerData = await getUser(mention.id);
                                         const now = moment.tz('Asia/Phnom_Penh');
                                         const dateOfStart = now.format('DD-MM-YYYY');
+                                        userData.relationshipStatus = args[1];
                                         userData.relationshipPartnerId = mention.id;
                                         userData.dateOfStartRelationShip = dateOfStart;
+                                        partnerData.relationshipStatus = args[1];
                                         partnerData.relationshipPartnerId = user.id;
                                         partnerData.dateOfStartRelationShip = dateOfStart;
 
@@ -309,31 +298,107 @@ class Profile extends Command {
                             });
 
                         } else {
-                            return ctx.channel.send({embeds: [SimpleEmbed(`<@${user.id}> please mention your partner.`)]});
+                            return ctx.channel.send({embeds: [SimpleEmbed(`${user.displayName} please mention your partner.`)]});
                         }
-                    }
-                } else {
-                    let recommendationMessage = '';
+                    } else if (args[0] === 'set' && args[1] === 'bestie') {
+                        const mention = ctx.message.mentions.users.first();
+                        if (mention) {
+                            if (mention.id === userData.relationshipPartnerId) {
+                                return ctx.channel.send({embeds: [SimpleEmbed(`${user.displayName} and ${mention.displayName}> are already in a bestie ${RELATIONSHIPHEART}`)]});
+                            }
 
-                    recommendationMessage += 'Invalid command usage.\nPlease use `profile` to view your profile.\nPlease use `profile set` to update your details.\n';
+                            const embed = this.client.embed()
+                                .setAuthor({
+                                    name: `${user.displayName} and ${mention.displayName} are about to get bestie`,
+                                    iconURL: user.displayAvatarURL()
+                                })
+                                .setColor("Random")
+                                .setDescription(`${mention.displayName}, do you agree with ${user.displayName}?`)
+                                .setTimestamp();
 
-                    if (!userData.bio) {
-                        recommendationMessage += 'Please set your bio using `profile set bio [text]`.\n';
-                    }
-                    if (!userData.dateOfBirth) {
-                        recommendationMessage += 'Please set your birthday using `profile set birthday [DD-MM-YYYY]`.\n';
-                    }
-                    if (!userData.relationshipPartnerId) {
-                        recommendationMessage += 'Please set your relationship status using `profile set relationship @user`.';
-                    }
+                            const confirmButton = emojiButton('confirm_button', `${YES}`, ButtonStyle.Success);
+                            const cancelButton = emojiButton('cancel_button', `${NO}`, ButtonStyle.Danger);
+                            const allButtons = twoButton(confirmButton, cancelButton);
 
-                    const embed =this.client.embed()
+                            const messageEmbed = await ctx.channel.send({embeds: [embed], components: [allButtons]});
+                            const collector = getCollectionButton(messageEmbed, 30000);
+
+                            collector.on('end', (collected, reason) => {
+                                if (reason === 'time') {
+                                    confirmButton.setDisabled(true);
+                                    cancelButton.setDisabled(true);
+                                    messageEmbed.edit({embeds: [embed.setColor('#3D3D3D')], components: [allButtons]});
+                                }
+                            });
+
+                            collector.on('collect', async (interaction) => {
+                                if (interaction.user.id !== mention.id) {
+                                    await interaction.reply({content: 'This button is not for you!', ephemeral: true});
+                                    return;
+                                }
+
+                                if (interaction.customId === 'confirm_button') {
+                                    try {
+                                        const partnerData = await getUser(mention.id);
+                                        const now = moment.tz('Asia/Phnom_Penh');
+                                        const dateOfStart = now.format('DD-MM-YYYY');
+                                        userData.relationshipStatus = args[1];
+                                        userData.relationshipPartnerId = mention.id;
+                                        userData.dateOfStartRelationShip = dateOfStart;
+                                        partnerData.relationshipStatus = args[1];
+                                        partnerData.relationshipPartnerId = user.id;
+                                        partnerData.dateOfStartRelationShip = dateOfStart;
+
+                                        await Promise.all([userData.save(), partnerData.save()]);
+
+                                        messageEmbed.edit({
+                                            embeds: [SimpleEmbed(`💓💞❤️💘 **Congratulations! You are now a bestie** 💖💝❣️💗\n <@${user.id}> ${RELATIONSHIPHEART} <@${mention.id}>.`)],
+                                            components: []
+                                        });
+                                        collector.stop();
+                                    } catch (error) {
+                                        console.error(`Error saving relationship data: ${error}`);
+                                    }
+                                }
+
+                                if (interaction.customId === 'cancel_button') {
+                                    messageEmbed.edit({
+                                        embeds: [SimpleEmbed(`<@${mention.displayName}> has rejected the proposal.`)],
+                                        components: []
+                                    });
+                                    collector.stop();
+                                }
+                            });
+
+                        } else {
+                            return ctx.channel.send({embeds: [SimpleEmbed(`<@${user.displayName}> please mention your partner.`)]});
+                        }
+                    } else {
+                        let recommendationMessage = '';
+
+                        recommendationMessage += 'Invalid command usage.\nPlease use `profile` to view your profile.\nPlease use `profile set` to update your details.\n';
+                        if (!userData.gender) {
+                            recommendationMessage += 'Please set your gender using `profile set gender [male, female]`.\n';
+                        }
+
+                        if (!userData.bio) {
+                            recommendationMessage += 'Please set your bio using `profile set bio [text]`.\n';
+                        }
+                        if (!userData.dateOfBirth) {
+                            recommendationMessage += 'Please set your birthday using `profile set birthday [DD-MM-YYYY]`.\n';
+                        }
+                        if (!userData.relationshipPartnerId) {
+                            recommendationMessage += 'Please set your relationship status using `profile set relationship @user`.';
+                        }
+
+                        const embed = this.client.embed()
                             .setColor(config.color.red)
                             .setTitle(`**${TITLE} Missing Arguments ${TITLE}**`)
                             .setDescription(recommendationMessage);
 
-                    if (recommendationMessage) {
-                        await ctx.channel.send({ embeds: [embed] });
+                        if (recommendationMessage) {
+                            await ctx.channel.send({embeds: [embed]});
+                        }
                     }
                 }
             }

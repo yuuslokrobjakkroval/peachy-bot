@@ -11,6 +11,6 @@
     "name": "Sunset Cover",
     "description": "A beautiful sunset cover photo.",
     "price": "150",
-    "image": "data/images/data"
+    "image": "src/data/images/cover"
   }
 ]
