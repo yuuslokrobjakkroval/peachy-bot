@@ -1,6 +1,14 @@
 module.exports = {
     // Profile background
 
+    // Owner
+    owner_special_background: 'src/data/images/profile/owner/Yuu.png',
+    baby_owner_special_background: 'src/data/images/profile/owner/Keo.png',
+
+    // Supporter
+    hugme_supporter_female_background: 'src/data/images/profile/supporter/Hugme.png',
+    kol_supporter_female_background: 'src/data/images/profile/supporter/Kol.jpeg',
+
     // Bestie
     one_bestie_male_background: 'src/data/images/profile/bestie_male/one.jpeg',
     two_bestie_male_background: 'src/data/images/profile/bestie_male/two.jpeg',
@@ -12,14 +20,12 @@ module.exports = {
     one_marrie_background: 'src/data/images/profile/marrie/one.jpeg',
 
     // Special Relationship
-    one_first_special_background: 'src/data/images/profile/special/one_01.jpeg',
-    one_second_special_background: 'src/data/images/profile/special/one_02.jpeg',
     two_second_special_background: 'src/data/images/profile/special/two.jpeg',
 
     // Relationship
+    main_relationship_background: 'src/data/images/profile/relationship/main.jpeg',
     one_relationship_background: 'src/data/images/profile/relationship/one.jpeg',
     two_relationship_background: 'src/data/images/profile/relationship/two.jpeg',
-    three_relationship_background: 'src/data/images/profile/relationship/three.jpeg',
 
     // Special Relationship
     one_special_single_male_background: 'src/data/images/profile/special_single_male/one.jpeg',
@@ -27,10 +33,12 @@ module.exports = {
     one_special_single_female_background: 'src/data/images/profile/special_single_female/one.jpeg',
 
     // Single
+    single_male_background: 'src/data/images/profile/single_male/main.png',
     one_single_male_background: 'src/data/images/profile/single_male/one.jpeg',
     two_single_male_background: 'src/data/images/profile/single_male/two.jpeg',
     three_single_male_background: 'src/data/images/profile/single_male/three.jpeg',
 
+    single_female_background: 'src/data/images/profile/single_female/main.png',
     one_single_female_background: 'src/data/images/profile/single_female/one.jpg',
     two_single_female_background: 'src/data/images/profile/single_female/two.jpeg',
     three_single_female_background: 'src/data/images/profile/single_female/three.jpeg',

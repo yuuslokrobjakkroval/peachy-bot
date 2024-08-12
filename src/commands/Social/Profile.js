@@ -77,17 +77,22 @@ class Profile extends Command {
                 const height = 1280;
                 const canvas = createCanvas(width, height);
                 const ctxCanvas = canvas.getContext('2d');
-
-                // Load background based on relationship status and gender
+                let backgroundPath;
                 if (userData.relationshipStatus === 'single') {
-                    let backgroundPath;
-                    if (userData.gender === 'male') {
-                        backgroundPath = gif.two_single_male_background;
-                    } else if (userData.gender === 'female') {
-                        backgroundPath = gif.six_single_female_background;
+                    if (userData.userId === '1006597979932725320') {
+                        backgroundPath = gif.hugme_supporter_female_background;
+                    } else if (userData.userId === '1259714830483329065') {
+                        backgroundPath = gif.kol_supporter_female_background;
                     } else {
-                        backgroundPath = gif.one_single_male_background;
+                        if (userData.gender === 'male') {
+                            backgroundPath = gif.single_male_background;
+                        } else if (userData.gender === 'female') {
+                            backgroundPath = gif.single_female_background;
+                        } else {
+                            backgroundPath = gif.one_single_male_background;
+                        }
                     }
+
                     try {
                         const background = await loadImage(backgroundPath);
                         ctxCanvas.drawImage(background, 0, 0, width, height);
@@ -95,19 +100,17 @@ class Profile extends Command {
                         console.error(`Error loading background image: ${error}`);
                     }
 
+                    // User Avatar
                     const avatar = await loadImage(avatarURL);
-
-                    // Replace these values with your specific measurements
-                    const existingAvatarX = 446.97;  // X position of the existing avatar
-                    const existingAvatarY = 588.34;  // Y position of the existing avatar
-                    const existingAvatarSize = 386; // Size of the existing avatar
-
+                    const existingAvatarX = 459.84;  // X position of the existing avatar
+                    const existingAvatarY = 603;  // Y position of the existing avatar
+                    const avatarSize = 360; // Size of the existing avatar
                     ctxCanvas.save();
                     ctxCanvas.beginPath();
-                    ctxCanvas.arc(existingAvatarX + existingAvatarSize / 2, existingAvatarY + existingAvatarSize / 2, existingAvatarSize / 2, 0, Math.PI * 2);
+                    ctxCanvas.arc(existingAvatarX + avatarSize / 2, existingAvatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
                     ctxCanvas.clip();
 
-                    ctxCanvas.drawImage(avatar, existingAvatarX, existingAvatarY, existingAvatarSize, existingAvatarSize);
+                    ctxCanvas.drawImage(avatar, existingAvatarX, existingAvatarY, avatarSize, avatarSize);
                     ctxCanvas.restore();
 
                     // // Username
@@ -129,14 +132,61 @@ class Profile extends Command {
                     // ctxCanvas.font = '36px sans-serif';
                     // ctxCanvas.fillStyle = '#FF0000';
                     // ctxCanvas.fillText(`Relationship: ${relationshipStatus}`, 140, 190);
+                } else {
+                    if (userData.relationshipStatus === 'bestie') {
+                        if (userData.gender === 'male') {
+                            backgroundPath = gif.one_bestie_male_background;
+                            } else {
+                            backgroundPath = gif.single_female_background;
+                        }
+                    } else {
+                        if(userData.userId === '966688007493140591'){
+                            backgroundPath = gif.owner_special_background;
+                        } else if (userData.userId === '946079190971732041') {
+                            backgroundPath = gif.baby_owner_special_background;
+                        } else {
+                            backgroundPath = gif.one_relationship_background;
+                        }
+                    }
+                    try {
+                        const background = await loadImage(backgroundPath);
+                        ctxCanvas.drawImage(background, 0, 0, width, height);
+                    } catch (error) {
+                        console.error(`Error loading background image: ${error}`);
+                    }
 
-                    // Convert canvas to buffer and send as attachment
-                    const buffer = canvas.toBuffer();
-                    const attachment = { files: [{ attachment: buffer, name: 'profile.png' }] };
-                    await ctx.channel.send(attachment);
+                    // User Avatar
+                    const avatar = await loadImage(avatarURL);
+                    const userAvatarX = 95.06;  // X position of the user avatar
+                    const userAvatarY = 600.5;  // Y position of the user avatar
+                    const partnerAvatarX = 823.56;  // X position of the user avatar
+                    const partnerAvatarY = 599;  // Y position of the user avatar
+                    const avatarSize = 360; // Size of the existing avatar
+
+                    ctxCanvas.save();
+                    ctxCanvas.beginPath();
+                    ctxCanvas.arc(userAvatarX + avatarSize / 2, userAvatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
+                    ctxCanvas.clip();
+
+                    ctxCanvas.drawImage(avatar, userAvatarX, userAvatarY, avatarSize, avatarSize);
+                    ctxCanvas.restore();
+
+                    // Partner Avatar
+                    if (userData.relationshipPartnerId) {
+                        const partner = await client.users.fetch(userData.relationshipPartnerId);
+                        const partnerURL = partner.displayAvatarURL({ extension: 'png', size: 256 });
+                        const partnerAvatar = await loadImage(partnerURL);
+                        ctxCanvas.save();
+                        ctxCanvas.beginPath();
+                        ctxCanvas.arc(partnerAvatarX + avatarSize / 2, partnerAvatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
+                        ctxCanvas.clip();
+                        ctxCanvas.drawImage(partnerAvatar, partnerAvatarX, partnerAvatarY, avatarSize, avatarSize);
+                        ctxCanvas.restore();
+                    }
                 }
-
-
+                const buffer = canvas.toBuffer();
+                const attachment = { files: [{ attachment: buffer, name: 'profile.png' }] };
+                await ctx.channel.send(attachment);
             } else {
                 if (args[0] && args[1]) {
                     if (args[0] === 'set' && args[1] === 'gender') {
