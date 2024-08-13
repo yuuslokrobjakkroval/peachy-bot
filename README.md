@@ -3,9 +3,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">Skyrealm</h3>
+  <h3 align="center">Peachy</h3>
   <p align="center">
-    Skyrealm is a powerful discord Bot
+    Peachy is a powerful discord Bot
     <br />
     <br />
 
@@ -63,7 +63,7 @@ git clone https://github.com/Kuraiiii/Kaiju-King-Bot-Template.git
 2. change the directory to skyrealm-bot
 
 ```bash
-cd skyrealm-bot
+cd peachy-bot
 ```
 
 3. Install the required packages:
@@ -96,14 +96,14 @@ npm run start or npm start
 
 ###
 
-Skyrealm is a discord bot mode by [Yuu](https://discord.gg/mRt2FkwxYu)
+Peachy is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
 If you liked this repository, feel free to leave a star ⭐ to help promote !
 
 ## 💌 Support Server
 
 [//]: # ([![DiscordBanner]&#40;https://invidget.switchblade.xyz/mRt2FkwxYu&#41;]&#40;https://discord.gg/sE7VuPx54a&#41;)
 
-[Support Server](https://discord.gg/sE7VuPx54a) - Skyrealm's Support Server Invite
+[Support Server](https://discord.gg/CmsxPWNEjf) - Peachy's Support Server Invite
 
 [//]: # (# Donate)
 
