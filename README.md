@@ -54,10 +54,10 @@ Before starting with the installation, you need to have the following:
 
 ## 🚀 Installation from source
 
-1. Clone the skyrealm-bot repository:
+1. Clone the peachy-bot repository:
 
 ```bash
-git clone https://github.com/Kuraiiii/Kaiju-King-Bot-Template.git
+git clone https://github.com/yuuslokrobjakkroval/peachy-bot.git
 ```
 
 2. change the directory to skyrealm-bot
