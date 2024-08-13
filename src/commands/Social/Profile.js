@@ -2,6 +2,8 @@ const { Command } = require("../../structures");
 const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiButton, twoButton, getCollectionButton, formatCapitalize, registerFont } = require('../../functions/function');
 const moment = require('moment-timezone');
 const config = require('../../config');
+const path = require('path');
+const opentype = require('opentype.js');
 const { TITLE, MALE, FEMALE, GAY, RELATIONSHIPHEART, YES, NO , CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL} = require('../../utils/Emoji');
 const CAKE = [CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL]
 
@@ -65,6 +67,8 @@ class Profile extends Command {
         try {
             const user = ctx.author;
             const userData = await getUser(user.id);
+            const abcGintoNordFont = await opentype.load(path.join(__dirname, '../../data/fonts/ABC Ginto Nord normal 800.woff2'));
+            const ggSansFont = await opentype.load(path.join(__dirname, '../../data/fonts/gg sans normal 400.woff2'));
             if(!args[0]) {
                 const username = userData.username ? userData.username : user.username;
                 const bio = userData.bio || 'Not Set';
@@ -111,28 +115,19 @@ class Profile extends Command {
                     ctxCanvas.drawImage(avatar, existingAvatarX, existingAvatarY, avatarSize, avatarSize);
                     ctxCanvas.restore();
 
-                    // Username
-                    ctx.font = '48px "ABC Ginto Nord"'; // Apply custom font
-                    ctx.fillStyle = '#FF0000';
-                    ctx.fillText('Username', 140, 50);
+                    ctxCanvas.font = `48px ${abcGintoNordFont}`;
+                    ctxCanvas.fillStyle = '#FF0000';
 
-                    // Bio
-                    ctx.font = '36px "gg sans"'; // Apply custom font
-                    ctx.fillStyle = '#FF0000';
-                    ctx.fillText('Bio: I love coding!', 140, 90);
+                    const textPath = abcGintoNordFont.getPath(bio, 140, 50, 48);
+                    textPath.fill(ctxCanvas);
 
-                    // Birthday
-                    ctx.font = '36px "Noto Sans"'; // Apply custom font
-                    ctx.fillStyle = '#FF0000';
-                    ctx.fillText('Birthday: 01-Jan-2000', 140, 150);
+                    ctxCanvas.font = `36px ${ggSansFont}`;
+                    ctxCanvas.fillStyle = '#FF0000';
 
-                    // Relationship Status
-                    ctx.font = '36px "gg sans"'; // Apply custom font
-                    ctx.fillStyle = '#FF0000';
-                    ctx.fillText('Relationship: Single', 140, 190);
-
+                    const bioTextPath = ggSansFont.getPath(username, 140, 90, 36);
+                    bioTextPath.fill(ctxCanvas);
                 } else {
-                    if (userData.relationshipStatus === 'bestie') {
+                    if (userData.relationshipStatus === 'relationship') {
                         if (userData.gender === 'male') {
                             backgroundPath = gif.two_bestie_male_background;
                             } else {
