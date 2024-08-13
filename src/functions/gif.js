@@ -7,7 +7,7 @@ module.exports = {
 
     // Supporter
     hugme_supporter_female_background: 'src/data/images/profile/supporter/Hugme.png',
-    kol_supporter_female_background: 'src/data/images/profile/supporter/Kol.jpeg',
+    kol_supporter_female_background: 'src/data/images/profile/supporter/Kol.png',
 
     // Bestie
     one_bestie_male_background: 'src/data/images/profile/bestie_male/one.jpeg',
