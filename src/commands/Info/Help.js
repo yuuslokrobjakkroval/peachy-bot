@@ -1,7 +1,7 @@
 const { Command } = require("../../structures/index.js");
 const { TITLE, PEACHYISP, BANANA, INVENTORY, GAMBLING, INFO, SOCIAL } = require("../../utils/Emoji");
 
-const CATEGORIES = [BANANA, INVENTORY, GAMBLING, INFO, SOCIAL];
+const CATEGORIES = [BANANA, GAMBLING, INFO, INVENTORY, SOCIAL];
 class Help extends Command {
   constructor(client) {
     super(client, {
@@ -46,7 +46,7 @@ class Help extends Command {
       prefix = prefix.prefix;
     }
     const commands = this.client.commands.filter(
-      (cmd) => cmd.category !== "developer"
+      (cmd) => cmd.category !== "developer" && cmd.category !== "admin"
     );
     const categories = commands
       .map((cmd) => cmd.category)

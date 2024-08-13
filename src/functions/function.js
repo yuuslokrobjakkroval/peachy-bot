@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const { userSchema } = require('../schemas/user');
 const User = mongoose.model('User', userSchema);
 const gif = require('../functions/gif');
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage, registerFont } = require('canvas');
 const Users = require("../schemas/user");
 const moment = require("moment-timezone");
 const config = require("../config");
@@ -257,10 +257,4 @@ function cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {
 }
 
 
-function stateMAG(statemag, lvl) {
-    const mag = ((statemag * lvl) + 100);
-    return mag;
-}
-
-
-module.exports = { checkBirthdays, formatCapitalize, formatUpperCase, stateMAG, stateMAG, loadImage ,createCanvas ,User, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, gif, advanceEmbed, labelButton, emojiButton, sym, syms, sym3, ButtonStyle, AttachmentBuilder, ComponentType, createCanvas, loadImage, InteractionCollector };
+module.exports = { checkBirthdays, formatCapitalize, formatUpperCase, registerFont, loadImage, createCanvas, User, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, gif, advanceEmbed, labelButton, emojiButton, sym, syms, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };

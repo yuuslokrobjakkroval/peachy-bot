@@ -11,7 +11,7 @@ module.exports = {
   guildId: process.env.GUILD_ID,
   database: process.env.DATABASE_URL,
   users: {
-    owners: process.env.OWNERS ? process.env.OWNERS.split(",") : undefined,
+    owners: process.env.OWNERS ? process.env.OWNERS.split(",").map(id => id.trim()) : [],
   },
   color: {
     red: 0xff0000,

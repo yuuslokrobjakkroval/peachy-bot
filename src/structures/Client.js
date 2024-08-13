@@ -15,7 +15,7 @@ const config = require("../config.js");
 const loadPlugins = require("../plugin/index.js");
 const Utils = require("../utils/Utils.js");
 
-module.exports = class SkyrealmClient extends Client {
+module.exports = class PeachyClient extends Client {
   constructor(options) {
     super(options);
     this.commands = new Collection();

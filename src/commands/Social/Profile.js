@@ -1,7 +1,5 @@
 const { Command } = require("../../structures");
-const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiButton, twoButton, getCollectionButton,
-    formatCapitalize
-} = require('../../functions/function');
+const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiButton, twoButton, getCollectionButton, formatCapitalize, registerFont } = require('../../functions/function');
 const moment = require('moment-timezone');
 const config = require('../../config');
 const { TITLE, MALE, FEMALE, GAY, RELATIONSHIPHEART, YES, NO , CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL} = require('../../utils/Emoji');
@@ -113,25 +111,26 @@ class Profile extends Command {
                     ctxCanvas.drawImage(avatar, existingAvatarX, existingAvatarY, avatarSize, avatarSize);
                     ctxCanvas.restore();
 
-                    // // Username
-                    // ctxCanvas.font = '48px sans-serif';
-                    // ctxCanvas.fillStyle = '#FF0000';
-                    // ctxCanvas.fillText(username, 140, 50);
-                    //
-                    // // Bio
-                    // ctxCanvas.font = '36px sans-serif';
-                    // ctxCanvas.fillStyle = '#FF0000';
-                    // ctxCanvas.fillText(`Bio: ${bio}`, 140, 90);
-                    //
-                    // // Birthday
-                    // ctxCanvas.font = '36px sans-serif';
-                    // ctxCanvas.fillStyle = '#FF0000';
-                    // ctxCanvas.fillText(`Birthday: ${birthday}`, 140, 150);
-                    //
-                    // // Relationship Status
-                    // ctxCanvas.font = '36px sans-serif';
-                    // ctxCanvas.fillStyle = '#FF0000';
-                    // ctxCanvas.fillText(`Relationship: ${relationshipStatus}`, 140, 190);
+                    // Username
+                    ctx.font = '48px "ABC Ginto Nord"'; // Apply custom font
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillText('Username', 140, 50);
+
+                    // Bio
+                    ctx.font = '36px "gg sans"'; // Apply custom font
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillText('Bio: I love coding!', 140, 90);
+
+                    // Birthday
+                    ctx.font = '36px "Noto Sans"'; // Apply custom font
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillText('Birthday: 01-Jan-2000', 140, 150);
+
+                    // Relationship Status
+                    ctx.font = '36px "gg sans"'; // Apply custom font
+                    ctx.fillStyle = '#FF0000';
+                    ctx.fillText('Relationship: Single', 140, 190);
+
                 } else {
                     if (userData.relationshipStatus === 'bestie') {
                         if (userData.gender === 'male') {
