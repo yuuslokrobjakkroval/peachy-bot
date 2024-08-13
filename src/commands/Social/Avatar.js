@@ -1,5 +1,4 @@
 const { Command } = require("../../structures/index.js");
-const { getUser, SimpleEmbed, gif, AttachmentBuilder, customEmbed, cooldown, sym } = require('../../functions/function');
 const config = require("../../config.js");
 
 class Avatar extends Command {
