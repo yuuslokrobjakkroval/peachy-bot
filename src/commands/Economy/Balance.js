@@ -1,7 +1,7 @@
 const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const numeral = require("numeral");
-const { TITLE , COIN, DAILY} = require("../../utils/Emoji");
+const { TITLE, COIN, DAILY } = require("../../utils/Emoji");
 
 class Balance extends Command {
   constructor(client) {
@@ -25,8 +25,17 @@ class Balance extends Command {
       options: [],
     });
   }
+
   async run(client, ctx, args) {
     let user = await Users.findOne({ userId: ctx.author.id });
+
+    // Check if the user is trying to give coins to themselves
+    if (ctx.author.id === ctx.target?.id) {
+      return ctx.sendMessage({
+        content: "You cannot give coins to yourself!",
+        ephemeral: true,
+      });
+    }
 
     let embed = this.client.embed();
     let balance = user.balance;
@@ -36,8 +45,11 @@ class Balance extends Command {
       embeds: [
         embed
             .setColor(this.client.color.main)
-            .setTitle(`**${TITLE} ${ctx.author.globalName ? ctx.author.globalName : ctx.author.username} ${TITLE}**`)
-            .setDescription(`Coin: **${numeral(balance.toLocaleString()).format()} ${COIN}**\n` + `\nClaim your daily reward using **\`${prefix}daily!\`** ${DAILY}`)
+            .setTitle(`**${TITLE} ${ctx.author.displayName} ${TITLE}**`)
+            .setDescription(
+                `Coin: **${numeral(balance.toLocaleString()).format()} ${COIN}**\n` +
+                `\nClaim your daily reward using **\`${prefix}daily!\`** ${DAILY}`
+            ),
       ],
     });
   }

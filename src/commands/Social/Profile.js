@@ -1,9 +1,7 @@
 const { Command } = require("../../structures");
-const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiButton, twoButton, getCollectionButton, formatCapitalize, registerFont } = require('../../functions/function');
+const { gif, SimpleEmbed, getUser, ButtonStyle, createCanvas, loadImage, emojiButton, twoButton, getCollectionButton, formatCapitalize } = require('../../functions/function');
 const moment = require('moment-timezone');
 const config = require('../../config');
-const path = require('path');
-const opentype = require('opentype.js');
 const { TITLE, MALE, FEMALE, GAY, RELATIONSHIPHEART, YES, NO , CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL} = require('../../utils/Emoji');
 const CAKE = [CATCAKE, HEARTCAKE, PANCAKE, SWEETROLL]
 
@@ -12,6 +10,7 @@ function getRandomElement(arr) {
 }
 
 const randomCake = getRandomElement(CAKE);
+
 
 class Profile extends Command {
     constructor(client) {
@@ -67,9 +66,7 @@ class Profile extends Command {
         try {
             const user = ctx.author;
             const userData = await getUser(user.id);
-            const abcGintoNordFont = await opentype.load(path.join(__dirname, '../../data/fonts/ABC Ginto Nord normal 800.woff2'));
-            const ggSansFont = await opentype.load(path.join(__dirname, '../../data/fonts/gg sans normal 400.woff2'));
-            if(!args[0]) {
+            if (!args[0]) {
                 const username = userData.username ? userData.username : user.username;
                 const bio = userData.bio || 'Not Set';
                 const birthday = moment(userData.dateOfBirth, 'DD-MM-YYYY').format('DD-MMM-YYYY') || 'Not Set';
@@ -79,6 +76,7 @@ class Profile extends Command {
                 const height = 1280;
                 const canvas = createCanvas(width, height);
                 const ctxCanvas = canvas.getContext('2d');
+
                 let backgroundPath;
                 if (userData.relationshipStatus === 'single') {
                     if (userData.userId === '1006597979932725320') {
@@ -86,13 +84,9 @@ class Profile extends Command {
                     } else if (userData.userId === '1259714830483329065') {
                         backgroundPath = gif.kol_supporter_female_background;
                     } else {
-                        if (userData.gender === 'male') {
-                            backgroundPath = gif.single_male_background;
-                        } else if (userData.gender === 'female') {
-                            backgroundPath = gif.single_female_background;
-                        } else {
-                            backgroundPath = gif.one_single_male_background;
-                        }
+                        backgroundPath = userData.gender === 'male'
+                            ? gif.single_male_background
+                            : gif.single_female_background;
                     }
 
                     try {
@@ -104,44 +98,45 @@ class Profile extends Command {
 
                     // User Avatar
                     const avatar = await loadImage(avatarURL);
-                    const existingAvatarX = 459.84;  // X position of the existing avatar
-                    const existingAvatarY = 603;  // Y position of the existing avatar
-                    const avatarSize = 360; // Size of the existing avatar
+                    const existingAvatarX = 459.84;
+                    const existingAvatarY = 603;
+                    const avatarSize = 360;
                     ctxCanvas.save();
                     ctxCanvas.beginPath();
                     ctxCanvas.arc(existingAvatarX + avatarSize / 2, existingAvatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
                     ctxCanvas.clip();
-
                     ctxCanvas.drawImage(avatar, existingAvatarX, existingAvatarY, avatarSize, avatarSize);
                     ctxCanvas.restore();
 
-                    ctxCanvas.font = `48px ${abcGintoNordFont}`;
-                    ctxCanvas.fillStyle = '#FF0000';
+                    // Draw username
+                    ctxCanvas.font = '30px Times New Roman';
+                    ctxCanvas.fillStyle = '#ffffff';
+                    ctxCanvas.fillText(username, 140, 50);
 
-                    const textPath = abcGintoNordFont.getPath(bio, 140, 50, 48);
-                    textPath.fill(ctxCanvas);
+                    // Draw "About Me"
+                    ctxCanvas.font = "30px Times New Roman";
+                    ctxCanvas.fillStyle = '#ffffff';
+                    ctxCanvas.fillText('About Me:', 140, 90);
+                    ctxCanvas.fillText(bio, 140, 120);
 
-                    ctxCanvas.font = `36px ${ggSansFont}`;
-                    ctxCanvas.fillStyle = '#FF0000';
-
-                    const bioTextPath = ggSansFont.getPath(username, 140, 90, 36);
-                    bioTextPath.fill(ctxCanvas);
+                    // Draw "Relationship Status"
+                    ctxCanvas.font = "30px Times New Roman";
+                    ctxCanvas.fillStyle = '#ffffff';
+                    ctxCanvas.fillText('Relationship Status:', 140, 160);
+                    ctxCanvas.fillText(relationshipStatus, 140, 190);
                 } else {
                     if (userData.relationshipStatus === 'relationship') {
-                        if (userData.gender === 'male') {
-                            backgroundPath = gif.two_bestie_male_background;
-                            } else {
-                            backgroundPath = gif.two_relationship_background;
-                        }
+                        backgroundPath = userData.gender === 'male'
+                            ? gif.two_bestie_male_background
+                            : gif.two_relationship_background;
                     } else {
-                        if(userData.userId === '966688007493140591'){
-                            backgroundPath = gif.owner_special_background;
-                        } else if (userData.userId === '946079190971732041') {
-                            backgroundPath = gif.baby_owner_special_background;
-                        } else {
-                            backgroundPath = gif.one_relationship_background;
-                        }
+                        backgroundPath = userData.userId === '966688007493140591'
+                            ? gif.owner_special_background
+                            : userData.userId === '946079190971732041'
+                                ? gif.baby_owner_special_background
+                                : gif.one_relationship_background;
                     }
+
                     try {
                         const background = await loadImage(backgroundPath);
                         ctxCanvas.drawImage(background, 0, 0, width, height);
@@ -151,17 +146,16 @@ class Profile extends Command {
 
                     // User Avatar
                     const avatar = await loadImage(avatarURL);
-                    const userAvatarX = 95.06;  // X position of the user avatar
-                    const userAvatarY = 600.5;  // Y position of the user avatar
-                    const partnerAvatarX = 823.56;  // X position of the user avatar
-                    const partnerAvatarY = 599;  // Y position of the user avatar
-                    const avatarSize = 360; // Size of the existing avatar
+                    const userAvatarX = 95.06;
+                    const userAvatarY = 600.5;
+                    const partnerAvatarX = 823.56;
+                    const partnerAvatarY = 599;
+                    const avatarSize = 360;
 
                     ctxCanvas.save();
                     ctxCanvas.beginPath();
                     ctxCanvas.arc(userAvatarX + avatarSize / 2, userAvatarY + avatarSize / 2, avatarSize / 2, 0, Math.PI * 2);
                     ctxCanvas.clip();
-
                     ctxCanvas.drawImage(avatar, userAvatarX, userAvatarY, avatarSize, avatarSize);
                     ctxCanvas.restore();
 
@@ -177,7 +171,25 @@ class Profile extends Command {
                         ctxCanvas.drawImage(partnerAvatar, partnerAvatarX, partnerAvatarY, avatarSize, avatarSize);
                         ctxCanvas.restore();
                     }
+
+                    // Draw username
+                    ctxCanvas.font = "30px Times New Roman";
+                    ctxCanvas.fillStyle = '#ffffff';
+                    ctxCanvas.fillText(username, 140, 50);
+
+                    // Draw "About Me"
+                    ctxCanvas.font = "30px Times New Roman";
+                    ctxCanvas.fillStyle = '#ffffff';
+                    ctxCanvas.fillText('About Me:', 140, 90);
+                    ctxCanvas.fillText(bio, 140, 120);
+
+                    // Draw "Relationship Status"
+                    ctxCanvas.font = "30px Times New Roman";
+                    ctxCanvas.fillStyle = '#ffffff';
+                    ctxCanvas.fillText('Relationship Status:', 140, 160);
+                    ctxCanvas.fillText(relationshipStatus, 140, 190);
                 }
+
                 const buffer = canvas.toBuffer();
                 const attachment = { files: [{ attachment: buffer, name: 'profile.png' }] };
                 await ctx.channel.send(attachment);
