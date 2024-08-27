@@ -45,7 +45,7 @@ module.exports = class SisterBirthdayWish extends Command {
         const sisterMention = ctx.isInteraction
                 ? ctx.interaction.options.getUser('user')
                 : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]); // Gets the mentioned user
-        const messageArg = ctx.options.getString('message'); // Gets the optional message argument
+        const messageArg = ctx?.options?.getString('message'); // Gets the optional message argument
 
         const fromKeo = messageArg && messageArg.toLowerCase().includes('from keo');
 
