@@ -42,7 +42,7 @@ module.exports = class SisterBirthdayWish extends Command {
     }
 
     async run(client, ctx) {
-        const sisterMention = const target = ctx.isInteraction
+        const sisterMention = ctx.isInteraction
                 ? ctx.interaction.options.getUser('user')
                 : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]); // Gets the mentioned user
         const messageArg = ctx.options.getString('message'); // Gets the optional message argument
