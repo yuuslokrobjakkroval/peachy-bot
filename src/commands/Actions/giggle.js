@@ -6,7 +6,7 @@ module.exports = class Giggle extends Command {
             name: 'giggle',
             description: {
                 content: 'Sends a cute giggling message.',
-                examples: ['giggle'],
+                examples: ['giggle', 'laugh', 'chuckle'],
                 usage: 'giggle',
             },
             category: 'anime-actions',
