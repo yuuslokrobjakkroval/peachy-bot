@@ -1,17 +1,17 @@
 const Command = require('../../structures/Command.js');
 const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
-module.exports = class SisterBirthdayWish extends Command {
+module.exports = class BirthdayWish extends Command {
     constructor(client) {
         super(client, {
-            name: 'sisterbirthday',
+            name: 'birthdaywish',
             description: {
-                content: 'Sends a special birthday message to your sister.',
-                examples: ['sisterbirthday @SisterName from Keo'],
-                usage: 'sisterbirthday @SisterName [from Keo]',
+                content: 'Sends a random birthday message to the mentioned user.',
+                examples: ['birthdaywish @User from Keo'],
+                usage: 'birthdaywish @User [from Keo]',
             },
             category: 'fun',
-            aliases: ['sisterbday', 'happysisterbirthday'],
+            aliases: ['bdaywish', 'happybirthday'],
             cooldown: 3,
             args: true,
             player: {
@@ -27,8 +27,8 @@ module.exports = class SisterBirthdayWish extends Command {
             },
             slashCommand: true,
             options: [{
-                name: 'sister',
-                description: 'Mention your sister',
+                name: 'user',
+                description: 'Mention the person whose birthday it is.',
                 type: 6, // USER type
                 required: true,
             },
@@ -42,14 +42,25 @@ module.exports = class SisterBirthdayWish extends Command {
     }
 
     async run(client, ctx) {
-        const sisterMention = ctx.isInteraction
-                ? ctx.interaction.options.getUser('user')
-                : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]); // Gets the mentioned user
+        const userMention = ctx.isInteraction
+            ? ctx.interaction.options.getUser('user')
+            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]); // Gets the mentioned user
         const messageArg = ctx.isInteraction
             ? ctx.interaction.options.getString('message')
             : ctx.args.slice(1).join(' ');
 
         const fromKeo = messageArg && messageArg.toLowerCase().includes('from keo');
+
+        // Define a set of random birthday wishes
+        const randomWishes = [
+            `Happy Birthday! May your special day be filled with love, laughter, and joy. 🎂❤️`,
+            `Wishing you a year full of adventure and happiness. Happy Birthday! 🥳`,
+            `May all your dreams come true this year. Happy Birthday! 🌟`,
+            `Sending you warm wishes and sweet thoughts on your birthday. Enjoy your day! 🎉`,
+            `Cheers to another year of greatness. Happy Birthday! 🥂`,
+            `May your day be as special as you are. Happy Birthday! 💖`,
+            `Here’s to celebrating you! Wishing you a fantastic birthday! 🎈`
+        ];
 
         let message;
 
@@ -68,28 +79,18 @@ module.exports = class SisterBirthdayWish extends Command {
                 `Love you bong j’muah j’muah bong nimol. I hope that your birthday is as much fun as you are, but that sets a very high standard 😍🎂🎂🎂🎂\n` +
                 `**28/08/2024**`;
         } else {
-            message = 
-                `**To my amazing sister, ${sisterMention},**\n\n` +
-                `Words cannot express how much you mean to me. You've been my confidante, my partner in crime, my best friend, and ` +
-                `the most wonderful sister anyone could ask for. On your special day, I want you to know just how deeply you're loved and cherished.\n\n` +
-                `You've always been there for me, through thick and thin, always ready to lend a listening ear or a shoulder to cry on. ` +
-                `Your kindness, generosity, and unwavering support have made my life so much richer, and I am endlessly grateful for all the memories we've shared.\n\n` +
-                `As you celebrate another year of life, I wish you nothing but the best. May your day be filled with joy, laughter, and everything that makes you smile. ` +
-                `May this year bring you closer to your dreams, and may you find happiness in every moment.\n\n` +
-                `No matter where life takes us, know that I will always be here for you, just as you've always been there for me. ` +
-                `I am so proud of the person you've become and can't wait to see all the incredible things you will achieve.\n\n` +
-                `Happy Birthday, dear sister! Here's to a year filled with love, success, and all the wonderful things you deserve. 🎂🥳\n\n` +
-                `With all my love,\n${ctx.author.username}`;
+            // Select a random wish from the array
+            const randomWish = randomWishes[Math.floor(Math.random() * randomWishes.length)];
+            message = `**To my amazing friend, ${userMention},**\n\n${randomWish}\n\n` +
+                      `With all my love,\n${ctx.author.username}`;
         }
 
-        const embed = this.client
+        const embed = client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`💖 Happy Birthday, ${sisterMention.username}! 💖`)
+            .setColor(client.color.main)
+            .setTitle(`💖 Happy Birthday, ${userMention.username}! 💖`)
             .setDescription(message);
 
-        
-
-        await ctx.sendMessage({ content: `${sisterMention}`, embeds: [embed], components: [] });
+        await ctx.sendMessage({ content: `${userMention}`, embeds: [embed], components: [] });
     }
 };
