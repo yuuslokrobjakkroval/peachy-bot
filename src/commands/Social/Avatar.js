@@ -1,50 +1,56 @@
 const { Command } = require("../../structures/index.js");
-const config = require("../../config.js");
+const { MessageEmbed } = require("discord.js");
 
 class Avatar extends Command {
-    constructor(client) {
-        super(client, {
-            name: "avatar",
-            description: "Displays the avatar of the specified user.",
-            category: "social",
-            aliases: ["avatar"],
-            cooldown: 3,
-            args: true,
-            permissions: {
-                dev: false,
-                client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-                user: [],
-            },
-            slashCommand: true,
-            options: [
-                {
-                    name: 'user',
-                    description: 'The user whose avatar you want to see',
-                    type: 6, // USER type
-                    required: false,
-                }
-            ],
-        });
-    }
+  constructor(client) {
+    super(client, {
+      name: "avatar",
+      description: {
+        content: "Displays a user's avatar",
+        examples: ["avatar @User"],
+        usage: "avatar [@User]",
+      },
+      category: "utility",
+      aliases: ["av", "pfp"],
+      cooldown: 3,
+      args: false,
+      player: {
+        voice: false,
+        dj: false,
+        active: false,
+        djPerm: null,
+      },
+      permissions: {
+        dev: false,
+        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
+        user: [],
+      },
+      slashCommand: true,
+      options: [
+        {
+          name: "user",
+          description: "The user to get the avatar of",
+          type: 6, // USER type
+          required: false,
+        },
+      ],
+    });
+  }
 
-    async run(client, ctx, args) {
-        try {
-            const userId = args[0].replace(/[<@!>]/g, '');
-            const mention = await client.users.fetch(userId);
-            const user = mention ? mention : ctx.author;
-            const avatarURL = user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 });
+  async run(client, ctx, args) {
+    const user = ctx.mentions.users.first() || client.users.cache.get(args[0]) || ctx.author;
+    const embed = new MessageEmbed()
+      .setColor(client.color.main)
+      .setTitle(`Avatar of ${user.username}`)
+      .setImage(user.displayAvatarURL({ dynamic: true, size: 1024 }))
+      .setFooter({
+        text: `Requested by ${ctx.author.username}`,
+        iconURL: ctx.author.displayAvatarURL(),
+      })
+      .setTimestamp();
 
-            const embed = this.client.embed()
-                .setColor(config.color.main)
-                .setTitle(`**${user.globalName} Avatar**`)
-                .setImage(avatarURL);
-
-            ctx.channel.send({ embeds: [embed] });
-        } catch (error) {
-            console.error(`Avatar command error: ${error}`);
-            ctx.channel.send("There was an error while executing this command.");
-        }
-    }
+    ctx.sendMessage({ embeds: [embed] });
+  }
 }
 
 module.exports = Avatar;
