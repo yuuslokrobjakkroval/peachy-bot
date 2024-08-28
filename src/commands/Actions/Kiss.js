@@ -10,7 +10,7 @@ module.exports = class Kiss extends Command {
                 examples: ['kiss @user'],
                 usage: 'kiss <user>',
             },
-            category: 'actions',
+            category: 'anime-actions',
             aliases: [],
             cooldown: 5,
             args: true,
