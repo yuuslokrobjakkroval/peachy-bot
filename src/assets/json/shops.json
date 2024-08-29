@@ -1,0 +1,19 @@
+{
+  "id": "",
+  "name": "",
+  "description": "",
+  "type": "",
+  "able": {
+    "use": false,
+    "gift": false,
+    "multiple": false
+  },
+  "quantity": 1,
+  "emoji": "",
+  "image": "",
+  "available": [],
+  "price": {
+    "buy": 0,
+    "sell": 0
+  }
+}

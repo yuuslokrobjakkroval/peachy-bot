@@ -1,0 +1,6 @@
+invalid_amount_title: "ការណែនាំអំពីចំនួន!"
+invalid_amount_description: "អ្នក​អាច​បញ្ចូល​ចំនួន​ជា​តម្លៃ​​លេខបាន។"
+invalid_amount_field_name_1: "ផ្លូវកាត់ពិសេស៖ (ឥតគិតថ្លៃឥឡូវនេះ)"
+invalid_amount_field_value_1: "`[ 1 ]` អ្នកអាចប្រើ __**all**__ ដើម្បីបញ្ចូលកាក់ទាំងអស់របស់អ្នក។\n`[ 2 ]` អ្នកអាចប្រើ __**half**__ ដើម្បីបញ្ចូលពាក់កណ្តាលនៃកាក់របស់អ្នក។"
+invalid_amount_field_name_2: "ផ្លូវកាត់ច្រើនទៀត៖"
+invalid_amount_field_value_2: "- ប្រើ **1k** សម្រាប់ %{coinEmote} `1,000` កាក់។\n- ប្រើ **1M** សម្រាប់ %{coinEmote} `1,000,000` កាក់។\n- ប្រើ **1B** សម្រាប់ % {coinEmote} `1,000,000,000` កាក់។"

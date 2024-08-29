@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const Users = require("../../schemas/user");
+const Users = require("../../schemas/User");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
 const { SLOTS, SPIN, COIN, TITLE } = require("../../utils/Emoji");
@@ -17,7 +17,7 @@ class Slots extends Command {
 			},
 			category: "gamble",
 			aliases: ["slots", "slot", "s"],
-			cooldown: 1,
+			cooldown: 8,
 			args: true,
 			permissions: {
 				dev: false,

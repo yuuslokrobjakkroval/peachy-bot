@@ -2,6 +2,8 @@ const { ShardingManager } = require("discord.js");
 const fs = require("fs");
 const config = require("./config.js");
 const Logger = require("./structures/Logger.js");
+const cron = require('node-cron')
+const reset = require('./schedule/reset.js');
 
 const logger = new Logger();
 
@@ -38,3 +40,8 @@ manager.on("shardCreate", (shard) => {
     logger.start(`[CLIENT] Shard ${shard.id} connected to Discord's Gateway.`);
   });
 });
+
+cron.schedule(process.env.SCHEDULE_RESET_DAILY_LIMIT, async () => {
+  console.log('Cron job Reset Daily Transfer executed at:', new Date().toLocaleString());
+  await reset.resetDailyTransfer()
+}).start()

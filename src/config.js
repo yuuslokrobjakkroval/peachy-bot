@@ -1,40 +1,44 @@
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 
 dotenv.config();
+
+const path = require('path');
+
+const logChannelAll = '1278729169340993721';
+const logChannelGame = '1278728844110598195';
+const logChannelBalance = '1278728739760640093';
+
+const logChannelId = [logChannelAll, logChannelGame, logChannelBalance]
 
 module.exports = {
   token: process.env.TOKEN,
   prefix: process.env.PREFIX,
-  prefixes: process.env.PREFIXES ? process.env.PREFIXES.split(",") : ["!"],
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET || "",
   guildId: process.env.GUILD_ID,
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  logChannelId,
+  owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
+  color: { red: 0xff0000, green: 0x00ff00, blue: 0xffb0f2, yellow: 0xffff00, orange: 0xFFA500, main: 0xffff00, none: 0x2b2d31 },
   database: process.env.DATABASE_URL,
-  users: {
-    owners: process.env.OWNERS ? process.env.OWNERS.split(",").map(id => id.trim()) : [],
-  },
-  color: {
-    red: 0xff0000,
-    green: 0x00ff00,
-    blue: 0x0000ff,
-    yellow: 0xffff00,
-    main: 0xffc0cb,
-  },
-  botStatus: process.env.BOT_STATUS || "online",
-  botActivity: process.env.BOT_ACTIVITY || "WaveMusic",
-  botActivityType: parseInt(process.env.BOT_ACTIVITY_TYPE || "2"),
-  keepAlive: parseBoolean(process.env.KEEP_ALIVE) || false,
+  botStatus: 'online',
+  botActivityType: 4,
   production: parseBoolean(process.env.PRODUCTION) || true,
+  keepAlive: parseBoolean(process.env.KEEP_ALIVE) || false,
+  language: {
+    defaultLocale: 'en-US', // "en" = default language
+    directory: path.resolve('./src/languages'), // <= location of language
+  },
+  links: {
+    banner: 'https://i.imgur.com/usG6QnM.gif',
+    support: 'https://discord.gg/Yv8c4AWAsV',
+    invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=1789356665943&scope=bot+applications.commands`,
+    vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
+    website: 'https://top.gg/bot/${process.env.CLIENT_ID}/vote',
+  },
 };
 
 function parseBoolean(value) {
-  if (typeof value === "string") {
-    value = value.trim().toLowerCase();
-  }
-  switch (value) {
-    case "true":
-      return true;
-    default:
-      return false;
-  }
+  if (typeof value === 'string') value = value.trim().toLowerCase();
+  return value === 'true' ? true : false;
 }
+

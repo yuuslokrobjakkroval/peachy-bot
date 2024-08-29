@@ -1,30 +1,17 @@
-const { GatewayIntentBits } = require("discord.js");
-const config = require("./config.js");
-const WaveClient = require("./structures/Client.js");
+const { GatewayIntentBits } = require('discord.js');
+const config = require('./config.js');
+const PeachyClient = require('./structures/Client.js');
 
-const {
-  GuildMembers,
-  MessageContent,
-  GuildVoiceStates,
-  GuildMessages,
-  Guilds,
-  GuildMessageTyping,
-} = GatewayIntentBits;
+const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 
 const clientOptions = {
-  intents: [
-    Guilds,
-    GuildMessages,
-    MessageContent,
-    GuildVoiceStates,
-    GuildMembers,
-    GuildMessageTyping,
-  ],
+  intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
   allowedMentions: {
-    parse: ["users", "roles"],
+    parse: ['users', 'roles'],
     repliedUser: false,
   },
 };
 
-const client = new WaveClient(clientOptions);
+const client = new PeachyClient(clientOptions);
+
 client.start(config.token);

@@ -1,0 +1,6 @@
+invalid_amount_title: "Amount Instruction!"
+invalid_amount_description: "You can entered the amount as a numerical value."
+invalid_amount_field_name_1: "Premium shortcuts: ( Free now )"
+invalid_amount_field_value_1: "`[ 1 ]` You can use __**all**__ to insert all of your coins.\n`[ 2 ]` You can use __**half**__ to insert half of your coins."
+invalid_amount_field_name_2: "More shortcuts:"
+invalid_amount_field_value_2: "- Use **1k** for %{coinEmote} `1,000` coins.\n- Use **1M** for %{coinEmote} `1,000,000` coins.\n- Use **1B** for %{coinEmote} `1,000,000,000` coins."

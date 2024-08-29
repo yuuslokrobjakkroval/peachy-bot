@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const Users = require("../../schemas/user");
+const Users = require("../../schemas/User");
 const config = require("../../config.js");
 const numeral = require("numeral");
 const { COIN, IMMORTAL, IMMORTAL_TITLE, DIVINE, ANCIENT, LEGEND, ARCHON, CRUSADER, GUARDIAN, HERALD } = require("../../utils/Emoji");

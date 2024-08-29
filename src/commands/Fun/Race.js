@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const Race = require("../../schemas/race");
+const Race = require("../../schemas/Race");
 
 const emojiTurtle = '<a:TURTLE:1278531149295128619>';
 const emojiRabbit = '<a:RABBIT:1278531138805301269>';

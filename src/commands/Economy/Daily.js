@@ -1,70 +1,97 @@
-const { Command } = require("../../structures");
-const numeral = require("numeral");
-const Users = require("../../schemas/user");
-const { COIN, DAILY, getEmojiForTime } = require("../../utils/Emoji");
+const { Command } = require('../../structures/index.js');
+const Users = require('../../schemas/User.js');
+const { checkCooldown, getCooldown, updateCooldown } = require('../../functions/function');
+const chance = require('chance').Chance();
+const moment = require('moment');
 
-const cooldowns = {};
-
-class Daily extends Command {
-  constructor(client) {
-    super(client, {
-      name: "daily",
-      description: {
-        content: "Claim your daily skyrealm",
-        examples: ["daily"],
-        usage: "daily",
-      },
-      category: "economy",
-      aliases: ["daily"],
-      cooldown: 1,
-      args: false,
-      permissions: {
-        dev: false,
-        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: [],
-      },
-      slashCommand: false,  // Ensure this is false if you are using message-based commands
-      options: [],
-    });
-  }
-
-  async run(client, ctx, args) {
-    const userId = ctx.author.id;  // Should be ctx.author.id for a Message object
-    const minDailyAmount = 100000;
-    const maxDailyAmount = 400000;
-    const cooldownTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-    const lastDailyTime = cooldowns[userId] || 0;
-    const currentTime = Date.now();
-
-    if (lastDailyTime && (currentTime - lastDailyTime < cooldownTime)) {
-      const remainingTime = cooldownTime - (currentTime - lastDailyTime);
-      const remainingHours = Math.floor(remainingTime / (60 * 60 * 1000));
-      const remainingMinutes = Math.floor((remainingTime % (60 * 60 * 1000)) / (60 * 1000));
-
-      return ctx.channel.send(`You can claim your daily skyrealm again in ${remainingHours} hours and ${remainingMinutes} minutes.`);
+module.exports = class Daily extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'daily',
+            description: {
+                content: 'Earn some coins daily.',
+                examples: ['daily'],
+                usage: 'daily',
+            },
+            category: 'economy',
+            aliases: ['daily'],
+            cooldown: 5,
+            args: false,
+            permissions: {
+                dev: false,
+                client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
+                user: [],
+            },
+            slashCommand: true,
+            options: [],
+        });
     }
 
-    const dailyAmount = Math.floor(Math.random() * (maxDailyAmount - minDailyAmount + 1)) + minDailyAmount;
+    async run(client, ctx, args, language) {
+        try {
+            const user = await Users.findOne({ userId: ctx.author.id }).exec();
+            if (!user) {
+                return client.utils.sendErrorMessage(client, ctx, 'User not found.');
+            }
 
-    const user = await Users.findOne({ userId });
-    if (!user) {
-      await Users.create({
-        userId: ctx.author.id,
-        balance: dailyAmount,
-      });
-    } else {
-      await Users.updateOne({ userId }, { $inc: { balance: dailyAmount } }, { upsert: true });
+            const { coin, bank } = user.balance;
+            const baseCoins = chance.integer({ min: 30000, max: 50000 });
+            const newBalance = coin + baseCoins;
+            const now = moment()
+            const next3PM = moment().add(1, 'days').set({ hour: 15, minute: 0, second: 0, millisecond: 0 });
+
+            const timeUntilNext3PM = moment.duration(next3PM.diff(now));
+
+
+            const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext3PM);
+
+
+
+            if (!isCooldownExpired) {
+                const duration = moment.duration(next3PM.diff(now));
+
+                const hours = Math.floor(duration.asHours());
+                const minutes = Math.floor(duration.asMinutes()) % 60;
+                const seconds = Math.floor(duration.asSeconds()) % 60;
+
+                const cooldownMessage = `Daily is on cooldown!\nTry again after **${hours}hrs, ${minutes}mins and ${seconds}secs**.`;
+
+                const cooldownEmbed = client.embed().setColor(client.color.red).setDescription(cooldownMessage);
+
+                return await ctx.sendMessage({ embeds: [cooldownEmbed] });
+            }
+
+            const baseExp = chance.integer({ min: 100, max: 150 });
+            const newExp = user.profile.exp + baseExp;
+
+            await Promise.all([
+                Users.updateOne({ userId: ctx.author.id }, {
+                    $set: {
+                        'balance.coin': newBalance,
+                        'balance.bank': bank,
+                        'profile.exp': newExp,
+                    }
+                }).exec(),
+                updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext3PM)
+            ]);
+
+            const embed = client
+                .embed()
+                .setColor(client.color.main)
+                .setTitle(`${ctx.author.displayName} claimed their daily reward!`)
+                .setDescription(
+                    client.i18n.get(language, 'commands', 'daily_success', {
+                        coinEmote: client.emote.coin,
+                        coin: client.utils.formatNumber(baseCoins),
+                        exp: client.utils.formatNumber(baseExp),
+                    })
+                );
+
+            return await ctx.sendMessage({ embeds: [embed] });
+
+        } catch (error) {
+            console.error('Error processing daily command:', error);
+            return client.utils.sendErrorMessage(client, ctx, 'There was an error processing your daily claim.');
+        }
     }
-
-    cooldowns[userId] = currentTime;
-
-    const embed = this.client.embed()
-        .setColor(this.client.color.main)
-        .setTitle(`**${getEmojiForTime()} ${ctx.author.globalName} claimed their daily ${DAILY} reward!**`)
-        .setDescription(`${COIN} **\`+${numeral(dailyAmount).format('0,0')}\`** coins`);
-
-    return await ctx.channel.send({ embeds: [embed] });
-  }
-}
-
-module.exports = Daily;
+};

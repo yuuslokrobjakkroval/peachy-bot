@@ -2,19 +2,13 @@ const { Client, IntentsBitField, Collection, EmbedBuilder, ButtonBuilder, Action
 const { prefix } = require('../config');
 const fs = require('fs');
 const sym = '`';
-const syms = sym;
 const sym3 = '```';
 const one_second = 1000;
-const mongoose = require('mongoose');
-const { userSchema } = require('../schemas/user');
-const User = mongoose.model('User', userSchema);
-const gif = require('../functions/gif');
-const { createCanvas, loadImage, registerFont } = require('canvas');
-const Users = require("../schemas/user");
 const moment = require("moment-timezone");
 const config = require("../config");
-const {TITLE, BIRTHDAY, CAKEBIRTHDAY} = require("../utils/Emoji");
 require('dotenv').config();
+const Users = require("../schemas/User.js");
+const transferLimits = require('../utils/transferReceiveLimitUtil');
 
 const bot = new Client({
     intents: [
@@ -26,6 +20,121 @@ const bot = new Client({
         IntentsBitField.Flags.GuildMessageReactions,
     ]
 });
+
+
+async function getUserLevel(userId) {
+    const user = await Users.findOne({ userId }).exec();
+    if (!user) return 1; // Default to level 1 if user not found
+    return user.profile.level || 1;
+}
+
+function getLimitForLevel(level, type) {
+    const limit = transferLimits.find(l => l.level === level);
+    if (!limit) return { send: Infinity, receive: Infinity }; // Default to no limit if level not found
+    return { send: limit.send, receive: limit.receive };
+}
+
+async function canTransfer(userId, amount, type) {
+    const userLevel = await getUserLevel(userId);
+    const limits = getLimitForLevel(userLevel, type);
+
+    if (type === 'send') {
+        return amount <= limits.send;
+    } else if (type === 'receive') {
+        return amount <= limits.receive;
+    }
+
+    return false;
+}
+
+async function updateDailyLimits(userId, amount, type) {
+    try {
+        const user = await Users.findOne({ userId });
+        if (!user) throw new Error('User not found');
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Midnight of today
+
+        if (user.dailyLimits.lastReset < today) {
+            user.dailyLimits.transferUsed = 0;
+            user.dailyLimits.receiveUsed = 0;
+            user.dailyLimits.lastReset = today;
+        }
+
+        if (type === 'sent') {
+            if (user.dailyLimits.transferUsed + parseFloat(amount) > user.dailyLimits.transferLimit) {
+                return false;
+            }
+            user.dailyLimits.transferUsed += parseFloat(amount);
+        } else if (type === 'received') {
+            if (user.dailyLimits.receiveUsed + parseFloat(amount) > user.dailyLimits.receiveLimit) {
+                return false;
+            }
+            user.dailyLimits.receiveUsed += parseFloat(amount);
+        } else {
+            throw new Error('Invalid type');
+        }
+
+        await user.save();
+        return true;
+    } catch (error) {
+        console.error('Error updating daily limits:', error);
+        return false;
+    }
+}
+
+
+async function checkCooldown(userId, command, duration) {
+    const now = Date.now();
+
+    try {
+        const user = await Users.findOne({ userId: userId }).exec();
+        if (user) {
+            const cooldown = user.cooldowns.find(c => c.name === command);
+            if (cooldown) {
+                // Check if the current time minus the timestamp is greater than or equal to the provided duration
+                return now - cooldown.timestamp >= duration;
+            }
+        }
+        return true;
+    } catch (error) {
+        console.error('Error checking cooldown:', error);
+        return false;
+    }
+}
+
+async function updateCooldown(userId, command, duration) {
+    const now = Date.now();
+    try {
+        const user = await Users.findOne({ userId: userId }).exec();
+        if (user) {
+            const cooldownIndex = user.cooldowns.findIndex(c => c.name === command);
+            if (cooldownIndex > -1) {
+                user.cooldowns[cooldownIndex].timestamp = now;
+                user.cooldowns[cooldownIndex].duration = duration;
+            } else {
+                user.cooldowns.push({ name: command, timestamp: now, duration: duration });
+            }
+            await user.save();
+        }
+    } catch (error) {
+        console.error('Error updating cooldown:', error);
+    }
+}
+
+async function getCooldown(userId, command) {
+    try {
+        const user = await Users.findOne({ userId: userId }).exec();
+        if (user) {
+            const cooldown = user.cooldowns.find(c => c.name === command);
+            return cooldown ? cooldown.timestamp : 0;
+        }
+        return 0;
+    } catch (error) {
+        console.error('Error fetching cooldown:', error);
+        return 0;
+    }
+}
 
 function getRandomInt(min, max){
     min = Math.ceil(min);
@@ -43,24 +152,7 @@ function getFiles(commandFiles, dir){
         const command = require(`${dir}/${file}`);
         bot.commands.set(command.name, command);
     }
-    const result = bot.commands;
-    return result;
-}
-
-function formatCapitalize (val) {
-    if (!!val) {
-        const words = val.split('_');
-        const CapitalizeWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
-        return CapitalizeWords.join(' ');
-    }
-}
-
-function formatUpperCase (val) {
-    if (!!val) {
-        const words = val.split('_');
-        const UpperWords = words.map((word) => word.toUpperCase());
-        return UpperWords.join(' ');
-    }
+    return bot.commands;
 }
 
 async function getUser(id) {
@@ -76,7 +168,7 @@ function customEmbed(){
     return new EmbedBuilder()
 }
 function advanceEmbed(desc, image, footer, user, color){
-    return new EmbedBuilder()
+    return new user.channel.send()
         .setAuthor({ name: `${user.displayName}`, iconURL: user.displayAvatarURL() })
         .setColor(`${color}`)
         .setDescription(`${desc}`)
@@ -100,6 +192,7 @@ function emojiButton(id, emoji, style){
         .setEmoji(`${emoji}`)
         .setStyle(style)
 }
+
 function labelButton(id, label, style){
     return new ButtonBuilder()
         .setCustomId(`${id}`)
@@ -122,42 +215,6 @@ function fourButton(one, two, three, four){
 function fiveButton(one, two, three, four, five){
     return new ActionRowBuilder().addComponents(one, two, three, four, five);
 }
-
-async function checkBirthdays(client) {
-    const today = moment().format('DD-MM'); // Format for checking birthdays
-    const allUsers = await Users.find();
-
-    for (const userData of allUsers) {
-        if (userData.dateOfBirth) {
-            const [day, month] = userData.dateOfBirth.split('-').slice(0, 2);
-            if (`${day}-${month}` === today) {
-                if (!userData.birthdayMessageSent) {
-                    try {
-                        const user = await client.users.fetch(userData.userId);
-                        if (user) {
-                            const birthdayChannel = await client.channels.fetch('1272074580797952116');
-
-                            const embed = new EmbedBuilder()
-                                .setColor(config.color.main)
-                                .setTitle(`**${TITLE} Happy Birthday ${BIRTHDAY} ${TITLE}**`)
-                                .setDescription(`Happy Birthday, <@${user.id}>! ${CAKEBIRTHDAY}.`);
-
-                            await birthdayChannel.send({ embeds: [embed] });
-
-                            userData.birthdayMessageSent = true;
-                            await userData.save();
-                        }
-                    } catch (error) {
-                        console.error(`Error sending birthday message: ${error}`);
-                    }
-                }
-            }
-        }
-    }
-}
-
-module.exports = checkBirthdays;
-
 
 function blackjackEmbed(amount, text, body, text2, body2, result, user, color, client){
     if(typeof color == Number){
@@ -257,4 +314,4 @@ function cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {
 }
 
 
-module.exports = { checkBirthdays, formatCapitalize, formatUpperCase, registerFont, loadImage, createCanvas, User, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, gif, advanceEmbed, labelButton, emojiButton, sym, syms, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };
+module.exports = { canTransfer, updateDailyLimits, checkCooldown, updateCooldown, getCooldown, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, advanceEmbed, labelButton, emojiButton, sym, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };

@@ -1,0 +1,102 @@
+##### Provide Amount #####
+zero_balance: "You don't have enough coins."
+enough_balance: "You don't have enough coins."
+invalid_amount: 'The quantity you provided is incorrect.'
+invalid_amount_button: 'Instruction'
+no_user: 'You need to mention someone.'
+mention_to_bot: 'You can not mention to bot.'
+mention_to_self: 'You can not mention to yourself.'
+
+##### Gambling System #####
+win_message: 'You won %{coinEmote} **`%{coin}`** coins'
+lose_message: 'You lose %{coinEmote} **`%{coin}`** coins'
+draw_message: "It's a tie!"
+bet_info: 'You bet %{coinEmote} **`%{coin}`** coins'
+current_balance: '%{coinEmote} **`%{coin}`** coins'
+
+##### Inventory Command #####
+invalid_item: "The items id **`%{itemId}`** couldn't find in the shop!"
+sell_disable: ''
+use_disable: ''
+
+##### Balance Commands #####
+balance_title: "Balance's %{displayName}"
+balance_description: "%{coinEmote} **`%{coin}`** coins\n%{bankEmote} %{bank} bank\n%{gemEmote} **`%{gem}`** gems"
+
+##### Beg Commands #####
+beg_cooldown: 'Looks like you were begged recently. Please wait **%{time}**!'
+beg_title: "%{displayName}'s begging!"
+beg_success: 'You get %{coinEmote} **`%{coin}`** coins from begged.'
+
+##### Daily Commands #####
+daily_cooldown: 'Your daily reward is not coming yet. Please wait for %{time}!'
+daily_title: 'Daily Reward'
+daily_success: '%{coinEmote} **`+%{coin}`** coins'
+daily_field_name: 'Current Streak'
+daily_field_value: "You've claimed daily rewards for **`%{streak}`** days in a row."
+
+##### Weekly Commands #####
+weekly_cooldown: 'Your Weekly reward is not coming yet. Please wait for %{time}!'
+weekly_title: 'Weekly Reward'
+weekly_success: '%{coinEmote} **`+%{coin}`** coins'
+weekly_field_name: 'Current Streak'
+weekly_field_value: "You've claimed daily rewards for **`%{streak}`** days in a row."
+
+##### Give Commands #####
+give_title: "%{displayName}'s transaction!"
+give_success: "**Click:** %{tickEmote} to accept the transaction.\n**Click:** %{denyEmote} to cancel the transaction."
+give_field_name: 'You will give to %{target}:'
+give_field_value: '%{coinEmote} **`%{coin}`** coins'
+give_button_accept: 'Accept'
+give_button_cancel: 'Cancel'
+give_accept: 'You have accepted the transaction. %{coinEmote} **`%{coin}`** coins have been transferred to %{target}.'
+give_cancel: 'You have canceled the transaction. No coins have been transferred.'
+
+##### Blackjack Command #####
+blackjack_title: "%{author}' betting on blackjack!"
+blackjack_description: "The one who's closest to 21 is the winner."
+
+##### Coinflip Command #####
+coinflip_title: "%{author}' betting on coinflip!"
+coinflip_description: '**%{author}** choose **%{choice}**! The coin spins %{spins}'
+
+##### Slots Command #####
+slots_title: "%{author}' betting on slots!"
+
+##### Buy Command #####
+buy_disable: 'The items %{itemEmote} **`%{itemName}`** is not purchasable!'
+buy_afford: 'You need %{coinEmote} **`%{needCoin}`** coins more to buy %{itemEmote} **`%{itemName}`**.'
+buy_title: "%{author}' buying!"
+buy_successfully: 'have bought'
+buy_afford_to_buy: 'can only afford to buy'
+buy_description: 'You %{afford} %{itemEmote} **`%{amountToBuy}x`** %{itemName} for %{coinEmote} **`%{totalPrice}`** coins.'
+
+##### Inventory Command #####
+inventory_title: "%{author}'s inventory!"
+inventory_fields_name: 'Empty Inventory'
+inventory_fields_value: 'Your current inventory is empty.'
+
+##### Actions Commands #####
+bite_success: "%{displayName}'s bites %{target}!"
+bully_success: "%{displayName}'s bully %{target}!"
+cuddle_success: "%{displayName}'s cuddles %{target}!"
+highfive_success: "%{displayName}'s highfives %{target}!"
+hug_success: "%{displayName}'s hugs %{target}!"
+kick_success: "%{displayName}'s kicks %{target}!"
+kill_success: "%{displayName}'s kills %{target}!"
+kiss_success: "%{displayName}'s kisses %{target}!"
+pat_success: "%{displayName}'s pats %{target}!"
+poke_success: "%{displayName}'s pokes %{target}!"
+punch_success: "%{displayName}'s punches %{target}!"
+slap_success: "%{displayName}'s slaps %{target}!"
+wave_success: "%{displayName}'s waves to %{target}!"
+wink_success: "%{displayName}'s winks at %{target}!"
+
+##### Emotes Commands #####
+blush_success: "%{displayName}'s blushes!"
+cry_success: "%{displayName}'s crying!"
+dance_success: "%{displayName}'s dancing!"
+happy_success: "%{displayName}'s happy!"
+sad_success: "%{displayName}'s sad!"
+smile_success: "%{displayName}'s smiling!"
+thinking_success: "%{displayName}'s thinking!"
