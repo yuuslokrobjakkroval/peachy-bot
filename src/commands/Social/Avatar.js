@@ -38,10 +38,10 @@ class Avatar extends Command {
   }
 
   async run(client, ctx, args) {
-    const user = ctx.mentions.users.first() || client.users.cache.get(args[0]) || ctx.author;
-    const embed = new MessageEmbed()
+    const user = ctx.message.mentions.users.first() || client.users.cache.get(args[0]) || ctx.author;
+    const embed = client.embed()
       .setColor(client.color.main)
-      .setTitle(`Avatar of ${user.username}`)
+      .setTitle(`Avatar of ${user.displayName}`)
       .setImage(user.displayAvatarURL({ dynamic: true, size: 1024 }))
       .setFooter({
         text: `Requested by ${ctx.author.username}`,
