@@ -1,20 +1,19 @@
 const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const numeral = require("numeral");
-const random = require("random-number-csprng");
-const { TITLE } = require("../../utils/Emoji");
+const { TITLE, COIN } = require("../../utils/Emoji");
 
 const maxBet = 250000;
 
 const questions = [
     {
-        question: "តើទីក្រុងជាន់ខាងក្រោមមានអ្វី?",
-        options: ["A. ភ្នំពេញ", "B. សៀមរាប", "C. បាត់ដំបង", "D. សិ​ហនូកវិល"],
-        answer: "A"
+        question: "តើទីក្រុងដែលមានប្រាសាទអង្គរ​នៅកម្ពុជា​គឺជា​ទីក្រុងអ្វី?",
+        options: ["A. ភ្នំពេញ", "B. សៀមរាប", "C. បាត់ដំបង", "D. ក្រចេះ"],
+        answer: "B"
     },
     {
         question: "តើប្រាសាទល្បីដែលនៅកម្ពុជា គេហៅថាអ្វី?",
-        options: ["A. បូរ​បូដូរ", "B. អង្គរ​វត", "C. ពេត្រ", "D. ម៉ាជូភីចូ"],
+        options: ["A. បូរ​បូដូរ", "B. អង្គរ", "C. ពេត្រ", "D. ម៉ាជូភីចូ"],
         answer: "B"
     },
     {
