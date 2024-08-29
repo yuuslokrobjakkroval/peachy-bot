@@ -38,7 +38,7 @@ const userSchema = new Schema({
         transferLimit: { type: Number, default: 64000 },
         receiveLimit: { type: Number, default: 64000 }
     },
-    daddy: {
+    peachy: {
         streak: { type: Number, default: 0 }
     },
     profile: {
