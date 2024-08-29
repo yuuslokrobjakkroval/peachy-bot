@@ -76,6 +76,68 @@ function getEmojiForTime() {
 }
 
 module.exports = {
+    ddMaster: '<a:DOM:1265339437462589611>',
+    ddMasterLeft: '<:DDMASTERLEFT:1277216866787397696>',
+    ddMasterRight: '<:DDMASTERRIGHT:1277216855026827265>',
+    congratulation: '<a:CONGRATULATIONS:1277266750114631792>',
+    // PROFILE
+
+    // RING
+    emeraldRing: '<:emerald_ring:1265568199991103508>',
+    silverRing: '<:silver_ring:1265567423902257163>',
+    cristalRing: '<:cristal_ring:1265567717620973591>',
+    diamondRing: '<:diamond_ring:1265568815660662824>',
+    specialDiamondRing: '<:special_diamond_ring:1266291702193193004>',
+
+    // WALLPAPER
+    framePhoto: '<:FRAMEPHOTO:1277209488440688731>',
+
+    // VISIBILITY
+    public: '<:PUBLIC:1277211424464044065>',
+    private: '<:PRIVATE:1277209446166167656>',
+
+    // SOCIAL
+    socialMedia: '<a:SOCIALMEDIA:1277209473584463872>',
+    like: '<a:LIKE:1276934735192522752>',
+    facebook: '<a:FACEBOOK:1277209404961193985>',
+    instagram: '<a:INSTAGRAM:1277209419997909074>',
+
+    // SLOTS
+    eggPlantSlot: '<:DD_Eggplant:1263907213194297486>',
+    heartSlot: '<:DD_HEART:1263907225244663909>',
+    cherrySlot: '<:DD_Cherry:1263907205640487043>',
+    diamondSlot: '<:DD_Daimon:1263970828555522212>',
+    coinSlot: '<:DD_COIN:1263907229493629088>',
+    fxxkSlot: '<:DD_FXXKU:1263907222002335817>',
+
+    // QUIZ
+    letterA: '<a:A_:1277954376601702434>',
+    letterB: '<a:B_:1277954385099358311>',
+    letterC: '<a:C_:1277954392561287291>',
+    letterD: '<a:D_:1277954400698109994>',
+    questionMark: '<a:QUESTION:1277944145238822972>',
+    exclamationMark: '<a:EXCLAMATION:1277944154642583635>',
+
+    // KLA KLOUK
+    kla: '<:DDKLA:1277209095190872064>',
+    klouk: '<:DDKLOUK:1277209104041119897>',
+    morn: '<:DDMORN:1277209113486688277>',
+    bongkorng: '<:DDBONFKORNG:1277209064010678273>',
+    kdam: '<:DDKDAM:1277209074957815808>',
+    trey: '<:DDTREY:1277209085086793758>',
+    klaKloukBall: '<:KLAKLOUKBALL:1277209131283124244>',
+    klaKloukFooter: '<a:SPIN:1277209155202977873>',
+
+    // COINFLIP
+    coinFlipSpin: '<a:DDCOINFLIP:1266265828240920736>',
+    heads: '<:DD_Coin:1266265646283489311>',
+    tails: '<:DD_COINFLIP:1266265592889868339>',
+
+    // PAV
+    rock: '✊',
+    paper: '🖐️',
+    scissors: '✌️',
+
     COIN,
 
     TITLE,
@@ -108,14 +170,14 @@ module.exports = {
     DAILY,
     DAY,
     NIGHT,
-    
+
     RANK_MASTER,
     RANK_DIAMOND,
     RANK_PLATINUM,
     RANK_GOLD,
     RANK_SILVER,
     RANK_BRONZE,
-    
+
     IMMORTAL,
     IMMORTAL_TITLE,
     DIVINE,

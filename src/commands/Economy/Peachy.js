@@ -4,17 +4,17 @@ const Users = require('../../schemas/User.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
 
-module.exports = class Daddy extends Command {
+module.exports = class Peachy extends Command {
     constructor(client) {
         super(client, {
-            name: 'dd',
+            name: 'peachy',
             description: {
-                content: 'Earn some coins by daddy.',
-                examples: ['dd'],
-                usage: 'dd',
+                content: 'Earn some coins by being peachy.',
+                examples: ['peachy'],
+                usage: 'peachy',
             },
             category: 'economy',
-            aliases: ['d'],
+            aliases: ['p'],
             cooldown: 5,
             args: false,
             permissions: {
@@ -36,9 +36,9 @@ module.exports = class Daddy extends Command {
 
         const baseCoins = chance.integer({ min: 500, max: 1000 });
         const newBalance = user.balance.coin + baseCoins;
-        const newStreak = (user.daddy.streak += 1);
+        const newStreak = (user.peachy.streak += 1);
 
-        const timeExpired = 300000; // 4 minutes cooldown
+        const timeExpired = 300000; // 5 minutes cooldown
         const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeExpired);
 
         if (!isCooldownExpired) {
@@ -50,21 +50,15 @@ module.exports = class Daddy extends Command {
             const minutes = Math.floor(duration.asMinutes());
             const seconds = Math.floor(duration.asSeconds()) % 60;
 
-            const cooldownMessage = `Daddyed is on cooldown!\nTry again after **${minutes}mins and ${seconds}secs**.`;
+            const cooldownMessage = `Peachy is on cooldown!\nTry again after **${minutes}mins and ${seconds}secs**.`;
 
             const cooldownEmbed = client.embed().setColor(client.color.red).setDescription(cooldownMessage);
 
             return await ctx.sendMessage({ embeds: [cooldownEmbed] });
-            // return await client.utils.sendErrorMessage(
-            //     client,
-            //     ctx,
-            //     `You have already daddyed recently! Please wait <t:${Math.round(Date.now() / 1000) + remainingTime}:R>.`,
-            //     remainingTime * 1000
-            // );
         }
 
         await Promise.all([
-            Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'daddy.streak': newStreak } }).exec(),
+            Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'peachy.streak': newStreak } }).exec(),
             updateCooldown(ctx.author.id, this.name.toLowerCase(), timeExpired)
         ]);
 
@@ -72,7 +66,7 @@ module.exports = class Daddy extends Command {
         const embed = client
             .embed()
             .setColor(client.color.main)
-            .setTitle(`${ctx.author.displayName} daddyed!`)
+            .setTitle(`${ctx.author.displayName} is peachy!`)
             .setDescription(
                 client.i18n.get(language, 'commands', 'beg_success', {
                     coinEmote: client.emote.coin,

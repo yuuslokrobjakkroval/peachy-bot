@@ -164,7 +164,7 @@ module.exports = class MessageCreate extends Event {
               .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
               .setDescription(
                   `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
-              .setImage(gif.ddMaster);
+              .setImage(gif.peachy);
 
           const row = new ActionRowBuilder().addComponents(
               new ButtonBuilder()
