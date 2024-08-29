@@ -1,5 +1,3 @@
-const { version } = require("discord.js");
-const os = require("os");
 const { Command } = require("../../structures/index.js");
 
 class Info extends Command {
@@ -7,7 +5,7 @@ class Info extends Command {
     super(client, {
       name: "info",
       description: {
-        content: "Information about the bot",
+        content: "Information about the bot owner",
         examples: ["info"],
         usage: "info",
       },
@@ -30,40 +28,15 @@ class Info extends Command {
       options: [],
     });
   }
+
   async run(client, ctx) {
-    const osType = os.type();
-    const osRelease = os.release();
-    const osUptime = os.uptime();
-    const osHostname = os.hostname();
-    const cpuArch = os.arch();
-    const cpuCores = os.cpus().length;
-    const totalMem = os.totalmem();
-    const freeMem = os.freemem();
-    const usedMem = totalMem - freeMem;
-    const nodeVersion = process.version;
-    const discordJsVersion = version;
-    const botGuilds = client.guilds.cache.size;
-    const botChannels = client.channels.cache.size;
-    const botUsers = client.users.cache.size;
-    const botCommands = client.commands.size;
-    const botInfo = `Skyrealm's Information!:
-- **Operating System**: ${osType} ${osRelease}
-- **Uptime**: ${client.utils.formatTime(osUptime)}
-- **Hostname**: ${osHostname}
-- **CPU Architecture**: ${cpuArch} (${cpuCores} cores)
-- **Memory Usage**: ${client.utils.formatBytes(
-      usedMem
-    )} / ${client.utils.formatBytes(totalMem)} (${Math.round(
-      (usedMem / totalMem) * 100
-    )}%)
-- **Node Version**: ${nodeVersion}
-- **Discord Version**: ${discordJsVersion}
-- **Connected to** ${botGuilds} guilds, ${botChannels} channels, and ${botUsers} users
-- **Total Commands**: ${botCommands}
-  `;
+    const botOwnerInfo = `**Bot Owner Information**:
+- **Discord:** [DADDY KYUU](https://discord.com/users/966688007493140591)
+- **Facebook:** [Thoeurn Rothanak](https://www.facebook.com/thoeurnrothanak?mibextid=LQQJ4d)`;
+
     const embed = this.client.embed();
     return await ctx.sendMessage({
-      embeds: [embed.setColor(this.client.color.main).setDescription(botInfo)],
+      embeds: [embed.setColor(this.client.color.main).setDescription(botOwnerInfo)],
     });
   }
 }
