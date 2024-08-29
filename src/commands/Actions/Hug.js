@@ -46,15 +46,15 @@ module.exports = class Hug extends Command {
         }
 
         try {
-            const hugGif = await Anime.hug(); // Fetches a cute hug GIF from the anime-actions package
+            const hugGif = await Anime.hug();
 
             return await ctx.sendMessage({
                 embeds: [
                     client
                         .embed()
                         .setColor(client.color.main)
-                        .setTitle(`${author.username} gives ${target.username} a warm hug!`)
-                        .setImage(hugGif), // Uses the GIF URL from the package
+                        .setTitle(`${author.displayName} gives ${target.displayName} a warm hug!`)
+                        .setImage(hugGif),
                 ],
             });
         } catch (error) {

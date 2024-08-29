@@ -13,6 +13,14 @@ const raceSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    dog: {
+        type: Number,
+        default: 0
+    },
+    chicken: {
+        type: Number,
+        default: 0
+    },
     isActive: {
         type: Boolean,
         default: false

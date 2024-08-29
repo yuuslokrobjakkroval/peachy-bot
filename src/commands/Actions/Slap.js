@@ -1,18 +1,18 @@
 const { Command } = require('../../structures/index.js');
 const Anime = require('anime-actions');
 
-module.exports = class Kiss extends Command {
+module.exports = class Slap extends Command {
     constructor(client) {
         super(client, {
-            name: 'kiss',
+            name: 'slap',
             description: {
-                content: 'Sends a cute kiss anime action.',
-                examples: ['kiss @user'],
-                usage: 'kiss <user>',
+                content: 'Sends a playful slap to the mentioned user.',
+                examples: ['slap @User'],
+                usage: 'slap @User',
             },
             category: 'actions',
-            aliases: [],
-            cooldown: 5,
+            aliases: ['smack'],
+            cooldown: 3,
             args: true,
             permissions: {
                 dev: false,
@@ -23,7 +23,7 @@ module.exports = class Kiss extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'The user you want to kiss.',
+                    description: 'Mention the user you want to slap',
                     type: 6, // USER type
                     required: true,
                 },
@@ -39,27 +39,27 @@ module.exports = class Kiss extends Command {
 
         if (!target || target.id === author.id) {
             let errorMessage = '';
-            if (!target) errorMessage += 'You need to mention a user to kiss.';
-            if (target.id === author.id) errorMessage += 'You cannot kiss yourself.';
+            if (!target) errorMessage += 'You need to mention a user to slap.';
+            if (target.id === author.id) errorMessage += 'You cannot slap yourself.';
 
             return await ctx.sendMessage({ content: errorMessage });
         }
 
         try {
-            const kissGif = await Anime.kiss();
+            const slapGif = await Anime.slap();
 
             return await ctx.sendMessage({
                 embeds: [
                     client
                         .embed()
                         .setColor(client.color.main)
-                        .setTitle(`${author.displayName} kisses ${target.displayName}!`)
-                        .setImage(kissGif),
+                        .setTitle(`${author.displayName} playfully slaps ${target.displayName}! 👋`)
+                        .setImage(slapGif),
                 ],
             });
         } catch (error) {
-            console.error('Failed to fetch kiss GIF:', error);
-            return await ctx.sendMessage({ content: 'Something went wrong while fetching the kiss GIF.' });
+            console.error('Failed to fetch slap GIF:', error);
+            return await ctx.sendMessage({ content: 'Something went wrong while fetching the slap GIF.' });
         }
     }
 };

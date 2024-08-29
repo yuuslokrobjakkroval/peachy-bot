@@ -26,6 +26,7 @@
     "nodemon": "^3.1.4"
   },
   "dependencies": {
+    "anime-actions": "^2.1.2",
     "canvas": "^2.11.2",
     "discord.js": "^14.15.3",
     "dotenv": "^16.3.1",
