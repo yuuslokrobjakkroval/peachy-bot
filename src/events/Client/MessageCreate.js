@@ -3,7 +3,6 @@ const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/User.js");
 const canvafy = require('canvafy');
-const { randomBytes } = require('crypto');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
@@ -15,13 +14,13 @@ function getLimitsForLevel(level) {
   return limit || { send: 0, receive: 0 };
 }
 
-const Level_Background = [
-  gif.one_level_background,
-  gif.two_level_background,
-  gif.three_level_background,
-  gif.four_level_background,
-  gif.five_level_background,
-  gif.six_level_background
+const LevelBackground = [
+  gif.levelOne,
+  gif.levelTwo,
+  gif.levelThree,
+  gif.levelFour,
+  gif.levelFive,
+  gif.levelSix
 ];
 
 function getRandomXp(min, max) {
@@ -58,9 +57,9 @@ module.exports = class MessageCreate extends Event {
       if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
         let xpGained = 0;
         if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-          xpGained = getRandomXp(8, 10);
+          xpGained = getRandomXp(30, 50);
         } else {
-          xpGained = getRandomXp(3, 5);
+          xpGained = getRandomXp(10, 15);
         }
 
         user.profile.exp += xpGained;
@@ -79,8 +78,8 @@ module.exports = class MessageCreate extends Event {
           user.dailyLimits.transferLimit = newLimits.send;
           user.dailyLimits.receiveLimit = newLimits.receive;
 
-          const levelIndex = Math.min(user.profile.level - 1, Level_Background.length - 1);
-          const backgroundImage = Level_Background[levelIndex];
+          const levelIndex = Math.min(user.profile.level - 1, LevelBackground.length - 1);
+          const backgroundImage = LevelBackground[levelIndex];
 
           const levelUp = await new canvafy.LevelUp()
               .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))

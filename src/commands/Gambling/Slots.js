@@ -55,7 +55,6 @@ class Slots extends Command {
 		}
 
 		const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
-		console.log(baseCoins)
 		await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': coin - baseCoins, 'balance.bank': bank } }).exec();
 
 		// ===================================== > Decide Results < ===================================== \\

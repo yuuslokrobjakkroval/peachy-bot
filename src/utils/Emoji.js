@@ -1,4 +1,5 @@
 // SLOTS
+const moment = require("moment/moment");
 const CAT = '<:CAT:1272808741934469173>';
 const COFFEE = '<:DRINKS:1272808777686712373>';
 const HEART = '<:HEART:1272808792261918721>';
@@ -64,16 +65,6 @@ const GUARDIAN = '<:GUARDIAN:1271718096503046217>';
 const HERALD = '<:HERALD:1271718105839697950>';
 
 const SLOTS = [CAT, COFFEE, HEART, CAKE, MILK, PEACHY];
-
-function getEmojiForTime() {
-    const now = new Date();
-    const hours = now.getHours();
-
-    // Define day and night times
-    const isDaytime = hours >= 6 && hours < 18; // From 6 AM to 6 PM
-
-    return isDaytime ? DAY : NIGHT;
-}
 
 module.exports = {
     ddMaster: '<a:DOM:1265339437462589611>',
@@ -166,6 +157,5 @@ module.exports = {
     ARCHON,
     CRUSADER,
     GUARDIAN,
-    HERALD,
-    getEmojiForTime
+    HERALD
 };

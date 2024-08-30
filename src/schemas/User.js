@@ -1,6 +1,7 @@
 const { model, Schema } = require("mongoose");
 const Config = require('../config.js');
 
+// Define the schemas for inventory, equipment, and cooldowns
 const InventoryItemSchema = new Schema({
     item: { type: String, required: true },
     quantity: { type: Number, default: 1 }
@@ -17,6 +18,7 @@ const CooldownSchema = new Schema({
     duration: { type: Number, required: true }
 });
 
+// Define the user schema
 const userSchema = new Schema({
     userId: { type: String, required: true, unique: true, index: true },
     username: { type: String, default: null },
@@ -52,11 +54,19 @@ const userSchema = new Schema({
             name: { type: String, default: null },
             link: { type: String, default: null },
         },
+        twitter: {
+            name: { type: String, default: null },
+            link: { type: String, default: null },
+        },
+        linkedin: {
+            name: { type: String, default: null },
+            link: { type: String, default: null },
+        },
         exp: { type: Number, default: 0 },
         levelExp: { type: Number, default: 1000 },
         level: { type: Number, default: 1 },
         lastXpGain: { type: Number, default: 0 },
-        visibility: { status: { type: Boolean, default: false }, message: { type: String, default: null }} ,
+        visibility: { status: { type: Boolean, default: false }, message: { type: String, default: null }},
         likes: { type: [String], default: [] }
     },
     marriage: {
@@ -81,6 +91,19 @@ const userSchema = new Schema({
                 content: { type: String, required: true },
             },
         ],
+    },
+    preferences: {
+        theme: { type: String, enum: ['light', 'dark'], default: 'light' },
+        notifications: { type: Boolean, default: true },
+        language: { type: String, default: 'en' },
+    },
+    achievements: [{
+        name: { type: String, required: true },
+        dateEarned: { type: Date, default: Date.now }
+    }],
+    activity: {
+        lastLogin: { type: Date, default: Date.now },
+        totalMessagesSent: { type: Number, default: 0 },
     }
 });
 

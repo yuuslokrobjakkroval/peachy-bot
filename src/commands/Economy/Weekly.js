@@ -1,6 +1,7 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/User.js');
 const { checkCooldown, getCooldown, updateCooldown } = require('../../functions/function');
+const moment = require("moment/moment");
 const chance = require('chance').Chance();
 
 module.exports = class Weekly extends Command {
@@ -49,6 +50,13 @@ module.exports = class Weekly extends Command {
                 const lastCooldownTimestamp = await getCooldown(ctx.author.id, this.name.toLowerCase());
                 const remainingTime = Math.ceil((lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000);
 
+                function getEmojiForTime() {
+                    const hours = moment().hour();
+                    const isDaytime = hours >= 6 && hours < 18;
+
+                    return isDaytime ? `${client.emoji.time.day}` : `${client.emoji.time.night}`;
+                }
+
                 const days = Math.floor(remainingTime / 86400);
                 const hours = Math.floor((remainingTime % 86400) / 3600);
                 const minutes = Math.floor((remainingTime % 3600) / 60);
@@ -87,7 +95,7 @@ module.exports = class Weekly extends Command {
             const embed = client
                 .embed()
                 .setColor(client.color.main)
-                .setTitle(`${ctx.author.displayName} claimed their weekly reward!`)
+                .setTitle(`${ctx.author.displayName} claimed their weekly reward! ${getEmojiForTime()}`)
                 .setDescription(
                     client.i18n.get(language, 'commands', 'weekly_success', {
                         coinEmote: client.emote.coin,

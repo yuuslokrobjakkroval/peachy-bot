@@ -43,6 +43,10 @@ module.exports = class Utils {
         const UpperWords = words.map((word) => word.toUpperCase());
         return UpperWords.join(' ');
     }
+
+    static getRandomElement(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
     
     static toNameCase(args) {
         return args
