@@ -1,12 +1,6 @@
 module.exports = {
-    // DD GANG
-    ddGang: 'https://i.imgur.com/LIgjcQ5.gif',
-    ddMaster: 'https://i.imgur.com/kYXE4No.gif',
     peachy: 'https://i.imgur.com/kYXE4No.gif',
-
-    // LOGO
-    ddMasterLeft: 'https://i.imgur.com/Rj00SgJ.png',
-    ddMasterRight: 'https://i.imgur.com/d9N4s1P.png',
+    thankYou: 'https://i.imgur.com/GgrQ9Ap.gif',
 
     // Default Single profile
     defaultProfile: 'https://i.imgur.com/D0B6fsn.png',

@@ -211,7 +211,7 @@ class InteractionCreate extends Event {
                         .setStyle(ButtonStyle.Success),
                     new ButtonBuilder()
                         .setCustomId('giveaway-participants')
-                        .setEmoji(this.client.emote.userlist)
+                        .setEmoji(this.client.emote.userList)
                         .setLabel('Participants')
                         .setStyle(ButtonStyle.Primary)
                 ),

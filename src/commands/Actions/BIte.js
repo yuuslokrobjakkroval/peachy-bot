@@ -53,7 +53,8 @@ module.exports = class Bite extends Command {
                     client
                         .embed()
                         .setColor(client.color.main)
-                        .setTitle(`${author.displayName} playfully bites ${target.displayName}! 😜🦷`)
+                        .setTitle(`${client.emotes.mainLeft} bites ${client.emotes.mainRight}`)
+                        .setDescription(`${author.displayName} have bites ${target.displayName}! 😜🦷`)
                         .setImage(biteGif),
                 ],
             });

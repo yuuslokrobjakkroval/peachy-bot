@@ -77,8 +77,8 @@ function getEmojiForTime() {
 
 module.exports = {
     ddMaster: '<a:DOM:1265339437462589611>',
-    ddMasterLeft: '<:DDMASTERLEFT:1277216866787397696>',
-    ddMasterRight: '<:DDMASTERRIGHT:1277216855026827265>',
+    peachyLeft: '<:PEACHYLEFT:1278893846868131840>',
+    peachyRight: '<:PEACHYRIGHT:1278893836458000435>',
     congratulation: '<a:CONGRATULATIONS:1277266750114631792>',
     // PROFILE
 
@@ -117,26 +117,6 @@ module.exports = {
     letterD: '<a:D_:1277954400698109994>',
     questionMark: '<a:QUESTION:1277944145238822972>',
     exclamationMark: '<a:EXCLAMATION:1277944154642583635>',
-
-    // KLA KLOUK
-    kla: '<:DDKLA:1277209095190872064>',
-    klouk: '<:DDKLOUK:1277209104041119897>',
-    morn: '<:DDMORN:1277209113486688277>',
-    bongkorng: '<:DDBONFKORNG:1277209064010678273>',
-    kdam: '<:DDKDAM:1277209074957815808>',
-    trey: '<:DDTREY:1277209085086793758>',
-    klaKloukBall: '<:KLAKLOUKBALL:1277209131283124244>',
-    klaKloukFooter: '<a:SPIN:1277209155202977873>',
-
-    // COINFLIP
-    coinFlipSpin: '<a:DDCOINFLIP:1266265828240920736>',
-    heads: '<:DD_Coin:1266265646283489311>',
-    tails: '<:DD_COINFLIP:1266265592889868339>',
-
-    // PAV
-    rock: '✊',
-    paper: '🖐️',
-    scissors: '✌️',
 
     COIN,
 

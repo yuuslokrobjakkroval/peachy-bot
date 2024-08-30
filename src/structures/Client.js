@@ -3,13 +3,13 @@ const { connect, connection } = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
-const Logger = require('./Logger.js');
-const config = require('../config.js');
-const emojis = require('../emotes.js');
 const loadPlugins = require('../plugin/index.js');
 const Utils = require('../utils/Utils.js');
-const Users = require('../schemas/User.js');
 const { I18n } = require('@hammerhq/localization');
+const Users = require('../schemas/User.js');
+const config = require('../config.js');
+const emojis = require('../emotes.js');
+const Logger = require('./Logger.js');
 
 module.exports = class DDMasterClient extends Client {
     constructor(options) {
@@ -84,7 +84,6 @@ module.exports = class DDMasterClient extends Client {
                     }
                     const json = JSON.stringify(data);
                     this.body.push(JSON.parse(json));
-                    console.log(this.body[26])
                 }
             });
         });

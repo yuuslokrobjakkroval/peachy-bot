@@ -5,7 +5,6 @@ const Users = require("../../schemas/User.js");
 const canvafy = require('canvafy');
 const { randomBytes } = require('crypto');
 const gif = require('../../utils/Gif.js');
-const emoji = require('../../utils/Emoji.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
 
@@ -160,7 +159,7 @@ module.exports = class MessageCreate extends Event {
           const embed = this.client
               .embed()
               .setColor(this.client.color.main)
-              .setTitle(`${emoji.ddMasterLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${emoji.ddMasterRight}`)
+              .setTitle(`${this.client.emoji.mainLeft}  𝐏𝐄𝐀𝐂𝐇𝐘  ${this.client.emoji.mainRight}`)
               .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
               .setDescription(
                   `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
@@ -188,22 +187,23 @@ module.exports = class MessageCreate extends Event {
               try {
                 const embed = this.client.embed()
                     .setColor(this.client.color.main)
-                    .setTitle(`${emoji.ddMasterLeft} Welcome, ${ctx.author.displayName} ${emoji.ddMasterRight}`)
+                    .setTitle(`${this.client.emoji.mainLeft} 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 ${this.client.emoji.mainRight}`)
                     .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                     .setDescription(
-                        `Here are the guidelines we expect you to follow:\n\n`+
+                        `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
                         `**Rules and Guidelines**\n\n` +
-                        `1. **Respect Others**: Respect others and their belongings. Any attempt to scam or deceive others using trade commands will result in a complete reset of your balance and inventory.\n\n` +
-                        `2. **No Automation**: Usage of scripts or any form of automation to exploit the bot functionalities is strictly prohibited. Engaging in such activities will lead to a permanent blacklist.\n\n` +
-                        `3. **Avoid Spamming**: Avoid spamming commands. Repeatedly using commands excessively or inappropriately will result in a complete balance reset. Continued violations will result in a blacklist.\n\n` +
-                        `4. **Appropriate Behavior**: Use appropriate language and behavior. Any form of hate speech, harassment, or inappropriate behavior is not tolerated.\n\n` +
-                        `5. **No Personal Information**: Do not share personal information or attempt to collect others' personal information.\n\n` +
-                        `6. **Follow Discord's Terms**: Abide by the Discord Terms of Service and Community Guidelines at all times.\n\n` +
-                        `7. **Respect Staff**: Respect the staff and their decisions. Any argument or disrespect towards staff will result in appropriate action.\n\n` +
-                        `8. **No Advertising**: Do not advertise or promote external servers, products, or services without permission.\n\n` +
-                        `9. **No Multiple Accounts**: Refrain from creating multiple accounts to exploit the bot's features.\n\n` +
-                        `If you have any questions or concerns, feel free to join our [Support Server](https://discord.gg/ddgang) and ask for assistance.`
+                        `1. **Respect Everyone**: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
+                        `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
+                        `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
+                        `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
+                        `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
+                        `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
+                        `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
+                        `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
+                        `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
+                        `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
                     );
+
 
                 await int.editReply({
                   content: '',
@@ -230,32 +230,32 @@ module.exports = class MessageCreate extends Event {
               try {
                 const embed = this.client.embed()
                     .setColor(this.client.color.main)
-                    .setTitle(`${emoji.ddMasterLeft} Privacy Policy ${emoji.ddMasterRight}`)
+                    .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${this.client.emoji.mainRight}`)
                     .setDescription(
                         `**Introduction**\n` +
-                        `DD Master is committed to protecting and respecting your privacy. This Privacy Policy explains what information we collect, how we use it, and how we protect it.\n\n` +
+                        `PEACHY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
                         `**Information Collection**\n` +
-                        `We collect the following types of information:\n` +
-                        `• **User IDs**: To identify and interact with users.\n` +
-                        `• **Messages**: For processing commands and providing responses.\n` +
-                        `• **Server Information**: To customize the bot's functionality based on server settings.\n\n` +
+                        `We gather the following information to enhance your experience:\n` +
+                        `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
+                        `• **Messages**: Used to process your commands, manage game states, and provide customized responses.\n` +
+                        `• **Server Information**: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
                         `**Data Usage**\n` +
-                        `We use the collected data to:\n` +
-                        `• Process commands and interactions.\n` +
-                        `• Improve and customize bot features.\n` +
-                        `• Ensure the security and integrity of the bot.\n\n` +
+                        `We utilize your data to:\n` +
+                        `• Execute commands, interactions, and maintain game progression.\n` +
+                        `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
+                        `• Enhance the security and smooth operation of PEACHY, ensuring a seamless user experience.\n\n` +
                         `**Data Sharing**\n` +
-                        `We do not share your data with third parties, except as required by law.\n\n` +
+                        `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
                         `**Data Security**\n` +
-                        `We implement appropriate technical and organizational measures to protect your data from unauthorized access, use, or disclosure.\n\n` +
+                        `We implement stringent technical and organizational measures to safeguard your data from unauthorized access, alteration, or misuse.\n\n` +
                         `**User Rights**\n` +
                         `You have the right to:\n` +
-                        `• Request access to the data we hold about you.\n` +
-                        `• Request the correction or deletion of your data.\n\n` +
-                        `**Policy Changes**\n` +
-                        `We may update this Privacy Policy from time to time. If there are any significant changes, we will announce them in our Discord server. Additionally, the new Privacy Policy will be posted on our bot's profile and help command.\n\n` +
+                        `• Access the data we hold about you.\n` +
+                        `• Request the correction or deletion of your data if it's inaccurate or no longer needed.\n\n` +
+                        `**Policy Updates**\n` +
+                        `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
                         `**Contact Information**\n` +
-                        `If you have any questions or concerns about this Privacy Policy, please contact us by joining our support server.`
+                        `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
                     );
 
                 await int.editReply({
@@ -299,7 +299,7 @@ module.exports = class MessageCreate extends Event {
                 )]
               });
             } else if (int.customId === 'confirm') {
-              const gift = 100000
+              const gift = 500000
               await Users.updateOne(
                   { userId: int.user.id },
                   {
@@ -316,8 +316,9 @@ module.exports = class MessageCreate extends Event {
               const embed = this.client.embed()
                   .setColor(this.client.color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                  .setTitle(`${emoji.ddMasterLeft} 𝐃𝐃 𝐌𝐀𝐒𝐓𝐄𝐑 ${emoji.ddMasterRight}`)
-                  .setDescription(`**${emoji.congratulation} Congratulations!!! u got ${this.client.utils.formatNumber(gift)} ${this.client.emote.coin}**\nYou have successfully registered! You can now use the bot.`);
+                  .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${this.client.emoji.mainRight}`)
+                  .setDescription(`${this.client.emoji.warming} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emote.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
+                  .setImage(gif.thankYou)
               await int.editReply({
                 content: '',
                 embeds: [embed],
@@ -337,7 +338,7 @@ module.exports = class MessageCreate extends Event {
                   this.client.embed()
                       .setColor(this.client.color.main)
                       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                      .setTitle(`${emoji.ddMasterLeft} Thank You ${ctx.author.displayName} ${emoji.ddMasterRight}`)
+                      .setTitle(`${this.client.emoji.mainLeft} 𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 ${ctx.author.displayName} ${this.client.emoji.mainRight}`)
                       .setDescription(`Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`)
                 ],
                 components: [],
