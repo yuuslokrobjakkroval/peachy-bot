@@ -2,7 +2,6 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/User.js');
 const { checkCooldown, getCooldown, updateCooldown } = require('../../functions/function');
 const chance = require('chance').Chance();
-const moment = require('moment');
 
 module.exports = class Weekly extends Command {
     constructor(client) {

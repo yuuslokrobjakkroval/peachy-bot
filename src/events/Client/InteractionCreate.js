@@ -147,7 +147,7 @@ class InteractionCreate extends Event {
               embeds: [
                 this.client.embed()
                     .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-                    .setColor(this.client.color.yellow)
+                    .setColor(this.client.color.pink)
                     .setDescription('You are already entered in this giveaway. Would you like to leave?'),
               ],
               components: [

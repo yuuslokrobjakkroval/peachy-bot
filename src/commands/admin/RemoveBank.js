@@ -1,17 +1,17 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/User');
 
-module.exports = class RemoveMoney extends Command {
+module.exports = class RemoveBank extends Command {
     constructor(client) {
         super(client, {
-            name: 'removemoney',
+            name: 'removebank',
             description: {
-                content: 'Remove coin from user.',
-                examples: ['removemoney @user 100'],
-                usage: 'removemoney <user> <amount>',
+                content: "Remove coin from the user's bank.",
+                examples: ['removebank @user 100'],
+                usage: 'removebank <user> <amount>',
             },
             category: 'developer',
-            aliases: ['rm'],
+            aliases: ['rb'],
             args: true,
             permissions: {
                 dev: true,
@@ -22,6 +22,7 @@ module.exports = class RemoveMoney extends Command {
             options: [],
         });
     }
+
     async run(client, ctx, args, language) {
         const mention = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         const user = await Users.findOne({ userId: mention.id });
@@ -31,7 +32,7 @@ module.exports = class RemoveMoney extends Command {
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[1] || 1;
         if (isNaN(amount) || amount < 1 || amount.toString().includes('.') || amount.toString().includes(',')) {
-            const amountMap = { all: coin, half: Math.ceil(coin / 2) };
+            const amountMap = { all: bank, half: Math.ceil(bank / 2) };
             const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
 
             if (amount in amountMap) amount = amountMap[amount];
@@ -48,21 +49,21 @@ module.exports = class RemoveMoney extends Command {
             }
         }
 
-        const baseCoins = parseInt(Math.min(amount));
-        const newCoin = coin - baseCoins;
+        const baseAmount = parseInt(Math.min(amount));
+        const newBank = Math.max(bank - baseAmount, 0);  // Ensure bank balance doesn't go negative
 
         const embed = client
             .embed()
             .setColor(client.color.main)
             .setDescription(
-                `${client.emote.tick} Removed **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emote.coin} to ${mention} balance.`
+                `${client.emote.tick} Removed **\`${client.utils.formatNumber(baseAmount)}\`** ${client.emote.coin} from ${mention}'s bank balance.`
             );
 
-        await Promise.all([
-            Users.updateOne({ userId: mention.id }, { $set: { 'balance.coin': newCoin, 'balance.bank': bank } }).exec(),
-        ]);
+        await Users.updateOne(
+            { userId: mention.id },
+            { $set: {  'balance.coin': coin, 'balance.bank': newBank } }
+        ).exec();
 
         return await ctx.sendMessage({ embeds: [embed] });
     }
 };
-

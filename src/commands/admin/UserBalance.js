@@ -1,33 +1,44 @@
 const { Command } = require('../../structures/index.js');
-const Users = require("../../schemas/User.js");
+const Users = require('../../schemas/User');
 const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
+const { formatNumber } = require('../../utils/Utils.js');
 
-module.exports = class Balance extends Command {
+module.exports = class UserBalance extends Command {
     constructor(client) {
         super(client, {
-            name: 'balance',
+            name: 'userbalance',
             description: {
-                content: 'Displays your balance and daily transfer/receive limits.',
-                examples: ['balance'],
-                usage: 'balance',
+                content: 'Displays a user\'s balance and daily transfer/receive limits.',
+                examples: ['ubal @user'],
+                usage: 'ubal <@user>',
             },
-            category: 'economy',
-            aliases: ['bal', 'money', 'cash'],
-            cooldown: 5,
+            category: 'developer',
+            aliases: ['ubal'],
             args: false,
             permissions: {
-                dev: false,
+                dev: true,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
             slashCommand: false,
-            options: [],
+            options: [
+                {
+                    name: 'user',
+                    description: 'The user you want to check.',
+                    type: 6,
+                    required: true,
+                },
+            ],
         });
     }
 
     async run(client, ctx, args, language) {
         try {
-            const user = await Users.findOne({ userId: ctx.author.id });
+            const target = ctx.isInteraction
+                ? ctx.interaction.options.getUser('user')
+                : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+
+            const user = await Users.findOne({ userId: target.id });
             if (!user) {
                 return await client.utils.sendErrorMessage(client, ctx, 'User not found.');
             }
@@ -50,11 +61,12 @@ module.exports = class Balance extends Command {
 
             const embed = client
                 .embed()
-                .setTitle(`<a:Dom:1264200823542517812> ${ctx.author.displayName}'s Balance <a:Dom:1264200823542517812>`)
+                .setTitle(`${target.displayName}'s Balance and Limits`)
                 .setColor(client.color.main)
-                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+                .setThumbnail(target.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(
-                    `**Coin: \`${client.utils.formatNumber(coin)}\` ${client.emote.coin}\nBank: \`${client.utils.formatNumber(bank)}\` ${client.emote.coin}**`
+                    `**Coin: \`${client.utils.formatNumber(coin)}\`** ${client.emote.coin}\n` +
+                    `**Bank: \`${client.utils.formatNumber(bank)}\`** ${client.emote.coin}`
                 )
                 .addFields([
                     {
@@ -71,8 +83,10 @@ module.exports = class Balance extends Command {
 
             return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
-            console.error('Error in Balance command:', error);
-            await client.utils.sendErrorMessage(client, ctx, 'An error occurred while fetching the balance.');
+            console.error('Error in user balance command:', error);
+            return await ctx.sendMessage({
+                content: 'An error occurred while processing your request.',
+            });
         }
     }
 };

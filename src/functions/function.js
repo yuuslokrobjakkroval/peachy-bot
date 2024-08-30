@@ -4,8 +4,6 @@ const fs = require('fs');
 const sym = '`';
 const sym3 = '```';
 const one_second = 1000;
-const moment = require("moment-timezone");
-const config = require("../config");
 require('dotenv').config();
 const Users = require("../schemas/User.js");
 const transferLimits = require('../utils/transferReceiveLimitUtil');

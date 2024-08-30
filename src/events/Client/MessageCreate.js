@@ -120,7 +120,7 @@ module.exports = class MessageCreate extends Event {
         embeds: [
           this.client.embed()
               .setColor(this.client.color.main)
-              .setTitle(`Hello ${message.author.username}`)
+              .setTitle(`Hello ${message.author.displayName}`)
               .setDescription(
                   `Prefix for this server is **\`${prefix}\`**.\n\n` +
                   `Need help? Use **\`${prefix}help\`** !\n` +
@@ -160,7 +160,7 @@ module.exports = class MessageCreate extends Event {
           const embed = this.client
               .embed()
               .setColor(this.client.color.main)
-              .setTitle(`${emoji.ddMasterLeft} 𝐃𝐃 𝐌𝐀𝐒𝐓𝐄𝐑 ${emoji.ddMasterRight}`)
+              .setTitle(`${emoji.ddMasterLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${emoji.ddMasterRight}`)
               .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
               .setDescription(
                   `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)

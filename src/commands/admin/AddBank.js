@@ -1,18 +1,17 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/User');
-const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
-module.exports = class AddMoney extends Command {
+module.exports = class AddBank extends Command {
     constructor(client) {
         super(client, {
-            name: 'addmoney',
+            name: 'addbank',
             description: {
-                content: "Add coin to a user's balance.",
-                examples: ['addmoney @user 100'],
-                usage: 'addmoney <user> <amount>',
+                content: "Add coin to a user's bank balance.",
+                examples: ['addbank @user 100'],
+                usage: 'addbank <user> <amount>',
             },
             category: 'developer',
-            aliases: ['addm', 'am'],
+            aliases: ['ab'],
             args: true,
             permissions: {
                 dev: true,
@@ -68,22 +67,21 @@ module.exports = class AddMoney extends Command {
         }
 
         const baseCoins = parseInt(amount);
-        const newCoin = coin + baseCoins;
+        const newBank = bank + baseCoins;
 
         const embed = client
             .embed()
             .setColor(client.color.main)
             .setDescription(
-                `${client.emote.tick} Added **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emote.coin} to ${mention} balance.`
+                `${client.emote.tick} Added **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emote.coin} to ${mention}'s bank balance.`
             );
 
         await Users.updateOne(
             { userId: mention.id },
-            { $set: { 'balance.coin': newCoin, 'balance.bank': bank } },
+            { $set: { 'balance.bank': newBank, 'balance.coin': coin } },
             { upsert: true }
         ).exec();
 
         return await ctx.sendMessage({ embeds: [embed] });
     }
 };
-

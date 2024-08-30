@@ -43,7 +43,7 @@ module.exports = class Utils {
         const UpperWords = words.map((word) => word.toUpperCase());
         return UpperWords.join(' ');
     }
-
+    
     static toNameCase(args) {
         return args
             .split('_')
@@ -250,7 +250,7 @@ module.exports = class Utils {
             }
         }, 10000);
     }
-
+    
     static async oops(client, ctx, args, time) {
         return await ctx.sendMessage({ content: args }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
@@ -258,8 +258,7 @@ module.exports = class Utils {
     }
 
     static async sendSuccessMessage(client, ctx, args, time) {
-        const embed = new EmbedBuilder().setColor('GREEN').setDescription(args);
-        return await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
+        return await ctx.sendMessage({ content: args }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }

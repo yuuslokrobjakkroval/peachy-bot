@@ -18,7 +18,7 @@ module.exports = {
   clientSecret: process.env.CLIENT_SECRET,
   logChannelId,
   owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
-  color: { red: 0xff0000, green: 0x00ff00, blue: 0xffb0f2, yellow: 0xffff00, orange: 0xFFA500, main: 0xffff00, none: 0x2b2d31 },
+  color: { red: 0xff0000, green: 0x00ff00, blue: 0xffb0f2, pink: 0xe3a1ad, orange: 0xFFA500, main: 0xbbdee4, none: 0x2b2d31 },
   database: process.env.DATABASE_URL,
   botStatus: 'online',
   botActivityType: 4,
