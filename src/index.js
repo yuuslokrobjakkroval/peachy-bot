@@ -4,6 +4,7 @@ const config = require("./config.js");
 const Logger = require("./structures/Logger.js");
 const cron = require('node-cron')
 const reset = require('./schedule/reset.js');
+const celebrate = require('./schedule/celebrate.js');
 
 const logger = new Logger();
 
@@ -44,4 +45,9 @@ manager.on("shardCreate", (shard) => {
 cron.schedule(process.env.SCHEDULE_RESET_DAILY_LIMIT, async () => {
   console.log('Cron job Reset Daily Transfer executed at:', new Date().toLocaleString());
   await reset.resetDailyTransfer()
+}).start()
+
+cron.schedule(process.env.CELEBRATE_BIRTHDAY, async () => {
+  console.log('Checking for birthdays...');
+  await celebrate.happyBirthday()
 }).start()

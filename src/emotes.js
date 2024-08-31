@@ -41,7 +41,6 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
-
     heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
     drink: {
         guest: '<a:DRINKING:1271717032882077766>',

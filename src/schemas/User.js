@@ -18,7 +18,6 @@ const CooldownSchema = new Schema({
     duration: { type: Number, required: true }
 });
 
-// Define the user schema
 const userSchema = new Schema({
     userId: { type: String, required: true, unique: true, index: true },
     username: { type: String, default: null },
@@ -46,6 +45,7 @@ const userSchema = new Schema({
     profile: {
         bio: { type: String, default: null, maxlength: 200 },
         birthday: { type: String, default: null },
+        birthdayAcknowledged: { type: Boolean, default: false }, // New field
         facebook: {
             name: { type: String, default: null },
             link: { type: String, default: null },

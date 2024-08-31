@@ -10,6 +10,10 @@ const logChannelBalance = '1278728739760640093';
 
 const logChannelId = [logChannelAll, logChannelGame, logChannelBalance]
 
+const birthdayPeachyChannelId = '1272074580797952116';
+
+const birthdayChannelId = [birthdayPeachyChannelId];
+
 module.exports = {
   token: process.env.TOKEN,
   prefix: process.env.PREFIX,
@@ -17,6 +21,7 @@ module.exports = {
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   logChannelId,
+  birthdayChannelId,
   owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
   color: { red: 0xff0000, green: 0x00ff00, blue: 0xffb0f2, pink: 0xe3a1ad, orange: 0xFFA500, main: 0xbbdee4, none: 0x2b2d31 },
   database: process.env.DATABASE_URL,
