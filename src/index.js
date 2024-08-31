@@ -2,7 +2,7 @@ const { ShardingManager } = require("discord.js");
 const fs = require("fs");
 const config = require("./config.js");
 const Logger = require("./structures/Logger.js");
-const cron = require('node-cron')
+const cron = require('node-cron');
 const reset = require('./schedule/reset.js');
 const celebrate = require('./schedule/celebrate.js');
 
@@ -28,13 +28,13 @@ const manager = new ShardingManager("./src/client.js", {
 });
 
 manager
-  .spawn({ amount: manager.totalShards, delay: null, timeout: -1 })
-  .then((shards) => {
-    logger.start(`[CLIENT] ${shards.size} shard(s) spawned.`);
-  })
-  .catch((err) => {
-    logger.error("[CLIENT] An error has occurred :", err);
-  });
+    .spawn({ amount: manager.totalShards, delay: null, timeout: -1 })
+    .then((shards) => {
+      logger.start(`[CLIENT] ${shards.size} shard(s) spawned.`);
+    })
+    .catch((err) => {
+      logger.error("[CLIENT] An error has occurred :", err);
+    });
 
 manager.on("shardCreate", (shard) => {
   shard.on("ready", () => {
@@ -42,12 +42,15 @@ manager.on("shardCreate", (shard) => {
   });
 });
 
-cron.schedule(process.env.SCHEDULE_RESET_DAILY_LIMIT, async () => {
-  console.log('Cron job Reset Daily Transfer executed at:', new Date().toLocaleString());
-  await reset.resetDailyTransfer()
-}).start()
+// Schedule daily reset tasks at 7 PM
+cron.schedule('0 19 * * *', async () => {
+  console.log('Cron job Reset Daily Transfer and Daily Tasks executed at:', new Date().toLocaleString());
+  await reset.resetDailyTransfer();
+  await reset.resetDailyTasks();
+});
 
-cron.schedule(process.env.CELEBRATE_BIRTHDAY, async () => {
+// Schedule birthday check at 6 AM
+cron.schedule('0 6 * * *', async () => {
   console.log('Checking for birthdays...');
-  await celebrate.happyBirthday()
-}).start()
+  await celebrate.happyBirthday();
+});

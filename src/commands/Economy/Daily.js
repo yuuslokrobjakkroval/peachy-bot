@@ -42,14 +42,14 @@ module.exports = class Daily extends Command {
             const timeUntilNext7AM = moment.duration(next7AM.diff(now));
             const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext7AM);
 
+            function getEmojiForTime() {
+                const hours = moment().hour();
+                const isDaytime = hours >= 6 && hours < 18;
+
+                return isDaytime ? `${client.emoji.time.day}` : `${client.emoji.time.night}`;
+            }
+
             if (!isCooldownExpired) {
-                function getEmojiForTime() {
-                    const hours = moment().hour();
-                    const isDaytime = hours >= 6 && hours < 18;
-
-                    return isDaytime ? `${client.emoji.time.day}` : `${client.emoji.time.night}`;
-                }
-
                 const duration = moment.duration(next7AM.diff(now));
                 const hours = Math.floor(duration.asHours());
                 const minutes = Math.floor(duration.asMinutes()) % 60;

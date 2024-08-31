@@ -1,18 +1,28 @@
-const { Command } = require("../../structures/index.js");
-const { TITLE, PEACHYISP, BANANA, INVENTORY, GAMBLING, INFO, SOCIAL } = require("../../utils/Emoji");
+const Command = require('../../structures/Command.js');
+const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
+const font = {
+  Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
+  Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
+  Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
+  Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
+  Giveaway: '𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘',
+  Profile: '𝐏𝐑𝐎𝐅𝐈𝐋𝐄',
+  Social: '𝐒𝐎𝐂𝐈𝐀𝐋',
+  Emotes: '𝐄𝐌𝐎𝐓𝐄𝐒',
+  Info: '𝐈𝐍𝐅𝐎',
+};
 
-const CATEGORIES = [BANANA, GAMBLING, INFO, INVENTORY, SOCIAL];
-class Help extends Command {
+module.exports = class Help extends Command {
   constructor(client) {
     super(client, {
-      name: "help",
+      name: 'help',
       description: {
-        content: "Shows the help menu",
-        examples: ["help"],
-        usage: "help",
+        content: 'Displays the commands of the bot',
+        examples: ['help'],
+        usage: 'help',
       },
-      category: "utility",
-      aliases: ["h"],
+      category: 'information',
+      aliases: ['h'],
       cooldown: 3,
       args: false,
       player: {
@@ -23,14 +33,14 @@ class Help extends Command {
       },
       permissions: {
         dev: false,
-        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
+        client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
         user: [],
       },
       slashCommand: true,
       options: [
         {
-          name: "command",
-          description: "The command you want to get info on",
+          name: 'command',
+          description: 'The command you want to get info on',
           type: 3,
           required: false,
         },
@@ -38,82 +48,96 @@ class Help extends Command {
     });
   }
   async run(client, ctx, args) {
-    const embed = this.client.embed();
-    let prefix;
-    if (!prefix) {
-      prefix = this.client.config.prefix;
-    } else {
-      prefix = prefix.prefix;
-    }
-    const commands = this.client.commands.filter(
-      (cmd) => cmd.category !== "developer" && cmd.category !== "admin"
-    );
-    const categories = commands
-      .map((cmd) => cmd.category)
-      .filter((value, index, self) => self.indexOf(value) === index);
+    const embed = client.embed();
+    const prefix = client.config.prefix;
+
+    const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
+    const categories = ['Actions', 'Economy', 'Inventory', 'Gambling', 'Profile', 'Social', 'Emotes', 'Info',];
+
     if (!args[0]) {
-      const fildes = [];
-      categories.forEach((category, i) => {
-        fildes.push({
-          name: `**${CATEGORIES[i]} ${category.toUpperCase()}**`,
-          value: commands
-            .filter((cmd) => cmd.category === category)
-            .map((cmd, i) => `\`${cmd.name}\``)
-            .join(", "),
-          inline: false,
-        });
+      const sortedCommands = {};
+      categories.forEach(category => {
+        sortedCommands[category] = commands.filter(cmd => cmd.category.toLowerCase() === category.toLowerCase());
       });
+
       const helpEmbed = embed
-        .setColor(this.client.color.main)
-        .setTitle(`**${TITLE} Help Menu ${TITLE}**`)
-          .setDescription(`Hey there! I'm **${this.client.user.username}** ${PEACHYISP},\n` +
-              `You can use \`${prefix}help <command>\` to get more info on a command.`)
-        .setFooter({
-          text: `Use ${prefix}help <command> for more info on a command`,
-        });
-      fildes.forEach((field) => helpEmbed.addFields(field));
-      ctx.sendMessage({ embeds: [helpEmbed] });
+          .setColor(client.color.main)
+          .setTitle(`${client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬 ${client.emoji.mainRight}`)
+          .setDescription(
+              `Use **\`${prefix}help [command]\`** to get more help!
+Example: **\`${prefix}help balance\`**
+
+Note that certain commands might display usernames in lists retrieved by the bot. Check command details for more information.`
+          )
+          .setImage(client.config.links.banner)
+          .setFooter({
+            text: `© Copyright by ${client.user.username} Yuu`,
+            iconURL: client.user.displayAvatarURL(),
+          });
+
+      for (const category in sortedCommands) {
+        if (Object.prototype.hasOwnProperty.call(sortedCommands, category)) {
+          const categoryCommands = sortedCommands[category];
+          const commandNames = categoryCommands.map(cmd => `\`${cmd.name}\``).join(', ');
+
+          helpEmbed.addFields([
+            {
+              name: `${client.emote.help[category.toLowerCase()]} ${font[category]}`,
+              value: commandNames,
+              inline: false,
+            },
+          ]);
+        }
+      }
+
+      const row = new ActionRowBuilder().addComponents(
+          new ButtonBuilder().setCustomId('support-link').setLabel('Click for support').setStyle(1),
+          new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
+          new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
+      );
+
+      return await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
     } else {
-      const command = this.client.commands.get(args[0].toLowerCase());
+      const command = client.commands.get(args[0].toLowerCase());
       if (!command)
         return await ctx.sendMessage({
-          embeds: [
-            client
-              .embed()
-              .setColor(client.color.red)
-              .setDescription(`Command \`${args[0]}\` not found`),
-          ],
+          embeds: [client.embed().setColor(client.color.red).setDescription(`Command \`${args[0]}\` not found`)],
         });
-      const embed = this.client.embed();
+
       const helpEmbed = embed
-        .setColor(this.client.color.main)
-        .setTitle(`Help Menu - ${command.name}`)
-        .setDescription(`**Description:** ${command.description.content}
-**Usage:** ${prefix}${command.description.usage}
-**Examples:** ${command.description.examples
-        .map((example) => `${prefix}${example}`)
-        .join(", ")}
-**Aliases:** ${command.aliases.map((alias) => `\`${alias}\``).join(", ")}
-**Category:** ${command.category}
-**Cooldown:** ${command.cooldown} seconds
-**Permissions:** ${
-        command.permissions.user.length > 0
-          ? command.permissions.user.map((perm) => `\`${perm}\``).join(", ")
-          : "None"
-      }
-**Bot Permissions:** ${command.permissions.client
-        .map((perm) => `\`${perm}\``)
-        .join(", ")}
-**Developer Only:** ${command.permissions.dev ? "Yes" : "No"}
-**Slash Command:** ${command.slashCommand ? "Yes" : "No"}
-**Args:** ${command.args ? "Yes" : "No"}
-**Player:** ${command.player.active ? "Yes" : "No"}
-**DJ:** ${command.player.dj ? "Yes" : "No"}
-**DJ Permissions:** ${command.player.djPerm ? command.player.djPerm : "None"}
-**Voice:** ${command.player.voice ? "Yes" : "No"}`);
-      ctx.sendMessage({ embeds: [helpEmbed] });
+          .setColor(client.color.main)
+          .setTitle(`Help - ${command.name}`)
+          .setDescription(command.description.content)
+          .addFields([
+            {
+              name: `Category`,
+              value: `${command.category}`,
+              inline: false,
+            },
+            {
+              name: `Aliases:`,
+              value: `${command.aliases.map(alias => `\`${alias}\``).join(', ')}`,
+              inline: false,
+            },
+            {
+              name: `Cooldown`,
+              value: `\`[${client.utils.formatTime(command.cooldown)}]\``,
+              inline: false,
+            },
+            {
+              name: `Bot Permissions:`,
+              value: `${command.permissions.client.map(perm => `\`${perm}\``).join(', ')}`,
+              inline: false,
+            },
+            {
+              name: 'Example(s):',
+              value: `\`\`\`arm\n${command.description.examples.map(example => `${prefix.prefix}${example}`).join('\n')}\n\`\`\``,
+              inline: false,
+            },
+          ]);
+
+      await ctx.sendMessage({ embeds: [helpEmbed] });
     }
   }
-}
+};
 
-module.exports = Help;

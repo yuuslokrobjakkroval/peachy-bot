@@ -34,8 +34,8 @@ module.exports = {
     directory: path.resolve('./src/languages'), // <= location of language
   },
   links: {
-    banner: 'https://i.imgur.com/usG6QnM.gif',
-    support: 'https://discord.gg/Yv8c4AWAsV',
+    banner: 'https://i.imgur.com/kYXE4No.gif',
+    support: 'https://discord.gg/cCNZHVEbcu',
     invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=1789356665943&scope=bot+applications.commands`,
     vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
     website: 'https://top.gg/bot/${process.env.CLIENT_ID}/vote',

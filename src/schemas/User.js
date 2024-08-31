@@ -1,5 +1,5 @@
 const { model, Schema } = require("mongoose");
-const Config = require('../config.js');
+const config = require('../config.js');
 
 // Define the schemas for inventory, equipment, and cooldowns
 const InventoryItemSchema = new Schema({
@@ -20,10 +20,10 @@ const CooldownSchema = new Schema({
 
 const userSchema = new Schema({
     userId: { type: String, required: true, unique: true, index: true },
+    prefix: { type: String, default: config.prefix },
     username: { type: String, default: null },
     gender: { type: String, default: null },
-    prefix: { type: String, default: Config.prefix },
-    language: { type: String, default: Config.language.defaultLocale },
+    language: { type: String, default: config.language.defaultLocale },
     verification: {
         status: { type: Boolean, default: false },
         code: { type: String, default: null }
@@ -54,11 +54,7 @@ const userSchema = new Schema({
             name: { type: String, default: null },
             link: { type: String, default: null },
         },
-        twitter: {
-            name: { type: String, default: null },
-            link: { type: String, default: null },
-        },
-        linkedin: {
+        tiktok: {
             name: { type: String, default: null },
             link: { type: String, default: null },
         },
@@ -104,7 +100,14 @@ const userSchema = new Schema({
     activity: {
         lastLogin: { type: Date, default: Date.now },
         totalMessagesSent: { type: Number, default: 0 },
-    }
+    },
+    dailyTasks: [{
+        id: { type: String, required: true },
+        type: { type: String, enum: ['peach', 'transfer'], required: true },
+        progress: { type: Number, default: 0 },
+        requiredAmount: { type: Number, default: 0 },
+        completed: { type: Boolean, default: false },
+    }],
 });
 
 module.exports = model('user', userSchema);

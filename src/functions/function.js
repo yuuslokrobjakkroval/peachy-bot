@@ -7,6 +7,7 @@ const one_second = 1000;
 require('dotenv').config();
 const Users = require("../schemas/User.js");
 const transferLimits = require('../utils/transferReceiveLimitUtil');
+const { peachTasks, transferTasks } = require('../utils/TaskUtil.js');
 
 const bot = new Client({
     intents: [
@@ -31,6 +32,13 @@ function getLimitForLevel(level, type) {
     if (!limit) return { send: Infinity, receive: Infinity }; // Default to no limit if level not found
     return { send: limit.send, receive: limit.receive };
 }
+
+function getRandomTasks(tasks, num) {
+    if (tasks.length <= num) return tasks;
+    const shuffled = tasks.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, num);
+}
+
 
 async function canTransfer(userId, amount, type) {
     const userLevel = await getUserLevel(userId);
@@ -80,7 +88,6 @@ async function updateDailyLimits(userId, amount, type) {
         return false;
     }
 }
-
 
 async function checkCooldown(userId, command, duration) {
     const now = Date.now();
@@ -134,6 +141,38 @@ async function getCooldown(userId, command) {
     }
 }
 
+async function assignTasks(userId) {
+    const user = await Users.findOne({ userId });
+    if (!user) return;
+
+    const userLevel = user.profile.level || 1;
+
+    const availablePeachTasks = peachTasks.filter(task => task.requiredLevel <= userLevel);
+    const availableTransferTasks = transferTasks.filter(task => task.requiredLevel <= userLevel);
+
+    const selectedPeachTasks = availablePeachTasks.slice(0, 2);
+    const selectedTransferTasks = availableTransferTasks.slice(0, 2);
+
+    user.dailyTasks = [
+        ...selectedPeachTasks.map(task => ({
+            id: task.id,
+            type: 'peach',
+            progress: 0,
+            requiredAmount: 0,
+            completed: false,
+        })),
+        ...selectedTransferTasks.map(task => ({
+            id: task.id,
+            type: 'transfer',
+            progress: 0,
+            requiredAmount: 0,
+            completed: false,
+        })),
+    ];
+
+    await user.save();
+}
+
 function getRandomInt(min, max){
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -157,11 +196,12 @@ async function getUser(id) {
     return User.findOne({userId: id});
 }
 
-function SimpleEmbed(text){
+function SimpleEmbed(text) {
     return new EmbedBuilder()
         .setColor('Blue')
         .setDescription(text)
 }
+
 function customEmbed(){
     return new EmbedBuilder()
 }
@@ -201,15 +241,19 @@ function labelButton(id, label, style){
 function oneButton(allButton){
     return new ActionRowBuilder().addComponents(allButton);
 }
+
 function twoButton(one, two){
     return new ActionRowBuilder().addComponents(one, two);
 }
+
 function threeButton(one, two, three){
     return new ActionRowBuilder().addComponents(one, two, three);
 }
+
 function fourButton(one, two, three, four){
     return new ActionRowBuilder().addComponents(one, two, three, four);
 }
+
 function fiveButton(one, two, three, four, five){
     return new ActionRowBuilder().addComponents(one, two, three, four, five);
 }
@@ -312,4 +356,4 @@ function cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {
 }
 
 
-module.exports = { canTransfer, updateDailyLimits, checkCooldown, updateCooldown, getCooldown, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, advanceEmbed, labelButton, emojiButton, sym, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };
+module.exports = { assignTasks, canTransfer, updateDailyLimits, checkCooldown, updateCooldown, getCooldown, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, advanceEmbed, labelButton, emojiButton, sym, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };

@@ -34,6 +34,7 @@ class Transfer extends Command {
         const userId = args[0].replace(/[<@!>]/g, '');
         let amount = args[1] ? parseInt(args[1], 10) : 1;
         const randomThankScreen = client.utils.getRandomElement(thankYouScreen);
+
         if (args[1] !== 'all') {
             if (isNaN(amount) || amount <= 0) {
                 return ctx.channel.send('Please mention a valid user and amount.');
@@ -96,36 +97,45 @@ class Transfer extends Command {
                 try {
                     await Users.findOneAndUpdate({ userId: ctx.author.id }, { balance: user.balance });
                     await Users.findOneAndUpdate({ userId: targetUser.id }, { balance: target.balance }, { upsert: true });
+
+                    const confirmationEmbed = this.client.embed()
+                        .setColor(config.color.main)
+                        .setTitle(`**Transaction - ${ctx.author.displayName}**`)
+                        .setDescription(`You have given ${formattedAmount} ${client.emoji.coin} to ${targetUsername}`);
+
+                    await ctx.channel.send({ embeds: [confirmationEmbed] });
+
+                    setTimeout(async () => {
+                        const imageEmbed = this.client.embed()
+                            .setColor(config.color.main)
+                            .setDescription(`${targetUser} wants to say ... to ${ctx.author}`)
+                            .setImage(randomThankScreen);
+
+                        await ctx.channel.send({ embeds: [imageEmbed] });
+                    }, 6000);
+
+                    await messageEmbed.delete();
                 } catch (error) {
                     console.error('Database update error:', error);
                     await ctx.channel.send('An error occurred while updating the balance.');
-                    return;
                 }
-
-                // Send confirmation message
-                const confirmationEmbed = this.client.embed()
-                    .setColor(config.color.main)
-                    .setTitle(`**Transaction - ${ctx.author.displayName}**`)
-                    .setDescription(`You have given ${formattedAmount} ${client.emoji.coin} to ${targetUsername}`);
-
-                await ctx.channel.send({ embeds: [confirmationEmbed] });
-
-                setTimeout(async () => {
-                    const imageEmbed = this.client.embed()
-                        .setColor(config.color.main)
-                        .setDescription(`${targetUser} wanna say ... to ${ctx.author}`)
-                        .setImage(randomThankScreen);
-
-                    await ctx.channel.send({ embeds: [imageEmbed] });
-                }, 6000); // 6000 ms = 6 second delay
-
-                await messageEmbed.delete();
             } else if (interaction.customId === 'cancel_button') {
                 await ctx.channel.send('You have canceled the transaction. No coins have been transferred.');
                 await messageEmbed.delete();
             }
 
             collector.stop();
+        });
+
+        collector.on('end', collected => {
+            if (collected.size === 0) {
+                const timeoutEmbed = this.client.embed()
+                    .setColor(config.color.orange)
+                    .setTitle(`Transaction Timed Out`)
+                    .setDescription(`You did not respond in time. The transaction has been canceled.`);
+
+                messageEmbed.edit({ embeds: [timeoutEmbed], components: [] });
+            }
         });
     }
 }

@@ -46,17 +46,16 @@ module.exports = class Weekly extends Command {
 
             const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
 
+            function getEmojiForTime() {
+                const hours = moment().hour();
+                const isDaytime = hours >= 6 && hours < 18;
+
+                return isDaytime ? `${client.emoji.time.day}` : `${client.emoji.time.night}`;
+            }
+
             if (!isCooldownExpired) {
                 const lastCooldownTimestamp = await getCooldown(ctx.author.id, this.name.toLowerCase());
                 const remainingTime = Math.ceil((lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000);
-
-                function getEmojiForTime() {
-                    const hours = moment().hour();
-                    const isDaytime = hours >= 6 && hours < 18;
-
-                    return isDaytime ? `${client.emoji.time.day}` : `${client.emoji.time.night}`;
-                }
-
                 const days = Math.floor(remainingTime / 86400);
                 const hours = Math.floor((remainingTime % 86400) / 3600);
                 const minutes = Math.floor((remainingTime % 3600) / 60);

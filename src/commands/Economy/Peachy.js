@@ -3,6 +3,8 @@ const { checkCooldown, updateCooldown, getCooldown } = require('../../functions/
 const Users = require('../../schemas/User.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
+const { peachTasks } = require('../../utils/TaskUtil.js');
+
 
 module.exports = class Peachy extends Command {
     constructor(client) {
@@ -57,10 +59,24 @@ module.exports = class Peachy extends Command {
             return await ctx.sendMessage({ embeds: [cooldownEmbed] });
         }
 
+        // Update balance and streak
         await Promise.all([
             Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'peachy.streak': newStreak } }).exec(),
             updateCooldown(ctx.author.id, this.name.toLowerCase(), timeExpired)
         ]);
+
+        // Check and update daily tasks
+        const updatedTasks = user.dailyTasks.map(task => {
+            if (task.type === 'peach' && !task.completed) {
+                task.progress += 1; // Increment progress
+                if (task.progress >= peachTasks.find(t => t.id === task.id).requiredAmount) {
+                    task.completed = true; // Mark as completed
+                }
+            }
+            return task;
+        });
+
+        await Users.updateOne({ userId: ctx.author.id }, { $set: { dailyTasks: updatedTasks } }).exec();
 
         // Display Embed
         const embed = client

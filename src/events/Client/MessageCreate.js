@@ -6,6 +6,7 @@ const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
+const { assignTasks } = require('../../functions/function.js');
 
 const activeGames = new Map();
 
@@ -20,7 +21,6 @@ const LevelBackground = [
   gif.levelThree,
   gif.levelFour,
   gif.levelFive,
-  gif.levelSix
 ];
 
 function getRandomXp(min, max) {
@@ -311,6 +311,7 @@ module.exports = class MessageCreate extends Event {
                   },
                   { upsert: true }
               );
+              await assignTasks(int.user.id);
 
               const embed = this.client.embed()
                   .setColor(this.client.color.main)
