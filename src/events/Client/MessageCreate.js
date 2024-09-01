@@ -15,14 +15,6 @@ function getLimitsForLevel(level) {
   return limit || { send: 0, receive: 0 };
 }
 
-const LevelBackground = [
-  gif.levelOne,
-  gif.levelTwo,
-  gif.levelThree,
-  gif.levelFour,
-  gif.levelFive,
-];
-
 function getRandomXp(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -78,12 +70,10 @@ module.exports = class MessageCreate extends Event {
           user.dailyLimits.transferLimit = newLimits.send;
           user.dailyLimits.receiveLimit = newLimits.receive;
 
-          const levelIndex = Math.min(user.profile.level - 1, LevelBackground.length - 1);
-          const backgroundImage = LevelBackground[levelIndex];
+
 
           const levelUp = await new canvafy.LevelUp()
               .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-              .setBackground("image", backgroundImage)
               .setUsername(`${message.author.username}`)
               .setBorder("#000000")
               .setLevels(user.profile.level - 1, user.profile.level)

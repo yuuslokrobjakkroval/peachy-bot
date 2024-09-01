@@ -1,16 +1,33 @@
-module.exports = {
-    peachy: 'https://i.imgur.com/kYXE4No.gif',
-    thanks: 'https://i.imgur.com/N0653cE.gifv',
-    thankYou: 'https://i.imgur.com/GgrQ9Ap.gif',
-    urWelcome: 'https://i.imgur.com/N0653cE.gif',
+const path = require('path');
 
-    loadingSleep: 'https://i.imgur.com/NEjoyFi.gif',
-    loadingShower: 'https://i.imgur.com/l4K54fM.gif',
+// Define the base directory for your images
+const mainImagePath = path.resolve(__dirname, 'src/data/images/main');
+const bgImagePath = path.resolve(__dirname, 'src/data/images/main');
+
+module.exports = {
+    peachy: path.join(mainImagePath, 'peachy.gif'),
+    yuu: path.join(bgImagePath, 'yuu.jpg'),
+
+    thanks: path.join(mainImagePath, 'thanks.gif'),
+    loadingSleep: path.join(mainImagePath, 'loadingSleep.gif'),
+    loadingShower: path.join(mainImagePath, 'loadingShower.gif'),
 
     // Level
-    levelOne: 'https://i.imgur.com/qIGIKt4.gif',
-    levelTwo: 'https://i.imgur.com/GnKJVjB.gifv',
-    levelThree: 'https://i.imgur.com/0fUILX9.gif',
-    levelFour: 'https://i.imgur.com/DC6YUeK.gif',
-    levelFive: 'https://i.imgur.com/yV5qdsO.jpg',
+    angel: path.join(bgImagePath, 'angel.jpg'),
+    lofi: path.join(bgImagePath, 'lofi.jpg'),
+    luna: path.join(bgImagePath, 'luna.jpg'),
+    moon: path.join(bgImagePath, 'moon.jpg'),
+    naotomori: path.join(bgImagePath, 'naotomori.jpg'),
+    ocean: path.join(bgImagePath, 'ocean.jpg'),
+    sadboi: path.join(bgImagePath, 'sadboi.jpg'),
+    sasuke: path.join(bgImagePath, 'sasuke.jpg'),
+    saturoGojo: path.join(bgImagePath, 'saturoGojo.jpg'),
+    sunrise: path.join(bgImagePath, 'sunrise.jpg'),
+    scenery: path.join(bgImagePath, 'scenery.jpg'),
+    sunriseRiver: path.join(bgImagePath, 'sunriseRiver.jpg'),
+
+    noodle: path.join(bgImagePath, 'noodle.gif'),
+    water: path.join(bgImagePath, 'water.gif'),
+    waterWall: path.join(bgImagePath, 'waterWall.gif'),
+    raining: path.join(bgImagePath, 'raining.gif'),
 };

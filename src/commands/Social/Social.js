@@ -74,14 +74,32 @@ module.exports = class Socials extends Command {
     async run(client, ctx, args, language) {
         const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
 
-        if (subCommand === 'show') {
-            // Handle 'show' sub-command
+        if (subCommand === 'help') {
+            const embed = client.embed()
+                .setTitle('Socials Command Help')
+                .setDescription('Manage and show your social media profiles.')
+                .addFields([
+                    { name: 'Examples', value: '• socials show\n• socials set <platform> <name> <link>' },
+                    { name: 'Usage', value: '• socials show\n• socials set facebook MyName https://facebook.com/MyProfile' }
+                ])
+                .setColor(client.color.main);
+            return ctx.sendMessage({ embeds: [embed] });
+        }
+
+        if (!subCommand || subCommand === 'show') {
             const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message?.mentions?.users?.first();
             const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
             const user = await Users.findOne({ userId: targetUserId });
-            const targetUsername = mentionedUser ? mentionedUser.username : ctx.author.username;
+            const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
 
-            const embed = client.embed().setTitle(`📱 Social Media Profiles for ${targetUsername} 📱`);
+            if (!user) {
+                const embed = client.embed().setColor(client.color.red).setDescription(`User not found.`);
+                return ctx.sendMessage({ embeds: [embed] });
+            }
+
+            const embed = client.embed()
+                .setTitle(`📱 Social Media Profiles for ${targetUsername} 📱`)
+                .setColor(client.color.main);
 
             const fbName = user.profile.facebook.name || 'Not set';
             const fbLink = user.profile.facebook.link || 'Not set';
@@ -96,20 +114,24 @@ module.exports = class Socials extends Command {
                 { name: 'TikTok', value: `**Name**: ${ttName}\n**Link**: ${ttLink === 'Not set' ? ttLink : `[Link](${ttLink})`}`, inline: false },
             ]);
 
-            await ctx.sendMessage({ embeds: [embed] });
-        } else if (subCommand === 'set') {
-            // Handle 'set' sub-command
+            return ctx.sendMessage({ embeds: [embed] });
+        }
+
+        // Handle 'set' sub-command
+        if (subCommand === 'set') {
             const platform = ctx.isInteraction ? ctx.interaction.options.getString('platform') : args[1];
             const name = ctx.isInteraction ? ctx.interaction.options.getString('name') : args[2];
             const link = ctx.isInteraction ? ctx.interaction.options.getString('link') : args[3];
 
             if (!['facebook', 'instagram', 'tiktok'].includes(platform)) {
-                return ctx.sendMessage('Invalid platform selected.');
+                const embed = client.embed().setColor(client.color.red).setDescription('Invalid platform selected.');
+                return ctx.sendMessage({ embeds: [embed] });
             }
 
             const user = await Users.findOne({ userId: ctx.author.id });
             if (!user) {
-                return ctx.sendMessage('User not found.');
+                const embed = client.embed().setColor(client.color.red).setDescription('User not found.');
+                return ctx.sendMessage({ embeds: [embed] });
             }
 
             switch (platform) {
@@ -128,9 +150,11 @@ module.exports = class Socials extends Command {
             }
 
             await user.save();
-            await ctx.sendMessage(`Successfully updated your ${platform} profile.`);
-        } else {
-            await ctx.sendMessage('Invalid sub-command. Use `socials show` or `socials set`.');
+            const embed = client.embed().setColor(client.color.main).setDescription(`Successfully updated your ${platform} profile.`);
+            return ctx.sendMessage({ embeds: [embed] });
         }
+
+        const embed = client.embed().setColor(client.color.red).setDescription('Invalid sub-command. Use `socials show`, `socials set`, or `socials help`.');
+        return ctx.sendMessage({ embeds: [embed] });
     }
 };
