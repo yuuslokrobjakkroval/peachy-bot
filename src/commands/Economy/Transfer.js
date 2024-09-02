@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const Users = require("../../schemas/User");
+const Users = require("../../schemas/user");
 const config = require("../../config.js");
 const gif = require("../../utils/Gif");
 const numeral = require("numeral");

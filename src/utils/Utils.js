@@ -1,6 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder } = require('discord.js');
-const GiveawaySchema = require('../schemas/Giveaway');
-const Users = require('../schemas/User');
+const GiveawaySchema = require('../schemas/giveaway');
+const Users = require('../schemas/user');
 const emoji = require('../utils/Emoji');
 
 module.exports = class Utils {

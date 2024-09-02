@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/User');
+const Users = require('../../schemas/user');
 const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
 module.exports = class AddMoney extends Command {

@@ -1,7 +1,7 @@
 const { Collection, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
-const Users = require("../../schemas/User.js");
+const Users = require("../../schemas/user.js");
 const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
@@ -67,8 +67,8 @@ module.exports = class MessageCreate extends Event {
           user.balance.coin += celebrationCoin;
 
           const newLimits = getLimitsForLevel(user.profile.level);
-          user.dailyLimits.transferLimit = newLimits.send;
-          user.dailyLimits.receiveLimit = newLimits.receive;
+          user.dailyLimit.transferLimit = newLimits.send;
+          user.dailyLimit.receiveLimit = newLimits.receive;
 
 
 
@@ -301,7 +301,6 @@ module.exports = class MessageCreate extends Event {
                   },
                   { upsert: true }
               );
-              await assignTasks(int.user.id);
 
               const embed = this.client.embed()
                   .setColor(this.client.color.main)

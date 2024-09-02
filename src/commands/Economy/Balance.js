@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const Users = require("../../schemas/User.js");
+const Users = require("../../schemas/user.js");
 const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
 
 module.exports = class Balance extends Command {

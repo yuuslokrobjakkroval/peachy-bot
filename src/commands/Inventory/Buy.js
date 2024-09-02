@@ -1,6 +1,6 @@
-const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/User.js');
-const ShopItem = require('../../schemas/ShopItem.js');
+const { Command } = require('../../structures');
+const Users = require('../../schemas/user');
+const ShopItem = require('../../schemas/shopItem');
 
 module.exports = class Buy extends Command {
     constructor(client) {

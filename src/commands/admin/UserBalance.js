@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/User');
+const Users = require('../../schemas/user');
 const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
 const { formatNumber } = require('../../utils/Utils.js');
 

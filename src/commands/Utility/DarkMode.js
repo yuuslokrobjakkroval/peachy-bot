@@ -1,5 +1,5 @@
 const { Command } = require("../../structures/index.js");
-const User = require("../../schemas/User.js"); // Adjust path as necessary
+const User = require("../../schemas/user.js"); // Adjust path as necessary
 
 class DarkMode extends Command {
     constructor(client) {

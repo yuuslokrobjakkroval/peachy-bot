@@ -5,7 +5,7 @@ const sym = '`';
 const sym3 = '```';
 const one_second = 1000;
 require('dotenv').config();
-const Users = require("../schemas/User.js");
+const Users = require("../schemas/user.js");
 const transferLimits = require('../utils/transferReceiveLimitUtil');
 const { peachTasks, transferTasks } = require('../utils/TaskUtil.js');
 
@@ -144,8 +144,7 @@ async function getCooldown(userId, command) {
 async function assignTasks(userId) {
     const user = await Users.findOne({ userId });
     if (!user) return;
-
-    const userLevel = user.profile.level || 1;
+    const userLevel = user.profile.level ? user.profile.level : 1;
 
     const availablePeachTasks = peachTasks.filter(task => task.requiredLevel <= userLevel);
     const availableTransferTasks = transferTasks.filter(task => task.requiredLevel <= userLevel);

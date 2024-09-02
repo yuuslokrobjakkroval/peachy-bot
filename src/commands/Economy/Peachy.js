@@ -1,6 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const { checkCooldown, updateCooldown, getCooldown } = require('../../functions/function');
-const Users = require('../../schemas/User.js');
+const Users = require('../../schemas/user.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
 const { peachTasks } = require('../../utils/TaskUtil.js');

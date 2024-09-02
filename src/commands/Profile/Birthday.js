@@ -1,6 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const moment = require('moment');
-const Users = require('../../schemas/User.js');
+const Users = require('../../schemas/user.js');
 
 module.exports = class Birthday extends Command {
     constructor(client) {

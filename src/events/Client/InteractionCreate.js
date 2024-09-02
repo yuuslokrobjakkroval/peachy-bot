@@ -9,7 +9,7 @@ const {
   ButtonStyle,
 } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
-const GiveawaySchema = require('../../schemas/Giveaway.js');
+const GiveawaySchema = require('../../schemas/giveaway.js');
 const { endGiveaway } = require('../../utils/Utils.js');
 
 class InteractionCreate extends Event {

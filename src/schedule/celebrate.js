@@ -1,4 +1,4 @@
-const Users = require("../schemas/User.js");
+const Users = require("../schemas/user.js");
 
 async function happyBirthday() {
     console.log('Function executed');

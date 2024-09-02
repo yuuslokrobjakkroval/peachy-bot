@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const Users = require("../../schemas/User");
+const Users = require("../../schemas/user");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
 const { SLOTS, SPIN, COIN, TITLE } = require("../../utils/Emoji");

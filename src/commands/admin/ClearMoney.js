@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/User');
+const Users = require('../../schemas/user');
 
 module.exports = class ClearMoney extends Command {
     constructor(client) {

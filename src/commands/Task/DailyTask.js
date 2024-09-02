@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/User.js');
+const Users = require('../../schemas/user.js');
 const { peachTasks, transferTasks } = require('../../utils/TaskUtil.js');
 const { assignTasks, completeTask } = require('../../functions/function.js');
 

@@ -1,4 +1,4 @@
-const Users = require("../schemas/User");
+const Users = require("../schemas/user");
 
 // Function to reset daily transfer limits
 function resetDailyTransfer() {
