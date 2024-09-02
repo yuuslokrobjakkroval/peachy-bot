@@ -10,14 +10,14 @@ const thankYouScreen = [gif.thanks, gif.thankYou, gif.urWelcome]
 class Transfer extends Command {
     constructor(client) {
         super(client, {
-            name: "give",
+            name: "transfer",
             description: {
-                content: "Give coin to another user",
-                examples: ["give"],
-                usage: "give <user> [amount]",
+                content: "transfer coin to another user",
+                examples: ["transfer"],
+                usage: "transfer <user> [amount]",
             },
             category: "economy",
-            aliases: ["give", "pay", "oy"],
+            aliases: ["transfer", "pay", "give", "oy"],
             cooldown: 1,
             args: true,
             permissions: {
@@ -62,7 +62,6 @@ class Transfer extends Command {
             amount = user.balance.coin;
         }
 
-        // Validate amount and check balance
         if (isNaN(amount) || amount <= 0 || user.balance.coin < amount) {
             return ctx.channel.send('Invalid amount specified or insufficient balance.');
         }

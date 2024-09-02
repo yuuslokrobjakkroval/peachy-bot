@@ -1,19 +1,20 @@
 const { Command } = require('../../structures/index.js');
 const Users = require("../../schemas/user.js");
 
-module.exports = class Username extends Command {
+module.exports = class Gender extends Command {
     constructor(client) {
         super(client, {
-            name: 'username',
+            name: 'gender',
             description: {
-                content: 'Sets, resets, or shows your username.',
+                content: 'Sets, resets, or shows your gender.',
                 examples: [
-                    'username peachy',
-                    'username reset',
-                    'username show',
-                    'username help'
+                    'gender male',
+                    'gender female',
+                    'gender reset',
+                    'gender show',
+                    'gender help'
                 ],
-                usage: 'username <text || reset || show || help>',
+                usage: 'gender <male || female || reset || show || help>',
             },
             category: 'profile',
             aliases: [],
@@ -28,12 +29,12 @@ module.exports = class Username extends Command {
             options: [
                 {
                     name: 'set',
-                    description: 'Sets the username in profile card',
+                    description: 'Sets the gender in profile card',
                     type: 1,
                     options: [
                         {
                             name: 'text',
-                            description: 'The text to set as your username.',
+                            description: 'The gender to set (male/female/other).',
                             type: 3,
                             required: true,
                         },
@@ -41,12 +42,12 @@ module.exports = class Username extends Command {
                 },
                 {
                     name: 'reset',
-                    description: 'Resets the username to the default one',
+                    description: 'Resets the gender to the default one',
                     type: 1,
                 },
                 {
                     name: 'show',
-                    description: 'Show the current username for you.',
+                    description: 'Show the current gender for you.',
                     type: 1,
                 },
                 {
@@ -68,7 +69,7 @@ module.exports = class Username extends Command {
             case 'help': {
                 embed
                     .setColor(client.color.main)
-                    .setDescription(`**Usage:** \`username <text || reset || show || help>\`\n\n**Examples:**\n\`username CodingMaster\`\n\`username reset\`\n\`username show\`\n\`username help\``);
+                    .setDescription(`**Usage:** \`gender <male || female || reset || show || help>\`\n\n**Examples:**\n\`gender male\`\n\`gender female\`\n\`gender reset\`\n\`gender show\`\n\`gender help\``);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -77,9 +78,9 @@ module.exports = class Username extends Command {
             case 'reset': {
                 embed
                     .setColor(client.color.main)
-                    .setDescription('Your username has been reset.');
+                    .setDescription('Your gender has been reset.');
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.username': 'No username set.' } }).exec();
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.gender': 'Not specified' } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
@@ -87,7 +88,7 @@ module.exports = class Username extends Command {
             case 'show': {
                 embed
                     .setColor(client.color.main)
-                    .setDescription(user.profile.username ? `\`\`\`arm\n${user.profile.username}\`\`\`` : 'No username set.');
+                    .setDescription(user.profile.gender ? `\`\`\`arm\n${user.profile.gender}\`\`\`` : 'Not specified.');
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -96,21 +97,16 @@ module.exports = class Username extends Command {
             default: {
                 const text = ctx.isInteraction ? ctx.interaction.options.data[0]?.options[0]?.value?.toString() : args.join(' ');
 
-                if (!text) {
-                    await client.utils.oops(client, ctx, 'Please provide a username or a valid subcommand.');
-                    return;
-                }
-
-                if (text.length > 40) {
-                    await client.utils.oops(client, ctx, 'The username cannot be longer than 40 characters.');
+                if (!text || !['male', 'female', 'other'].includes(text.toLowerCase())) {
+                    await client.utils.oops(client, ctx, 'Please provide a valid gender (male, female, other).');
                     return;
                 }
 
                 embed
-                    .setDescription('Your username has been set.')
-                    .addFields([{ name: 'New username', value: `\`\`\`arm\n${text}\n\`\`\``, inline: false }]);
+                    .setDescription('Your gender has been set.')
+                    .addFields([{ name: 'New gender', value: `\`\`\`arm\n${text}\n\`\`\``, inline: false }]);
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.username': text } }).exec();
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.gender': text } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }

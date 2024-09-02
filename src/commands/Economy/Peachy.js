@@ -66,7 +66,7 @@ module.exports = class Peachy extends Command {
         ]);
 
         // Check and update daily tasks
-        const updatedTasks = user.dailyTasks.map(task => {
+        const updatedTasks = user.quest.map(task => {
             if (task.type === 'peach' && !task.completed) {
                 task.progress += 1; // Increment progress
                 if (task.progress >= peachTasks.find(t => t.id === task.id).requiredAmount) {

@@ -6,7 +6,6 @@ const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
-const { assignTasks } = require('../../functions/function.js');
 
 const activeGames = new Map();
 
@@ -283,25 +282,17 @@ module.exports = class MessageCreate extends Event {
                 )]
               });
             } else if (int.customId === 'confirm') {
-              const gift = 500000
-              await Users.updateOne(
-                  { userId: int.user.id },
-                  {
-                    $set: {
-                      balance: {
-                        coin: gift,
-                        bank: 0
-                      }
-                    }
-                  },
-                  { upsert: true }
-              );
-
+              if (!user) {
+                user = new Users({
+                  userId: int.user.id
+                });
+                await user.save();
+              }
               const embed = this.client.embed()
                   .setColor(this.client.color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                   .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${this.client.emoji.mainRight}`)
-                  .setDescription(`${this.client.emoji.warming} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emote.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
+                  .setDescription(`${this.client.emoji.warming} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(5000000)} ${this.client.emote.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
                   .setImage(gif.thankYou)
               await int.editReply({
                 content: '',
