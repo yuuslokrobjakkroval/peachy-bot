@@ -38,11 +38,6 @@ module.exports = class MessageCreate extends Event {
     let user = await Users.findOne({ userId: message.author.id });
     const prefix = this.client.config.prefix;
 
-    if (user?.verification?.status) {
-      await message.reply("You are restricted from using commands. Please contact an admin for verification.");
-      return;
-    }
-
     if (user) {
       const now = Date.now();
       const xpCooldown = 45000;

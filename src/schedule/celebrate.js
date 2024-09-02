@@ -1,11 +1,19 @@
-const Users = require("../schemas/user.js");
+const cron = require('node-cron')
+const Users = require('../schemas/User.js');
+const config = require('../config.js');
+const { connect, connection } = require('mongoose');
 
-async function happyBirthday() {
-    console.log('Function executed');
+async function connectMongodb() {
+    if ([1, 2, 99].includes(connection.readyState)) return;
+    await connect(config.database);
+}
 
+async function updateBirthdayAcknowledged() {
+    console.log('func exec');
+    connectMongodb();
     const today = new Date();
     const todayDay = today.getDate().toString().padStart(2, '0'); // Day (DD)
-    const todayMonth = today.toLocaleString('default', { month: 'short' }).toUpperCase(); // Month (MMM)
+    const todayMonth = today.toLocaleString('default', {month: 'short'}).toUpperCase(); // Month (MMM)
     const todayString = `${todayDay}-${todayMonth}`; // Format as DD-MMM
 
     try {
@@ -22,7 +30,7 @@ async function happyBirthday() {
                     'profile.birthday': todayString
                 },
                 {
-                    $set: { 'profile.birthdayAcknowledged': true }
+                    $set: {'profile.birthdayAcknowledged': true}
                 }
             );
             console.log('Updated birthdayAcknowledged for users with birthdays today');
@@ -39,19 +47,32 @@ async function happyBirthday() {
                     .setImage('https://i.imgur.com/CkIglgR.gif')
                     .setTimestamp();
 
-                await channel.send({ embeds: [embed] });
+                await channel.send({embeds: [embed]});
                 console.log('Sent birthday alerts to the channel');
             } else {
                 console.error('Channel not found');
             }
 
-        } else {
-            console.log('No users with birthdays today');
         }
-
-    } catch (error) {
-        console.error('Error updating users:', error);
+        await Users.updateMany(
+            {},
+            {
+                $set: {'profile.birthdayAcknowledged': true}
+            }
+        ).exec()
+        console.log('END:: uBirthdayAcknowledged was updated successfully');
+    } catch (e) {
+        console.log('error: ', e);
     }
 }
+
+const happyBirthday = cron.schedule(process.env.SCHEDULE_RESET_DAILY_TASK, async () => {
+    console.log('Cron job Reset Daily Transfer executed at:', new Date().toLocaleString());
+    try{
+        await updateBirthdayAcknowledged()
+    } catch(e){
+        console.log(e)
+    }
+})
 
 module.exports = { happyBirthday };

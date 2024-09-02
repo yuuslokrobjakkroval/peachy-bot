@@ -41,16 +41,3 @@ manager.on("shardCreate", (shard) => {
     logger.start(`[CLIENT] Shard ${shard.id} connected to Discord's Gateway.`);
   });
 });
-
-// Schedule daily reset tasks at 7 PM
-cron.schedule('0 19 * * *', async () => {
-  console.log('Cron job Reset Daily Transfer and Daily Tasks executed at:', new Date().toLocaleString());
-  await reset.resetDailyTransfer();
-  await reset.resetDailyTasks();
-});
-
-// Schedule birthday check at 6 AM
-cron.schedule('0 6 * * *', async () => {
-  console.log('Checking for birthdays...');
-  await celebrate.happyBirthday();
-});

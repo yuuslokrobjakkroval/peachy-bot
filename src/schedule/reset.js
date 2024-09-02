@@ -1,23 +1,65 @@
-const Users = require("../schemas/user");
+const cron = require('node-cron')
+const Users = require('../schemas/User.js');
+const config = require('../config.js');
+const { connect, connection } = require('mongoose');
 
-// Function to reset daily transfer limits
-function resetDailyTransfer() {
-    console.log('Resetting daily transfer limits...');
-    Users.updateMany(
-        {},
-        {
-            $set: { 'dailyLimits.lastReset': new Date(), 'dailyLimits.transferUsed': 0, 'dailyLimits.receiveUsed': 0 }
-        }
-    ).then(result => console.log(`Daily transfer limits reset for ${result.modifiedCount} users.`))
-        .catch(err => console.error('Error resetting daily transfer limits:', err));
+async function connectMongodb() {
+    if ([1, 2, 99].includes(connection.readyState)) return;
+    await connect(config.database);
 }
 
-// Function to reset daily tasks
+async function resetDailyTransfer() {
+    console.log('func exec')
+    try{
+        connectMongodb();
+
+        await Users.updateMany(
+            { },
+            {
+                $set: { 'dailyLimits.lastReset': new Date(), 'dailyLimits.transferUsed': 0, 'dailyLimits.receiveUsed': 0 }
+            }
+        ).exec()
+        console.log('END:: reset daily limit')
+    } catch(e) {
+        console.log('error: ', e)
+    }
+}
+
+const resetDailyLimit = cron.schedule(process.env.SCHEDULE_RESET_DAILY_LIMIT, async () => {
+    console.log('Cron job Reset Daily Transfer executed at:', new Date().toLocaleString());
+    try{
+        await resetDailyTransfer()
+
+    } catch(e){
+        console.log(e)
+    }
+})
+
+
 async function resetDailyTasks() {
-    await Users.updateMany(
-        {},
-        { $set: { 'dailyTasks': [] } }
-    );
+    console.log('func exec')
+    try{
+        connectMongodb();
+
+        await Users.updateMany(
+            { },
+            {
+                $set: { 'quest': [] }
+            }
+        ).exec()
+        console.log('END:: reset daily task')
+    } catch(e) {
+        console.log('error: ', e)
+    }
 }
 
-module.exports = { resetDailyTransfer, resetDailyTasks };
+const resetDailyTask = cron.schedule(process.env.SCHEDULE_RESET_DAILY_TASK, async () => {
+    console.log('Cron job Reset Daily Transfer executed at:', new Date().toLocaleString());
+    try{
+        await resetDailyTasks()
+    } catch(e){
+        console.log(e)
+    }
+})
+
+module.exports = { resetDailyLimit, resetDailyTask };
