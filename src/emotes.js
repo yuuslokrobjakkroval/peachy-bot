@@ -133,6 +133,7 @@ module.exports = {
     help: {
         rankings: '🎖️',
         economy: '<:COIN:1278770778699206717>',
+        task: '<:TASK:1280103934907908149>',
         inventory: '<:INVENTORY:1271873903316303893>',
         gambling: '<:GAMBLING:1271873644611768431>',
         fun: '🤡',
@@ -140,6 +141,7 @@ module.exports = {
         emotes: '<a:EMOTES:1279341550471741513>',
         actions: '<a:ACTIONS:1279341315116498964>',
         social: '<a:SOCIAL:1272917226374037586>',
+        utility: '<a:UTILITY:1280104579861843971>',
         info: '<:INFO:1271874450408607846>',
         setting: '🔨',
         dev: '💻',

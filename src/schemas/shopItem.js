@@ -1,7 +1,8 @@
 const { model, Schema } = require('mongoose');
 
 const ShopItemSchema = new Schema({
-    name: { type: String, required: true },
+    id: { type: String, required: true },
+    name: { type: String, default: null },
     type: { type: String, enum: ['food', 'drink', 'cute'], required: true },
     price: {
         buy: { type: Number, required: true },

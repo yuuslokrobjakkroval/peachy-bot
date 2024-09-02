@@ -3,12 +3,14 @@ const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
 const font = {
   Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
   Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
+  Task: '𝐓𝐀𝐒𝐊',
   Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
   Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
   Giveaway: '𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘',
   Profile: '𝐏𝐑𝐎𝐅𝐈𝐋𝐄',
   Social: '𝐒𝐎𝐂𝐈𝐀𝐋',
   Emotes: '𝐄𝐌𝐎𝐓𝐄𝐒',
+  Utility: '𝐔𝐓𝐈𝐋𝐈𝐓𝐘',
   Info: '𝐈𝐍𝐅𝐎',
 };
 
@@ -52,7 +54,7 @@ module.exports = class Help extends Command {
     const prefix = client.config.prefix;
 
     const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
-    const categories = ['Actions', 'Economy', 'Inventory', 'Gambling', 'Profile', 'Social', 'Emotes', 'Info',];
+    const categories = ['Actions', 'Economy', 'Task', 'Inventory', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info',];
 
     if (!args[0]) {
       const sortedCommands = {};
