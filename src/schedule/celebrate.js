@@ -1,5 +1,5 @@
 const cron = require('node-cron')
-const Users = require('../schemas/User.js');
+const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const { connect, connection } = require('mongoose');
 
