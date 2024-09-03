@@ -1,16 +1,16 @@
 const { Command } = require('../../structures/index.js');
 
-module.exports = class Downfall extends Command {
+module.exports = class Bleh extends Command {
     constructor(client) {
         super(client, {
-            name: 'downfall',
+            name: 'bleh',
             description: {
-                content: 'Show off a feeling of downfall or being down.',
-                examples: ['downfall'],
-                usage: 'downfall',
+                content: 'Show off a bleh expression with a cool animation!',
+                examples: ['bleh'],
+                usage: 'bleh',
             },
             category: 'emotes',
-            aliases: ['fd', 'df'],
+            aliases: [],
             cooldown: 3,
             args: false,
             permissions: {
@@ -24,13 +24,13 @@ module.exports = class Downfall extends Command {
     }
 
     async run(client, ctx) {
-        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.downfall); // Ensure this is the correct category
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.bleh);
         const embed = this.client
             .embed()
             .setColor(client.color.main)
-            .setTitle(`${client.emoji.mainLeft} Feeling Down... ${client.emoji.mainRight}`)
+            .setTitle(`${client.emoji.mainLeft} Bleh! ${client.emoji.mainRight}`)
             .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Express your feelings of downfall.');
+            .setDescription('Show off your bleh expression!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }
