@@ -101,12 +101,12 @@ module.exports = class Socials extends Command {
                 .setTitle(`📱 Social Media Profiles for ${targetUsername} 📱`)
                 .setColor(client.color.main);
 
-            const fbName = user.profile.facebook.name || 'Not set';
-            const fbLink = user.profile.facebook.link || 'Not set';
-            const igName = user.profile.instagram.name || 'Not set';
-            const igLink = user.profile.instagram.link || 'Not set';
-            const ttName = user.profile.tiktok.name || 'Not set';
-            const ttLink = user.profile.tiktok.link || 'Not set';
+            const fbName = user.social.facebook.name || 'Not set';
+            const fbLink = user.social.facebook.link || 'Not set';
+            const igName = user.social.instagram.name || 'Not set';
+            const igLink = user.social.instagram.link || 'Not set';
+            const ttName = user.social.tiktok.name || 'Not set';
+            const ttLink = user.social.tiktok.link || 'Not set';
 
             embed.addFields([
                 { name: 'Facebook', value: `**Name**: ${fbName}\n**Link**: ${fbLink === 'Not set' ? fbLink : `[Link](${fbLink})`}`, inline: false },

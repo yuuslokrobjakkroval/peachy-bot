@@ -14,7 +14,7 @@ module.exports = class Facebook extends Command {
                     'facebook link https://facebook.com/YourFacebookLink - Sets your Facebook link.',
                     'facebook help - Shows command usage examples.'
                 ],
-                usage: 'facebook\nfacebook @mention\nfacebook name <YourFacebookName>\nfacebook link <YourFacebookLink>\nfacebook help',
+                usage: 'facebook\nfacebook @mention\n facebook name <YourFacebookName>\n facebook link <YourFacebookLink>\n facebook help',
             },
             category: 'profile',
             aliases: ['fb'],
@@ -95,7 +95,7 @@ module.exports = class Facebook extends Command {
 
                 embed.setDescription('Your Facebook name has been set.').addFields([{ name: 'New Facebook Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.facebook.name': name } }).exec();
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.facebook.name': name } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
@@ -112,7 +112,7 @@ module.exports = class Facebook extends Command {
 
                 embed.setDescription('Your Facebook link has been set.').addFields([{ name: 'New Facebook Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.facebook.link': link } }).exec();
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.facebook.link': link } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
@@ -132,8 +132,8 @@ module.exports = class Facebook extends Command {
             }
 
             case 'show': {
-                const fbName = user.profile.facebook.name || 'Not set';
-                const fbLink = user.profile.facebook.link || 'Not set';
+                const fbName = user.social.facebook.name || 'Not set';
+                const fbLink = user.social.facebook.link || 'Not set';
 
                 embed.setDescription(`${targetUsername}'s Facebook details:`)
                     .addFields([

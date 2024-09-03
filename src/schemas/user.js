@@ -35,22 +35,6 @@ const ProfileSchema = new Schema({
     likes: { type: [String], default: [] }
 });
 
-// Social Schema
-const SocialSchema = new Schema({
-    facebook: {
-        name: { type: String, default: null },
-        link: { type: String, default: null }
-    },
-    instagram: {
-        name: { type: String, default: null },
-        link: { type: String, default: null }
-    },
-    tiktok: {
-        name: { type: String, default: null },
-        link: { type: String, default: null }
-    }
-});
-
 // Verification Schema
 const VerificationSchema = new Schema({
     code: { type: String },
@@ -136,7 +120,20 @@ const userSchema = new Schema({
     inventory: { type: [InventoryItemSchema], default: [] },
     equip: { type: [EquipItemSchema], default: [] },
     cooldowns: { type: [CooldownSchema], default: [] },
-    social: { type: SocialSchema, default: () => ({}) },
+    social: {
+        facebook: {
+            name: { type: String, default: null },
+            link: { type: String, default: null }
+        },
+        instagram: {
+            name: { type: String, default: null },
+            link: { type: String, default: null }
+        },
+        tiktok: {
+            name: { type: String, default: null },
+            link: { type: String, default: null }
+        }
+    },
     preferences: {
         language: { type: String, default: config.language.defaultLocale },
         notifications: { type: Boolean, default: true },

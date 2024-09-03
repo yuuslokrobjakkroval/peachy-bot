@@ -95,7 +95,7 @@ module.exports = class TikTok extends Command {
 
                 embed.setDescription('Your TikTok name has been set.').addFields([{ name: 'New TikTok Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.tiktok.name': name } }).exec();
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.tiktok.name': name } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
@@ -112,7 +112,7 @@ module.exports = class TikTok extends Command {
 
                 embed.setDescription('Your TikTok link has been set.').addFields([{ name: 'New TikTok Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.tiktok.link': link } }).exec();
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.tiktok.link': link } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
@@ -132,8 +132,8 @@ module.exports = class TikTok extends Command {
             }
 
             case 'show': {
-                const ttName = user.profile.tiktok.name || 'Not set';
-                const ttLink = user.profile.tiktok.link || 'Not set';
+                const ttName = user.social.tiktok.name || 'Not set';
+                const ttLink = user.social.tiktok.link || 'Not set';
 
                 embed.setDescription(`${targetUsername}'s TikTok details:`)
                     .addFields([

@@ -14,7 +14,7 @@ module.exports = class Instagram extends Command {
                     'instagram link https://instagram.com/YourInstagramLink - Sets your Instagram link.',
                     'instagram help - Shows command usage examples.'
                 ],
-                usage: 'instagram\ninstagram @mention\ninstagram name <YourInstagramName>\ninstagram link <YourInstagramLink>\ninstagram help',
+                usage: 'instagram\ninstagram @mention\n instagram name <YourInstagramName>\n instagram link <YourInstagramLink>\n instagram help',
             },
             category: 'profile',
             aliases: ['ig'],
@@ -95,7 +95,7 @@ module.exports = class Instagram extends Command {
 
                 embed.setDescription('Your Instagram name has been set.').addFields([{ name: 'New Instagram Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.instagram.name': name } }).exec();
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.instagram.name': name } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
@@ -112,7 +112,7 @@ module.exports = class Instagram extends Command {
 
                 embed.setDescription('Your Instagram link has been set.').addFields([{ name: 'New Instagram Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.instagram.link': link } }).exec();
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.instagram.link': link } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
@@ -132,8 +132,8 @@ module.exports = class Instagram extends Command {
             }
 
             case 'show': {
-                const igName = user.profile.instagram.name || 'Not set';
-                const igLink = user.profile.instagram.link || 'Not set';
+                const igName = user.social.instagram.name || 'Not set';
+                const igLink = user.social.instagram.link || 'Not set';
 
                 embed.setDescription(`${targetUsername}'s Instagram details:`)
                     .addFields([
