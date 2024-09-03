@@ -1,14 +1,13 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
-module.exports = class Wink extends Command {
+module.exports = class Run extends Command {
     constructor(client) {
         super(client, {
-            name: 'wink',
+            name: 'run',
             description: {
-                content: 'Sends a playful wink.',
-                examples: ['wink'],
-                usage: 'wink',
+                content: 'Show off your running skills with a cool animation!',
+                examples: ['run'],
+                usage: 'run',
             },
             category: 'emotes',
             aliases: [],
@@ -25,14 +24,13 @@ module.exports = class Wink extends Command {
     }
 
     async run(client, ctx) {
-        const winkGif = await Anime.wink();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.run);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`😉 Wink 😉`)
-            .setImage(winkGif)
-            .setDescription('Just a little wink to make your day brighter!');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Running Time! ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Show off your running skills!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }

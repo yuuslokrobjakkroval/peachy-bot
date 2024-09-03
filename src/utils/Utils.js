@@ -152,8 +152,7 @@ module.exports = class Utils {
         const emptySize = size - filledSize;
         const filledBar = '▓'.repeat(filledSize);
         const emptyBar = '░'.repeat(emptySize);
-        const progressBar = `${filledBar}${emptyBar} ${percent}%`;
-        return progressBar;
+        return `${filledBar}${emptyBar} ${percent}%`;
     }
 
     static percentage(percent, total) {

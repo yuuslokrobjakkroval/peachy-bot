@@ -1,12 +1,11 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Smile extends Command {
     constructor(client) {
         super(client, {
             name: 'smile',
             description: {
-                content: 'Sends a warm smile.',
+                content: 'Show a smiling face.',
                 examples: ['smile'],
                 usage: 'smile',
             },
@@ -25,14 +24,13 @@ module.exports = class Smile extends Command {
     }
 
     async run(client, ctx) {
-        const smileGif = await Anime.smile();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.smile);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`😊 Smile 😊`)
-            .setImage(smileGif)
-            .setDescription('A smile can brighten anyone\'s day!');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Smile Brightly! ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Show off your best smile and brighten everyone\'s day!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }

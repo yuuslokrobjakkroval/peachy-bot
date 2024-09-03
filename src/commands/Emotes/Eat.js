@@ -1,17 +1,16 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
-module.exports = class Pout extends Command {
+module.exports = class Eat extends Command {
     constructor(client) {
         super(client, {
-            name: 'pout',
+            name: 'eat',
             description: {
-                content: 'Expresses mild frustration or displeasure with a pout.',
-                examples: ['pout'],
-                usage: 'pout',
+                content: 'Show off a feeling of eating!',
+                examples: ['eat'],
+                usage: 'eat',
             },
             category: 'emotes',
-            aliases: [],
+            aliases: ['nham', 'c'],
             cooldown: 3,
             args: false,
             permissions: {
@@ -25,14 +24,13 @@ module.exports = class Pout extends Command {
     }
 
     async run(client, ctx) {
-        const poutGif = await Anime.pout();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.eat);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`😡 Pout 😡`)
-            .setImage(poutGif)
-            .setDescription('Hmph! I’m not happy about this...');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Eating Time! ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Time to enjoy some delicious food!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }

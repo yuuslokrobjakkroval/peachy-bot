@@ -1,12 +1,11 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Cry extends Command {
     constructor(client) {
         super(client, {
             name: 'cry',
             description: {
-                content: 'Expresses sadness with a crying emote.',
+                content: 'Express a feeling of crying.',
                 examples: ['cry'],
                 usage: 'cry',
             },
@@ -25,14 +24,13 @@ module.exports = class Cry extends Command {
     }
 
     async run(client, ctx) {
-        const cryGif = await Anime.cry();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.cry);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`😢 Crying 😢`)
-            .setImage(cryGif)
-            .setDescription('Sometimes, you just need to let it out...');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Crying Time ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Sometimes, expressing tears is the best way to handle emotions.');
 
         await ctx.sendMessage({ embeds: [embed] });
     }

@@ -1,14 +1,13 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
-module.exports = class Shrug extends Command {
+module.exports = class Makeup extends Command {
     constructor(client) {
         super(client, {
-            name: 'shrug',
+            name: 'makeup',
             description: {
-                content: 'Expresses indifference or confusion.',
-                examples: ['shrug'],
-                usage: 'shrug',
+                content: 'Show off some makeup!',
+                examples: ['makeup'],
+                usage: 'makeup',
             },
             category: 'emotes',
             aliases: [],
@@ -23,16 +22,14 @@ module.exports = class Shrug extends Command {
             options: [],
         });
     }
-
     async run(client, ctx) {
-        const shrugGif = await Anime.shrug();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.makeUp);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`🤷 Shrug 🤷`)
-            .setImage(shrugGif)
-            .setDescription('Sometimes, you just don\'t know!');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Makeup Time! ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Apply some fabulous makeup and shine bright!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }

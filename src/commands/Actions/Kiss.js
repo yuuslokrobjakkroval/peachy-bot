@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Kiss extends Command {
     constructor(client) {
@@ -46,17 +45,14 @@ module.exports = class Kiss extends Command {
         }
 
         try {
-            const kissGif = await Anime.kiss();
-
-            return await ctx.sendMessage({
-                embeds: [
-                    client
-                        .embed()
-                        .setColor(client.color.main)
-                        .setTitle(`${author.displayName} kisses ${target.displayName}!`)
-                        .setImage(kissGif),
-                ],
-            });
+            const randomEmoji = client.utils.getRandomElement(client.emoji.actions.kisses);
+            const embed = this.client
+                .embed()
+                .setColor(client.color.main)
+                .setTitle(`${client.emoji.mainLeft} Kiss Time! ${client.emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${author.displayName} kisses ${target.displayName}!`);
+            await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch kiss GIF:', error);
             return await ctx.sendMessage({ content: 'Something went wrong while fetching the kiss GIF.' });

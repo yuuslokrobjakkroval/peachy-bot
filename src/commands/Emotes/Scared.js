@@ -1,14 +1,13 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
-module.exports = class Facepalm extends Command {
+module.exports = class Scare extends Command {
     constructor(client) {
         super(client, {
-            name: 'facepalm',
+            name: 'scare',
             description: {
-                content: 'Expresses frustration or disbelief with a facepalm.',
-                examples: ['facepalm'],
-                usage: 'facepalm',
+                content: 'Show off a feeling of being scared!',
+                examples: ['scare'],
+                usage: 'scare',
             },
             category: 'emotes',
             aliases: [],
@@ -25,14 +24,13 @@ module.exports = class Facepalm extends Command {
     }
 
     async run(client, ctx) {
-        const facepalmGif = await Anime.facepalm();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.scared);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`🤦 Facepalm 🤦`)
-            .setImage(facepalmGif)
-            .setDescription('When words just aren’t enough to express your frustration...');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Scared! ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Show your scared side!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }

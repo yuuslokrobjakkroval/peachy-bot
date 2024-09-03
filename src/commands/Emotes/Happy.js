@@ -1,13 +1,13 @@
 const { Command } = require('../../structures/index.js');
 
-module.exports = class Dance extends Command {
+module.exports = class Happy extends Command {
     constructor(client) {
         super(client, {
-            name: 'dance',
+            name: 'happy',
             description: {
-                content: 'Shows off some dance moves!',
-                examples: ['dance'],
-                usage: 'dance',
+                content: 'Show off a feeling of happiness!',
+                examples: ['happy'],
+                usage: 'happy',
             },
             category: 'emotes',
             aliases: [],
@@ -24,16 +24,14 @@ module.exports = class Dance extends Command {
     }
 
     async run(client, ctx) {
-        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.dances);
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.happy);
         const embed = this.client
             .embed()
             .setColor(client.color.main)
-            .setTitle(`${client.emoji.mainLeft} Dancing Time! ${client.emoji.mainRight}`)
+            .setTitle(`${client.emoji.mainLeft} Happy Vibes! ${client.emoji.mainRight}`)
             .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Let\'s dance the night away!');
-
+            .setDescription('Spread some joy and happiness!');
 
         await ctx.sendMessage({ embeds: [embed] });
-
     }
 };

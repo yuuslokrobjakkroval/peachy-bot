@@ -46,17 +46,14 @@ module.exports = class Slap extends Command {
         }
 
         try {
-            const slapGif = await Anime.slap();
-
-            return await ctx.sendMessage({
-                embeds: [
-                    client
-                        .embed()
-                        .setColor(client.color.main)
-                        .setTitle(`${author.displayName} playfully slaps ${target.displayName}! 👋`)
-                        .setImage(slapGif),
-                ],
-            });
+            const randomEmoji = client.utils.getRandomElement(client.emoji.actions.slaps);
+            const embed = this.client
+                .embed()
+                .setColor(client.color.main)
+                .setTitle(`${client.emoji.mainLeft} Slap Time! ${client.emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${author.displayName} playfully slaps ${target.displayName}!`);
+            await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch slap GIF:', error);
             return await ctx.sendMessage({ content: 'Something went wrong while fetching the slap GIF.' });

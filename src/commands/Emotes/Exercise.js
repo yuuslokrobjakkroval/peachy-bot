@@ -1,14 +1,13 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
-module.exports = class Pat extends Command {
+module.exports = class Exercise extends Command {
     constructor(client) {
         super(client, {
-            name: 'pat',
+            name: 'exercise',
             description: {
-                content: 'Gently pats someone’s head to show affection.',
-                examples: ['pat'],
-                usage: 'pat',
+                content: 'Show off a feeling of exercising!',
+                examples: ['exercise'],
+                usage: 'exercise',
             },
             category: 'emotes',
             aliases: [],
@@ -25,14 +24,13 @@ module.exports = class Pat extends Command {
     }
 
     async run(client, ctx) {
-        const patGif = await Anime.pat();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.exercise);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`💖 Pat 💖`)
-            .setImage(patGif)
-            .setDescription('There, there... you deserve some affection!');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Exercise Time! ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Get moving and stay fit!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }

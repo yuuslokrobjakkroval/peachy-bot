@@ -1,12 +1,11 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Laugh extends Command {
     constructor(client) {
         super(client, {
             name: 'laugh',
             description: {
-                content: 'Expresses joy with laughter.',
+                content: 'Express a feeling of laughter.',
                 examples: ['laugh'],
                 usage: 'laugh',
             },
@@ -25,14 +24,13 @@ module.exports = class Laugh extends Command {
     }
 
     async run(client, ctx) {
-        const laughGif = await Anime.laugh();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.laugh);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`😂 Laughing 😂`)
-            .setImage(laughGif)
-            .setDescription('Something really tickled your funny bone!');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Laughing Out Loud! ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Share a hearty laugh and spread some joy!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }

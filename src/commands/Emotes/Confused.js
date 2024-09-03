@@ -1,17 +1,16 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
-module.exports = class ThumbsUp extends Command {
+module.exports = class Confused extends Command {
     constructor(client) {
         super(client, {
-            name: 'thumbsup',
+            name: 'confused',
             description: {
-                content: 'Gives a thumbs up to express approval or agreement.',
-                examples: ['thumbsup'],
-                usage: 'thumbsup',
+                content: 'Show off a confused expression with a cool animation!',
+                examples: ['confused'],
+                usage: 'confused',
             },
             category: 'emotes',
-            aliases: ['approve'],
+            aliases: [],
             cooldown: 3,
             args: false,
             permissions: {
@@ -25,14 +24,13 @@ module.exports = class ThumbsUp extends Command {
     }
 
     async run(client, ctx) {
-        const thumbsUpGif = await Anime.thumbsUp();
-
+        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.confused);
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
-            .setTitle(`👍 Thumbs Up 👍`)
-            .setImage(thumbsUpGif)
-            .setDescription('Good job! Keep it up!');
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} Confused! ${client.emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Show off your confused expression!');
 
         await ctx.sendMessage({ embeds: [embed] });
     }
