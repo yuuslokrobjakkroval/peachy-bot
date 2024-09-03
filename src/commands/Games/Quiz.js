@@ -57,6 +57,7 @@ module.exports = class Quiz extends Command {
         const embed = client.embed()
             .setTitle(`${client.emoji.mainLeft} 𝐑𝐀𝐍𝐃𝐎𝐌 𝐐𝐔𝐄𝐒𝐓𝐈𝐎𝐍! ${client.emoji.mainRight}`)
             .setColor(client.color.main)
+            .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
             .setDescription(randomQuestion.question)
             .addFields(randomQuestion.options.map((option, index) => ({
                 name: `${emojiOptions[index]} Option ${index + 1}`,

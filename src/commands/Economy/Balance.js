@@ -50,7 +50,7 @@ module.exports = class Balance extends Command {
 
             const embed = client
                 .embed()
-                .setTitle(`${this.client.emoji.mainLeft} ${ctx.author.displayName}'s Balance ${ctx.author.displayName} ${this.client.emoji.mainRight}`)
+                .setTitle(`${this.client.emoji.mainLeft} ${ctx.author.displayName}'s Balance ${this.client.emoji.mainRight}`)
                 .setColor(client.color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(

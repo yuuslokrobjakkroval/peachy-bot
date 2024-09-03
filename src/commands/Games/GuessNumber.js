@@ -45,6 +45,7 @@ module.exports = class GuessNumber extends Command {
         const embed = client.embed()
             .setTitle(`${client.emoji.mainLeft} 𝐆𝐔𝐄𝐒𝐒 𝐓𝐇𝐄 𝐍𝐔𝐌𝐁𝐄𝐑! ${client.emoji.mainRight}`)
             .setColor(client.color.main)
+            .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
             .setDescription('I have picked a number between 1 and 100. You have 3 hearts. React with the number you guess or type your guess in the chat!');
 
         const message = await ctx.sendMessage({ embeds: [embed] });
