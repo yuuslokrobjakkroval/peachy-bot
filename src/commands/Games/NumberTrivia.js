@@ -72,7 +72,7 @@ module.exports = class NumberTrivia extends Command {
 
         const message = await ctx.sendMessage({ embeds: [embed] });
 
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
         for (const emoji of emojiOptions) {
             await message.react(emoji);

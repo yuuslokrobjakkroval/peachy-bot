@@ -393,12 +393,15 @@ module.exports = class MessageCreate extends Event {
             });
           }
 
+          const gameCommands = ['quiz', 'numbertrivia', 'guessnumber'];
+          const gamblingCommands = ['slots', 'coinflip', 'klaklouk', 'blackjack', 'pav'];
           const balanceCommands = ['balance', 'deposit', 'transfer', 'buy', 'sell'];
-          const gameCommands = ['slots', 'coinflip', 'klaklouk', 'blackjack', 'pav'];
 
           try {
             let logChannelId;
             if (balanceCommands.includes(command.name)) {
+              logChannelId = this.client.config.logChannelId[3];
+            } else if (gamblingCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[2];
             } else if (gameCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[1];

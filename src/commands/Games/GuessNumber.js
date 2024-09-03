@@ -25,8 +25,6 @@ module.exports = class GuessNumber extends Command {
 
     async run(client, ctx) {
         const user = await Users.findOne({ userId: ctx.author.id });
-
-        // Check if the user has enough coins
         if (user.balance.coin < 1000) {
             return ctx.sendMessage({
                 embeds: [
@@ -37,8 +35,6 @@ module.exports = class GuessNumber extends Command {
                 ]
             });
         }
-
-        // Deduct 1000 coins from the user's balance
         user.balance.coin -= 1000;
         await user.save();
 
@@ -58,7 +54,7 @@ module.exports = class GuessNumber extends Command {
             return !isNaN(guess) && guess >= 1 && guess <= 100 && response.author.id === ctx.author.id;
         };
 
-        const collector = ctx.channel.createMessageCollector({ filter, time: 30000 }); // 30 seconds to guess
+        const collector = ctx.channel.createMessageCollector({ filter, time: 30000 });
 
         collector.on('collect', async response => {
             const guess = parseInt(response.content);
