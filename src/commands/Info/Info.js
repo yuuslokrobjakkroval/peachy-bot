@@ -33,9 +33,9 @@ class Info extends Command {
     const botName = "PEACHY";
     const botDescription = "A multi-purpose bot designed for fun and enjoyment!";
     const botFeatures = `
-**Fun and Games**: Enjoy various games and gambling features, from slot machines to quizzes.
-**Social Interaction**: Engage with custom commands and interactive features.
-**Utility**: Manage server settings and get useful information easily.`;
+**Fun and Games**:\nEnjoy various games and gambling features, from slot machines to quizzes.\n
+**Social Interaction**:\nEngage with custom commands and interactive features.\n
+**Utility**:\nManage server settings and get useful information easily.\n`;
 
     const botOwnerInfo = `
 **Bot Owner Information**:
@@ -50,7 +50,7 @@ ${botOwnerInfo}`;
 
     const embed = this.client.embed();
     return await ctx.sendMessage({
-      embeds: [embed.setColor(this.client.color.main).setDescription(botInfo)],
+      embeds: [embed.setColor(client.color.main).setDescription(botInfo).setImage(client.config.links.banner)],
     });
   }
 }

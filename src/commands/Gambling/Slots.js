@@ -2,7 +2,6 @@ const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
-const { SLOTS, SPIN, COIN, TITLE } = require("../../utils/Emoji");
 
 const maxAmount = 250000;
 
@@ -17,7 +16,7 @@ class Slots extends Command {
 			},
 			category: 'gambling',
 			aliases: ['slot', 's'],
-			cooldown: 12,
+			cooldown: 10,
 			args: false,
 			permissions: {
 				dev: false,
@@ -37,6 +36,7 @@ class Slots extends Command {
 	}
 
 	async run(client, ctx, args, language) {
+		const SLOTS = [client.emoji.slots.cat, client.emoji.slots.coffee, client.emoji.slots.heart, client.emoji.slots.cake, client.emoji.slots.milk, client.emoji.slots.peachy]
 		const user = await Users.findOne({ userId: ctx.author.id }).exec();
 		const { coin, bank } = user.balance;
 		if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'));
@@ -64,34 +64,22 @@ class Slots extends Command {
 
 		if (rand <= 20) { // 20%
 			win = baseCoins;
-			rslots.push(SLOTS[1]);
-			rslots.push(SLOTS[1]);
-			rslots.push(SLOTS[1]);
+			rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
 		} else if (rand <= 33) { // 13%
 			win = baseCoins * 2;
-			rslots.push(SLOTS[2]);
-			rslots.push(SLOTS[2]);
-			rslots.push(SLOTS[2]);
+			rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
 		} else if (rand <= 41.5) { // 8.5%
 			win = baseCoins * 3;
-			rslots.push(SLOTS[3]);
-			rslots.push(SLOTS[3]);
-			rslots.push(SLOTS[3]);
+			rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
 		} else if (rand <= 48) { // 7.5%
 			win = 0;
-			rslots.push(SLOTS[0]);
-			rslots.push(SLOTS[0]);
-			rslots.push(SLOTS[0]);
+			rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
 		} else if (rand <= 52.75) { // 3.75%
 			win = baseCoins * 4;
-			rslots.push(SLOTS[4]);
-			rslots.push(SLOTS[4]);
-			rslots.push(SLOTS[4]);
+			rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
 		} else if (rand <= 55.75) { // 1.5%
 			win = baseCoins * 10;
-			rslots.push(SLOTS[5]);
-			rslots.push(SLOTS[5]);
-			rslots.push(SLOTS[5]);
+			rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 		} else { // 45.5%
 			let slot1 = Math.floor(Math.random() * SLOTS.length);
 			let slot2 = Math.floor(Math.random() * SLOTS.length);
@@ -101,41 +89,40 @@ class Slots extends Command {
 			rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
 		}
 
-		let content = `**${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE}**\n` +
-			`**\`[\` ${SPIN} ${SPIN} ${SPIN} \`]\`** ** ${ctx.author.displayName} ** \n` +
-			`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${COIN}**\n` +
-			`**\`|        |\`**`;
+		let newBalance = coin + win - baseCoins;
 
-		const newBalance = coin + win - baseCoins;
-		await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec();
-		await ctx.sendMessage({ content: content });
+		const initialEmbed = client.embed()
+			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
+			.setDescription(
+				`**\`|\` ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin} \`|\`** ** ${ctx.author.displayName} ** \n` +
+				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
+				`**\`|        |\`**`)
+			.setColor(client.color.main);
 
-		let winmsg = win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``;
+		const spinEmbed = client.embed()
+			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
+			.setDescription(`**\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin} \`|\`** ** ${ctx.author.displayName} ** \n` +
+				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
+				`**\`|        |\`**`)
+			.setColor(client.color.main);
+
+		const resultEmbed = client.embed()
+			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
+			.setDescription(`**\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`|\`** ** ${ctx.author.displayName} ** \n` +
+				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
+				`**\`|        |\` ${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
+			.setColor(client.color.main);
+
+		await ctx.sendMessage({ embeds: [initialEmbed] });
 
 		setTimeout(async function () {
-			let content = `**${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE}**\n` +
-				`**\`[\` ${rslots[0]} ${SPIN} ${SPIN} \`]\`** ** ${ctx.author.displayName} ** \n` +
-				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${COIN}**\n` +
-				`**\`|        |\`**`;
-
-			await ctx.editMessage({ content: content });
+			await ctx.editMessage({ embeds: [spinEmbed] });
 			setTimeout(async function () {
-				let content = `**${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE}**\n` +
-					`**\`[\` ${rslots[0]} ${SPIN} ${rslots[2]} \`]\`** ** ${ctx.author.displayName} ** \n` +
-					`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${COIN}**\n` +
-					`**\`|        |\`**`;
-
-				await ctx.editMessage({ content: content });
-				setTimeout(async function () {
-					let content = `**${TITLE} 𝐒𝐋𝐎𝐓𝐒 ${TITLE}**\n` +
-						`**\`[\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`]\`** ** ${ctx.author.displayName} ** \n` +
-						`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${COIN}**\n` +
-						`**\`|        |\` ${winmsg} ${COIN}**`;
-
-					await ctx.editMessage({ content: content });
-				}, 1000);
-			}, 700);
+				await ctx.editMessage({ embeds: [resultEmbed] });
+			}, 1000);
 		}, 1000);
+
+		await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec();
 	}
 }
 

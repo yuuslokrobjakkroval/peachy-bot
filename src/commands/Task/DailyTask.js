@@ -13,7 +13,7 @@ module.exports = class Task extends Command {
                 usage: 'task\n task show\n task help',
             },
             category: 'task',
-            aliases: ['quest', 'q', 'task', 't'],
+            aliases: ['quest', 'task'],
             cooldown: 5,
             args: false,
             permissions: {

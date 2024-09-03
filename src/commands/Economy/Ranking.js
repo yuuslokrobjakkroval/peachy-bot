@@ -2,28 +2,27 @@ const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const config = require("../../config.js");
 const numeral = require("numeral");
-const { COIN, IMMORTAL, IMMORTAL_TITLE, DIVINE, ANCIENT, LEGEND, ARCHON, CRUSADER, GUARDIAN, HERALD } = require("../../utils/Emoji");
 
 const handleEmoji = (no) => {
     switch (no) {
         case 1:
-            return IMMORTAL;
+            return this.client.emoji.rank.one;
         case 2:
-            return DIVINE;
+            return this.client.emoji.rank.two;
         case 3:
-            return ANCIENT;
+            return this.client.emoji.rank.three;
         case 4:
-            return LEGEND;
+            return this.client.emoji.rank.four;
         case 5:
-            return ARCHON;
+            return this.client.emoji.rank.five;
         case 6:
-            return CRUSADER;
+            return this.client.emoji.rank.six;
         case 7:
-            return GUARDIAN;
+            return this.client.emoji.rank.seven;
         case 8:
-            return HERALD;
+            return this.client.emoji.rank.eight;
         default:
-            return HERALD;
+            return this.client.emoji.rank.nine;
     }
 }
 
@@ -66,12 +65,12 @@ class Ranking extends Command {
             const memberData = await Promise.all(memberPromises);
 
             const description = memberData.map(({ emoji, displayName, balance }) => {
-                return `${emoji} ${displayName}\n ${balance} coin ${COIN}\n`;
+                return `${emoji} ${displayName}\n ${balance} coin ${client.emoji.coin}\n`;
             }).join('\n');
 
             const embed = this.client.embed()
                 .setColor(config.color.main)
-                .setTitle(`${IMMORTAL_TITLE}** Top Phhum Coin LeaderBoard **${IMMORTAL_TITLE}\n`)
+                .setTitle(`${client.emoji.mainLeft}** Top Phum Coin LeaderBoard **${client.emoji.mainRight}\n`)
                 .setDescription(`Here are the top users with the highest coin balances:\n ${description}`);
 
             await ctx.channel.send({ embeds: [embed] });

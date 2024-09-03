@@ -6,6 +6,7 @@ const font = {
   Task: '𝐓𝐀𝐒𝐊',
   Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
   Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
+  Games: '𝐆𝐀𝐌𝐄𝐒',
   Giveaway: '𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘',
   Profile: '𝐏𝐑𝐎𝐅𝐈𝐋𝐄',
   Social: '𝐒𝐎𝐂𝐈𝐀𝐋',
@@ -54,7 +55,7 @@ module.exports = class Help extends Command {
     const prefix = client.config.prefix;
 
     const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
-    const categories = ['Actions', 'Economy', 'Task', 'Inventory', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info',];
+    const categories = ['Actions', 'Economy', 'Task', 'Inventory', 'Games', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info',];
 
     if (!args[0]) {
       const sortedCommands = {};
@@ -73,7 +74,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: `© Copyright by ${client.user.username} Yuu`,
+            text: `© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐊𝐘𝐔𝐔`,
             iconURL: client.user.displayAvatarURL(),
           });
 

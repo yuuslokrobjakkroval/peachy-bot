@@ -1,7 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder } = require('discord.js');
 const GiveawaySchema = require('../schemas/giveaway');
 const Users = require('../schemas/user');
-const emoji = require('../utils/Emoji');
 
 module.exports = class Utils {
     static toSmall(count) {
@@ -345,7 +344,7 @@ module.exports = class Utils {
                     .setColor(client.color.main)
                     .setDescription(
                         winnerIdArray.length
-                            ? `Congratulations ${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}**. ${emoji.congratulation}`
+                            ? `Congratulations ${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}**. ${client.emoji.congratulation}`
                             : `No one entered the giveaway of **\`${client.utils.formatNumber(data.prize)}\`**!`
                     ),
             ],

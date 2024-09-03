@@ -50,7 +50,7 @@ class Ping extends Command {
         },
       ])
       .setFooter({
-        text: `Requested by ${ctx.author.tag}`,
+        text: `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.avatarURL({}),
       })
       .setTimestamp();
