@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Bite extends Command {
     constructor(client) {
@@ -46,18 +45,14 @@ module.exports = class Bite extends Command {
         }
 
         try {
-            const biteGif = await Anime.bite();
-
-            return await ctx.sendMessage({
-                embeds: [
-                    client
-                        .embed()
-                        .setColor(client.color.main)
-                        .setTitle(`${client.emotes.mainLeft} bites ${client.emotes.mainRight}`)
-                        .setDescription(`${author.displayName} have bites ${target.displayName}! 😜🦷`)
-                        .setImage(biteGif),
-                ],
-            });
+            const randomEmoji = client.utils.getRandomElement(client.emoji.actions.bites);
+            const embed = this.client
+                .embed()
+                .setColor(client.color.main)
+                .setTitle(`${client.emoji.mainLeft} Bite Time! ${client.emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${author.displayName} playfully bites ${target.displayName}!`);
+            await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch bite GIF:', error);
             return await ctx.sendMessage({ content: 'Something went wrong while fetching the bite GIF.' });

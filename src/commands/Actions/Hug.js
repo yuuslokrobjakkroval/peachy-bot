@@ -1,18 +1,17 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Hug extends Command {
     constructor(client) {
         super(client, {
             name: 'hug',
             description: {
-                content: 'Sends a cute hug anime action.',
+                content: 'Sends a cute hug to the mentioned user.',
                 examples: ['hug @user'],
-                usage: 'hug <user>',
+                usage: 'hug @user',
             },
             category: 'actions',
             aliases: [],
-            cooldown: 5,
+            cooldown: 3,
             args: true,
             permissions: {
                 dev: false,
@@ -23,7 +22,7 @@ module.exports = class Hug extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'The user you want to hug.',
+                    description: 'Mention the user you want to hug.',
                     type: 6, // USER type
                     required: true,
                 },
@@ -46,17 +45,14 @@ module.exports = class Hug extends Command {
         }
 
         try {
-            const hugGif = await Anime.hug();
-
-            return await ctx.sendMessage({
-                embeds: [
-                    client
-                        .embed()
-                        .setColor(client.color.main)
-                        .setTitle(`${author.displayName} gives ${target.displayName} a warm hug!`)
-                        .setImage(hugGif),
-                ],
-            });
+            const randomEmoji = client.utils.getRandomElement(client.emoji.actions.hugs);
+            const embed = this.client
+                .embed()
+                .setColor(client.color.main)
+                .setTitle(`${client.emoji.mainLeft} Hug Time! ${client.emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${author.displayName} gives ${target.displayName} a warm hug!`);
+            await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch hug GIF:', error);
             return await ctx.sendMessage({ content: 'Something went wrong while fetching the hug GIF.' });

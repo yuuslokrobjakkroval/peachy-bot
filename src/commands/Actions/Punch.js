@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Punch extends Command {
     constructor(client) {
@@ -46,17 +45,14 @@ module.exports = class Punch extends Command {
         }
 
         try {
-            const punchGif = await Anime.punch();
-
-            return await ctx.sendMessage({
-                embeds: [
-                    client
-                        .embed()
-                        .setColor(client.color.main)
-                        .setTitle(`${author.displayName} playfully punches ${target.displayName}! 👊😜`)
-                        .setImage(punchGif),
-                ],
-            });
+            const randomEmoji = client.utils.getRandomElement(client.emoji.actions.punches);
+            const embed = this.client
+                .embed()
+                .setColor(client.color.main)
+                .setTitle(`${client.emoji.mainLeft} Punch Time! ${client.emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${author.displayName} playfully punches ${target.displayName}!`);
+            await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch punch GIF:', error);
             return await ctx.sendMessage({ content: 'Something went wrong while fetching the punch GIF.' });
