@@ -99,9 +99,19 @@ class Slots extends Command {
 				`**\`|        |\`**`)
 			.setColor(client.color.main);
 
+		await ctx.sendMessage({ embeds: [initialEmbed] });
+
+
 		const spinEmbed = client.embed()
 			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
 			.setDescription(`**\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin} \`|\`** ** ${ctx.author.displayName} ** \n` +
+				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
+				`**\`|        |\`**`)
+			.setColor(client.color.main);
+
+		const spinSecondEmbed = client.embed()
+			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
+			.setDescription(`**\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]} \`|\`** ** ${ctx.author.displayName} ** \n` +
 				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
 				`**\`|        |\`**`)
 			.setColor(client.color.main);
@@ -113,13 +123,14 @@ class Slots extends Command {
 				`**\`|        |\` ${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setColor(client.color.main);
 
-		await ctx.sendMessage({ embeds: [initialEmbed] });
-
 		setTimeout(async function () {
 			await ctx.editMessage({ embeds: [spinEmbed] });
 			setTimeout(async function () {
-				await ctx.editMessage({ embeds: [resultEmbed] });
-			}, 1000);
+				await ctx.editMessage({embeds: [spinSecondEmbed]});
+				setTimeout(async function () {
+					await ctx.editMessage({embeds: [resultEmbed]});
+				}, 1000);
+			}, 700);
 		}, 1000);
 
 		await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec();
