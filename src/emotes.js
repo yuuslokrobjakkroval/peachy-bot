@@ -3,7 +3,7 @@ module.exports = {
     mainLeft: '<:PEACHYLEFT:1278893846868131840>',
     mainRight: '<:PEACHYRIGHT:1278893836458000435>',
     warming: '<:KABLVHZ:1271876381340602471>',
-    congratulation: '<a:CONGRATULATIONS:1277266750114631792>',
+    congratulation: '<a:CONGRATULATIONS:1280335697403842580>',
     tick: '`✅`',
     deny: '<:x_:1230882133891878933>',
     mark: '`❕`',

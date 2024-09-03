@@ -25,6 +25,21 @@ module.exports = class Quiz extends Command {
     }
 
     async run(client, ctx) {
+        const user = await Users.findOne({ userId: ctx.author.id });
+        if (user.balance.coin < 1000) {
+            return ctx.sendMessage({
+                embeds: [
+                    client.embed()
+                        .setTitle('Insufficient Balance')
+                        .setColor(client.color.red)
+                        .setDescription(`You need at least 1000 coins to play the Quiz game. Your current balance is ${user.balance.coin} coins.`)
+                ]
+            });
+        }
+
+        user.balance.coin -= 1000;
+        await user.save();
+
         const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
         const emojiOptions = [
             client.emoji.letter.a,
@@ -40,7 +55,7 @@ module.exports = class Quiz extends Command {
         };
 
         const embed = client.embed()
-            .setTitle('Trivia Game')
+            .setTitle(`${client.emoji.mainLeft} 𝐑𝐀𝐍𝐃𝐎𝐌 𝐐𝐔𝐄𝐒𝐓𝐈𝐎𝐍! ${client.emoji.mainRight}`)
             .setColor(client.color.main)
             .setDescription(randomQuestion.question)
             .addFields(randomQuestion.options.map((option, index) => ({
@@ -51,6 +66,8 @@ module.exports = class Quiz extends Command {
             .setFooter({ text: 'Please react with the corresponding emoji for your answer.' });
 
         const message = await ctx.sendMessage({ embeds: [embed] });
+
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
         for (const emoji of emojiOptions) {
             await message.react(emoji);
@@ -97,7 +114,7 @@ module.exports = class Quiz extends Command {
             try {
                 if (collected.size === 0) {
                     const timeoutEmbed = client.embed()
-                        .setTitle('Time is Up!')
+                        .setTitle(`${client.emoji.mainLeft} 𝐓𝐈𝐌𝐄 𝐈𝐒 𝐔𝐏! ${client.emoji.mainRight}`)
                         .setColor(client.color.orange)
                         .setDescription('⏳ Time is up! No answer was provided.');
                     ctx.editMessage({ embeds: [timeoutEmbed], components: [] });

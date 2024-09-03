@@ -25,6 +25,26 @@ module.exports = class NumberTrivia extends Command {
     }
 
     async run(client, ctx) {
+        // Fetch the user's data from the database
+        const user = await Users.findOne({ userId: ctx.author.id });
+
+        // Check if the user has enough coins to play
+        if (user.balance.coin < 1000) {
+            return ctx.sendMessage({
+                embeds: [
+                    client.embed()
+                        .setTitle('Insufficient Balance')
+                        .setColor(client.color.red)
+                        .setDescription(`You need at least 1000 coins to play the Number Trivia game. Your current balance is ${user.balance.coin} coins.`)
+                ]
+            });
+        }
+
+        // Deduct 1000 coins from the user's balance
+        user.balance.coin -= 1000;
+        await user.save();
+
+        // Proceed with the game logic
         const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
         const emojiOptions = [
             client.emoji.number.one,
@@ -40,7 +60,7 @@ module.exports = class NumberTrivia extends Command {
         };
 
         const embed = client.embed()
-            .setTitle('Number Trivia Game')
+            .setTitle(`${client.emoji.mainLeft} 𝐍𝐔𝐌𝐁𝐄𝐑 𝐑𝐀𝐍𝐃𝐎𝐌 𝐐𝐔𝐄𝐒𝐓𝐈𝐎𝐍! ${client.emoji.mainRight}`)
             .setColor(client.color.main)
             .setDescription(randomQuestion.question)
             .addFields(randomQuestion.options.map((option, index) => ({
@@ -51,6 +71,8 @@ module.exports = class NumberTrivia extends Command {
             .setFooter({ text: 'Please react with the corresponding emoji for your answer.' });
 
         const message = await ctx.sendMessage({ embeds: [embed] });
+
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
         for (const emoji of emojiOptions) {
             await message.react(emoji);
@@ -97,7 +119,7 @@ module.exports = class NumberTrivia extends Command {
             try {
                 if (collected.size === 0) {
                     const timeoutEmbed = client.embed()
-                        .setTitle('Time is Up!')
+                        .setTitle(`${client.emoji.mainLeft} 𝐓𝐈𝐌𝐄 𝐈𝐒 𝐔𝐏! ${client.emoji.mainRight}`)
                         .setColor(client.color.orange)
                         .setDescription('⏳ Time is up! No answer was provided.');
                     await ctx.editMessage({ embeds: [timeoutEmbed], components: [] });
