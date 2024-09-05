@@ -33,7 +33,7 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-
+    await this.client.setColorBasedOnTheme(message.author.id);
     let user = await Users.findOne({ userId: message.author.id });
     const prefix = this.client.config.prefix;
 

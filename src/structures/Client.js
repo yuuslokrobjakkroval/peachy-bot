@@ -9,6 +9,13 @@ const { I18n } = require('@hammerhq/localization');
 const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const emojis = require('../emotes.js');
+
+const configPeach = require('../theme/peach/config.js');
+const emojiPeach = require('../theme/peach/emotes.js');
+
+const configGoma = require('../theme/goma/config.js');
+const emojiGoma = require('../theme/goma/emotes.js');
+
 const Logger = require('./Logger.js');
 
 module.exports = class PeachyClient extends Client {
@@ -18,10 +25,7 @@ module.exports = class PeachyClient extends Client {
         this.aliases = new Collection();
         this.cooldown = new Collection();
         this.config = config;
-        this.emote = emojis;
-        this.emoji = emojis;
         this.logger = new Logger();
-        this.color = config.color;
         this.body = [];
         this.utils = Utils;
         this.db = Users;
@@ -119,5 +123,24 @@ module.exports = class PeachyClient extends Client {
                 }
             });
         });
+    }
+
+    async setColorBasedOnTheme(userId) {
+        const user = await this.db.findOne({ userId });
+        if (user && user.preferences && user.preferences.theme) {
+            if (user.preferences.theme === 'peach') {
+                this.color = configPeach.color;
+                this.emoji = emojiPeach;
+            } else if (user.preferences.theme === 'goma') {
+                this.color = configGoma.color;
+                this.emoji = emojiGoma;
+            } else {
+                this.color = config.color;
+                this.emoji = emojis;
+            }
+        } else {
+            this.color = config.color;
+            this.emoji = emojis;
+        }
     }
 };
