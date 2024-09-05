@@ -137,7 +137,7 @@ const userSchema = new Schema({
     preferences: {
         language: { type: String, default: config.language.defaultLocale },
         notifications: { type: Boolean, default: true },
-        theme: { type: String, enum: ['light', 'dark'], default: 'light' },
+        theme: { type: String, enum: ['peach', 'goma'], default: 'peach' },
     },
     activity: {
         lastLogin: { type: Date, default: Date.now },

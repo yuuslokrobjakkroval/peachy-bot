@@ -43,17 +43,17 @@ module.exports = class MessageCreate extends Event {
       if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
         let xpGained = 0;
         if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-          xpGained = getRandomXp(30, 50);
+          xpGained = getRandomXp(300, 500);
         } else {
           xpGained = getRandomXp(10, 15);
         }
 
-        user.profile.exp += xpGained;
+        user.profile.xp += xpGained;
         user.profile.lastXpGain = now;
 
         const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
-        if (user.profile.exp >= nextLevelXp) {
-          user.profile.exp -= nextLevelXp;
+        if (user.profile.xp >= nextLevelXp) {
+          user.profile.xp -= nextLevelXp;
           user.profile.level += 1;
           user.profile.levelExp = calculateNextLevelXpBonus(user.profile.level);
 
@@ -61,8 +61,8 @@ module.exports = class MessageCreate extends Event {
           user.balance.coin += celebrationCoin;
 
           const newLimits = getLimitsForLevel(user.profile.level);
-          user.dailyLimit.transferLimit = newLimits.send;
-          user.dailyLimit.receiveLimit = newLimits.receive;
+          user.dailyLimits.transferLimit = newLimits.send;
+          user.dailyLimits.receiveLimit = newLimits.receive;
 
 
 
@@ -81,10 +81,10 @@ module.exports = class MessageCreate extends Event {
           const embed = this.client.embed()
               .setColor(this.client.color.main)
               .setTitle(`𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
+              .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
               .setDescription(`Congratulations ${message.author.displayName}!\n
                     You leveled up to level ${user.profile.level}!\n
                     You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emote.coin}.`)
-              .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
               .setImage('attachment://level-up.png');
 
           await message.channel.send({
@@ -292,7 +292,7 @@ module.exports = class MessageCreate extends Event {
                   .setColor(this.client.color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                   .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${this.client.emoji.mainRight}`)
-                  .setDescription(`${this.client.emoji.warming} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(5000000)} ${this.client.emote.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
+                  .setDescription(`${this.client.emoji.warming} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(500000)} ${this.client.emote.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
                   .setImage(gif.thankYou)
               await int.editReply({
                 content: '',

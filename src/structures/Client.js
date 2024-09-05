@@ -11,7 +11,7 @@ const config = require('../config.js');
 const emojis = require('../emotes.js');
 const Logger = require('./Logger.js');
 
-module.exports = class DDMasterClient extends Client {
+module.exports = class PeachyClient extends Client {
     constructor(options) {
         super(options);
         this.commands = new Collection();
