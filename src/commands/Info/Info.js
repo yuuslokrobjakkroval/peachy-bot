@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const {ActionRowBuilder, ButtonBuilder} = require("discord.js");
 
 class Info extends Command {
   constructor(client) {
@@ -30,28 +31,40 @@ class Info extends Command {
   }
 
   async run(client, ctx) {
-    const botName = "PEACHY";
-    const botDescription = "A multi-purpose bot designed for fun and enjoyment!";
-    const botFeatures = `
-**Fun and Games**:\nEnjoy various games and gambling features, from slot machines to quizzes.\n
-**Social Interaction**:\nEngage with custom commands and interactive features.\n
-**Utility**:\nManage server settings and get useful information easily.\n`;
+    const embed = this.client
+        .embed()
+        .setColor(this.client.color.main)
+        .setTitle(`${client.user.username}'s information!`)
+        .setDescription(
+            `${client.user.username} is your multi-purpose Discord bot designed for fun, entertainment, and utility. With ${client.user.username} features, you can go mining, try your luck at gambling, play mini-games, and much more!`
+        )
+        .addFields([
+          { name: '𝐎𝐖𝐍𝐄𝐑', value: `[𝐊𝐘𝐔𝐔](https://discord.com/users/966688007493140591)`, inline: false },
+          { name: '𝐁𝐀𝐁𝐘 𝐎𝐖𝐍𝐄𝐑', value: `[𝐊𝐄𝐎𝐘𝐔𝐔](https://discord.com/users/946079190971732041)`, inline: false },
+          {
+            name: '𝐃𝐄𝐕',
+            value: `[𝐃𝐀𝐃𝐃𝐘 𝐊𝐘𝐔𝐔](https://discord.com/users/966688007493140591)`,
+            inline: false,
+          },
+          {
+            name: '𝐆𝐑𝐀𝐏𝐇𝐈𝐂 𝐃𝐄𝐒𝐈𝐆𝐍',
+            value: `[𝐙𝐄𝐄𝐋𝐄𝐄](https://discord.com/users/845918847482724363)`,
+            inline: false,
+          },
+          {
+            name: '𝐒𝐔𝐏𝐏𝐎𝐑𝐓𝐄𝐑',
+            value: `[𝐇𝐔𝐆𝐌𝐄](https://discord.com/users/1006597979932725320), [𝐍𝐈𝐌𝐎𝐋](https://discord.com/users/990645277033656362)`,
+            inline: false,
+          },
+        ])
+        .setFooter({ text: 'Having any issues, need help, or want to report bugs? Clicking the link below' });
+    const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(1),
+        new ButtonBuilder().setLabel('Invite Me!').setStyle(5).setURL(client.config.links.invite),
+        new ButtonBuilder().setLabel('Vote for Me').setStyle(5).setURL(client.config.links.vote)
+    );
 
-    const botOwnerInfo = `
-**Bot Owner Information**:
-- **Discord:** [DADDY KYUU](https://discord.com/users/966688007493140591)
-- **Facebook:** [Thoeurn Rothanak](https://www.facebook.com/thoeurnrothanak?mibextid=LQQJ4d)`;
-
-    const botInfo = `**Bot Information**:
-- **Name:** ${botName}
-- **Description:** ${botDescription}
-- **Features:** ${botFeatures}
-${botOwnerInfo}`;
-
-    const embed = this.client.embed();
-    return await ctx.sendMessage({
-      embeds: [embed.setColor(client.color.main).setDescription(botInfo).setImage(client.config.links.banner)],
-    });
+    return await ctx.sendMessage({ embeds: [embed], components: [row] });
   }
 }
 
