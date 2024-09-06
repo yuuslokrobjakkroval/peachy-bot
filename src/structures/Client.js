@@ -8,13 +8,13 @@ const Utils = require('../utils/Utils.js');
 const { I18n } = require('@hammerhq/localization');
 const Users = require('../schemas/user.js');
 const config = require('../config.js');
-const emojis = require('../emotes.js');
+const emojis = require('../emojis.js');
 
 const configPeach = require('../theme/peach/config.js');
-const emojiPeach = require('../theme/peach/emotes.js');
+const emojiPeach = require('../theme/peach/emojis.js');
 
 const configGoma = require('../theme/goma/config.js');
-const emojiGoma = require('../theme/goma/emotes.js');
+const emojiGoma = require('../theme/goma/emojis.js');
 
 const Logger = require('./Logger.js');
 
