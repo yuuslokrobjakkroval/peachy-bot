@@ -85,7 +85,7 @@ module.exports = class Peachy extends Command {
             .setTitle(`${ctx.author.displayName} is peachy!`)
             .setDescription(
                 client.i18n.get(language, 'commands', 'beg_success', {
-                    coinEmote: client.emote.coin,
+                    coinEmote: client.emoji.coin,
                     coin: client.utils.formatNumber(baseCoins),
                 })
             );

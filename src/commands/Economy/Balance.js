@@ -54,17 +54,17 @@ module.exports = class Balance extends Command {
                 .setColor(client.color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(
-                    `**Coin: \`${client.utils.formatNumber(coin)}\` ${client.emote.coin}\nBank: \`${client.utils.formatNumber(bank)}\` ${client.emote.coin}**`
+                    `**Coin: \`${client.utils.formatNumber(coin)}\` ${client.emoji.coin}\nBank: \`${client.utils.formatNumber(bank)}\` ${client.emoji.coin}**`
                 )
                 .addFields([
                     {
                         name: 'Transferred (per day)',
-                        value: `**\`${client.utils.formatNumber(sentToday)}\` / \`${client.utils.formatNumber(limits.send)}\`** ${client.emote.coin}`,
+                        value: `**\`${client.utils.formatNumber(sentToday)}\` / \`${client.utils.formatNumber(limits.send)}\`** ${client.emoji.coin}`,
                         inline: true,
                     },
                     {
                         name: 'Received (per day)',
-                        value: `**\`${client.utils.formatNumber(receivedToday)}\` / \`${client.utils.formatNumber(limits.receive)}\`** ${client.emote.coin}`,
+                        value: `**\`${client.utils.formatNumber(receivedToday)}\` / \`${client.utils.formatNumber(limits.receive)}\`** ${client.emoji.coin}`,
                         inline: true,
                     }
                 ]);

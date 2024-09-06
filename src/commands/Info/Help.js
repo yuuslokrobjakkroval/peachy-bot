@@ -85,7 +85,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
 
           helpEmbed.addFields([
             {
-              name: `${client.emote.help[category.toLowerCase()]} ${font[category]}`,
+              name: `${client.emoji.help[category.toLowerCase()]} ${font[category]}`,
               value: commandNames,
               inline: false,
             },

@@ -84,7 +84,7 @@ module.exports = class MessageCreate extends Event {
               .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
               .setDescription(`Congratulations ${message.author.displayName}!\n
                     You leveled up to level ${user.profile.level}!\n
-                    You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emote.coin}.`)
+                    You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emoji.coin}.`)
               .setImage('attachment://level-up.png');
 
           await message.channel.send({
@@ -292,7 +292,7 @@ module.exports = class MessageCreate extends Event {
                   .setColor(this.client.color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                   .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${this.client.emoji.mainRight}`)
-                  .setDescription(`${this.client.emoji.warming} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(500000)} ${this.client.emote.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
+                  .setDescription(`${this.client.emoji.warming} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(500000)} ${this.client.emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
                   .setImage(gif.thankYou)
               await int.editReply({
                 content: '',
