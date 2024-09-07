@@ -34,7 +34,7 @@ class Info extends Command {
     const embed = this.client
         .embed()
         .setColor(this.client.color.main)
-        .setTitle(`${client.user.username}'s information!`)
+        .setTitle(`${client.emoji.mainLeft} 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍! ${client.emoji.mainRight}`)
         .setDescription(
             `${client.user.username} is your multi-purpose Discord bot designed for fun, entertainment, and utility. With ${client.user.username} features, you can go mining, try your luck at gambling, play mini-games, and much more!`
         )

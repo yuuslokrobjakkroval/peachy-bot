@@ -1,7 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
-const { formatNumber } = require('../../utils/Utils.js');
 
 module.exports = class UserBalance extends Command {
     constructor(client) {
@@ -65,18 +64,18 @@ module.exports = class UserBalance extends Command {
                 .setColor(client.color.main)
                 .setThumbnail(target.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(
-                    `**Coin: \`${client.utils.formatNumber(coin)}\`** ${client.emote.coin}\n` +
-                    `**Bank: \`${client.utils.formatNumber(bank)}\`** ${client.emote.coin}`
+                    `**Coin: \`${client.utils.formatNumber(coin)}\`** ${client.emoji.coin}\n` +
+                    `**Bank: \`${client.utils.formatNumber(bank)}\`** ${client.emoji.coin}`
                 )
                 .addFields([
                     {
                         name: 'Transferred (per day)',
-                        value: `**\`${client.utils.formatNumber(sentToday)}\` / \`${client.utils.formatNumber(limits.send)}\`** ${client.emote.coin}`,
+                        value: `**\`${client.utils.formatNumber(sentToday)}\` / \`${client.utils.formatNumber(limits.send)}\`** ${client.emoji.coin}`,
                         inline: true,
                     },
                     {
                         name: 'Received (per day)',
-                        value: `**\`${client.utils.formatNumber(receivedToday)}\` / \`${client.utils.formatNumber(limits.receive)}\`** ${client.emote.coin}`,
+                        value: `**\`${client.utils.formatNumber(receivedToday)}\` / \`${client.utils.formatNumber(limits.receive)}\`** ${client.emoji.coin}`,
                         inline: true,
                     }
                 ]);

@@ -31,7 +31,7 @@ module.exports = class ClearMoney extends Command {
         const embed = client
             .embed()
             .setColor(client.color.main)
-            .setDescription(`${client.emote.tick} Cleared all money from ${user}'s balance.`);
+            .setDescription(`${client.emoji.tick} Cleared all money from ${user}'s balance.`);
 
         try {
             await Users.updateOne(

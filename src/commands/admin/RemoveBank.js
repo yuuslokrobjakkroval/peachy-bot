@@ -56,7 +56,7 @@ module.exports = class RemoveBank extends Command {
             .embed()
             .setColor(client.color.main)
             .setDescription(
-                `${client.emote.tick} Removed **\`${client.utils.formatNumber(baseAmount)}\`** ${client.emote.coin} from ${mention}'s bank balance.`
+                `${client.emoji.tick} Removed **\`${client.utils.formatNumber(baseAmount)}\`** ${client.emoji.coin} from ${mention}'s bank balance.`
             );
 
         await Users.updateOne(

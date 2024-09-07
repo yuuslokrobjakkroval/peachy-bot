@@ -74,7 +74,7 @@ module.exports = class AddMoney extends Command {
             .embed()
             .setColor(client.color.main)
             .setDescription(
-                `${client.emote.tick} Added **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emote.coin} to ${mention} balance.`
+                `${client.emoji.tick} Added **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emoji.coin} to ${mention} balance.`
             );
 
         await Users.updateOne(

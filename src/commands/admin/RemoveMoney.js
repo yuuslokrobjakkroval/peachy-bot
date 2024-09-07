@@ -55,7 +55,7 @@ module.exports = class RemoveMoney extends Command {
             .embed()
             .setColor(client.color.main)
             .setDescription(
-                `${client.emote.tick} Removed **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emote.coin} to ${mention} balance.`
+                `${client.emoji.tick} Removed **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emoji.coin} to ${mention} balance.`
             );
 
         await Promise.all([
