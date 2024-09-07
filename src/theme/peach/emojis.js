@@ -55,15 +55,6 @@ module.exports = {
         white: '<:WHITECAKE:1272826828981010433>',
         pink: '<:PINKCAKE:1272826839655645236>',
     },
-    slots: {
-        cat: '<:CAT:1272808741934469173>',
-        coffee: '<:DRINKS:1272808777686712373>',
-        heart: '<:HEART:1272808792261918721>',
-        cake: '<:CAKE:1272808800549863445>',
-        milk: '<:MILK:1272808817041608808>',
-        peachy: '<:PEACHY:1272808826571329636>',
-        spin: '<a:SLOTS:1272809917329182791>',
-    },
 
     time: {
         clock: '`⏰`',
@@ -263,6 +254,20 @@ module.exports = {
         facebook: '<a:FACEBOOK:1281824132136435764>',
         instagram: '<a:INSTAGRAM:1281824139631661117>',
         tiktok: '<a:TIKTOK:1281824146568773642>',
+    },
+    slots: {
+        cat: '<:PEACHHAND:1282072021143916636>',
+        coffee: '<:PEACHDRINK:1282072010612281375>',
+        heart: '<:PEACHHEART:1282071979830022144>',
+        cake: '<:PEACHCAKE:1282072000218660966>',
+        milk: '<:PEACHMILK:1282071897294770311>',
+        peachy: '<:PEACH:1282071836590608457>',
+        spin: '<a:PEACHSLOTS:1282071812808773746>',
+    },
+    coinFlip: {
+        peach: '<:PEACHCOIN:1281820633621074023>',
+        goma: '<:GOMACOIN:1281820649416953878>',
+        flip: '<a:COINFLIP:1281820615673774130>',
     },
     letter: {
         a: '<a:A_:1281517563846721546>',

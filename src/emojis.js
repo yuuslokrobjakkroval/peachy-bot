@@ -41,34 +41,10 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
-    slots: {
-        cat: '<:CAT:1272808741934469173>',
-        coffee: '<:DRINKS:1272808777686712373>',
-        heart: '<:HEART:1272808792261918721>',
-        cake: '<:CAKE:1272808800549863445>',
-        milk: '<:MILK:1272808817041608808>',
-        peachy: '<:PEACHY:1272808826571329636>',
-        spin: '<a:SLOTS:1272809917329182791>',
-    },
-    coinFlip: {
-        peach: '<:PEACHCOIN:1281820633621074023>',
-        goma: '<:GOMACOIN:1281820649416953878>',
-        flip: '<a:COINFLIP:1281820615673774130>',
-    },
+
 
     heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
-    drink: {
-        guest: '<a:DRINKING:1271717032882077766>',
-    },
-    cake: {
-        birthday: '<a:PIXELCAKE:1272826868776702024>',
-        cupcake: '<:CUPCAKE:1272838036358565912>',
-        lemon: '<:LEMONCAKE:1272826776246026365>',
-        chocolate: '<:CHOCOLATECAKE:1272826811281182764>',
-        orange: '<:ORANGECAKE:1272826817912508456>',
-        white: '<:WHITECAKE:1272826828981010433>',
-        pink: '<:PINKCAKE:1272826839655645236>',
-    },
+
 
     time: {
         clock: '`⏰`',
@@ -268,6 +244,20 @@ module.exports = {
         facebook: '<a:FACEBOOK:1281824132136435764>',
         instagram: '<a:INSTAGRAM:1281824139631661117>',
         tiktok: '<a:TIKTOK:1281824146568773642>',
+    },
+    slots: {
+        cat: '<:CAT:1272808741934469173>',
+        coffee: '<:DRINKS:1272808777686712373>',
+        heart: '<:HEART:1272808792261918721>',
+        cake: '<:CAKE:1272808800549863445>',
+        milk: '<:MILK:1272808817041608808>',
+        peachy: '<:PEACHY:1272808826571329636>',
+        spin: '<a:SLOTS:1272809917329182791>',
+    },
+    coinFlip: {
+        peach: '<:PEACHCOIN:1281820633621074023>',
+        goma: '<:GOMACOIN:1281820649416953878>',
+        flip: '<a:COINFLIP:1281820615673774130>',
     },
     letter: {
         a: '<a:A_:1272825567481167934>',
