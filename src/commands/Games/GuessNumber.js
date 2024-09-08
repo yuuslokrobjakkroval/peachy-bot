@@ -80,8 +80,8 @@ module.exports = class GuessNumber extends Command {
                 if (hearts > 0) {
                     let hint = '';
                     if (incorrectGuesses === 2) {
-                        const minRange = Math.max(0, numberToGuess - 10);
-                        const maxRange = Math.min(100, numberToGuess + 10);
+                        const minRange = Math.max(0, numberToGuess - 6);
+                        const maxRange = Math.min(100, numberToGuess + 8);
                         hint = `Here's a hint: The number is between **${minRange}** and **${maxRange}**.`;
                     }
 
