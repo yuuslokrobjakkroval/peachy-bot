@@ -11,10 +11,10 @@ module.exports = class Theme extends Command {
                     'theme show - Shows your current theme.',
                     'theme peach - Sets your theme to peach.',
                     'theme goma - Sets your theme to goma.',
-                    'theme normal - Sets your theme to normal.',
+                    'theme normal - Sets your theme to love.',
                     'theme help - Shows command usage examples.'
                 ],
-                usage: 'theme show\n theme peach\n theme goma\n theme normal\n theme help',
+                usage: 'theme show\n theme peach\n theme goma\n theme love\n theme help',
             },
             category: 'utility',
             aliases: ['t'],
@@ -51,7 +51,7 @@ module.exports = class Theme extends Command {
             case 'normal': {
                 const mode = subCommand;
                 embed
-                    .setColor(mode === 'peach' ? '#BBDEE4' : mode === 'goma' ? '#664C36' : '#FFFFFF')
+                    .setColor(mode === 'peach' ? '#BBDEE4' : mode === 'goma' ? '#F5BABC' : '#C8A8E9')
                     .setDescription(`Your theme has been set to **${client.utils.formatCapitalize(mode)}**.`);
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'preferences.theme': mode } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -75,7 +75,7 @@ module.exports = class Theme extends Command {
                 const user = await Users.findOne({ userId: ctx.author.id });
                 const currentTheme = user?.preferences?.theme || 'Not set';
 
-                const themeColor = currentTheme === 'peach' ? '#BBDEE4' : currentTheme === 'goma' ? '#664C36' : '#FFFFFF';
+                const themeColor = currentTheme === 'peach' ? '#BBDEE4' : currentTheme === 'goma' ? '#F5BABC' : '#C8A8E9';
 
                 embed
                     .setDescription(`Your current theme is **${client.utils.formatCapitalize(currentTheme)}**.`)
