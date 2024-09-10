@@ -4,8 +4,9 @@ const font = {
   Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
   Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
   Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
-  Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
+  fun: '𝐅𝐔𝐍',
   Games: '𝐆𝐀𝐌𝐄𝐒',
+  Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
   Giveaway: '𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘',
   Profile: '𝐏𝐑𝐎𝐅𝐈𝐋𝐄',
   Social: '𝐒𝐎𝐂𝐈𝐀𝐋',
@@ -54,7 +55,7 @@ module.exports = class Help extends Command {
     const prefix = client.config.prefix;
 
     const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
-    const categories = ['Actions', 'Economy', 'Inventory', 'Games', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info',];
+    const categories = ['Actions', 'Economy', 'Inventory', 'fun', 'Games', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info',];
 
     if (!args[0]) {
       const sortedCommands = {};

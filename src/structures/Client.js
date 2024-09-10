@@ -16,6 +16,9 @@ const emojiPeach = require('../theme/peach/emojis.js');
 const configGoma = require('../theme/goma/config.js');
 const emojiGoma = require('../theme/goma/emojis.js');
 
+const configPjum = require('../theme/pjumben/config.js');
+const emojiPjum = require('../theme/pjumben/emojis.js');
+
 const Logger = require('./Logger.js');
 
 module.exports = class PeachyClient extends Client {
@@ -128,7 +131,10 @@ module.exports = class PeachyClient extends Client {
     async setColorBasedOnTheme(userId) {
         const user = await this.db.findOne({ userId });
         if (user && user.preferences && user.preferences.theme) {
-            if (user.preferences.theme === 'peach') {
+            if (user.preferences.theme === 'pjumben') {
+                this.color = configPjum.color;
+                this.emoji = emojiPjum;
+            } else if (user.preferences.theme === 'peach') {
                 this.color = configPeach.color;
                 this.emoji = emojiPeach;
             } else if (user.preferences.theme === 'goma') {

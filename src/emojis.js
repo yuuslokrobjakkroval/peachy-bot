@@ -66,6 +66,7 @@ module.exports = {
         actions: '<a:NORMALACTIONS:1282637922863939597>',
         economy: '<:COIN:1281821085209460797>',
         inventory: '<a:NORMALINVENTORY:1282637993156411432>',
+        fun: '<a:ROAR_1:1283083752896987209>',
         games: '<:NORMALGAME:1282638025402224704>',
         gambling: '<:GAMBLING:1282638278780256357>',
         profile: '<a:NORMALPROFILE:1282639241989460061>',

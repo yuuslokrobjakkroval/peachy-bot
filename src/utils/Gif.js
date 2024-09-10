@@ -20,5 +20,6 @@ module.exports = {
     welcomeToPeachAndGoma: 'https://i.imgur.com/12bykrb.gif',
     welcomeToPeach: 'https://i.imgur.com/nDocQCG.gif',
     welcomeToGoma: 'https://i.imgur.com/eIdHzUJ.gif',
+    welcomeToPjumBen: 'https://i.imgur.com/0IzitAm.jpg',
 
 };

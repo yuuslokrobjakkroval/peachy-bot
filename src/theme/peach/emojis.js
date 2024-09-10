@@ -80,6 +80,7 @@ module.exports = {
         actions: '<a:PEACHACTION:1282953188349182016>',
         economy: '<:PEACHCOIN:1281820633621074023>',
         inventory: '<a:PEACHINVENTORY:1282953361250975795>',
+        fun: '<a:ROAR_1:1283083752896987209>',
         games: '<:PEACHGAME:1282953378158346250>',
         gambling: '<:GAMBLING:1282638278780256357>',
         profile: '<:PEACHMAIN:1281827601412915230>',

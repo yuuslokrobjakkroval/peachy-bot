@@ -47,12 +47,13 @@ module.exports = class Theme extends Command {
         const embed = client.embed().setTitle(`${client.emoji.mainLeft} 𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒 ${client.emoji.mainRight}`);
 
         switch (subCommand) {
+            case 'pjumben':
             case 'peach':
             case 'goma':
             case 'normal': {
                 const theme = subCommand;
-                const themeColor = theme === 'peach' ? '#8BD3DD' : theme === 'goma' ? '#AC7D67' : '#F582AE';
-                const images = theme === 'peach' ? gif.welcomeToPeach : theme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
+                const themeColor = theme === 'pjumben' ? '#FFD166' : theme === 'peach' ? '#8BD3DD' : theme === 'goma' ? '#AC7D67' : '#F582AE';
+                const images = theme === 'pjumben' ? gif.welcomeToPjumBen : theme === 'peach' ? gif.welcomeToPeach : theme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
                 embed
                     .setColor(themeColor)
                     .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
@@ -79,8 +80,8 @@ module.exports = class Theme extends Command {
             default: {
                 const user = await Users.findOne({ userId: ctx.author.id });
                 const currentTheme = user?.preferences?.theme || 'Not set';
-                const themeColor = currentTheme === 'peach' ? '#8BD3DD' : currentTheme === 'goma' ? '#AC7D67' : '#F582AE';
-                const images = currentTheme === 'peach' ? gif.welcomeToPeach : currentTheme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
+                const themeColor = currentTheme === 'pjumben' ? '#FFD166' : currentTheme === 'peach' ? '#8BD3DD' : currentTheme === 'goma' ? '#AC7D67' : '#F582AE';
+                const images = currentTheme === 'pjumben' ? gif.welcomeToPjumBen : currentTheme === 'peach' ? gif.welcomeToPeach : currentTheme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
                 embed
                     .setColor(themeColor)
                     .setDescription(`Your current theme is **${client.utils.formatCapitalize(currentTheme)}**.`)
