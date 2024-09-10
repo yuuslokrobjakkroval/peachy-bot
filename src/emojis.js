@@ -242,12 +242,12 @@ module.exports = {
         tiktok: '<a:TIKTOK:1281824146568773642>',
     },
     slots: {
-        cat: '<:GOMAHAND:1282072483549155480>',
-        coffee: '<:GOMADRINK:1282072460216238151>',
-        heart: '<:GOMAHEART:1282072415890968666>',
-        cake: '<:GOMADONUT:1282072222105604238>',
-        milk: '<:GOMAMILK:1282072170394292373>',
-        peachy: '<:GOMA:1282072151972909123>',
+        cat: '<:PAPER:1283112108795629650>',
+        coffee: '<:TIME:1283112163409662012>',
+        heart: '<:BALL:1283112176848207935>',
+        cake: '<:GRAPE:1283112190718509199>',
+        milk: '<:DIAMOND:1283112198708920362>',
+        peachy: '<:COIN:1281821085209460797>',
         spin: '<a:GOMASLOTS:1282072120901238855>',
     },
     coinFlip: {
