@@ -247,7 +247,7 @@ module.exports = {
         heart: '<:BALL:1283112176848207935>',
         cake: '<:GRAPE:1283112190718509199>',
         milk: '<:DIAMOND:1283112198708920362>',
-        peachy: '<:COIN:1281821085209460797>',
+        peachy: '<:NORMALCOINSLOT:1283113489979805706>',
         spin: '<a:GOMASLOTS:1282072120901238855>',
     },
     coinFlip: {
