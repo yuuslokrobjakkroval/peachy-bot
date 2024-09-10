@@ -36,10 +36,10 @@ module.exports = {
     },
     links: {
         banner: 'https://i.imgur.com/kYXE4No.gif',
-        support: 'https://discord.gg/cCNZHVEbcu',
-        invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=1789356665943&scope=bot+applications.commands`,
+        support: 'https://discord.gg/GdspXPrMPA',
+        invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&integration_type=0&scope=bot+applications.commands`,
         vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
-        website: 'https://top.gg/bot/${process.env.CLIENT_ID}/vote',
+        website: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
     },
 };
 

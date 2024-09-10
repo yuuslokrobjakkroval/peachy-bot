@@ -6,7 +6,7 @@ const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 
-const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight];
+const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight, gif.welcomeNine, gif.welcomeTen];
 
 const activeGames = new Map();
 
