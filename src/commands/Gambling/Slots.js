@@ -74,10 +74,10 @@ class Slots extends Command {
 		} else if (rand <= 48) { // 7.5%
 			win = 0;
 			rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-		} else if (rand <= 52.75) { // 3.75%
+		} else if (rand <= 54.75) { // 5.75%
 			win = baseCoins * 4;
 			rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-		} else if (rand <= 55.75) { // 1.5%
+		} else if (rand <= 57.25) { // 2.5%
 			win = baseCoins * 10;
 			rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 		} else { // 45.5%
