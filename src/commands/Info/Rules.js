@@ -1,6 +1,6 @@
 const { Command } = require("../../structures/index.js");
 
-class Rules extends Command {
+module.exports = class Rules extends Command {
   constructor(client) {
     super(client, {
       name: "rules",
@@ -49,5 +49,3 @@ class Rules extends Command {
     ctx.sendMessage({ embeds: [embed] });
   }
 }
-
-module.exports = Rules;

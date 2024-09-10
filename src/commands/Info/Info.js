@@ -1,7 +1,7 @@
 const { Command } = require("../../structures/index.js");
 const {ActionRowBuilder, ButtonBuilder} = require("discord.js");
 
-class Info extends Command {
+module.exports = class Info extends Command {
   constructor(client) {
     super(client, {
       name: "info",
@@ -67,5 +67,3 @@ class Info extends Command {
     return await ctx.sendMessage({ embeds: [embed], components: [row] });
   }
 }
-
-module.exports = Info;

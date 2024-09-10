@@ -37,7 +37,7 @@ module.exports = {
     info: '`📁`',
     premium: '`💎`',
     home: '`🏡`',
-    ping: '`🏓`',
+    ping: '<:STATS:1283004222023143434>',
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
@@ -50,6 +50,9 @@ module.exports = {
         night: '<a:NIGHT:1282624979686658119>'
     },
     rank: {
+        owner: '<:OWNER:1282976626560335883>',
+        babyOwner: '<:BABYOWNER:1282976634617593898>',
+        developer: '<:NIGHTMARERANK:1282976705438289973>',
         one: '<:GRANDCHAMPIONRANK:1282976716234428416>',
         two: '<:CHAMPIONRANK:1282976725684457472>',
         three: '<:LEGENDRANK:1282976733422817301>',

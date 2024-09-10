@@ -68,7 +68,7 @@ module.exports = class Peachy extends Command {
         const embed = client
             .embed()
             .setColor(client.color.main)
-            .setTitle(`${ctx.author.displayName} is peachy!`)
+            .setTitle(`${ctx.author.displayName} have claimed peachy!`)
             .setDescription(
                 client.i18n.get(language, 'commands', 'beg_success', {
                     coinEmote: client.emoji.coin,

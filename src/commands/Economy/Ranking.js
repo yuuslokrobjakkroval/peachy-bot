@@ -1,27 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 
-const handleEmoji = (no) => {
-    switch (no) {
-        case 1:
-            return this.client.emoji.rank.one;
-        case 2:
-            return this.client.emoji.rank.two;
-        case 3:
-            return this.client.emoji.rank.three;
-        case 4:
-            return this.client.emoji.rank.four;
-        case 5:
-            return this.client.emoji.rank.five;
-        case 6:
-            return this.client.emoji.rank.six;
-        case 7:
-            return this.client.emoji.rank.seven;
-        default:
-            return this.client.emoji.rank.eight;
-    }
-}
-
 module.exports = class Ranking extends Command {
     constructor(client) {
         super(client, {
@@ -58,7 +37,26 @@ module.exports = class Ranking extends Command {
 
     async run(client, ctx, args, language) {
         const type = ctx.isInteraction ? ctx.interaction.options.data[0]?.value : args[0] || 'bal';
-
+        const handleEmoji = (no) => {
+            switch (no) {
+                case 1:
+                    return client.emoji.rank.one;
+                case 2:
+                    return client.emoji.rank.two;
+                case 3:
+                    return client.emoji.rank.three;
+                case 4:
+                    return client.emoji.rank.four;
+                case 5:
+                    return client.emoji.rank.five;
+                case 6:
+                    return client.emoji.rank.six;
+                case 7:
+                    return client.emoji.rank.seven;
+                default:
+                    return client.emoji.rank.eight;
+            }
+        }
         if (type === 'bal') {
             const users = await Users.aggregate([
                 {
@@ -78,23 +76,23 @@ module.exports = class Ranking extends Command {
             }
 
             const userPosition = users.findIndex(({ userId }) => userId === ctx.author.id) + 1;
-            const userTotalCoins = users.find(({ userId }) => userId === ctx.author.id)?.totalCoins || 0;
-            const userRank = `Your position: **#${userPosition}**\nTotal coins: **\`${client.utils.formatNumber(userTotalCoins)}\`** ${client.emoji.coin}`;
+            const user = users.find(({ userId }) => userId === ctx.author.id);
+            const userRank = `**${user.username} Rank : ${userPosition} ${handleEmoji(userPosition)}**\n**${client.utils.formatNumber(user?.totalCoins || 0)}** ${client.emoji.coin}\n`;
 
             const leaderboardList = users.slice(0, 100).map((user, index) => {
                 const position = index + 1;
                 const emoji = handleEmoji(position);
-                const totalCoins = `**\`${client.utils.formatNumber(user.totalCoins)}\`** ${client.emoji.coin} `;
-                return `**${emoji} ${user.username ? user.username : 'Unknown'}**\n${totalCoins}`;
+                const totalCoins = `**${client.utils.formatNumber(user.totalCoins)}** ${client.emoji.coin} `;
+                return `**${emoji} ${position}. ${user.username ? user.username : 'Unknown'}**\n${totalCoins}`;
             });
 
             const chunks = client.utils.chunk(leaderboardList, 10);
             const pages = chunks.map((chunk, i) => {
                 return client
                     .embed()
-                    .setTitle('<a:Dom:1264200823542517812>🏆 **Global Coin Leaderboard** 🏆<a:Dom:1264200823542517812>')
+                    .setTitle(`${client.emoji.rank.owner} **𝐓𝐎𝐏 𝐏𝐇𝐔𝐌 𝐂𝐎𝐈𝐍𝐒** ${client.emoji.rank.owner}`)
                     .setColor(client.color.main)
-                    .setDescription(`${userRank}\n\n${chunk.join('\n\n')}`)
+                    .setDescription(`${userRank}\n${chunk.join('\n\n')}`)
                     .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
             });
 
@@ -106,22 +104,22 @@ module.exports = class Ranking extends Command {
             }
 
             const userPosition = users.findIndex(({ userId }) => userId === ctx.author.id) + 1;
-            const userStreak = users.find(({ userId }) => userId === ctx.author.id)?.peachy?.streak || 0;
-            const userRank = `Your position: **#${userPosition}**\nPEACHY: **${client.utils.formatNumber(userStreak)}** streaks`;
+            const user = users.find(({ userId }) => userId === ctx.author.id);
+            const userRank = `**${user.username} Rank :  ${userPosition} ${handleEmoji(userPosition)}**\n**${client.utils.formatNumber(user.peachy.streak || 0)} streaks**\n`;
 
             const leaderboardList = users.slice(0, 100).map((user, index) => {
                 const position = index + 1;
                 const emoji = handleEmoji(position);
-                return `**${emoji} ${user.username ? user.username : 'Unknown'}**\nPEACHY: **${client.utils.formatNumber(user.peachy.streak)}** streaks`;
+                return `**${emoji} ${position}. ${user.username ? user.username : 'Unknown'}**\n**${client.utils.formatNumber(user.peachy.streak)} streaks**`;
             });
 
             const chunks = client.utils.chunk(leaderboardList, 10);
             const pages = chunks.map((chunk, i) => {
                 return client
                     .embed()
-                    .setTitle('<a:Dom:1264200823542517812>🏆 **Global Daddy Leaderboard** 🏆<a:Dom:1264200823542517812>')
+                    .setTitle(`${client.emoji.rank.babyOwner} **𝐓𝐎𝐏 𝐏𝐇𝐔𝐌 𝐏𝐄𝐀𝐂𝐇𝐘** ${client.emoji.rank.babyOwner}`)
                     .setColor(client.color.main)
-                    .setDescription(`${userRank}\n\n${chunk.join('\n\n')}`)
+                    .setDescription(`${userRank}\n${chunk.join('\n\n')}`)
                     .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
             });
 

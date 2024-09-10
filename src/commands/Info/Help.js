@@ -3,7 +3,6 @@ const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
 const font = {
   Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
   Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
-  // Task: '𝐓𝐀𝐒𝐊',
   Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
   Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
   Games: '𝐆𝐀𝐌𝐄𝐒',

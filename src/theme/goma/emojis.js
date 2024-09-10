@@ -37,7 +37,7 @@ module.exports = {
     info: '`📁`',
     premium: '`💎`',
     home: '`🏡`',
-    ping: '`🏓`',
+    ping: '<:STATS:1283004222023143434>',
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
