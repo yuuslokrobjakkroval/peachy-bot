@@ -41,11 +41,7 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
-
-
     heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
-
-
     time: {
         clock: '`⏰`',
         daily: '<:DAILY:1272008002228060221>',
@@ -54,15 +50,14 @@ module.exports = {
         night: '<a:NIGHT:1282624979686658119>'
     },
     rank: {
-        one: '<:IMMORTAL:1271717971424710698>',
-        two: '<:IMMORTAL_TITLE:1271717983928188948>',
-        three: '<:DIVINE:1271717996993318942>',
-        four: '<:ANCIENT:1271718005621002290>',
-        five: '<:LEGEND:1271718016547160135>',
-        six: '<:ARCHON:1271718029553831996>',
-        seven: '<:CRUSADER:1271718069257113684>',
-        eight: '<:GUARDIAN:1271718096503046217>',
-        nine: '<:HERALD:1271718105839697950>'
+        one: '<:GRANDCHAMPIONRANK:1282976716234428416>',
+        two: '<:CHAMPIONRANK:1282976725684457472>',
+        three: '<:LEGENDRANK:1282976733422817301>',
+        four: '<:DIAMONDRANK:1282976747624726538>',
+        five: '<:PLATINUMRANK:1282976755686178878>',
+        six: '<:GOLDRANK:1282976770814902304>',
+        seven: '<:SILVERRANK:1282976779547709483>',
+        eight: '<:BRONZERANK:1282977459658035210>',
     },
     help: {
         actions: '<a:NORMALACTIONS:1282637922863939597>',

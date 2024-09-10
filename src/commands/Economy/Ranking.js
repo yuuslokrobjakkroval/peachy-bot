@@ -17,10 +17,8 @@ const handleEmoji = (no) => {
             return this.client.emoji.rank.six;
         case 7:
             return this.client.emoji.rank.seven;
-        case 8:
-            return this.client.emoji.rank.eight;
         default:
-            return this.client.emoji.rank.nine;
+            return this.client.emoji.rank.eight;
     }
 }
 
@@ -84,12 +82,10 @@ module.exports = class Ranking extends Command {
             const userRank = `Your position: **#${userPosition}**\nTotal coins: **\`${client.utils.formatNumber(userTotalCoins)}\`** ${client.emoji.coin}`;
 
             const leaderboardList = users.slice(0, 100).map((user, index) => {
-                const position = `#${index + 1} `;
+                const position = index + 1;
+                const emoji = handleEmoji(position);
                 const totalCoins = `**\`${client.utils.formatNumber(user.totalCoins)}\`** ${client.emoji.coin} `;
-                return `**${position
-                    .replace('#1 ', '<:crystaltrophy12_11zon:1264224156850061455> ')
-                    .replace('#2 ', '<:goldtrophy:1264221300621054106> ')
-                    .replace('#3 ', '<:silvertrophy:1264221291540648067> ')}${user.username ? user.username : 'Unknown'}**\n${totalCoins}`;
+                return `**${emoji} ${user.username ? user.username : 'Unknown'}**\n${totalCoins}`;
             });
 
             const chunks = client.utils.chunk(leaderboardList, 10);
@@ -111,14 +107,12 @@ module.exports = class Ranking extends Command {
 
             const userPosition = users.findIndex(({ userId }) => userId === ctx.author.id) + 1;
             const userStreak = users.find(({ userId }) => userId === ctx.author.id)?.peachy?.streak || 0;
-            const userRank = `Your position: **#${userPosition}**\nDD: **${client.utils.formatNumber(userStreak)}** streaks`;
+            const userRank = `Your position: **#${userPosition}**\nPEACHY: **${client.utils.formatNumber(userStreak)}** streaks`;
 
             const leaderboardList = users.slice(0, 100).map((user, index) => {
-                const position = `#${index + 1} `;
-                return `**${position
-                    .replace('#1 ', '<:crystaltrophy12_11zon:1264224156850061455> ')
-                    .replace('#2 ', '<:goldtrophy:1264221300621054106> ')
-                    .replace('#3 ', '<:silvertrophy:1264221291540648067> ')}${user.username ? user.username : 'Unknown'}**\nDD: **${client.utils.formatNumber(user.peachy.streak)}** streaks`;
+                const position = index + 1;
+                const emoji = handleEmoji(position);
+                return `**${emoji} ${user.username ? user.username : 'Unknown'}**\nPEACHY: **${client.utils.formatNumber(user.peachy.streak)}** streaks`;
             });
 
             const chunks = client.utils.chunk(leaderboardList, 10);
