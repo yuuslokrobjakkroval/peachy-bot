@@ -24,7 +24,7 @@ module.exports = class Help extends Command {
         examples: ['help'],
         usage: 'help',
       },
-      category: 'information',
+      category: 'info',
       aliases: ['h'],
       cooldown: 3,
       args: false,

@@ -9,7 +9,7 @@ module.exports = class Ping extends Command {
         examples: ["ping"],
         usage: "ping",
       },
-      category: "utility",
+      category: "info",
       aliases: ["pong"],
       cooldown: 3,
       args: false,

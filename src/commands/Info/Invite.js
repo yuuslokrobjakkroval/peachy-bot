@@ -10,7 +10,7 @@ class Invite extends Command {
         examples: ["invite"],
         usage: "invite",
       },
-      category: "utility",
+      category: "info",
       aliases: ["inv"],
       cooldown: 3,
       args: false,

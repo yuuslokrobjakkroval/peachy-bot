@@ -9,7 +9,7 @@ module.exports = class Rules extends Command {
         examples: ["rules"],
         usage: "rules",
       },
-      category: "utility",
+      category: "info",
       aliases: ["guidelines"],
       cooldown: 3,
       args: false,

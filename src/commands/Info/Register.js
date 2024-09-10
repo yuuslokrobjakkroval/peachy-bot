@@ -11,7 +11,7 @@ module.exports = class Register extends Command {
                 examples: ['register'],
                 usage: 'register',
             },
-            category: 'user',
+            category: 'info',
             aliases: ['signup', 'join'],
             cooldown: 5,
             args: false,

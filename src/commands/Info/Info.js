@@ -10,7 +10,7 @@ module.exports = class Info extends Command {
         examples: ["info"],
         usage: "info",
       },
-      category: "utility",
+      category: "info",
       aliases: ["botinfo", "bi"],
       cooldown: 3,
       args: false,

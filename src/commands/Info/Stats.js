@@ -10,7 +10,7 @@ module.exports = class Stats extends Command {
                 examples: ['stats'],
                 usage: 'stats',
             },
-            category: 'information',
+            category: 'info',
             aliases: ['botstats', 'statistics'],
             cooldown: 5,
             args: false,

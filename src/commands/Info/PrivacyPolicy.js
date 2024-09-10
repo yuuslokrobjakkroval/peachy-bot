@@ -9,7 +9,7 @@ class PrivacyPolicy extends Command {
         examples: ["privacy"],
         usage: "privacy",
       },
-      category: "utility",
+      category: "info",
       aliases: ["policy", "privacypolicy"],
       cooldown: 3,
       args: false,
