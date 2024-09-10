@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user.js');
+const gif = require("../../utils/Gif");
 
 module.exports = class Theme extends Command {
     constructor(client) {
@@ -49,11 +50,15 @@ module.exports = class Theme extends Command {
             case 'peach':
             case 'goma':
             case 'normal': {
-                const mode = subCommand;
+                const theme = subCommand;
+                const themeColor = theme === 'peach' ? '#8BD3DD' : theme === 'goma' ? '#AC7D67' : '#F582AE';
+                const images = theme === 'peach' ? gif.welcomeToPeach : theme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
                 embed
-                    .setColor(mode === 'peach' ? '#BBDEE4' : mode === 'goma' ? '#F5BABC' : '#C8A8E9')
-                    .setDescription(`Your theme has been set to **${client.utils.formatCapitalize(mode)}**.`);
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'preferences.theme': mode } }).exec();
+                    .setColor(themeColor)
+                    .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+                    .setDescription(`Your theme has been set to **${client.utils.formatCapitalize(theme)}**.`)
+                    .setImage(images);
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'preferences.theme': theme } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
@@ -74,12 +79,12 @@ module.exports = class Theme extends Command {
             default: {
                 const user = await Users.findOne({ userId: ctx.author.id });
                 const currentTheme = user?.preferences?.theme || 'Not set';
-
-                const themeColor = currentTheme === 'peach' ? '#BBDEE4' : currentTheme === 'goma' ? '#F5BABC' : '#C8A8E9';
-
+                const themeColor = currentTheme === 'peach' ? '#8BD3DD' : currentTheme === 'goma' ? '#AC7D67' : '#F582AE';
+                const images = currentTheme === 'peach' ? gif.welcomeToPeach : currentTheme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
                 embed
+                    .setColor(themeColor)
                     .setDescription(`Your current theme is **${client.utils.formatCapitalize(currentTheme)}**.`)
-                    .setColor(themeColor);
+                    .setImage(images);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;

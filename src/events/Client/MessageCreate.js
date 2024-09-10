@@ -6,12 +6,9 @@ const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 
-const activeGames = new Map();
+const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight];
 
-function getLimitsForLevel(level) {
-  const limit = transferLimits.find(limit => limit.level === level);
-  return limit || { send: 0, receive: 0 };
-}
+const activeGames = new Map();
 
 function getRandomXp(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -42,7 +39,7 @@ module.exports = class MessageCreate extends Event {
       if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
         let xpGained = 0;
         if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-          xpGained = getRandomXp(300, 500);
+          xpGained = getRandomXp(45, 55);
         } else {
           xpGained = getRandomXp(10, 15);
         }
@@ -74,10 +71,10 @@ module.exports = class MessageCreate extends Event {
           const embed = this.client.embed()
               .setColor(this.client.color.main)
               .setTitle(`𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
-              .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
               .setDescription(`Congratulations ${message.author.displayName}!\n
                     You leveled up to level ${user.profile.level}!\n
                     You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emoji.coin}.`)
+              .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
               .setImage('attachment://level-up.png');
 
           await message.channel.send({
@@ -275,18 +272,27 @@ module.exports = class MessageCreate extends Event {
                 )]
               });
             } else if (int.customId === 'confirm') {
-              if (!user) {
-                user = new Users({
-                  userId: int.user.id
-                });
-                await user.save();
-              }
+              const gift = 500000;
+              const userInfo = await this.client.users.fetch(int.user.id).catch(() => null);
+              await Users.updateOne(
+                  { userId: int.user.id },
+                  {
+                    $set: {
+                      username: userInfo ? userInfo.displayName : 'Unknown',
+                      balance: {
+                        coin: gift,
+                        bank: 0
+                      },
+                    }
+                  },
+                  { upsert: true }
+              );
               const embed = this.client.embed()
                   .setColor(this.client.color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                   .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${this.client.emoji.mainRight}`)
-                  .setDescription(`${this.client.emoji.warming} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(500000)} ${this.client.emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
-                  .setImage(gif.thankYou)
+                  .setDescription(`${this.client.emoji.congratulation} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
+                  .setImage(this.client.utils.getRandomElement(welcome))
               await int.editReply({
                 content: '',
                 embeds: [embed],
@@ -318,6 +324,11 @@ module.exports = class MessageCreate extends Event {
             await msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
           });
         } else {
+          const userInfo = await this.client.users.fetch(user.userId).catch(() => null);
+          if (!user.username || user.username !== userInfo.displayName ) {
+            user.username = userInfo ? userInfo.displayName : 'Unknown';
+            user.save();
+          }
 
           if (!command) return;
 

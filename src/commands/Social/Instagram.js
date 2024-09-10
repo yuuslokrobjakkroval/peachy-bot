@@ -58,36 +58,25 @@ module.exports = class Instagram extends Command {
                     description: 'Shows command usage examples and information.',
                     type: 1, // Sub-command type
                 },
-                {
-                    name: 'show',
-                    description: 'View someone\'s Instagram details.',
-                    type: 1, // Sub-command type
-                    options: [
-                        {
-                            name: 'user',
-                            description: 'Mention a user to view their Instagram details.',
-                            type: 6, // User type for mentions
-                            required: false,
-                        },
-                    ],
-                },
             ],
         });
     }
 
     async run(client, ctx, args, language) {
         const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
-        const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message?.mentions?.users?.first();
+        const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
         const user = await Users.findOne({ userId: targetUserId });
-        const targetUsername = mentionedUser ? mentionedUser.username : ctx.author.username;
+        const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
+
+        if(!user) {
+            return await client.utils.sendErrorMessage(client, ctx, 'User not found.');
+        }
 
         const embed = client.embed().setTitle(`${client.emoji.mainLeft} Instagram Settings for ${targetUsername} ${client.emoji.mainRight}`);
 
         switch (subCommand) {
             case 'name': {
-                if (mentionedUser) return client.utils.oops(client, ctx, 'You cannot change another user\'s Instagram name.');
-
                 const name = ctx.isInteraction ? ctx.interaction.options.getString('name') : args.slice(1).join(' ');
                 if (!name || name.length > 21) {
                     return await client.utils.oops(client, ctx, 'Please provide a valid Instagram name (up to 21 characters).');
@@ -101,8 +90,6 @@ module.exports = class Instagram extends Command {
             }
 
             case 'link': {
-                if (mentionedUser) return client.utils.oops(client, ctx, 'You cannot change another user\'s Instagram link.');
-
                 const link = ctx.isInteraction ? ctx.interaction.options.getString('link') : args.slice(1).join(' ');
                 const urlPattern = /^https?:\/\/[^\s$.?#].[^\s]*$/;
 
@@ -131,22 +118,15 @@ module.exports = class Instagram extends Command {
                 break;
             }
 
-            case 'show': {
+            default: {
                 const igName = user.social.instagram.name || 'Not set';
-                const igLink = user.social.instagram.link || 'Not set';
+                const igLink = user.social.instagram.link || '';
 
-                embed.setDescription(`${targetUsername}'s Instagram details:`)
-                    .addFields([
-                        { name: 'Instagram Name', value: `\`\`\`${igName}\`\`\``, inline: false },
-                        { name: 'Instagram Link', value: igLink === 'Not set' ? igLink : `[Link](${igLink})`, inline: false }
-                    ]);
+                embed.setColor(client.color.main).setDescription(
+                    `**${client.emoji.social.instagram} : ${igName && igLink ? `[${igName}](${igLink})` : igName ? igName : 'Not set'}**`)
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
-            }
-
-            default: {
-                await client.utils.oops(client, ctx, 'Invalid sub-command. Use `instagram help` for guidance.');
             }
         }
     }

@@ -58,36 +58,25 @@ module.exports = class TikTok extends Command {
                     description: 'Shows command usage examples and information.',
                     type: 1, // Sub-command type
                 },
-                {
-                    name: 'show',
-                    description: 'View someone\'s TikTok details.',
-                    type: 1, // Sub-command type
-                    options: [
-                        {
-                            name: 'user',
-                            description: 'Mention a user to view their TikTok details.',
-                            type: 6, // User type for mentions
-                            required: false,
-                        },
-                    ],
-                },
             ],
         });
     }
 
     async run(client, ctx, args, language) {
         const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
-        const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message?.mentions?.users?.first();
+        const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
         const user = await Users.findOne({ userId: targetUserId });
-        const targetUsername = mentionedUser ? mentionedUser.username : ctx.author.username;
+        const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
+
+        if(!user) {
+            return await client.utils.sendErrorMessage(client, ctx, 'User not found.');
+        }
 
         const embed = client.embed().setTitle(`${client.emoji.mainLeft} TikTok Settings for ${targetUsername} ${client.emoji.mainRight}`);
 
         switch (subCommand) {
             case 'name': {
-                if (mentionedUser) return client.utils.oops(client, ctx, 'You cannot change another user\'s TikTok name.');
-
                 const name = ctx.isInteraction ? ctx.interaction.options.getString('name') : args.slice(1).join(' ');
                 if (!name || name.length > 21) {
                     return await client.utils.oops(client, ctx, 'Please provide a valid TikTok name (up to 21 characters).');
@@ -101,8 +90,6 @@ module.exports = class TikTok extends Command {
             }
 
             case 'link': {
-                if (mentionedUser) return client.utils.oops(client, ctx, 'You cannot change another user\'s TikTok link.');
-
                 const link = ctx.isInteraction ? ctx.interaction.options.getString('link') : args.slice(1).join(' ');
                 const urlPattern = /^https?:\/\/[^\s$.?#].[^\s]*$/;
 
@@ -131,22 +118,15 @@ module.exports = class TikTok extends Command {
                 break;
             }
 
-            case 'show': {
+            default: {
                 const ttName = user.social.tiktok.name || 'Not set';
-                const ttLink = user.social.tiktok.link || 'Not set';
+                const ttLink = user.social.tiktok.link || '';
 
-                embed.setDescription(`${targetUsername}'s TikTok details:`)
-                    .addFields([
-                        { name: 'TikTok Name', value: `\`\`\`${ttName}\`\`\``, inline: false },
-                        { name: 'TikTok Link', value: ttLink === 'Not set' ? ttLink : `[Link](${ttLink})`, inline: false }
-                    ]);
+                embed.setColor(client.color.main).setDescription(
+                    `**${client.emoji.social.tiktok} : ${ttName && ttLink ? `[${ttName}](${ttLink})` : ttName ? ttName : 'Not set'}**`)
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
-            }
-
-            default: {
-                await client.utils.oops(client, ctx, 'Invalid sub-command. Use `tiktok help` for guidance.');
             }
         }
     }

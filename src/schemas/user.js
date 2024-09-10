@@ -31,7 +31,9 @@ const ProfileSchema = new Schema({
     birthdayAcknowledged: { type: Boolean, default: false },
     xp: { type: Number, default: 0 },
     level: { type: Number, default: 1 },
+    levelXp: { type: Number, default: 1000 },
     lastXpGain: { type: Number, default: 0 },
+    visibility: { status: { type: Boolean, default: false }, message: { type: String, default: null }} ,
     likes: { type: [String], default: [] }
 });
 
@@ -92,22 +94,23 @@ const achievementsSchema = new Schema({
 // User Schema
 const userSchema = new Schema({
     userId: { type: String, required: true, unique: true, index: true },
+    username: { type: String, default: null },
     prefix: { type: String, default: config.prefix },
     verification: { type: VerificationSchema, default: () => ({}) },
     balance: {
-        coin: { type: Number, default: 500000 },  // Initial gift
+        coin: { type: Number, default: 500000 },
         bank: { type: Number, default: 0 }
     },
     peachy: {
         streak: { type: Number, default: 0 }
     },
-    quest: [{
-        id: { type: String, required: true },
-        type: { type: String, enum: ['peach', 'transfer'], required: true },
-        progress: { type: Number, default: 0 },
-        requiredAmount: { type: Number, default: 0 },
-        completed: { type: Boolean, default: false },
-    }],
+    // quest: [{
+    //     id: { type: String, required: true },
+    //     type: { type: String, enum: ['peach', 'transfer'], required: true },
+    //     progress: { type: Number, default: 0 },
+    //     requiredAmount: { type: Number, default: 0 },
+    //     completed: { type: Boolean, default: false },
+    // }],
     profile: { type: ProfileSchema, default: () => ({}) },
     relationship: RelationshipSchema,
     inventory: { type: [InventoryItemSchema], default: [] },

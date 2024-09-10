@@ -10,7 +10,6 @@ module.exports = {
     welcomeTwo: 'https://i.imgur.com/Bd6TMQYm.jpg',
     welcomeThree: 'https://i.imgur.com/QJn8AUSm.jpg',
     welcomeFour: 'https://i.imgur.com/EV2VJdlm.jpg',
-    welcomeFive: 'https://i.imgur.com/40zbfoem.jpg',
     welcomeSix: 'https://i.imgur.com/vnKLAK3m.jpg',
     welcomeSeven: 'https://i.imgur.com/xjDb4IYm.jpg',
     welcomeEight: 'https://i.imgur.com/M2XoQSYm.jpg',
@@ -18,10 +17,8 @@ module.exports = {
     loadingSleep: 'https://i.imgur.com/NEjoyFi.gif',
     loadingShower: 'https://i.imgur.com/l4K54fM.gif',
 
-    // Level
-    levelOne: 'https://i.imgur.com/qIGIKt4.gif',
-    levelTwo: 'https://i.imgur.com/GnKJVjB.gifv',
-    levelThree: 'https://i.imgur.com/0fUILX9.gif',
-    levelFour: 'https://i.imgur.com/DC6YUeK.gif',
-    levelFive: 'https://i.imgur.com/yV5qdsO.jpg',
+    welcomeToPeachAndGoma: 'https://i.imgur.com/12bykrb.gif',
+    welcomeToPeach: 'https://i.imgur.com/nDocQCG.gif',
+    welcomeToGoma: 'https://i.imgur.com/eIdHzUJ.gif',
+
 };

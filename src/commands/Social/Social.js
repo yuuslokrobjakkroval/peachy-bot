@@ -6,12 +6,9 @@ module.exports = class Socials extends Command {
         super(client, {
             name: 'socials',
             description: {
-                content: 'Manage and show social media profiles.',
-                examples: [
-                    'socials show - Shows your current social media profiles.',
-                    'socials set - Allows you to set your social media profiles.',
-                ],
-                usage: 'socials show\nsocials set <platform> <name> <link>',
+                content: 'Show social media profiles.',
+                examples: ['socials - Shows your current social media profiles.'],
+                usage: 'socials',
             },
             category: 'profile',
             aliases: ['socialmedia', 'sm'],
@@ -25,136 +22,44 @@ module.exports = class Socials extends Command {
             slashCommand: true,
             options: [
                 {
-                    name: 'show',
-                    description: 'Show social media profiles',
-                    type: 1, // 1 represents SUB_COMMAND
-                    options: [
-                        {
-                            name: 'user',
-                            description: 'Mention a user to view their social media profiles.',
-                            type: 6, // USER type for mentions
-                            required: false,
-                        },
-                    ],
-                },
-                {
-                    name: 'set',
-                    description: 'Set your social media profiles',
-                    type: 1, // 1 represents SUB_COMMAND
-                    options: [
-                        {
-                            name: 'platform',
-                            description: 'Select the platform to set (Facebook, Instagram, TikTok)',
-                            type: 3, // STRING type
-                            required: true,
-                            choices: [
-                                { name: 'Facebook', value: 'facebook' },
-                                { name: 'Instagram', value: 'instagram' },
-                                { name: 'TikTok', value: 'tiktok' },
-                            ],
-                        },
-                        {
-                            name: 'name',
-                            description: 'Enter your profile name for the selected platform.',
-                            type: 3, // STRING type
-                            required: true,
-                        },
-                        {
-                            name: 'link',
-                            description: 'Enter your profile link for the selected platform.',
-                            type: 3, // STRING type
-                            required: true,
-                        },
-                    ],
+                    name: 'user',
+                    description: 'Mention a user to view their social media profiles.',
+                    type: 6, // USER type for mentions
+                    required: false,
                 },
             ],
         });
     }
 
     async run(client, ctx, args, language) {
-        const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
+        const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+        const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
+        const user = await Users.findOne({ userId: targetUserId });
+        const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
 
-        if (subCommand === 'help') {
-            const embed = client.embed()
-                .setTitle('Socials Command Help')
-                .setDescription('Manage and show your social media profiles.')
-                .addFields([
-                    { name: 'Examples', value: '• socials show\n• socials set <platform> <name> <link>' },
-                    { name: 'Usage', value: '• socials show\n• socials set facebook MyName https://facebook.com/MyProfile' }
-                ])
-                .setColor(client.color.main);
+        if (!user) {
+            const embed = client.embed().setColor(client.color.red).setDescription(`User not found.`);
             return ctx.sendMessage({ embeds: [embed] });
         }
 
-        if (!subCommand || subCommand === 'show') {
-            const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message?.mentions?.users?.first();
-            const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
-            const user = await Users.findOne({ userId: targetUserId });
-            const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
+        const fbName = user.social.facebook.name || 'Not set';
+        const fbLink = user.social.facebook.link || '';
+        const igName = user.social.instagram.name || 'Not set';
+        const igLink = user.social.instagram.link || '';
+        const ttName = user.social.tiktok.name || 'Not set';
+        const ttLink = user.social.tiktok.link || '';
 
-            if (!user) {
-                const embed = client.embed().setColor(client.color.red).setDescription(`User not found.`);
-                return ctx.sendMessage({ embeds: [embed] });
-            }
+        const socialDescription = `
+        **${client.emoji.social.facebook} : ${fbName && fbLink  ? `[${fbName}](${fbLink})` : fbName ? fbName : 'Not Set'}**\n
+        **${client.emoji.social.instagram} : ${igName && igLink  ? `[${igName}](${igLink})` : igName ? igName : 'Not Set'}**\n
+        **${client.emoji.social.tiktok} : ${ttName && ttLink  ? `[${ttName}]$({ttLink})` : ttName ? ttName : 'Not Set'}**\n
+        `;
 
-            const embed = client.embed()
-                .setTitle(`📱 Social Media Profiles for ${targetUsername} 📱`)
-                .setColor(client.color.main);
+        const embed = client.embed()
+            .setTitle(`📱 Social Media Profiles for ${targetUsername} 📱`)
+            .setDescription(socialDescription)
+            .setColor(client.color.main);
 
-            const fbName = user.social.facebook.name || 'Not set';
-            const fbLink = user.social.facebook.link || 'Not set';
-            const igName = user.social.instagram.name || 'Not set';
-            const igLink = user.social.instagram.link || 'Not set';
-            const ttName = user.social.tiktok.name || 'Not set';
-            const ttLink = user.social.tiktok.link || 'Not set';
-
-            embed.addFields([
-                { name: 'Facebook', value: `**Name**: ${fbName}\n**Link**: ${fbLink === 'Not set' ? fbLink : `[Link](${fbLink})`}`, inline: false },
-                { name: 'Instagram', value: `**Name**: ${igName}\n**Link**: ${igLink === 'Not set' ? igLink : `[Link](${igLink})`}`, inline: false },
-                { name: 'TikTok', value: `**Name**: ${ttName}\n**Link**: ${ttLink === 'Not set' ? ttLink : `[Link](${ttLink})`}`, inline: false },
-            ]);
-
-            return ctx.sendMessage({ embeds: [embed] });
-        }
-
-        // Handle 'set' sub-command
-        if (subCommand === 'set') {
-            const platform = ctx.isInteraction ? ctx.interaction.options.getString('platform') : args[1];
-            const name = ctx.isInteraction ? ctx.interaction.options.getString('name') : args[2];
-            const link = ctx.isInteraction ? ctx.interaction.options.getString('link') : args[3];
-
-            if (!['facebook', 'instagram', 'tiktok'].includes(platform)) {
-                const embed = client.embed().setColor(client.color.red).setDescription('Invalid platform selected.');
-                return ctx.sendMessage({ embeds: [embed] });
-            }
-
-            const user = await Users.findOne({ userId: ctx.author.id });
-            if (!user) {
-                const embed = client.embed().setColor(client.color.red).setDescription('User not found.');
-                return ctx.sendMessage({ embeds: [embed] });
-            }
-
-            switch (platform) {
-                case 'facebook':
-                    user.profile.facebook.name = name;
-                    user.profile.facebook.link = link;
-                    break;
-                case 'instagram':
-                    user.profile.instagram.name = name;
-                    user.profile.instagram.link = link;
-                    break;
-                case 'tiktok':
-                    user.profile.tiktok.name = name;
-                    user.profile.tiktok.link = link;
-                    break;
-            }
-
-            await user.save();
-            const embed = client.embed().setColor(client.color.main).setDescription(`Successfully updated your ${platform} profile.`);
-            return ctx.sendMessage({ embeds: [embed] });
-        }
-
-        const embed = client.embed().setColor(client.color.red).setDescription('Invalid sub-command. Use `socials show`, `socials set`, or `socials help`.');
         return ctx.sendMessage({ embeds: [embed] });
     }
 };

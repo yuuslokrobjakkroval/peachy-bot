@@ -127,8 +127,7 @@ module.exports = class Utils {
             : empty.middle.repeat(size - 1);
         const endBar = filledBar === size ? full.end : empty.end;
 
-        const progressBar = firstBar + middleBar + endBar;
-        return progressBar;
+        return firstBar + middleBar + endBar;
     }
 
     static parseTime(string) {
@@ -167,7 +166,7 @@ module.exports = class Utils {
             const isAnimated = match[1] === 'a';
             return `https://cdn.discordapp.com/emojis/${emojiId}.${isAnimated ? 'gif' : 'png'}`;
         } else {
-            return null; // Invalid emoji
+            return null;
         }
     }
 
@@ -180,6 +179,72 @@ module.exports = class Utils {
             arr[j] = temp;
         }
         return arr;
+    }
+
+    static async reactionPaginate(ctx, embed) {
+        const author = ctx instanceof CommandInteraction ? ctx.user : ctx.author;
+        const isInteraction = ctx.isInteraction;
+
+        if (embed.length < 2) {
+            const msgOptions = { embeds: embed };
+            await (isInteraction
+                ? ctx.deferred
+                    ? ctx.interaction.followUp(msgOptions)
+                    : ctx.interaction.reply(msgOptions)
+                : ctx.channel.send(msgOptions));
+            return;
+        }
+
+        let page = 0;
+
+        const getPageContent = (page) => {
+            return { embeds: [embed[page]] };
+        };
+
+        const msgOptions = getPageContent(0);
+        const msg = await (isInteraction
+            ? ctx.deferred
+                ? ctx.interaction.followUp({ ...msgOptions, fetchReply: true })
+                : ctx.interaction.reply({ ...msgOptions, fetchReply: true })
+            : ctx.channel.send({ ...msgOptions, fetchReply: true }));
+
+        const reactions = ['⏪', '◀️', '▶️', '⏩'];
+        for (const emoji of reactions) {
+            await msg.react(emoji);
+        }
+
+        const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && user.id === author.id;
+
+        const collector = msg.createReactionCollector({ filter, time: 60000 });
+
+        collector.on('collect', (reaction, user) => {
+            if (user.id !== author.id) return;
+
+            reaction.users.remove(user);
+
+            switch (reaction.emoji.name) {
+                case '⏪':
+                    page = 0;
+                    break;
+                case '◀️':
+                    if (page > 0) page--;
+                    break;
+                case '▶️':
+                    if (page < embed.length - 1) page++;
+                    break;
+                case '⏩':
+                    page = embed.length - 1;
+                    break;
+                default:
+                    break;
+            }
+
+            msg.edit(getPageContent(page));
+        });
+
+        collector.on('end', () => {
+            msg.reactions.removeAll();
+        });
     }
 
     static async paginate(ctx, embed) {
@@ -260,13 +325,19 @@ module.exports = class Utils {
     }
 
     static async sendSuccessMessage(client, ctx, args, time) {
-        return await ctx.sendMessage({ content: args }).then(async msg => {
+        const embed = new EmbedBuilder()
+            .setColor(client.color.main)
+            .setDescription(args)
+        return await ctx.sendMessage({ embeds: embed }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
 
     static async sendErrorMessage(client, ctx, args, time) {
-        return await ctx.sendMessage({ content: args }).then(async msg => {
+        const embed = new EmbedBuilder()
+            .setColor(client.color.red)
+            .setDescription(args)
+        await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
