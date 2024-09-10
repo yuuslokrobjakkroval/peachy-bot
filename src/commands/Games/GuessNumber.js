@@ -61,14 +61,15 @@ module.exports = class GuessNumber extends Command {
             const guess = parseInt(response.content);
 
             if (guess === numberToGuess) {
+                const xpEarned = Math.floor(Math.random() * 51) + 30;
                 await Users.updateOne(
                     { userId: ctx.author.id },
-                    { $inc: { 'profile.xp': 30 } }
+                    { $inc: { 'profile.xp': xpEarned } }
                 );
                 const resultEmbed = client.embed()
                     .setTitle(`${client.emoji.mainLeft} 𝐂𝐎𝐑𝐑𝐄𝐂𝐓 𝐀𝐍𝐒𝐖𝐄𝐑! ${client.emoji.mainRight}`)
                     .setColor(client.color.green)
-                    .setDescription(`${client.emoji.congratulation} Congratulations! You guessed the number correctly: **${numberToGuess}**.\nYou've earned 30 XP.`);
+                    .setDescription(`${client.emoji.congratulation} Congratulations! You guessed the number correctly: **${numberToGuess}**.\nYou've earned ${xpEarned} XP.`);
 
                 await ctx.editMessage({ embeds: [resultEmbed] });
                 collector.stop();
@@ -79,9 +80,12 @@ module.exports = class GuessNumber extends Command {
 
                 if (hearts > 0) {
                     let hint = '';
-                    if (incorrectGuesses === 2) {
-                        const minRange = Math.max(0, numberToGuess - 6);
-                        const maxRange = Math.min(100, numberToGuess + 8);
+                    if (incorrectGuesses === 1) {
+                        hint = guess < numberToGuess ? 'The number is bigger than your guess.' : 'The number is smaller than your guess.';
+                    } else if (incorrectGuesses === 2) {
+                        const rangeSize = Math.floor(Math.random() * 16) + 5;
+                        const minRange = Math.max(1, numberToGuess - rangeSize);
+                        const maxRange = Math.min(100, numberToGuess + rangeSize);
                         hint = `Here's a hint: The number is between **${minRange}** and **${maxRange}**.`;
                     }
 

@@ -6,8 +6,6 @@ const sym3 = '```';
 const one_second = 1000;
 require('dotenv').config();
 const Users = require("../schemas/user.js");
-const transferLimits = require('../utils/transferReceiveLimitUtil');
-const { peachTasks, transferTasks } = require('../utils/TaskUtil.js');
 
 const bot = new Client({
     intents: [
@@ -19,75 +17,6 @@ const bot = new Client({
         IntentsBitField.Flags.GuildMessageReactions,
     ]
 });
-
-
-async function getUserLevel(userId) {
-    const user = await Users.findOne({ userId }).exec();
-    if (!user) return 1; // Default to level 1 if user not found
-    return user.profile.level || 1;
-}
-
-function getLimitForLevel(level, type) {
-    const limit = transferLimits.find(l => l.level === level);
-    if (!limit) return { send: Infinity, receive: Infinity }; // Default to no limit if level not found
-    return { send: limit.send, receive: limit.receive };
-}
-
-function getRandomTasks(tasks, num) {
-    if (tasks.length <= num) return tasks;
-    const shuffled = tasks.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, num);
-}
-
-
-async function canTransfer(userId, amount, type) {
-    const userLevel = await getUserLevel(userId);
-    const limits = getLimitForLevel(userLevel, type);
-
-    if (type === 'send') {
-        return amount <= limits.send;
-    } else if (type === 'receive') {
-        return amount <= limits.receive;
-    }
-
-    return false;
-}
-
-async function updateDailyLimits(userId, amount, type) {
-    try {
-        const user = await Users.findOne({ userId });
-        if (!user) throw new Error('User not found');
-
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Midnight of today
-
-        if (user.dailyLimits.lastReset < today) {
-            user.dailyLimits.transferUsed = 0;
-            user.dailyLimits.receiveUsed = 0;
-            user.dailyLimits.lastReset = today;
-        }
-
-        if (type === 'sent') {
-            if (user.dailyLimits.transferUsed + parseFloat(amount) > user.dailyLimits.transferLimit) {
-                return false;
-            }
-            user.dailyLimits.transferUsed += parseFloat(amount);
-        } else if (type === 'received') {
-            if (user.dailyLimits.receiveUsed + parseFloat(amount) > user.dailyLimits.receiveLimit) {
-                return false;
-            }
-            user.dailyLimits.receiveUsed += parseFloat(amount);
-        } else {
-            throw new Error('Invalid type');
-        }
-
-        await user.save();
-        return true;
-    } catch (error) {
-        console.error('Error updating daily limits:', error);
-        return false;
-    }
-}
 
 async function checkCooldown(userId, command, duration) {
     const now = Date.now();
@@ -141,37 +70,6 @@ async function getCooldown(userId, command) {
     }
 }
 
-async function assignTasks(userId) {
-    const user = await Users.findOne({ userId });
-    if (!user) return;
-    const userLevel = user.profile.level ? user.profile.level : 1;
-
-    const availablePeachTasks = peachTasks.filter(task => task.requiredLevel <= userLevel);
-    const availableTransferTasks = transferTasks.filter(task => task.requiredLevel <= userLevel);
-
-    const selectedPeachTasks = availablePeachTasks.slice(0, 2);
-    const selectedTransferTasks = availableTransferTasks.slice(0, 2);
-
-    user.dailyTasks = [
-        ...selectedPeachTasks.map(task => ({
-            id: task.id,
-            type: 'peach',
-            progress: 0,
-            requiredAmount: 0,
-            completed: false,
-        })),
-        ...selectedTransferTasks.map(task => ({
-            id: task.id,
-            type: 'transfer',
-            progress: 0,
-            requiredAmount: 0,
-            completed: false,
-        })),
-    ];
-
-    await user.save();
-}
-
 function getRandomInt(min, max){
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -192,7 +90,7 @@ function getFiles(commandFiles, dir){
 }
 
 async function getUser(id) {
-    return User.findOne({userId: id});
+    return Users.findOne({userId: id});
 }
 
 function SimpleEmbed(text) {
@@ -355,4 +253,4 @@ function cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {
 }
 
 
-module.exports = { assignTasks, canTransfer, updateDailyLimits, checkCooldown, updateCooldown, getCooldown, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, advanceEmbed, labelButton, emojiButton, sym, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };
+module.exports = { checkCooldown, updateCooldown, getCooldown, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, advanceEmbed, labelButton, emojiButton, sym, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };

@@ -38,7 +38,15 @@ class Avatar extends Command {
   }
 
   async run(client, ctx, args) {
-    const user = ctx.message.mentions.users.first() || client.users.cache.get(args[0]) || ctx.author;
+    const user = ctx.isInteraction
+        ? ctx.interaction.options.getUser('user')
+        : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+
+    if (!user) {
+      const errorMessage = 'No user mentioned';
+      return await client.utils.sendErrorMessage(client, ctx, errorMessage);
+    }
+
     const embed = client.embed()
       .setColor(client.color.main)
       .setTitle(`Avatar of ${user.displayName}`)

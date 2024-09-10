@@ -98,13 +98,6 @@ const userSchema = new Schema({
         coin: { type: Number, default: 500000 },  // Initial gift
         bank: { type: Number, default: 0 }
     },
-    dailyLimits: {
-        lastReset: { type: Date, default: Date.now },
-        transferUsed: { type: Number, default: 0 },
-        receiveUsed: { type: Number, default: 0 },
-        transferLimit: { type: Number, default: 64000 },
-        receiveLimit: { type: Number, default: 64000 }
-    },
     peachy: {
         streak: { type: Number, default: 0 }
     },

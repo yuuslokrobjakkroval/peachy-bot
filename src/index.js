@@ -2,7 +2,6 @@ const { ShardingManager } = require('discord.js');
 const fs = require('fs');
 const config = require('./config.js');
 const Logger = require('./structures/Logger.js');
-const reset = require('./schedule/reset.js');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -42,5 +41,3 @@ manager.on('shardCreate', shard => {
     logger.start(`[CLIENT] Shard ${shard.id} connected to Discord's Gateway.`);
   });
 });
-
-reset.resetDailyLimit.start(); // start cronjob

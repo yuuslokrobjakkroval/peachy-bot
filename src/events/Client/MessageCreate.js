@@ -5,7 +5,6 @@ const Users = require("../../schemas/user.js");
 const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
-const transferLimits = require('../../utils/transferReceiveLimitUtil.js');
 
 const activeGames = new Map();
 
@@ -59,12 +58,6 @@ module.exports = class MessageCreate extends Event {
 
           const celebrationCoin = user.profile.level * 1000;
           user.balance.coin += celebrationCoin;
-
-          const newLimits = getLimitsForLevel(user.profile.level);
-          user.dailyLimits.transferLimit = newLimits.send;
-          user.dailyLimits.receiveLimit = newLimits.receive;
-
-
 
           const levelUp = await new canvafy.LevelUp()
               .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
