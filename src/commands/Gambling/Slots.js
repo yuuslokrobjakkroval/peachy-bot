@@ -80,7 +80,7 @@ class Slots extends Command {
 		} else if (rand <= 57.25) { // 3.5%
 			win = baseCoins * 10;
 			rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-		} else { // 45.5%
+		} else { // 42.75%
 			let slot1 = Math.floor(Math.random() * SLOTS.length);
 			let slot2 = Math.floor(Math.random() * SLOTS.length);
 			let slot3 = Math.floor(Math.random() * SLOTS.length);
