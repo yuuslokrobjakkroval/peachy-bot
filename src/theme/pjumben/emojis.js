@@ -243,10 +243,10 @@ module.exports = {
     },
     slots: {
         cat: '<:PEACHGOMA:1283061018246778963>',
-        coffee: '<:THOUK:1283061067836031036>',
-        heart: '<:PKACHOUK:1283061224346746920>',
+        coffee: '<:PKACHOUK:1283061224346746920>',
+        heart: '<:NORM:1283111772022112389>',
         cake: '<:NORM:1283111772022112389>',
-        milk: '<:JONGHAN:1283061371986120734>',
+        milk: '<:MONK:1283061312964005928>',
         peachy: '<:PJUMBEN:1283112546261270549>',
         spin: '<a:PJUMBENSLOTS:1283111803353829468>',
     },
