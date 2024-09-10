@@ -30,6 +30,7 @@ module.exports = class Ping extends Command {
   }
 
   async run(client, ctx) {
+    const msg = await ctx.sendDeferMessage("Pinging...");
     const embed = client
       .embed()
         .setTitle(`**${client.emoji.mainLeft} 𝐏𝐎𝐍𝐆 ${client.emoji.mainRight}**`)
@@ -38,7 +39,7 @@ module.exports = class Ping extends Command {
         .addFields([
           {
             name: `𝐁𝐎𝐓 ${client.emoji.ping}`,
-            value: `\`\`\`ini\n[ ${ctx.createdTimestamp - ctx.createdTimestamp}ms ]\n\`\`\``,
+            value: `\`\`\`ini\n[ ${msg.createdTimestamp - ctx.createdTimestamp}ms ]\n\`\`\``,
             inline: true,
           },
           {
@@ -48,6 +49,6 @@ module.exports = class Ping extends Command {
           },
         ])
         .setTimestamp();
-    await ctx.sendMessage({ content: "", embeds: [embed] });
+    await ctx.editMessage({ content: "", embeds: [embed] });
   }
 }
