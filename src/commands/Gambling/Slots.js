@@ -16,7 +16,7 @@ class Slots extends Command {
 			},
 			category: 'gambling',
 			aliases: ['slot', 's'],
-			cooldown: 10,
+			cooldown: 8,
 			args: false,
 			permissions: {
 				dev: false,
@@ -99,7 +99,7 @@ class Slots extends Command {
 				`**\`|        |\`**`)
 			.setColor(client.color.main);
 
-		await ctx.sendMessage({ embeds: [initialEmbed] });
+		await ctx.sendMessage({ content: initialEmbed });
 
 
 		const spinEmbed = client.embed()
