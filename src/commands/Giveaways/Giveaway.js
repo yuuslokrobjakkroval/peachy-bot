@@ -128,7 +128,7 @@ Ends: <t:${formattedDuration}:R>`
             giveawayMessage = await ctx.sendMessage({ embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
         } catch (err) {
             if (!ctx.replied && !ctx.deferred) {
-                await ctx.reply({ content: 'There was an error sending the giveaway message.' });
+                await ctx.interaction.reply({ content: 'There was an error sending the giveaway message.' });
             }
             console.error(err);
             return;
