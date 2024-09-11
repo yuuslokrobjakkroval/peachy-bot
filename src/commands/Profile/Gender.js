@@ -8,18 +8,18 @@ module.exports = class Gender extends Command {
             description: {
                 content: 'Sets, resets, or shows your gender.',
                 examples: [
+                    'gender',
                     'gender male',
                     'gender female',
                     'gender reset',
-                    'gender show',
                     'gender help'
                 ],
-                usage: 'gender <male || female || reset || show || help>',
+                usage: 'gender <male || female || reset || help>',
             },
             category: 'profile',
             aliases: [],
             cooldown: 5,
-            args: true,
+            args: false,
             permissions: {
                 dev: false,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
@@ -46,11 +46,6 @@ module.exports = class Gender extends Command {
                     type: 1,
                 },
                 {
-                    name: 'show',
-                    description: 'Show the current gender for you.',
-                    type: 1,
-                },
-                {
                     name: 'help',
                     description: 'Displays example and usage information for the command.',
                     type: 1,
@@ -61,15 +56,14 @@ module.exports = class Gender extends Command {
 
     async run(client, ctx, args, language) {
         const user = await Users.findOne({ userId: ctx.author.id });
-        const embed = client.embed().setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() });
+        const embed = client.embed().setTitle(`${client.emoji.mainLeft} 𝐆𝐄𝐍𝐃𝐄𝐑 ${client.emoji.mainRight}`).setColor(client.color.main);
 
         const subCommand = ctx.isInteraction ? ctx.interaction.options.data[0].name : args[0];
 
         switch (subCommand) {
             case 'help': {
                 embed
-                    .setColor(client.color.main)
-                    .setDescription(`**Usage:** \`gender <male || female || reset || show || help>\`\n\n**Examples:**\n\`gender male\`\n\`gender female\`\n\`gender reset\`\n\`gender show\`\n\`gender help\``);
+                    .setDescription(`**Usage:** \`gender <male || female || reset || help>\`\n\n**Examples:**\n\`gender male\`\n\`gender female\`\n\`gender reset\`\n\`gender help\``);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -77,7 +71,6 @@ module.exports = class Gender extends Command {
 
             case 'reset': {
                 embed
-                    .setColor(client.color.main)
                     .setDescription('Your gender has been reset.');
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.gender': 'Not specified' } }).exec();
@@ -85,28 +78,24 @@ module.exports = class Gender extends Command {
                 break;
             }
 
-            case 'show': {
-                embed
-                    .setColor(client.color.main)
-                    .setDescription(user.profile.gender ? `\`\`\`arm\n${user.profile.gender}\`\`\`` : 'Not specified.');
+            case 'male':
+            case 'female': {
+                const emojiGender = subCommand === 'male' ? client.emoji.gender.male : subCommand === 'female' ? client.emoji.gender.female : '';
 
+                embed
+                    .setDescription(`Your gender has been set to ${client.utils.formatCapitalize(subCommand)} ${emojiGender}.`);
+
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.gender': subCommand } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
 
             default: {
-                const text = ctx.isInteraction ? ctx.interaction.options.data[0]?.options[0]?.value?.toString() : args.join(' ');
-
-                if (!text || !['male', 'female', 'other'].includes(text.toLowerCase())) {
-                    await client.utils.oops(client, ctx, 'Please provide a valid gender (male, female, other).');
-                    return;
-                }
-
+                const gender = user.profile.gender;
+                const emojiGender = gender === 'male' ? client.emoji.gender.male : gender === 'female' ? client.emoji.gender.female : '';
                 embed
-                    .setDescription('Your gender has been set.')
-                    .addFields([{ name: 'New gender', value: `\`\`\`arm\n${text}\n\`\`\``, inline: false }]);
+                    .setDescription(gender ? `Your gender is set to ${client.utils.formatCapitalize(gender)} ${emojiGender}` : 'Your gender is not specified.');
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.gender': text } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }

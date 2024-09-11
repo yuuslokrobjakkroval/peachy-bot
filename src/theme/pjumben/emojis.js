@@ -1,8 +1,8 @@
 module.exports = {
     coin: '<:PJUMBENCOIN:1283066955967762557>',
     main: '<:MAIN:1281847051860054016>',
-    mainLeft: '<:PEACHMAIN:1281827601412915230>',
-    mainRight: '<:GOMAMAIN:1281827625169322078>',
+    mainLeft: '<:PJUMBENLEFT:1283280791094169671>',
+    mainRight: '<:PJUMBENRIGHT:1283280797561786418>',
     congratulation: '<a:CONGRATULATIONS:1282268007183290379>',
     tick: '`✅`',
     deny: '<:x_:1230882133891878933>',
@@ -233,8 +233,8 @@ module.exports = {
         ],
     },
     gender: {
-        male: '<:MALE:1281840630833741874>',
-        female: '<:FEMALE:1281840643634626662>',
+        male: '<:MALEPJUMBEN:1283280012107190304>',
+        female: '<:FEMALEPJUMBEN:1283280021506756629>',
     },
     social: {
         facebook: '<a:FACEBOOK:1281824132136435764>',
