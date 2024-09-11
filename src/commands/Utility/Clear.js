@@ -14,7 +14,7 @@ module.exports = class Clear extends Command {
             cooldown: 3,
             args: true,
             permissions: {
-                dev: true,
+                dev: false,
                 client: ["ManageMessages"],
                 user: ["ManageMessages"],
             },
@@ -31,45 +31,24 @@ module.exports = class Clear extends Command {
     }
 
     async run(client, ctx, args) {
-        const amount = ctx.isInteraction ? ctx.interaction.options.getInteger('number_message_delete') : parseInt(args[0]);
-        if (isNaN(amount) || amount <= 0 || amount > 1000) {
-            return ctx.sendMessage("Please provide a valid number between 1 and 1000.");
+        const numberMessageDelete = ctx.isInteraction ? ctx.interaction.options.getInteger('number_message_delete') : parseInt(args[0]);
+
+        if (isNaN(numberMessageDelete) || numberMessageDelete <= 0 || numberMessageDelete > 100) {
+            return ctx.sendMessage("Please provide a valid number between 1 and 100.");
         }
 
-        if (ctx.isInteraction) {
-            await ctx.interaction.deferReply();
-        }
-
-        const deleteMessages = async (messagesToDelete) => {
-            let deleted = 0;
-
-            while (messagesToDelete > 0) {
-                const batchSize = Math.min(messagesToDelete, 100);
-                const deletedMessages = await ctx.channel.bulkDelete(batchSize, true);
-                deleted += deletedMessages.size;
-                messagesToDelete -= deletedMessages.size;
-            }
-
-            return deleted;
-        };
-
-        try {
-            const deletedTotal = await deleteMessages(amount);
-            if (ctx.isInteraction) {
-                await ctx.interaction.editReply(`Successfully deleted ${deletedTotal} messages.`);
-            } else {
-                ctx.sendMessage(`Successfully deleted ${deletedTotal} messages.`)
+        await ctx.channel.bulkDelete(numberMessageDelete, true)
+            .then(deletedMessages => {
+                // Send a confirmation message
+                ctx.sendMessage(`Deleted ${deletedMessages.size} messages.`)
                     .then(msg => {
-                        setTimeout(() => msg.delete(), 100000);
+                        // Delete the confirmation message after 5 seconds
+                        setTimeout(() => msg.delete(), 3000); // 5000ms = 5 seconds
                     });
-            }
-        } catch (err) {
-            console.error(err);
-            if (ctx.isInteraction) {
-                await ctx.interaction.editReply("There was an error trying to delete messages in this channel.");
-            } else {
+            })
+            .catch(err => {
+                console.error(err);
                 ctx.sendMessage("There was an error trying to delete messages in this channel.");
-            }
-        }
+            });
     }
 };
