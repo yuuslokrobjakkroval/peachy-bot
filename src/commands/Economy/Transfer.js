@@ -109,7 +109,7 @@ class Transfer extends Command {
                             .setImage(randomThankScreen);
 
                         await ctx.channel.send({ embeds: [imageEmbed] });
-                    }, 6000);
+                    }, 2000);
 
                     await messageEmbed.delete();
                 } catch (error) {
