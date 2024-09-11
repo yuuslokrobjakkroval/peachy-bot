@@ -1,7 +1,6 @@
 const { Command } = require("../../structures/index.js");
-const { MessageEmbed } = require("discord.js");
 
-class Avatar extends Command {
+module.exports = class Avatar extends Command {
   constructor(client) {
     super(client, {
       name: "avatar",
@@ -60,5 +59,3 @@ class Avatar extends Command {
     ctx.sendMessage({ embeds: [embed] });
   }
 }
-
-module.exports = Avatar;

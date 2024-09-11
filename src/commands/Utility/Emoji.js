@@ -1,5 +1,4 @@
 const { Command } = require("../../structures/index.js");
-const { MessageEmbed } = require("discord.js");
 
 module.exports = class Emoji extends Command {
     constructor(client) {
