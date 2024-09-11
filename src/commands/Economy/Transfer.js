@@ -31,7 +31,7 @@ class Transfer extends Command {
     async run(client, ctx, args) {
         const userId = args[0].replace(/[<@!>]/g, '');
         let amount = args[1] ? parseInt(args[1], 10) : 1;
-        const randomThankScreen = client.utils.getRandomElement(gif.thanks);
+        // const randomThankScreen = client.utils.getRandomElement(gif.thanks);
 
         if (args[1] !== 'all') {
             if (isNaN(amount) || amount <= 0) {
@@ -106,7 +106,7 @@ class Transfer extends Command {
                         const imageEmbed = this.client.embed()
                             .setColor(config.color.main)
                             .setDescription(`${targetUser} wants to say ... to ${ctx.author}`)
-                            .setImage(randomThankScreen);
+                            .setImage(gif.thanks);
 
                         await ctx.channel.send({ embeds: [imageEmbed] });
                     }, 2000);
