@@ -57,9 +57,19 @@ module.exports = class PeachyClient extends Client {
     }
 
     async loadCommands() {
-        const commandsPath = fs.readdirSync(path.join(__dirname, '../commands'));
-        commandsPath.forEach(dir => {
-            const commandFiles = fs.readdirSync(path.join(__dirname, `../commands/${dir}`)).filter(file => file.endsWith('.js'));
+        const theme = await this.getUserTheme(); // Retrieve user theme preference
+
+        // Default to 'commands' directory if no specific theme directory exists
+        let commandsPath = path.join(__dirname, '../commands');
+
+        if (theme === 'pjumben') {
+            commandsPath = path.join(__dirname, '../commands/Pjumben');
+        }
+
+        const commandsDir = fs.readdirSync(commandsPath);
+
+        commandsDir.forEach(dir => {
+            const commandFiles = fs.readdirSync(path.join(commandsPath, dir)).filter(file => file.endsWith('.js'));
             commandFiles.forEach(async file => {
                 const cmd = require(`../commands/${dir}/${file}`);
                 const command = new cmd(this, file);
@@ -107,6 +117,12 @@ module.exports = class PeachyClient extends Client {
                 this.logger.error(error);
             }
         });
+    }
+
+    async getUserTheme() {
+        // Example function to get the user's theme, modify as necessary
+        const user = await this.db.findOne({ userId: 'exampleUserId' }); // Replace with actual userId
+        return user && user.preferences && user.preferences.theme ? user.preferences.theme : 'default';
     }
 
     loadEvents() {
