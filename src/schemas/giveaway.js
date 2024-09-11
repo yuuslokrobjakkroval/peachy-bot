@@ -13,6 +13,6 @@ const GiveawaySchema = new Schema({
     entered: { type: [String], default: [] },
     autopay: { type: Boolean, default: false },
     rerollOptions: { type: [String], default: [] }
-});
+}, { timestamps: { createdAt: true, updatedAt: false } });
 
 module.exports = model('giveaway', GiveawaySchema);

@@ -140,6 +140,6 @@ const userSchema = new Schema({
         totalMessagesSent: { type: Number, default: 0 }
     },
     achievements: { type: [achievementsSchema], default: [] }
-});
+}, { timestamps: { createdAt: true, updatedAt: false } });
 
 module.exports = model('user', userSchema);

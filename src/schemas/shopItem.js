@@ -13,6 +13,6 @@ const ShopItemSchema = new Schema({
     expGain: { type: Number, default: 0 },
     description: { type: String, default: '' },
     available: { type: Boolean, default: true }
-});
+}, { timestamps: { createdAt: true, updatedAt: false } });
 
 module.exports = model('ShopItem', ShopItemSchema);
