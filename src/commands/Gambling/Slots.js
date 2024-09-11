@@ -118,7 +118,7 @@ class Slots extends Command {
 
 		const resultEmbed = client.embed()
 			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
-			.setDescription(`#*\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`|\`** ** ${ctx.author.displayName} ** \n` +
+			.setDescription(`#**\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`|\`** ** ${ctx.author.displayName} ** \n` +
 				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
 				`**\`|        |\` ${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setColor(client.color.main);
