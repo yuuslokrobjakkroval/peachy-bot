@@ -209,13 +209,13 @@ class InteractionCreate extends Event {
                     new ButtonBuilder()
                         .setCustomId('giveaway-join')
                         .setLabel(`${newLabel}`)
-                        .setEmoji('<a:Dom:1264200823542517812>')
-                        .setStyle(ButtonStyle.Success),
+                        .setEmoji(`${this.client.emoji.main}`)
+                        .setStyle(3),
                     new ButtonBuilder()
                         .setCustomId('giveaway-participants')
-                        .setEmoji(this.client.emote.userList)
+                        .setEmoji(this.client.emoji.userList)
                         .setLabel('Participants')
-                        .setStyle(ButtonStyle.Primary)
+                        .setStyle(1)
                 ),
               ],
             });

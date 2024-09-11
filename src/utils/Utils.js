@@ -342,7 +342,7 @@ module.exports = class Utils {
         });
     }
 
-    static async endGiveaway(client, message, reroll = false) {
+    static async endGiveaway(client, message, autopay = false, rerollWinners = []) {
         if (!message.guild) return;
         if (!message.client.guilds.cache.get(message.guild.id)) return;
 
@@ -353,7 +353,7 @@ module.exports = class Utils {
         });
 
         if (!data) return;
-        if (data.ended === true && !reroll) return;
+        if (data.ended === true) return;
         if (data.paused === true) return;
 
         function getMultipleRandom(arr, number) {
@@ -370,6 +370,21 @@ module.exports = class Utils {
             winnerIdArray.push(...data.entered);
         }
 
+        if (rerollWinners.length) {
+            winnerIdArray = winnerIdArray.filter(w => !rerollWinners.includes(w));
+            while (rerollWinners.length > 0 && winnerIdArray.length < data.winners) {
+                winnerIdArray.push(...getMultipleRandom(rerollWinners, data.winners - winnerIdArray.length));
+                rerollWinners = rerollWinners.filter(r => !winnerIdArray.includes(r));
+            }
+        }
+
+        // Set reroll options to the winners
+        await GiveawaySchema.findOneAndUpdate({
+            guildId: data.guildId,
+            channelId: data.channelId,
+            messageId: message.id
+        }, { rerollOptions: winnerIdArray });
+
         const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
             ButtonBuilder.from(message.components[0].components[0])
                 .setLabel(`${data.entered.length}`) // Number of participants
@@ -381,13 +396,17 @@ module.exports = class Utils {
             .setColor(client.color.main)
             .setDescription(`Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`);
 
-        await message.edit({ embeds: [endGiveawayEmbed], components: [disableButton] }).then(async msg => {
-            await GiveawaySchema.findOneAndUpdate({ guildId: data.guildId, channelId: data.channelId, messageId: msg.id }, { ended: true });
+        await message.edit({embeds: [endGiveawayEmbed], components: [disableButton]}).then(async msg => {
+            await GiveawaySchema.findOneAndUpdate({
+                guildId: data.guildId,
+                channelId: data.channelId,
+                messageId: msg.id
+            }, {ended: true});
         });
 
         async function addCoinsToUser(userId, amount) {
             try {
-                let user = await Users.findOne({ userId });
+                let user = await Users.findOne({userId});
                 if (!user) {
                     user = new Users({
                         userId,
@@ -399,8 +418,8 @@ module.exports = class Utils {
                     await user.save();
                 } else {
                     await Users.updateOne(
-                        { userId },
-                        { $inc: { 'balance.coin': amount } }
+                        {userId},
+                        {$inc: {'balance.coin': amount}}
                     );
                 }
             } catch (error) {
@@ -420,15 +439,18 @@ module.exports = class Utils {
             ],
         });
 
-        for (const winner of winnerIdArray) {
-            await addCoinsToUser(winner, data.prize);
-        await message.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(client.color.main)
-                    .setDescription(`**${client.user.username}** has been given **\`${client.utils.formatNumber(data.prize)}\`** ${client.emote.coin} to <@${winner}>.`),
-            ],
-        });
-    }
+        // Handle autopay
+        if (autopay) {
+            for (const winner of winnerIdArray) {
+                await addCoinsToUser(winner, data.prize);
+                await message.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(client.color.main)
+                            .setDescription(`**${client.user.username}** has been given **\`${client.utils.formatNumber(data.prize)}\`** ${client.emoji.coin} to <@${winner}>.`),
+                    ],
+                });
+            }
         }
+    }
 };

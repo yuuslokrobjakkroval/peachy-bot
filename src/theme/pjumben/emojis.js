@@ -70,7 +70,7 @@ module.exports = {
         games: '<:NORMALGAME:1282638025402224704>',
         gambling: '<:GAMBLING:1282638278780256357>',
         profile: '<a:NORMALPROFILE:1282639241989460061>',
-        pjumben: '<a:NORMALPROFILE:1282639241989460061>',
+        pjumben: '<:PJUM:1283316419647242282>',
         social: '<a:SOCIAL:1282639924419366966>',
         emotes: '<a:NORMALEMOTES:1282640907832660038>',
         utility: '<a:NORMALUTILITY:1282642190190776390>',

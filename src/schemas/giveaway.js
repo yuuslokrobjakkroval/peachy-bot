@@ -6,11 +6,13 @@ const GiveawaySchema = new Schema({
     messageId: { type: String, required: true, unique: true },
     winners: { type: Number, default: 1 },
     prize: { type: Number, default: 0 },
-    endTime: { type: String, default: null },
+    endTime: { type: Number, default: null },
     paused: { type: Boolean, default: false },
     ended: { type: Boolean, default: false },
     hostedBy: { type: String, default: null },
-    entered: { type: Array, default: [] },
+    entered: { type: [String], default: [] },
+    autopay: { type: Boolean, default: false },
+    rerollOptions: { type: [String], default: [] }
 });
-module.exports = model('giveaway', GiveawaySchema);
 
+module.exports = model('giveaway', GiveawaySchema);
