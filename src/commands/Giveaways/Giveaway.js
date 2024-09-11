@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const ms = require('ms');
 const GiveawaySchema = require('../../schemas/giveaway.js');
 
