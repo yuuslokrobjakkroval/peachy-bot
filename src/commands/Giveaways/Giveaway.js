@@ -154,7 +154,7 @@ Ends: <t:${formattedDuration}:R>`
             paused: false,
             ended: false,
             entered: [],
-            autopay: autoPay === 'true' ? true : false,
+            autopay: !!autoPay,
             rerollOptions: [],
         }).then(data => {
             setTimeout(async () => {
