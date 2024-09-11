@@ -99,7 +99,7 @@ class Slots extends Command {
 				`**\`|        |\`**`)
 			.setColor(client.color.main);
 
-		await ctx.sendMessage({ content: initialEmbed });
+		await ctx.sendMessage({ embeds: [initialEmbed] });
 
 
 		const spinEmbed = client.embed()
