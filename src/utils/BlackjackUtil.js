@@ -86,23 +86,23 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
 
     if (end == 'w') {
         color = 65280;
-        description = `**You won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
+        description = `**\nYou won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
     } else if (end == 'l') {
         color = 16711680;
-        description = `**You lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
+        description = `**\nYou lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
     } else if (end == 'tb') {
         color = 6381923;
-        description = '**You both bust!**';
+        description = '**\nYou both bust!**';
     } else if (end == 't') {
         color = 6381923;
-        description = '**You tied!**';
+        description = '**\nYou tied!**';
     } else dealerValue.points = dealerValue.shownPoints + '+?';
 
     return {
         title: `${client.emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.mainRight}`,
         color: color,
         description: `The winner is the one who's closest to 21.\n` +
-            `**\nDEALER ${DEALER} \`[${dealerValue.points}]\`**\n` +
+            `**DEALER ${DEALER} \`[${dealerValue.points}]\`**\n` +
             `# \n${dealerValue.display}\n` +
             `**\n${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
             `# ${playerValue.display}\n` +
