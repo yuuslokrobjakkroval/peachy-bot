@@ -92,10 +92,8 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
     const maxLength = Math.max(dealerCardsDisplay.length, playerCardsDisplay.length);
     const blankCount = Math.ceil((maxLength - dealerCardsDisplay.length) / BLANK.length);
 
-    // Create a dynamic BLANK space
     const blankSpace = BLANK.repeat(blankCount > 0 ? blankCount : 1); // At least one BLANK
 
-    // Handle game outcome
     if (end === 'w') {
         color = 65280;
         description = `**You won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
@@ -112,13 +110,15 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
         dealerValue.points = dealerValue.shownPoints + '+?';
     }
 
-    // Construct the embed
     return {
         title: `${client.emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.mainRight}`,
         color: color,
-        description: `The winner is the one who's closest to 21.\n${description}\n` +
-            `\nDealer **\`[${dealerValue.points}]\`${blankSpace}**${author.displayName} **\`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
-            `## ${dealerCardsDisplay}${blankSpace}${playerCardsDisplay}`,
+        description: `The winner is the one who's closest to 21.\n` +
+            `\n**Dealer \`[${dealerValue.points}]\`**` +
+            `## ${dealerCardsDisplay}\n` +
+            `**${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**` +
+            `## ${playerCardsDisplay}\n` +
+            `${description}\n`,
         thumbnail: {
             url: author.displayAvatarURL({ dynamic: true, size: 1024 })
         },
