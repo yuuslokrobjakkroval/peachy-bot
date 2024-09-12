@@ -59,7 +59,7 @@ module.exports = class MessageCreate extends Event {
           const levelUp = await new canvafy.LevelUp()
               .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
               .setUsername(`${message.author.displayName}`)
-              .setBorder(this.client.color.main)
+              .setBorder('#8BD3DD')
               .setBackground("image", gif.welcomeTen)
               .setLevels(user.profile.level - 1, user.profile.level)
               .build();

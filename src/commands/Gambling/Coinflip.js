@@ -81,7 +81,7 @@ module.exports = class Coinflip extends Command {
             .setTitle(`**${client.emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${client.emoji.mainRight}**`)
             .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
             .setDescription(`**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\` ${client.emoji.coin}** choose **${
-                choice === 'p' ? 'Peach' : 'Goma'
+                choice === 'p' ? 'peach' : 'goma'
             }**
 The coin is flips ${client.emoji.coinFlip.flip}`)
             .setFooter({
@@ -101,7 +101,7 @@ The coin is flips ${client.emoji.coinFlip.flip}`)
                 .setTitle(`**${client.emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${client.emoji.mainRight}**`)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(`**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${client.emoji.coin} choose **${
-                    choice === 'p' ? 'Peach' : 'Goma'
+                    choice === 'p' ? 'peach' : 'goma'
                 }**
 The coin is flips ${win ? (choice === 'p' ? client.emoji.coinFlip.peach : client.emoji.coinFlip.goma) : choice === 'p' ? client.emoji.coinFlip.goma : client.coinFlip.emoji.peach} and ${
                     win
