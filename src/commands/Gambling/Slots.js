@@ -125,7 +125,7 @@ class Slots extends Command {
 		const resultEmbed = client.embed()
 			.setColor(client.color.main)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n## \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n## **\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`|\`**\n## \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
+			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n## \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n## **\`|   \` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`   |\`**\n## \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
