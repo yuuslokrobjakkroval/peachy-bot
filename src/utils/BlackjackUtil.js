@@ -84,33 +84,28 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
     let dealerValue = cardValue(dealer);
     let playerValue = cardValue(player);
 
-    const dealerCardsDisplay = dealerValue.display || '';
-    const playerCardsDisplay = playerValue.display || '';
-
-    if (end === 'w') {
+    if (end == 'w') {
         color = 65280;
         description = `**You won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
-    } else if (end === 'l') {
+    } else if (end == 'l') {
         color = 16711680;
         description = `**You lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
-    } else if (end === 'tb') {
+    } else if (end == 'tb') {
         color = 6381923;
         description = '**You both bust!**';
-    } else if (end === 't') {
+    } else if (end == 't') {
         color = 6381923;
         description = '**You tied!**';
-    } else {
-        dealerValue.points = dealerValue.shownPoints + '+?';
-    }
+    } else dealerValue.points = dealerValue.shownPoints + '+?';
 
     return {
         title: `${client.emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.mainRight}`,
         color: color,
         description: `The winner is the one who's closest to 21.\n` +
-            `\n**${DEALER} \`[${dealerValue.points}]\`**\n` +
-            `## ${dealerCardsDisplay}\n` +
+            `## ${DEALER}` + `**\`[${dealerValue.points}]\`**\n` +
+            `## ${dealerValue.display}\n` +
             `**${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
-            `## ${playerCardsDisplay}\n` +
+            `## ${playerValue.display}\n` +
             `${description}\n`,
         thumbnail: {
             url: author.displayAvatarURL({ dynamic: true, size: 1024 })
