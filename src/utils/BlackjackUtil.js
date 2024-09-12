@@ -108,12 +108,12 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
         fields: [
             {
                 name: 'Dealer **`[' + dealerValue.points + ']`**',
-                value: `# **${dealerValue.display}**`,
+                value: `** # ${dealerValue.display}**`,
                 inline: true,
             },
             {
                 name: author.displayName + ' **`[' + playerValue.points + ']' + (playerValue.ace ? '*' : '') + '`**',
-                value: `# **${playerValue.display}**`,
+                value: `** # ${playerValue.display}**`,
                 inline: true,
             },
         ],
