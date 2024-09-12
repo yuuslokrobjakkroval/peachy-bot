@@ -39,7 +39,7 @@ module.exports = class MessageCreate extends Event {
       if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
         let xpGained = 0;
         if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-          xpGained = getRandomXp(45, 55);
+          xpGained = getRandomXp(15, 25);
         } else {
           xpGained = getRandomXp(10, 15);
         }
@@ -51,9 +51,9 @@ module.exports = class MessageCreate extends Event {
         if (user.profile.xp >= nextLevelXp) {
           user.profile.xp -= nextLevelXp;
           user.profile.level += 1;
-          user.profile.levelExp = calculateNextLevelXpBonus(user.profile.level);
+          user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
 
-          const celebrationCoin = user.profile.level * 1000;
+          const celebrationCoin = user.profile.level * 250000;
           user.balance.coin += celebrationCoin;
 
           const levelUp = await new canvafy.LevelUp()
@@ -75,7 +75,7 @@ module.exports = class MessageCreate extends Event {
                     You leveled up to level ${user.profile.level}!\n
                     You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emoji.coin}.`)
               .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-              .setImage('attachment://level-up.png');
+              .setImage(gif.welcomeTen);
 
           await message.channel.send({
             embeds: [embed],
