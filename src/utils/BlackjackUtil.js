@@ -84,28 +84,36 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
     let dealerValue = cardValue(dealer);
     let playerValue = cardValue(player);
 
-    if (end == 'w') {
+    const dealerCardsDisplay = dealerValue.display || '';
+    const playerCardsDisplay = playerValue.display || '';
+
+    const maxLength = Math.max(dealerCardsDisplay.length, playerCardsDisplay.length);
+    const blankSpace = ' '.repeat(maxLength - dealerCardsDisplay.length + 5);
+
+    if (end === 'w') {
         color = 65280;
         description = `**You won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
-    } else if (end == 'l') {
+    } else if (end === 'l') {
         color = 16711680;
         description = `**You lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
-    } else if (end == 'tb') {
+    } else if (end === 'tb') {
         color = 6381923;
         description = '**You both bust!**';
-    } else if (end == 't') {
+    } else if (end === 't') {
         color = 6381923;
         description = '**You tied!**';
-    } else dealerValue.points = dealerValue.shownPoints + '+?';
+    } else {
+        dealerValue.points = dealerValue.shownPoints + '+?';
+    }
 
     return {
         title: `${client.emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.mainRight}`,
         color: color,
         description: `The winner is the one who's closest to 21.\n${description}\n` +
-            `\nDealer **\`[${dealerValue.points}]\`${BLANK}**${author.displayName} **\`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
-            `## ${dealerValue.display}${BLANK}${playerValue.display}`,
+            `\nDealer **\`[${dealerValue.points}]\`${blankSpace}**${author.displayName} **\`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
+            `## ${dealerCardsDisplay}${blankSpace}${playerCardsDisplay}`, // Dynamic spacing between cards
         thumbnail: {
-            url: author.displayAvatarURL({dynamic: true, size: 1024})
+            url: author.displayAvatarURL({ dynamic: true, size: 1024 })
         },
         footer: {
             text: !!end ? 'Game Over' : 'Game in progress',
