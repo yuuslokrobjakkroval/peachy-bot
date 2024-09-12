@@ -92,35 +92,35 @@ class Slots extends Command {
 		let newBalance = coin + win - baseCoins;
 
 		const initialEmbed = client.embed()
-			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
+			.setTitle(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
 			.setDescription(
 				`# **\`|\` ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin} \`|\`** ** ${ctx.author.displayName} ** \n` +
-				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
-				`**\`|        |\`**`)
+				`# **\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
+				`# **\`|        |\`**`)
 			.setColor(client.color.main);
 
 		await ctx.sendMessage({ embeds: [initialEmbed] });
 
 
 		const spinEmbed = client.embed()
-			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
+			.setTitle(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
 			.setDescription(`# **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin} \`|\`** ** ${ctx.author.displayName} ** \n` +
-				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
-				`**\`|        |\`**`)
+				`# **\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
+				`# **\`|        |\`**`)
 			.setColor(client.color.main);
 
 		const spinSecondEmbed = client.embed()
-			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
+			.setTitle(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
 			.setDescription(`# **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]} \`|\`** ** ${ctx.author.displayName} ** \n` +
-				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
-				`**\`|        |\`**`)
+				`# **\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
+				`# **\`|        |\`**`)
 			.setColor(client.color.main);
 
 		const resultEmbed = client.embed()
-			.setTitle(`**${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
+			.setTitle(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**`)
 			.setDescription(`# **\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} \`|\`** ** ${ctx.author.displayName} ** \n` +
-				`**\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
-				`**\`|        |\` ${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
+				`# **\`|        |\` You bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n` +
+				`# **\`|        |\` ${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setColor(client.color.main);
 
 		setTimeout(async function () {
