@@ -101,9 +101,7 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
     return {
         title: `${client.emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.mainRight}`,
         color: color,
-        description: `The winner is the one who's closest to 21.\n${description}`+
-            `Dealer **\`[${dealerValue.points}]\`${BLANK}${BLANK}${BLANK}**${author.displayName} **\`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**` +
-            `## **${dealerValue.display}**${BLANK}${BLANK}${BLANK}## **${playerValue.display}**`,
+        description: `The winner is the one who's closest to 21.\n${description} Dealer **\`[${dealerValue.points}]\`${BLANK}${BLANK}${BLANK}**${author.displayName} **\`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n ## **${dealerValue.display}**${BLANK}${BLANK}${BLANK} ## **${playerValue.display}**`,
         thumbnail: {
             url: author.displayAvatarURL({dynamic: true, size: 1024})
         },
