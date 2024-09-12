@@ -15,7 +15,7 @@ module.exports = class Peachy extends Command {
                 usage: 'peachy',
             },
             category: 'economy',
-            aliases: ['p'],
+            aliases: ['eachy', 'p'],
             cooldown: 5,
             args: false,
             permissions: {
