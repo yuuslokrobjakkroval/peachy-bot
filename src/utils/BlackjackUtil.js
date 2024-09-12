@@ -63,7 +63,7 @@ const cardsf = [
 const config = require('../config');
 const random = require('random-number-csprng');
 
-const BLANK = '<:BLANK:1283828360593543269>';
+const DEALER = '<:DEALERBLACKJACK:1283852034784886885>';
 exports.randCard = randCard;
 async function randCard(deck, type) {
     let card = deck.splice(await random(0, deck.length - 1), 1)[0];
@@ -107,7 +107,7 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
         title: `${client.emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.mainRight}`,
         color: color,
         description: `The winner is the one who's closest to 21.\n` +
-            `\n**DEALER \`[${dealerValue.points}]\`**\n` +
+            `\n**${DEALER} \`[${dealerValue.points}]\`**\n` +
             `## ${dealerCardsDisplay}\n` +
             `**${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
             `## ${playerCardsDisplay}\n` +
