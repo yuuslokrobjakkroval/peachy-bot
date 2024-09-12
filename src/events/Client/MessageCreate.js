@@ -58,8 +58,9 @@ module.exports = class MessageCreate extends Event {
 
           const levelUp = await new canvafy.LevelUp()
               .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-              .setUsername(`${message.author.username}`)
-              .setBorder("#000000")
+              .setUsername(`${message.author.displayName}`)
+              .setBorder(this.client.color.main)
+              .setBackground("image", gif.welcomeTen)
               .setLevels(user.profile.level - 1, user.profile.level)
               .build();
 
@@ -75,7 +76,7 @@ module.exports = class MessageCreate extends Event {
                     You leveled up to level ${user.profile.level}!\n
                     You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emoji.coin}.`)
               .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-              .setImage(gif.welcomeTen);
+              .setImage('attachment://level-up.png');
 
           await message.channel.send({
             embeds: [embed],
