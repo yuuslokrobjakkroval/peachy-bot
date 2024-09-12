@@ -103,7 +103,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
       }
 
       const row = new ActionRowBuilder().addComponents(
-          new ButtonBuilder().setLabel('Click for support').setStyle(1).setURL(client.config.link.support),
+          new ButtonBuilder().setLabel('Click for support').setStyle(1).setURL(client.config.links.support),
           new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
           new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
       );
