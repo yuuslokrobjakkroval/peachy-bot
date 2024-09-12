@@ -104,31 +104,13 @@ Note that certain commands might display usernames in lists retrieved by the bot
 
       const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
-// Create buttons with style 1 (Primary button)
-const row = new ActionRowBuilder().addComponents(
-    new ButtonBuilder().setCustomId('support_button').setLabel('Click for support').setStyle(1), // No URL, using customId
-    new ButtonBuilder().setCustomId('invite_button').setLabel('Invite me!').setStyle(1),
-    new ButtonBuilder().setCustomId('vote_button').setLabel('Vote for me').setStyle(1)
-);
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setLabel('Click for support').setStyle(5).setURL(client.config.links.support), // Link button style 5
+        new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
+        new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
+      );
 
-await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
-
-// Handling interaction for buttons
-client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isButton()) return;
-
-    // Button interactions based on customId
-    if (interaction.customId === 'support_button') {
-        await interaction.reply({ content: `Here is the [support link](${client.config.links.support})`, ephemeral: true });
-    }
-    if (interaction.customId === 'invite_button') {
-        await interaction.reply({ content: `Invite me using this [link](${client.config.links.invite})`, ephemeral: true });
-    }
-    if (interaction.customId === 'vote_button') {
-        await interaction.reply({ content: `Vote for me [here](${client.config.links.vote})`, ephemeral: true });
-    }
-});
-
+      await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
     } else {
       const command = client.commands.get(args[0].toLowerCase());
       if (!command)
