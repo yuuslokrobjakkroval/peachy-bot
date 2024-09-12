@@ -19,7 +19,7 @@ module.exports = {
     loadingSleep: 'https://i.imgur.com/NEjoyFi.gif',
     loadingShower: 'https://i.imgur.com/l4K54fM.gif',
 
-    welcomeToPeachAndGoma: 'https://i.imgur.com/12bykrb.gif',
+    welcomeToPeachAndGoma: 'https://i.imgur.com/YU19mNL.gif',
     welcomeToPeach: 'https://i.imgur.com/nDocQCG.gif',
     welcomeToGoma: 'https://i.imgur.com/eIdHzUJ.gif',
     welcomeToPjumBen: 'https://i.imgur.com/0IzitAm.jpg',

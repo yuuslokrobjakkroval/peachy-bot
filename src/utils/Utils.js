@@ -3,6 +3,10 @@ const GiveawaySchema = require('../schemas/giveaway');
 const Users = require('../schemas/user');
 
 module.exports = class Utils {
+    static getUser(id) {
+        return Users.findOne({userId: id});
+    }
+
     static toSmall(count) {
         const numbers = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
         let digits = Math.trunc(Math.log10(count) + 1);
