@@ -109,8 +109,6 @@ module.exports = class PeachyClient extends Client {
         });
     }
 
-
-
     loadEvents() {
         const eventsPath = fs.readdirSync(path.join(__dirname, '../events'));
         eventsPath.forEach(dir => {
