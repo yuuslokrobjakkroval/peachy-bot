@@ -84,15 +84,8 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
     let dealerValue = cardValue(dealer);
     let playerValue = cardValue(player);
 
-    // Dealer and player cards display
     const dealerCardsDisplay = dealerValue.display || '';
     const playerCardsDisplay = playerValue.display || '';
-
-    // Calculate the number of BLANK emojis needed to align the cards
-    const maxLength = Math.max(dealerCardsDisplay.length, playerCardsDisplay.length);
-    const blankCount = Math.ceil((maxLength - dealerCardsDisplay.length) / BLANK.length);
-
-    const blankSpace = BLANK.repeat(blankCount > 0 ? blankCount : 1); // At least one BLANK
 
     if (end === 'w') {
         color = 65280;
