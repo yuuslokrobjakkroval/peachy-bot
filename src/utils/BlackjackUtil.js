@@ -107,9 +107,9 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
         title: `${client.emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.mainRight}`,
         color: color,
         description: `The winner is the one who's closest to 21.\n` +
-            `\n**Dealer \`[${dealerValue.points}]\`**` +
+            `\n**Dealer \`[${dealerValue.points}]\`**\n` +
             `## ${dealerCardsDisplay}\n` +
-            `**${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**` +
+            `**${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
             `## ${playerCardsDisplay}\n` +
             `${description}\n`,
         thumbnail: {
