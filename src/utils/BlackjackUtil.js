@@ -86,16 +86,16 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
 
     if (end == 'w') {
         color = 65280;
-        description = `\n**You won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
+        description = `**\nYou won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
     } else if (end == 'l') {
         color = 16711680;
-        description = `\n**You lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
+        description = `**\nYou lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
     } else if (end == 'tb') {
         color = 6381923;
-        description = '\n**You both bust!**';
+        description = '**\nYou both bust!**';
     } else if (end == 't') {
         color = 6381923;
-        description = '\n**You tied!**';
+        description = '**\nYou tied!**';
     } else dealerValue.points = dealerValue.shownPoints + '+?';
 
     return {
