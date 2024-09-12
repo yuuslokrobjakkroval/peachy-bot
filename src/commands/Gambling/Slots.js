@@ -5,7 +5,7 @@ const random = require("random-number-csprng");
 
 const maxAmount = 250000;
 
-class Slots extends Command {
+module.exports = class Slots extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'slots',
@@ -77,10 +77,10 @@ class Slots extends Command {
 		} else if (rand <= 54.75) { // 5.75%
 			win = baseCoins * 4;
 			rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-		} else if (rand <= 57.25) { // 2.5%
+		} else if (rand <= 56.25) { // 2.5%
 			win = baseCoins * 10;
 			rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-		} else { // 42.75%
+		} else { // 48.75%
 			let slot1 = Math.floor(Math.random() * SLOTS.length);
 			let slot2 = Math.floor(Math.random() * SLOTS.length);
 			let slot3 = Math.floor(Math.random() * SLOTS.length);
@@ -95,7 +95,7 @@ class Slots extends Command {
 			.setColor(client.color.main)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
 			.setDescription(
-				`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`    ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin}    \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+				`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -107,7 +107,7 @@ class Slots extends Command {
 		const spinEmbed = client.embed()
 			.setColor(client.color.main)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`    ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin}    \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -116,7 +116,7 @@ class Slots extends Command {
 		const spinSecondEmbed = client.embed()
 			.setColor(client.color.main)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`    ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]}    \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -125,7 +125,7 @@ class Slots extends Command {
 		const resultEmbed = client.embed()
 			.setColor(client.color.main)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`    ${rslots[0]} ${rslots[1]} ${rslots[2]}    \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
+			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${rslots[1]} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -144,5 +144,3 @@ class Slots extends Command {
 		await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec();
 	}
 }
-
-module.exports = Slots;
