@@ -103,7 +103,7 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
         color: color,
         description: `The winner is the one who's closest to 21.\n${description}\n` +
             `Dealer **\`[${dealerValue.points}]\`${BLANK}${BLANK}${BLANK}**${author.displayName} **\`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
-            `# ${dealerValue.display}${BLANK}${BLANK}${BLANK} # ${playerValue.display}`,
+            `# ${dealerValue.display}${BLANK}${playerValue.display}`,
         thumbnail: {
             url: author.displayAvatarURL({dynamic: true, size: 1024})
         },
