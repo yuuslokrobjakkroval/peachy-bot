@@ -103,7 +103,7 @@ The coin is flips ${client.emoji.coinFlip.flip}`)
                 .setDescription(`**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${client.emoji.coin} choose **${
                     choice === 'p' ? 'peach' : 'goma'
                 }**
-The coin is flips ${win ? (choice === 'p' ? client.emoji.coinFlip.peach : client.emoji.coinFlip.goma) : choice === 'p' ? client.emoji.coinFlip.goma : client.coinFlip.emoji.peach} and ${
+The coin is flips ${win ? (choice === 'p' ? client.emoji.coinFlip.peach : client.emoji.coinFlip.goma) : (choice === 'p' ? client.emoji.coinFlip.peach : client.coinFlip.emoji.goma)} and ${
                     win
                         ? `**Won \`${(baseCoins + baseCoins).toLocaleString()}\` ${client.emoji.coin}**`
                         : `**Lose \`${baseCoins.toLocaleString()}\` ${client.emoji.coin}**`
