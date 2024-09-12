@@ -106,7 +106,7 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
             `# \n${dealerValue.display}\n` +
             `**\n${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
             `# ${playerValue.display}\n` +
-            `\n${description}\n`,
+            `**\n${description}**\n`,
         thumbnail: {
             url: author.displayAvatarURL({ dynamic: true, size: 1024 })
         },
