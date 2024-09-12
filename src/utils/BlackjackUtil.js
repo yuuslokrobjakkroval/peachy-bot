@@ -60,10 +60,10 @@ const cardsf = [
     '<a:qdf:1281795921117708299>',
     '<a:kdf:1281795928159944899>',
 ];
-
 const config = require('../config');
 const random = require('random-number-csprng');
 
+const BLANK = '<:BLANK:1283828360593543269>';
 exports.randCard = randCard;
 async function randCard(deck, type) {
     let card = deck.splice(await random(0, deck.length - 1), 1)[0];
@@ -101,22 +101,12 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
     return {
         title: `${client.emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.mainRight}`,
         color: color,
-        description: `The winner is the one who's closest to 21.\n${description}`,
+        description: `The winner is the one who's closest to 21.\n${description}`+
+            `Dealer **\`[${dealerValue.points}]\`${BLANK}${BLANK}${BLANK}**${author.displayName} **\`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**` +
+            `## **${dealerValue.display}**${BLANK}${BLANK}${BLANK}## **${playerValue.display}**`,
         thumbnail: {
             url: author.displayAvatarURL({dynamic: true, size: 1024})
         },
-        fields: [
-            {
-                name: 'Dealer **`[' + dealerValue.points + ']`**',
-                value: `** # ${dealerValue.display}**`,
-                inline: true,
-            },
-            {
-                name: author.displayName + ' **`[' + playerValue.points + ']' + (playerValue.ace ? '*' : '') + '`**',
-                value: `** # ${playerValue.display}**`,
-                inline: true,
-            },
-        ],
         footer: {
             text: !!end ? 'Game Over' : 'Game in progress',
             iconURL: client.utils.emojiToImage(`${client.emoji.main}`),
