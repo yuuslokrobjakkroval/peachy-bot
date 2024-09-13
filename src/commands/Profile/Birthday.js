@@ -156,8 +156,9 @@ module.exports = class Birthday extends Command {
                     const month = parsedDate.month() + 1;
 
                     const zodiacSign = getZodiacSign(client.emoji.zodiac, day, month);
+                    const zodiacEmojiImage = zodiacSign ? client.utils.emojiToImage(zodiacSign.emoji) : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 });
 
-                    embed.setDescription(`Your birthday has been set to **\`${formattedDate}\`**\n\nYour zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
+                    embed.setThumbnail(zodiacEmojiImage).setDescription(`Your birthday has been set to\n**\`${formattedDate}\`**\nYour zodiac sign is\n**\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
                     await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': formattedDate, 'profile.zodiacSign': zodiacSign.sign } }).exec();
 
                     await ctx.sendMessage({ embeds: [embed] });
