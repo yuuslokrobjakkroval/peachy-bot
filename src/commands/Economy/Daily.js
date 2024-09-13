@@ -1,11 +1,12 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/User.js');
+const Users = require('../../schemas/user.js');
 const { checkCooldown, updateCooldown } = require('../../functions/function');
 const chance = require('chance').Chance();
 const moment = require('moment');
 
 function getEmojiForTime() {
     const hours = moment().hour();
+    console.log(hours)
     const isDaytime = hours >= 6 && hours < 18;
 
     return isDaytime ? `${this.client.emoji.time.day}` : `${this.client.emoji.time.night}`;
