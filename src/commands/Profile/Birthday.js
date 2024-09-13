@@ -168,7 +168,7 @@ module.exports = class Birthday extends Command {
 
                     embed
                         .setColor(client.color.main)
-                        .setDescription(`Your birthday has been set to **\`${formattedDate}\`** and zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** **\`${zodiacSign.emoji}\`**.`);
+                        .setDescription(`Your birthday has been set to **\`${formattedDate}\`** and zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
                     await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': formattedDate, 'profile.zodiacSign': zodiacSign.sign } }).exec();
 
                     await ctx.sendMessage({ embeds: [embed] });
