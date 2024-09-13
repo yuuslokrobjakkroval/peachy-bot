@@ -157,7 +157,7 @@ module.exports = class Birthday extends Command {
 
                     const zodiacSign = getZodiacSign(client.emoji.zodiac, day, month);
 
-                    embed.setDescription(`Your birthday has been set to **\`${formattedDate}\`** and zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
+                    embed.setDescription(`Your birthday has been set to **\`${formattedDate}\`**\nYour zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
                     await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': formattedDate, 'profile.zodiacSign': zodiacSign.sign } }).exec();
 
                     await ctx.sendMessage({ embeds: [embed] });
