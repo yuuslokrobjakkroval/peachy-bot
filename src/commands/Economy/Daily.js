@@ -4,14 +4,6 @@ const { checkCooldown, updateCooldown } = require('../../functions/function');
 const chance = require('chance').Chance();
 const moment = require('moment');
 
-function getEmojiForTime() {
-    const hours = moment().hour();
-    console.log(hours)
-    const isDaytime = hours >= 6 && hours < 18;
-
-    return isDaytime ? `${this.client.emoji.time.day}` : `${this.client.emoji.time.night}`;
-}
-
 module.exports = class Daily extends Command {
     constructor(client) {
         super(client, {
@@ -47,14 +39,8 @@ module.exports = class Daily extends Command {
             const newBalance = coin + baseCoins;
 
             const now = moment()
+            const hours = now.hour();
             let nextDate = moment()
-
-            const getEmojiForTime = () => {
-                const hours = moment().hour();
-                const isDaytime = hours >= 6 && hours < 18;
-
-                return isDaytime ? `${this.client.emoji.time.day}` : `${this.client.emoji.time.night}`;
-            }
 
             if(now.isAfter(moment().hour(15).minute(0).second(0))) {
                 nextDate = moment().add(1, 'days')
@@ -95,7 +81,7 @@ module.exports = class Daily extends Command {
             const embed = client
                 .embed()
                 .setColor(client.color.main)
-                .setTitle(`${ctx.author.displayName} claimed their daily reward! ${getEmojiForTime()}`)
+                .setTitle(`${ctx.author.displayName} claimed their daily reward! ${hours >= 6 && hours < 18 ? `${client.emoji.time.day}` : `${client.emoji.time.night}`}`)
                 .setDescription(
                     client.i18n.get(language, 'commands', 'daily_success', {
                         coinEmote: client.emoji.coin,
