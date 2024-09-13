@@ -77,7 +77,7 @@ module.exports = class Ranking extends Command {
 
             const userPosition = users.findIndex(({ userId }) => userId === ctx.author.id) + 1;
             const user = users.find(({ userId }) => userId === ctx.author.id);
-            const userRank = `**${user.username} Rank : ${userPosition} ${handleEmoji(userPosition)}**\n**${client.utils.formatNumber(user?.totalCoins || 0)}** ${client.emoji.coin}\n`;
+            const userRank = `**${user.username ? user.username : 'Unknown'} Rank : ${userPosition} ${handleEmoji(userPosition)}**\n**${client.utils.formatNumber(user?.totalCoins || 0)}** ${client.emoji.coin}\n`;
 
             const leaderboardList = users.slice(0, 100).map((user, index) => {
                 const position = index + 1;
