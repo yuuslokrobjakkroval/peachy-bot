@@ -1,6 +1,6 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/user.js');
-const { checkCooldown, updateCooldown } = require('../../functions/function');
+const Users = require('../../schemas/User.js');
+const { checkCooldown, getCooldown, updateCooldown } = require('../../functions/function');
 const chance = require('chance').Chance();
 const moment = require('moment');
 
@@ -37,21 +37,24 @@ module.exports = class Daily extends Command {
             const { coin, bank } = user.balance;
             const baseCoins = chance.integer({ min: 300000, max: 500000 });
             const newBalance = coin + baseCoins;
-            const now = moment();
-            const next7AM = moment().add(1, 'days').set({ hour: 7, minute: 0, second: 0, millisecond: 0 });
-            const timeUntilNext7AM = moment.duration(next7AM.diff(now));
-            const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext7AM);
 
-            function getEmojiForTime() {
-                const hours = moment().hour();
-                const isDaytime = hours >= 6 && hours < 18;
-                console.log(isDaytime)
-
-                return isDaytime ? `${client.emoji.time.day}` : `${client.emoji.time.night}`;
+            const now = moment()
+            let nextDate = moment()
+            if(now.isAfter(moment().hour(15).minute(0).second(0))) {
+                nextDate = moment().add(1, 'days')
             }
+            const next5PM = nextDate.set({ hour: 17, minute: 0, second: 0, millisecond: 0 });
+
+            const timeUntilNext5PM = moment.duration(next5PM.diff(now));
+
+
+            const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM);
+
+
 
             if (!isCooldownExpired) {
-                const duration = moment.duration(next7AM.diff(now));
+                const duration = moment.duration(next5PM.diff(now));
+
                 const hours = Math.floor(duration.asHours());
                 const minutes = Math.floor(duration.asMinutes()) % 60;
                 const seconds = Math.floor(duration.asSeconds()) % 60;
@@ -64,23 +67,23 @@ module.exports = class Daily extends Command {
             }
 
             const baseExp = chance.integer({ min: 100, max: 150 });
-            const newExp = user.profile.exp + baseExp;
+            const newExp = user.profile.xp + baseExp;
 
             await Promise.all([
                 Users.updateOne({ userId: ctx.author.id }, {
                     $set: {
                         'balance.coin': newBalance,
                         'balance.bank': bank,
-                        'profile.exp': newExp,
+                        'profile.xp': newExp,
                     }
                 }).exec(),
-                updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext7AM)
+                updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM)
             ]);
 
             const embed = client
                 .embed()
                 .setColor(client.color.main)
-                .setTitle(`${ctx.author.displayName} claimed their daily reward! ${getEmojiForTime()}`)
+                .setTitle(`${ctx.author.displayName} claimed their daily reward!`)
                 .setDescription(
                     client.i18n.get(language, 'commands', 'daily_success', {
                         coinEmote: client.emoji.coin,
