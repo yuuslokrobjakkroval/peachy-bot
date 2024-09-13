@@ -35,7 +35,7 @@ module.exports = class Daily extends Command {
             }
 
             const { coin, bank } = user.balance;
-            const baseCoins = chance.integer({ min: 30000, max: 50000 });
+            const baseCoins = chance.integer({ min: 300000, max: 500000 });
             const newBalance = coin + baseCoins;
             const now = moment();
             const next7AM = moment().add(1, 'days').set({ hour: 7, minute: 0, second: 0, millisecond: 0 });
@@ -45,6 +45,7 @@ module.exports = class Daily extends Command {
             function getEmojiForTime() {
                 const hours = moment().hour();
                 const isDaytime = hours >= 6 && hours < 18;
+                console.log(isDaytime)
 
                 return isDaytime ? `${client.emoji.time.day}` : `${client.emoji.time.night}`;
             }
