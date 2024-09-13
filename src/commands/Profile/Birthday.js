@@ -2,14 +2,45 @@ const { Command } = require('../../structures/index.js');
 const moment = require('moment');
 const Users = require('../../schemas/user.js');
 
+function getZodiacSign(zodiacSign, day, month) {
+    const zodiacSigns = [
+        { sign: 'capricorn', start: [12, 22], end: [1, 19] },
+        { sign: 'aquarius', start: [1, 20], end: [2, 18] },
+        { sign: 'pisces', start: [2, 19], end: [3, 20] },
+        { sign: 'aries', start: [3, 21], end: [4, 19] },
+        { sign: 'taurus', start: [4, 20], end: [5, 20] },
+        { sign: 'gemini', start: [5, 21], end: [6, 20] },
+        { sign: 'cancer', start: [6, 21], end: [7, 22] },
+        { sign: 'leo', start: [7, 23], end: [8, 22] },
+        { sign: 'virgo', start: [8, 23], end: [9, 22] },
+        { sign: 'libra', start: [9, 23], end: [10, 22] },
+        { sign: 'scorpio', start: [10, 23], end: [11, 21] },
+        { sign: 'sagittarius', start: [11, 22], end: [12, 21] }
+    ];
+
+    for (const zodiac of zodiacSigns) {
+        const [startMonth, startDay] = zodiac.start;
+        const [endMonth, endDay] = zodiac.end;
+
+        if (
+            (month === startMonth && day >= startDay) ||
+            (month === endMonth && day <= endDay) ||
+            (startMonth > endMonth && (month === startMonth || month === endMonth))
+        ) {
+            return { sign: zodiac.sign, emoji: zodiacSign[zodiac.sign] };
+        }
+    }
+    return null;
+}
+
 module.exports = class Birthday extends Command {
     constructor(client) {
         super(client, {
             name: 'birthday',
             description: {
-                content: 'Sets, resets, shows, or provides help for your profile birthday.',
+                content: 'Sets, resets, shows, or provides help for your profile birthday and zodiac sign.',
                 examples: [
-                    'birthday 20-03-2024',
+                    'birthday 20-03-2001',
                     'birthday reset',
                     'birthday show',
                     'birthday help'
@@ -21,10 +52,6 @@ module.exports = class Birthday extends Command {
             cooldown: 5,
             args: true,
             guildOnly: false,
-            player: {
-                voice: false,
-                active: false,
-            },
             permissions: {
                 admin: false,
                 dev: false,
@@ -54,7 +81,7 @@ module.exports = class Birthday extends Command {
                 },
                 {
                     name: 'show',
-                    description: 'Show your birthday.',
+                    description: 'Show your birthday and zodiac sign.',
                     type: 1,
                 },
                 {
@@ -75,35 +102,47 @@ module.exports = class Birthday extends Command {
 
         switch (subCommand) {
             case 'help': {
+                // Show help
                 embed
                     .setColor(client.color.main)
-                    .setDescription(`**Usage:** \`birthday <date || reset || show || help>\`\n\n**Examples:**\n\`birthday 20-03-2024\`\n\`birthday reset\`\n\`birthday show\`\n\`birthday help\``);
+                    .setDescription(`**Usage:** \`birthday <date || reset || show || help>\`\n\n**Examples:**\n\`birthday 20-03-2001\`\n\`birthday reset\`\n\`birthday show\`\n\`birthday help\``);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
 
             case 'reset': {
+                // Reset birthday and zodiac sign
                 embed
                     .setColor(client.color.main)
-                    .setDescription('The birthday for you has been reset.');
+                    .setDescription('Your birthday and zodiac sign have been reset.');
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': null } }).exec();
-
-                await ctx.sendMessage({ embeds: [embed] });
-                break;
-            }
-
-            case 'show': {
-                embed
-                    .setColor(client.color.main)
-                    .setDescription(user.profile.birthday ? `The birthday for you is **\`${user.profile.birthday}\`**.` : 'No birthday set.');
+                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': null, 'profile.zodiacSign': null } }).exec();
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
             }
 
             default: {
+                // If no arguments, show birthday and zodiac sign
+                if (!args.length) {
+                    const birthdayMessage = user.profile.birthday
+                        ? `Your birthday is **\`${user.profile.birthday}\`**.`
+                        : 'No birthday set.';
+
+                    const zodiacMessage = user.profile.zodiacSign
+                        ? `Your zodiac sign is **\`${client.utils.formatCapitalize(user.profile.zodiacSign)}\`** ${client.emoji.zodiac[user.profile.zodiacSign] || ''}.`
+                        : 'No zodiac sign set.';
+
+                    embed
+                        .setColor(client.color.main)
+                        .setDescription(`${birthdayMessage}\n${zodiacMessage}`);
+
+                    await ctx.sendMessage({ embeds: [embed] });
+                    break;
+                }
+
+                // Set birthday and zodiac sign
                 let date = ctx.isInteraction ? ctx.interaction.options.data[0]?.options[0]?.value.toString() : args.join(' ');
 
                 if (!date) {
@@ -122,15 +161,18 @@ module.exports = class Birthday extends Command {
                     await ctx.sendMessage({ embeds: [embed] });
                 } else {
                     const formattedDate = parsedDate.format('DD-MMM-YYYY');
+                    const day = parsedDate.date();
+                    const month = parsedDate.month() + 1;
+
+                    const zodiacSign = getZodiacSign(client.emoji.zodiac, day, month);
+
                     embed
                         .setColor(client.color.main)
-                        .setDescription(`The birthday for you has been set to **\`${formattedDate}\`**`);
-
-                    await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': formattedDate } }).exec();
+                        .setDescription(`Your birthday has been set to **\`${formattedDate}\`** and zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** **\`${zodiacSign.emoji}\`**.`);
+                    await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': formattedDate, 'profile.zodiacSign': zodiacSign.sign } }).exec();
 
                     await ctx.sendMessage({ embeds: [embed] });
                 }
-                break;
             }
         }
     }

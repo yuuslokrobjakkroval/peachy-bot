@@ -34,7 +34,8 @@ const ProfileSchema = new Schema({
     levelXp: { type: Number, default: 1000 },
     lastXpGain: { type: Number, default: 0 },
     visibility: { status: { type: Boolean, default: false }, message: { type: String, default: null }} ,
-    likes: { type: [String], default: [] }
+    likes: { type: [String], default: [] },
+    zodiacSign: { type: String, default: null }
 });
 
 // Verification Schema
