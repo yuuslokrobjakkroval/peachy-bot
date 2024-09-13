@@ -39,9 +39,9 @@ module.exports = class Daily extends Command {
             const newBalance = coin + baseCoins;
 
             const now = moment().tz('Asia/Bangkok');
-            let nextDate = now;
             const hours = now.hour();
 
+            let nextDate = now;
             if(now.isAfter(moment().tz('Asia/Bangkok').hour(15).minute(0).second(0))) {
                 nextDate = moment().tz('Asia/Bangkok').add(1, 'days')
             }
