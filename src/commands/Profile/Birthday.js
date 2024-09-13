@@ -40,7 +40,7 @@ module.exports = class Birthday extends Command {
             description: {
                 content: 'Sets, resets or provides help for your profile birthday and zodiac sign.',
                 examples: [
-                    'birthday 20-01-2000',
+                    'birthday 20-01',
                     'birthday reset',
                     'birthday help'
                 ],
@@ -95,12 +95,15 @@ module.exports = class Birthday extends Command {
         embed.setThumbnail(zodiacEmojiImage);
 
         const subCommand = ctx.isInteraction ? ctx.interaction.options.data[0].name : args[0];
-        const dateFormats = ['DD-MM-YYYY', 'YYYY-MM-DD', 'MM/DD/YYYY', 'MM-DD-YYYY', 'DD/MM/YYYY'];
+        const dateFormats = ['DD-MM', 'MM-DD', 'MM/DD', 'MM-DD', 'DD/MM'];
 
         switch (subCommand) {
             case 'help': {
                 // Show help
-                embed.setDescription(`**Usage:** \`birthday <date || reset || show || help>\`\n\n**Examples:**\n\`birthday 20-03-2001\`\n\`birthday reset\`\n\`birthday show\`\n\`birthday help\``);
+                embed.addFields([
+                        { name: '**Usage :**', value: `\`\`\`birthday <date || reset || show || help>\n\`\`\``, inline: false },
+                        { name: '**Examples :**', value: `\`\`\`birthday 20-03\nbirthday reset\nbirthday help\n\`\`\``, inline: false }
+                    ]);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -148,10 +151,10 @@ module.exports = class Birthday extends Command {
                 }
 
                 if (!parsedDate.isValid()) {
-                    embed.setDescription(`The date must be in one of the supported formats:\n• DD-MM-YYYY\n• YYYY-MM-DD\n• MM/DD/YYYY\n• MM-DD-YYYY\n• DD/MM/YYYY`);
+                    embed.setDescription(`The date must be in one of the supported formats:\n• DD-MM\n• MM-DD\n• MM/DD\n• MM-DD\n• DD/MM`);
                     await ctx.sendMessage({ embeds: [embed] });
                 } else {
-                    const formattedDate = parsedDate.format('DD-MMM-YYYY');
+                    const formattedDate = parsedDate.format('DD-MMM');
                     const day = parsedDate.date();
                     const month = parsedDate.month() + 1;
 
