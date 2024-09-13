@@ -48,6 +48,14 @@ module.exports = class Daily extends Command {
 
             const now = moment()
             let nextDate = moment()
+
+            const getEmojiForTime = () => {
+                const hours = moment().hour();
+                const isDaytime = hours >= 6 && hours < 18;
+
+                return isDaytime ? `${this.client.emoji.time.day}` : `${this.client.emoji.time.night}`;
+            }
+
             if(now.isAfter(moment().hour(15).minute(0).second(0))) {
                 nextDate = moment().add(1, 'days')
             }
