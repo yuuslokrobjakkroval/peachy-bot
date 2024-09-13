@@ -41,7 +41,7 @@ module.exports = class Info extends Command {
         .addFields([
           {
             name: '𝐃𝐄𝐕',
-            value: `[𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌](https://i.imgur.com/kYXE4No.gif)`,
+            value: `[𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌](https://discord.gg/PPuhSbgF6d)`,
             inline: false,
           },
           {
