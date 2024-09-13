@@ -35,7 +35,7 @@ module.exports = class Weekly extends Command {
             }
 
             const { coin, bank } = user.balance;
-            const baseCoins = chance.integer({ min: 80000, max: 100000 });
+            const baseCoins = chance.integer({ min: 500000, max: 1000000 });
             const newBalance = coin + baseCoins;
 
             const now = new Date();
@@ -78,14 +78,14 @@ module.exports = class Weekly extends Command {
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
             }
 
-            const baseExp = chance.integer({ min: 500, max: 1000 });
-            const newExp = user.profile.exp + baseExp;
+            const baseExp = chance.integer({ min: 30, max: 50 });
+            const newExp = user.profile.xp + baseExp;
             await Promise.all([
                 Users.updateOne({ userId: ctx.author.id }, {
                     $set: {
                         'balance.coin': newBalance,
                         'balance.bank': bank,
-                        'profile.exp': newExp,
+                        'profile.xp': newExp,
                     }
                 }).exec(),
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly)
@@ -97,7 +97,7 @@ module.exports = class Weekly extends Command {
                 .setTitle(`${ctx.author.displayName} claimed their weekly reward! ${getEmojiForTime()}`)
                 .setDescription(
                     client.i18n.get(language, 'commands', 'weekly_success', {
-                        coinEmote: client.emote.coin,
+                        coinEmote: client.emoji.coin,
                         coin: client.utils.formatNumber(baseCoins),
                         exp: client.utils.formatNumber(baseExp),
                     })
