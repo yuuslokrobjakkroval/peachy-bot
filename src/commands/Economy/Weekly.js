@@ -39,19 +39,13 @@ module.exports = class Weekly extends Command {
             const newBalance = coin + baseCoins;
 
             const now = new Date();
+            const hours = now.getHours();
             const nextWeekly = new Date();
             nextWeekly.setDate(now.getDate() + 7);
 
             const timeUntilNextWeekly = nextWeekly - now;
 
             const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
-
-            function getEmojiForTime() {
-                const hours = moment().hour();
-                const isDaytime = hours >= 6 && hours < 18;
-
-                return isDaytime ? `${client.emoji.time.day}` : `${client.emoji.time.night}`;
-            }
 
             if (!isCooldownExpired) {
                 const lastCooldownTimestamp = await getCooldown(ctx.author.id, this.name.toLowerCase());
@@ -94,7 +88,7 @@ module.exports = class Weekly extends Command {
             const embed = client
                 .embed()
                 .setColor(client.color.main)
-                .setTitle(`${ctx.author.displayName} claimed their weekly reward! ${getEmojiForTime()}`)
+                .setTitle(`${ctx.author.displayName} claimed their weekly reward! ${hours >= 6 && hours < 18 ? `${client.emoji.time.day}` : `${client.emoji.time.night}`}`)
                 .setDescription(
                     client.i18n.get(language, 'commands', 'weekly_success', {
                         coinEmote: client.emoji.coin,
