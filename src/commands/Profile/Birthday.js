@@ -38,20 +38,18 @@ module.exports = class Birthday extends Command {
         super(client, {
             name: 'birthday',
             description: {
-                content: 'Sets, resets, shows, or provides help for your profile birthday and zodiac sign.',
+                content: 'Sets, resets or provides help for your profile birthday and zodiac sign.',
                 examples: [
                     'birthday 20-03-2001',
                     'birthday reset',
-                    'birthday show',
                     'birthday help'
                 ],
-                usage: 'birthday <date || reset || show || help>',
+                usage: 'birthday <date || reset || help>',
             },
             category: 'profile',
             aliases: ['bd'],
             cooldown: 5,
-            args: true,
-            guildOnly: false,
+            args: false,
             permissions: {
                 admin: false,
                 dev: false,
@@ -77,11 +75,6 @@ module.exports = class Birthday extends Command {
                 {
                     name: 'reset',
                     description: 'Resets the birthday to the default one',
-                    type: 1,
-                },
-                {
-                    name: 'show',
-                    description: 'Show your birthday and zodiac sign.',
                     type: 1,
                 },
                 {
