@@ -1,7 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user.js');
 const { checkCooldown, getCooldown, updateCooldown } = require('../../functions/function');
-const moment = require("moment/moment");
 const chance = require('chance').Chance();
 
 module.exports = class Weekly extends Command {
