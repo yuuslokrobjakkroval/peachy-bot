@@ -88,7 +88,11 @@ module.exports = class Birthday extends Command {
 
     async run(client, ctx, args) {
         const user = await Users.findOne({ userId: ctx.author.id });
-        const embed = client.embed().setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() });
+        const embed = client.embed()
+            .setColor(client.color.main)
+            .setTitle(`${client.emoji.mainLeft} 𝐁𝐈𝐑𝐓𝐇𝐃𝐀𝐘 𝐈𝐍𝐅𝐎 ${client.emoji.mainRight}`)
+        const zodiacEmojiImage = user.profile.zodiacSign ? client.utils.emojiToImage(client.emoji.zodiac[user.profile.zodiacSign]) : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 });
+        embed.setThumbnail(zodiacEmojiImage);
 
         const subCommand = ctx.isInteraction ? ctx.interaction.options.data[0].name : args[0];
         const dateFormats = ['DD-MM-YYYY', 'YYYY-MM-DD', 'MM/DD/YYYY', 'MM-DD-YYYY', 'DD/MM/YYYY'];
@@ -96,9 +100,7 @@ module.exports = class Birthday extends Command {
         switch (subCommand) {
             case 'help': {
                 // Show help
-                embed
-                    .setColor(client.color.main)
-                    .setDescription(`**Usage:** \`birthday <date || reset || show || help>\`\n\n**Examples:**\n\`birthday 20-03-2001\`\n\`birthday reset\`\n\`birthday show\`\n\`birthday help\``);
+                embed.setDescription(`**Usage:** \`birthday <date || reset || show || help>\`\n\n**Examples:**\n\`birthday 20-03-2001\`\n\`birthday reset\`\n\`birthday show\`\n\`birthday help\``);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -106,9 +108,7 @@ module.exports = class Birthday extends Command {
 
             case 'reset': {
                 // Reset birthday and zodiac sign
-                embed
-                    .setColor(client.color.main)
-                    .setDescription('Your birthday and zodiac sign have been reset.');
+                embed.setDescription('Your birthday and zodiac sign have been reset.');
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': null, 'profile.zodiacSign': null } }).exec();
 
@@ -124,12 +124,10 @@ module.exports = class Birthday extends Command {
                         : 'No birthday set.';
 
                     const zodiacMessage = user.profile.zodiacSign
-                        ? `Your zodiac sign is **\`${client.utils.formatCapitalize(user.profile.zodiacSign)}\`** ${client.emoji.zodiac[user.profile.zodiacSign] || ''}.`
+                        ? `Your zodiac sign is **\`${client.utils.formatCapitalize(user.profile.zodiacSign)}\`**.`
                         : 'No zodiac sign set.';
 
-                    embed
-                        .setColor(client.color.main)
-                        .setDescription(`${birthdayMessage}\n${zodiacMessage}`);
+                    embed.setDescription(`${birthdayMessage}\n${zodiacMessage}`);
 
                     await ctx.sendMessage({ embeds: [embed] });
                     break;
@@ -150,7 +148,7 @@ module.exports = class Birthday extends Command {
                 }
 
                 if (!parsedDate.isValid()) {
-                    embed.setColor(client.color.main).setDescription(`The date must be in one of the supported formats:\n• DD-MM-YYYY\n• YYYY-MM-DD\n• MM/DD/YYYY\n• MM-DD-YYYY\n• DD/MM/YYYY`);
+                    embed.setDescription(`The date must be in one of the supported formats:\n• DD-MM-YYYY\n• YYYY-MM-DD\n• MM/DD/YYYY\n• MM-DD-YYYY\n• DD/MM/YYYY`);
                     await ctx.sendMessage({ embeds: [embed] });
                 } else {
                     const formattedDate = parsedDate.format('DD-MMM-YYYY');
@@ -159,9 +157,7 @@ module.exports = class Birthday extends Command {
 
                     const zodiacSign = getZodiacSign(client.emoji.zodiac, day, month);
 
-                    embed
-                        .setColor(client.color.main)
-                        .setDescription(`Your birthday has been set to **\`${formattedDate}\`** and zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
+                    embed.setDescription(`Your birthday has been set to **\`${formattedDate}\`** and zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
                     await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': formattedDate, 'profile.zodiacSign': zodiacSign.sign } }).exec();
 
                     await ctx.sendMessage({ embeds: [embed] });
