@@ -2,7 +2,7 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user.js');
 const { checkCooldown, updateCooldown } = require('../../functions/function');
 const chance = require('chance').Chance();
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 module.exports = class Daily extends Command {
     constructor(client) {
@@ -38,7 +38,7 @@ module.exports = class Daily extends Command {
             const baseCoins = chance.integer({ min: 300000, max: 500000 });
             const newBalance = coin + baseCoins;
 
-            const now = moment()
+            const now = moment().tz('Asia/Bangkok');
             const hours = now.hour();
             let nextDate = moment()
 
