@@ -40,7 +40,7 @@ module.exports = class Birthday extends Command {
             description: {
                 content: 'Sets, resets or provides help for your profile birthday and zodiac sign.',
                 examples: [
-                    'birthday 20-03-2001',
+                    'birthday 20-01-2000',
                     'birthday reset',
                     'birthday help'
                 ],
@@ -120,11 +120,11 @@ module.exports = class Birthday extends Command {
                 // If no arguments, show birthday and zodiac sign
                 if (!args.length) {
                     const birthdayMessage = user.profile.birthday
-                        ? `Your birthday is **\`${user.profile.birthday}\`**.`
+                        ? `Your birthday is **\`${user.profile.birthday}\`**.\n`
                         : 'No birthday set.';
 
                     const zodiacMessage = user.profile.zodiacSign
-                        ? `Your zodiac sign is **\`${client.utils.formatCapitalize(user.profile.zodiacSign)}\`**.`
+                        ? `Your zodiac sign is **\`${client.utils.formatCapitalize(user.profile.zodiacSign)}\`**.\n`
                         : 'No zodiac sign set.';
 
                     embed.setDescription(`${birthdayMessage}\n${zodiacMessage}`);
@@ -157,7 +157,7 @@ module.exports = class Birthday extends Command {
 
                     const zodiacSign = getZodiacSign(client.emoji.zodiac, day, month);
 
-                    embed.setDescription(`Your birthday has been set to **\`${formattedDate}\`**\nYour zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
+                    embed.setDescription(`Your birthday has been set to **\`${formattedDate}\`**\n\nYour zodiac sign is **\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${zodiacSign.emoji}.`);
                     await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.birthday': formattedDate, 'profile.zodiacSign': zodiacSign.sign } }).exec();
 
                     await ctx.sendMessage({ embeds: [embed] });
