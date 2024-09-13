@@ -41,8 +41,8 @@ module.exports = class Daily extends Command {
             const now = moment().tz('Asia/Bangkok');
             const hours = now.hour();
 
-            let nextDate = now;
-            if(now.isAfter(moment().tz('Asia/Bangkok').hour(15).minute(0).second(0))) {
+            let nextDate = moment().tz('Asia/Bangkok');
+            if(now.isAfter(moment().tz('Asia/Bangkok').hour(17).minute(0).second(0))) {
                 nextDate = moment().tz('Asia/Bangkok').add(1, 'days')
             }
             const next5PM = nextDate.set({ hour: 17, minute: 0, second: 0, millisecond: 0 });
