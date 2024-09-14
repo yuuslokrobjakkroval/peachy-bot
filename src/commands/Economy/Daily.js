@@ -78,7 +78,6 @@ module.exports = class Daily extends Command {
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM)
             ]);
 
-            console.log(hours >= 6 && hours < 18)
             const embed = client
                 .embed()
                 .setColor(client.color.main)
