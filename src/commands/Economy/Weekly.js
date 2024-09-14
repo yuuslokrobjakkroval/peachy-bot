@@ -1,6 +1,7 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user.js');
 const { checkCooldown, getCooldown, updateCooldown } = require('../../functions/function');
+const moment = require("moment-timezone");
 const chance = require('chance').Chance();
 
 module.exports = class Weekly extends Command {
@@ -37,10 +38,10 @@ module.exports = class Weekly extends Command {
             const baseCoins = chance.integer({ min: 500000, max: 1000000 });
             const newBalance = coin + baseCoins;
 
-            const now = new Date();
-            const hours = now.getHours();
+            const now = moment().tz('Asia/Bangkok');
+            const hours = now.hour();
             const nextWeekly = new Date();
-            nextWeekly.setDate(now.getDate() + 7);
+            nextWeekly.setDate(now.date() + 7);
 
             const timeUntilNextWeekly = nextWeekly - now;
 
