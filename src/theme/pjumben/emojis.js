@@ -3,7 +3,7 @@ module.exports = {
     main: '<:MAIN:1281847051860054016>',
     mainLeft: '<:PJUMBENLEFT:1283280791094169671>',
     mainRight: '<:PJUMBENRIGHT:1283280797561786418>',
-    congratulation: '<a:CONGRATULATIONS:1282268007183290379>',
+    congratulation: '<a:CONGRATULATIONS:1284383994544394311>',
     tick: '`✅`',
     deny: '<:x_:1230882133891878933>',
     mark: '`❕`',
