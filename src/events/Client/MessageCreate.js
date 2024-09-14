@@ -292,7 +292,7 @@ module.exports = class MessageCreate extends Event {
                   .setColor(this.client.color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                   .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${this.client.emoji.mainRight}`)
-                  .setDescription(`${this.client.emoji.congratulation} Warming Gift for you,\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
+                  .setDescription(`Warming Gift for you ${this.client.emoji.congratulation}\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
                   .setImage(this.client.utils.getRandomElement(welcome))
               await int.editReply({
                 content: '',

@@ -51,7 +51,7 @@ module.exports = class Avatar extends Command {
       .setTitle(`Avatar of ${user.displayName}`)
       .setImage(user.displayAvatarURL({ dynamic: true, size: 1024 }))
       .setFooter({
-        text: `Requested by ${ctx.author.username}`,
+        text: `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })
       .setTimestamp();
