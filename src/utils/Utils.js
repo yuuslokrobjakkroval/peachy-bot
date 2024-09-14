@@ -346,7 +346,7 @@ module.exports = class Utils {
         });
     }
 
-    static async endGiveaway(client, message, autopay = false, rerollWinners = []) {
+    static async endGiveaway(client, message, autopay = false) {
         if (!message.guild) return;
         if (!message.client.guilds.cache.get(message.guild.id)) return;
 
@@ -373,21 +373,6 @@ module.exports = class Utils {
         } else {
             winnerIdArray.push(...data.entered);
         }
-
-        if (rerollWinners.length) {
-            winnerIdArray = winnerIdArray.filter(w => !rerollWinners.includes(w));
-            while (rerollWinners.length > 0 && winnerIdArray.length < data.winners) {
-                winnerIdArray.push(...getMultipleRandom(rerollWinners, data.winners - winnerIdArray.length));
-                rerollWinners = rerollWinners.filter(r => !winnerIdArray.includes(r));
-            }
-        }
-
-        // Set reroll options to the winners
-        await GiveawaySchema.findOneAndUpdate({
-            guildId: data.guildId,
-            channelId: data.channelId,
-            messageId: message.id
-        }, { rerollOptions: winnerIdArray });
 
         const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
             ButtonBuilder.from(message.components[0].components[0])
