@@ -62,7 +62,7 @@ module.exports = class Ranking extends Command {
                 {
                     $project: {
                         userId: 1,
-                        totalCoins: { $add: ['$balance.coin', '$balance.bank'] },
+                        totalCoins: '$balance.coin',
                         username: '$username',
                     }
                 },
