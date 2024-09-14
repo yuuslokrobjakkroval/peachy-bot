@@ -145,7 +145,7 @@ class InteractionCreate extends Event {
               ephemeral: true,
             });
           } else if (data.entered.includes(interaction.user.id)) {
-            await interaction.reply({
+            return await interaction.reply({
               embeds: [
                 this.client.embed()
                     .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
