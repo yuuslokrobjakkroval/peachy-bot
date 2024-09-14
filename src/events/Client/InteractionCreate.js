@@ -165,7 +165,7 @@ class InteractionCreate extends Event {
 
             // Collect button interaction
             const filter = int => int.isButton() && int.user.id === interaction.user.id;
-            interaction.channel
+            await interaction.channel
                 .awaitMessageComponent({ filter, time: 30000 })
                 .then(async int => {
                   if (int.customId === 'leave-giveaway') {
