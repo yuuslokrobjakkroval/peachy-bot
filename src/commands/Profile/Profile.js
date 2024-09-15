@@ -1,114 +1,161 @@
-const { Command } = require('../../structures/index.js');
-const Users = require("../../schemas/user.js");
+const { Command } = require('../../structures');
 const { AttachmentBuilder } = require('discord.js');
-const { createCanvas, loadImage } = require('@napi-rs/canvas');
+const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
+const { formatUsername, splitToSpace, formatCapitalize } = require('../../utils/Utils');
+const Users = require('../../schemas/user');
+const gif = require('../../utils/Gif');
 
-const gif = require("../../utils/Gif");
+GlobalFonts.registerFromPath('./fonts/EmOne-SemiBold.ttf', 'EmOne-SemiBold');
+GlobalFonts.registerFromPath('./fonts/EmOne-SemiBoldItalic.ttf', 'EmOne-SemiBoldItalic');
 
 module.exports = class Profile extends Command {
     constructor(client) {
         super(client, {
             name: 'profile',
             description: {
-                content: 'Displays your profile information.',
-                examples: ['profile'],
-                usage: 'profile',
+                content: 'Shows the current xp, level, rank, and other details of a user',
+                examples: ['profile @user'],
+                usage: 'profile <user>',
             },
-            category: 'profile',
+            category: 'social',
             aliases: ['profile', 'pf'],
             cooldown: 5,
             args: false,
             permissions: {
                 dev: false,
-                client: ['SendMessages', 'ViewChannel', 'EmbedLinks', 'AttachFiles'],
+                client: ['SendMessages', 'ViewChannel', 'EmbedLinks', 'AddReactions'],
                 user: [],
             },
-            slashCommand: false,
-            options: [],
+            slashCommand: true,
+            options: [{
+                name: 'user',
+                description: 'The user to view the profile of',
+                type: 6,
+                required: true,
+            }],
         });
     }
 
-    async run(client, ctx, args, language) {
+    async run(client, ctx, args) {
+        let loadingMessage;
         try {
-            const user = await Users.findOne({ userId: ctx.author.id });
-            if (!user) {
-                return await client.utils.sendErrorMessage(client, ctx, 'User not found.');
+            const targetUser = ctx.isInteraction ? ctx.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+            const userData = await Users.findOne({ userId: targetUser.id });
+
+            if (!userData) {
+                const embed = client.embed()
+                    .setColor(client.color.main)
+                    .setDescription('User Not Found')
+                loadingMessage = await ctx.sendMessage({
+                    embeds: [embed],
+                });
+            } else if (userData.profile.visibility.status && targetUser.id !== ctx.author.id) {
+                const embed = client.embed()
+                    .setColor(client.color.main)
+                    .setDescription(userData.profile.visibility.message ? userData.profile.visibility.message : 'This profile is private and cannot be viewed.')
+                loadingMessage = await ctx.sendMessage({
+                    embeds: [embed],
+                });
+            } else {
+                const embed = client.embed()
+                    .setColor(client.color.main)
+                    .setDescription('**Generating your profile...**')
+                    .setImage(gif.loadingScreen);
+                loadingMessage = await ctx.sendDeferMessage({
+                    embeds: [embed],
+                });
+
+                const canvas = createCanvas(1280, 720);
+                const context = canvas.getContext('2d');
+                // Background and gradient
+                const backgroundImage = await loadImage('https://i.imgur.com/pKkVaQD.jpg');
+                await drawBackground(context, backgroundImage);
+                await drawSingleProfile(context, ctx, userData)
+
+                const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.displayName}.png` });
+
+                await loadingMessage?.edit({
+                    content: '',
+                    embeds: [],
+                    files: [attachment],
+                });
             }
-
-            // Extract XP, level, and level experience
-            const { xp = 0, level = 1, levelExp = 1000 } = user.profile;
-            const xpProgress = Math.min((xp / levelExp) * 100, 100);
-
-            // Generate the level image using Canvas
-            const canvas = createCanvas(700, 250);
-            const ctxCanvas = canvas.getContext('2d');
-
-            // Background image
-            const background = await loadImage(gif.welcomeThree);
-            ctxCanvas.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-            // Function to draw a rounded rectangle
-            function drawRoundedRect(ctx, x, y, width, height, radius) {
-                ctx.beginPath();
-                ctx.moveTo(x + radius, y);
-                ctx.lineTo(x + width - radius, y);
-                ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-                ctx.lineTo(x + width, y + height - radius);
-                ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-                ctx.lineTo(x + radius, y + height);
-                ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-                ctx.lineTo(x, y + radius);
-                ctx.quadraticCurveTo(x, y, x + radius, y);
-                ctx.closePath();
-            }
-
-            // Draw rounded avatar
-            const avatar = await loadImage(ctx.author.displayAvatarURL({ format: 'png' }));
-            ctxCanvas.save();
-            ctxCanvas.beginPath();
-            ctxCanvas.arc(60 + 128 / 2, 60 + 128 / 2, 128 / 2, 0, Math.PI * 2, true); // x, y are the center of the circle, and 128 is the radius
-            ctxCanvas.closePath();
-            ctxCanvas.clip();
-            ctxCanvas.drawImage(avatar, 60, 60, 128, 128); // Draw avatar with 256px width and height
-            ctxCanvas.restore();
-
-            // Add level text
-            ctxCanvas.font = '40px sans-serif';
-            ctxCanvas.fillStyle = '#F582AE';
-            ctxCanvas.fillText(`Level: ${level}`, 250, 60);
-
-            // Add XP progress text
-            ctxCanvas.font = '30px sans-serif';
-            ctxCanvas.fillStyle = '#F582AE';
-            ctxCanvas.fillText(`XP: ${xp} / ${levelExp}`, 250, 120);
-
-            // Draw rounded progress bar background
-            ctxCanvas.fillStyle = '#AC7D67'; // Background color for the progress bar
-            drawRoundedRect(ctxCanvas, 250, 150, 400, 30, 14); // Rounded rectangle for the progress bar
-            ctxCanvas.fill();
-
-            // Draw rounded progress bar foreground (filled part)
-            ctxCanvas.fillStyle = '#8BD3DD'; // Foreground color (progress fill)
-            ctxCanvas.save();
-            drawRoundedRect(ctxCanvas, 250, 150, (xpProgress / 100) * 400, 30, 14); // Rounded rectangle for the filled part
-            ctxCanvas.clip();
-            ctxCanvas.fillRect(250, 150, (xpProgress / 100) * 400, 30);
-            ctxCanvas.restore();
-
-            // Convert to an attachment
-            const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: 'level-image.png' });
-
-            // Send the embed with the image
-            const embed = client.embed()
-                .setTitle(`${client.emoji.mainLeft} ${ctx.author.displayName}'s Level ${client.emoji.mainRight}`)
-                .setColor(client.color.main)
-                .setDescription(`**Level:** ${level}\n**XP:** ${xp} / ${levelExp}\n**Progress:** ${xpProgress.toFixed(2)}%`)
-                .setImage('attachment://level-image.png');
-
-            await ctx.message.channel.send({ embeds: [embed], files: [attachment] });
         } catch (error) {
-            console.error('Error in Level command:', error);
-            await client.utils.sendErrorMessage(client, ctx, 'An error occurred while fetching your level.');
+            await loadingMessage?.edit({
+                content: 'An error occurred while generating your profile. Please try again later.',
+                files: [],
+            });
+            console.error(error);
         }
+
     }
 };
+
+function drawBackground(ctx, bannerImage) {
+    ctx.drawImage(bannerImage, 0, 0, 1280, 720);
+}
+
+function drawRoundedRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+}
+
+async function drawSingleProfile(context, ctx, user) {
+
+    const userAvatar = await loadImage(ctx.author.displayAvatarURL({ format: 'png', size: 256 }));
+    const userAvatarX = 30;
+    const userAvatarY = 40;
+    const userAvatarSize = 168;
+    context.save();
+    context.beginPath();
+    context.arc(userAvatarX + userAvatarSize / 2, userAvatarY + userAvatarSize / 2, userAvatarSize / 2, 0, Math.PI * 2, true);
+    context.closePath();
+    context.clip();
+    context.drawImage(userAvatar, userAvatarX, userAvatarY, userAvatarSize, userAvatarSize);
+    context.restore();
+
+    const xpProgress = Math.min((user.profile.xp / user.profile.levelXp) * 100, 100);
+    // User avatar
+
+    // Draw rounded progress bar background
+    context.fillStyle = '#AC7D67'; // Background color for the progress bar
+    drawRoundedRect(context, 250, 150, 400, 30, 14); // Rounded rectangle for the progress bar
+    context.fill();
+
+    // Draw rounded progress bar foreground (filled part)
+    context.fillStyle = '#8BD3DD';
+    context.save();
+    drawRoundedRect(context, 250, 150, (xpProgress / 100) * 400, 30, 14);
+    context.clip();
+    context.fillRect(250, 150, (xpProgress / 100) * 400, 30);
+    context.restore();
+
+    // Color
+    context.fillStyle = '#FFFFFF';
+    context.font = 'bold 36px EmOne-SemiBoldItalic';
+    context.fillText(formatUsername(ctx.author.username), 220, 75);
+
+    context.font = '24px EmOne-SemiBoldItalic';
+    context.fillText(formatCapitalize(user.profile.gender || 'Not Set'), 220, 125);
+    context.fillText(formatCapitalize(user.profile.bio || 'Not Set'), 220, 175);
+    context.fillText(formatCapitalize(splitToSpace(user.profile.birthday )|| 'Not Set'), 220, 225);
+
+    context.font = '24px EmOne-SemiBold';
+    context.fillText(`LEVEL ${user.profile.level || 1}`, 220, 250);
+    context.fillText(`${user.profile.xp || 0}/${user.profile.levelXp || 1000}`, 400, 100);
+
+
+    context.fillText(`ZODIAC SIGNS: ${user.zodiacSign || 'N/A'}`, 550, 50);
+
+}
+
+

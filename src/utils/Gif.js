@@ -5,6 +5,15 @@ module.exports = {
     urWelcome: 'https://i.imgur.com/N0653cE.gif',
 
 
+    // PROFILE
+    loadingScreen: 'https://i.imgur.com/DX8rjaB.gif',
+
+    // BANNER
+
+    // COLOR BANNER
+    bannerPeach: 'https://i.imgur.com/yn29i0G.jpg',
+    bannerGoma: 'https://i.imgur.com/8Jg9KBn.jpg',
+
     // WALLPAPER
     welcomeOne: 'https://i.imgur.com/vvxRxU1.jpg',
     welcomeTwo: 'https://i.imgur.com/2W13m0Y.jpg',

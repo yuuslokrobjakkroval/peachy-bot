@@ -156,9 +156,18 @@ Ends: <t:${formattedDuration}:R>`
             entered: [],
             autopay: !!autoPay,
             rerollOptions: [],
-        }).then(data => {
+        }).then(async data => {
+            // Wrap the setTimeout in an async function for better error handling
             setTimeout(async () => {
-                if (!data.ended) client.utils.endGiveaway(client, giveawayMessage, data.autopay);
+                try {
+                    // Re-fetch the giveaway to ensure the most up-to-date status
+                    const giveawayData = await GiveawaySchema.findById(data?._id);
+                    if (giveawayData && !giveawayData.ended) {
+                        await client.utils.endGiveaway(client, giveawayMessage, giveawayData.autopay);
+                    }
+                } catch (err) {
+                    console.error(`Error ending giveaway: ${err.message}`);
+                }
             }, duration);
         });
     }
