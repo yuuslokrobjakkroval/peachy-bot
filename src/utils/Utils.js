@@ -357,8 +357,8 @@ module.exports = class Utils {
         });
 
         if (!data) return;
-        if (data.ended === true) return;
-        if (data.paused === true) return;
+        if (data?.ended === true) return;
+        if (data?.paused === true) return;
 
         function getMultipleRandom(arr, number) {
             const shuffled = [...arr].sort(() => 0.5 - Math.random());
@@ -366,12 +366,12 @@ module.exports = class Utils {
         }
 
         let winnerIdArray = [];
-        if (data.entered.length > data.winners) {
-            winnerIdArray.push(...getMultipleRandom(data.entered, data.winners));
-            while (winnerIdArray.length < data.winners)
-                winnerIdArray.push(...getMultipleRandom(data.entered, data.winners - winnerIdArray.length));
+        if (data?.entered?.length > data?.winners) {
+            winnerIdArray.push(...getMultipleRandom(data?.entered, data.winners));
+            while (winnerIdArray.length < data?.winners)
+                winnerIdArray.push(...getMultipleRandom(data?.entered, data?.winners - winnerIdArray.length));
         } else {
-            winnerIdArray.push(...data.entered);
+            winnerIdArray.push(...data?.entered);
         }
 
         const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
@@ -383,12 +383,12 @@ module.exports = class Utils {
 
         const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
             .setColor(client.color.main)
-            .setDescription(`Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`);
+            .setDescription(`Winners: ${data?.winners}\nHosted by: <@${data?.hostedBy}>`);
 
         await message.edit({embeds: [endGiveawayEmbed], components: [disableButton]}).then(async msg => {
             await GiveawaySchema.findOneAndUpdate({
-                guildId: data.guildId,
-                channelId: data.channelId,
+                guildId: data?.guildId,
+                channelId: data?.channelId,
                 messageId: msg.id
             }, {ended: true});
         });

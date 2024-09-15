@@ -162,8 +162,8 @@ Ends: <t:${formattedDuration}:R>`
                 try {
                     // Re-fetch the giveaway to ensure the most up-to-date status
                     const giveawayData = await GiveawaySchema.findById(data?._id);
-                    if (giveawayData && !giveawayData.ended) {
-                        await client.utils.endGiveaway(client, giveawayMessage, giveawayData.autopay);
+                    if (giveawayData && !giveawayData?.ended) {
+                        await client.utils.endGiveaway(client, giveawayMessage, giveawayData?.autopay);
                     }
                 } catch (err) {
                     console.error(`Error ending giveaway: ${err.message}`);
