@@ -346,7 +346,7 @@ module.exports = class Utils {
         });
     }
 
-    static async endGiveaway(client, message, autopay = false) {
+    static async endGiveaway(client, message, autopay) {
         if (!message.guild) return;
         if (!message.client.guilds.cache.get(message.guild.id)) return;
 
