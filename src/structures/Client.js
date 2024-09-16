@@ -9,19 +9,9 @@ const { I18n } = require('@hammerhq/localization');
 const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const emojis = require('../emojis.js');
-
-const configPeach = require('../theme/peach/config.js');
-const emojiPeach = require('../theme/peach/emojis.js');
-
-const configGoma = require('../theme/goma/config.js');
-const emojiGoma = require('../theme/goma/emojis.js');
-
-const configPjum = require('../theme/pjumben/config.js');
-const emojiPjum = require('../theme/pjumben/emojis.js');
-
 const Logger = require('./Logger.js');
 
-module.exports = class PeachyClient extends Client {
+module.exports = class MagicClient extends Client {
     constructor(options) {
         super(options);
         this.commands = new Collection();

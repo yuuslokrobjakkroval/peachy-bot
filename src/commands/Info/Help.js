@@ -1,18 +1,9 @@
 const Command = require('../../structures/Command.js');
-const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
 const font = {
-  Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
   Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
-  Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
-  fun: '𝐅𝐔𝐍',
-  Games: '𝐆𝐀𝐌𝐄𝐒',
   Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
-  Giveaway: '𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘',
-  Profile: '𝐏𝐑𝐎𝐅𝐈𝐋𝐄',
-  Pjumben: '𝐏𝐉𝐔𝐌𝐁𝐄𝐍',
-  Social: '𝐒𝐎𝐂𝐈𝐀𝐋',
+  Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
   Emotes: '𝐄𝐌𝐎𝐓𝐄𝐒',
-  Utility: '𝐔𝐓𝐈𝐋𝐈𝐓𝐘',
   Info: '𝐈𝐍𝐅𝐎',
 };
 
@@ -54,19 +45,11 @@ module.exports = class Help extends Command {
 
   async run(client, ctx, args) {
     // Retrieve user theme
-    const userId = ctx.isInteraction ? ctx.interaction.user.id : ctx.author.id;
-    const user = await client.db.findOne({ userId });
-    const theme = user && user.preferences && user.preferences.theme ? user.preferences.theme : 'default';
-
     const embed = client.embed();
     const prefix = client.config.prefix;
 
     const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
-    let categories = ['Actions', 'Economy', 'Inventory', 'fun', 'Games', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info'];
-
-    if (theme === 'pjumben') {
-      categories = ['Actions', 'Economy', 'Inventory', 'fun', 'Games', 'Gambling', 'Profile', 'Pjumben', 'Social', 'Emotes', 'Utility', 'Info'];
-    }
+    let categories = ['Economy', 'Gambling', 'Actions', 'Emotes', 'Info'];
 
     if (!args[0]) {
       const sortedCommands = {};
@@ -76,7 +59,7 @@ module.exports = class Help extends Command {
 
       const helpEmbed = embed
           .setColor(client.color.main)
-          .setTitle(`${client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬 ${client.emoji.mainRight}`)
+          .setTitle(`𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬`)
           .setDescription(
               `Use **\`${prefix}help [command]\`** to get more help!
 Example: **\`${prefix}help balance\`**
@@ -85,7 +68,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: `© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐊𝐘𝐔𝐔`,
+            text: `© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐌𝐀𝐆𝐈𝐂`,
             iconURL: client.user.displayAvatarURL(),
           });
 
@@ -95,7 +78,8 @@ Note that certain commands might display usernames in lists retrieved by the bot
           const commandNames = categoryCommands.map(cmd => `\`${cmd.name}\``).join(', ');
 
           helpEmbed.addFields([{
-            name: `${client.emoji.help[category.toLowerCase()]} ${font[category]}`,
+            // name: `${client.emoji.help[category.toLowerCase()]} ${font[category]}`,
+            name: `${font[category]}`,
             value: commandNames,
             inline: false,
           }]);
@@ -105,7 +89,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
       const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
       const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setLabel('Click for support').setStyle(5).setURL(client.config.links.support), // Link button style 5
+        new ButtonBuilder().setLabel('Click for support').setStyle(5).setURL(client.config.links.support),
         new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
         new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
       );

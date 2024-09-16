@@ -34,7 +34,7 @@ module.exports = class Balance extends Command {
 
             const embed = client
                 .embed()
-                .setTitle(`${this.client.emoji.mainLeft} ${ctx.author.displayName}'s Balance ${this.client.emoji.mainRight}`)
+                .setTitle(`${ctx.author.displayName}'s Balance`)
                 .setColor(client.color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(

@@ -4,7 +4,7 @@ const options = {
     disabled: false,
     interactive: false,
     logLevel: 'info',
-    scope: 'PEACHY',
+    scope: 'MAGIC',
 };
 
 module.exports = class Logger extends Signale {

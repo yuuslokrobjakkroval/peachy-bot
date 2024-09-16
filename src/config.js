@@ -4,16 +4,11 @@ dotenv.config();
 
 const path = require('path');
 
-const logChannelAll = '1278729169340993721';
-const logChannelGame = '1278728844110598195';
-const logChannelGambling = '1280343485731442784';
-const logChannelBalance = '1278728739760640093';
+const logChannelAll = '1285248453571776522';
+const logChannelBalance = '1285248582630244454';
+const logChannelGambling = '1285244924844965919';
 
-const logChannelId = [logChannelAll, logChannelGame, logChannelGambling, logChannelBalance]
-
-const birthdayPeachyChannelId = '1272074580797952116';
-
-const birthdayChannelId = [birthdayPeachyChannelId];
+const logChannelId = [logChannelAll, logChannelGambling, logChannelBalance]
 
 module.exports = {
   token: process.env.TOKEN,
@@ -22,10 +17,8 @@ module.exports = {
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   logChannelId,
-  birthdayChannelId,
   owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
-  bankAccount: process.env.BANKACCOUNT_ID,
-  color: { red: 0xFF0000, green: 0x00FF00, blue: 0xFFB0F2, pink: 0xE3A1AD, orange: 0xFFA500, main: 0xF582AE, none: 0x2B2D31 },
+  color: { danger: 0xFF0000, success: 0x00FF00, primary: 0x0023FF, tied: 0x877D7D, secondary: 0xE3A1AD, warning: 0xFFA500, main: 0xF582AE, none: 0x2B2D31 },
   database: process.env.DATABASE_URL,
   botStatus: 'online',
   botActivityType: 4,
@@ -36,8 +29,8 @@ module.exports = {
     directory: path.resolve('./src/languages'), // <= location of language
   },
   links: {
-    banner: 'https://i.imgur.com/kYXE4No.gif',
-    support: 'https://discord.gg/PPuhSbgF6d',
+    banner: 'https://i.imgur.com/yHEN3Wv.gif',
+    support: 'https://discord.gg/magicrealm8888',
     invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&integration_type=0&scope=bot+applications.commands`,
     vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
     website: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,

@@ -1,5 +1,6 @@
 const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
+const gif = require("../../utils/Gif");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
 
@@ -16,7 +17,7 @@ module.exports = class Slots extends Command {
 			},
 			category: 'gambling',
 			aliases: ['slot', 's'],
-			cooldown: 8,
+			cooldown: 6,
 			args: false,
 			permissions: {
 				dev: false,
@@ -36,7 +37,27 @@ module.exports = class Slots extends Command {
 	}
 
 	async run(client, ctx, args, language) {
-		const SLOTS = [client.emoji.slots.cat, client.emoji.slots.coffee, client.emoji.slots.heart, client.emoji.slots.cake, client.emoji.slots.milk, client.emoji.slots.peachy]
+		const slots = [client.emoji.slots.bottle, client.emoji.slots.ticket, client.emoji.slots.jelly, client.emoji.slots.magicCoin, client.emoji.slots.romdul]
+		// const thumbLoading = [
+		// 	gif.bubuLoading,
+		// 	gif.catLoading,
+		// 	gif.girlLoading
+		// ];
+		const thumbnailWin = [
+			gif.moneyThrowing,
+			gif.moneyCrypto,
+			gif.printMoney,
+			gif.richPudgy,
+			gif.throwingMoney
+		];
+		const thumbnailLose = [
+			gif.bunnyAngry,
+			gif.peachAngry,
+			gif.phoneAngry,
+			gif.catAngry,
+			gif.yierAngry,
+			gif.tigerAngry
+		];
 		const user = await Users.findOne({ userId: ctx.author.id }).exec();
 		const { coin, bank } = user.balance;
 		if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'));
@@ -61,41 +82,47 @@ module.exports = class Slots extends Command {
 		let rslots = [];
 		let rand = (await random(1, 1000)) / 10;
 		let win = 0;
-
-		if (rand <= 20) { // 20%
+		if (rand <= 21) { // 21%
 			win = baseCoins;
-			rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-		} else if (rand <= 33) { // 13%
+			rslots.push(slots[0]);
+			rslots.push(slots[0]);
+			rslots.push(slots[0]);
+		} else if (rand <= 34) { // 13%
 			win = baseCoins * 2;
-			rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-		} else if (rand <= 40) { // 7%
+			rslots.push(slots[1]);
+			rslots.push(slots[1]);
+			rslots.push(slots[1]);
+		} else if (rand <= 41.5) { // 7.5%
 			win = baseCoins * 3;
-			rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-		} else if (rand <= 45) { // 5%
-			win = 0;
-			rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-		} else if (rand <= 48.50) { // 3.5%
+			rslots.push(slots[2]);
+			rslots.push(slots[2]);
+			rslots.push(slots[2]);
+		} else if (rand <= 43.75) { // 2.75%
 			win = baseCoins * 4;
-			rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-		} else if (rand <= 50.50) { // 2%
+			rslots.push(slots[3]);
+			rslots.push(slots[3]);
+			rslots.push(slots[3]);
+		} else if (rand <= 45.25) { // 1.5%
 			win = baseCoins * 10;
-			rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-		} else { // 49.50%
-			let slot1 = Math.floor(Math.random() * SLOTS.length);
-			let slot2 = Math.floor(Math.random() * SLOTS.length);
-			let slot3 = Math.floor(Math.random() * SLOTS.length);
-			if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
-			if (slot3 === slot1 || slot3 === slot2) slot3 = (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
-			rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
+			rslots.push(slots[4]);
+			rslots.push(slots[4]);
+			rslots.push(slots[4]);
+		} else { // 54.75%
+			let slot1 = Math.floor(Math.random() * slots.length);
+			let slot2 = Math.floor(Math.random() * slots.length);
+			let slot3 = Math.floor(Math.random() * slots.length);
+			if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (slots.length - 1))) % slots.length;
+			if (slot3 === slot1 || slot3 === slot2) slot3 = (slot2 + Math.ceil(Math.random() * (slots.length - 1))) % slots.length;
+			rslots = [slots[slot1], slots[slot2], slots[slot3]];
 		}
 
 		let newBalance = coin + win - baseCoins;
 
 		const initialEmbed = client.embed()
 			.setColor(client.color.main)
-			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+			.setThumbnail(gif.bubuLoading)
 			.setDescription(
-				`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+				`### **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒**\n## **\`|\` ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -103,11 +130,10 @@ module.exports = class Slots extends Command {
 
 		await ctx.sendMessage({ embeds: [initialEmbed] });
 
-
 		const spinEmbed = client.embed()
 			.setColor(client.color.main)
-			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+			.setThumbnail(gif.bubuLoading)
+			.setDescription(`### **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒**\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}** \n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -115,17 +141,17 @@ module.exports = class Slots extends Command {
 
 		const spinSecondEmbed = client.embed()
 			.setColor(client.color.main)
-			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+			.setThumbnail(gif.bubuLoading)
+			.setDescription(`### **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒**\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
 			})
 
 		const resultEmbed = client.embed()
-			.setColor(client.color.main)
-			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`# **${client.emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${client.emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${rslots[1]} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
+			.setColor(win === 0 ? client.color.danger : client.color.primary)
+			.setThumbnail(win === 0 ? client.utils.getRandomElement(thumbnailLose) : client.utils.getRandomElement(thumbnailWin))
+			.setDescription(`### **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒**\n## **\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),

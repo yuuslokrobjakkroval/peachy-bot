@@ -8,14 +8,14 @@ const moment = require('moment');
 module.exports = class Peachy extends Command {
     constructor(client) {
         super(client, {
-            name: 'peachy',
+            name: 'magic',
             description: {
                 content: 'Earn some coins by being peachy.',
-                examples: ['peachy'],
-                usage: 'peachy',
+                examples: ['magic'],
+                usage: 'magic',
             },
             category: 'economy',
-            aliases: ['eachy', 'p'],
+            aliases: ['agic', 'm'],
             cooldown: 5,
             args: false,
             permissions: {
@@ -37,7 +37,7 @@ module.exports = class Peachy extends Command {
 
         const baseCoins = chance.integer({ min: 500, max: 1000 });
         const newBalance = user.balance.coin + baseCoins;
-        const newStreak = (user.peachy.streak += 1);
+        const newStreak = (user.magic.streak += 1);
 
         const timeExpired = 300000; // 5 minutes cooldown
         const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeExpired);
@@ -51,16 +51,16 @@ module.exports = class Peachy extends Command {
             const minutes = Math.floor(duration.asMinutes());
             const seconds = Math.floor(duration.asSeconds()) % 60;
 
-            const cooldownMessage = `Peachy is on cooldown!\nTry again after **${minutes}mins and ${seconds}secs**.`;
+            const cooldownMessage = `Magic is on cooldown!\nTry again after **${minutes}mins and ${seconds}secs**.`;
 
-            const cooldownEmbed = client.embed().setColor(client.color.red).setDescription(cooldownMessage);
+            const cooldownEmbed = client.embed().setColor(client.color.warning).setDescription(cooldownMessage);
 
             return await ctx.sendMessage({ embeds: [cooldownEmbed] });
         }
 
         // Update balance and streak
         await Promise.all([
-            Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'peachy.streak': newStreak } }).exec(),
+            Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'magic.streak': newStreak } }).exec(),
             updateCooldown(ctx.author.id, this.name.toLowerCase(), timeExpired)
         ]);
 
@@ -68,7 +68,7 @@ module.exports = class Peachy extends Command {
         const embed = client
             .embed()
             .setColor(client.color.main)
-            .setTitle(`${ctx.author.displayName} have claimed peachy!`)
+            .setTitle(`${ctx.author.displayName} have claimed magic!`)
             .setDescription(
                 client.i18n.get(language, 'commands', 'beg_success', {
                     coinEmote: client.emoji.coin,

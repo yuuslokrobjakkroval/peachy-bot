@@ -14,7 +14,7 @@ module.exports = class Ready extends Event {
     this.client.user?.setPresence({
       activities: [
         {
-          name: `PEACHY IN UR AREA !!!`,
+          name: `MAGIC !!!`,
           type: config.botActivityType,
         },
       ],

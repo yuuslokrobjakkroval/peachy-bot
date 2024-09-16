@@ -6,8 +6,6 @@ const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 
-const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight, gif.welcomeNine, gif.welcomeTen];
-
 const activeGames = new Map();
 
 function getRandomXp(min, max) {
@@ -33,59 +31,59 @@ module.exports = class MessageCreate extends Event {
     let user = await Users.findOne({ userId: message.author.id });
     const prefix = this.client.config.prefix;
 
-    if (user) {
-      const now = Date.now();
-      const xpCooldown = 45000;
-      if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
-        let xpGained = 0;
-        if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-          xpGained = getRandomXp(15, 25);
-        } else {
-          xpGained = getRandomXp(10, 15);
-        }
-
-        user.profile.xp += xpGained;
-        user.profile.lastXpGain = now;
-
-        const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
-        if (user.profile.xp >= nextLevelXp) {
-          user.profile.xp -= nextLevelXp;
-          user.profile.level += 1;
-          user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
-
-          const celebrationCoin = user.profile.level * 250000;
-          user.balance.coin += celebrationCoin;
-
-          const levelUp = await new canvafy.LevelUp()
-              .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-              .setUsername(`${message.author.displayName}`)
-              .setBorder('#8BD3DD')
-              .setBackground("image", gif.welcomeTen)
-              .setLevels(user.profile.level - 1, user.profile.level)
-              .build();
-
-          const levelImage = {
-            attachment: levelUp,
-            name: 'level-up.png',
-          };
-
-          const embed = this.client.embed()
-              .setColor(this.client.color.main)
-              .setTitle(`𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
-              .setDescription(`Congratulations ${message.author.displayName}!\n
-                    You leveled up to level ${user.profile.level}!\n
-                    You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emoji.coin}.`)
-              .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-              .setImage('attachment://level-up.png');
-
-          await message.channel.send({
-            embeds: [embed],
-            files: [levelImage],
-          });
-        }
-        await user.save();
-      }
-    }
+    // if (user) {
+    //   const now = Date.now();
+    //   const xpCooldown = 45000;
+    //   if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
+    //     let xpGained = 0;
+    //     if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
+    //       xpGained = getRandomXp(15, 25);
+    //     } else {
+    //       xpGained = getRandomXp(10, 15);
+    //     }
+    //
+    //     user.profile.xp += xpGained;
+    //     user.profile.lastXpGain = now;
+    //
+    //     const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
+    //     if (user.profile.xp >= nextLevelXp) {
+    //       user.profile.xp -= nextLevelXp;
+    //       user.profile.level += 1;
+    //       user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
+    //
+    //       const celebrationCoin = user.profile.level * 250000;
+    //       user.balance.coin += celebrationCoin;
+    //
+    //       const levelUp = await new canvafy.LevelUp()
+    //           .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
+    //           .setUsername(`${message.author.displayName}`)
+    //           .setBorder('#8BD3DD')
+    //           .setBackground("image", gif.welcomeTen)
+    //           .setLevels(user.profile.level - 1, user.profile.level)
+    //           .build();
+    //
+    //       const levelImage = {
+    //         attachment: levelUp,
+    //         name: 'level-up.png',
+    //       };
+    //
+    //       const embed = this.client.embed()
+    //           .setColor(this.client.color.main)
+    //           .setTitle(`𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
+    //           .setDescription(`Congratulations ${message.author.displayName}!\n
+    //                 You leveled up to level ${user.profile.level}!\n
+    //                 You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emoji.coin}.`)
+    //           .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
+    //           .setImage('attachment://level-up.png');
+    //
+    //       await message.channel.send({
+    //         embeds: [embed],
+    //         files: [levelImage],
+    //       });
+    //     }
+    //     await user.save();
+    //   }
+    // }
 
     const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
     if (mention.test(message.content)) {
@@ -118,13 +116,13 @@ module.exports = class MessageCreate extends Event {
       const command = this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
       const ctx = new Context(message, args);
       ctx.setArgs(args);
-      const permissionCommand = ['help', 'links', 'info', 'ping', 'rules', 'privacypolicy', 'stats']
+      const permissionCommand = ['help', 'links', 'info', 'ping', 'rules', 'privacypolicy']
       if (match) {
-        if (!user && !permissionCommand.includes(command?.name)) {
+        if (!user && !permissionCommand.includes(command.name)) {
           if (activeGames.has(ctx.author.id)) {
             return await ctx.sendMessage({
               embeds: [
-                this.client.embed().setColor(this.client.color.orange).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
+                this.client.embed().setColor(this.client.color.warning).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
               ],
             });
           }
@@ -133,11 +131,11 @@ module.exports = class MessageCreate extends Event {
           const embed = this.client
               .embed()
               .setColor(this.client.color.main)
-              .setTitle(`${this.client.emoji.mainLeft}  𝐏𝐄𝐀𝐂𝐇𝐘  ${this.client.emoji.mainRight}`)
+              .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌𝐀𝐆𝐈𝐂`)
               .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
               .setDescription(
                   `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
-              .setImage(gif.peachy);
+              .setImage(gif.magic);
 
           const row = new ActionRowBuilder().addComponents(
               new ButtonBuilder()
@@ -161,21 +159,21 @@ module.exports = class MessageCreate extends Event {
               try {
                 const embed = this.client.embed()
                     .setColor(this.client.color.main)
-                    .setTitle(`${this.client.emoji.mainLeft} 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 ${this.client.emoji.mainRight}`)
+                    .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌𝐀𝐆𝐈𝐂`)
                     .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                     .setDescription(
-                        `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
+                        `Welcome to the MAGIC community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
                         `**Rules and Guidelines**\n\n` +
                         `1. **Respect Everyone**: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
-                        `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
+                        `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit MAGIC's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
                         `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
                         `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
                         `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
                         `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
                         `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
                         `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
-                        `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
-                        `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
+                        `9. **One Account per User**: Creating multiple accounts to exploit MAGIC’s features is not allowed. Enjoy the bot responsibly.\n\n` +
+                        `If you have any questions or need assistance, feel free to join our [Support Server](${this.client.config.links.support}). We're here to help!`
                     );
 
 
@@ -204,10 +202,10 @@ module.exports = class MessageCreate extends Event {
               try {
                 const embed = this.client.embed()
                     .setColor(this.client.color.main)
-                    .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${this.client.emoji.mainRight}`)
+                    .setTitle(`𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘`)
                     .setDescription(
                         `**Introduction**\n` +
-                        `PEACHY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
+                        `MAGIC is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
                         `**Information Collection**\n` +
                         `We gather the following information to enhance your experience:\n` +
                         `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
@@ -217,7 +215,7 @@ module.exports = class MessageCreate extends Event {
                         `We utilize your data to:\n` +
                         `• Execute commands, interactions, and maintain game progression.\n` +
                         `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
-                        `• Enhance the security and smooth operation of PEACHY, ensuring a seamless user experience.\n\n` +
+                        `• Enhance the security and smooth operation of MAGIC, ensuring a seamless user experience.\n\n` +
                         `**Data Sharing**\n` +
                         `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
                         `**Data Security**\n` +
@@ -291,9 +289,9 @@ module.exports = class MessageCreate extends Event {
               const embed = this.client.embed()
                   .setColor(this.client.color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                  .setTitle(`${this.client.emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${this.client.emoji.mainRight}`)
+                  .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌𝐀𝐆𝐈𝐂`)
                   .setDescription(`Warming Gift for you ${this.client.emoji.congratulation}\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
-                  .setImage(this.client.utils.getRandomElement(welcome))
+                  .setImage(this.client.config.links.banner)
               await int.editReply({
                 content: '',
                 embeds: [embed],
@@ -313,7 +311,7 @@ module.exports = class MessageCreate extends Event {
                   this.client.embed()
                       .setColor(this.client.color.main)
                       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                      .setTitle(`${this.client.emoji.mainLeft} 𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 ${ctx.author.displayName} ${this.client.emoji.mainRight}`)
+                      .setTitle(`𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 ${ctx.author.displayName}`)
                       .setDescription(`Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`)
                 ],
                 components: [],
@@ -325,11 +323,15 @@ module.exports = class MessageCreate extends Event {
             await msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
           });
         } else {
-          const userInfo = await this.client.users.fetch(user.userId).catch(() => null);
-          if (!user.username || user.username !== userInfo.displayName ) {
-            user.username = userInfo ? userInfo.displayName : 'Unknown';
-            user.save();
-          }
+
+          // if(!!user) {
+          //   const userInfo = await this.client.users.fetch(user.userId).catch(() => null);
+          //
+          //   if (user || user.username !== userInfo?.displayName) {
+          //     user.username = userInfo ? userInfo.displayName : 'Unknown';
+          //     user.save();
+          //   }
+          // }
 
           if (!command) return;
 
@@ -353,7 +355,7 @@ module.exports = class MessageCreate extends Event {
             const embed = this.client
                 .embed()
                 .setColor(this.client.color.red)
-                .setTitle('Missing Arguments')
+                .setTitle('𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬')
                 .setDescription(`Please provide the required arguments for the \`${command.name}\` command.`)
                 .addFields([
                   {
@@ -397,18 +399,14 @@ module.exports = class MessageCreate extends Event {
               content: "You can't use this command with everyone or here.",
             });
           }
-
-          const gameCommands = ['quiz', 'numbertrivia', 'guessnumber'];
-          const gamblingCommands = ['slots', 'coinflip', 'klaklouk', 'blackjack', 'pav'];
-          const balanceCommands = ['balance', 'deposit', 'transfer', 'buy', 'sell'];
+          const balanceCommands = ['balance', 'deposit', 'transfer'];
+          const gamblingCommands = ['slots', 'coinflip', 'blackjack'];
 
           try {
             let logChannelId;
             if (balanceCommands.includes(command.name)) {
-              logChannelId = this.client.config.logChannelId[3];
-            } else if (gamblingCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[2];
-            } else if (gameCommands.includes(command.name)) {
+            } else if (gamblingCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[1];
             } else {
               logChannelId = this.client.config.logChannelId[0];

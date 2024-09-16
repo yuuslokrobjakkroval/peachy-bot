@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder } = require('discord.js');
-const GiveawaySchema = require('../schemas/giveaway');
+// const GiveawaySchema = require('../schemas/giveaway');
 const Users = require('../schemas/user');
 
 module.exports = class Utils {
@@ -339,107 +339,107 @@ module.exports = class Utils {
 
     static async sendErrorMessage(client, ctx, args, time) {
         const embed = new EmbedBuilder()
-            .setColor(client.color.red)
+            .setColor(client.color.danger)
             .setDescription(args)
         await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
 
-    static async endGiveaway(client, message, autopay) {
-        if (!message.guild) return;
-        if (!message.client.guilds.cache.get(message.guild.id)) return;
-
-        // Fetch the giveaway data
-        const data = await GiveawaySchema.findOne({
-            guildId: message.guildId,
-            messageId: message.id,
-        });
-
-        if (!data) return;
-        if (data?.ended === true) return;
-        if (data?.paused === true) return;
-
-        function getMultipleRandom(arr, number) {
-            const shuffled = [...arr].sort(() => 0.5 - Math.random());
-            return [...new Set(shuffled.slice(0, number))];
-        }
-
-        let winnerIdArray = [];
-        if (data?.entered?.length > data?.winners) {
-            winnerIdArray.push(...getMultipleRandom(data?.entered, data.winners));
-            while (winnerIdArray.length < data?.winners)
-                winnerIdArray.push(...getMultipleRandom(data?.entered, data?.winners - winnerIdArray.length));
-        } else {
-            winnerIdArray.push(...data?.entered);
-        }
-
-        const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
-            ButtonBuilder.from(message.components[0].components[0])
-                .setLabel(`${data.entered.length}`) // Number of participants
-                .setDisabled(true),
-            ButtonBuilder.from(message.components[0].components[1]).setDisabled(false)
-        );
-
-        const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
-            .setColor(client.color.main)
-            .setDescription(`Winners: ${data?.winners}\nHosted by: <@${data?.hostedBy}>`);
-
-        await message.edit({embeds: [endGiveawayEmbed], components: [disableButton]}).then(async msg => {
-            await GiveawaySchema.findOneAndUpdate({
-                guildId: data?.guildId,
-                channelId: data?.channelId,
-                messageId: msg.id
-            }, {ended: true});
-        });
-
-        async function addCoinsToUser(userId, amount) {
-            try {
-                let user = await Users.findOne({userId});
-                if (!user) {
-                    user = new Users({
-                        userId,
-                        balance: {
-                            coin: amount,
-                            bank: 0,
-                        }
-                    });
-                    await user.save();
-                } else {
-                    await Users.updateOne(
-                        {userId},
-                        {$inc: {'balance.coin': amount}}
-                    );
-                }
-            } catch (error) {
-                console.error(`Failed to update balance for user ${userId}:`, error);
-            }
-        }
-
-        await message.reply({
-            embeds: [
-                new EmbedBuilder()
-                    .setColor(client.color.main)
-                    .setDescription(
-                        winnerIdArray.length
-                            ? `Congratulations ${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}**. ${client.emoji.congratulation}`
-                            : `No one entered the giveaway of **\`${client.utils.formatNumber(data.prize)}\`**!`
-                    ),
-            ],
-        });
-
-        // Handle autopay
-        if (autopay) {
-            for (const winner of winnerIdArray) {
-                await addCoinsToUser(winner, data.prize);
-                await message.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                            .setColor(client.color.main)
-                            .setDescription(`**${client.user.username}** has been given **\`${client.utils.formatNumber(data.prize)}\`** ${client.emoji.coin} to <@${winner}>.`),
-                    ],
-                });
-            }
-        }
-    }
+    // static async endGiveaway(client, message, autopay) {
+    //     if (!message.guild) return;
+    //     if (!message.client.guilds.cache.get(message.guild.id)) return;
+    //
+    //     // Fetch the giveaway data
+    //     const data = await GiveawaySchema.findOne({
+    //         guildId: message.guildId,
+    //         messageId: message.id,
+    //     });
+    //
+    //     if (!data) return;
+    //     if (data?.ended === true) return;
+    //     if (data?.paused === true) return;
+    //
+    //     function getMultipleRandom(arr, number) {
+    //         const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    //         return [...new Set(shuffled.slice(0, number))];
+    //     }
+    //
+    //     let winnerIdArray = [];
+    //     if (data?.entered?.length > data?.winners) {
+    //         winnerIdArray.push(...getMultipleRandom(data?.entered, data.winners));
+    //         while (winnerIdArray.length < data?.winners)
+    //             winnerIdArray.push(...getMultipleRandom(data?.entered, data?.winners - winnerIdArray.length));
+    //     } else {
+    //         winnerIdArray.push(...data?.entered);
+    //     }
+    //
+    //     const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
+    //         ButtonBuilder.from(message.components[0].components[0])
+    //             .setLabel(`${data.entered.length}`) // Number of participants
+    //             .setDisabled(true),
+    //         ButtonBuilder.from(message.components[0].components[1]).setDisabled(false)
+    //     );
+    //
+    //     const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
+    //         .setColor(client.color.main)
+    //         .setDescription(`Winners: ${data?.winners}\nHosted by: <@${data?.hostedBy}>`);
+    //
+    //     await message.edit({embeds: [endGiveawayEmbed], components: [disableButton]}).then(async msg => {
+    //         await GiveawaySchema.findOneAndUpdate({
+    //             guildId: data?.guildId,
+    //             channelId: data?.channelId,
+    //             messageId: msg.id
+    //         }, {ended: true});
+    //     });
+    //
+    //     async function addCoinsToUser(userId, amount) {
+    //         try {
+    //             let user = await Users.findOne({userId});
+    //             if (!user) {
+    //                 user = new Users({
+    //                     userId,
+    //                     balance: {
+    //                         coin: amount,
+    //                         bank: 0,
+    //                     }
+    //                 });
+    //                 await user.save();
+    //             } else {
+    //                 await Users.updateOne(
+    //                     {userId},
+    //                     {$inc: {'balance.coin': amount}}
+    //                 );
+    //             }
+    //         } catch (error) {
+    //             console.error(`Failed to update balance for user ${userId}:`, error);
+    //         }
+    //     }
+    //
+    //     await message.reply({
+    //         embeds: [
+    //             new EmbedBuilder()
+    //                 .setColor(client.color.main)
+    //                 .setDescription(
+    //                     winnerIdArray.length
+    //                         ? `Congratulations ${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}**. ${client.emoji.congratulation}`
+    //                         : `No one entered the giveaway of **\`${client.utils.formatNumber(data.prize)}\`**!`
+    //                 ),
+    //         ],
+    //     });
+    //
+    //     // Handle autopay
+    //     if (autopay) {
+    //         for (const winner of winnerIdArray) {
+    //             await addCoinsToUser(winner, data.prize);
+    //             await message.reply({
+    //                 embeds: [
+    //                     new EmbedBuilder()
+    //                         .setColor(client.color.main)
+    //                         .setDescription(`**${client.user.username}** has been given **\`${client.utils.formatNumber(data.prize)}\`** ${client.emoji.coin} to <@${winner}>.`),
+    //                 ],
+    //             });
+    //         }
+    //     }
+    // }
 };

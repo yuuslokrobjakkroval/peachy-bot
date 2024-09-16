@@ -31,7 +31,6 @@ class Transfer extends Command {
     async run(client, ctx, args) {
         const userId = args[0].replace(/[<@!>]/g, '');
         let amount = args[1] ? parseInt(args[1], 10) : 1;
-        // const randomThankScreen = client.utils.getRandomElement(gif.thanks);
 
         if (args[1] !== 'all') {
             if (isNaN(amount) || amount <= 0) {

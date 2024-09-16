@@ -35,10 +35,10 @@ class GuildList extends Command {
     const pages = [];
     for (let i = 0; i < chunks.length; i++) {
       const embed = this.client
-        .embed()
-        .setColor(this.client.color.main)
-        .setDescription(chunks[i].join("\n"))
-        .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
+          .embed()
+          .setColor(this.client.color.main)
+          .setDescription(chunks[i].join("\n"))
+          .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
       pages.push(embed);
     }
     return await client.utils.paginate(ctx, pages);

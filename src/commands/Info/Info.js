@@ -34,24 +34,19 @@ module.exports = class Info extends Command {
     const embed = this.client
         .embed()
         .setColor(this.client.color.main)
-        .setTitle(`${client.emoji.mainLeft} 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍! ${client.emoji.mainRight}`)
+        .setTitle(`𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!`)
         .setDescription(
             `${client.user.username} is your multi-purpose Discord bot designed for fun, entertainment, and utility. With ${client.user.username} features, you can go mining, try your luck at gambling, play mini-games, and much more!`
         )
         .addFields([
           {
+            name: '𝐎𝐖𝐍𝐄𝐑',
+            value: `[𝐌𝐆ʳ . 𝐂𝐡𝐢𝐧𝐠𝐠](https://discord.gg/magicrealm8888)`,
+            inline: false,
+          },
+          {
             name: '𝐃𝐄𝐕',
-            value: `[𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌](https://discord.gg/PPuhSbgF6d)`,
-            inline: false,
-          },
-          {
-            name: '𝐆𝐑𝐀𝐏𝐇𝐈𝐂 𝐃𝐄𝐒𝐈𝐆𝐍',
-            value: `[𝐙𝐄𝐄𝐋𝐄𝐄](https://discord.com/users/845918847482724363)`,
-            inline: false,
-          },
-          {
-            name: '𝐒𝐔𝐏𝐏𝐎𝐑𝐓𝐄𝐑',
-            value: `[𝐇𝐔𝐆𝐌𝐄](https://discord.com/users/1006597979932725320)`,
+            value: `[𝐃𝐃 𝐓𝐄𝐕 𝐓𝐄𝐀𝐌](https://discord.gg/PPuhSbgF6d)`,
             inline: false,
           },
         ])

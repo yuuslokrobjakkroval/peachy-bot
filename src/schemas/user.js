@@ -2,18 +2,18 @@ const { model, Schema } = require("mongoose");
 const config = require('../config.js');
 
 // InventoryItemSchema
-const InventoryItemSchema = new Schema({
-    id: { type: String, required: true },
-    name: { type: String, default: null },
-    quantity: { type: Number, default: 1 }
-});
+// const InventoryItemSchema = new Schema({
+//     id: { type: String, required: true },
+//     name: { type: String, default: null },
+//     quantity: { type: Number, default: 1 }
+// });
 
 // EquipItemSchema
-const EquipItemSchema = new Schema({
-    id: { type: String, required: true },
-    name: { type: String, default: null },
-    quantity: { type: Number, default: 1 }
-});
+// const EquipItemSchema = new Schema({
+//     id: { type: String, required: true },
+//     name: { type: String, default: null },
+//     quantity: { type: Number, default: 1 }
+// });
 
 // CooldownSchema
 const CooldownSchema = new Schema({
@@ -23,20 +23,20 @@ const CooldownSchema = new Schema({
 });
 
 // Profile Schema
-const ProfileSchema = new Schema({
-    username: { type: String, default: null },
-    gender: { type: String, default: null },
-    bio: { type: String, default: null, maxlength: 200 },
-    birthday: { type: String, default: null },
-    birthdayAcknowledged: { type: Boolean, default: false },
-    xp: { type: Number, default: 0 },
-    level: { type: Number, default: 1 },
-    levelXp: { type: Number, default: 1000 },
-    lastXpGain: { type: Number, default: 0 },
-    visibility: { status: { type: Boolean, default: false }, message: { type: String, default: null }} ,
-    likes: { type: [String], default: [] },
-    zodiacSign: { type: String, default: null }
-});
+// const ProfileSchema = new Schema({
+//     username: { type: String, default: null },
+//     gender: { type: String, default: null },
+//     bio: { type: String, default: null, maxlength: 200 },
+//     birthday: { type: String, default: null },
+//     birthdayAcknowledged: { type: Boolean, default: false },
+//     xp: { type: Number, default: 0 },
+//     level: { type: Number, default: 1 },
+//     levelXp: { type: Number, default: 1000 },
+//     lastXpGain: { type: Number, default: 0 },
+//     visibility: { status: { type: Boolean, default: false }, message: { type: String, default: null }} ,
+//     likes: { type: [String], default: [] },
+//     zodiacSign: { type: String, default: null }
+// });
 
 // Verification Schema
 const VerificationSchema = new Schema({
@@ -54,43 +54,43 @@ const VerificationSchema = new Schema({
 });
 
 // Relationship Schema
-const RelationshipSchema = new Schema({
-    partner: {
-        id: { type: String, default: null },  // Change required: true to default: null
-        name: { type: String, default: null },
-        xp: { type: Number, default: 0 },
-        level: { type: Number, default: 1 }
-    },
-    brothers: [{
-        id: { type: String, default: null },  // Also change these to default: null if necessary
-        name: { type: String, default: null },
-        xp: { type: Number, default: 0 },
-        level: { type: Number, default: 1 }
-    }],
-    sisters: [{
-        id: { type: String, default: null },  // Also change these to default: null if necessary
-        name: { type: String, default: null },
-        xp: { type: Number, default: 0 },
-        level: { type: Number, default: 1 }
-    }],
-    besties: [{
-        id: { type: String, default: null },  // Also change these to default: null if necessary
-        name: { type: String, default: null },
-        xp: { type: Number, default: 0 },
-        level: { type: Number, default: 1 }
-    }],
-    confidants: [{
-        id: { type: String, default: null },  // Also change these to default: null if necessary
-        name: { type: String, default: null },
-        xp: { type: Number, default: 0 },
-        level: { type: Number, default: 1 }
-    }]
-});
+// const RelationshipSchema = new Schema({
+//     partner: {
+//         id: { type: String, default: null },  // Change required: true to default: null
+//         name: { type: String, default: null },
+//         xp: { type: Number, default: 0 },
+//         level: { type: Number, default: 1 }
+//     },
+//     brothers: [{
+//         id: { type: String, default: null },  // Also change these to default: null if necessary
+//         name: { type: String, default: null },
+//         xp: { type: Number, default: 0 },
+//         level: { type: Number, default: 1 }
+//     }],
+//     sisters: [{
+//         id: { type: String, default: null },  // Also change these to default: null if necessary
+//         name: { type: String, default: null },
+//         xp: { type: Number, default: 0 },
+//         level: { type: Number, default: 1 }
+//     }],
+//     besties: [{
+//         id: { type: String, default: null },  // Also change these to default: null if necessary
+//         name: { type: String, default: null },
+//         xp: { type: Number, default: 0 },
+//         level: { type: Number, default: 1 }
+//     }],
+//     confidants: [{
+//         id: { type: String, default: null },  // Also change these to default: null if necessary
+//         name: { type: String, default: null },
+//         xp: { type: Number, default: 0 },
+//         level: { type: Number, default: 1 }
+//     }]
+// });
 
-const achievementsSchema = new Schema({
-    name: { type: String, required: true },
-    dateEarned: { type: Date, default: Date.now }
-});
+// const achievementsSchema = new Schema({
+//     name: { type: String, required: true },
+//     dateEarned: { type: Date, default: Date.now }
+// });
 
 // User Schema
 const userSchema = new Schema({
@@ -102,7 +102,7 @@ const userSchema = new Schema({
         coin: { type: Number, default: 500000 },
         bank: { type: Number, default: 0 }
     },
-    peachy: {
+    magic: {
         streak: { type: Number, default: 0 }
     },
     // quest: [{
@@ -112,10 +112,10 @@ const userSchema = new Schema({
     //     requiredAmount: { type: Number, default: 0 },
     //     completed: { type: Boolean, default: false },
     // }],
-    profile: { type: ProfileSchema, default: () => ({}) },
-    relationship: RelationshipSchema,
-    inventory: { type: [InventoryItemSchema], default: [] },
-    equip: { type: [EquipItemSchema], default: [] },
+    // profile: { type: ProfileSchema, default: () => ({}) },
+    // relationship: RelationshipSchema,
+    // inventory: { type: [InventoryItemSchema], default: [] },
+    // equip: { type: [EquipItemSchema], default: [] },
     cooldowns: { type: [CooldownSchema], default: [] },
     social: {
         facebook: {
@@ -140,7 +140,7 @@ const userSchema = new Schema({
         lastLogin: { type: Date, default: Date.now },
         totalMessagesSent: { type: Number, default: 0 }
     },
-    achievements: { type: [achievementsSchema], default: [] }
+    // achievements: { type: [achievementsSchema], default: [] }
 }, { timestamps: { createdAt: true, updatedAt: false } });
 
 module.exports = model('user', userSchema);

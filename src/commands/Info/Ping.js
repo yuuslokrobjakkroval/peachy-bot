@@ -33,7 +33,7 @@ module.exports = class Ping extends Command {
     const msg = await ctx.sendDeferMessage("Pinging...");
     const embed = client
       .embed()
-        .setTitle(`**${client.emoji.mainLeft} 𝐏𝐎𝐍𝐆 ${client.emoji.mainRight}**`)
+        .setTitle(`**𝐏𝐎𝐍𝐆**`)
         .setColor(this.client.color.main)
         .setThumbnail(ctx.author.displayAvatarURL())
         .addFields([
