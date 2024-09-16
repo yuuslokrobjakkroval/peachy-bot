@@ -97,7 +97,7 @@ module.exports = class Ranking extends Command {
             });
 
             return await client.utils.reactionPaginate(ctx, pages);
-        } else if (type === 'peachy') {
+        } else if (type === 'peachy' || type === 'pp') {
             const users = await Users.find({ 'peachy.streak': { $gt: 0 } }).sort({ 'peachy.streak': -1 }).exec();
             if (!users.length) {
                 return await client.utils.oops(client, ctx, 'No one has a streak yet.');
