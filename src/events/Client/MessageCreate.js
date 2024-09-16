@@ -354,7 +354,7 @@ module.exports = class MessageCreate extends Event {
           if (command.args && !args.length) {
             const embed = this.client
                 .embed()
-                .setColor(this.client.color.red)
+                .setColor(this.client.color.danger)
                 .setTitle('𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬')
                 .setDescription(`Please provide the required arguments for the \`${command.name}\` command.`)
                 .addFields([
@@ -416,7 +416,7 @@ module.exports = class MessageCreate extends Event {
             if (channel && channel.isTextBased()) {
               const embed = this.client
                   .embed()
-                  .setColor(this.client.config.color.green)
+                  .setColor(this.client.config.color.success)
                   .setTitle(`Command - ${formatCapitalize(command.name)}`)
                   .setThumbnail(message.guild.iconURL({ extension: 'jpeg' }))
                   .addFields([

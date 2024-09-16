@@ -126,7 +126,7 @@ class Transfer extends Command {
         collector.on('end', collected => {
             if (collected.size === 0) {
                 const timeoutEmbed = this.client.embed()
-                    .setColor(config.color.orange)
+                    .setColor(config.color.warning)
                     .setTitle(`Transaction Timed Out`)
                     .setDescription(`You did not respond in time. The transaction has been canceled.`);
 

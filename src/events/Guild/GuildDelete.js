@@ -11,7 +11,7 @@ class GuildDelete extends Event {
     async run(guild) {
         const owner = await guild.fetchOwner();
         const embed = new EmbedBuilder()
-            .setColor(this.client.config.color.red)
+            .setColor(this.client.config.color.danger)
             .setAuthor({
                 name: guild.name,
                 iconURL: guild.iconURL({ extension: 'jpeg' }),

@@ -62,7 +62,7 @@ module.exports = class GuildInfo extends Command {
         // Create and send an embed with guild information and invite link
         const embed = this.client
             .embed()
-            .setColor(this.client.config.color.green)
+            .setColor(this.client.config.color.success)
             .setAuthor({ name: guild.name, iconURL: guild.iconURL({ format: 'jpeg' }) })
             .setDescription(`**${guild.name}** has been added to my guilds!`)
             .setThumbnail(guild.iconURL({ format: 'jpeg' }))

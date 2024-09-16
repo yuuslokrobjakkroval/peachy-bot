@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require("../../schemas/user.js");
+const gif = require("../../utils/Gif");
 
 module.exports = class Balance extends Command {
     constructor(client) {
@@ -25,6 +26,7 @@ module.exports = class Balance extends Command {
     }
 
     async run(client, ctx, args, language) {
+        const thumbnail = [gif.catBalance, gif.bearBalance]
         try {
             const user = await Users.findOne({ userId: ctx.author.id });
             if (!user) {
@@ -36,9 +38,9 @@ module.exports = class Balance extends Command {
                 .embed()
                 .setTitle(`${ctx.author.displayName}'s Balance`)
                 .setColor(client.color.main)
-                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+                .setThumbnail(client.utils.getRandomElement(thumbnail))
                 .setDescription(
-                    `**Coin: \`${client.utils.formatNumber(coin)}\` ${client.emoji.coin}\nBank: \`${client.utils.formatNumber(bank)}\` ${client.emoji.coin}**`
+                    `**${client.emoji.coin} : \`${client.utils.formatNumber(coin)} coins\`\n${client.emoji.bank} : \`${client.utils.formatNumber(bank)} coins\`**`
                 )
 
             return await ctx.sendMessage({ embeds: [embed] });

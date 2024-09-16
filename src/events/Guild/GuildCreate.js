@@ -17,7 +17,7 @@ module.exports = class GuildCreate extends Event {
         }
         if (!owner) owner = { user: { tag: 'Unknown#0000' } };
         const embed = new EmbedBuilder()
-            .setColor(this.client.config.color.green)
+            .setColor(this.client.config.color.success)
             .setAuthor({
                 name: guild.name,
                 iconURL: guild.iconURL({ extension: 'jpeg' }),

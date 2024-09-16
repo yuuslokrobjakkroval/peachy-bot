@@ -1,8 +1,6 @@
 module.exports = {
     coin: '<:COIN:1285262512622669834>',
-    main: '<:MAIN:1281847051860054016>',
-    mainLeft: '<:PEACHMAIN:1281827601412915230>',
-    mainRight: '<:GOMAMAIN:1281827625169322078>',
+    bank: '<:Bank:1285259504442937467>',
     congratulation: '<a:CONGRATULATIONS:1284383994544394311>',
     tick: '`✅`',
     deny: '<:x_:1230882133891878933>',
@@ -27,8 +25,6 @@ module.exports = {
     minimize: '<:MINIMIZE:1278893891004792833>',
     buy: '<a:BUY:1278894005400113203>',
     sell: '<a:SELL:1278894015952982076>',
-    money: '💶',
-    bank: '🏦',
     blank: '<:BLANK:1278189370381439007>',
     open: '`🔓`',
     close: '`🔒`',
