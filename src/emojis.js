@@ -1,6 +1,7 @@
 module.exports = {
     coin: '<:COIN:1285262512622669834>',
     bank: '<:Bank:1285259504442937467>',
+    main: '<:MAIN:1285312282678788200>',
     congratulation: '<a:CONGRATULATIONS:1284383994544394311>',
     tick: '`✅`',
     deny: '<:x_:1230882133891878933>',
