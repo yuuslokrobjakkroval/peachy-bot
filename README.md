@@ -3,9 +3,9 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">Peachy</h3>
+  <h3 align="center">Magic Realm</h3>
   <p align="center">
-    Peachy is a powerful discord Bot
+    Magic Realm is a powerful discord Bot
     <br />
     <br />
 

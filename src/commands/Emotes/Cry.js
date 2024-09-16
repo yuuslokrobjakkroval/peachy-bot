@@ -1,17 +1,18 @@
 const { Command } = require('../../structures/index.js');
+const Anime = require('anime-actions');
 
 module.exports = class Cry extends Command {
     constructor(client) {
         super(client, {
             name: 'cry',
             description: {
-                content: 'Express a feeling of crying.',
+                content: 'Express crying emotion.',
                 examples: ['cry'],
                 usage: 'cry',
             },
             category: 'emotes',
             aliases: [],
-            cooldown: 3,
+            cooldown: 5,
             args: false,
             permissions: {
                 dev: false,
@@ -22,16 +23,16 @@ module.exports = class Cry extends Command {
             options: [],
         });
     }
-
-    async run(client, ctx) {
-        const randomEmoji = client.utils.getRandomElement(client.emoji.emotes.cry);
-        const embed = this.client
-            .embed()
-            .setColor(client.color.main)
-            .setTitle(`${client.emoji.mainLeft} Crying Time ${client.emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Sometimes, expressing tears is the best way to handle emotions.');
-
-        await ctx.sendMessage({ embeds: [embed] });
+    async run(client, ctx, args, language) {
+        return await ctx.sendMessage({
+            embeds: [
+                client
+                    .embed()
+                    .setColor(client.color.main)
+                    .setTitle(client.i18n.get(language, 'commands', `${this.name}_success`, { displayName: ctx.author.displayName }))
+                    .setImage(await Anime.cry()),
+            ],
+        });
     }
 };
+

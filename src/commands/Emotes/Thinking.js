@@ -1,14 +1,14 @@
 const { Command } = require('../../structures/index.js');
 const Anime = require('anime-actions');
 
-module.exports = class Sad extends Command {
+module.exports = class Thinking extends Command {
     constructor(client) {
         super(client, {
-            name: 'sad',
+            name: 'thinking',
             description: {
-                content: 'Express sadness.',
-                examples: ['sad'],
-                usage: 'sad',
+                content: 'Express thinking.',
+                examples: ['thinking'],
+                usage: 'thinking',
             },
             category: 'emotes',
             aliases: [],
@@ -30,7 +30,7 @@ module.exports = class Sad extends Command {
                     .embed()
                     .setColor(client.color.main)
                     .setTitle(client.i18n.get(language, 'commands', `${this.name}_success`, { displayName: ctx.author.displayName }))
-                    .setImage(await Anime.sad()),
+                    .setImage(await Anime.thinking()),
             ],
         });
     }

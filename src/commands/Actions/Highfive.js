@@ -1,14 +1,14 @@
 const { Command } = require('../../structures/index.js');
 const Anime = require('anime-actions');
 
-module.exports = class Punch extends Command {
+module.exports = class Highfive extends Command {
     constructor(client) {
         super(client, {
-            name: 'punch',
+            name: 'highfive',
             description: {
-                content: 'Random punch anime actions',
-                examples: ['punch @user'],
-                usage: 'punch <user>',
+                content: 'Random highfive anime actions',
+                examples: ['highfive @user'],
+                usage: 'highfive <user>',
             },
             category: 'actions',
             aliases: [],
@@ -23,7 +23,7 @@ module.exports = class Punch extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'The user you want to punch.',
+                    description: 'The user you want to highfive.',
                     type: 6,
                     required: true,
                 },
@@ -55,7 +55,24 @@ module.exports = class Punch extends Command {
                             target: target.displayName,
                         })
                     )
-                    .setImage(await Anime.punch()),
+                    .setImage(await Anime.highfive()),
+            ],
+        });
+
+        return await ctx.sendMessage({
+            embeds: [
+                {
+                    color: client.color.main,
+                    author: {
+                        name: this.client.user.username,
+                        iconURL: this.client.user.displayAvatarURL(),
+                    },
+                    description: client.i18n.get(language, 'commands', `${this.name}_success`, {
+                        displayName: author.displayName,
+                        target: target,
+                    }),
+                    image: { url: await Anime.highfive() },
+                },
             ],
         });
     }

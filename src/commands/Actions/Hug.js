@@ -1,17 +1,18 @@
 const { Command } = require('../../structures/index.js');
+const Anime = require('anime-actions');
 
 module.exports = class Hug extends Command {
     constructor(client) {
         super(client, {
             name: 'hug',
             description: {
-                content: 'Sends a cute hug to the mentioned user.',
+                content: 'Random hug anime actions',
                 examples: ['hug @user'],
-                usage: 'hug @user',
+                usage: 'hug <user>',
             },
             category: 'actions',
             aliases: [],
-            cooldown: 3,
+            cooldown: 5,
             args: true,
             permissions: {
                 dev: false,
@@ -22,40 +23,41 @@ module.exports = class Hug extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'Mention the user you want to hug.',
-                    type: 6, // USER type
+                    description: 'The user you want to hug.',
+                    type: 6,
                     required: true,
                 },
             ],
         });
     }
-
-    async run(client, ctx, args) {
+    async run(client, ctx, args, language) {
         const author = ctx.author;
         const target = ctx.isInteraction
-            ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
+            ? ctx.interaction.options.data[0]?.member
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]);
 
         if (!target || target.id === author.id) {
             let errorMessage = '';
-            if (!target) errorMessage += 'You need to mention a user to hug.';
-            if (target.id === author.id) errorMessage += 'You cannot hug yourself.';
+            if (!target) errorMessage += client.i18n.get(language, 'commands', 'no_user');
+            if (target.id === author.id) errorMessage += client.i18n.get(language, 'commands', 'mention_to_self');
 
-            return await ctx.sendMessage({ content: errorMessage });
+            return await client.utils.sendErrorMessage(client, ctx, errorMessage);
         }
 
-        try {
-            const randomEmoji = client.utils.getRandomElement(client.emoji.actions.hugs);
-            const embed = this.client
-                .embed()
-                .setColor(client.color.main)
-                .setTitle(`${client.emoji.mainLeft} Hug Time! ${client.emoji.mainRight}`)
-                .setImage(client.utils.emojiToImage(randomEmoji))
-                .setDescription(`${author.displayName} gives ${target.displayName} a warm hug!`);
-            await ctx.sendMessage({ embeds: [embed] });
-        } catch (error) {
-            console.error('Failed to fetch hug GIF:', error);
-            return await ctx.sendMessage({ content: 'Something went wrong while fetching the hug GIF.' });
-        }
+        return await ctx.sendMessage({
+            embeds: [
+                client
+                    .embed()
+                    .setColor(client.color.main)
+                    .setTitle(
+                        client.i18n.get(language, 'commands', `${this.name}_success`, {
+                            displayName: author.displayName,
+                            target: target.displayName,
+                        })
+                    )
+                    .setImage(await Anime.hug()),
+            ],
+        });
     }
 };
+

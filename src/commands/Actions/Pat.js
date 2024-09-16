@@ -1,14 +1,14 @@
 const { Command } = require('../../structures/index.js');
 const Anime = require('anime-actions');
 
-module.exports = class Punch extends Command {
+module.exports = class Pat extends Command {
     constructor(client) {
         super(client, {
-            name: 'punch',
+            name: 'pat',
             description: {
-                content: 'Random punch anime actions',
-                examples: ['punch @user'],
-                usage: 'punch <user>',
+                content: 'Random pat anime actions',
+                examples: ['pat @user'],
+                usage: 'pat <user>',
             },
             category: 'actions',
             aliases: [],
@@ -23,7 +23,7 @@ module.exports = class Punch extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'The user you want to punch.',
+                    description: 'The user you want to pat.',
                     type: 6,
                     required: true,
                 },
@@ -55,7 +55,7 @@ module.exports = class Punch extends Command {
                             target: target.displayName,
                         })
                     )
-                    .setImage(await Anime.punch()),
+                    .setImage(await Anime.pat()),
             ],
         });
     }

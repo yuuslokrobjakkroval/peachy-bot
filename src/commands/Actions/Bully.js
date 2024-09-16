@@ -1,14 +1,15 @@
+const { EmbedBuilder } = require('discord.js');
 const { Command } = require('../../structures/index.js');
 const Anime = require('anime-actions');
 
-module.exports = class Punch extends Command {
+module.exports = class Bully extends Command {
     constructor(client) {
         super(client, {
-            name: 'punch',
+            name: 'bully',
             description: {
-                content: 'Random punch anime actions',
-                examples: ['punch @user'],
-                usage: 'punch <user>',
+                content: 'Random bully anime actions',
+                examples: ['bully @user'],
+                usage: 'bully <user>',
             },
             category: 'actions',
             aliases: [],
@@ -23,7 +24,7 @@ module.exports = class Punch extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'The user you want to punch.',
+                    description: 'The user you want to generate image.',
                     type: 6,
                     required: true,
                 },
@@ -55,7 +56,7 @@ module.exports = class Punch extends Command {
                             target: target.displayName,
                         })
                     )
-                    .setImage(await Anime.punch()),
+                    .setImage(await Anime.bully()),
             ],
         });
     }
