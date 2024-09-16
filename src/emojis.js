@@ -79,9 +79,9 @@ module.exports = {
         richPudgy: '<a:chooserichpudgy:1285273357603962964>',
     },
     coinFlip: {
-        peach: '<:PEACHCOIN:1281820633621074023>',
-        goma: '<:GOMACOIN:1281820649416953878>',
-        flip: '<a:COINFLIP:1281820615673774130>',
+        heads: '<:COIN:1285262512622669834>',
+        tails: '<:BACKCOIN:1285303610988564613>',
+        spin: '<a:COINFLIP:1285303457439551598>',
     },
     letter: {
         a: '<a:A_:1281517563846721546>',
