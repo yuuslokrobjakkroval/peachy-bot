@@ -8,7 +8,7 @@ const logChannelAll = '1285248453571776522';
 const logChannelBalance = '1285248582630244454';
 const logChannelGambling = '1285244924844965919';
 
-const logChannelId = [logChannelAll, logChannelGambling, logChannelBalance]
+const logChannelId = [logChannelAll, logChannelBalance, logChannelGambling]
 
 module.exports = {
   token: process.env.TOKEN,

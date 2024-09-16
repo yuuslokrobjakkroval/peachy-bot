@@ -399,14 +399,14 @@ module.exports = class MessageCreate extends Event {
               content: "You can't use this command with everyone or here.",
             });
           }
-          const balanceCommands = ['balance', 'deposit', 'transfer'];
-          const gamblingCommands = ['slots', 'coinflip', 'blackjack'];
+          const balanceCommands = ['balance', 'deposit', 'withdraw', 'transfer'];
+          const gamblingCommands = ['slots', 'blackjack'];
 
           try {
             let logChannelId;
-            if (balanceCommands.includes(command.name)) {
+            if (gamblingCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[2];
-            } else if (gamblingCommands.includes(command.name)) {
+            } else if (balanceCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[1];
             } else {
               logChannelId = this.client.config.logChannelId[0];
