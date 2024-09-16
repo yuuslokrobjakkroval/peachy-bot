@@ -10,9 +10,10 @@ module.exports = class Theme extends Command {
                 content: 'Toggle between peach, goma, and normal themes or view your current theme setting.',
                 examples: [
                     'theme show - Shows your current theme.',
+                    'theme normal - Sets your theme to love.',
                     'theme peach - Sets your theme to peach.',
                     'theme goma - Sets your theme to goma.',
-                    'theme normal - Sets your theme to love.',
+                    'theme pjumben - Sets your theme to pjumben.',
                     'theme help - Shows command usage examples.'
                 ],
                 usage: 'theme show\n theme peach\n theme goma\n theme love\n theme help',
@@ -47,10 +48,10 @@ module.exports = class Theme extends Command {
         const embed = client.embed().setTitle(`${client.emoji.mainLeft} 𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒 ${client.emoji.mainRight}`);
 
         switch (subCommand) {
-            case 'pjumben':
+            case 'normal':
             case 'peach':
             case 'goma':
-            case 'normal': {
+            case 'pjumben':{
                 const theme = subCommand;
                 const themeColor = theme === 'pjumben' ? '#FFD166' : theme === 'peach' ? '#8BD3DD' : theme === 'goma' ? '#AC7D67' : '#F582AE';
                 const images = theme === 'pjumben' ? gif.welcomeToPjumBen : theme === 'peach' ? gif.welcomeToPeach : theme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
@@ -69,12 +70,11 @@ module.exports = class Theme extends Command {
                     .setTitle(`${client.emoji.mainLeft} 𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏 ${client.emoji.mainRight}`)
                     .setDescription('Manage your theme settings.')
                     .addFields([
-                        { name: 'Examples', value: '• theme\n• theme peach\n• theme goma\n• theme normal' },
-                        { name: 'Usage', value: '• theme - Shows your current theme\n• theme peach - Sets your theme to peach\n• theme goma - Sets your theme to goma\n• theme normal - Sets your theme to normal' }
+                        { name: 'Examples', value: '• theme\n• theme normal\n• theme peach\n• theme goma\n• theme pjumben' },
+                        { name: 'Usage', value: '• theme - Shows your current theme\n• theme normal - Sets your theme to normal\n• theme peach - Sets your theme to peach\n• theme goma - Sets your theme to goma\n• theme goma - Sets your theme to pjumben' }
                     ])
                     .setColor(client.color.main);
                 return ctx.sendMessage({ embeds: [embed] });
-                break;
             }
 
             default: {
