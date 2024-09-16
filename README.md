@@ -63,7 +63,7 @@ git clone https://github.com/yuuslokrobjakkroval/peachy-bot.git
 2. change the directory to skyrealm-bot
 
 ```bash
-cd peachy-bot
+cd magic-bot
 ```
 
 3. Install the required packages:
@@ -96,14 +96,14 @@ npm run start or npm start
 
 ###
 
-Peachy is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
+Magic is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
 If you liked this repository, feel free to leave a star ⭐ to help promote !
 
 ## 💌 Support Server
 
 [//]: # ([![DiscordBanner]&#40;https://invidget.switchblade.xyz/mRt2FkwxYu&#41;]&#40;https://discord.gg/sE7VuPx54a&#41;)
 
-[Support Server](https://discord.gg/CmsxPWNEjf) - Peachy's Support Server Invite
+[Support Server](https://discord.gg/magicrealm8888) - Magic's Support Server Invite
 
 [//]: # (# Donate)
 
