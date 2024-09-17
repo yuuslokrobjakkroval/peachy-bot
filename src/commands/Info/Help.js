@@ -78,8 +78,8 @@ Note that certain commands might display usernames in lists retrieved by the bot
           const commandNames = categoryCommands.map(cmd => `\`${cmd.name}\``).join(', ');
 
           helpEmbed.addFields([{
-            // name: `${client.emoji.help[category.toLowerCase()]} ${font[category]}`,
-            name: `${font[category]}`,
+            name: `${client.emoji.help[category.toLowerCase()]} ${font[category]}`,
+            // name: `${font[category]}`,
             value: commandNames,
             inline: false,
           }]);

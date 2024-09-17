@@ -3,7 +3,7 @@ module.exports = {
     bank: '<:Bank:1285259504442937467>',
     main: '<:MAIN:1285312282678788200>',
     congratulation: '<a:CONGRATULATIONS:1284383994544394311>',
-    tick: '`✅`',
+    tick: '<:YES:1285469292464181299>',
     deny: '<:x_:1230882133891878933>',
     mark: '`❕`',
     plus: '``➕``',
@@ -44,17 +44,11 @@ module.exports = {
         night: '<a:NIGHT:1285435435165814946>'
     },
     help: {
-        actions: '<a:NORMALACTIONS:1282637922863939597>',
-        economy: '<:COIN:1281821085209460797>',
-        inventory: '<a:NORMALINVENTORY:1282637993156411432>',
-        fun: '<a:ROAR_1:1283083752896987209>',
-        games: '<:NORMALGAME:1282638025402224704>',
-        gambling: '<:GAMBLING:1282638278780256357>',
-        profile: '<a:NORMALPROFILE:1282639241989460061>',
-        social: '<a:SOCIAL:1282639924419366966>',
-        emotes: '<a:NORMALEMOTES:1282640907832660038>',
-        utility: '<a:NORMALUTILITY:1282642190190776390>',
-        info: '<a:NORMALINFO:1282641611695591434>',
+        economy: '<:COIN:1285262512622669834>',
+        gambling: '<:MAIN:1285312282678788200>',
+        actions: '<a:ACTIONS:1285469930355163187>',
+        emotes: '<a:EMOTES:1285469862449381396>',
+        info: '<:INFO:1285469468964687933>',
         setting: '🔨',
         dev: '💻',
     },
@@ -65,12 +59,6 @@ module.exports = {
         magicCoin: '<:MAGICCOIN:1285258198458302549>',
         romdul: '<:ROMDUL:1285258254871695523>',
         spin: '<a:SLOT:1285266165802864764>',
-    },
-    thumbnailSlots: {
-        moneyThrowing: '<a:moneycrypto:1285273243879608462>',
-        moneyCrypto: '<a:moneycrypto:1285273243879608462>',
-        printMoney: '<a:printingmoneyprintmoney:1285273259461312572>',
-        richPudgy: '<a:chooserichpudgy:1285273357603962964>',
     },
     coinFlip: {
         heads: '<:COIN:1285262512622669834>',
@@ -118,8 +106,8 @@ module.exports = {
         nine: '<a:9_:1281517591294251061>'
     },
     button: {
-        tick: '<:tick:1216078016208441354>',
-        deny: '<:deny:1216078032813559809>',
+        tick: '<:YES:1285469292464181299>',
+        deny: '<:NO:1285469299968049182>',
     },
 };
 

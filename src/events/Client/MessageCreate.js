@@ -84,7 +84,7 @@ module.exports = class MessageCreate extends Event {
 
           const msg = await ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true });
           const filter = interaction => interaction.user.id === ctx.author.id;
-          const collector = msg.createMessageComponentCollector({ filter, time: 150000 });
+          const collector = msg.createMessageComponentCollector({ filter, time: 500000 });
 
           collector.on('collect', async int => {
             await int.deferUpdate();
@@ -254,6 +254,7 @@ module.exports = class MessageCreate extends Event {
             }
           })
           collector.on('end', async () => {
+            activeGames.delete(ctx.author.id);
             await msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
           });
         } else {
