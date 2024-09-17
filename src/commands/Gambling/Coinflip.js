@@ -76,7 +76,7 @@ module.exports = class Coinflip extends Command {
         else if (rand == 1 && choice == 'h') win = true;
 
         // ===================================== > Display < ===================================== \\
-        const content = `${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏** ${client.emoji.main}\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\` ${client.emoji.coin}** choose **${
+        const content = `${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏** ${client.emoji.main}\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\` ${client.emoji.coin}**\nchoose **${
             choice === 'h' ? 'heads' : 'tails'
         }**
 The coin is flips ${client.emoji.coinFlip.spin}`;
@@ -86,7 +86,7 @@ The coin is flips ${client.emoji.coinFlip.spin}`;
 
         await ctx.sendDeferMessage({ content: content });
         setTimeout(async function () {
-            const content = `${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏** ${client.emoji.main}\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${client.emoji.coin} choose **${
+            const content = `${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏** ${client.emoji.main}\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${client.emoji.coin}\nchoose **${
                 choice === 'h' ? 'heads' : 'tails'
             }**
 The coin is flips ${win ? (choice == 'h' ? client.emoji.coinFlip.heads : client.emoji.coinFlip.tails) : choice == 'h' ? client.emoji.coinFlip.tails : client.emoji.coinFlip.heads} and ${
