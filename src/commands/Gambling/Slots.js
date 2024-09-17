@@ -101,7 +101,7 @@ module.exports = class Slots extends Command {
 			.setColor(client.color.main)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
 			.setDescription(
-				`### ${client.emoji.main} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+				`### ${client.emoji.mainLeft} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.mainRight}\n## **\`|\` ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -112,7 +112,7 @@ module.exports = class Slots extends Command {
 		const spinEmbed = client.embed()
 			.setColor(client.color.main)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`### ${client.emoji.main} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}** \n`)
+			.setDescription(`### ${client.emoji.mainLeft} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.mainRight}\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}** \n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -121,7 +121,7 @@ module.exports = class Slots extends Command {
 		const spinSecondEmbed = client.embed()
 			.setColor(client.color.main)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`### ${client.emoji.main} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+			.setDescription(`### ${client.emoji.mainLeft} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.mainRight}\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -130,7 +130,7 @@ module.exports = class Slots extends Command {
 		const resultEmbed = client.embed()
 			.setColor(win === 0 ? client.color.danger : client.color.primary)
 			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-			.setDescription(`### ${client.emoji.main} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
+			.setDescription(`### ${client.emoji.mainLeft} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.mainRight}\n## **\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),

@@ -4,11 +4,11 @@ dotenv.config();
 
 const path = require('path');
 
-// const logChannelAll = '1285248453571776522';
-// const logChannelBalance = '1285248582630244454';
-// const logChannelGambling = '1285244924844965919';
-//
-// const logChannelId = [logChannelAll, logChannelBalance, logChannelGambling]
+const logChannelAll = '1285547919855845390';
+const logChannelBalance = '1285547978810986547';
+const logChannelGambling = '1285548015045709936';
+
+const logChannelId = [logChannelAll, logChannelBalance, logChannelGambling]
 
 module.exports = {
   token: process.env.TOKEN,
@@ -16,7 +16,7 @@ module.exports = {
   guildId: process.env.GUILD_ID,
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  // logChannelId,
+  logChannelId,
   owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
   color: { danger: 0xFF0000, success: 0x00FF00, primary: 0x0023FF, tied: 0x877D7D, secondary: 0xE3A1AD, warning: 0xFFA500, main: 0xF582AE, none: 0x2B2D31 },
   database: process.env.DATABASE_URL,
