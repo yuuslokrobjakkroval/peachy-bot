@@ -3,26 +3,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">Magic Realm</h3>
+  <h3 align="center">OGGY</h3>
   <p align="center">
-    Magic Realm is a powerful discord Bot
+    OGGY is a powerful discord Bot
     <br />
     <br />
-
-[//]: # (    <a href="https://github.com/Kuraiiii/Kaiju-King-Bot-Template/issues">Report Bug</a>)
-
-[//]: # (    ·)
-
-[//]: # (    <a href="https://github.com/Kuraiiii/Kaiju-King-Bot-Template/issues">Request Feature</a>)
-[//]: # (  </p>)
-
-[//]: # (</p>)
-
-[//]: # (<!-- ABOUT THE PROJECT -->)
-
-[//]: # (## 🌀 About)
-
-[//]: # ([![Readme Card]&#40;https://github-readme-stats.vercel.app/api/pin/?username=Kuraiiii&repo=Kaiju-King-Bot-Template&theme=tokyonight&#41;]&#40;https://github.com/Kuraiiii/Kaiju-King-Bot-Template&#41;)
 
 ## 🔥 Unique Features
 
@@ -60,10 +45,10 @@ Before starting with the installation, you need to have the following:
 git clone https://github.com/yuuslokrobjakkroval/peachy-bot.git
 ```
 
-2. change the directory to skyrealm-bot
+2. change the directory to oggy-bot
 
 ```bash
-cd magic-bot
+cd oggy-bot
 ```
 
 3. Install the required packages:
@@ -103,7 +88,7 @@ If you liked this repository, feel free to leave a star ⭐ to help promote !
 
 [//]: # ([![DiscordBanner]&#40;https://invidget.switchblade.xyz/mRt2FkwxYu&#41;]&#40;https://discord.gg/sE7VuPx54a&#41;)
 
-[Support Server](https://discord.gg/magicrealm8888) - Magic's Support Server Invite
+[Support Server](https://discord.gg/magicrealm8888) - Oggy's Support Server Invite
 
 [//]: # (# Donate)
 
