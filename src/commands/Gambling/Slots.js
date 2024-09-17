@@ -3,6 +3,7 @@ const Users = require("../../schemas/user");
 const gif = require("../../utils/Gif");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
+const {oruWin} = require("../../utils/Gif");
 
 const maxAmount = 250000;
 
@@ -38,26 +39,6 @@ module.exports = class Slots extends Command {
 
 	async run(client, ctx, args, language) {
 		const slots = [client.emoji.slots.bottle, client.emoji.slots.ticket, client.emoji.slots.jelly, client.emoji.slots.magicCoin, client.emoji.slots.romdul]
-		// const thumbLoading = [
-		// 	gif.bubuLoading,
-		// 	gif.catLoading,
-		// 	gif.girlLoading
-		// ];
-		const thumbnailWin = [
-			gif.moneyThrowing,
-			gif.moneyCrypto,
-			gif.printMoney,
-			gif.richPudgy,
-			gif.throwingMoney
-		];
-		const thumbnailLose = [
-			gif.bunnyAngry,
-			gif.peachAngry,
-			gif.phoneAngry,
-			gif.catAngry,
-			gif.yierAngry,
-			gif.tigerAngry
-		];
 		const user = await Users.findOne({ userId: ctx.author.id }).exec();
 		const { coin, bank } = user.balance;
 		if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'));
@@ -150,7 +131,7 @@ module.exports = class Slots extends Command {
 
 		const resultEmbed = client.embed()
 			.setColor(win === 0 ? client.color.danger : client.color.primary)
-			.setThumbnail(win === 0 ? client.utils.getRandomElement(thumbnailLose) : client.utils.getRandomElement(thumbnailWin))
+			.setThumbnail(win === 0 ? gif.oruLose : oruWin)
 			.setDescription(`### ${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,

@@ -76,21 +76,6 @@ function initDeck(deck, player, dealer) {
 
 exports.generateEmbed = generateEmbed;
 function generateEmbed(author, client, dealer, player, bet, end, winnings) {
-    const thumbnailWin = [
-        gif.moneyThrowing,
-        gif.moneyCrypto,
-        gif.printMoney,
-        gif.richPudgy,
-        gif.throwingMoney
-    ];
-    const thumbnailLose = [
-        gif.bunnyAngry,
-        gif.peachAngry,
-        gif.phoneAngry,
-        gif.catAngry,
-        gif.yierAngry,
-        gif.tigerAngry
-    ];
     let color = config.color.main;
     let thumbnail = author.displayAvatarURL({ dynamic: true, size: 1024 });
     let description = '';
@@ -99,11 +84,11 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
 
     if (end === 'w') {
         color = config.color.primary;
-        thumbnail = client.utils.getRandomElement(thumbnailWin);
+        thumbnail = gif.oruWin;
         description = `**\nYou won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
     } else if (end === 'l') {
         color = config.color.danger;
-        thumbnail = client.utils.getRandomElement(thumbnailLose);
+        thumbnail = gif.oruLose;
         description = `**\nYou lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
     } else if (end === 'tb') {
         color = config.color.tied;
