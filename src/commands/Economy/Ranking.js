@@ -69,7 +69,7 @@ module.exports = class Ranking extends Command {
             const pages = chunks.map((chunk, i) => {
                 return client
                     .embed()
-                    .setTitle(`${client.emoji.rank.owner} **𝐋𝐄𝐀𝐃𝐄𝐑𝐁𝐎𝐀𝐑𝐃** ${client.emoji.rank.owner}`)
+                    .setTitle(`🏆 **𝐂𝐎𝐈𝐍 𝐋𝐄𝐀𝐃𝐄𝐑𝐁𝐎𝐀𝐑𝐃** 🏆`)
                     .setColor(client.color.main)
                     .setDescription(`${userRank}\n${chunk.join('\n\n')}`)
                     .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
@@ -88,14 +88,14 @@ module.exports = class Ranking extends Command {
 
             const leaderboardList = users.slice(0, 100).map((user, index) => {
                 const position = index + 1;
-                return `**#${position}. ${user.username ? user.username : 'Unknown'}**\n**${client.utils.formatNumber(user.peachy.streak)} streaks**`;
+                return `**#${position}. ${user.username ? user.username : 'Unknown'}**\n**${client.utils.formatNumber(user.magic.streak)} streaks**`;
             });
 
             const chunks = client.utils.chunk(leaderboardList, 10);
             const pages = chunks.map((chunk, i) => {
                 return client
                     .embed()
-                    .setTitle(`${client.emoji.rank.babyOwner} **𝐋𝐄𝐀𝐃𝐄𝐑𝐁𝐎𝐀𝐑𝐃** ${client.emoji.rank.babyOwner}`)
+                    .setTitle(`🏆 **𝐌𝐀𝐆𝐈𝐂 𝐋𝐄𝐀𝐃𝐄𝐑𝐁𝐎𝐀𝐑𝐃** 🏆`)
                     .setColor(client.color.main)
                     .setDescription(`${userRank}\n${chunk.join('\n\n')}`)
                     .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
