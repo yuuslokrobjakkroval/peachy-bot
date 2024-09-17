@@ -117,7 +117,7 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
 
     return {
         color: color,
-        description: `### 𝐌𝐀𝐆𝐈𝐂 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊\n` +
+        description: `### ${client.emoji.main} 𝐌𝐀𝐆𝐈𝐂 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.main}\n` +
             `The winner is the one who's closest to 21.\n` +
             `**DEALER \`[${dealerValue.points}]\`**\n` +
             `# \n${dealerValue.display}\n` +
