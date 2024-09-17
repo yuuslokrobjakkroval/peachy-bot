@@ -84,7 +84,7 @@ module.exports = class MessageCreate extends Event {
 
           const msg = await ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true });
           const filter = interaction => interaction.user.id === ctx.author.id;
-          const collector = msg.createMessageComponentCollector({ filter, time: 500000 });
+          const collector = msg.createMessageComponentCollector({ filter, time: 300000 });
 
           collector.on('collect', async int => {
             await int.deferUpdate();
