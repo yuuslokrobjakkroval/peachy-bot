@@ -11,7 +11,7 @@ const config = require('../config.js');
 const emojis = require('../emojis.js');
 const Logger = require('./Logger.js');
 
-module.exports = class MagicClient extends Client {
+module.exports = class OggyClient extends Client {
     constructor(options) {
         super(options);
         this.commands = new Collection();

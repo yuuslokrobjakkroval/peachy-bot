@@ -68,7 +68,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: `© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐌𝐀𝐆𝐈𝐂`,
+            text: `© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐎𝐆𝐆𝐘`,
             iconURL: client.user.displayAvatarURL(),
           });
 
@@ -78,8 +78,8 @@ Note that certain commands might display usernames in lists retrieved by the bot
           const commandNames = categoryCommands.map(cmd => `\`${cmd.name}\``).join(', ');
 
           helpEmbed.addFields([{
-            name: `${client.emoji.help[category.toLowerCase()]} ${font[category]}`,
-            // name: `${font[category]}`,
+            // name: `${client.emoji.help[category.toLowerCase()]} ${font[category]}`,
+            name: `${font[category]}`,
             value: commandNames,
             inline: false,
           }]);

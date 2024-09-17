@@ -65,7 +65,7 @@ module.exports = class MessageCreate extends Event {
           const embed = this.client
               .embed()
               .setColor(this.client.color.main)
-              .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌𝐀𝐆𝐈𝐂`)
+              .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐎𝐆𝐆𝐘`)
               .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
               .setDescription(
                   `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
@@ -93,20 +93,20 @@ module.exports = class MessageCreate extends Event {
               try {
                 const embed = this.client.embed()
                     .setColor(this.client.color.main)
-                    .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌𝐀𝐆𝐈𝐂`)
+                    .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐎𝐆𝐆𝐘`)
                     .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                     .setDescription(
-                        `Welcome to the MAGIC community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
+                        `Welcome to the OGGY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
                         `**Rules and Guidelines**\n\n` +
                         `1. **Respect Everyone**: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
-                        `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit MAGIC's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
+                        `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit OGGY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
                         `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
                         `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
                         `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
                         `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
                         `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
                         `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
-                        `9. **One Account per User**: Creating multiple accounts to exploit MAGIC’s features is not allowed. Enjoy the bot responsibly.\n\n` +
+                        `9. **One Account per User**: Creating multiple accounts to exploit OGGY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
                         `If you have any questions or need assistance, feel free to join our [Support Server](${this.client.config.links.support}). We're here to help!`
                     );
 
@@ -139,7 +139,7 @@ module.exports = class MessageCreate extends Event {
                     .setTitle(`𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘`)
                     .setDescription(
                         `**Introduction**\n` +
-                        `MAGIC is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
+                        `OGGY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
                         `**Information Collection**\n` +
                         `We gather the following information to enhance your experience:\n` +
                         `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
@@ -149,7 +149,7 @@ module.exports = class MessageCreate extends Event {
                         `We utilize your data to:\n` +
                         `• Execute commands, interactions, and maintain game progression.\n` +
                         `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
-                        `• Enhance the security and smooth operation of MAGIC, ensuring a seamless user experience.\n\n` +
+                        `• Enhance the security and smooth operation of OGGY, ensuring a seamless user experience.\n\n` +
                         `**Data Sharing**\n` +
                         `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
                         `**Data Security**\n` +
@@ -223,8 +223,8 @@ module.exports = class MessageCreate extends Event {
               const embed = this.client.embed()
                   .setColor(this.client.color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                  .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌𝐀𝐆𝐈𝐂`)
-                  .setDescription(`Warming Gift for you \nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emoji.coin} from 𝐌𝐀𝐆𝐈𝐂\n\nYou have successfully registered!\nYou can now use the bot.`)
+                  .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐎𝐆𝐆𝐘`)
+                  .setDescription(`Warming Gift for you \nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emoji.coin} from 𝐎𝐆𝐆𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
                   .setImage(this.client.config.links.banner)
               await int.editReply({
                 content: '',

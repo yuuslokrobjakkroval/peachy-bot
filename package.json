@@ -1,7 +1,7 @@
 {
-  "name": "magic",
+  "name": "oggy",
   "version": "2.1.0",
-  "description": "Magic is a discord bot mode by YUU",
+  "description": "Oggy is a discord bot mode by YUU",
   "main": "src/index.js",
   "repository": "",
   "author": "YUU",

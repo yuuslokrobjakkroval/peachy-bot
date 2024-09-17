@@ -102,7 +102,7 @@ const userSchema = new Schema({
         coin: { type: Number, default: 500000 },
         bank: { type: Number, default: 0 }
     },
-    magic: {
+    oggy: {
         streak: { type: Number, default: 0 }
     },
     // quest: [{

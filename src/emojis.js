@@ -1,7 +1,8 @@
 module.exports = {
-    coin: '<:COIN:1285262512622669834>',
+    coin: '<:COIN:1285540871974162502>',
     bank: '<:Bank:1285259504442937467>',
-    main: '<:MAIN:1285312282678788200>',
+    mainLeft: '<:OGGYLEFT:1285545063296012319>',
+    mainRight: '<:OLIVIARIGHT:1285545084590227476>',
     congratulation: '<a:CONGRATULATIONS:1284383994544394311>',
     tick: '<:YES:1285469292464181299>',
     deny: '<:x_:1230882133891878933>',
@@ -44,7 +45,7 @@ module.exports = {
         night: '<a:NIGHT:1285435435165814946>'
     },
     help: {
-        economy: '<:COIN:1285262512622669834>',
+        economy: '<:COIN:1285540871974162502>',
         gambling: '<:MAIN:1285312282678788200>',
         actions: '<a:ACTIONS:1285469930355163187>',
         emotes: '<a:EMOTES:1285469862449381396>',
@@ -53,17 +54,17 @@ module.exports = {
         dev: '💻',
     },
     slots: {
-        bottle: '<:BOTTLE:1285258350556221482>',
-        ticket: '<:TICKET:1285258375570919554>',
-        jelly: '<:JELLY:1285258304754548768>',
-        magicCoin: '<:MAGICCOIN:1285258198458302549>',
-        romdul: '<:ROMDUL:1285258254871695523>',
-        spin: '<a:SLOT:1285266165802864764>',
+        threeBug: '<:DEEMARKYJOEY:1285540991863885854>',
+        bob: '<:BOB:1285540984079253566>',
+        jack: '<:JACK:1285540977527754854>',
+        olivia: '<:OLIVIA:1285540965183913994>',
+        oggy: '<:OGGY:1285540955017183293>',
+        spin: '<a:SLOTS:1285540942388006933>',
     },
     coinFlip: {
-        heads: '<:COIN:1285262512622669834>',
-        tails: '<:BACKCOIN:1285303610988564613>',
-        spin: '<a:COINFLIP:1285303457439551598>',
+        heads: '<:COIN:1285540871974162502>',
+        tails: '<:BACK:1285540882812108820>',
+        spin: '<a:COINFLIP:1285540911161413713>',
     },
     letter: {
         a: '<a:A_:1281517563846721546>',

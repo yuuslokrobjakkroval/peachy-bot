@@ -3,10 +3,10 @@ const {
   CommandInteraction,
   InteractionType,
   PermissionFlagsBits,
-  ButtonInteraction,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
+  // ButtonInteraction,
+  // ActionRowBuilder,
+  // ButtonBuilder,
+  // ButtonStyle,
 } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
 // const GiveawaySchema = require('../../schemas/giveaway.js');
@@ -30,16 +30,16 @@ class InteractionCreate extends Event {
 
         if (!interaction.inGuild()) return;
 
-        const isRestrictedCommand = ['giveaway', 'level-setup', 'level-message', 'level-disable']
-        const hasDevRole = interaction.member.roles.cache.some(role => role.name === 'Developer');
-        const isOwner = this.client.config.owners.includes(interaction.user.id);
+        // const isRestrictedCommand = ['giveaway', 'level-setup', 'level-message', 'level-disable']
+        // const hasDevRole = interaction.member.roles.cache.some(role => role.name === 'Developer');
+        // const isOwner = this.client.config.owners.includes(interaction.user.id);
 
-        if (isRestrictedCommand.includes(interaction.commandName) && !(isOwner || hasDevRole)) {
-          return await interaction.reply({
-            content: "You don't have permission to use this command.",
-            ephemeral: true,
-          });
-        }
+        // if (isRestrictedCommand.includes(interaction.commandName) && !(isOwner || hasDevRole)) {
+        //   return await interaction.reply({
+        //     content: "You don't have permission to use this command.",
+        //     ephemeral: true,
+        //   });
+        // }
 
         if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ViewChannel)) {
           return;

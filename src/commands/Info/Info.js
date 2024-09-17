@@ -41,12 +41,12 @@ module.exports = class Info extends Command {
         .addFields([
           {
             name: '𝐎𝐖𝐍𝐄𝐑',
-            value: `[𝐌𝐆ʳ . 𝐂𝐡𝐢𝐧𝐠𝐠](https://discord.gg/magicrealm8888)`,
+            value: `[𝓓𝓓 𝓗𝓤𝓖𝓜𝓔👑🖤](https://discord.gg/1006597979932725320)`,
             inline: false,
           },
           {
             name: '𝐃𝐄𝐕',
-            value: `[𝐃𝐃 𝐃𝐄𝐕 𝐓𝐄𝐀𝐌](https://discord.gg/hrDG8P9XD3)`,
+            value: `[𝓓𝓐𝓓𝓓𝓨 𝓚𝓨𝓤𝓤](https://discord.gg/966688007493140591)`,
             inline: false,
           },
         ])

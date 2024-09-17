@@ -1,9 +1,7 @@
 const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
-const gif = require("../../utils/Gif");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
-const {oruWin} = require("../../utils/Gif");
 
 const maxAmount = 250000;
 
@@ -38,7 +36,7 @@ module.exports = class Slots extends Command {
 	}
 
 	async run(client, ctx, args, language) {
-		const slots = [client.emoji.slots.bottle, client.emoji.slots.ticket, client.emoji.slots.jelly, client.emoji.slots.magicCoin, client.emoji.slots.romdul]
+		const slots = [client.emoji.slots.threeBug, client.emoji.slots.bob, client.emoji.slots.jack, client.emoji.slots.olivia, client.emoji.slots.oggy]
 		const user = await Users.findOne({ userId: ctx.author.id }).exec();
 		const { coin, bank } = user.balance;
 		if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'));
@@ -101,9 +99,9 @@ module.exports = class Slots extends Command {
 
 		const initialEmbed = client.embed()
 			.setColor(client.color.main)
-			.setThumbnail(gif.bubuLoading)
+			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
 			.setDescription(
-				`### ${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+				`### ${client.emoji.main} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${client.emoji.slots.spin} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -113,8 +111,8 @@ module.exports = class Slots extends Command {
 
 		const spinEmbed = client.embed()
 			.setColor(client.color.main)
-			.setThumbnail(gif.bubuLoading)
-			.setDescription(`### ${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}** \n`)
+			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+			.setDescription(`### ${client.emoji.main} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${client.emoji.slots.spin} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}** \n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -122,8 +120,8 @@ module.exports = class Slots extends Command {
 
 		const spinSecondEmbed = client.embed()
 			.setColor(client.color.main)
-			.setThumbnail(gif.bubuLoading)
-			.setDescription(`### ${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
+			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+			.setDescription(`### ${client.emoji.main} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${client.emoji.slots.spin} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),
@@ -131,8 +129,8 @@ module.exports = class Slots extends Command {
 
 		const resultEmbed = client.embed()
 			.setColor(win === 0 ? client.color.danger : client.color.primary)
-			.setThumbnail(win === 0 ? gif.oruLose : oruWin)
-			.setDescription(`### ${client.emoji.main} **𝐌𝐀𝐆𝐈𝐂 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
+			.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+			.setDescription(`### ${client.emoji.main} **𝐎𝐆𝐆𝐘 𝐒𝐋𝐎𝐓𝐒** ${client.emoji.main}\n## **\`|\` ${rslots[0]} ${rslots[1]} ${rslots[2]} **\n**\nYou bet \`${numeral(baseCoins).format()}\` ${client.emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${client.emoji.coin}**`)
 			.setFooter({
 				text: `Requested by ${ctx.author.displayName}`,
 				iconURL: ctx.author.displayAvatarURL(),

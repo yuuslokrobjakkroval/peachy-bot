@@ -1,6 +1,6 @@
 const { GatewayIntentBits } = require('discord.js');
 const config = require('./config.js');
-const MagicClient = require('./structures/Client.js');
+const OggyClient = require('./structures/Client.js');
 
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 
@@ -12,6 +12,6 @@ const clientOptions = {
   },
 };
 
-const client = new MagicClient(clientOptions);
+const client = new OggyClient(clientOptions);
 
 client.start(config.token);

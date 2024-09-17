@@ -39,7 +39,6 @@ module.exports = class Weekly extends Command {
             const newBalance = coin + baseCoins;
 
             const now = moment().tz('Asia/Bangkok');
-            const hours = now.hour();
             const nextWeekly = new Date();
             nextWeekly.setDate(now.date() + 7);
 
@@ -85,7 +84,7 @@ module.exports = class Weekly extends Command {
             const embed = client
                 .embed()
                 .setColor(client.color.main)
-                .setTitle(`${ctx.author.displayName} claimed their weekly reward! ${hours >= 6 && hours < 18 ? `${client.emoji.time.day}` : `${client.emoji.time.night}`}`)
+                .setTitle(`${ctx.author.displayName} claimed their weekly reward!`)
                 .setDescription(
                     client.i18n.get(language, 'commands', 'weekly_success', {
                         coinEmote: client.emoji.coin,

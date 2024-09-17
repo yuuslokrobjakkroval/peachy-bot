@@ -77,7 +77,7 @@ module.exports = class Daily extends Command {
             const embed = client
                 .embed()
                 .setColor(client.color.main)
-                .setTitle(`${ctx.author.displayName} claimed their daily reward! ${hours >= 6 && hours < 18 ? `${client.emoji.time.day}` : `${client.emoji.time.night}`}`)
+                .setTitle(`${ctx.author.displayName} claimed their daily reward!`)
                 .setDescription(
                     client.i18n.get(language, 'commands', 'daily_success', {
                         coinEmote: client.emoji.coin,

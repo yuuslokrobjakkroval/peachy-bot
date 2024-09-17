@@ -59,7 +59,6 @@ const cardsf = [
 ];
 const config = require('../config');
 const random = require('random-number-csprng');
-const gif = require("./Gif");
 
 exports.randCard = randCard;
 async function randCard(deck, type) {
@@ -84,25 +83,21 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
 
     if (end === 'w') {
         color = config.color.primary;
-        thumbnail = gif.oruWin;
         description = `**\nYou won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
     } else if (end === 'l') {
         color = config.color.danger;
-        thumbnail = gif.oruLose;
         description = `**\nYou lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
     } else if (end === 'tb') {
         color = config.color.tied;
-        thumbnail = author.displayAvatarURL({ dynamic: true, size: 1024 });
         description = '**\nYou both bust!**';
     } else if (end === 't') {
         color = config.color.tied;
-        thumbnail = author.displayAvatarURL({ dynamic: true, size: 1024 });
         description = '**\nYou tied!**';
     } else dealerValue.points = dealerValue.shownPoints + '+?';
 
     return {
         color: color,
-        description: `### ${client.emoji.main} 𝐌𝐀𝐆𝐈𝐂 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.main}\n` +
+        description: `### ${client.emoji.main} 𝐎𝐆𝐆𝐘 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.main}\n` +
             `The winner is the one who's closest to 21.\n` +
             `**DEALER \`[${dealerValue.points}]\`**\n` +
             `# \n${dealerValue.display}\n` +
@@ -110,7 +105,7 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
             `# ${playerValue.display}\n` +
             `${description}`,
         thumbnail: {
-            url: thumbnail,
+            url: author.displayAvatarURL({ dynamic: true, size: 1024 }),
         },
         footer: {
             text: !!end ? 'Game Over' : 'Game in progress',

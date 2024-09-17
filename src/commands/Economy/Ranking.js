@@ -95,7 +95,7 @@ module.exports = class Ranking extends Command {
             const pages = chunks.map((chunk, i) => {
                 return client
                     .embed()
-                    .setTitle(`🏆 **𝐌𝐀𝐆𝐈𝐂 𝐋𝐄𝐀𝐃𝐄𝐑𝐁𝐎𝐀𝐑𝐃** 🏆`)
+                    .setTitle(`🏆 **𝐎𝐆𝐆𝐘 𝐋𝐄𝐀𝐃𝐄𝐑𝐁𝐎𝐀𝐑𝐃** 🏆`)
                     .setColor(client.color.main)
                     .setDescription(`${userRank}\n${chunk.join('\n\n')}`)
                     .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });

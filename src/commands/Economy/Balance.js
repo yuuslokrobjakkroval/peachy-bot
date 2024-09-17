@@ -26,7 +26,6 @@ module.exports = class Balance extends Command {
     }
 
     async run(client, ctx, args, language) {
-        const thumbnail = [gif.catBalance, gif.bearBalance]
         try {
             const user = await Users.findOne({ userId: ctx.author.id });
             if (!user) {
@@ -38,9 +37,9 @@ module.exports = class Balance extends Command {
                 .embed()
                 .setTitle(`${ctx.author.displayName}'s Balance`)
                 .setColor(client.color.main)
-                .setThumbnail(client.utils.getRandomElement(thumbnail))
+                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(
-                    `**${client.emoji.coin} : \`${client.utils.formatNumber(coin)} coins\`\n${client.emoji.bank} : \`${client.utils.formatNumber(bank)} coins\`**`
+                    `**Coin : \`${client.utils.formatNumber(coin)} ${client.emoji.coin}\`\nBank : \`${client.utils.formatNumber(bank)} ${client.emoji.coin}\`**`
                 )
 
             return await ctx.sendMessage({ embeds: [embed] });
