@@ -35,20 +35,24 @@ module.exports = class Ping extends Command {
       .embed()
         .setTitle(`**𝐏𝐎𝐍𝐆**`)
         .setColor(this.client.color.main)
-        .setThumbnail(ctx.author.displayAvatarURL())
+        .setThumbnail('https://i.imgur.com/RvobBe0.jpg')
         .addFields([
           {
-            name: `𝐁𝐎𝐓 ${client.emoji.ping}`,
+            name: `𝐁𝐎𝐓`,
             value: `\`\`\`ini\n[ ${msg.createdTimestamp - ctx.createdTimestamp}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `𝐀𝐏𝐈 ${client.emoji.ping}`,
+            name: `𝐀𝐏𝐈`,
             value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
             inline: true,
           },
         ])
-        .setTimestamp();
+        .setFooter({
+          text: `Req by ${ctx.author.displayName}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        });
+
     await ctx.editMessage({ content: "", embeds: [embed] });
   }
 }

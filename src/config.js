@@ -29,7 +29,7 @@ module.exports = {
     directory: path.resolve('./src/languages'), // <= location of language
   },
   links: {
-    banner: 'https://i.imgur.com/yHEN3Wv.gif',
+    banner: 'https://i.imgur.com/EnVF7mm.gif',
     support: 'https://discord.gg/magicrealm8888',
     invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&integration_type=0&scope=bot+applications.commands`,
     vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
