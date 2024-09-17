@@ -2,21 +2,9 @@ const { Collection, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/user.js");
-const canvafy = require('canvafy');
-const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 
 const activeGames = new Map();
-
-function getRandomXp(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function calculateNextLevelXpBonus(level) {
-  const base = 1000;
-  const scalingFactor = 1.5;
-  return Math.floor(base * Math.pow(scalingFactor, level - 1));
-}
 
 module.exports = class MessageCreate extends Event {
   constructor(client, file) {
@@ -30,60 +18,6 @@ module.exports = class MessageCreate extends Event {
     await this.client.setColorBasedOnTheme(message.author.id);
     let user = await Users.findOne({ userId: message.author.id });
     const prefix = this.client.config.prefix;
-
-    // if (user) {
-    //   const now = Date.now();
-    //   const xpCooldown = 45000;
-    //   if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
-    //     let xpGained = 0;
-    //     if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-    //       xpGained = getRandomXp(15, 25);
-    //     } else {
-    //       xpGained = getRandomXp(10, 15);
-    //     }
-    //
-    //     user.profile.xp += xpGained;
-    //     user.profile.lastXpGain = now;
-    //
-    //     const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
-    //     if (user.profile.xp >= nextLevelXp) {
-    //       user.profile.xp -= nextLevelXp;
-    //       user.profile.level += 1;
-    //       user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
-    //
-    //       const celebrationCoin = user.profile.level * 250000;
-    //       user.balance.coin += celebrationCoin;
-    //
-    //       const levelUp = await new canvafy.LevelUp()
-    //           .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-    //           .setUsername(`${message.author.displayName}`)
-    //           .setBorder('#8BD3DD')
-    //           .setBackground("image", gif.welcomeTen)
-    //           .setLevels(user.profile.level - 1, user.profile.level)
-    //           .build();
-    //
-    //       const levelImage = {
-    //         attachment: levelUp,
-    //         name: 'level-up.png',
-    //       };
-    //
-    //       const embed = this.client.embed()
-    //           .setColor(this.client.color.main)
-    //           .setTitle(`𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
-    //           .setDescription(`Congratulations ${message.author.displayName}!\n
-    //                 You leveled up to level ${user.profile.level}!\n
-    //                 You have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${this.client.emoji.coin}.`)
-    //           .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-    //           .setImage('attachment://level-up.png');
-    //
-    //       await message.channel.send({
-    //         embeds: [embed],
-    //         files: [levelImage],
-    //       });
-    //     }
-    //     await user.save();
-    //   }
-    // }
 
     const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
     if (mention.test(message.content)) {
@@ -135,7 +69,7 @@ module.exports = class MessageCreate extends Event {
               .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
               .setDescription(
                   `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
-              .setImage(gif.magic);
+              .setImage(this.client.config.links.banner);
 
           const row = new ActionRowBuilder().addComponents(
               new ButtonBuilder()
@@ -323,16 +257,6 @@ module.exports = class MessageCreate extends Event {
             await msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
           });
         } else {
-
-          // if(!!user) {
-          //   const userInfo = await this.client.users.fetch(user.userId).catch(() => null);
-          //
-          //   if (user || user.username !== userInfo?.displayName) {
-          //     user.username = userInfo ? userInfo.displayName : 'Unknown';
-          //     user.save();
-          //   }
-          // }
-
           if (!command) return;
 
           if (command.permissions) {
