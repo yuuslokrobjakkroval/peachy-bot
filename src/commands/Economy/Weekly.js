@@ -66,7 +66,7 @@ module.exports = class Weekly extends Command {
                 }
                 const cooldownEmbed = client
                     .embed()
-                    .setColor(client.color.red)
+                    .setColor(client.color.danger)
                     .setDescription(cooldownMessage);
 
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });

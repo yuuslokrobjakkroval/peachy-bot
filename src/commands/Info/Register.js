@@ -31,7 +31,7 @@ module.exports = class Register extends Command {
             return await ctx.sendMessage({
                 embeds: [
                     this.client.embed()
-                        .setColor(this.client.color.red)
+                        .setColor(this.client.color.danger)
                         .setTitle('Already Registered')
                         .setDescription('You are already registered. If you need assistance, please contact an admin.')
                 ],

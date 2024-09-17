@@ -117,7 +117,7 @@ class InteractionCreate extends Event {
     //           embeds: [
     //             this.client.embed()
     //                 .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                 .setColor(this.client.color.red)
+    //                 .setColor(this.client.color.danger)
     //                 .setDescription('An error occurred: Giveaway data not found.'),
     //           ],
     //           ephemeral: true,
@@ -129,7 +129,7 @@ class InteractionCreate extends Event {
     //           embeds: [
     //             this.client.embed()
     //                 .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                 .setColor(this.client.color.red)
+    //                 .setColor(this.client.color.danger)
     //                 .setDescription('This giveaway has already ended.'),
     //           ],
     //           ephemeral: true,
@@ -139,7 +139,7 @@ class InteractionCreate extends Event {
     //           embeds: [
     //             this.client.embed()
     //                 .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                 .setColor(this.client.color.red)
+    //                 .setColor(this.client.color.danger)
     //                 .setDescription('This giveaway is currently paused.'),
     //           ],
     //           ephemeral: true,

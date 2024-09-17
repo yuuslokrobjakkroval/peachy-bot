@@ -50,7 +50,7 @@ module.exports = class AddBank extends Command {
             } else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(client.color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
+                        client.embed().setColor(client.color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
                     ],
                     components: [
                         new ActionRowBuilder().addComponents(

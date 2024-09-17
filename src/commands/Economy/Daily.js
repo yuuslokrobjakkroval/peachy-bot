@@ -59,7 +59,7 @@ module.exports = class Daily extends Command {
 
                 const cooldownMessage = `Daily is on cooldown!\nTry again after **${hours}hrs, ${minutes}mins and ${seconds}secs**.`;
 
-                const cooldownEmbed = client.embed().setColor(client.color.red).setDescription(cooldownMessage);
+                const cooldownEmbed = client.embed().setColor(client.color.danger).setDescription(cooldownMessage);
 
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
             }

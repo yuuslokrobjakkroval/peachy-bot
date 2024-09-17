@@ -99,7 +99,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
       const command = client.commands.get(args[0].toLowerCase());
       if (!command)
         return await ctx.sendMessage({
-          embeds: [client.embed().setColor(client.color.red).setDescription(`Command \`${args[0]}\` not found`)],
+          embeds: [client.embed().setColor(client.color.danger).setDescription(`Command \`${args[0]}\` not found`)],
         });
 
       const helpEmbed = embed
