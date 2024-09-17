@@ -17,7 +17,7 @@ module.exports = class Cmd extends Command {
             },
             category: 'gambling',
             aliases: ['bj'],
-            cooldown: 10,
+            cooldown: 8,
             args: false,
             permissions: {
                 dev: false,
