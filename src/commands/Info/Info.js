@@ -46,7 +46,7 @@ module.exports = class Info extends Command {
           },
           {
             name: '𝐃𝐄𝐕',
-            value: `[𝐃𝐃 𝐓𝐄𝐕 𝐓𝐄𝐀𝐌](https://discord.gg/hrDG8P9XD3)`,
+            value: `[𝐃𝐃 𝐃𝐄𝐕 𝐓𝐄𝐀𝐌](https://discord.gg/hrDG8P9XD3)`,
             inline: false,
           },
         ])
