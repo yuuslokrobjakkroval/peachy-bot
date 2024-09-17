@@ -31,14 +31,14 @@ beg_success: 'You get %{coinEmote} **`%{coin}`** coins from begged.'
 ##### Daily Commands #####
 daily_cooldown: 'Your daily reward is not coming yet. Please wait for %{time}!'
 daily_title: 'Daily Reward'
-daily_success: 'coins: **`+%{coin}`** %{coinEmote}'
+daily_success: '%{coinEmote}: **`+%{coin}`** coins'
 daily_field_name: 'Current Streak'
 daily_field_value: "You've claimed daily rewards for **`%{streak}`** days in a row."
 
 ##### Weekly Commands #####
 weekly_cooldown: 'Your Weekly reward is not coming yet. Please wait for %{time}!'
 weekly_title: 'Weekly Reward'
-weekly_success: 'coins: **`+%{coin}`** %{coinEmote}'
+weekly_success: '%{coinEmote}: **`+%{coin}`** coins'
 weekly_field_name: 'Current Streak'
 weekly_field_value: "You've claimed daily rewards for **`%{streak}`** days in a row."
 

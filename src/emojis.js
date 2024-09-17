@@ -40,11 +40,8 @@ module.exports = {
     tickets: '`🎫`',
     heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
     time: {
-        clock: '`⏰`',
-        daily: '<:DAILY:1272008002228060221>',
-        weekly: '<:DAILY:1272008002228060221>',
-        day: '<a:DAY:1282624971738189856>',
-        night: '<a:NIGHT:1282624979686658119>'
+        day: '<a:DAY:1285435424835371008>',
+        night: '<a:NIGHT:1285435435165814946>'
     },
     help: {
         actions: '<a:NORMALACTIONS:1282637922863939597>',

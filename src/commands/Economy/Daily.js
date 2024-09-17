@@ -64,15 +64,11 @@ module.exports = class Daily extends Command {
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
             }
 
-            const baseExp = chance.integer({ min: 100, max: 150 });
-            const newExp = user.profile.xp + baseExp;
-
             await Promise.all([
                 Users.updateOne({ userId: ctx.author.id }, {
                     $set: {
                         'balance.coin': newBalance,
                         'balance.bank': bank,
-                        'profile.xp': newExp,
                     }
                 }).exec(),
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM)
@@ -86,7 +82,6 @@ module.exports = class Daily extends Command {
                     client.i18n.get(language, 'commands', 'daily_success', {
                         coinEmote: client.emoji.coin,
                         coin: client.utils.formatNumber(baseCoins),
-                        exp: client.utils.formatNumber(baseExp),
                     })
                 );
 
