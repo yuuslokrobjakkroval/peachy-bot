@@ -31,27 +31,25 @@ module.exports = class Slap extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const author = ctx.author;
         const target = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
-        if (!target || target.id === author.id) {
+        if (!target || target.id === ctx.author.id) {
             let errorMessage = '';
             if (!target) errorMessage += 'You need to mention a user to slap.';
-            if (target.id === author.id) errorMessage += 'You cannot slap yourself.';
+            if (target.id === ctx.author.id) errorMessage += 'You cannot slap yourself.';
 
             return await ctx.sendMessage({ content: errorMessage });
         }
 
         try {
             const randomEmoji = client.utils.getRandomElement(emoji.actions.slaps);
-            const embed = this.client
-                .embed()
+            const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`${emoji.mainLeft} Slap Time! ${emoji.mainRight}`)
                 .setImage(client.utils.emojiToImage(randomEmoji))
-                .setDescription(`${author.displayName} playfully slaps ${target.displayName}!`);
+                .setDescription(`${ctx.author.displayName} playfully slaps ${target.displayName}!`);
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch slap GIF:', error);

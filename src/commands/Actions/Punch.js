@@ -36,22 +36,21 @@ module.exports = class Punch extends Command {
             ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
-        if (!target || target.id === author.id) {
+        if (!target || target.id === ctx.author.id) {
             let errorMessage = '';
             if (!target) errorMessage += 'You need to mention a user to punch.';
-            if (target.id === author.id) errorMessage += 'You cannot punch yourself.';
+            if (target.id === ctx.author.id) errorMessage += 'You cannot punch yourself.';
 
             return await ctx.sendMessage({ content: errorMessage });
         }
 
         try {
             const randomEmoji = client.utils.getRandomElement(emoji.actions.punches);
-            const embed = this.client
-                .embed()
+            const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`${emoji.mainLeft} Punch Time! ${emoji.mainRight}`)
                 .setImage(client.utils.emojiToImage(randomEmoji))
-                .setDescription(`${author.displayName} playfully punches ${target.displayName}!`);
+                .setDescription(`${ctx.author.displayName} playfully punches ${target.displayName}!`);
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch punch GIF:', error);

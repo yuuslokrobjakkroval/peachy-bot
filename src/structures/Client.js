@@ -9,19 +9,16 @@ const { I18n } = require('@hammerhq/localization');
 const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const emojis = require('../emojis.js');
-
 const configPeach = require('../theme/Peach/config.js');
 const emojiPeach = require('../theme/Peach/emojis.js');
-
 const configGoma = require('../theme/Goma/config.js');
 const emojiGoma = require('../theme/Goma/emojis.js');
-
 const configPjum = require('../theme/Pjumben/config.js');
 const emojiPjum = require('../theme/Pjumben/emojis.js');
-
 const configOcean = require('../theme/OceanBreeze/config.js');
 const emojiOcean = require('../theme/OceanBreeze/emojis.js');
-
+const configHeaven = require('../theme/CelestialGrace/config.js');
+const emojiHeaven = require('../theme/CelestialGrace/emojis.js');
 const configHalloween = require('../theme/Halloween/config.js');
 const emojiHalloween = require('../theme/Halloween/emojis.js');
 
@@ -37,6 +34,8 @@ module.exports = class PeachyClient extends Client {
         this.logger = new Logger();
         this.body = [];
         this.utils = Utils;
+        this.color = config.color;
+        this.emoji = emojis;
         this.moment = moment;
         this.i18n = new I18n(this.config.language);
     }
@@ -148,6 +147,10 @@ module.exports = class PeachyClient extends Client {
                 case 't02':
                     color = configPjum.color;
                     emoji = emojiPjum;
+                    break;
+                case 'st01':
+                    color = configHeaven.color;
+                    emoji = emojiHeaven;
                     break;
                 case 'halloween':
                     color = configHalloween.color;

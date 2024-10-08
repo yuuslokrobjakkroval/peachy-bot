@@ -51,16 +51,11 @@ module.exports = class Theme extends Command {
         switch (convertSubCommand) {
             case 'normal':
             case 'peach':
-            case 'goma':
-            case 'halloween':{
+            case 'goma': {
                 const theme = convertSubCommand;
-                const themeColor = theme === 'halloween' ?  '#6F489D' : theme === 'pjumben' ? '#FFA751' : theme === 'peach' ? '#8BD3DD' : theme === 'goma' ? '#94716B' : '#F582AE';
-                const images =
-                    theme  === 'halloween' ? client.utils.getRandomElement([gif.welcomeToPeachHalloween, gif.welcomeToGomaHalloween]) :
-                        theme === 'peach' ? gif.welcomeToPeach :
-                            theme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
+                const images = theme === 'peach' ? gif.welcomeToPeach : theme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
                 embed
-                    .setColor(themeColor)
+                    .setColor(color.main)
                     .setDescription(`Your theme has been set to **${client.utils.formatCapitalize(theme)}**.`)
                     .setImage(images)
                     .setFooter({
@@ -77,8 +72,8 @@ module.exports = class Theme extends Command {
                     .setTitle(`${emoji.mainLeft} 𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏 ${emoji.mainRight}`)
                     .setDescription('Manage your theme settings.')
                     .addFields([
-                        { name: 'Examples', value: '• theme\n• theme normal\n• theme peach\n• theme goma\n• theme pjumben\n• theme halloween' },
-                        { name: 'Usage', value: '• theme - Shows your current theme\n• theme normal - Sets your theme to normal\n• theme peach - Sets your theme to peach\n• theme goma - Sets your theme to goma\n• theme pjumben - Sets your theme to pjumben\n• theme halloween - Sets your theme to halloween' }
+                        { name: 'Examples', value: '• theme\n• theme normal\n• theme peach\n• theme goma' },
+                        { name: 'Usage', value: '• theme - Shows your current theme\n• theme normal - Sets your theme to normal\n• theme peach - Sets your theme to peach\n• theme goma - Sets your theme to goma' }
                     ])
                     .setColor(color.main)
                     .setFooter({
@@ -91,15 +86,35 @@ module.exports = class Theme extends Command {
             default: {
                 const user = await Users.findOne({ userId: ctx.author.id });
                 const currentTheme = user?.preferences?.theme || 'Not set';
-                const themeColor = currentTheme  === 'halloween' ?  '#6F489D' : currentTheme === 'pjumben' ? '#FFA751' : currentTheme === 'peach' ? '#8BD3DD' : currentTheme === 'goma' ? '#94716B' : '#F582AE';
-                const images =
-                    currentTheme  === 'halloween' ? client.utils.getRandomElement([gif.welcomeToPeachHalloween, gif.welcomeToGomaHalloween]) :
-                        currentTheme === 'peach' ? gif.welcomeToPeach :
-                            currentTheme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
+                let imageTheme;
+
+                switch (currentTheme) {
+                    case 'peach':
+                        imageTheme = gif.welcomeToPeach;
+                        break;
+                    case 'goma':
+                        imageTheme = gif.welcomeToGoma;
+                        break;
+                    case 't01':
+                        imageTheme = gif.welcomeToOceanBreeze;
+                        break;
+                    case 't02':
+                        imageTheme = gif.welcomeToPjumBen;
+                        break;
+                    case 'halloween':
+                    case 't03':
+                        imageTheme = client.utils.getRandomElement([gif.welcomeToPeachHalloween, gif.welcomeToGomaHalloween]);
+                        break;
+                    case 'st01':
+                        imageTheme = gif.welcomeToCelestialGrace;
+                        break;
+                    default:
+                        imageTheme = gif.welcomeToPeachAndGoma;
+                }
                 embed
-                    .setColor(themeColor)
+                    .setColor(color.main)
                     .setDescription(`Your current theme is **${client.utils.formatCapitalize(currentTheme)}**.`)
-                    .setImage(images)
+                    .setImage(imageTheme)
                     .setFooter({
                         text: `Request By ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),

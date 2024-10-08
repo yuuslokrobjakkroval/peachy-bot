@@ -404,17 +404,14 @@ module.exports = class Utils {
 
         function getMultipleRandom(arr, number) {
             const shuffled = [...arr].sort(() => 0.5 - Math.random());
-            return [...new Set(shuffled.slice(0, number))];
+            return shuffled.slice(0, number);
         }
 
         let winnerIdArray = [];
-        if (data.entered.length > data.winners) {
-            winnerIdArray.push(...getMultipleRandom(data.entered, data.winners));
-            while (winnerIdArray.length < data.winners) {
-                winnerIdArray.push(...getMultipleRandom(data.entered, data.winners - winnerIdArray.length));
-            }
+        if (data.entered.length >= data.winners) {
+            winnerIdArray = getMultipleRandom(data.entered, data.winners);
         } else {
-            winnerIdArray.push(...data.entered);
+            winnerIdArray = data.entered;
         }
 
         const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
@@ -446,10 +443,10 @@ module.exports = class Utils {
                     ),
             ],
         });
-
         if (autopay) {
             for (const winner of winnerIdArray) {
                 try {
+
                     await Utils.addCoinsToUser(winner, data.prize);
                     await message.reply({
                         embeds: [
@@ -458,10 +455,11 @@ module.exports = class Utils {
                                 .setDescription(`**${client.user.username}** has awarded **\`${client.utils.formatNumber(data.prize)}\`** ${emoji.coin} to <@${winner}>.`),
                         ],
                     });
-                    data.retryAutopay = true;
-                    data.save();
                 } catch (err) {
                     console.error(`Error awarding prize to user <@${winner}>:`, err);
+
+                    data.retryAutopay = true;
+                    await data.save();
                 }
             }
         }

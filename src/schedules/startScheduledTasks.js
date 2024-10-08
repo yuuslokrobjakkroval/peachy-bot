@@ -62,7 +62,7 @@ async function checkBirthdays(client) {
 }
 
 // Function to check for and end giveaways
-async function startScheduledTasks(client) {
+async function checkGiveaways(client) {
     console.log('Check Giveaway Start');
     try {
         await connectMongodb();

@@ -21,8 +21,9 @@ module.exports = {
     orange: '<:orange:1287299123405389845>',
 
     // THEME
-    sea: '<:PEACHMAINLEFTV2:1287985191922696215>',
     pjum: '<:PLUM:1283316419647242282>',
+    sea: '<:PEACHMAINLEFTV2:1287985191922696215>',
+    halloween: '<:HALLOWEEN:1290645770688790560>',
     heaven: '<:Heaven:1292849959363674173>',
 
     // EXCHANGE

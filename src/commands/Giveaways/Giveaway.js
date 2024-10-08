@@ -155,7 +155,7 @@ module.exports = class Start extends Command {
             hostedBy: ctx.author.id,
             winners: winners,
             prize: prizeAmount,
-            endTime: formattedDuration,
+            endTime: Date.now() + duration,
             paused: false,
             ended: false,
             entered: [],
@@ -163,19 +163,6 @@ module.exports = class Start extends Command {
             retryAutopay: false,
             winnerId: [],
             rerollOptions: [],
-        }).then(async data => {
-            // Schedule giveaway end based on duration
-            setTimeout(async () => {
-                try {
-                    // Re-fetch the giveaway data before ending
-                    const giveawayData = await GiveawaySchema.findById(data._id);
-                    if (giveawayData && !giveawayData.ended) {
-                        await client.utils.endGiveaway(client, giveawayMessage, giveawayData.autopay);
-                    }
-                } catch (err) {
-                    console.error(`Error ending giveaway: ${err.message}`);
-                }
-            }, duration);
         });
     }
 };

@@ -10,7 +10,10 @@ module.exports = {
     welcomeToGoma: 'https://i.imgur.com/eIdHzUJ.gif',
     welcomeToPjumBen: 'https://i.imgur.com/0IzitAm.jpg',
     welcomeToPeachHalloween: 'https://i.imgur.com/FLCoMZi.png',
+    welcomeToOceanBreeze: 'https://i.imgur.com/AQD5CXA.gif',
     welcomeToGomaHalloween: 'https://i.imgur.com/SwAsJVq.png',
+    welcomeToCelestialGrace : 'https://i.imgur.com/w2u4Sdo.gif',
+
     // TOP
     top: 'https://i.imgur.com/BrmPIPw.gif',
 
