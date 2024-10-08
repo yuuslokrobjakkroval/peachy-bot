@@ -37,7 +37,6 @@ module.exports = class PeachyClient extends Client {
         this.logger = new Logger();
         this.body = [];
         this.utils = Utils;
-        this.db = Users;
         this.moment = moment;
         this.i18n = new I18n(this.config.language);
     }
