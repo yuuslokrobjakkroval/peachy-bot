@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const {ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 class PrivacyPolicy extends Command {
   constructor(client) {
@@ -28,9 +29,9 @@ class PrivacyPolicy extends Command {
     });
   }
 
-  async run(client, ctx) {
+  async run(client, ctx, args, color, emoji, language) {
     const embed = this.client.embed()
-      .setColor(this.client.color.main)
+      .setColor(color.main)
       .setTitle(`Privacy Policy`)
       .setDescription(`Your privacy is important to us. Please read our privacy policy below:`)
       .addFields(
@@ -46,7 +47,13 @@ class PrivacyPolicy extends Command {
       })
       .setTimestamp();
 
-    ctx.sendMessage({ embeds: [embed] });
+    const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary),
+        // new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
+        // new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
+    );
+
+    ctx.sendMessage({ embeds: [embed], components: [row] });
   }
 }
 

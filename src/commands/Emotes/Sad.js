@@ -1,18 +1,17 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Sad extends Command {
     constructor(client) {
         super(client, {
             name: 'sad',
             description: {
-                content: 'Express sadness.',
+                content: 'Express a feeling of sadness.',
                 examples: ['sad'],
                 usage: 'sad',
             },
             category: 'emotes',
             aliases: [],
-            cooldown: 5,
+            cooldown: 3,
             args: false,
             permissions: {
                 dev: false,
@@ -23,16 +22,16 @@ module.exports = class Sad extends Command {
             options: [],
         });
     }
-    async run(client, ctx, args, language) {
-        return await ctx.sendMessage({
-            embeds: [
-                client
-                    .embed()
-                    .setColor(client.color.main)
-                    .setTitle(client.i18n.get(language, 'commands', `${this.name}_success`, { displayName: ctx.author.displayName }))
-                    .setImage(await Anime.sad()),
-            ],
-        });
+
+    async run(client, ctx, args, color, emoji, language) {
+        const randomEmoji = client.utils.getRandomElement(emoji.emotes.sad);
+        const embed = this.client
+            .embed()
+            .setColor(color.main)
+            .setTitle(`${emoji.mainLeft} Feeling Sad ${emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Sometimes we all need to express our sadness.');
+
+        await ctx.sendMessage({ embeds: [embed] });
     }
 };
-

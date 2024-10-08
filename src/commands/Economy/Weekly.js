@@ -27,11 +27,11 @@ module.exports = class Weekly extends Command {
         });
     }
 
-    async run(client, ctx, args, language) {
+    async run(client, ctx, args, color, emoji, language) {
         try {
             const user = await Users.findOne({ userId: ctx.author.id }).exec();
             if (!user) {
-                return client.utils.sendErrorMessage(client, ctx, 'User not found.');
+                return client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
             }
 
             const { coin, bank } = user.balance;
@@ -39,6 +39,7 @@ module.exports = class Weekly extends Command {
             const newBalance = coin + baseCoins;
 
             const now = moment().tz('Asia/Bangkok');
+            const hours = now.hour();
             const nextWeekly = new Date();
             nextWeekly.setDate(now.date() + 7);
 
@@ -53,7 +54,7 @@ module.exports = class Weekly extends Command {
                 const hours = Math.floor((remainingTime % 86400) / 3600);
                 const minutes = Math.floor((remainingTime % 3600) / 60);
                 const seconds = remainingTime % 60;
-                
+
                 let cooldownMessage;
                 if (days > 1) {
                     cooldownMessage = `Weekly is on cooldown!\nTry again after **${days} day${days > 1 ? 's' : ''} and ${hours}hr${hours > 1 ? 's' : ''}**, **${minutes}min${minutes > 1 ? 's' : ''}**, and **${seconds}sec${seconds > 1 ? 's' : ''}**.`;
@@ -65,17 +66,20 @@ module.exports = class Weekly extends Command {
                 }
                 const cooldownEmbed = client
                     .embed()
-                    .setColor(client.color.danger)
+                    .setColor(color.red)
                     .setDescription(cooldownMessage);
 
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
             }
 
+            const baseExp = chance.integer({ min: 30, max: 50 });
+            const newExp = user.profile.xp + baseExp;
             await Promise.all([
                 Users.updateOne({ userId: ctx.author.id }, {
                     $set: {
                         'balance.coin': newBalance,
                         'balance.bank': bank,
+                        'profile.xp': newExp,
                     }
                 }).exec(),
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly)
@@ -83,12 +87,14 @@ module.exports = class Weekly extends Command {
 
             const embed = client
                 .embed()
-                .setColor(client.color.main)
+                .setColor(color.main)
                 .setTitle(`${ctx.author.displayName} claimed their weekly reward!`)
+                .setThumbnail(client.utils.emojiToImage(`${hours >= 6 && hours < 18 ? `${emoji.time.day}` : `${emoji.time.night}`}`))
                 .setDescription(
                     client.i18n.get(language, 'commands', 'weekly_success', {
-                        coinEmote: client.emoji.coin,
+                        coinEmote: emoji.coin,
                         coin: client.utils.formatNumber(baseCoins),
+                        exp: client.utils.formatNumber(baseExp),
                     })
                 );
 
@@ -96,7 +102,7 @@ module.exports = class Weekly extends Command {
 
         } catch (error) {
             console.error('Error processing weekly command:', error);
-            return client.utils.sendErrorMessage(client, ctx, 'There was an error processing your weekly claim.');
+            return client.utils.sendErrorMessage(client, ctx, 'There was an error processing your weekly claim.', color);
         }
     }
 };

@@ -25,13 +25,13 @@ module.exports = class Register extends Command {
         });
     }
 
-    async run(client, ctx) {
+    async run(client, ctx, args, color, emoji, language) {
         const user = await Users.findOne({ userId: ctx.author.id }).exec();
         if (user) {
             return await ctx.sendMessage({
                 embeds: [
                     this.client.embed()
-                        .setColor(this.client.color.danger)
+                        .setColor(color.red)
                         .setTitle('Already Registered')
                         .setDescription('You are already registered. If you need assistance, please contact an admin.')
                 ],
@@ -47,15 +47,15 @@ module.exports = class Register extends Command {
 
         const embed = this.client
             .embed()
-            .setColor(this.client.color.main)
+            .setColor(color.main)
             .setTitle('Registration Successful')
             .setDescription(`You have been successfully registered, ${ctx.author.username}! You can now start using all features of the bot.`)
             .setFooter({ text: 'If you need help or have questions, use the commands below.' });
 
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary),
-            new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
-            new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
+            // new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
+            // new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
         );
 
         return await ctx.sendMessage({ embeds: [embed], components: [row] });

@@ -35,18 +35,19 @@ module.exports = class Cmd extends Command {
             ],
         });
     }
-    async run(client, ctx, args, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const user = await Users.findOne({ userId: ctx.author.id }).exec();
         if (activeGames.has(ctx.author.id)) {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                'You are already in a game. Please finish your current game before starting a new one.'
+                'You are already in a game. Please finish your current game before starting a new one.',
+                color
             );
         }
 
         const { coin, bank } = user.balance;
-        if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'));
+        if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'), color);
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
@@ -55,7 +56,7 @@ module.exports = class Cmd extends Command {
             else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(client.color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
+                        client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
                     ],
                 });
             }
@@ -66,20 +67,20 @@ module.exports = class Cmd extends Command {
         await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec();
         activeGames.set(ctx.author.id, true);
 
-        return await initBlackjack(ctx, client, baseCoins);
+        return await initBlackjack(ctx, client, color, emoji, baseCoins);
     }
 };
 
-async function initBlackjack(ctx, client, bet) {
+async function initBlackjack(ctx, client, color, emoji, bet) {
     let tdeck = deck.slice(0);
     let player = [await bjUtil.randCard(tdeck, 'f'), await bjUtil.randCard(tdeck, 'f')];
     let dealer = [await bjUtil.randCard(tdeck, 'f'), await bjUtil.randCard(tdeck, 'b')];
 
-    await blackjack(ctx, client, player, dealer, bet);
+    await blackjack(ctx, client, color, emoji, player, dealer, bet);
 }
 
-async function blackjack(ctx, client, player, dealer, bet) {
-    let embed = bjUtil.generateEmbed(ctx.author, client, dealer, player, bet);
+async function blackjack(ctx, client, color, emoji, player, dealer, bet) {
+    let embed = await bjUtil.generateEmbed(ctx.author, client, color, emoji, dealer, player, bet);
 
     let row = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId('hit').setLabel('Hit').setStyle(1),
@@ -102,11 +103,11 @@ async function blackjack(ctx, client, player, dealer, bet) {
     collector.on('collect', async int => {
         if (int.customId === 'hit') {
             await int.deferUpdate();
-            await hit(int, client, player, dealer, msg, bet, collector);
+            await hit(int, client, color, emoji, player, dealer, msg, bet, collector);
         } else if (int.customId === 'stand') {
             await int.deferUpdate();
             collector.stop('done');
-            await stop(int, client, player, dealer, msg, bet);
+            await stop(int, client, color, emoji, player, dealer, msg, bet);
         }
     });
 
@@ -116,7 +117,7 @@ async function blackjack(ctx, client, player, dealer, bet) {
     });
 }
 
-async function hit(int, client, player, dealer, msg, bet, collector) {
+async function hit(int, client, color, emoji, player, dealer, msg, bet, collector) {
     let tdeck = bjUtil.initDeck(deck.slice(0), player, dealer);
     let card = await bjUtil.randCard(tdeck, 'f');
     player.push(card);
@@ -127,14 +128,14 @@ async function hit(int, client, player, dealer, msg, bet, collector) {
 
     if (ppoints >= 21) {
         collector.stop('done');
-        await stop(int, client, player, dealer, msg, bet, true);
+        await stop(int, client, color, emoji, player, dealer, msg, bet, true);
     } else {
-        let embed = bjUtil.generateEmbed(int.user, client, dealer, player, bet);
+        let embed = await bjUtil.generateEmbed(int.user, client, color, emoji, dealer, player, bet);
         msg.edit({ embeds: [embed] });
     }
 }
 
-async function stop(int, client, player, dealer, msg, bet, fromHit) {
+async function stop(int, client, color, emoji, player, dealer, msg, bet, fromHit) {
     if (!fromHit) player.forEach(card => (card.type = 'c'));
     dealer.forEach(card => {
         if (card.type == 'b') card.type = 'f';
@@ -172,7 +173,7 @@ async function stop(int, client, player, dealer, msg, bet, fromHit) {
 
     await Users.updateOne({ userId: int.user.id }, { $set: { 'balance.coin': newBalance } }).exec();
 
-    let embed = bjUtil.generateEmbed(int.user, client, dealer, player, bet, winner, bet);
+    let embed = await bjUtil.generateEmbed(int.user, client, color, emoji, dealer, player, bet, winner, bet);
 
     activeGames.delete(int.user.id);
     msg.edit({

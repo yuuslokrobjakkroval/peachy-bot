@@ -24,8 +24,10 @@ module.exports = class AddMoney extends Command {
         });
     }
 
-    async run(client, ctx, args, language) {
-        const mention = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+    async run(client, ctx, args, color, emoji, language) {
+        const mention = ctx.isInteraction
+            ? ctx.interaction.options.getUser('user')
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         let user = await Users.findOne({ userId: mention.id });
         if (!user) {
             user = new Users({
@@ -39,7 +41,7 @@ module.exports = class AddMoney extends Command {
 
         const { coin, bank } = user.balance;
 
-        if (mention.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'));
+        if (mention.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'), color);
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
@@ -51,7 +53,7 @@ module.exports = class AddMoney extends Command {
             } else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(client.color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
+                        client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
                     ],
                     components: [
                         new ActionRowBuilder().addComponents(
@@ -72,9 +74,9 @@ module.exports = class AddMoney extends Command {
 
         const embed = client
             .embed()
-            .setColor(client.color.main)
+            .setColor(color.main)
             .setDescription(
-                `${client.emoji.tick} Added **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emoji.coin} to ${mention} balance.`
+                `${emoji.tick} Added **\`${client.utils.formatNumber(baseCoins)}\`** ${emoji.coin} to ${mention} balance.`
             );
 
         await Users.updateOne(

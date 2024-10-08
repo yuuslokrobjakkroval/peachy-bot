@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder } = require('discord.js');
-// const GiveawaySchema = require('../schemas/giveaway');
+const GiveawaySchema = require('../schemas/giveaway');
 const Users = require('../schemas/user');
 
 module.exports = class Utils {
@@ -27,9 +27,14 @@ module.exports = class Utils {
     }
 
     static formatUsername(name) {
+        if (typeof name !== 'string') {
+            return '';
+        }
+
         let formattedName = name.replace(/[^a-zA-Z0-9]+/g, ' ');
         return formattedName.toUpperCase();
     }
+
 
     static splitToSpace(text) {
         return text.replace(/[^a-zA-Z0-9]+/g, ' ');
@@ -50,7 +55,7 @@ module.exports = class Utils {
     static getRandomElement(arr) {
         return arr[Math.floor(Math.random() * arr.length)];
     }
-    
+
     static toNameCase(args) {
         return args
             .split('_')
@@ -321,125 +326,146 @@ module.exports = class Utils {
             }
         }, 10000);
     }
-    
-    static async oops(client, ctx, args, time) {
-        return await ctx.sendMessage({ content: args }).then(async msg => {
-            setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
-        });
-    }
 
-    static async sendSuccessMessage(client, ctx, args, time) {
-        const embed = new EmbedBuilder()
-            .setColor(client.color.main)
+    static async oops(client, ctx, args, color, time) {
+        const embed = client.embed()
+            .setColor(color.red)
             .setDescription(args)
         return await ctx.sendMessage({ embeds: embed }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
 
-    static async sendErrorMessage(client, ctx, args, time) {
-        const embed = new EmbedBuilder()
-            .setColor(client.color.danger)
+    static async sendSuccessMessage(client, ctx, args, color, time) {
+        const embed = client.embed()
+            .setColor(color.main)
+            .setDescription(args)
+        return await ctx.sendMessage({ embeds: embed }).then(async msg => {
+            setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
+        });
+    }
+
+    static async sendErrorMessage(client, ctx, args, color, time) {
+        const embed = client.embed()
+            .setColor(color.red)
             .setDescription(args)
         await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
 
-    // static async endGiveaway(client, message, autopay) {
-    //     if (!message.guild) return;
-    //     if (!message.client.guilds.cache.get(message.guild.id)) return;
-    //
-    //     // Fetch the giveaway data
-    //     const data = await GiveawaySchema.findOne({
-    //         guildId: message.guildId,
-    //         messageId: message.id,
-    //     });
-    //
-    //     if (!data) return;
-    //     if (data?.ended === true) return;
-    //     if (data?.paused === true) return;
-    //
-    //     function getMultipleRandom(arr, number) {
-    //         const shuffled = [...arr].sort(() => 0.5 - Math.random());
-    //         return [...new Set(shuffled.slice(0, number))];
-    //     }
-    //
-    //     let winnerIdArray = [];
-    //     if (data?.entered?.length > data?.winners) {
-    //         winnerIdArray.push(...getMultipleRandom(data?.entered, data.winners));
-    //         while (winnerIdArray.length < data?.winners)
-    //             winnerIdArray.push(...getMultipleRandom(data?.entered, data?.winners - winnerIdArray.length));
-    //     } else {
-    //         winnerIdArray.push(...data?.entered);
-    //     }
-    //
-    //     const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
-    //         ButtonBuilder.from(message.components[0].components[0])
-    //             .setLabel(`${data.entered.length}`) // Number of participants
-    //             .setDisabled(true),
-    //         ButtonBuilder.from(message.components[0].components[1]).setDisabled(false)
-    //     );
-    //
-    //     const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
-    //         .setColor(client.color.main)
-    //         .setDescription(`Winners: ${data?.winners}\nHosted by: <@${data?.hostedBy}>`);
-    //
-    //     await message.edit({embeds: [endGiveawayEmbed], components: [disableButton]}).then(async msg => {
-    //         await GiveawaySchema.findOneAndUpdate({
-    //             guildId: data?.guildId,
-    //             channelId: data?.channelId,
-    //             messageId: msg.id
-    //         }, {ended: true});
-    //     });
-    //
-    //     async function addCoinsToUser(userId, amount) {
-    //         try {
-    //             let user = await Users.findOne({userId});
-    //             if (!user) {
-    //                 user = new Users({
-    //                     userId,
-    //                     balance: {
-    //                         coin: amount,
-    //                         bank: 0,
-    //                     }
-    //                 });
-    //                 await user.save();
-    //             } else {
-    //                 await Users.updateOne(
-    //                     {userId},
-    //                     {$inc: {'balance.coin': amount}}
-    //                 );
-    //             }
-    //         } catch (error) {
-    //             console.error(`Failed to update balance for user ${userId}:`, error);
-    //         }
-    //     }
-    //
-    //     await message.reply({
-    //         embeds: [
-    //             new EmbedBuilder()
-    //                 .setColor(client.color.main)
-    //                 .setDescription(
-    //                     winnerIdArray.length
-    //                         ? `Congratulations ${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}**. ${client.emoji.congratulation}`
-    //                         : `No one entered the giveaway of **\`${client.utils.formatNumber(data.prize)}\`**!`
-    //                 ),
-    //         ],
-    //     });
-    //
-    //     // Handle autopay
-    //     if (autopay) {
-    //         for (const winner of winnerIdArray) {
-    //             await addCoinsToUser(winner, data.prize);
-    //             await message.reply({
-    //                 embeds: [
-    //                     new EmbedBuilder()
-    //                         .setColor(client.color.main)
-    //                         .setDescription(`**${client.user.username}** has been given **\`${client.utils.formatNumber(data.prize)}\`** ${client.emoji.coin} to <@${winner}>.`),
-    //                 ],
-    //             });
-    //         }
-    //     }
-    // }
+    static async selectWinners(participants, numWinners) {
+        let winners = [];
+        while (winners.length < numWinners) {
+            const randomIndex = Math.floor(Math.random() * participants.length);
+            const selected = participants[randomIndex];
+            if (!winners.includes(selected)) {
+                winners.push(selected);
+            }
+        }
+        return winners;
+    }
+
+    static async addCoinsToUser(userId, amount) {
+        try {
+            let user = await Users.findOne({ userId });
+            if (!user) {
+                user = new Users({
+                    userId,
+                    balance: {
+                        coin: amount,
+                        bank: 0,
+                    },
+                });
+                await user.save();
+            } else {
+                await Users.updateOne(
+                    { userId },
+                    { $inc: { 'balance.coin': amount } }
+                );
+            }
+        } catch (error) {
+            console.error(`Failed to update balance for user ${userId}:`, error);
+        }
+    }
+
+    static async endGiveaway(client, color, emoji, message, autopay) {
+        if (!message.guild) return;
+        if (!client.guilds.cache.get(message.guild.id)) return;
+
+        const data = await GiveawaySchema.findOne({
+            guildId: message.guildId,
+            messageId: message.id,
+        });
+
+        if (!data) return;
+        if (data.ended) return;
+        if (data.paused) return;
+
+        function getMultipleRandom(arr, number) {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            return [...new Set(shuffled.slice(0, number))];
+        }
+
+        let winnerIdArray = [];
+        if (data.entered.length > data.winners) {
+            winnerIdArray.push(...getMultipleRandom(data.entered, data.winners));
+            while (winnerIdArray.length < data.winners) {
+                winnerIdArray.push(...getMultipleRandom(data.entered, data.winners - winnerIdArray.length));
+            }
+        } else {
+            winnerIdArray.push(...data.entered);
+        }
+
+        const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
+            ButtonBuilder.from(message.components[0].components[0]).setLabel(`${data.entered.length}`).setDisabled(true),
+            ButtonBuilder.from(message.components[0].components[1]).setDisabled(true)
+        );
+
+        const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
+            .setColor(color.main)
+            .setDescription(`Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`);
+
+        await message.edit({ embeds: [endGiveawayEmbed], components: [disableButton] }).then(async (msg) => {
+            await GiveawaySchema.findOneAndUpdate(
+                { guildId: data.guildId, channelId: data.channelId, messageId: msg.id },
+                { ended: true, winnerId: winnerIdArray }
+            );
+        });
+
+        // Announce the winners
+        await message.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(color.main)
+                    .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
+                    .setDescription(
+                        winnerIdArray.length
+                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}`
+                            : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
+                    ),
+            ],
+        });
+
+        if (autopay) {
+            for (const winner of winnerIdArray) {
+                try {
+                    await Utils.addCoinsToUser(winner, data.prize);
+                    await message.reply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(color.main)
+                                .setDescription(`**${client.user.username}** has awarded **\`${client.utils.formatNumber(data.prize)}\`** ${emoji.coin} to <@${winner}>.`),
+                        ],
+                    });
+                    data.retryAutopay = true;
+                    data.save();
+                } catch (err) {
+                    console.error(`Error awarding prize to user <@${winner}>:`, err);
+                }
+            }
+        }
+    }
 };
+
+

@@ -31,11 +31,11 @@ module.exports = class Withdraw extends Command {
         });
     }
 
-    async run(client, ctx, args, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const user = await Users.findOne({ userId: ctx.author.id });
         const { coin, bank } = user.balance;
 
-        if (bank < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'));
+        if (bank < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'), color);
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || bank : args[0] || bank;
         if (isNaN(amount) || amount < 1 || amount.toString().includes('.') || amount.toString().includes(',')) {
@@ -45,7 +45,7 @@ module.exports = class Withdraw extends Command {
             else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(client.color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
+                        client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
                     ],
                 });
             }
@@ -58,8 +58,8 @@ module.exports = class Withdraw extends Command {
 
         const embed = client
             .embed()
-            .setColor(client.color.main)
-            .setDescription(`You have withdraw ${client.emoji.coin} **\`${client.utils.formatNumber(baseCoins)}\`** coins to your bank.`);
+            .setColor(color.main)
+            .setDescription(`You have withdraw ${emoji.coin} **\`${client.utils.formatNumber(baseCoins)}\`** coins to your bank.`);
 
         await Promise.all([
             Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newCoin, 'balance.bank': newBank } }).exec(),

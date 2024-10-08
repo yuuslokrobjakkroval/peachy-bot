@@ -1,65 +1,68 @@
 const cardsf = [
-    '<:flipcard:1285273700941299842>',
+    '<:BACKSF:1281843966266048583>',
+    // '<:BACKCF:1281843924062703679>',
+    // '<:BACKHF:1281843958846328842>',
+    // '<:BACKDF:1281843932430471169>',
 
-    '<a:asf:1285239867235897397>',
-    '<a:2sf:1285239558606160024>',
-    '<a:3sf:1285239586687029328>',
-    '<a:4sf:1285239608342478930>',
-    '<a:5sf:1285239646724427899>',
-    '<a:6sf:1285239669197504575>',
-    '<a:7sf:1285239754710978591>',
-    '<a:8sf:1285239777246969917>',
-    '<a:9sf:1285239806208770078>',
-    '<a:10sf:1285239833719214130>',
-    '<a:jsf:1285239902794944593>',
-    '<a:qsf:1285239936349634620>',
-    '<a:ksf:1285239922940317799>',
+    '<a:asf:1281795959122165760>',
+    '<a:2sf:1281795969632960552>',
+    '<a:3sf:1281795977317187625>',
+    '<a:4sf:1281796867520462849>',
+    '<a:5sf:1281796875850088488>',
+    '<a:6sf:1281796885824278549>',
+    '<a:7sf:1281796893755838494>',
+    '<a:8sf:1281796905336311808>',
+    '<a:9sf:1281796911090630717>',
+    '<a:10sf:1281796919626170368>',
+    '<a:jsf:1281796927700205589>',
+    '<a:qsf:1281796935434371102>',
+    '<a:ksf:1281796944141746247>',
 
-    '<a:acf:1285238453763571776>',
-    '<a:2cf:1285238197793722368>',
-    '<a:3cf:1285238224683532340>',
-    '<a:4cf:1285238257885515818>',
-    '<a:5cf:1285238280467648579>',
-    '<a:6cf:1285238295915397130>',
-    '<a:7cf:1285238317188644916>',
-    '<a:8cf:1285238357290516521>',
-    '<a:9cf:1285238376177340498>',
-    '<a:10cf:1285238404782620753>',
-    '<a:jcf:1285238501620584581>',
-    '<a:qcf:1285238544968716383>',
-    '<a:kcf:1285238524316221452>',
+    '<a:acf:1281795702200078378>',
+    '<a:2cf:1281795708424421416>',
+    '<a:3cf:1281795719472349237>',
+    '<a:4cf:1281795725516079166>',
+    '<a:5cf:1281795736945819770>',
+    '<a:6cf:1281795743098736690>',
+    '<a:7cf:1281795745732890656>',
+    '<a:8cf:1281795754897309736>',
+    '<a:9cf:1281795760156971018>',
+    '<a:10cf:1281795767719432222>',
+    '<a:jcf:1281795774803345542>',
+    '<a:qcf:1281795799390486528>',
+    '<a:kcf:1281795809783840799>',
 
-    '<a:ahf:1285239418697023538>',
-    '<a:2hf:1285238915455913984>',
-    '<a:3hf:1285238953229684736>',
-    '<a:4hf:1285239188198920202>',
-    '<a:5hf:1285239230297018418>',
-    '<a:6hf:1285239264514150420>',
-    '<a:7hf:1285239287901847552>',
-    '<a:8hf:1285239312388194345>',
-    '<a:9hf:1285239349772025988>',
-    '<a:10hf:1285239379245269022>',
-    '<a:jhf:1285239447000191139>',
-    '<a:qhf:1285239515656491110>',
-    '<a:khf:1285239475634700421>',
+    '<a:ahf:1281796992086835222>',
+    '<a:2hf:1281797003403067463>',
+    '<a:3hf:1281797009476681738>',
+    '<a:4hf:1281797018871795754>',
+    '<a:5hf:1281797029491773501>',
+    '<a:6hf:1281797045148975104>',
+    '<a:7hf:1281797093526081587>',
+    '<a:8hf:1281797105056219167>',
+    '<a:9hf:1281797114464305265>',
+    '<a:10hf:1281797120419958784>',
+    '<a:jhf:1281797127080775771>',
+    '<a:qhf:1281797150304505896>',
+    '<a:khf:1281797162870640680>',
 
-    '<a:adf:1285238804399263786>',
-    '<a:2df:1285238576367403152>',
-    '<a:3df:1285238598718980116>',
-    '<a:4df:1285238621267562587>',
-    '<a:5df:1285238653068644392>',
-    '<a:6df:1285238693212196940>',
-    '<a:7df:1285238711352688680>',
-    '<a:8df:1285238732747833397>',
-    '<a:9df:1285238750045147198>',
-    '<a:10df:1285238775114367117>',
-    '<a:jdf:1285238831758708746>',
-    '<a:qdf:1285238882098741269>',
-    '<a:kdf:1285238859369549824>',
+    '<a:adf:1281795831401287681>',
+    '<a:2df:1281795838489788508>',
+    '<a:3df:1281795846211633172>',
+    '<a:4df:1281795850242097193>',
+    '<a:5df:1281795862191669280>',
+    '<a:6df:1281795871825989733>',
+    '<a:7df:1281795880294416384>',
+    '<a:8df:1281795890834837518>',
+    '<a:9df:1281795895293116480>',
+    '<a:10df:1281795903996432438>',
+    '<a:jdf:1281795913269907597>',
+    '<a:qdf:1281795921117708299>',
+    '<a:kdf:1281795928159944899>',
 ];
 const config = require('../config');
 const random = require('random-number-csprng');
-
+const DEALER = '<:DEALERBLACKJACK:1283852034784886885>';
 exports.randCard = randCard;
 async function randCard(deck, type) {
     let card = deck.splice(await random(0, deck.length - 1), 1)[0];
@@ -74,32 +77,30 @@ function initDeck(deck, player, dealer) {
 }
 
 exports.generateEmbed = generateEmbed;
-function generateEmbed(author, client, dealer, player, bet, end, winnings) {
-    let color = config.color.main;
-    let thumbnail = author.displayAvatarURL({ dynamic: true, size: 1024 });
+async function generateEmbed(author, client, color, emoji, dealer, player, bet, end, winnings) {
     let description = '';
     let dealerValue = cardValue(dealer);
     let playerValue = cardValue(player);
 
-    if (end === 'w') {
-        color = config.color.primary;
-        description = `**\nYou won \`${client.utils.formatNumber(winnings)}\` ${client.emoji.coin}**`;
-    } else if (end === 'l') {
-        color = config.color.danger;
-        description = `**\nYou lost \`${client.utils.formatNumber(bet)}\` ${client.emoji.coin}**`;
-    } else if (end === 'tb') {
-        color = config.color.tied;
+    if (end == 'w') {
+        color = color.green;
+        description = `**\nYou won \`${client.utils.formatNumber(winnings)}\` ${emoji.coin}**`;
+    } else if (end == 'l') {
+        color = color.red;
+        description = `**\nYou lost \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**`;
+    } else if (end == 'tb') {
+        color = color.main;
         description = '**\nYou both bust!**';
-    } else if (end === 't') {
-        color = config.color.tied;
+    } else if (end == 't') {
+        color = color.main;
         description = '**\nYou tied!**';
     } else dealerValue.points = dealerValue.shownPoints + '+?';
 
     return {
-        color: color,
-        description: `### ${client.emoji.main} 𝐎𝐆𝐆𝐘 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${client.emoji.main}\n` +
+        color: color.main,
+        description: `# ${emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${emoji.mainRight}\n` +
             `The winner is the one who's closest to 21.\n` +
-            `**DEALER \`[${dealerValue.points}]\`**\n` +
+            `**DEALER ${DEALER} \`[${dealerValue.points}]\`**\n` +
             `# \n${dealerValue.display}\n` +
             `**\n${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
             `# ${playerValue.display}\n` +
@@ -108,7 +109,8 @@ function generateEmbed(author, client, dealer, player, bet, end, winnings) {
             url: author.displayAvatarURL({ dynamic: true, size: 1024 }),
         },
         footer: {
-            text: !!end ? 'Game Over' : 'Game in progress',
+            text: !!end ? `${author.displayName}! your game is over.` : `${author.displayName}, your game is in progress!`,
+            iconURL: author.displayAvatarURL(),
         },
     };
 }

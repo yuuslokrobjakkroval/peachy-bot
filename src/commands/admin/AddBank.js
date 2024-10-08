@@ -23,8 +23,10 @@ module.exports = class AddBank extends Command {
         });
     }
 
-    async run(client, ctx, args, language) {
-        const mention = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+    async run(client, ctx, args, color, emoji, language) {
+        const mention = ctx.isInteraction
+            ? ctx.interaction.options.getUser('user')
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         let user = await Users.findOne({ userId: mention.id });
         if (!user) {
             user = new Users({
@@ -50,7 +52,7 @@ module.exports = class AddBank extends Command {
             } else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(client.color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
+                        client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
                     ],
                     components: [
                         new ActionRowBuilder().addComponents(
@@ -71,9 +73,9 @@ module.exports = class AddBank extends Command {
 
         const embed = client
             .embed()
-            .setColor(client.color.main)
+            .setColor(color.main)
             .setDescription(
-                `${client.emoji.tick} Added **\`${client.utils.formatNumber(baseCoins)}\`** ${client.emoji.coin} to ${mention}'s bank balance.`
+                `${emoji.tick} Added **\`${client.utils.formatNumber(baseCoins)}\`** ${emoji.coin} to ${mention}'s bank balance.`
             );
 
         await Users.updateOne(

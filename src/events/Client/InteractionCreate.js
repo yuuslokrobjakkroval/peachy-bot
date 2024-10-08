@@ -3,14 +3,14 @@ const {
   CommandInteraction,
   InteractionType,
   PermissionFlagsBits,
-  // ButtonInteraction,
-  // ActionRowBuilder,
-  // ButtonBuilder,
-  // ButtonStyle,
+  ButtonInteraction,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
 } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
-// const GiveawaySchema = require('../../schemas/giveaway.js');
-// const { endGiveaway } = require('../../utils/Utils.js');
+const GiveawaySchema = require('../../schemas/giveaway.js');
+const { endGiveaway } = require('../../utils/Utils.js');
 
 class InteractionCreate extends Event {
   constructor(client, file) {
@@ -18,8 +18,7 @@ class InteractionCreate extends Event {
   }
 
   async run(interaction) {
-    await this.client.setColorBasedOnTheme(interaction.user.id);
-
+    const { color, emoji } = await this.client.setColorBasedOnTheme(interaction.user.id);
     if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
       const command = this.client.commands.get(interaction.commandName);
       if (!command) return;
@@ -30,16 +29,16 @@ class InteractionCreate extends Event {
 
         if (!interaction.inGuild()) return;
 
-        // const isRestrictedCommand = ['giveaway', 'level-setup', 'level-message', 'level-disable']
-        // const hasDevRole = interaction.member.roles.cache.some(role => role.name === 'Developer');
-        // const isOwner = this.client.config.owners.includes(interaction.user.id);
+        const isRestrictedCommand = ['giveaway', 'level-setup', 'level-message', 'level-disable']
+        const hasDevRole = interaction.member.roles.cache.some(role => role.name === 'Developer');
+        const isOwner = this.client.config.owners.includes(interaction.user.id);
 
-        // if (isRestrictedCommand.includes(interaction.commandName) && !(isOwner || hasDevRole)) {
-        //   return await interaction.reply({
-        //     content: "You don't have permission to use this command.",
-        //     ephemeral: true,
-        //   });
-        // }
+        if (isRestrictedCommand.includes(interaction.commandName) && !(isOwner || hasDevRole)) {
+          return await interaction.reply({
+            content: "You don't have permission to use this command.",
+            ephemeral: true,
+          });
+        }
 
         if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ViewChannel)) {
           return;
@@ -93,7 +92,7 @@ class InteractionCreate extends Event {
           }
         }
 
-        await command.run(this.client, ctx, ctx.args);
+        await command.run(this.client, ctx, ctx.args, color, emoji);
       } catch (error) {
         console.error(`Error handling command ${interaction.commandName}:`, error);
         await interaction.reply({
@@ -103,157 +102,157 @@ class InteractionCreate extends Event {
       }
     }
 
-    // else if (interaction instanceof ButtonInteraction && interaction.type === InteractionType.MessageComponent) {
-    //   switch (interaction.customId) {
-    //     case 'giveaway-join': {
-    //       const data = await GiveawaySchema.findOne({
-    //         guildId: interaction.guild.id,
-    //         channelId: interaction.channel.id,
-    //         messageId: interaction.message.id,
-    //       });
-    //
-    //       if (!data) {
-    //         return await interaction.reply({
-    //           embeds: [
-    //             this.client.embed()
-    //                 .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                 .setColor(this.client.color.danger)
-    //                 .setDescription('An error occurred: Giveaway data not found.'),
-    //           ],
-    //           ephemeral: true,
-    //         });
-    //       } else if (data.endTime * 1000 < Date.now()) {
-    //         return endGiveaway(this.client, interaction.message);
-    //       } else if (data.ended) {
-    //         return await interaction.reply({
-    //           embeds: [
-    //             this.client.embed()
-    //                 .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                 .setColor(this.client.color.danger)
-    //                 .setDescription('This giveaway has already ended.'),
-    //           ],
-    //           ephemeral: true,
-    //         });
-    //       } else if (data.paused) {
-    //         return await interaction.reply({
-    //           embeds: [
-    //             this.client.embed()
-    //                 .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                 .setColor(this.client.color.danger)
-    //                 .setDescription('This giveaway is currently paused.'),
-    //           ],
-    //           ephemeral: true,
-    //         });
-    //       } else if (data.entered.includes(interaction.user.id)) {
-    //         return await interaction.reply({
-    //           embeds: [
-    //             this.client.embed()
-    //                 .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                 .setColor(this.client.color.pink)
-    //                 .setDescription('You are already entered in this giveaway. Would you like to leave?'),
-    //           ],
-    //           components: [
-    //             new ActionRowBuilder().addComponents(
-    //                 new ButtonBuilder()
-    //                     .setCustomId('leave-giveaway')
-    //                     .setLabel('Leave Giveaway')
-    //                     .setStyle(ButtonStyle.Danger)
-    //             ),
-    //           ],
-    //           ephemeral: true,
-    //         });
-    //
-    //         // Collect button interaction
-    //         const filter = int => int.isButton() && int.user.id === interaction.user.id;
-    //         await interaction.channel
-    //             .awaitMessageComponent({ filter, time: 30000 })
-    //             .then(async int => {
-    //               if (int.customId === 'leave-giveaway') {
-    //                 data.entered = data.entered.filter(id => id !== interaction.user.id);
-    //                 await data.save();
-    //
-    //                 await int.reply({
-    //                   embeds: [
-    //                     this.client.embed()
-    //                         .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                         .setColor(this.client.color.main)
-    //                         .setDescription('You have successfully left the giveaway.'),
-    //                   ],
-    //                   ephemeral: true,
-    //                 });
-    //               } else {
-    //                 int.deferUpdate();
-    //               }
-    //             })
-    //             .catch(() => {
-    //               console.log('No interaction collected or error occurred.');
-    //             });
-    //       } else {
-    //         data.entered.push(interaction.user.id);
-    //         await data.save();
-    //
-    //         await interaction.reply({
-    //           embeds: [
-    //             this.client.embed()
-    //                 .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
-    //                 .setColor(this.client.color.main)
-    //                 .setDescription('You have successfully joined the giveaway.'),
-    //           ],
-    //           ephemeral: true,
-    //         });
-    //
-    //         const newLabel = data.entered.length;
-    //         await interaction.message.edit({
-    //           components: [
-    //             new ActionRowBuilder().addComponents(
-    //                 new ButtonBuilder()
-    //                     .setCustomId('giveaway-join')
-    //                     .setLabel(`${newLabel}`)
-    //                     .setEmoji(`${this.client.emoji.main}`)
-    //                     .setStyle(3),
-    //                 new ButtonBuilder()
-    //                     .setCustomId('giveaway-participants')
-    //                     .setEmoji(this.client.emoji.userList)
-    //                     .setLabel('Participants')
-    //                     .setStyle(1)
-    //             ),
-    //           ],
-    //         });
-    //       }
-    //       break;
-    //     }
-    //
-    //     case 'giveaway-participants': {
-    //       const data = await GiveawaySchema.findOne({
-    //         guildId: interaction.guild.id,
-    //         channelId: interaction.channel.id,
-    //         messageId: interaction.message.id,
-    //       });
-    //
-    //       if (!data.entered.length) {
-    //         return await interaction.reply({
-    //           content: 'No participants found.',
-    //           ephemeral: true,
-    //         });
-    //       }
-    //
-    //       const participants = data.entered
-    //           .map((id, index) => `${index + 1}. ${this.client.users.cache.get(id)?.username || 'Unknown User'} (**1** entry)`)
-    //           .join('\n');
-    //
-    //       const embed = this.client.embed()
-    //           .setTitle('Giveaway Participants')
-    //           .setColor(this.client.color.main)
-    //           .setDescription(`These are the members who participated in the giveaway of **${data.prize}**:\n\n${participants}\n\nTotal Participants: **${data.entered.length}**`);
-    //
-    //       await interaction.reply({ embeds: [embed], ephemeral: true });
-    //       break;
-    //     }
-    //
-    //     default:
-    //       break;
-    //   }
-    // }
+    else if (interaction instanceof ButtonInteraction && interaction.type === InteractionType.MessageComponent) {
+      switch (interaction.customId) {
+        case 'giveaway-join': {
+          const data = await GiveawaySchema.findOne({
+            guildId: interaction.guild.id,
+            channelId: interaction.channel.id,
+            messageId: interaction.message.id,
+          });
+
+          if (!data) {
+            return await interaction.reply({
+              embeds: [
+                this.client.embed()
+                    .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
+                    .setColor(color.red)
+                    .setDescription('An error occurred: Giveaway data not found.'),
+              ],
+              ephemeral: true,
+            });
+          } else if (data.endTime * 1000 < Date.now()) {
+            return endGiveaway(this.client, color, emoji, interaction.message);
+          } else if (data.ended) {
+            return await interaction.reply({
+              embeds: [
+                this.client.embed()
+                    .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
+                    .setColor(color.red)
+                    .setDescription('This giveaway has already ended.'),
+              ],
+              ephemeral: true,
+            });
+          } else if (data.paused) {
+            return await interaction.reply({
+              embeds: [
+                this.client.embed()
+                    .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
+                    .setColor(color.red)
+                    .setDescription('This giveaway is currently paused.'),
+              ],
+              ephemeral: true,
+            });
+          } else if (data.entered.includes(interaction.user.id)) {
+            return await interaction.reply({
+              embeds: [
+                this.client.embed()
+                    .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
+                    .setColor(color.pink)
+                    .setDescription('You are already entered in this giveaway. Would you like to leave?'),
+              ],
+              components: [
+                new ActionRowBuilder().addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('leave-giveaway')
+                        .setLabel('Leave Giveaway')
+                        .setStyle(ButtonStyle.Danger)
+                ),
+              ],
+              ephemeral: true,
+            });
+
+            // Collect button interaction
+            const filter = int => int.isButton() && int.user.id === interaction.user.id;
+            await interaction.channel
+                .awaitMessageComponent({ filter, time: 30000 })
+                .then(async int => {
+                  if (int.customId === 'leave-giveaway') {
+                    data.entered = data.entered.filter(id => id !== interaction.user.id);
+                    await data.save();
+
+                    await int.reply({
+                      embeds: [
+                        this.client.embed()
+                            .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
+                            .setColor(color.main)
+                            .setDescription('You have successfully left the giveaway.'),
+                      ],
+                      ephemeral: true,
+                    });
+                  } else {
+                    int.deferUpdate();
+                  }
+                })
+                .catch(() => {
+                  console.log('No interaction collected or error occurred.');
+                });
+          } else {
+            data.entered.push(interaction.user.id);
+            await data.save();
+
+            await interaction.reply({
+              embeds: [
+                this.client.embed()
+                    .setAuthor({ name: this.client.user.username, iconURL: this.client.user.displayAvatarURL() })
+                    .setColor(color.main)
+                    .setDescription('You have successfully joined the giveaway.'),
+              ],
+              ephemeral: true,
+            });
+
+            const newLabel = data.entered.length;
+            await interaction.message.edit({
+              components: [
+                new ActionRowBuilder().addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('giveaway-join')
+                        .setLabel(`${newLabel}`)
+                        .setEmoji(`${emoji.main}`)
+                        .setStyle(3),
+                    new ButtonBuilder()
+                        .setCustomId('giveaway-participants')
+                        .setEmoji(emoji.userList)
+                        .setLabel('Participants')
+                        .setStyle(1)
+                ),
+              ],
+            });
+          }
+          break;
+        }
+
+        case 'giveaway-participants': {
+          const data = await GiveawaySchema.findOne({
+            guildId: interaction.guild.id,
+            channelId: interaction.channel.id,
+            messageId: interaction.message.id,
+          });
+
+          if (!data.entered.length) {
+            return await interaction.reply({
+              content: 'No participants found.',
+              ephemeral: true,
+            });
+          }
+
+          const participants = data.entered
+              .map((id, index) => `${index + 1}. ${interaction.guild.members.cache.get(id)?.user?.username || 'Unknown User'} (**1** entry)`)
+              .join('\n');
+
+          const embed = this.client.embed()
+              .setTitle('Giveaway Participants')
+              .setColor(color.main)
+              .setDescription(`These are the members who participated in the giveaway of **${data.prize}**:\n\n${participants}\n\nTotal Participants: **${data.entered.length}**`);
+
+          await interaction.reply({ embeds: [embed], ephemeral: true });
+          break;
+        }
+
+        default:
+          break;
+      }
+    }
   }
 }
 

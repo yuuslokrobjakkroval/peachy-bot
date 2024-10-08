@@ -3,6 +3,8 @@ const Users = require('../../schemas/user');
 
 const maxAmount = 250000;
 const random = require('random-number-csprng');
+const {getNumberEmoji} = require("../../functions/function");
+const gif = require("../../utils/Gif");
 
 module.exports = class Coinflip extends Command {
     constructor(client) {
@@ -10,12 +12,12 @@ module.exports = class Coinflip extends Command {
             name: 'coinflip',
             description: {
                 content: "Flip a coin and let's see who's the lucky one after!",
-                examples: ['coinflip head 100'],
+                examples: ['coinflip peach 100', 'coinflip goma 100'],
                 usage: 'coinflip <amount> <choice>',
             },
             category: 'gambling',
             aliases: ['flip', 'cf'],
-            cooldown: 8,
+            cooldown: 5,
             args: false,
             permissions: {
                 dev: false,
@@ -36,18 +38,18 @@ module.exports = class Coinflip extends Command {
                     type: 3,
                     required: true,
                     choices: [
-                        { name: 'heads', value: 'h' },
-                        { name: 'tails', value: 't' },
+                        { name: 'peach', value: 'p' },
+                        { name: 'goma', value: 'g' },
                     ],
                 },
             ],
         });
     }
 
-    async run(client, ctx, args, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const user = await Users.findOne({ userId: ctx.author.id }).exec();
         const { coin, bank } = user.balance;
-        if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'));
+        if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'), color);
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
@@ -56,7 +58,7 @@ module.exports = class Coinflip extends Command {
             else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(client.color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
+                        client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
                     ],
                 });
             }
@@ -65,37 +67,55 @@ module.exports = class Coinflip extends Command {
         const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
 
         // ===================================== > Choice < ===================================== \\
-        let choice = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() || 'h' : args[1] || 'h';
+        let choice = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() || 'p' : args[1] || 'p';
         if (choice !== undefined) choice = choice.toLowerCase();
-        else if (choice === 'heads' || choice === 'h' || choice === 'head') choice = 'h';
-        else if (choice === 'tails' || choice === 't' || choice === 'tail') choice = 't';
+        else if (choice === 'peach' || choice === 'p') choice = 'p';
+        else if (choice === 'goma' || choice === 'g') choice = 'g';
 
         let rand = await random(0, 1);
         let win = false;
-        if (rand == 0 && choice == 't') win = true;
-        else if (rand == 1 && choice == 'h') win = true;
+        if (rand === 0 && choice === 'g') win = true;
+        else if (rand === 1 && choice === 'p') win = true;
 
         // ===================================== > Display < ===================================== \\
-        const content = `${client.emoji.mainLeft} **𝐎𝐆𝐆𝐘 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏** ${client.emoji.mainRight}\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\` ${client.emoji.coin}**\nchoose **${
-            choice === 'h' ? 'heads' : 'tails'
-        }**
-The coin is flips ${client.emoji.coinFlip.spin}`;
+        const flipEmbed = client.embed()
+            .setColor(color.main)
+            .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+            .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\` ${emoji.coin}** choose **${
+                choice === 'p' ? 'peach' : 'goma'
+            }**
+The coin is flips ${emoji.coinFlip.flip}`)
+            .setFooter({
+                text: `${ctx.author.displayName}, your game is in progress!`,
+                iconURL: ctx.author.displayAvatarURL(),
+            })
+
+        await ctx.sendDeferMessage({ embeds: [flipEmbed] });
 
         const newBalance = win ? coin + baseCoins : coin - baseCoins;
         await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec();
 
-        await ctx.sendDeferMessage({ content: content });
+        // ===================================== > Result < ===================================== \\
         setTimeout(async function () {
-            const content = `${client.emoji.mainLeft} **𝐎𝐆𝐆𝐘 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏** ${client.emoji.mainRight}\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${client.emoji.coin}\nchoose **${
-                choice === 'h' ? 'heads' : 'tails'
-            }**
-The coin is flips ${win ? (choice == 'h' ? client.emoji.coinFlip.heads : client.emoji.coinFlip.tails) : choice == 'h' ? client.emoji.coinFlip.tails : client.emoji.coinFlip.heads} and ${
-                win
-                    ? `won **\`${(baseCoins + baseCoins).toLocaleString()}\`** ${client.emoji.coin}`
-                    : `lose **\`${baseCoins.toLocaleString()}\`** ${client.emoji.coin}`
-            }`;
 
-            return await ctx.editMessage({ content: content });
+            const resultEmbed = client.embed()
+                .setColor(win ? color.green : color.red)
+                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+                .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${emoji.coin} choose **${
+                    choice === 'p' ? 'peach' : 'goma'
+                }**
+The coin is flips ${win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma)} and ${
+                    win
+                        ? `**Won \`${(baseCoins + baseCoins).toLocaleString()}\` ${emoji.coin}**`
+                        : `**Lose \`${baseCoins.toLocaleString()}\` ${emoji.coin}**`
+                }`)
+                .setFooter({
+                    text: `${ctx.author.displayName}! your game is over.`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                })
+
+            await ctx.editMessage({ embeds: [resultEmbed] });
         }, 2000);
     }
 };
+

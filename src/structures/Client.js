@@ -9,9 +9,22 @@ const { I18n } = require('@hammerhq/localization');
 const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const emojis = require('../emojis.js');
+
+const configPeach = require('../theme/peach/config.js');
+const emojiPeach = require('../theme/peach/emojis.js');
+
+const configGoma = require('../theme/goma/config.js');
+const emojiGoma = require('../theme/goma/emojis.js');
+
+const configPjum = require('../theme/pjumben/config.js');
+const emojiPjum = require('../theme/pjumben/emojis.js');
+
+const configHalloween = require('../theme/halloween/config.js');
+const emojiHalloween = require('../theme/halloween/emojis.js');
+
 const Logger = require('./Logger.js');
 
-module.exports = class OggyClient extends Client {
+module.exports = class PeachyClient extends Client {
     constructor(options) {
         super(options);
         this.commands = new Collection();
@@ -84,6 +97,7 @@ module.exports = class OggyClient extends Client {
                 }
             });
         });
+
         this.once('ready', async () => {
             const applicationCommands =
                 this.config.production === true
@@ -120,23 +134,31 @@ module.exports = class OggyClient extends Client {
 
     async setColorBasedOnTheme(userId) {
         const user = await Users.findOne({ userId });
+        let color;
+        let emoji;
+
         if (user && user.preferences && user.preferences.theme) {
-            if (user.preferences.theme === 'pjumben') {
-                this.color = configPjum.color;
-                this.emoji = emojiPjum;
+            if (user.preferences.theme === 'halloween') {
+                color = configHalloween.color;
+                emoji = emojiHalloween;
+            } else if (user.preferences.theme === 'pjumben') {
+                color = configPjum.color;
+                emoji = emojiPjum;
             } else if (user.preferences.theme === 'peach') {
-                this.color = configPeach.color;
-                this.emoji = emojiPeach;
+                color = configPeach.color;
+                emoji = emojiPeach;
             } else if (user.preferences.theme === 'goma') {
-                this.color = configGoma.color;
-                this.emoji = emojiGoma;
+                color = configGoma.color;
+                emoji = emojiGoma;
             } else {
-                this.color = config.color;
-                this.emoji = emojis;
+                color = config.color;
+                emoji = emojis;
             }
         } else {
-            this.color = config.color;
-            this.emoji = emojis;
+            color = config.color;
+            emoji = emojis;
         }
+
+        return { color, emoji };
     }
 };

@@ -25,7 +25,7 @@ module.exports = class AddUsername extends Command {
         });
     }
 
-    async run(client, ctx, args, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const users = await Users.aggregate([
             { $sort: { 'balance.coin': -1 }},
         ]).exec();
@@ -42,7 +42,7 @@ module.exports = class AddUsername extends Command {
         setTimeout(async () => {
             const embed = client
                 .embed()
-                .setColor(client.color.main)
+                .setColor(color.main)
                 .setDescription('Add Username Successfully');
             const messageEmbed= await ctx.sendMessage({ embeds: [embed] });
             await messageEmbed.delete();

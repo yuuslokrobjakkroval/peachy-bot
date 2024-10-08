@@ -23,15 +23,16 @@ module.exports = class ClearMoney extends Command {
         });
     }
 
-    async run(client, ctx, args, language) {
-        const user = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
-
-        if (user.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'));
+    async run(client, ctx, args, color, emoji, language) {
+        const user = ctx.isInteraction
+            ? ctx.interaction.options.getUser('user')
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+        if (user.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'), color);
 
         const embed = client
             .embed()
-            .setColor(client.color.main)
-            .setDescription(`${client.emoji.tick} Cleared all money from ${user}'s balance.`);
+            .setColor(color.main)
+            .setDescription(`${emoji.tick} Cleared all money from ${user}'s balance.`);
 
         try {
             await Users.updateOne(
@@ -41,7 +42,7 @@ module.exports = class ClearMoney extends Command {
 
             return await ctx.sendMessage({ embeds: [embed] });
         } catch (err) {
-            return await client.utils.sendErrorMessage(client, ctx, "An error occurred while clearing the money.");
+            return await client.utils.sendErrorMessage(client, ctx, "An error occurred while clearing the money.", color);
         }
     }
 };

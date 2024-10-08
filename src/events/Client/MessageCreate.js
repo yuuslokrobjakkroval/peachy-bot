@@ -2,9 +2,23 @@ const { Collection, ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/user.js");
+const canvafy = require('canvafy');
+const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 
+const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight, gif.welcomeNine, gif.welcomeTen];
+
 const activeGames = new Map();
+
+function getRandomXp(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function calculateNextLevelXpBonus(level) {
+  const base = 1000;
+  const scalingFactor = 1.5;
+  return Math.floor(base * Math.pow(scalingFactor, level - 1));
+}
 
 module.exports = class MessageCreate extends Event {
   constructor(client, file) {
@@ -15,27 +29,77 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-    await this.client.setColorBasedOnTheme(message.author.id);
+    const { color, emoji } = await this.client.setColorBasedOnTheme(message.author.id);
+    const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
     let user = await Users.findOne({ userId: message.author.id });
     const prefix = this.client.config.prefix;
 
+    if (user?.verification?.isBanned) {
+      return await message.channel.send({
+        embeds: [
+          this.client.embed()
+              .setColor(color.red)
+              .setDescription(`You is already banned for: \`${user.verification.banReason || 'No reason provided'}\`.`)
+        ]
+      });
+    }
+
+    const now = new Date();
+    if (user?.verification?.timeout?.expiresAt && user.verification.timeout.expiresAt > now) {
+      const remainingTime = user.verification.timeout.expiresAt - now; // Remaining time in milliseconds
+
+      // Calculate hours, minutes, and seconds
+      const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+      const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+      // Construct the remaining time string
+      let timeString = '';
+      if (hours > 0) {
+        timeString += `${hours} hr${hours > 1 ? 's' : ''}`;
+      }
+      if (minutes > 0) {
+        if (timeString) timeString += ', ';
+        timeString += `${minutes} min${minutes > 1 ? 's' : ''}`;
+      }
+      if (seconds > 0 || timeString === '') {
+        if (timeString) timeString += ', ';
+        timeString += `${seconds} sec${seconds > 1 ? 's' : ''}`;
+      }
+
+      return await message.channel.send({
+        embeds: [
+          this.client.embed()
+              .setColor(color.red)
+              .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
+        ]
+      });
+    }
+
     const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
     if (mention.test(message.content)) {
+      const row = new ActionRowBuilder().addComponents(
+          new ButtonBuilder()
+              .setLabel('Click for support')
+              .setStyle(5)
+              .setURL(this.client.config.links.support),
+      );
       await message.reply({
         embeds: [
           this.client.embed()
-              .setColor(this.client.color.main)
+              .setColor(color.main)
               .setTitle(`Hello ${message.author.displayName}`)
               .setDescription(
-                  `Prefix for this server is **\`${prefix}\`**.\n\n` +
-                  `Need help? Use **\`${prefix}help\`** !\n` +
-                  `[Invite Me](${this.client.config.links.invite}) **\`|\`** [Support Server](${this.client.config.links.support})`
+                  `My Name is ${this.client.user.displayName}.\n` +
+                  `My prefix for this server is **\`${prefix}\`**.\n\n` +
+                  `Do you need help? please use **\`${prefix}help\`**!!!`
               )
               .setFooter({
                 text: `© ${this.client.user.username}`,
                 iconURL: this.client.user.displayAvatarURL(),
               }),
         ],
+        components: [row],
       });
       return;
     }
@@ -48,143 +112,146 @@ module.exports = class MessageCreate extends Event {
       const args = message.content.slice(matchedPrefix.length).trim().split(/ +/);
       const cmd = args.shift().toLowerCase();
       const command = this.client.commands.get(cmd) || this.client.commands.get(this.client.aliases.get(cmd));
+      if(!command) {
+        return;
+      }
       const ctx = new Context(message, args);
       ctx.setArgs(args);
-      const permissionCommand = ['help', 'links', 'info', 'ping', 'rules', 'privacypolicy']
+      const permissionCommand = ['help', 'links', 'info', 'ping', 'rules', 'privacypolicy', 'stats']
       if (match) {
-        if (!user && !permissionCommand.includes(command.name)) {
-          if (activeGames.has(ctx.author.id)) {
-            return await ctx.sendMessage({
-              embeds: [
-                this.client.embed().setColor(this.client.color.warning).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
-              ],
-            });
-          }
-          activeGames.set(ctx.author.id, true);
+          if (!user && !permissionCommand.includes(command.name)) {
+            if (activeGames.has(ctx.author.id)) {
+              return await ctx.sendMessage({
+                embeds: [
+                  this.client.embed().setColor(color.orange).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
+                ],
+              });
+            }
+            activeGames.set(ctx.author.id, true);
 
-          const embed = this.client
-              .embed()
-              .setColor(this.client.color.main)
-              .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐎𝐆𝐆𝐘`)
-              .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-              .setDescription(
-                  `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
-              .setImage(this.client.config.links.banner);
+            const embed = this.client
+                .embed()
+                .setColor(color.main)
+                .setTitle(`${emoji.mainLeft}  𝐏𝐄𝐀𝐂𝐇𝐘  ${emoji.mainRight}`)
+                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+                .setDescription(
+                    `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
+                .setImage(gif.peachy);
 
-          const row = new ActionRowBuilder().addComponents(
-              new ButtonBuilder()
-                  .setCustomId('register')
-                  .setLabel('Register')
-                  .setStyle(3),
-              new ButtonBuilder()
-                  .setCustomId('cancel')
-                  .setLabel('Cancel')
-                  .setStyle(4)
-          );
+            const row = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
+                    .setCustomId('register')
+                    .setLabel('Register')
+                    .setStyle(3),
+                new ButtonBuilder()
+                    .setCustomId('cancel')
+                    .setLabel('Cancel')
+                    .setStyle(4)
+            );
 
-          const msg = await ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true });
-          const filter = interaction => interaction.user.id === ctx.author.id;
-          const collector = msg.createMessageComponentCollector({ filter, time: 300000 });
+            const msg = await ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true });
+            const filter = interaction => interaction.user.id === ctx.author.id;
+            const collector = msg.createMessageComponentCollector({ filter, time: 150000 });
 
-          collector.on('collect', async int => {
-            await int.deferUpdate();
+            collector.on('collect', async int => {
+              await int.deferUpdate();
 
-            if (int.customId === 'register') {
-              try {
-                const embed = this.client.embed()
-                    .setColor(this.client.color.main)
-                    .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐎𝐆𝐆𝐘`)
-                    .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                    .setDescription(
-                        `Welcome to the OGGY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
-                        `**Rules and Guidelines**\n\n` +
-                        `1. **Respect Everyone**: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
-                        `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit OGGY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
-                        `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
-                        `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
-                        `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
-                        `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
-                        `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
-                        `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
-                        `9. **One Account per User**: Creating multiple accounts to exploit OGGY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
-                        `If you have any questions or need assistance, feel free to join our [Support Server](${this.client.config.links.support}). We're here to help!`
-                    );
+              if (int.customId === 'register') {
+                try {
+                  const embed = this.client.embed()
+                      .setColor(color.main)
+                      .setTitle(`${emoji.mainLeft} 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 ${emoji.mainRight}`)
+                      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+                      .setDescription(
+                          `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
+                          `**Rules and Guidelines**\n\n` +
+                          `1. **Respect Everyone**: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
+                          `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
+                          `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
+                          `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
+                          `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
+                          `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
+                          `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
+                          `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
+                          `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
+                          `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
+                      );
 
 
-                await int.editReply({
-                  content: '',
-                  embeds: [embed],
-                  components: [new ActionRowBuilder().addComponents(
-                      new ButtonBuilder()
-                          .setCustomId('confirm')
-                          .setLabel('Accept for Register')
-                          .setStyle(3),
-                      new ButtonBuilder()
-                          .setCustomId('privacy')
-                          .setLabel('Privacy Policy')
-                          .setStyle(2),
-                      new ButtonBuilder()
-                          .setCustomId('cancel')
-                          .setLabel('Cancel')
-                          .setStyle(4)
-                  )]
-                });
-              } catch (error) {
-                console.error('Error in Register Command:', error);
-              }
-            } else if (int.customId === 'privacy') {
-              try {
-                const embed = this.client.embed()
-                    .setColor(this.client.color.main)
-                    .setTitle(`𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘`)
-                    .setDescription(
-                        `**Introduction**\n` +
-                        `OGGY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
-                        `**Information Collection**\n` +
-                        `We gather the following information to enhance your experience:\n` +
-                        `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
-                        `• **Messages**: Used to process your commands, manage game states, and provide customized responses.\n` +
-                        `• **Server Information**: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
-                        `**Data Usage**\n` +
-                        `We utilize your data to:\n` +
-                        `• Execute commands, interactions, and maintain game progression.\n` +
-                        `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
-                        `• Enhance the security and smooth operation of OGGY, ensuring a seamless user experience.\n\n` +
-                        `**Data Sharing**\n` +
-                        `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
-                        `**Data Security**\n` +
-                        `We implement stringent technical and organizational measures to safeguard your data from unauthorized access, alteration, or misuse.\n\n` +
-                        `**User Rights**\n` +
-                        `You have the right to:\n` +
-                        `• Access the data we hold about you.\n` +
-                        `• Request the correction or deletion of your data if it's inaccurate or no longer needed.\n\n` +
-                        `**Policy Updates**\n` +
-                        `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
-                        `**Contact Information**\n` +
-                        `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
-                    );
+                  await int.editReply({
+                    content: '',
+                    embeds: [embed],
+                    components: [new ActionRowBuilder().addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('confirm')
+                            .setLabel('Accept for Register')
+                            .setStyle(3),
+                        new ButtonBuilder()
+                            .setCustomId('privacy')
+                            .setLabel('Privacy Policy')
+                            .setStyle(2),
+                        new ButtonBuilder()
+                            .setCustomId('cancel')
+                            .setLabel('Cancel')
+                            .setStyle(4)
+                    )]
+                  });
+                } catch (error) {
+                  console.error('Error in Register Command:', error);
+                }
+              } else if (int.customId === 'privacy') {
+                try {
+                  const embed = this.client.embed()
+                      .setColor(color.main)
+                      .setTitle(`${emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${emoji.mainRight}`)
+                      .setDescription(
+                          `**Introduction**\n` +
+                          `PEACHY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
+                          `**Information Collection**\n` +
+                          `We gather the following information to enhance your experience:\n` +
+                          `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
+                          `• **Messages**: Used to process your commands, manage game states, and provide customized responses.\n` +
+                          `• **Server Information**: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
+                          `**Data Usage**\n` +
+                          `We utilize your data to:\n` +
+                          `• Execute commands, interactions, and maintain game progression.\n` +
+                          `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
+                          `• Enhance the security and smooth operation of PEACHY, ensuring a seamless user experience.\n\n` +
+                          `**Data Sharing**\n` +
+                          `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
+                          `**Data Security**\n` +
+                          `We implement stringent technical and organizational measures to safeguard your data from unauthorized access, alteration, or misuse.\n\n` +
+                          `**User Rights**\n` +
+                          `You have the right to:\n` +
+                          `• Access the data we hold about you.\n` +
+                          `• Request the correction or deletion of your data if it's inaccurate or no longer needed.\n\n` +
+                          `**Policy Updates**\n` +
+                          `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
+                          `**Contact Information**\n` +
+                          `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
+                      );
 
-                await int.editReply({
-                  content: '',
-                  embeds: [embed],
-                  components: [new ActionRowBuilder().addComponents(
-                      new ButtonBuilder()
-                          .setCustomId('confirm')
-                          .setLabel('Accept for Register')
-                          .setStyle(3),
-                      new ButtonBuilder()
-                          .setCustomId('register')
-                          .setLabel('Rules and Guidelines')
-                          .setStyle(2),
-                      new ButtonBuilder()
-                          .setCustomId('cancel')
-                          .setLabel('Cancel')
-                          .setStyle(4)
-                  )]
-                });
-              } catch (error) {
-                console.error('Error in Privacy Command:', error);
-              }
+                  await int.editReply({
+                    content: '',
+                    embeds: [embed],
+                    components: [new ActionRowBuilder().addComponents(
+                        new ButtonBuilder()
+                            .setCustomId('confirm')
+                            .setLabel('Accept for Register')
+                            .setStyle(3),
+                        new ButtonBuilder()
+                            .setCustomId('register')
+                            .setLabel('Rules and Guidelines')
+                            .setStyle(2),
+                        new ButtonBuilder()
+                            .setCustomId('cancel')
+                            .setLabel('Cancel')
+                            .setStyle(4)
+                    )]
+                  });
+                } catch (error) {
+                  console.error('Error in Privacy Command:', error);
+                }
             } else if (int.customId === 'register') {
               await int.update({
                 content: '',
@@ -207,25 +274,43 @@ module.exports = class MessageCreate extends Event {
             } else if (int.customId === 'confirm') {
               const gift = 500000;
               const userInfo = await this.client.users.fetch(int.user.id).catch(() => null);
-              await Users.updateOne(
-                  { userId: int.user.id },
-                  {
-                    $set: {
-                      username: userInfo ? userInfo.displayName : 'Unknown',
-                      balance: {
-                        coin: gift,
-                        bank: 0
-                      },
-                    }
-                  },
-                  { upsert: true }
-              );
+              if (userInfo) {
+                await Users.updateOne(
+                    { userId: int.user.id },
+                    {
+                      $set: {
+                        username: userInfo.displayName,
+                        'profile.username': userInfo.displayName,
+                        balance: {
+                          coin: gift,
+                          bank: 0
+                        },
+                      }
+                    },
+                    { upsert: true }
+                );
+              } else {
+                await Users.updateOne(
+                    { userId: int.user.id },
+                    {
+                      $set: {
+                        username: 'Unknown',
+                        'profile.username': 'Unknown',
+                        balance: {
+                          coin: gift,
+                          bank: 0
+                        },
+                      }
+                    },
+                    { upsert: true }
+                );
+              }
               const embed = this.client.embed()
-                  .setColor(this.client.color.main)
+                  .setColor(color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                  .setTitle(`𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐎𝐆𝐆𝐘`)
-                  .setDescription(`Warming Gift for you \nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${this.client.emoji.coin} from 𝐎𝐆𝐆𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
-                  .setImage(this.client.config.links.banner)
+                  .setTitle(`${emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${emoji.mainRight}`)
+                  .setDescription(`Warming Gift for you ${emoji.congratulation}\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
+                  .setImage(this.client.utils.getRandomElement(welcome))
               await int.editReply({
                 content: '',
                 embeds: [embed],
@@ -243,9 +328,9 @@ module.exports = class MessageCreate extends Event {
               await int.editReply({
                 embeds: [
                   this.client.embed()
-                      .setColor(this.client.color.main)
+                      .setColor(color.main)
                       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                      .setTitle(`𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 ${ctx.author.displayName}`)
+                      .setTitle(`${emoji.mainLeft} 𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 ${ctx.author.displayName} ${emoji.mainRight}`)
                       .setDescription(`Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`)
                 ],
                 components: [],
@@ -254,10 +339,15 @@ module.exports = class MessageCreate extends Event {
             }
           })
           collector.on('end', async () => {
-            activeGames.delete(ctx.author.id);
             await msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
           });
         } else {
+          const userInfo = await this.client.users.fetch(user.userId).catch(() => null);
+          if (!user.username || user.username !== userInfo.displayName ) {
+            user.username = userInfo ? userInfo.displayName : 'Unknown';
+            user.profile.username = userInfo ? userInfo.displayName : 'Unknown';
+            user.save();
+          }
           if (!command) return;
 
           if (command.permissions) {
@@ -279,8 +369,8 @@ module.exports = class MessageCreate extends Event {
           if (command.args && !args.length) {
             const embed = this.client
                 .embed()
-                .setColor(this.client.color.danger)
-                .setTitle('𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬')
+                .setColor(color.red)
+                .setTitle('Missing Arguments')
                 .setDescription(`Please provide the required arguments for the \`${command.name}\` command.`)
                 .addFields([
                   {
@@ -324,14 +414,21 @@ module.exports = class MessageCreate extends Event {
               content: "You can't use this command with everyone or here.",
             });
           }
-          const balanceCommands = ['balance', 'deposit', 'withdraw', 'transfer'];
-          const gamblingCommands = ['slots', 'blackjack'];
+
+          const balanceCommands = ['balance', 'deposit', 'withdraw', 'transfer', 'buy', 'sell'];
+          const gamblingCommands = ['slots', 'blackjack', 'coinflip'];
+          const gameCommands = ['guessnumber'];
+          const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
 
           try {
             let logChannelId;
-            if (gamblingCommands.includes(command.name)) {
-              logChannelId = this.client.config.logChannelId[2];
+            if (mineCommands.includes(command.name)) {
+              logChannelId = this.client.config.logChannelId[4];
             } else if (balanceCommands.includes(command.name)) {
+              logChannelId = this.client.config.logChannelId[3];
+            } else if (gamblingCommands.includes(command.name)) {
+              logChannelId = this.client.config.logChannelId[2];
+            } else if (gameCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[1];
             } else {
               logChannelId = this.client.config.logChannelId[0];
@@ -341,7 +438,7 @@ module.exports = class MessageCreate extends Event {
             if (channel && channel.isTextBased()) {
               const embed = this.client
                   .embed()
-                  .setColor(this.client.config.color.success)
+                  .setColor(this.client.config.color.green)
                   .setTitle(`Command - ${formatCapitalize(command.name)}`)
                   .setThumbnail(message.guild.iconURL({ extension: 'jpeg' }))
                   .addFields([
@@ -366,8 +463,7 @@ module.exports = class MessageCreate extends Event {
                   .setTimestamp();
               await channel.send({ embeds: [embed] }).catch(() => console.error('Error sending log message'));
             }
-
-            return command.run(this.client, ctx, ctx.args);
+            return command.run(this.client, ctx, ctx.args, color, emoji);
           } catch (error) {
             console.error('Error executing command:', error);
             await BotLog.send(this.client, `An error occurred: \`${error.message}\``, 'error');

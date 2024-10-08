@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const {ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
 module.exports = class Rules extends Command {
   constructor(client) {
@@ -28,9 +29,9 @@ module.exports = class Rules extends Command {
     });
   }
 
-  async run(client, ctx) {
+  async run(client, ctx, args, color, emoji, language) {
     const embed = this.client.embed()
-      .setColor(this.client.color.main)
+      .setColor(color.main)
       .setTitle(`Bot Rules`)
       .setDescription(`Please read and follow the rules below to ensure a smooth and enjoyable experience for everyone:`)
       .addFields(
@@ -46,6 +47,12 @@ module.exports = class Rules extends Command {
       })
       .setTimestamp();
 
-    ctx.sendMessage({ embeds: [embed] });
+    const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary),
+        // new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
+        // new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
+    );
+
+    ctx.sendMessage({ embeds: [embed], components: [row] });
   }
 }

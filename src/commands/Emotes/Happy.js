@@ -1,18 +1,17 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Happy extends Command {
     constructor(client) {
         super(client, {
             name: 'happy',
             description: {
-                content: 'Express happiness.',
+                content: 'Show off a feeling of happiness!',
                 examples: ['happy'],
                 usage: 'happy',
             },
             category: 'emotes',
             aliases: [],
-            cooldown: 5,
+            cooldown: 3,
             args: false,
             permissions: {
                 dev: false,
@@ -23,16 +22,16 @@ module.exports = class Happy extends Command {
             options: [],
         });
     }
-    async run(client, ctx, args, language) {
-        return await ctx.sendMessage({
-            embeds: [
-                client
-                    .embed()
-                    .setColor(client.color.main)
-                    .setTitle(client.i18n.get(language, 'commands', `${this.name}_success`, { displayName: ctx.author.displayName }))
-                    .setImage(await Anime.happy()),
-            ],
-        });
+
+    async run(client, ctx, args, color, emoji, language) {
+        const randomEmoji = client.utils.getRandomElement(emoji.emotes.happy);
+        const embed = this.client
+            .embed()
+            .setColor(color.main)
+            .setTitle(`${emoji.mainLeft} Happy Vibes! ${emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Spread some joy and happiness!');
+
+        await ctx.sendMessage({ embeds: [embed] });
     }
 };
-

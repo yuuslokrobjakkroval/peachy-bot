@@ -1,6 +1,6 @@
 const { GatewayIntentBits } = require('discord.js');
 const config = require('./config.js');
-const OggyClient = require('./structures/Client.js');
+const PeachyClient = require('./structures/Client.js');
 
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 
@@ -12,6 +12,7 @@ const clientOptions = {
   },
 };
 
-const client = new OggyClient(clientOptions);
+const client = new PeachyClient(clientOptions);
 
+// Start the client
 client.start(config.token);

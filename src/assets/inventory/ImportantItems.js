@@ -1,0 +1,63 @@
+const emoji = require('../../utils/Emoji');
+module.exports = [
+    {
+        id: 'banana',
+        name: 'Banana Milk Tea',
+        description: 'Sell Banana Milk Tea to get coin.',
+        type: 'milk',
+        able: {
+            use: false,
+            gift: true,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.banana,
+        available: ['sell'],
+        price: { buy: 15e5, sell: 1e6 },
+    },
+    {
+        id: 'avocado',
+        name: 'Avocado Milk Tea',
+        description: 'Sell Avocado Milk Tea to get coin.',
+        type: 'milk',
+        able: {
+            use: false,
+            gift: true,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.avocado,
+        available: ['sell'],
+        price: { buy: 25e5, sell: 2e6 },
+    },
+    {
+        id: 'strawberry',
+        name: 'Strawberry Milk Tea',
+        description: 'Sell Strawberry Milk Tea to get coin.',
+        type: 'milk',
+        able: {
+            use: false,
+            gift: true,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.strawberry,
+        available: ['sell'],
+        price: { buy: 35e6, sell: 3e6 },
+    },
+    {
+        id: 'peach',
+        name: 'Peach Milk Tea',
+        description: 'Sell Peach Milk Tea to get coin.',
+        type: 'milk',
+        able: {
+            use: false,
+            gift: true,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.peachy,
+        available: ['sell'],
+        price: { buy: 55e5, sell: 5e6 },
+    },
+];

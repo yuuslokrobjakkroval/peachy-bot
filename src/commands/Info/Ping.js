@@ -29,30 +29,26 @@ module.exports = class Ping extends Command {
     });
   }
 
-  async run(client, ctx) {
+  async run(client, ctx, args, color, emoji, language) {
     const msg = await ctx.sendDeferMessage("Pinging...");
     const embed = client
       .embed()
-        .setTitle(`**𝐏𝐎𝐍𝐆**`)
-        .setColor(this.client.color.main)
-        .setThumbnail('https://i.imgur.com/RvobBe0.jpg')
+        .setTitle(`**${emoji.mainLeft} 𝐏𝐎𝐍𝐆 ${emoji.mainRight}**`)
+        .setColor(color.main)
+        .setThumbnail(ctx.author.displayAvatarURL())
         .addFields([
           {
-            name: `𝐁𝐎𝐓`,
+            name: `𝐁𝐎𝐓 ${emoji.ping}`,
             value: `\`\`\`ini\n[ ${msg.createdTimestamp - ctx.createdTimestamp}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `𝐀𝐏𝐈`,
+            name: `𝐀𝐏𝐈 ${emoji.ping}`,
             value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
             inline: true,
           },
         ])
-        .setFooter({
-          text: `Req by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
-
+        .setTimestamp();
     await ctx.editMessage({ content: "", embeds: [embed] });
   }
 }

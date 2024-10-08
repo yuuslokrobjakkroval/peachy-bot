@@ -6,13 +6,13 @@ module.exports = class Slap extends Command {
         super(client, {
             name: 'slap',
             description: {
-                content: 'Random slap anime actions',
-                examples: ['slap @user'],
-                usage: 'slap <user>',
+                content: 'Sends a playful slap to the mentioned user.',
+                examples: ['slap @User'],
+                usage: 'slap @User',
             },
             category: 'actions',
-            aliases: [],
-            cooldown: 5,
+            aliases: ['smack'],
+            cooldown: 3,
             args: true,
             permissions: {
                 dev: false,
@@ -23,41 +23,40 @@ module.exports = class Slap extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'The user you want to slap.',
-                    type: 6,
+                    description: 'Mention the user you want to slap',
+                    type: 6, // USER type
                     required: true,
                 },
             ],
         });
     }
-    async run(client, ctx, args, language) {
+
+    async run(client, ctx, args, color, emoji, language) {
         const author = ctx.author;
         const target = ctx.isInteraction
-            ? ctx.interaction.options.data[0]?.member
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]);
+            ? ctx.interaction.options.getUser('user')
+            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
         if (!target || target.id === author.id) {
             let errorMessage = '';
-            if (!target) errorMessage += client.i18n.get(language, 'commands', 'no_user');
-            if (target.id === author.id) errorMessage += client.i18n.get(language, 'commands', 'mention_to_self');
+            if (!target) errorMessage += 'You need to mention a user to slap.';
+            if (target.id === author.id) errorMessage += 'You cannot slap yourself.';
 
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage);
+            return await ctx.sendMessage({ content: errorMessage });
         }
 
-        return await ctx.sendMessage({
-            embeds: [
-                client
-                    .embed()
-                    .setColor(client.color.main)
-                    .setTitle(
-                        client.i18n.get(language, 'commands', `${this.name}_success`, {
-                            displayName: author.displayName,
-                            target: target.displayName,
-                        })
-                    )
-                    .setImage(await Anime.slap()),
-            ],
-        });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.actions.slaps);
+            const embed = this.client
+                .embed()
+                .setColor(color.main)
+                .setTitle(`${emoji.mainLeft} Slap Time! ${emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${author.displayName} playfully slaps ${target.displayName}!`);
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Failed to fetch slap GIF:', error);
+            return await ctx.sendMessage({ content: 'Something went wrong while fetching the slap GIF.' });
+        }
     }
 };
-

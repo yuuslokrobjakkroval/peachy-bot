@@ -1,0 +1,69 @@
+const { Command } = require("../../structures/index.js");
+
+module.exports = class Clear extends Command {
+    constructor(client) {
+        super(client, {
+            name: "clear",
+            description: {
+                content: "Clear a specified number of messages",
+                examples: ["clear 10", "clear 250"],
+                usage: "clear <number>",
+            },
+            category: "dev",
+            aliases: ["purge", "delete"],
+            cooldown: 3,
+            args: true,
+            permissions: {
+                dev: false,
+                client: ["ManageMessages"],
+                user: ["ManageMessages"],
+            },
+            slashCommand: true,
+            options: [
+                {
+                    name: "number_message_delete",
+                    description: "Number of messages to delete (1-1000)",
+                    type: 4, // INTEGER type for amount
+                    required: true,
+                },
+            ],
+        });
+    }
+
+    async run(client, ctx, args, color, emoji, language) {
+        let numberMessageDelete = ctx.isInteraction ? ctx.interaction.options.getInteger('number_message_delete') : parseInt(args[0]);
+
+        if (isNaN(numberMessageDelete) || numberMessageDelete <= 0 || numberMessageDelete > 1000) {
+            return ctx.sendMessage("Please provide a valid number between 1 and 1000.");
+        }
+
+        // Send an initial response to avoid timeout
+        await ctx.interaction.reply({ content: "Deleting messages...", ephemeral: true }).catch(err => console.error(err));
+
+        let messagesDeleted = 0;
+
+        // Function to delete in chunks of 100
+        async function deleteBatch(limit) {
+            const deletedMessages = await ctx.channel.bulkDelete(limit, true);
+            messagesDeleted += deletedMessages.size;
+            return deletedMessages.size;
+        }
+
+        // Loop through until all messages are deleted
+        while (numberMessageDelete > 0) {
+            const deleteAmount = numberMessageDelete > 100 ? 100 : numberMessageDelete; // Determine if we should delete 100 or less
+            const deletedCount = await deleteBatch(deleteAmount);
+
+            if (deletedCount === 0) break; // Break if there are no more messages to delete
+
+            numberMessageDelete -= deleteAmount; // Reduce the number of messages left to delete
+        }
+
+        // Edit the initial response with the final count
+        await ctx.interaction.editReply(`Deleted ${messagesDeleted} messages.`).catch(err => {
+            console.error(err);
+            ctx.interaction.followUp("There was an error trying to delete messages in this channel.");
+        });
+    }
+
+};

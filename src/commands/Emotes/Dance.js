@@ -1,18 +1,17 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Dance extends Command {
     constructor(client) {
         super(client, {
             name: 'dance',
             description: {
-                content: 'Express dancing.',
+                content: 'Shows off some dance moves!',
                 examples: ['dance'],
                 usage: 'dance',
             },
             category: 'emotes',
             aliases: [],
-            cooldown: 5,
+            cooldown: 3,
             args: false,
             permissions: {
                 dev: false,
@@ -23,16 +22,18 @@ module.exports = class Dance extends Command {
             options: [],
         });
     }
-    async run(client, ctx, args, language) {
-        return await ctx.sendMessage({
-            embeds: [
-                client
-                    .embed()
-                    .setColor(client.color.main)
-                    .setTitle(client.i18n.get(language, 'commands', `${this.name}_success`, { displayName: ctx.author.displayName }))
-                    .setImage(await Anime.dance()),
-            ],
-        });
+
+    async run(client, ctx, args, color, emoji, language) {
+        const randomEmoji = client.utils.getRandomElement(emoji.emotes.dances);
+        const embed = this.client
+            .embed()
+            .setColor(color.main)
+            .setTitle(`${emoji.mainLeft} Dancing Time! ${emoji.mainRight}`)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription('Let\'s dance the night away!');
+
+
+        await ctx.sendMessage({ embeds: [embed] });
+
     }
 };
-

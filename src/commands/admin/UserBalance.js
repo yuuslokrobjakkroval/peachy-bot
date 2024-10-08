@@ -30,7 +30,7 @@ module.exports = class UserBalance extends Command {
         });
     }
 
-    async run(client, ctx, args, language) {
+    async run(client, ctx, args, color, emoji, language) {
         try {
             const target = ctx.isInteraction
                 ? ctx.interaction.options.getUser('user')
@@ -38,19 +38,19 @@ module.exports = class UserBalance extends Command {
 
             const user = await Users.findOne({ userId: target.id });
             if (!user) {
-                return await client.utils.sendErrorMessage(client, ctx, 'User not found.');
+                return await client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
             }
 
             const { coin = 0, bank = 0 } = user.balance;
 
             const embed = client
                 .embed()
-                .setTitle(`${target.displayName}'s Balance and Limits`)
-                .setColor(client.color.main)
+                .setTitle(`${target.displayName}'s Balance`)
+                .setColor(color.main)
                 .setThumbnail(target.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(
-                    `**Coin: \`${client.utils.formatNumber(coin)}\`** ${client.emoji.coin}\n` +
-                    `**Bank: \`${client.utils.formatNumber(bank)}\`** ${client.emoji.coin}`
+                    `**Coin: \`${client.utils.formatNumber(coin)}\`** ${emoji.coin}\n` +
+                    `**Bank: \`${client.utils.formatNumber(bank)}\`** ${emoji.coin}`
                 );
 
             return await ctx.sendMessage({ embeds: [embed] });

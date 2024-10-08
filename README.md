@@ -1,13 +1,28 @@
 [//]: # (<center><img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=KaijuKingz&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" /></center>)
-
+<center><img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=PEACHY&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" /></center>
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">OGGY</h3>
+  <h3 align="center">Peachy</h3>
   <p align="center">
-    OGGY is a powerful discord Bot
+    Peachy is a powerful discord Bot
     <br />
     <br />
+
+[//]: # (    <a href="https://github.com/Kuraiiii/Kaiju-King-Bot-Template/issues">Report Bug</a>)
+
+[//]: # (    ·)
+
+[//]: # (    <a href="https://github.com/Kuraiiii/Kaiju-King-Bot-Template/issues">Request Feature</a>)
+[//]: # (  </p>)
+
+[//]: # (</p>)
+
+[//]: # (<!-- ABOUT THE PROJECT -->)
+
+[//]: # (## 🌀 About)
+
+[//]: # ([![Readme Card]&#40;https://github-readme-stats.vercel.app/api/pin/?username=Kuraiiii&repo=Kaiju-King-Bot-Template&theme=tokyonight&#41;]&#40;https://github.com/Kuraiiii/Kaiju-King-Bot-Template&#41;)
 
 ## 🔥 Unique Features
 
@@ -45,10 +60,10 @@ Before starting with the installation, you need to have the following:
 git clone https://github.com/yuuslokrobjakkroval/peachy-bot.git
 ```
 
-2. change the directory to oggy-bot
+2. change the directory to skyrealm-bot
 
 ```bash
-cd oggy-bot
+cd peachy-bot
 ```
 
 3. Install the required packages:
@@ -81,14 +96,14 @@ npm run start or npm start
 
 ###
 
-Magic is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
+Peachy is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
 If you liked this repository, feel free to leave a star ⭐ to help promote !
 
 ## 💌 Support Server
 
 [//]: # ([![DiscordBanner]&#40;https://invidget.switchblade.xyz/mRt2FkwxYu&#41;]&#40;https://discord.gg/sE7VuPx54a&#41;)
 
-[Support Server](https://discord.gg/magicrealm8888) - Oggy's Support Server Invite
+[Support Server](https://discord.gg/PPuhSbgF6d) - Peachy's Support Server Invite
 
 [//]: # (# Donate)
 

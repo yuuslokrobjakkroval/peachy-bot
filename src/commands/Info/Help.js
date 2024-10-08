@@ -1,9 +1,18 @@
 const Command = require('../../structures/Command.js');
+const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
 const font = {
-  Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
-  Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
   Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
+  Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
+  Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
+  fun: '𝐅𝐔𝐍',
+  Games: '𝐆𝐀𝐌𝐄𝐒',
+  Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
+  Giveaway: '𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘',
+  Profile: '𝐏𝐑𝐎𝐅𝐈𝐋𝐄',
+  Pjumben: '𝐏𝐉𝐔𝐌𝐁𝐄𝐍',
+  Social: '𝐒𝐎𝐂𝐈𝐀𝐋',
   Emotes: '𝐄𝐌𝐎𝐓𝐄𝐒',
+  Utility: '𝐔𝐓𝐈𝐋𝐈𝐓𝐘',
   Info: '𝐈𝐍𝐅𝐎',
 };
 
@@ -43,13 +52,12 @@ module.exports = class Help extends Command {
     });
   }
 
-  async run(client, ctx, args) {
-    // Retrieve user theme
+  async run(client, ctx, args, color, emoji, language) {
     const embed = client.embed();
     const prefix = client.config.prefix;
 
     const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
-    let categories = ['Economy', 'Gambling', 'Actions', 'Emotes', 'Info'];
+    let categories = ['Actions', 'Economy', 'Inventory', 'fun', 'Games', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info'];
 
     if (!args[0]) {
       const sortedCommands = {};
@@ -58,8 +66,8 @@ module.exports = class Help extends Command {
       });
 
       const helpEmbed = embed
-          .setColor(client.color.main)
-          .setTitle(`𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬`)
+          .setColor(color.main)
+          .setTitle(`${emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬 ${emoji.mainRight}`)
           .setDescription(
               `Use **\`${prefix}help [command]\`** to get more help!
 Example: **\`${prefix}help balance\`**
@@ -68,7 +76,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: `© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐎𝐆𝐆𝐘`,
+            text: `© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐊𝐘𝐔𝐔`,
             iconURL: client.user.displayAvatarURL(),
           });
 
@@ -78,8 +86,7 @@ Note that certain commands might display usernames in lists retrieved by the bot
           const commandNames = categoryCommands.map(cmd => `\`${cmd.name}\``).join(', ');
 
           helpEmbed.addFields([{
-            // name: `${client.emoji.help[category.toLowerCase()]} ${font[category]}`,
-            name: `${font[category]}`,
+            name: `${emoji.help[category.toLowerCase()]} ${font[category]}`,
             value: commandNames,
             inline: false,
           }]);
@@ -89,9 +96,9 @@ Note that certain commands might display usernames in lists retrieved by the bot
       const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
 
       const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setLabel('Click for support').setStyle(5).setURL(client.config.links.support),
-        new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
-        new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
+        new ButtonBuilder().setLabel('Click for support').setStyle(5).setURL(client.config.links.support), // Link button style 5
+        // new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
+        // new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
       );
 
       await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
@@ -99,11 +106,11 @@ Note that certain commands might display usernames in lists retrieved by the bot
       const command = client.commands.get(args[0].toLowerCase());
       if (!command)
         return await ctx.sendMessage({
-          embeds: [client.embed().setColor(client.color.danger).setDescription(`Command \`${args[0]}\` not found`)],
+          embeds: [client.embed().setColor(color.red).setDescription(`Command \`${args[0]}\` not found`)],
         });
 
       const helpEmbed = embed
-          .setColor(client.color.main)
+          .setColor(color.main)
           .setTitle(`Help - ${command.name}`)
           .setDescription(command.description.content)
           .addFields([

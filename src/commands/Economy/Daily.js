@@ -27,11 +27,11 @@ module.exports = class Daily extends Command {
         });
     }
 
-    async run(client, ctx, args, language) {
+    async run(client, ctx, args, color, emoji, language) {
         try {
             const user = await Users.findOne({ userId: ctx.author.id }).exec();
             if (!user) {
-                return client.utils.sendErrorMessage(client, ctx, 'User not found.');
+                return client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
             }
 
             const { coin, bank } = user.balance;
@@ -59,16 +59,20 @@ module.exports = class Daily extends Command {
 
                 const cooldownMessage = `Daily is on cooldown!\nTry again after **${hours}hrs, ${minutes}mins and ${seconds}secs**.`;
 
-                const cooldownEmbed = client.embed().setColor(client.color.danger).setDescription(cooldownMessage);
+                const cooldownEmbed = client.embed().setColor(color.red).setDescription(cooldownMessage);
 
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
             }
+
+            const baseExp = chance.integer({ min: 100, max: 150 });
+            const newExp = user.profile.xp + baseExp;
 
             await Promise.all([
                 Users.updateOne({ userId: ctx.author.id }, {
                     $set: {
                         'balance.coin': newBalance,
                         'balance.bank': bank,
+                        'profile.xp': newExp,
                     }
                 }).exec(),
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM)
@@ -76,12 +80,14 @@ module.exports = class Daily extends Command {
 
             const embed = client
                 .embed()
-                .setColor(client.color.main)
+                .setColor(color.main)
                 .setTitle(`${ctx.author.displayName} claimed their daily reward!`)
+                .setThumbnail(client.utils.emojiToImage(`${hours >= 6 && hours < 18 ? `${emoji.time.day}` : `${emoji.time.night}`}`))
                 .setDescription(
                     client.i18n.get(language, 'commands', 'daily_success', {
-                        coinEmote: client.emoji.coin,
+                        coinEmote: emoji.coin,
                         coin: client.utils.formatNumber(baseCoins),
+                        exp: client.utils.formatNumber(baseExp),
                     })
                 );
 
@@ -89,7 +95,7 @@ module.exports = class Daily extends Command {
 
         } catch (error) {
             console.error('Error processing daily command:', error);
-            return client.utils.sendErrorMessage(client, ctx, 'There was an error processing your daily claim.');
+            return client.utils.sendErrorMessage(client, ctx, 'There was an error processing your daily claim.', color);
         }
     }
 };

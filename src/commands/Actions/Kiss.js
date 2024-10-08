@@ -1,12 +1,11 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Kiss extends Command {
     constructor(client) {
         super(client, {
             name: 'kiss',
             description: {
-                content: 'Random kiss anime actions',
+                content: 'Sends a cute kiss anime action.',
                 examples: ['kiss @user'],
                 usage: 'kiss <user>',
             },
@@ -24,40 +23,39 @@ module.exports = class Kiss extends Command {
                 {
                     name: 'user',
                     description: 'The user you want to kiss.',
-                    type: 6,
+                    type: 6, // USER type
                     required: true,
                 },
             ],
         });
     }
-    async run(client, ctx, args, language) {
+
+    async run(client, ctx, args, color, emoji, language) {
         const author = ctx.author;
         const target = ctx.isInteraction
-            ? ctx.interaction.options.data[0]?.member
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]);
+            ? ctx.interaction.options.getUser('user')
+            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
         if (!target || target.id === author.id) {
             let errorMessage = '';
-            if (!target) errorMessage += client.i18n.get(language, 'commands', 'no_user');
-            if (target.id === author.id) errorMessage += client.i18n.get(language, 'commands', 'mention_to_self');
+            if (!target) errorMessage += 'You need to mention a user to kiss.';
+            if (target.id === author.id) errorMessage += 'You cannot kiss yourself.';
 
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage);
+            return await ctx.sendMessage({ content: errorMessage });
         }
 
-        return await ctx.sendMessage({
-            embeds: [
-                client
-                    .embed()
-                    .setColor(client.color.main)
-                    .setTitle(
-                        client.i18n.get(language, 'commands', `${this.name}_success`, {
-                            displayName: author.displayName,
-                            target: target.displayName,
-                        })
-                    )
-                    .setImage(await Anime.kiss()),
-            ],
-        });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.actions.kisses);
+            const embed = this.client
+                .embed()
+                .setColor(color.main)
+                .setTitle(`${emoji.mainLeft} Kiss Time! ${emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${author.displayName} kisses ${target.displayName}!`);
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Failed to fetch kiss GIF:', error);
+            return await ctx.sendMessage({ content: 'Something went wrong while fetching the kiss GIF.' });
+        }
     }
 };
-

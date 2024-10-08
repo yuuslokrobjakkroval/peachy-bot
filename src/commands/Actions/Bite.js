@@ -1,18 +1,17 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Bite extends Command {
     constructor(client) {
         super(client, {
             name: 'bite',
             description: {
-                content: 'Random bite anime actions',
-                examples: ['bite @user'],
-                usage: 'bite <user>',
+                content: 'Playfully bites the mentioned user.',
+                examples: ['bite @User'],
+                usage: 'bite @User',
             },
             category: 'actions',
             aliases: [],
-            cooldown: 5,
+            cooldown: 3,
             args: true,
             permissions: {
                 dev: false,
@@ -23,41 +22,40 @@ module.exports = class Bite extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'The user you want to bite.',
-                    type: 6,
+                    description: 'Mention the user you want to bite',
+                    type: 6, // USER type
                     required: true,
                 },
             ],
         });
     }
-    async run(client, ctx, args, language) {
+
+    async run(client, ctx, args, color, emoji, language) {
         const author = ctx.author;
         const target = ctx.isInteraction
-            ? ctx.interaction.options.data[0]?.member
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]);
+            ? ctx.interaction.options.getUser('user')
+            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
         if (!target || target.id === author.id) {
             let errorMessage = '';
-            if (!target) errorMessage += client.i18n.get(language, 'commands', 'no_user');
-            if (target.id === author.id) errorMessage += client.i18n.get(language, 'commands', 'mention_to_self');
+            if (!target) errorMessage += 'You need to mention a user to bite.';
+            if (target.id === author.id) errorMessage += 'You cannot bite yourself.';
 
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage);
+            return await ctx.sendMessage({ content: errorMessage });
         }
 
-        return await ctx.sendMessage({
-            embeds: [
-                client
-                    .embed()
-                    .setColor(client.color.main)
-                    .setTitle(
-                        client.i18n.get(language, 'commands', `${this.name}_success`, {
-                            displayName: author.displayName,
-                            target: target.displayName,
-                        })
-                    )
-                    .setImage(await Anime.bite()),
-            ],
-        });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.actions.bites);
+            const embed = this.client
+                .embed()
+                .setColor(color.main)
+                .setTitle(`${emoji.mainLeft} Bite Time! ${emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${author.displayName} playfully bites ${target.displayName}!`);
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Failed to fetch bite GIF:', error);
+            return await ctx.sendMessage({ content: 'Something went wrong while fetching the bite GIF.' });
+        }
     }
 };
-
