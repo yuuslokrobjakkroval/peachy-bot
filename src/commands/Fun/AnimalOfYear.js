@@ -40,7 +40,6 @@ module.exports = class AnimalOfYear extends Command {
             const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`${emoji.mainLeft} 𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑 ${emoji.mainRight}`)
-                .setDescription(animalList)
                 .setImage('https://image.freshnewsasia.com/2020/id-06/fn-2020-04-13-07-12-12-0.jpg') // Placeholder image, replace with your own if needed
                 .setFooter({
                     text: `Request By ${ctx.author.displayName}`,
