@@ -10,20 +10,16 @@ module.exports = class GuildCreate extends Event {
     }
 
     async run(guild) {
-        const channelId = '1289803142606622771';
+        const channelId = '1289803142606622771'; // Replace with your specific channel ID
         if (guild.id !== config.guildId) {
-            console.log(`Bot invited to an unauthorized guild: ${guild.name} (${guild.id})`);
-
             let owner;
             try {
                 owner = await guild.fetchOwner();
             } catch (e) {
                 owner = { user: { tag: 'Unknown#0000' } };
             }
-
             const memberCount = guild.memberCount ? guild.memberCount.toString() : 'Unknown';
-            const logChannel = this.client.channels.cache.get(logChannelId);
-
+            const logChannel = this.client.channels.cache.get(channelId);
             if (logChannel) {
                 const embed = this.client.embed()
                     .setColor('Red')
@@ -44,7 +40,6 @@ module.exports = class GuildCreate extends Event {
             }
             return await guild.leave().catch((err) => console.error(`Failed to leave the guild: ${err}`));
         }
-
         let owner;
         try {
             owner = guild.members.cache.get(guild?.ownerId);

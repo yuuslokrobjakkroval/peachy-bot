@@ -221,16 +221,17 @@ module.exports = [
                 price: { buy: 10000, sell: 0 },
             },
         ],
+
     },
     {
         name: 'Theme',
-        description: `Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization`,
+        description: `Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
         type: 'theme',
         inventory: [
             {
                 id: 't01',
-                name: 'Pjum Ben',
-                description: 'A heavenly theme to change your embed color and emoji to something divine.',
+                name: 'Ocean Breeze',
+                description: 'A calming theme that transforms your embed color to deep blues and your emoji to serene sea icons.',
                 type: 'theme',
                 able: {
                     use: true,
@@ -238,21 +239,15 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.heaven,
+                emoji: emoji.sea,
                 available: ['use'],
                 price: { buy: 1e6, sell: 5e5 },
+                limit: 50,
             },
-        ],
-    },
-    {
-        name: 'Theme',
-        description: `Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization`,
-        type: 'theme',
-        inventory: [
             {
                 id: 't02',
-                name: 'Heaven',
-                description: 'A heavenly theme to change your embed color and emoji to something divine.',
+                name: 'Pjum Ben Festival',
+                description: 'Celebrate the sacred Pjum Ben with this themed set, featuring festive colors and culturally inspired emojis.',
                 type: 'theme',
                 able: {
                     use: true,
@@ -260,10 +255,27 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.heaven,
+                emoji: emoji.pjum,
                 available: ['use'],
-                price: { buy: 5e6, sell: 3e6 },
+                price: { buy: 1e6, sell: 5e5 },
+                limit: 100,
             },
+            // {
+            //     id: 't03',
+            //     name: 'Celestial Grace',
+            //     description: 'A divine theme that bathes your embed in heavenly whites and golds, with ethereal emojis to match.',
+            //     type: 'theme',
+            //     able: {
+            //         use: true,
+            //         gift: false,
+            //         multiple: false,
+            //     },
+            //     quantity: 1,
+            //     emoji: emoji.heaven,
+            //     available: ['use'],
+            //     price: { buy: 5e6, sell: 3e6 },
+            //     limit: 30,
+            // },
         ],
-    }
+    },
 ];

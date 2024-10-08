@@ -2,14 +2,7 @@ module.exports = {
     // GLOBAL
     congratulation: '<a:congratulation:1287438960477474957>',
 
-    // IMPORTANT
-    peachy: '<:PEACHYMILK:1287593053321695304>',
-    strawberry: '<:STRAWBERRY:1287593045516091463>',
-    avocado: '<:AVOCADO:1287593039380090931>',
-    banana: '<:BANANA:1287593031461240852>',
-
     // SHOP
-
     // FOOD
     bun: '<:retrodumplings:1287302759674286193>',
     rainbowDonut: '<:rainbowdonut:1287302705756508160>',
@@ -28,35 +21,37 @@ module.exports = {
     orange: '<:orange:1287299123405389845>',
 
     // THEME
+    sea: '<:PEACHMAINLEFTV2:1287985191922696215>',
+    pjum: '<:PLUM:1283316419647242282>',
     heaven: '<:Heaven:1292849959363674173>',
 
-    // INVENTORY
-    // Gem and Mineral
-    coal: '<:COAL:1287105660693123092>',
-    // Level 1
-    mare: '<:mare:1287104241617469510>',
-    evo: '<:evo:1287104354947436657>',
-    gic: '<:gic:1287104464213377097>',
-    // Level 2
-    breath: '<:breath:1287104323104276512>',
-    resa: '<:resa:1287104295514275982>',
-    vilty: '<:vilty:1287104418356920370>',
-    // Level 3
-    gona: '<:gona:1287104261687349280>',
-    riras: '<:riras:1287104385213792299>',
+    // EXCHANGE
+    heartMilk: '<:HEARTMILK:1290653998054903899>',
+    peachMilk: '<:PEACHMILK:1290653986688466996>',
+    grapeMilk: '<:MGRAPE:1290653883600736378>',
+    bananaMilk: '<:MBANANA:1290653845235568780>',
+    blueBerryMilk: '<:MBLUEBERRY:1290653820304752661>',
+    strawBerryMilk: '<:MSTARBERRY:1290653796472590489>',
+    chocolateMilk: '<:MCHOCOLATE:1290653769255882865>',
+    rainBowMilk: '<:MRAINBOW:1290653757310238832>',
+    orangeMilk: '<:MORANGE:1290653735982465035>',
+    waterMelonMilk: '<:MWATERMELON:1290653714331467847>',
+    cloudMilk: '<:MCLOUD:1290653699982622720>',
+    cherryMilk: '<:MCHERRY:1290653678050476094>',
+    burgerMilk: '<:MBURGER:1290653659931213875>',
+    pearMilk: '<:MPEAR:1290653646723223592>',
+    cakeMilk: '<:MCAKE:1290653627119173715>',
+    bluePeachMilk: '<:MBLUEPEACH:1290653613613649990>',
+    milk: '<:MMILK:1290653597322969142>',
+    pinkHeartMilk: '<:MPINKHEART:1290653412710682745>',
 
-    // Potion
-    // Level 1
-    miral: '<:miral:1287104250966442096>',
-    clevo: '<:clevo:1287104363785093151>',
-    logic: '<:logic:1287104486007115837>',
-    // Level 2
-    iceBreath: '<:iceBreath:1287104333686636585>',
-    gaster: '<:gaster:1287104308252377099>',
-    evilty: '<:evilty:1287104440981127198>',
-    // Level 3
-    agon: '<:agon:1287104278573355140>',
-    ridras: '<:ridras:1287104405606367383>',
+    // IMPORTANT
+    peachy: '<:PEACHYMILK:1287593053321695304>',
+    strawberry: '<:STRAWBERRY:1287593045516091463>',
+    avocado: '<:AVOCADO:1287593039380090931>',
+    banana: '<:BANANA:1287593031461240852>',
+
+    // INVENTORY
 
     // RANK
     common: '<:common:1287104569431560273>',

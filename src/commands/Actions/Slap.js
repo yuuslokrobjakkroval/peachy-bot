@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const Anime = require('anime-actions');
 
 module.exports = class Slap extends Command {
     constructor(client) {
