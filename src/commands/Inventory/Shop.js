@@ -110,6 +110,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
     };
 
     const getButtonRow = (selectedItemIndex, items) => {
+        const homeButton = emojiButton('home', '🏠', 2);
         const prevButton = emojiButton('prev_item', '⬅️', 2);
         const nextButton = emojiButton('next_item', '➡️', 2);
 
@@ -133,7 +134,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
 
         const row1 = new ActionRowBuilder().addComponents(filterButton);
         const row2 = new ActionRowBuilder().addComponents(itemSelectButton);
-        const row3 = new ActionRowBuilder().addComponents(prevButton, nextButton);
+        const row3 = new ActionRowBuilder().addComponents(homeButton, prevButton, nextButton);
 
         return { components: [row1, row2, row3], embeds: [pages[page].embed] };
     };
@@ -167,7 +168,16 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
     });
 
     collector.on('collect', async int => {
-        if (int.customId === 'prev_item') {
+        if (int.customId === 'home') {
+            selectedCategory = categories[0];
+            updatePages(selectedCategory);
+            selectedItemIndex = null;
+            page = 0;
+            await int.update({
+                embeds: [pages[page]?.embed],
+                components: getButtonRow(selectedItemIndex, items).components
+            });
+        } else if (int.customId === 'prev_item') {
             if (selectedItemIndex !== null) {
                 selectedItemIndex--;
                 if (selectedItemIndex < 0) selectedItemIndex = items.length - 1;

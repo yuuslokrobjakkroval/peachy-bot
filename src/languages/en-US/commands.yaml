@@ -7,6 +7,12 @@ no_user: 'You need to mention someone.'
 mention_to_bot: 'You can not mention to bot.'
 mention_to_self: 'You can not mention to yourself.'
 
+##### Theme System #####
+theme_applied: "You have successfully applied %{itemEmote} **`%{itemName}`** theme to your embed!"
+use_not_available: "The theme **`%{itemName}`** is not available for use."
+not_owned: "You don't own the theme **`%{itemName}`**. Please purchase it first."
+invalid_theme: "The theme ID **`%{itemId}`** is not valid. Please check the available themes."
+
 ##### Gambling System #####
 win_message: 'You won %{coinEmote} **`%{coin}`** coins'
 lose_message: 'You lose %{coinEmote} **`%{coin}`** coins'
