@@ -57,6 +57,19 @@ module.exports = class Buy extends Command {
             );
         }
 
+        // Check if the item is a theme and if the user already owns it
+        if (itemInfo.type === 'theme') {
+            const themeExists = user.inventory.find(invItem => invItem.id === itemId);
+            if (themeExists) {
+                return await client.utils.sendErrorMessage(
+                    client,
+                    ctx,
+                    client.i18n.get(language, 'commands', 'theme_already_owned', { itemEmote: itemInfo.emoji, itemName: itemInfo.name }),
+                    color
+                );
+            }
+        }
+
         if (itemInfo.price.buy === 0) {
             return await client.utils.sendErrorMessage(
                 client,

@@ -12,6 +12,7 @@ theme_applied: "You have successfully applied %{itemEmote} **`%{itemName}`** the
 use_not_available: "The theme **`%{itemName}`** is not available for use."
 not_owned: "You don't own the theme **`%{itemName}`**. Please purchase it first."
 invalid_theme: "The theme ID **`%{itemId}`** is not valid. Please check the available themes."
+theme_already_owned: "You already own the theme **`%{itemName}`** and cannot buy it again."
 
 ##### Gambling System #####
 win_message: 'You won %{coinEmote} **`%{coin}`** coins'
