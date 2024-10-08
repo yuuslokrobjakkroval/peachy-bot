@@ -55,16 +55,16 @@ module.exports = class AddMoney extends Command {
                     embeds: [
                         client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
                     ],
-                    components: [
-                        new ActionRowBuilder().addComponents(
-                            new ButtonBuilder()
-                                .setCustomId('amount_instructions')
-                                .setStyle(2)
-                                .setLabel(client.i18n.get(language, 'commands', 'invalid_amount_button'))
-                                .setDisabled(false)
-                                .setEmoji('📕')
-                        ),
-                    ],
+                    // components: [
+                    //     new ActionRowBuilder().addComponents(
+                    //         new ButtonBuilder()
+                    //             .setCustomId('amount_instructions')
+                    //             .setStyle(2)
+                    //             .setLabel(client.i18n.get(language, 'commands', 'invalid_amount_button'))
+                    //             .setDisabled(false)
+                    //             .setEmoji('📕')
+                    //     ),
+                    // ],
                 });
             }
         }
