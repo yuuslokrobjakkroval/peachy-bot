@@ -10,17 +10,20 @@ const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const emojis = require('../emojis.js');
 
-const configPeach = require('../theme/peach/config.js');
-const emojiPeach = require('../theme/peach/emojis.js');
+const configPeach = require('../theme/Peach/config.js');
+const emojiPeach = require('../theme/Peach/emojis.js');
 
-const configGoma = require('../theme/goma/config.js');
-const emojiGoma = require('../theme/goma/emojis.js');
+const configGoma = require('../theme/Goma/config.js');
+const emojiGoma = require('../theme/Goma/emojis.js');
 
 const configPjum = require('../theme/pjumben/config.js');
-const emojiPjum = require('../theme/pjumben/emojis.js');
+const emojiPjum = require('../theme/Pjumben/emojis.js');
 
-const configHalloween = require('../theme/halloween/config.js');
-const emojiHalloween = require('../theme/halloween/emojis.js');
+const configOcean = require('../theme/OceanBreeze/config.js');
+const emojiOcean = require('../theme/OceanBreeze/emojis.js');
+
+const configHalloween = require('../theme/Halloween/config.js');
+const emojiHalloween = require('../theme/Halloween/emojis.js');
 
 const Logger = require('./Logger.js');
 
@@ -138,21 +141,31 @@ module.exports = class PeachyClient extends Client {
         let emoji;
 
         if (user && user.preferences && user.preferences.theme) {
-            if (user.preferences.theme === 'halloween') {
-                color = configHalloween.color;
-                emoji = emojiHalloween;
-            } else if (user.preferences.theme === 'pjumben') {
-                color = configPjum.color;
-                emoji = emojiPjum;
-            } else if (user.preferences.theme === 'peach') {
-                color = configPeach.color;
-                emoji = emojiPeach;
-            } else if (user.preferences.theme === 'goma') {
-                color = configGoma.color;
-                emoji = emojiGoma;
-            } else {
-                color = config.color;
-                emoji = emojis;
+            switch (user.preferences.theme) {
+                case 't01':
+                    color = configOcean.color;
+                    emoji = emojiOcean;
+                    break;
+                case 't02':
+                    color = configPjum.color;
+                    emoji = emojiPjum;
+                    break;
+                case 'halloween':
+                    color = configHalloween.color;
+                    emoji = emojiHalloween;
+                    break;
+                case 'peach':
+                    color = configPeach.color;
+                    emoji = emojiPeach;
+                    break;
+                case 'goma':
+                    color = configGoma.color;
+                    emoji = emojiGoma;
+                    break;
+                default:
+                    color = config.color;
+                    emoji = emojis;
+                    break;
             }
         } else {
             color = config.color;

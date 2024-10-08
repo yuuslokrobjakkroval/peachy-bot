@@ -70,7 +70,7 @@ module.exports = class Use extends Command {
 
         await Users.updateOne(
             { userId: ctx.author.id },
-            { $set: { 'preferences.theme': themeItem.name } }
+            { $set: { 'preferences.theme': themeItem.id } }
         ).exec();
 
         const embed = client.embed()

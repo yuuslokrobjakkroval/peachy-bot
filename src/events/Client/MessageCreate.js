@@ -76,6 +76,51 @@ module.exports = class MessageCreate extends Event {
       });
     }
 
+    if (user) {
+      const now = Date.now();
+      const xpCooldown = 30000;
+      if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
+        let xpGained = 0;
+        if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
+          xpGained = getRandomXp(20, 25);
+        } else {
+          xpGained = getRandomXp(10, 15);
+        }
+        user.profile.xp += xpGained;
+        user.profile.lastXpGain = now;
+        const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
+        if (user.profile.xp >= nextLevelXp) {
+          user.profile.xp -= nextLevelXp;
+          user.profile.level += 1;
+          user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
+          const celebrationCoin = user.profile.level * 250000;
+          user.balance.coin += celebrationCoin;
+          const levelUp = await new canvafy.LevelUp()
+              .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
+              .setUsername(`${message.author.username}`,'#000000')
+              .setBorder('#8BD3DD')
+              .setBackground("image", gif.levelBackground)
+              .setLevels(user.profile.level - 1, user.profile.level)
+              .build();
+          const levelImage = {
+            attachment: levelUp,
+            name: 'level-up.png',
+          };
+          const embed = this.client.embed()
+              .setColor(color.main)
+              .setTitle(`${message.author.displayName} - 𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
+              .setDescription(`Congratulations ${this.client.utils.getRandomElement(congratulations)} !!!\nYou leveled up to level ${user.profile.level}!\nYou have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${emoji.coin}.`)
+              .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
+              .setImage('attachment://level-up.png');
+          await message.channel.send({
+            embeds: [embed],
+            files: [levelImage],
+          });
+        }
+        await user.save();
+      }
+    }
+
     const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
     if (mention.test(message.content)) {
       const row = new ActionRowBuilder().addComponents(
