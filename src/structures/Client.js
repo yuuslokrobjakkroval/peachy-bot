@@ -16,7 +16,7 @@ const emojiPeach = require('../theme/Peach/emojis.js');
 const configGoma = require('../theme/Goma/config.js');
 const emojiGoma = require('../theme/Goma/emojis.js');
 
-const configPjum = require('../theme/pjumben/config.js');
+const configPjum = require('../theme/Pjumben/config.js');
 const emojiPjum = require('../theme/Pjumben/emojis.js');
 
 const configOcean = require('../theme/OceanBreeze/config.js');
