@@ -36,7 +36,7 @@ module.exports = class EmojiPuzzle extends Command {
         let guesses = 0; // Track the number of guesses
 
         // Send the initial puzzle embed
-        let embed = this.createPuzzleEmbed(client, puzzle);
+        let embed = this.createPuzzleEmbed(client, color, emoji, puzzle);
         await ctx.sendMessage({ embeds: [embed] });
 
         // Loop to allow multiple guesses
@@ -45,7 +45,7 @@ module.exports = class EmojiPuzzle extends Command {
             const collected = await ctx.channel.awaitMessages({ filter, max: 1, time: 30000, errors: ['time'] }).catch(() => { });
 
             if (!collected) {
-                embed = this.createCorrectEmbed(client)
+                embed = this.createCorrectEmbed(client, color, emoji)
                 return ctx.sendMessage({ embeds: [embed] });
             }
 
@@ -53,51 +53,51 @@ module.exports = class EmojiPuzzle extends Command {
             guesses++; // Increment the guess count
 
             if (userAnswer === puzzle.answer.toLowerCase()) {
-                embed = this.createCorrectEmbed(client)
+                embed = this.createCorrectEmbed(client, color, emoji)
                 await ctx.sendMessage({ embeds: [embed] });
                 return; // End the command after a correct guess
             } else {
                 if (guesses < maxGuesses) {
-                    embed = this.createWrongEmbed(client, maxGuesses - guesses)
+                    embed = this.createWrongEmbed(client, color, emoji, maxGuesses - guesses)
                     await ctx.sendMessage({ embeds: [embed] });
                 }
             }
         }
 
         // If the user runs out of guesses
-        embed = this.createGameOverEmbed(client, puzzle.answer)
+        embed = this.createGameOverEmbed(client, color, emoji, puzzle.answer)
         await ctx.sendMessage({ embeds: [embed] });
     }
 
-    createPuzzleEmbed(client, puzzle) {
+    createPuzzleEmbed(client, color, emoji, puzzle) {
         return client.embed()
             .setColor(color.main)
             .setTitle('🧩 Emoji Puzzle')
             .setDescription(`What does this mean?\n${puzzle.emoji}`);
     }
 
-    createCorrectEmbed(client) {
+    createCorrectEmbed(client, color, emoji,) {
         return client.embed()
             .setColor(color.green)
-            .setTitle('🎉 Correct!')
+            .setTitle(`Correct! ${emoji.congratulation}`)
             .setDescription('Well done, you guessed the emoji puzzle correctly!');
     }
 
-    createWrongEmbed(client, guessesLeft) {
+    createWrongEmbed(client, color, emoji, guessesLeft) {
         return client.embed()
             .setColor(color.red)
             .setTitle('❌ Wrong!')
             .setDescription(`You have ${guessesLeft} guesses left.`);
     }
 
-    createTimeoutEmbed(client, correctAnswer) {
+    createTimeoutEmbed(client, color, emoji, correctAnswer) {
         return client.embed()
             .setColor(color.orange)
             .setTitle('⏳ Time is up!')
             .setDescription(`The correct answer was **${correctAnswer}**.`);
     }
 
-    createGameOverEmbed(client, correctAnswer) {
+    createGameOverEmbed(client, color, emoji, correctAnswer) {
         return client.embed()
             .setColor(color.red)
             .setTitle('❌ Game Over!')
