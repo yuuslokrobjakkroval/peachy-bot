@@ -37,7 +37,7 @@ module.exports = class Peachy extends Command {
 
         const baseCoins = chance.integer({ min: 1000, max: 5000 });
         const newBalance = user.balance.coin + baseCoins;
-        const newStreak = (user.peachy.streak += 1);
+        const newStreak = (user.goma.streak += 1);
 
         const timeExpired = 300000; // 5 minutes cooldown
         const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeExpired);
