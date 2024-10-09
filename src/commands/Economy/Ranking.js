@@ -29,6 +29,7 @@ module.exports = class Ranking extends Command {
                     choices: [
                         { name: 'Balance', value: 'bal' },
                         { name: 'Peach', value: 'peachy' },
+                        { name: 'Goma', value: 'goma' },
                     ],
                 },
             ],
@@ -115,6 +116,33 @@ module.exports = class Ranking extends Command {
                 return client
                     .embed()
                     .setTitle(`${emoji.rank.babyOwner} **𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌** ${emoji.rank.babyOwner}`)
+                    .setColor(color.main)
+                    .setDescription(`${userRank}\n${chunk.join('\n\n')}`)
+                    .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
+            });
+
+            return await client.utils.reactionPaginate(ctx, pages);
+        } else if (type === 'goma' || type === 'g') {
+            const users = await Users.find({ 'goma.streak': { $gt: 0 } }).sort({ 'goma.streak': -1 }).exec();
+            if (!users.length) {
+                return await client.utils.oops(client, ctx, 'No one has a streak yet.', color);
+            }
+
+            const userPosition = users.findIndex(({ userId }) => userId === ctx.author.id) + 1;
+            const user = users.find(({ userId }) => userId === ctx.author.id);
+            const userRank = `**${user && user?.username ? user.username : 'Unknown'} Rank :  ${userPosition} ${handleEmoji(userPosition)}**\n**${client.utils.formatNumber(user.goma.streak || 0)} streaks**\n`;
+
+            const leaderboardList = users.slice(0, 100).map((user, index) => {
+                const position = index + 1;
+                const emoji = handleEmoji(position);
+                return `**${emoji} ${position}. ${user.username ? user.username : 'Unknown'}**\n**${client.utils.formatNumber(user.goma.streak)} streaks**`;
+            });
+
+            const chunks = client.utils.chunk(leaderboardList, 10);
+            const pages = chunks.map((chunk, i) => {
+                return client
+                    .embed()
+                    .setTitle(`${emoji.rank.babyOwner} **𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌** ${emoji.rank.babyOwner}`)
                     .setColor(color.main)
                     .setDescription(`${userRank}\n${chunk.join('\n\n')}`)
                     .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
