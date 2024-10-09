@@ -109,6 +109,9 @@ const userSchema = new Schema({
     peachy: {
         streak: { type: Number, default: 0 }
     },
+    goma: {
+        streak: { type: Number, default: 0 }
+    },
     // quest: [{
     //     id: { type: String, required: true },
     //     type: { type: String, enum: ['peach', 'transfer'], required: true },
