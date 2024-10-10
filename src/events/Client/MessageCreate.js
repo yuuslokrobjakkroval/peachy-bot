@@ -464,10 +464,13 @@ module.exports = class MessageCreate extends Event {
           const gamblingCommands = ['slots', 'blackjack', 'coinflip'];
           const gameCommands = ['guessnumber'];
           const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
+          const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'theme'];
 
           try {
             let logChannelId;
-            if (mineCommands.includes(command.name)) {
+            if (utilityCommands.includes(command.name)) {
+              logChannelId = this.client.config.logChannelId[5];
+            } else if (mineCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[4];
             } else if (balanceCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[3];
