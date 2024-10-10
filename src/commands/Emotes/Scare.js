@@ -33,9 +33,7 @@ module.exports = class Scare extends Command {
                 .setColor(color.main)
                 .setTitle(scareMessages.title) // Use localized title
                 .setImage(client.utils.emojiToImage(randomEmoji)) // Set random scare emoji image
-                .setDescription(scareMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                });
+                .setDescription(scareMessages.description.replace('{{user}}', ctx.author.displayName));
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {

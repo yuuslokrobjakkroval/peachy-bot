@@ -32,9 +32,7 @@ module.exports = class Laugh extends Command {
                 .embed()
                 .setColor(color.main)
                 .setTitle(laughMessages.title) // Use localized title
-                .setDescription(laughMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                })
+                .setDescription(laughMessages.description.replace('{{user}}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji)); // Set random laugh emoji image
 
             await ctx.sendMessage({ embeds: [embed] }); // Send the embed message

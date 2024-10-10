@@ -35,9 +35,7 @@ module.exports = class PlayGame extends Command {
                 .setColor(color.main)
                 .setTitle(playGameMessages.title) // Use localized title
                 .setImage(emoteImageUrl)
-                .setDescription(playGameMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                });
+                .setDescription(playGameMessages.description.replace('{{user}}', ctx.author.displayName));
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {

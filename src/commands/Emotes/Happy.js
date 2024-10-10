@@ -32,9 +32,7 @@ module.exports = class Happy extends Command {
                 .embed()
                 .setColor(color.main)
                 .setTitle(happyMessages.title) // Use localized title
-                .setDescription(happyMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                })
+                .setDescription(happyMessages.description.replace('{{user}}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji)); // Set random happy emoji image
 
             await ctx.sendMessage({ embeds: [embed] }); // Send the embed message

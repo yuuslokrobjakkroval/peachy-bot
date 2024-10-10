@@ -32,9 +32,7 @@ module.exports = class Exercise extends Command {
                 .embed()
                 .setColor(color.main)
                 .setTitle(exerciseMessages.title) // Use localized title
-                .setDescription(exerciseMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                })
+                .setDescription(exerciseMessages.description.replace('{{user}}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji)); // Set random exercise emoji image
 
             await ctx.sendMessage({ embeds: [embed] }); // Send the embed message

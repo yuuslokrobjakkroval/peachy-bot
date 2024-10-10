@@ -33,9 +33,7 @@ module.exports = class Sad extends Command {
                 .setColor(color.main)
                 .setTitle(sadMessages.title) // Use localized title
                 .setImage(client.utils.emojiToImage(randomEmoji)) // Set random sad emoji image
-                .setDescription(sadMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                });
+                .setDescription(sadMessages.description.replace('{{user}}', ctx.author.displayName));
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {

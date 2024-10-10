@@ -32,9 +32,7 @@ module.exports = class Cute extends Command {
                 .embed()
                 .setColor(color.main)
                 .setTitle(cuteMessages.title) // Use localized title
-                .setDescription(cuteMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                })
+                .setDescription(cuteMessages.description.replace('{{user}}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji)); // Set random cute emoji image
 
             await ctx.sendMessage({ embeds: [embed] }); // Send the embed message

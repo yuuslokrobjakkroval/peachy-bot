@@ -33,9 +33,7 @@ module.exports = class Roar extends Command {
                 .setColor(color.main)
                 .setTitle(roarMessages.title) // Use localized title
                 .setImage(client.utils.emojiToImage(randomEmoji)) // Set random roar emoji image
-                .setDescription(roarMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                });
+                .setDescription(roarMessages.description.replace('{{user}}', ctx.author.displayName));
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {

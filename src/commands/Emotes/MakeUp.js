@@ -32,9 +32,7 @@ module.exports = class Makeup extends Command {
                 .embed()
                 .setColor(color.main)
                 .setTitle(makeupMessages.title) // Use localized title
-                .setDescription(makeupMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                })
+                .setDescription(makeupMessages.description.replace('{{user}}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji)); // Set random makeup emoji image
 
             await ctx.sendMessage({ embeds: [embed] });

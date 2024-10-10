@@ -33,9 +33,7 @@ module.exports = class Shy extends Command {
                 .setColor(color.main)
                 .setTitle(shyMessages.title) // Use localized title
                 .setImage(client.utils.emojiToImage(randomEmoji)) // Set random shy emoji image
-                .setDescription(shyMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                });
+                .setDescription(shyMessages.description.replace('{{user}}', ctx.author.displayName));
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {

@@ -32,9 +32,7 @@ module.exports = class Eat extends Command {
                 .embed()
                 .setColor(color.main)
                 .setTitle(eatMessages.title) // Use localized title
-                .setDescription(eatMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                })
+                .setDescription(eatMessages.description.replace('{{user}}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji)); // Set random eat emoji image
 
             await ctx.sendMessage({ embeds: [embed] });

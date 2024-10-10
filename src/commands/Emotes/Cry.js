@@ -31,9 +31,8 @@ module.exports = class Cry extends Command {
                 .embed()
                 .setColor(color.main)
                 .setTitle(cryMessages.title) // Use localized title
-                .setDescription(cryMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                })
+                .setDescription(cryMessages.description.replace('{{user}}', ctx.author.displayName))
+
                 .setImage(client.utils.emojiToImage(randomEmoji)); // Set random crying emoji image
 
             await ctx.sendMessage({ embeds: [embed] });

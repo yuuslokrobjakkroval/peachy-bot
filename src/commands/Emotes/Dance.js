@@ -32,9 +32,7 @@ module.exports = class Dance extends Command {
                 .embed()
                 .setColor(color.main)
                 .setTitle(danceMessages.title) // Use localized title
-                .setDescription(danceMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                })
+                .setDescription(danceMessages.description.replace('{{user}}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji)); // Set random dance emoji image
 
             await ctx.sendMessage({ embeds: [embed] }); // Send the embed message

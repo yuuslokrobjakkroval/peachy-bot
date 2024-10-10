@@ -33,9 +33,7 @@ module.exports = class Shower extends Command {
                 .setColor(color.main)
                 .setTitle(showerMessages.title) // Use localized title
                 .setImage(client.utils.emojiToImage(randomEmoji)) // Set random shower emoji image
-                .setDescription(showerMessages.description, { // Use localized description
-                    user: ctx.author.displayName
-                });
+                .setDescription(showerMessages.description.replace('{{user}}', ctx.author.displayName));
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
