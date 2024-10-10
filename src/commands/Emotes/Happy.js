@@ -24,14 +24,23 @@ module.exports = class Happy extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.happy);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Happy Vibes! ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Spread some joy and happiness!');
+        const happyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.happyMessages; // Access localized messages
 
-        await ctx.sendMessage({ embeds: [embed] });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.happy); // Get a random happy emoji
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(happyMessages.title) // Use localized title
+                .setDescription(happyMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                })
+                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random happy emoji image
+
+            await ctx.sendMessage({ embeds: [embed] }); // Send the embed message
+        } catch (error) {
+            console.error('Error processing happy command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, happyMessages.error, color); // Use localized error message
+        }
     }
 };

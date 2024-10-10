@@ -29,7 +29,7 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-    const { color, emoji } = await this.client.setColorBasedOnTheme(message.author.id);
+    const { color, emoji, language } = await this.client.setColorBasedOnTheme(message.author.id);
     const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
     let user = await Users.findOne({ userId: message.author.id });
     const prefix = this.client.config.prefix;
@@ -454,11 +454,11 @@ module.exports = class MessageCreate extends Event {
             setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
           }
 
-          if (args.includes('@everyone') || args.includes('@here')) {
-            return await message.reply({
-              content: "You can't use this command with everyone or here.",
-            });
-          }
+            if (args.includes('@everyone') || args.includes('@here')) {
+              return await message.reply({
+                content: language.noEveryoneOrHereUsage, // Use language file for message
+              });
+            }
 
           const balanceCommands = ['balance', 'deposit', 'withdraw', 'transfer', 'buy', 'sell'];
           const gamblingCommands = ['slots', 'blackjack', 'coinflip'];
@@ -508,7 +508,7 @@ module.exports = class MessageCreate extends Event {
                   .setTimestamp();
               await channel.send({ embeds: [embed] }).catch(() => console.error('Error sending log message'));
             }
-            return command.run(this.client, ctx, ctx.args, color, emoji);
+            return command.run(this.client, ctx, ctx.args, color, emoji, language);
           } catch (error) {
             console.error('Error executing command:', error);
             await BotLog.send(this.client, `An error occurred: \`${error.message}\``, 'error');

@@ -1,0 +1,187 @@
+{
+	"generalMessages": {
+		"permissionsClientError": "Tôi không có quyền đủ để thực hiện lệnh này.",
+		"permissionsUserError": "Bạn không có quyền đủ để sử dụng lệnh này.",
+		"argumentsMissingTitle": "Thiếu đối số",
+		"argumentsMissingDescription": "Vui lòng cung cấp các đối số cần thiết cho lệnh `{commandName}`.",
+		"usageHeader": "Cách sử dụng",
+		"examplesHeader": "Ví dụ",
+		"syntaxInstructions": "Cú pháp: [] = tùy chọn, <> = bắt buộc",
+		"noEveryoneOrHereError": "Bạn không thể sử dụng lệnh này cho mọi người hoặc ở đây.",
+		"userNotFound": "Không tìm thấy người dùng trong cơ sở dữ liệu.",
+		"alreadyInGame": "Bạn đã ở trong một trò chơi. Vui lòng hoàn thành trò chơi hiện tại trước khi bắt đầu một trò chơi mới.",
+		"zeroBalance": "Số dư của bạn bằng không. Vui lòng kiếm được xu trước khi thử lại.",
+		"invalidAmount": "Số tiền không hợp lệ. Vui lòng nhập một số dương."
+	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "Thời gian cắn!",
+			"description": "cắn với tình yêu",
+			"errors": {
+				"noUser": "Bạn phải đề cập đến người dùng để cắn.",
+				"selfBite": "Bạn không thể cắn chính mình.",
+				"fetchFail": "Đã xảy ra lỗi khi lấy GIF cắn."
+			}
+		},
+		"hugMessages": {
+			"title": "Thời gian ôm!",
+			"description": "ôm ấm áp",
+			"errors": {
+				"noUser": "Bạn phải đề cập đến người dùng để ôm.",
+				"selfHug": "Bạn không thể ôm chính mình.",
+				"fetchFail": "Đã xảy ra lỗi khi lấy GIF ôm."
+			}
+		},
+		"kissMessages": {
+			"title": "Thời gian hôn!",
+			"description": "hôn",
+			"errors": {
+				"noUser": "Bạn phải đề cập đến người dùng để hôn.",
+				"selfKiss": "Bạn không thể hôn chính mình.",
+				"fetchFail": "Đã xảy ra lỗi khi lấy GIF hôn."
+			}
+		},
+		"punchMessages": {
+			"title": "Thời gian đấm!",
+			"description": "đấm thân thiện",
+			"errors": {
+				"noUser": "Bạn phải đề cập đến người dùng để đấm.",
+				"selfPunch": "Bạn không thể đấm chính mình.",
+				"fetchFail": "Đã xảy ra lỗi khi lấy GIF đấm."
+			}
+		},
+		"slapMessages": {
+			"title": "Thời gian tát!",
+			"description": "tát với tình yêu",
+			"errors": {
+				"noUser": "Bạn phải đề cập đến người dùng để tát.",
+				"selfSlap": "Bạn không thể tát chính mình.",
+				"fetchFail": "Đã xảy ra lỗi khi lấy GIF tát."
+			}
+		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"title": "Số dư %{displayName}",
+			"description": "%{coinEmote} **`%{coin}`** xu\n%{bankEmote} **`%{bank}`** xu",
+			"errors": {
+				"noUser": "Không tìm thấy người dùng.",
+				"fetchFail": "Đã xảy ra lỗi khi lấy số dư của bạn."
+			}
+		},
+		"dailyMessages": {
+			"title": "Phần thưởng hàng ngày %{displayName}",
+			"success": "%{coinEmote} **`+%{coin}`** xu\nXP: **`+%{exp}`** xp",
+			"cooldown": "Phần thưởng hàng ngày của bạn đang chờ. Vui lòng thử lại sau **%{time}**.",
+			"errors": {
+				"noUser": "Không tìm thấy người dùng.",
+				"fetchFail": "Đã xảy ra lỗi khi xử lý yêu cầu hàng ngày của bạn."
+			}
+		},
+		"depositMessages": {
+			"zeroBalance": "Bạn không có xu để gửi.",
+			"invalidAmount": "Số tiền không hợp lệ. Vui lòng nhập số hợp lệ hoặc sử dụng `tất cả` hoặc `một nửa`.",
+			"success": "Bạn đã gửi %{coinEmote} **`%{amount}`** xu vào ngân hàng của mình.",
+			"errors": {
+				"noUser": "Không tìm thấy người dùng."
+			}
+		},
+		"gomaMessages": {
+			"success": {
+				"title": "Bạn đã yêu cầu goma!",
+				"description": "Bạn đã kiếm được %{coinEmote} **`%{coin}`** xu."
+			},
+			"cooldown": "Goma đang chờ!\nVui lòng thử lại sau **%{minutes} phút và %{seconds} giây**.",
+			"errors": {
+				"noUser": "Không tìm thấy người dùng."
+			}
+		},
+		"peachyMessages": {
+			"errors": {
+				"noUser": "Không tìm thấy người dùng."
+			},
+			"cooldown": "Peachy đang chờ!\nVui lòng thử lại sau **%{minutes} phút và %{seconds} giây**.",
+			"success": {
+				"title": "Bạn đã yêu cầu peachy!",
+				"description": "Bạn đã kiếm được %{coinEmote} **`%{coin}`** xu."
+			}
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "Chưa có ai kiếm được xu.",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "Chưa có ai trong danh sách.",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "Chưa có ai trong danh sách.",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "Loại xếp hạng không hợp lệ."
+		},
+		"transferMessages": {
+			"selfTransfer": "Bạn không thể chuyển xu cho chính mình.",
+			"botTransfer": "Bạn không thể chuyển xu cho bot.",
+			"pendingTransfer": "Có một giao dịch đang chờ. Vui lòng xác nhận hoặc hủy giao dịch trước khi bắt đầu một giao dịch mới.",
+			"invalidAmount": "Vui lòng chỉ định người dùng và số tiền hợp lệ.",
+			"noUser": "Vui lòng chỉ định một người dùng hợp lệ.",
+			"balanceNotExist": "Không có bản ghi số dư.",
+			"insufficientBalance": "Số tiền đã chỉ định không hợp lệ hoặc không đủ số dư.",
+			"zeroBalance": "Bạn không có xu để gửi.",
+			"transactionConfirm": "Bạn sẽ chuyển {{amount}} {{emoji}} cho {{user}}. Bạn có chắc không?",
+			"transactionSuccess": "Bạn đã chuyển {{amount}} {{emoji}} cho {{user}}.",
+			"transactionCancel": "Bạn đã hủy giao dịch. Xu không được chuyển.",
+			"transactionTimeout": "Giao dịch đã hết hạn do không có hoạt động. Vui lòng thử lại.",
+			"transactionTimeoutAction": "Vui lòng bắt đầu lại lệnh để thực hiện chuyển giao.",
+			"amountTooHigh": "Số tiền vượt quá số dư hiện có.",
+			"transferTooFrequent": "Bạn đang chuyển xu quá thường xuyên. Vui lòng chờ một chút.",
+			"transferLimitExceeded": "Bạn đã vượt quá giới hạn chuyển tối đa.",
+			"transferInsufficientFunds": "Bạn không có đủ xu để hoàn tất giao dịch này.",
+			"transferInvalidUser": "Người dùng bạn chỉ định không hợp lệ hoặc không tìm thấy.",
+			"transferConfirmPrompt": "Vui lòng nhấp vào nút bên dưới để xác nhận chuyển giao.",
+			"transactionExpired": "Giao dịch đã hết hạn"
+		},
+		"weeklyMessages": {
+			"userNotFound": "Không tìm thấy người dùng.",
+			"cooldown": {
+				"multipleDays": "Phần thưởng hàng tuần của bạn đang chờ!\nVui lòng thử lại sau **{{days}} ngày{{days > 1 ? 's' : ''}} và {{hours}} giờ{{hours > 1 ? 's' : ''}}**.",
+				"singleDay": "Phần thưởng hàng tuần của bạn đang chờ!\nVui lòng thử lại sau **{{hours}} giờ{{hours > 1 ? 's' : ''}}**, **{{minutes}} phút{{minutes > 1 ? 's' : ''}}**, và **{{seconds}} giây{{seconds > 1 ? 's' : ''}}**.",
+				"noDays": "Phần thưởng hàng tuần của bạn đang chờ!\nVui lòng thử lại sau **{{hours}} giờ{{hours > 1 ? 's' : ''}}**, **{{minutes}} phút{{minutes > 1 ? 's' : ''}}**, và **{{seconds}} giây{{seconds > 1 ? 's' : ''}}**."
+			},
+			"success": {
+				"title": "Phần thưởng hàng tuần %{displayName}",
+				"description": "%{coinEmote} **`+%{coin}`** xu"
+			}
+		}
+	},
+	"information": {
+		"helpMessages": {
+			"title": "𝐈𝐓𝐒 𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
+			"description": "Dưới đây là các lệnh có sẵn:",
+			"note": "Lưu ý: Một số lệnh có thể hiển thị tên người dùng trong danh sách được bot lấy.",
+			"footer": "© Bản quyền KYUU",
+			"supportButton": "Nhấn để được hỗ trợ",
+			"commandNotFound": "Không tìm thấy lệnh:",
+			"commandTitle": "Trợ giúp cho lệnh",
+			"category": "Danh mục",
+			"aliases": "Biệt danh:",
+			"cooldown": "Thời gian chờ",
+			"botPermissions": "Quyền của bot:",
+			"examples": "Ví dụ:"
+		},
+		"infoMessages": {
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
+			"description": "là bot Discord đa năng được thiết kế cho sự vui vẻ, giải trí và tiện ích. Với các tính năng của bot, hãy thử vận may của bạn với trò chơi đánh bạc, chơi các trò chơi nhỏ và nhiều hơn nữa!",
+			"developer": {
+				"title": "𝐃𝐄𝐕",
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+			},
+			"footer": "Gặp vấn đề, cần giúp đỡ, hoặc muốn báo cáo lỗi? Nhấp vào liên kết bên dưới",
+			"supportButton": {
+				"label": "Nhấp để hỗ trợ"
+			}
+		}
+	}
+}

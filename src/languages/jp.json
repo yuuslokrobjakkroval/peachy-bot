@@ -1,0 +1,187 @@
+{
+	"generalMessages": {
+		"permissionsClientError": "このコマンドを実行する権限が不足しています。",
+		"permissionsUserError": "このコマンドを使用する権限が不足しています。",
+		"argumentsMissingTitle": "引数が不足しています",
+		"argumentsMissingDescription": "コマンド `{commandName}` に必要な引数を提供してください。",
+		"usageHeader": "使い方",
+		"examplesHeader": "例",
+		"syntaxInstructions": "構文: [] = オプション、<> = 必須",
+		"noEveryoneOrHereError": "このコマンドは全員またはここに使用することはできません。",
+		"userNotFound": "データベース内にユーザーが見つかりませんでした。",
+		"alreadyInGame": "すでにゲーム中です。現在のゲームを終了した後、新しいゲームを開始してください。",
+		"zeroBalance": "残高がありません。再試行する前にコインを獲得してください。",
+		"invalidAmount": "無効な金額です。正の数を入力してください。"
+	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "噛む時間！",
+			"description": "愛情を込めて噛む",
+			"errors": {
+				"noUser": "噛む相手を指定する必要があります。",
+				"selfBite": "自分自身を噛むことはできません。",
+				"fetchFail": "噛むGIFを取得中にエラーが発生しました。"
+			}
+		},
+		"hugMessages": {
+			"title": "ハグの時間！",
+			"description": "温かく抱きしめる",
+			"errors": {
+				"noUser": "ハグする相手を指定する必要があります。",
+				"selfHug": "自分自身をハグすることはできません。",
+				"fetchFail": "ハグGIFを取得中にエラーが発生しました。"
+			}
+		},
+		"kissMessages": {
+			"title": "キスの時間！",
+			"description": "キスする",
+			"errors": {
+				"noUser": "キスする相手を指定する必要があります。",
+				"selfKiss": "自分自身にキスすることはできません。",
+				"fetchFail": "キスGIFを取得中にエラーが発生しました。"
+			}
+		},
+		"punchMessages": {
+			"title": "パンチの時間！",
+			"description": "友好的にパンチする",
+			"errors": {
+				"noUser": "パンチする相手を指定する必要があります。",
+				"selfPunch": "自分自身をパンチすることはできません。",
+				"fetchFail": "パンチGIFを取得中にエラーが発生しました。"
+			}
+		},
+		"slapMessages": {
+			"title": "平手打ちの時間！",
+			"description": "愛情を込めて平手打ち",
+			"errors": {
+				"noUser": "平手打ちする相手を指定する必要があります。",
+				"selfSlap": "自分自身を平手打ちすることはできません。",
+				"fetchFail": "平手打ちGIFを取得中にエラーが発生しました。"
+			}
+		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"title": "%{displayName}の残高",
+			"description": "%{coinEmote} **`%{coin}`** コイン\n%{bankEmote} **`%{bank}`** コイン",
+			"errors": {
+				"noUser": "ユーザーが見つかりません。",
+				"fetchFail": "残高を取得中にエラーが発生しました。"
+			}
+		},
+		"dailyMessages": {
+			"title": "%{displayName}のデイリー報酬",
+			"success": "%{coinEmote} **`+%{coin}`** コイン\nXP: **`+%{exp}`** xp",
+			"cooldown": "デイリー報酬は待機中です。**%{time}** 後に再試行してください。",
+			"errors": {
+				"noUser": "ユーザーが見つかりません。",
+				"fetchFail": "デイリーリクエストの処理中にエラーが発生しました。"
+			}
+		},
+		"depositMessages": {
+			"zeroBalance": "預け入れるコインがありません。",
+			"invalidAmount": "無効な金額です。有効な数値を入力してください。`全て`または`半分`を使用することもできます。",
+			"success": "%{coinEmote} **`%{amount}`** コインを銀行に預けました。",
+			"errors": {
+				"noUser": "ユーザーが見つかりません。"
+			}
+		},
+		"gomaMessages": {
+			"success": {
+				"title": "gomaを要求しました！",
+				"description": "%{coinEmote} **`%{coin}`** コインを得ました。"
+			},
+			"cooldown": "Gomaが待機中です！\n**%{minutes}分と%{seconds}秒**後に再試行してください。",
+			"errors": {
+				"noUser": "ユーザーが見つかりません。"
+			}
+		},
+		"peachyMessages": {
+			"errors": {
+				"noUser": "ユーザーが見つかりません。"
+			},
+			"cooldown": "Peachyが待機中です！\n**%{minutes}分と%{seconds}秒**後に再試行してください。",
+			"success": {
+				"title": "peachyを要求しました！",
+				"description": "%{coinEmote} **`%{coin}`** コインを得ました。"
+			}
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "まだコインを獲得した人はいません。",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "まだシリーズがありません。",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "まだシリーズがありません。",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "無効なランクタイプです。"
+		},
+		"transferMessages": {
+			"selfTransfer": "自分自身にコインを送ることはできません。",
+			"botTransfer": "ボットにコインを送ることはできません。",
+			"pendingTransfer": "保留中の転送があります。新しい転送を開始する前に確認またはキャンセルしてください。",
+			"invalidAmount": "有効なユーザーと金額を指定してください。",
+			"noUser": "有効なユーザーを指定してください。",
+			"balanceNotExist": "残高のレコードがありません。",
+			"insufficientBalance": "指定された金額が無効または残高が不足しています。",
+			"zeroBalance": "送信するコインがありません。",
+			"transactionConfirm": "{{user}}に{{amount}} {{emoji}}を渡します。よろしいですか？",
+			"transactionSuccess": "{{user}}に{{amount}} {{emoji}}を渡しました。",
+			"transactionCancel": "転送をキャンセルしました。コインは送信されませんでした。",
+			"transactionTimeout": "アクティビティがないため、トランザクションが期限切れになりました。再試行してください。",
+			"transactionTimeoutAction": "転送を行うには、コマンドを再実行してください。",
+			"amountTooHigh": "金額が残高を超えています。",
+			"transferTooFrequent": "コインを頻繁に送信しています。少し待ってください。",
+			"transferLimitExceeded": "最大転送制限を超えました。",
+			"transferInsufficientFunds": "この転送を完了するための十分なコインがありません。",
+			"transferInvalidUser": "指定したユーザーが無効または見つかりません。",
+			"transferConfirmPrompt": "下のボタンをクリックして転送を確認してください。",
+			"transactionExpired": "トランザクションが期限切れになりました"
+		},
+		"weeklyMessages": {
+			"userNotFound": "ユーザーが見つかりません。",
+			"cooldown": {
+				"multipleDays": "あなたの週間報酬は待機中です！\n**{{days}}日{{days > 1 ? 's' : ''}}および{{hours}}時間{{hours > 1 ? 's' : ''}}**後に再試行してください。",
+				"singleDay": "あなたの週間報酬は待機中です！\n**{{hours}}時間{{hours > 1 ? 's' : ''}}**, **{{minutes}}分{{minutes > 1 ? 's' : ''}}**, および**{{seconds}}秒{{seconds > 1 ? 's' : ''}}**後に再試行してください。",
+				"noDays": "あなたの週間報酬は待機中です！\n**{{hours}}時間{{hours > 1 ? 's' : ''}}**, **{{minutes}}分{{minutes > 1 ? 's' : ''}}**, および**{{seconds}}秒{{seconds > 1 ? 's' : ''}}**後に再試行してください。"
+			},
+			"success": {
+				"title": "%{displayName}の週間報酬",
+				"description": "%{coinEmote} **`+%{coin}`** コイン"
+			}
+		}
+	},
+	"information": {
+		"helpMessages": {
+			"title": "𝐘𝐎𝐔𝐑 𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
+			"description": "利用可能なコマンドは以下の通りです:",
+			"note": "注意: 一部のコマンドは、ボットから取得したリストにユーザー名を表示する場合があります。",
+			"footer": "© 著作権 KYUU",
+			"supportButton": "サポートをクリック",
+			"commandNotFound": "コマンドが見つかりません:",
+			"commandTitle": "コマンドのヘルプ",
+			"category": "カテゴリー",
+			"aliases": "別名:",
+			"cooldown": "クールダウン",
+			"botPermissions": "ボットの権限:",
+			"examples": "例:"
+		},
+		"infoMessages": {
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
+			"description": "は、楽しさ、エンターテイメント、ユーティリティのために設計された多目的Discordボットです。機能を利用して、ギャンブルに挑戦したり、ミニゲームをプレイしたり、その他たくさんのことを楽しんでください！",
+			"developer": {
+				"title": "𝐃𝐄𝐕",
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+			},
+			"footer": "問題がある、助けが必要、またはバグを報告したい場合は、以下のリンクをクリックしてください",
+			"supportButton": {
+				"label": "サポートをクリック"
+			}
+		}
+	}
+}

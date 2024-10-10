@@ -29,41 +29,38 @@ module.exports = class Daily extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         try {
+            const dailyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.dailyMessages;
             const user = await Users.findOne({ userId: ctx.author.id }).exec();
+
+            // User not found in the database
             if (!user) {
-                return client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
+                return client.utils.sendErrorMessage(client, ctx, dailyMessages.errors.noUser, color);
             }
 
             const { coin, bank } = user.balance;
             const baseCoins = chance.integer({ min: 300000, max: 500000 });
             const newBalance = coin + baseCoins;
 
+            // Get current time and determine the next 5 PM
             const now = moment().tz('Asia/Bangkok');
             const hours = now.hour();
-
-            let nextDate = moment().tz('Asia/Bangkok');
-            if(now.isAfter(moment().tz('Asia/Bangkok').hour(17).minute(0).second(0))) {
-                nextDate = moment().tz('Asia/Bangkok').add(1, 'days')
-            }
+            let nextDate = now.hour() >= 17 ? now.add(1, 'days') : now;
             const next5PM = nextDate.set({ hour: 17, minute: 0, second: 0, millisecond: 0 });
-
             const timeUntilNext5PM = moment.duration(next5PM.diff(now));
-            const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM);
 
+            // Check cooldown
+            const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM);
             if (!isCooldownExpired) {
                 const duration = moment.duration(next5PM.diff(now));
-
-                const hours = Math.floor(duration.asHours());
-                const minutes = Math.floor(duration.asMinutes()) % 60;
-                const seconds = Math.floor(duration.asSeconds()) % 60;
-
-                const cooldownMessage = `Daily is on cooldown!\nTry again after **${hours}hrs, ${minutes}mins and ${seconds}secs**.`;
-
+                const cooldownMessage = dailyMessages.cooldown.replace(
+                    '%{time}',
+                    `${Math.floor(duration.asHours())}hrs, ${Math.floor(duration.asMinutes()) % 60}mins, and ${Math.floor(duration.asSeconds()) % 60}secs`
+                );
                 const cooldownEmbed = client.embed().setColor(color.red).setDescription(cooldownMessage);
-
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
             }
 
+            // Calculate and update balance and experience
             const baseExp = chance.integer({ min: 100, max: 150 });
             const newExp = user.profile.xp + baseExp;
 
@@ -78,24 +75,24 @@ module.exports = class Daily extends Command {
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM)
             ]);
 
+            // Prepare the embed
             const embed = client
                 .embed()
                 .setColor(color.main)
-                .setTitle(`${ctx.author.displayName} claimed their daily reward!`)
-                .setThumbnail(client.utils.emojiToImage(`${hours >= 6 && hours < 18 ? `${emoji.time.day}` : `${emoji.time.night}`}`))
+                .setTitle(dailyMessages.title.replace('%{displayName}', ctx.author.displayName))
+                .setThumbnail(client.utils.emojiToImage(hours >= 6 && hours < 18 ? emoji.time.day : emoji.time.night))
                 .setDescription(
-                    client.i18n.get(language, 'commands', 'daily_success', {
-                        coinEmote: emoji.coin,
-                        coin: client.utils.formatNumber(baseCoins),
-                        exp: client.utils.formatNumber(baseExp),
-                    })
+                    dailyMessages.success
+                        .replace('%{coinEmote}', emoji.coin)
+                        .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                        .replace('%{exp}', client.utils.formatNumber(baseExp))
                 );
 
             return await ctx.sendMessage({ embeds: [embed] });
 
         } catch (error) {
             console.error('Error processing daily command:', error);
-            return client.utils.sendErrorMessage(client, ctx, 'There was an error processing your daily claim.', color);
+            return client.utils.sendErrorMessage(client, ctx, dailyMessages.errors.fetchFail, color);
         }
     }
 };

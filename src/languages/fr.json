@@ -1,0 +1,187 @@
+{
+	"generalMessages": {
+		"permissionsClientError": "Je n'ai pas assez de permissions pour exécuter cette commande.",
+		"permissionsUserError": "Vous n'avez pas assez de permissions pour utiliser cette commande.",
+		"argumentsMissingTitle": "Arguments Manquants",
+		"argumentsMissingDescription": "Veuillez fournir les arguments requis pour la commande `{commandName}`.",
+		"usageHeader": "Utilisation",
+		"examplesHeader": "Exemples",
+		"syntaxInstructions": "Syntaxe : [] = optionnel, <> = requis",
+		"noEveryoneOrHereError": "Vous ne pouvez pas utiliser cette commande avec tout le monde ou ici.",
+		"userNotFound": "Utilisateur non trouvé dans la base de données.",
+		"alreadyInGame": "Vous êtes déjà dans un jeu. Veuillez terminer votre jeu actuel avant de commencer un nouveau.",
+		"zeroBalance": "Votre solde est nul. Veuillez gagner des pièces avant d'essayer à nouveau.",
+		"invalidAmount": "Montant invalide. Veuillez entrer un nombre positif."
+	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "Temps de Mordre !",
+			"description": "mord affectueusement",
+			"errors": {
+				"noUser": "Vous devez mentionner un utilisateur à mordre.",
+				"selfBite": "Vous ne pouvez pas vous mordre.",
+				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de morsure."
+			}
+		},
+		"hugMessages": {
+			"title": "Temps de Câlin !",
+			"description": "donne un câlin chaleureux à",
+			"errors": {
+				"noUser": "Vous devez mentionner un utilisateur à câliner.",
+				"selfHug": "Vous ne pouvez pas vous câliner.",
+				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de câlin."
+			}
+		},
+		"kissMessages": {
+			"title": "Temps de Bisous !",
+			"description": "donne un petit bisou à",
+			"errors": {
+				"noUser": "Vous devez mentionner un utilisateur à embrasser.",
+				"selfKiss": "Vous ne pouvez pas vous embrasser.",
+				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de bisou."
+			}
+		},
+		"punchMessages": {
+			"title": "Temps de Frapper !",
+			"description": "donne un coup amical à",
+			"errors": {
+				"noUser": "Vous devez mentionner un utilisateur à frapper.",
+				"selfPunch": "Vous ne pouvez pas vous frapper.",
+				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de coup."
+			}
+		},
+		"slapMessages": {
+			"title": "Temps de Gifler !",
+			"description": "donne une gifle affectueuse à",
+			"errors": {
+				"noUser": "Vous devez mentionner un utilisateur à gifler.",
+				"selfSlap": "Vous ne pouvez pas vous gifler.",
+				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de gifle."
+			}
+		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"title": "Solde de %{displayName}",
+			"description": "%{coinEmote} **`%{coin}`** pièces\n%{bankEmote} **`%{bank}`** pièces",
+			"errors": {
+				"noUser": "Utilisateur non trouvé.",
+				"fetchFail": "Une erreur s'est produite lors de la récupération de votre solde."
+			}
+		},
+		"dailyMessages": {
+			"title": "Récompense Quotidienne de %{displayName}",
+			"success": "%{coinEmote} **`+%{coin}`** pièces\nXP: **`+%{exp}`** xp",
+			"cooldown": "Votre récompense quotidienne est en attente. Veuillez réessayer après **%{time}**.",
+			"errors": {
+				"noUser": "Utilisateur non trouvé.",
+				"fetchFail": "Une erreur s'est produite lors du traitement de votre demande quotidienne."
+			}
+		},
+		"depositMessages": {
+			"zeroBalance": "Vous n'avez aucune pièce à déposer.",
+			"invalidAmount": "Montant invalide. Veuillez entrer un nombre valide ou utiliser `tout` ou `moitié`.",
+			"success": "Vous avez déposé %{coinEmote} **`%{amount}`** pièces dans votre banque.",
+			"errors": {
+				"noUser": "Utilisateur non trouvé."
+			}
+		},
+		"gomaMessages": {
+			"success": {
+				"title": "vous avez réclamé goma !",
+				"description": "Vous avez gagné %{coinEmote} **`%{coin}`** pièces."
+			},
+			"cooldown": "Goma est en attente !\nRéessayez après **%{minutes}mins et %{seconds}secs**.",
+			"errors": {
+				"noUser": "Utilisateur non trouvé."
+			}
+		},
+		"peachyMessages": {
+			"errors": {
+				"noUser": "Utilisateur non trouvé."
+			},
+			"cooldown": "Peachy est en attente !\nRéessayez après **%{minutes}mins et %{seconds}secs**.",
+			"success": {
+				"title": "vous avez réclamé peachy !",
+				"description": "Vous avez gagné %{coinEmote} **`%{coin}`** pièces."
+			}
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "Personne n'a encore gagné de pièces.",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "Personne n'a encore de série.",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "Personne n'a encore de série.",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "Type de classement invalide."
+		},
+		"transferMessages": {
+			"selfTransfer": "Vous ne pouvez pas transférer des pièces à vous-même.",
+			"botTransfer": "Vous ne pouvez pas transférer des pièces au bot.",
+			"pendingTransfer": "Vous avez déjà un transfert en attente. Veuillez le confirmer ou l'annuler avant de commencer un nouveau.",
+			"invalidAmount": "Veuillez mentionner un utilisateur valide et un montant.",
+			"noUser": "Veuillez mentionner un utilisateur valide.",
+			"balanceNotExist": "Votre enregistrement de solde n'existe pas.",
+			"insufficientBalance": "Montant spécifié invalide ou solde insuffisant.",
+			"zeroBalance": "Vous n'avez pas de pièces à transférer.",
+			"transactionConfirm": "Vous êtes sur le point de donner {{amount}} {{emoji}} à {{user}}. Confirmer ?",
+			"transactionSuccess": "Vous avez donné {{amount}} {{emoji}} à {{user}}.",
+			"transactionCancel": "Vous avez annulé la transaction. Aucune pièce n'a été transférée.",
+			"transactionTimeout": "La transaction a expiré en raison d'inactivité. Veuillez réessayer.",
+			"transactionTimeoutAction": "Si vous souhaitez effectuer un transfert, veuillez réinitier la commande.",
+			"amountTooHigh": "Le montant dépasse votre solde disponible.",
+			"transferTooFrequent": "Vous transférez des pièces trop fréquemment. Veuillez attendre un moment.",
+			"transferLimitExceeded": "Vous avez dépassé la limite de transfert maximum.",
+			"transferInsufficientFunds": "Vous n'avez pas assez de pièces pour compléter ce transfert.",
+			"transferInvalidUser": "L'utilisateur spécifié n'est pas valide ou introuvable.",
+			"transferConfirmPrompt": "Confirmez le transfert en cliquant sur le bouton ci-dessous.",
+			"transactionExpired": "Transaction Expirée"
+		},
+		"weeklyMessages": {
+			"userNotFound": "Utilisateur non trouvé.",
+			"cooldown": {
+				"multipleDays": "Hebdomadaire est en attente !\nRéessayez après **{{days}} jour{{days > 1 ? 's' : ''}} et {{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, et **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
+				"singleDay": "Hebdomadaire est en attente !\nRéessayez après **{{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, et **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
+				"noDays": "Hebdomadaire est en attente !\nRéessayez après **{{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, et **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**."
+			},
+			"success": {
+				"title": "Récompense Hebdomadaire de %{displayName}",
+				"description": "%{coinEmote} **`+%{coin}`** pièces"
+			}
+		}
+	},
+	"information": {
+		"helpMessages": {
+			"title": "𝐃𝐄𝐒 𝐓𝐀𝐑𝐆𝐄𝐓𝐒 𝐃𝐄 𝐌𝐀𝐈𝐍",
+			"description": "Voici les commandes disponibles :",
+			"note": "Remarque : Certaines commandes peuvent afficher des noms d'utilisateur dans les listes récupérées par le bot.",
+			"footer": "© Copyright Par KYUU",
+			"supportButton": "Cliquez pour le support",
+			"commandNotFound": "Commande non trouvée :",
+			"commandTitle": "Aide pour la commande",
+			"category": "Catégorie",
+			"aliases": "Alias :",
+			"cooldown": "Temps de recharge",
+			"botPermissions": "Permissions du bot :",
+			"examples": "Exemple(s) :"
+		},
+		"infoMessages": {
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
+			"description": "est votre bot Discord polyvalent conçu pour le plaisir, le divertissement et l'utilité. Avec ses fonctionnalités, tentez votre chance au jeu, jouez à des mini-jeux, et bien plus encore!",
+			"developer": {
+				"title": "𝐃𝐄𝐕",
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+			},
+			"footer": "Vous avez des problèmes, avez besoin d'aide ou souhaitez signaler des bugs ? Cliquez sur le lien ci-dessous",
+			"supportButton": {
+				"label": "Cliquez pour le support"
+			}
+		}
+	}
+}

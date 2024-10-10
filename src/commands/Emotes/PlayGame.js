@@ -24,16 +24,25 @@ module.exports = class PlayGame extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmote = client.utils.getRandomElement(emoji.emotes.playing);
-        const emoteImageUrl = client.utils.emojiToImage(randomEmote);
+        const playGameMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.playGameMessages;
 
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Game Time! ${emoji.mainRight}`)
-            .setImage(emoteImageUrl)
-            .setDescription('Get ready to play! Here\'s an emote to get you in the game mood.');
+        try {
+            const randomEmote = client.utils.getRandomElement(emoji.emotes.playing);
+            const emoteImageUrl = client.utils.emojiToImage(randomEmote);
 
-        await ctx.sendMessage({ embeds: [embed] });
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(playGameMessages.title) // Use localized title
+                .setImage(emoteImageUrl)
+                .setDescription(playGameMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                });
+
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Error processing play game command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, playGameMessages.error, color); // Use localized error message
+        }
     }
 };

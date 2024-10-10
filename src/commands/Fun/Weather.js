@@ -8,33 +8,33 @@ const API_KEY = 'd3c2eb6da3eeb3cdceb520c68679fc00'; // Your Weatherstack API key
 const BASE_URL = 'http://api.weatherstack.com/current';
 
 const weatherEmojis = {
-    "clear": "☀️",           // Clear sky
-    "sunny": "🌞",            // Sunny
-    "partly_cloudy": "⛅",    // Partly cloudy
-    "cloudy": "☁️",          // Cloudy
-    "overcast": "🌥️",        // Overcast
-    "foggy": "🌫️",           // Foggy
-    "misty": "🌁",            // Misty
-    "rain": "🌧️",            // Rain
-    "light_rain": "🌦️",      // Light rain
-    "heavy_rain": "🌧️",      // Heavy rain
-    "thundery_showers": "⛈️",// Thundery showers
-    "snow": "❄️",            // Snow
-    "light_snow": "🌨️",      // Light snow
-    "heavy_snow": "❄️",      // Heavy snow
-    "sleet": "🌧️❄️",        // Sleet
-    "hail": "🌨️",            // Hail
-    "windy": "💨",           // Windy
-    "stormy": "🌩️",         // Stormy
-    "torrential_rain": "🌧️", // Torrential rain
-    "blizzard": "🌨️❄️💨",   // Blizzard
-    "thunderstorm": "⛈️",    // Thunderstorm
-    "hazy": "🌫️",           // Hazy
-    "dusty": "🌪️",          // Dusty
-    "humid": "💦",           // Humid
-    "drizzle": "🌦️",        // Drizzle
-    "patchy_rain": "🌧️",    // Patchy rain
-    "patchy_snow": "🌨️",    // Patchy snow
+    "clear": "☀️",
+    "sunny": "🌞",
+    "partly_cloudy": "⛅",
+    "cloudy": "☁️",
+    "overcast": "🌥️",
+    "foggy": "🌫️",
+    "misty": "🌁",
+    "rain": "🌧️",
+    "light_rain": "🌦️",
+    "heavy_rain": "🌧️",
+    "thundery_showers": "⛈️",
+    "snow": "❄️",
+    "light_snow": "🌨️",
+    "heavy_snow": "❄️",
+    "sleet": "🌧️❄️",
+    "hail": "🌨️",
+    "windy": "💨",
+    "stormy": "🌩️",
+    "torrential_rain": "🌧️",
+    "blizzard": "🌨️❄️💨",
+    "thunderstorm": "⛈️",
+    "hazy": "🌫️",
+    "dusty": "🌪️",
+    "humid": "💦",
+    "drizzle": "🌦️",
+    "patchy_rain": "🌧️",
+    "patchy_snow": "🌨️",
 };
 
 // Get emoji based on weather description
@@ -67,8 +67,8 @@ module.exports = class Weather extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const selectedProvinces = Provinces; // All provinces
-
+        const selectedProvinces = Provinces;
+        const weather = language.locales.get(language.defaultLocale)?.funMessage?.weather;
         const pages = [];
         const itemsPerPage = 5; // Adjust the number of provinces per page
         const totalPages = Math.ceil(selectedProvinces.length / itemsPerPage);
@@ -76,7 +76,7 @@ module.exports = class Weather extends Command {
         for (let i = 0; i < totalPages; i++) {
             const embed = client.embed()
                 .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} 𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒 ${emoji.mainRight}`)
+                .setTitle(`${emoji.mainLeft} ${weather.title} ${emoji.mainRight}`)
                 .setImage('https://i.imgur.com/5CZWtLN.png')
                 .setFooter({
                     text: `Request By ${ctx.author.displayName}`,
@@ -86,14 +86,14 @@ module.exports = class Weather extends Command {
             pages.push({ embed });
         }
 
-        await paginateWeather(client, ctx, pages);
+        await paginateWeather(client, ctx, pages, color, weather);
     }
 };
 
-async function paginateWeather(client, ctx, pages, color) {
+async function paginateWeather(client, ctx, pages, color, language) {
     let page = 0;
     let selectedItemIndex = null;
-    let selectedProvinceName = 'Select a province';
+    let selectedProvinceName = language.selectProvince;
 
     const getButtonRow = () => {
         const homeButton = emojiButton('home', '🏠', 2); // Home button
@@ -108,7 +108,7 @@ async function paginateWeather(client, ctx, pages, color) {
         const itemSelect = new StringSelectMenuBuilder()
             .setCustomId('item_select')
             .setPlaceholder(selectedProvinceName)
-            .addOptions(itemOptions.length ? itemOptions : [{ label: 'No provinces available', value: 'none' }]);
+            .addOptions(itemOptions.length ? itemOptions : [{ label: language.noProvinces, value: 'none' }]);
 
         const row1 = new ActionRowBuilder().addComponents(itemSelect);
         const row2 = new ActionRowBuilder().addComponents(homeButton, prevButton, nextButton);
@@ -119,20 +119,19 @@ async function paginateWeather(client, ctx, pages, color) {
     const displayWeatherDetails = async (index) => {
         const province = Provinces[index];
         if (!province) {
-            console.error('Province not found at index:', index);
             return client.embed()
-                .setDescription('Province not found.')
+                .setDescription(language.provinceNotFound) // Use localization for error message
                 .setColor(color.red);
         }
 
         const weather = await fetchWeather(province.englishName);
-        const weatherEmoji = getWeatherEmoji(weather.description);
+        const weatherEmoji = getWeatherEmoji(weather?.description);
 
         if (!weather) {
             return client.embed()
                 .setColor(color.red)
-                .setTitle(`${province.englishName === 'Phnom Penh' ? `អាកាសធាតុសម្រាប់ក្រុង${province.name}`: `អាកាសធាតុសម្រាប់ខេត្ត${province.name}`}`)
-                .setDescription('Failed to retrieve weather data. Please check the API key or try again later.')
+                .setTitle(`${province.englishName === 'Phnom Penh' ? `អាកាសធាតុសម្រាប់ក្រុង ${province.name}` : `អាកាសធាតុសម្រាប់ខេត្ត ${province.name}`}`)
+                .setDescription(language.dataFetchFailed) // Use localization for error message
                 .setFooter({
                     text: `Request By ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
@@ -141,7 +140,7 @@ async function paginateWeather(client, ctx, pages, color) {
 
         return client.embed()
             .setColor(color.main)
-            .setTitle(`${province.englishName === 'Phnom Penh' ? `អាកាសធាតុសម្រាប់ក្រុង${province.name}`: `អាកាសធាតុសម្រាប់ខេត្ត${province.name}`}`)
+            .setTitle(`${province.englishName === 'Phnom Penh' ? `អាកាសធាតុសម្រាប់ក្រុង ${province.name}` : `អាកាសធាតុសម្រាប់ខេត្ត ${province.name}`}`)
             .setThumbnail(client.utils.emojiToImage(weatherEmoji))
             .setDescription(`**អាកាសធាតុ :** ${weather.description} ${weatherEmoji}\n**សីតុណ្ហភាព :** ${weather.temp}°C\n**សំណើម :** ${weather.humidity}%`)
             .setImage(province.image)
@@ -163,7 +162,6 @@ async function paginateWeather(client, ctx, pages, color) {
             const data = response.data;
 
             if (!data || !data.current) {
-                console.error('Invalid data from Weatherstack:', data);
                 return null;
             }
 
@@ -196,7 +194,7 @@ async function paginateWeather(client, ctx, pages, color) {
         if (ctx.author.id === int.user.id) {
             if (int.customId === 'home') {
                 selectedItemIndex = null;
-                selectedProvinceName = 'Select a province';
+                selectedProvinceName = language.selectProvince;
                 page = 0;
                 await int.update({ ...getButtonRow(), embeds: [pages[page]?.embed] });
             } else if (int.customId === 'prev_item') {
@@ -212,21 +210,14 @@ async function paginateWeather(client, ctx, pages, color) {
                 const embed = await displayWeatherDetails(selectedItemIndex);
                 await int.update({ embeds: [embed], components: getButtonRow().components });
             } else if (int.customId === 'item_select') {
-                selectedItemIndex = Provinces.findIndex(p => p.id === int.values[0]);
-                if (selectedItemIndex !== -1) {
-                    selectedProvinceName = Provinces[selectedItemIndex].name;
-                    const embed = await displayWeatherDetails(selectedItemIndex);
-                    await int.update({ embeds: [embed], components: getButtonRow().components });
-                } else {
-                    await int.update({ embeds: [client.embed().setDescription('Province not found.').setColor(color.red)], components: getButtonRow().components });
-                }
+                selectedItemIndex = int.values[0]; // Get the selected province ID
+                const embed = await displayWeatherDetails(selectedItemIndex);
+                await int.update({ embeds: [embed], components: getButtonRow().components });
             }
-        } else {
-            await int.reply({ content: 'You cannot interact with this menu.', ephemeral: true });
         }
     });
 
     collector.on('end', () => {
-        msg.edit({ components: [] });
+        msg.edit({ components: [] }); // Disable buttons after timeout
     });
 }

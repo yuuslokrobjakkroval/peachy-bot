@@ -31,29 +31,35 @@ module.exports = class Hug extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+
+        const hugMessages = language.locales.get(language.defaultLocale)?.actionMessages?.hugMessages;
+        const errorMessages = hugMessages.errors;
+
         const target = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
-
         if (!target || target.id === ctx.author.id) {
             let errorMessage = '';
-            if (!target) errorMessage += 'You need to mention a user to hug.';
-            if (target.id === ctx.author.id) errorMessage += 'You cannot hug yourself.';
+            if (!target) errorMessage += errorMessages.noUser;
+            if (target && target.id === ctx.author.id) errorMessage += `\n${errorMessages.selfHug}`;
 
-            return await ctx.sendMessage({ content: errorMessage });
+            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
         try {
             const randomEmoji = client.utils.getRandomElement(emoji.actions.hugs);
+
+            // Create the embed message for hugging
             const embed = client.embed()
                 .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} Hug Time! ${emoji.mainRight}`)
+                .setTitle(`${emoji.mainLeft} ${hugMessages.title} ${emoji.mainRight}`)
                 .setImage(client.utils.emojiToImage(randomEmoji))
-                .setDescription(`${ctx.author.displayName} gives ${target.displayName} a warm hug!`);
+                .setDescription(`${ctx.author.displayName} ${hugMessages.description} ${target.displayName}!`);
+
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch hug GIF:', error);
-            return await ctx.sendMessage({ content: 'Something went wrong while fetching the hug GIF.' });
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
         }
     }
 };

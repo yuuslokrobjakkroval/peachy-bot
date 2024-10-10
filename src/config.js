@@ -35,7 +35,7 @@ module.exports = {
   production: parseBoolean(process.env.PRODUCTION) || true,
   keepAlive: parseBoolean(process.env.KEEP_ALIVE) || false,
   language: {
-    defaultLocale: 'en-US', // "en" = default language
+    defaultLocale: 'en', // "en" = default language
     directory: path.resolve('./src/languages'), // <= location of language
   },
   links: {

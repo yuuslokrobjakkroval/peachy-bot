@@ -24,14 +24,23 @@ module.exports = class Laugh extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.laugh);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Laughing Out Loud! ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Share a hearty laugh and spread some joy!');
+        const laughMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.laughMessages; // Access localized messages
 
-        await ctx.sendMessage({ embeds: [embed] });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.laugh); // Get a random laugh emoji
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(laughMessages.title) // Use localized title
+                .setDescription(laughMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                })
+                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random laugh emoji image
+
+            await ctx.sendMessage({ embeds: [embed] }); // Send the embed message
+        } catch (error) {
+            console.error('Error processing laugh command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, laughMessages.error, color); // Use localized error message
+        }
     }
 };

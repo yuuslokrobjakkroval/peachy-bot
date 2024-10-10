@@ -22,15 +22,25 @@ module.exports = class Makeup extends Command {
             options: [],
         });
     }
-    async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.makeUp);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Makeup Time! ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Apply some fabulous makeup and shine bright!');
 
-        await ctx.sendMessage({ embeds: [embed] });
+    async run(client, ctx, args, color, emoji, language) {
+        const makeupMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.makeupMessages;
+
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.makeUp);
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(makeupMessages.title) // Use localized title
+                .setDescription(makeupMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                })
+                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random makeup emoji image
+
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Error processing makeup command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, makeupMessages.error, color); // Use localized error message
+        }
     }
 };

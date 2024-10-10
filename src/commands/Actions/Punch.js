@@ -22,7 +22,7 @@ module.exports = class Punch extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'Mention the user you want to punch',
+                    description: 'Mention the user you want to punch.',
                     type: 6, // USER type
                     required: true,
                 },
@@ -31,30 +31,39 @@ module.exports = class Punch extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const author = ctx.author;
+        // Fetch translated messages from the language object
+        const punchMessages = language.locales.get(language.defaultLocale)?.actionMessages?.punchMessages;
+        const errorMessages = punchMessages.errors;
+
+        // Fetch the target user
         const target = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
+        // Handle errors for missing user or self-punch
         if (!target || target.id === ctx.author.id) {
             let errorMessage = '';
-            if (!target) errorMessage += 'You need to mention a user to punch.';
-            if (target.id === ctx.author.id) errorMessage += 'You cannot punch yourself.';
+            if (!target) errorMessage += errorMessages.noUser; // "You need to mention a user to punch."
+            if (target && target.id === ctx.author.id) errorMessage += `\n${errorMessages.selfPunch}`; // "You cannot punch yourself."
 
-            return await ctx.sendMessage({ content: errorMessage });
+            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
         try {
             const randomEmoji = client.utils.getRandomElement(emoji.actions.punches);
+
+            // Create the embed for the punch action
             const embed = client.embed()
                 .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} Punch Time! ${emoji.mainRight}`)
-                .setImage(client.utils.emojiToImage(randomEmoji))
-                .setDescription(`${ctx.author.displayName} playfully punches ${target.displayName}!`);
+                .setTitle(`${emoji.mainLeft} ${punchMessages.title} ${emoji.mainRight}`)
+                .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is a valid URL or attachment
+                .setDescription(`${ctx.author.displayName} ${punchMessages.description} ${target.displayName}!`);
+
+            // Send the embed message
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch punch GIF:', error);
-            return await ctx.sendMessage({ content: 'Something went wrong while fetching the punch GIF.' });
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color); // "Something went wrong while fetching the punch GIF."
         }
     }
 };

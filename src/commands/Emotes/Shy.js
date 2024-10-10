@@ -24,14 +24,23 @@ module.exports = class Shy extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.shy);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Shy! ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Show off your shy expression!');
+        const shyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.shyMessages;
 
-        await ctx.sendMessage({ embeds: [embed] });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.shy);
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(shyMessages.title) // Use localized title
+                .setImage(client.utils.emojiToImage(randomEmoji)) // Set random shy emoji image
+                .setDescription(shyMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                });
+
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Error processing shy command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, shyMessages.error, color); // Use localized error message
+        }
     }
 };

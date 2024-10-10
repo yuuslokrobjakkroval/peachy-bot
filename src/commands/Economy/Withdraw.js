@@ -32,20 +32,29 @@ module.exports = class Withdraw extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const withdrawMessages = language.locales.get(language.defaultLocale)?.economyMessages?.withdrawMessages; // Access messages
+
         const user = await Users.findOne({ userId: ctx.author.id });
+        if (!user) {
+            return await client.utils.sendErrorMessage(client, ctx, withdrawMessages.noUser, color);
+        }
+
         const { coin, bank } = user.balance;
 
-        if (bank < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'), color);
+        if (bank < 1) {
+            return await client.utils.sendErrorMessage(client, ctx, withdrawMessages.zeroBalance, color);
+        }
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || bank : args[0] || bank;
         if (isNaN(amount) || amount < 1 || amount.toString().includes('.') || amount.toString().includes(',')) {
             const amountMap = { all: bank, half: Math.ceil(bank / 2) };
 
-            if (amount in amountMap) amount = amountMap[amount];
-            else {
+            if (amount in amountMap) {
+                amount = amountMap[amount];
+            } else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
+                        client.embed().setColor(color.red).setDescription(withdrawMessages.invalidAmount),
                     ],
                 });
             }
@@ -53,19 +62,24 @@ module.exports = class Withdraw extends Command {
 
         const baseCoins = parseInt(Math.min(amount, bank));
 
+        if (baseCoins > bank) {
+            return await client.utils.sendErrorMessage(client, ctx, withdrawMessages.tooHigh, color);
+        }
+
         const newCoin = coin + baseCoins;
         const newBank = bank - baseCoins;
 
         const embed = client
             .embed()
             .setColor(color.main)
-            .setDescription(`You have withdraw ${emoji.coin} **\`${client.utils.formatNumber(baseCoins)}\`** coins to your bank.`);
+            .setDescription(withdrawMessages.success, {
+                coinEmote: emoji.coin,
+                user: ctx.author.username,
+                amount: client.utils.formatNumber(baseCoins),
+            });
 
-        await Promise.all([
-            Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newCoin, 'balance.bank': newBank } }).exec(),
-        ]);
+        await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newCoin, 'balance.bank': newBank } }).exec();
 
         return await ctx.sendMessage({ embeds: [embed] });
     }
 };
-

@@ -1,0 +1,363 @@
+{
+	"generalMessages": {
+		"permissionsClientError": "Ich habe nicht genügend Berechtigungen, um diesen Befehl auszuführen.",
+		"permissionsUserError": "Sie verfügen nicht über ausreichende Berechtigungen, um diesen Befehl zu verwenden.",
+		"argumentsMissingTitle": "Fehlende Argumente",
+		"argumentsMissingDescription": "Bitte geben Sie die erforderlichen Argumente für den Befehl „{commandName}“ an.",
+		"usageHeader": "Verwendung",
+		"examplesHeader": "Beispiele",
+		"syntaxInstructions": "Syntax: [] = optional, <> = erforderlich",
+		"noEveryoneOrHereError": "Sie können diesen Befehl nicht für alle oder hier verwenden.",
+		"userNotFound": "Benutzer nicht in der Datenbank gefunden.",
+		"alreadyInGame": "Sie befinden sich bereits in einem Spiel. ",
+		"zeroBalance": "Ihr Guthaben ist Null. ",
+		"invalidAmount": "Ungültiger Betrag. "
+	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "Bisszeit!",
+			"description": "beißt spielerisch",
+			"errors": {
+				"noUser": "Sie müssen einen Benutzer zum Beißen erwähnen.",
+				"selfBite": "Du kannst dich nicht selbst beißen.",
+				"fetchFail": "Beim Abrufen des Biss-GIF ist ein Fehler aufgetreten."
+			}
+		},
+		"hugMessages": {
+			"title": "Zeit für eine Umarmung!",
+			"description": "umarmt ihn herzlich",
+			"errors": {
+				"noUser": "Sie müssen einen Benutzer erwähnen, den Sie umarmen möchten.",
+				"selfHug": "Du kannst dich nicht selbst umarmen.",
+				"fetchFail": "Beim Abrufen des Umarmungs-GIF ist ein Fehler aufgetreten."
+			}
+		},
+		"kissMessages": {
+			"title": "Kuss-Zeit!",
+			"description": "gibt einen süßen Kuss",
+			"errors": {
+				"noUser": "Sie müssen einen Benutzer zum Küssen erwähnen.",
+				"selfKiss": "Du kannst dich nicht selbst küssen.",
+				"fetchFail": "Beim Abrufen des Kuss-GIF ist ein Fehler aufgetreten."
+			}
+		},
+		"punchMessages": {
+			"title": "Schlagzeit!",
+			"description": "wirft einen spielerischen Schlag auf",
+			"errors": {
+				"noUser": "Sie müssen einen Benutzer zum Schlagen erwähnen.",
+				"selfPunch": "Du kannst dich nicht selbst schlagen.",
+				"fetchFail": "Beim Abrufen des Punch-GIF ist ein Fehler aufgetreten."
+			}
+		},
+		"slapMessages": {
+			"title": "Schlagzeit!",
+			"description": "spielerisch Ohrfeigen",
+			"errors": {
+				"noUser": "Sie müssen einen Benutzer erwähnen, den Sie schlagen möchten.",
+				"selfSlap": "Du kannst dich nicht selbst schlagen.",
+				"fetchFail": "Beim Abrufen des Schlag-GIF ist ein Fehler aufgetreten."
+			}
+		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"title": "Restbetrag von %{displayName}",
+			"description": "%{coinEmote} **`%{coin}`** Münzen\n",
+			"errors": {
+				"noUser": "Benutzer nicht gefunden.",
+				"fetchFail": "Beim Abrufen Ihres Guthabens ist ein Fehler aufgetreten."
+			}
+		},
+		"dailyMessages": {
+			"title": "%{displayName}s tägliche Belohnung",
+			"success": "%{coinEmote} **`+%{coin}`** Münzen\n",
+			"cooldown": "Deine tägliche Belohnung läuft im Cooldown. ",
+			"errors": {
+				"noUser": "Benutzer nicht gefunden.",
+				"fetchFail": "Bei der Verarbeitung Ihres täglichen Anspruchs ist ein Fehler aufgetreten."
+			}
+		},
+		"depositMessages": {
+			"zeroBalance": "Sie haben keine Münzen zum Einzahlen.",
+			"invalidAmount": "Ungültiger Betrag. ",
+			"success": "Sie haben %{coinEmote} **`%{amount}`** Münzen bei Ihrer Bank eingezahlt.",
+			"errors": {
+				"noUser": "Benutzer nicht gefunden."
+			}
+		},
+		"gomaMessages": {
+			"success": {
+				"title": "habe Goma beansprucht!",
+				"description": "Sie haben %{coinEmote} **`%{coin}`** Münzen verdient."
+			},
+			"cooldown": "Goma ist im Cooldown!\n",
+			"errors": {
+				"noUser": "Benutzer nicht gefunden."
+			}
+		},
+		"peachyMessages": {
+			"errors": {
+				"noUser": "Benutzer nicht gefunden."
+			},
+			"cooldown": "Peachy ist in der Abklingzeit!\n",
+			"success": {
+				"title": "habe pfirsichfarben behauptet!",
+				"description": "Sie haben %{coinEmote} **`%{coin}`** Münzen verdient."
+			}
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "Bisher hat noch niemand Münzen gewonnen.",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "Noch hat niemand einen Streak.",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "Noch hat niemand einen Streak.",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "Ungültiger Bestenlistentyp."
+		},
+		"transferMessages": {
+			"selfTransfer": "Sie können keine Münzen auf sich selbst übertragen.",
+			"botTransfer": "Sie können keine Münzen an den Bot übertragen.",
+			"pendingTransfer": "Sie haben bereits eine ausstehende Überweisung. ",
+			"invalidAmount": "Bitte geben Sie einen gültigen Benutzer und Betrag an.",
+			"noUser": "Bitte geben Sie einen gültigen Benutzer an.",
+			"balanceNotExist": "Ihr Saldendatensatz existiert nicht.",
+			"insufficientBalance": "Ungültiger Betrag angegeben oder unzureichender Saldo.",
+			"zeroBalance": "Sie haben keine Münzen zum Übertragen.",
+			"transactionConfirm": "Du bist im Begriff zu geben {{amount}} {{emoji}} Zu {{user}}. ",
+			"transactionSuccess": "Du hast gegeben {{amount}} {{emoji}} Zu {{user}}.",
+			"transactionCancel": "Sie haben die Transaktion abgebrochen. ",
+			"transactionTimeout": "Die Transaktion ist aufgrund von Inaktivität abgelaufen. ",
+			"transactionTimeoutAction": "Wenn Sie eine Übertragung durchführen möchten, starten Sie den Befehl bitte erneut.",
+			"amountTooHigh": "Der Betrag übersteigt Ihr verfügbares Guthaben.",
+			"transferTooFrequent": "Sie überweisen zu häufig Münzen. ",
+			"transferLimitExceeded": "Sie haben das maximale Übertragungslimit überschritten.",
+			"transferInsufficientFunds": "Sie haben nicht genügend Münzen, um diese Übertragung abzuschließen.",
+			"transferInvalidUser": "Der angegebene Benutzer ist ungültig oder wurde nicht gefunden.",
+			"transferConfirmPrompt": "Bestätigen Sie die Übertragung, indem Sie auf die Schaltfläche unten klicken.",
+			"transactionExpired": "Transaktion abgelaufen"
+		},
+		"weeklyMessages": {
+			"userNotFound": "Benutzer nicht gefunden.",
+			"cooldown": {
+				"multipleDays": "Wöchentlich ist in der Abklingzeit!\n{{days}} Tag{{days > 1 ? 's' : ''}} Und {{hours}}Std{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, Und **{{seconds}}Sek{{seconds > 1 ? 's' : ''}}**.",
+				"singleDay": "Wöchentlich ist in der Abklingzeit!\n{{days}} Tag, {{hours}}Std{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, Und {{seconds}}Sek{{seconds > 1 ? 's' : ''}}**.",
+				"noDays": "Wöchentlich ist in der Abklingzeit!\n{{hours}}Std{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, Und {{seconds}}Sek{{seconds > 1 ? 's' : ''}}**."
+			},
+			"success": "{{coinEmote}} **Glückwunsch, {{user}}!**\n{{coin}} Münzen** und **{{exp}} XP**!",
+			"error": "Bei der Bearbeitung Ihres wöchentlichen Anspruchs ist ein Fehler aufgetreten."
+		},
+		"withdrawMessages": {
+			"noUser": "Benutzer nicht gefunden.",
+			"zeroBalance": "Sie haben keine Münzen auf Ihrer Bank.",
+			"invalidAmount": "Bitte geben Sie einen gültigen Betrag zum Abheben an. ",
+			"tooHigh": "Sie können nicht mehr abheben, als Sie auf Ihrer Bank haben.",
+			"success": "{{coinEmote}} **Erfolg, {{user}}!**\n{{amount}} Münzen** von Ihrer Bank.",
+			"error": "Bei der Verarbeitung Ihrer Auszahlungsanfrage ist ein Fehler aufgetreten."
+		}
+	},
+	"emoteMessages": {
+		"angryMessages": {
+			"title": "Wütende Zeit!",
+			"description": "**{{user}}** zeigt ihren wütendsten Gesichtsausdruck!",
+			"error": "Bei der Verarbeitung Ihres wütenden Emotes ist ein Fehler aufgetreten."
+		},
+		"cryMessages": {
+			"title": "Zeit zum Weinen!",
+			"description": "**{{user}}** weint!",
+			"error": "Bei der Verarbeitung deines Weinen-Emotes ist ein Fehler aufgetreten."
+		},
+		"cuteMessages": {
+			"title": "Süße Zeit!",
+			"description": "**{{user}}** zeigt ihren süßesten Gesichtsausdruck!",
+			"error": "Bei der Verarbeitung deines süßen Emotes ist ein Fehler aufgetreten."
+		},
+		"danceMessages": {
+			"title": "Tanzzeit!",
+			"description": "**{{user}}** zeigt einige beeindruckende Tanzbewegungen!",
+			"error": "Bei der Verarbeitung deines Tanz-Emotes ist ein Fehler aufgetreten."
+		},
+		"exerciseMessages": {
+			"title": "Übungszeit!",
+			"description": "**{{user}}**bewegt sich und bleibt fit!",
+			"error": "Bei der Verarbeitung Ihres Trainings-Emotes ist ein Fehler aufgetreten."
+		},
+		"happyMessages": {
+			"title": "Fröhliche Stimmung!",
+			"description": "**{{user}}** verbreitet Freude und Glück!",
+			"error": "Bei der Verarbeitung Ihres Glückwunsch-Emotes ist ein Fehler aufgetreten."
+		},
+		"laughMessages": {
+			"title": "Lautes Lachen!",
+			"description": "**{{user}}** lacht herzlich!",
+			"error": "Bei der Verarbeitung Ihres Lach-Emotes ist ein Fehler aufgetreten."
+		},
+		"makeupMessages": {
+			"title": "Make-up-Zeit!",
+			"description": "**{{user}}** Trägt fantastisches Make-up auf und strahlt strahlend!",
+			"error": "Bei der Verarbeitung deines Make-up-Emotes ist ein Fehler aufgetreten."
+		},
+		"eatMessages": {
+			"title": "Essenszeit!",
+			"description": "**{{user}}** genießt leckeres Essen!",
+			"error": "Bei der Verarbeitung deines Ess-Emotes ist ein Fehler aufgetreten."
+		},
+		"playGameMessages": {
+			"title": "Spielzeit!",
+			"description": "**{{user}}** macht sich bereit zum Spielen!",
+			"error": "Bei der Verarbeitung Ihres Spiel-Emotes ist ein Fehler aufgetreten."
+		},
+		"roarMessages": {
+			"title": "Zeit zum Brüllen!",
+			"description": "**{{user}}** stößt ein gewaltiges Brüllen aus!",
+			"error": "Bei der Verarbeitung Ihres Brüllen-Emotes ist ein Fehler aufgetreten."
+		},
+		"sadMessages": {
+			"title": "Traurig fühlen",
+			"description": "**{{user}}** drückt Traurigkeit aus.",
+			"error": "Bei der Verarbeitung deines traurigen Emotes ist ein Fehler aufgetreten."
+		},
+		"scareMessages": {
+			"title": "Verängstigt!",
+			"description": "**{{user}}** zeigt ihre ängstliche Seite!",
+			"error": "Bei der Verarbeitung deines Schreckens-Emotes ist ein Fehler aufgetreten."
+		},
+		"showerMessages": {
+			"title": "Duschzeit!",
+			"description": "**{{user}}** genießt eine erfrischende Dusche!",
+			"error": "Bei der Verarbeitung Ihres Dusch-Emotes ist ein Fehler aufgetreten."
+		},
+		"shyMessages": {
+			"title": "Schüchtern!",
+			"description": "**{{user}}** zeigt ihren schüchternen Gesichtsausdruck!",
+			"error": "Bei der Verarbeitung deines schüchternen Emotes ist ein Fehler aufgetreten."
+		}
+	},
+	"funMessage": {
+		"animalOfYear": {
+			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑",
+			"selectAnimal": "Wählen Sie ein Tier aus",
+			"noAnimals": "Keine Tiere vorhanden",
+			"animalNotFound": "Tier nicht gefunden.",
+			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Beschreibung",
+			"requestBy": "Anfrage von",
+			"id": "AUSWEIS"
+		},
+		"province": {
+			"title": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Wählen Sie eine Provinz aus",
+			"noProvinces": "Keine Provinzen verfügbar",
+			"notFound": "Provinz nicht gefunden.",
+			"detailTitle": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Beschreibung",
+			"requestBy": "Anfrage von",
+			"id": "AUSWEIS"
+		},
+		"randomColor": {
+			"title": "Hier ist eine zufällige Farbe für Sie!",
+			"description": "Farbe: {Farbe}",
+			"requestedBy": "Angefordert von"
+		},
+		"reverseText": {
+			"title": "Umgekehrter Text",
+			"description": "**Originaltext:** {originalText}\n",
+			"requestedBy": "Angefordert von"
+		},
+		"wallpaper": {
+			"selectCategory": "Wählen Sie eine Kategorie aus...",
+			"selectWallpaper": "Wählen Sie ein Hintergrundbild aus...",
+			"noWallpapers": "In dieser Kategorie sind keine Hintergrundbilder verfügbar.",
+			"wallpaperNotFound": "Hintergrundbild nicht gefunden.",
+			"wallpaperDetailsTitle": "Hintergrundbilddetails",
+			"descriptionLabel": "Beschreibung",
+			"categoryLabel": "Kategorie"
+		},
+		"weather": {
+			"title": "𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Wählen Sie eine Provinz aus",
+			"noProvinces": "Keine Provinzen verfügbar",
+			"notFound": "Provinz nicht gefunden.",
+			"provinceNotFound": "Provinz nicht gefunden.",
+			"dataFetchFailed": "Wetterdaten konnten nicht abgerufen werden. "
+		}
+	},
+	"gamblingMessages": {
+		"blackjackMessages": {
+			"title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
+			"youWon": "Du hast **`%{coin}`** %{coinEmote} gewonnen",
+			"youLost": "Du hast **`%{coin}`** %{coinEmote} verloren",
+			"bothBust": "Ihr seid beide kaputt!",
+			"tied": "Du hast gebunden!",
+			"winnerInfo": "Der Gewinner ist derjenige, der der 21 am nächsten kommt.",
+			"gameInProgress": "Dein Spiel ist im Gange!",
+			"gameOver": "Dein Spiel ist vorbei."
+		},
+		"slotMessages": {
+			"title": "𝐒𝐋𝐎𝐓𝐒",
+			"youBet": "Sie wetten **`%{coin}`** %{coinEmote}",
+			"youWon": "Du hast **`%{coin}`** %{coinEmote} gewonnen",
+			"youLost": "Du hast **`%{coin}`** %{coinEmote} verloren",
+			"gameInProgress": "Dein Spiel ist im Gange!",
+			"gameOver": "Dein Spiel ist vorbei."
+		},
+		"coinflipMessages": {
+			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
+			"description": "**%{author}** hat **`%{coin}`** %{coinEmote} ausgegeben, wähle **%{choice}**! ",
+			"resultDescription": "**%{author}** hat **`%{coin}`** %{coinEmote} ausgegeben, wählen Sie **%{choice}**",
+			"youWon": "Du hast **`%{coin}`** %{coinEmote} gewonnen",
+			"youLost": "Du hast **`%{coin}`** %{coinEmote} verloren",
+			"gameInProgress": "Dein Spiel ist im Gange!",
+			"gameOver": "Dein Spiel ist vorbei."
+		}
+	},
+	"inventoryMessages": {
+		"inventoryHeader": "%{author}s Inventar!",
+		"inventoryEmptyName": "Leeres Inventar",
+		"inventoryEmptyValue": "Ihr aktueller Lagerbestand ist leer.",
+		"itemNotFound": "Die Artikel-ID **`%{itemId}`** konnte im Shop nicht gefunden werden!",
+		"sellDisabled": "Der Verkauf dieses Artikels ist deaktiviert.",
+		"useDisabled": "Die Verwendung dieses Elements ist deaktiviert."
+	},
+	"themeMessages": {
+		"themeApplied": "Sie haben das Thema %{itemEmote} **`%{itemName}`** erfolgreich auf Ihre Einbettung angewendet!",
+		"themeUnavailable": "Das Thema **`%{itemName}`** ist nicht zur Verwendung verfügbar.",
+		"themeNotOwned": "Sie besitzen das Thema **`%{itemName}`** nicht. ",
+		"invalidThemeID": "Die Design-ID **`%{itemId}`** ist ungültig. ",
+		"themeAlreadyOwned": "Sie besitzen das Theme **`%{itemName}`** bereits und können es nicht erneut kaufen."
+	},
+	"information": {
+		"helpMessages": {
+			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
+			"description": "Hier sind die verfügbaren Befehle:",
+			"note": "Hinweis: Einige Befehle zeigen möglicherweise Benutzernamen in Listen an, die vom Bot abgerufen werden.",
+			"footer": "© Copyright von KYUU",
+			"supportButton": "Klicken Sie hier, um Unterstützung zu erhalten",
+			"commandNotFound": "Befehl nicht gefunden:",
+			"commandTitle": "Hilfe zum Befehl",
+			"category": "Kategorie",
+			"aliases": "Aliase:",
+			"cooldown": "Abklingzeit",
+			"botPermissions": "Bot-Berechtigungen:",
+			"examples": "Beispiel(e):"
+		},
+		"infoMessages": {
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
+			"description": "ist Ihr vielseitiger Discord-Bot, der für Spaß, Unterhaltung und Nützlichkeit konzipiert ist. ",
+			"developer": {
+				"title": "𝐃𝐄𝐕",
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+			},
+			"footer": "Haben Sie Probleme, benötigen Sie Hilfe oder möchten Sie Fehler melden? ",
+			"supportButton": {
+				"label": "Klicken Sie hier, um Unterstützung zu erhalten"
+			}
+		}
+	}
+}

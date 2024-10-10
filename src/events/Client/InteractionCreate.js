@@ -18,7 +18,7 @@ class InteractionCreate extends Event {
   }
 
   async run(interaction) {
-    const { color, emoji } = await this.client.setColorBasedOnTheme(interaction.user.id);
+    const { color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
     if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
       const command = this.client.commands.get(interaction.commandName);
       if (!command) return;
@@ -92,7 +92,7 @@ class InteractionCreate extends Event {
           }
         }
 
-        await command.run(this.client, ctx, ctx.args, color, emoji);
+        await command.run(this.client, ctx, ctx.args, color, emoji, language);
       } catch (error) {
         console.error(`Error handling command ${interaction.commandName}:`, error);
         await interaction.reply({

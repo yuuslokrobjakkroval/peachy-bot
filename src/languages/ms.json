@@ -1,0 +1,363 @@
+{
+	"generalMessages": {
+		"permissionsClientError": "Saya tidak mempunyai kebenaran yang mencukupi untuk melaksanakan arahan ini.",
+		"permissionsUserError": "Anda tidak mempunyai kebenaran yang mencukupi untuk menggunakan arahan ini.",
+		"argumentsMissingTitle": "Hilang Hujah",
+		"argumentsMissingDescription": "Sila berikan hujah yang diperlukan untuk perintah `{commandName}`.",
+		"usageHeader": "Penggunaan",
+		"examplesHeader": "Contoh",
+		"syntaxInstructions": "Sintaks: [] = pilihan, <> = diperlukan",
+		"noEveryoneOrHereError": "Anda tidak boleh menggunakan arahan ini dengan semua orang atau di sini.",
+		"userNotFound": "Pengguna tidak ditemui dalam pangkalan data.",
+		"alreadyInGame": "Anda sudah berada dalam permainan. ",
+		"zeroBalance": "Baki anda adalah sifar. ",
+		"invalidAmount": "Jumlah tidak sah. "
+	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "Masa Gigit!",
+			"description": "menggigit secara main-main",
+			"errors": {
+				"noUser": "Anda perlu menyebut pengguna untuk menggigit.",
+				"selfBite": "Anda tidak boleh menggigit diri sendiri.",
+				"fetchFail": "Kesilapan telah berlaku semasa mengambil GIF gigitan."
+			}
+		},
+		"hugMessages": {
+			"title": "Masa Peluk!",
+			"description": "memberikan pelukan hangat kepada",
+			"errors": {
+				"noUser": "Anda perlu menyebut pengguna untuk memeluk.",
+				"selfHug": "Anda tidak boleh memeluk diri sendiri.",
+				"fetchFail": "Kesilapan telah berlaku semasa mengambil GIF pelukan."
+			}
+		},
+		"kissMessages": {
+			"title": "Masa Kiss!",
+			"description": "memberikan ciuman comel kepada",
+			"errors": {
+				"noUser": "Anda perlu menyebut pengguna untuk mencium.",
+				"selfKiss": "Anda tidak boleh mencium diri sendiri.",
+				"fetchFail": "Kesilapan telah berlaku semasa mengambil GIF ciuman."
+			}
+		},
+		"punchMessages": {
+			"title": "Masa Punch!",
+			"description": "melemparkan tumbukan main-main ke",
+			"errors": {
+				"noUser": "Anda perlu menyebut pengguna untuk menumbuk.",
+				"selfPunch": "Anda tidak boleh menumbuk diri sendiri.",
+				"fetchFail": "Kesilapan telah berlaku semasa mengambil GIF pukulan."
+			}
+		},
+		"slapMessages": {
+			"title": "Masa Tampar!",
+			"description": "tampar main-main",
+			"errors": {
+				"noUser": "Anda perlu menyebut pengguna untuk menampar.",
+				"selfSlap": "Anda tidak boleh menampar diri sendiri.",
+				"fetchFail": "Kesilapan telah berlaku semasa mengambil GIF tamparan."
+			}
+		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"title": "Baki %{displayName}",
+			"description": "%{coinEmote} **`%{coin}`** syiling\n",
+			"errors": {
+				"noUser": "Pengguna tidak ditemui.",
+				"fetchFail": "Kesilapan telah berlaku semasa mengambil baki anda."
+			}
+		},
+		"dailyMessages": {
+			"title": "Ganjaran Harian %{displayName}.",
+			"success": "%{coinEmote} **`+%{coin}`** syiling\n",
+			"cooldown": "Ganjaran harian anda sedang bertenang. ",
+			"errors": {
+				"noUser": "Pengguna tidak ditemui.",
+				"fetchFail": "Terdapat ralat semasa memproses tuntutan harian anda."
+			}
+		},
+		"depositMessages": {
+			"zeroBalance": "Anda tidak mempunyai sebarang syiling untuk didepositkan.",
+			"invalidAmount": "Jumlah tidak sah. ",
+			"success": "Anda telah mendepositkan %{coinEmote} **`%{amount}`** syiling ke bank anda.",
+			"errors": {
+				"noUser": "Pengguna tidak ditemui."
+			}
+		},
+		"gomaMessages": {
+			"success": {
+				"title": "telah mendakwa goma!",
+				"description": "Anda telah memperoleh %{coinEmote} **`%{coin}`** syiling."
+			},
+			"cooldown": "Goma sedang bertenang!\n",
+			"errors": {
+				"noUser": "Pengguna tidak ditemui."
+			}
+		},
+		"peachyMessages": {
+			"errors": {
+				"noUser": "Pengguna tidak ditemui."
+			},
+			"cooldown": "Peachy sedang bertenang!\n",
+			"success": {
+				"title": "telah mendakwa pic!",
+				"description": "Anda telah memperoleh %{coinEmote} **`%{coin}`** syiling."
+			}
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "Tiada siapa yang mendapat syiling lagi.",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "Tiada siapa yang mempunyai coretan lagi.",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "Tiada siapa yang mempunyai coretan lagi.",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "Jenis papan pendahulu tidak sah."
+		},
+		"transferMessages": {
+			"selfTransfer": "Anda tidak boleh memindahkan syiling kepada diri sendiri.",
+			"botTransfer": "Anda tidak boleh memindahkan syiling ke bot.",
+			"pendingTransfer": "Anda sudah mempunyai pemindahan yang belum selesai. ",
+			"invalidAmount": "Sila nyatakan pengguna dan jumlah yang sah.",
+			"noUser": "Sila nyatakan pengguna yang sah.",
+			"balanceNotExist": "Rekod baki anda tidak wujud.",
+			"insufficientBalance": "Jumlah yang dinyatakan tidak sah atau baki tidak mencukupi.",
+			"zeroBalance": "Anda tidak mempunyai syiling untuk dipindahkan.",
+			"transactionConfirm": "Anda akan memberi {{amount}} {{emoji}} kepada {{user}}. ",
+			"transactionSuccess": "Anda telah memberi {{amount}} {{emoji}} kepada {{user}}.",
+			"transactionCancel": "Anda telah membatalkan transaksi. ",
+			"transactionTimeout": "Urus niaga telah tamat masa kerana tidak aktif. ",
+			"transactionTimeoutAction": "Jika anda ingin membuat pemindahan, sila mulakan semula arahan.",
+			"amountTooHigh": "Jumlah tersebut melebihi baki anda yang tersedia.",
+			"transferTooFrequent": "Anda terlalu kerap memindahkan syiling. ",
+			"transferLimitExceeded": "Anda telah melebihi had pemindahan maksimum.",
+			"transferInsufficientFunds": "Anda tidak mempunyai syiling yang mencukupi untuk melengkapkan pemindahan ini.",
+			"transferInvalidUser": "Pengguna yang dinyatakan tidak sah atau tidak ditemui.",
+			"transferConfirmPrompt": "Sahkan pemindahan dengan mengklik butang di bawah.",
+			"transactionExpired": "Transaksi Tamat Tempoh"
+		},
+		"weeklyMessages": {
+			"userNotFound": "Pengguna tidak ditemui.",
+			"cooldown": {
+				"multipleDays": "Mingguan sedang bertenang!\n{{days}} hari{{days > 1 ? 's' : ''}} dan {{hours}}jam{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, dan **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
+				"singleDay": "Mingguan sedang bertenang!\n{{days}} hari, {{hours}}jam{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, dan {{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
+				"noDays": "Mingguan sedang bertenang!\n{{hours}}jam{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, dan {{seconds}}sec{{seconds > 1 ? 's' : ''}}**."
+			},
+			"success": "{{coinEmote}} **Tahniah, {{user}}!**\n{{coin}} syiling** dan **{{exp}} XP**!",
+			"error": "Terdapat ralat memproses tuntutan mingguan anda."
+		},
+		"withdrawMessages": {
+			"noUser": "Pengguna tidak ditemui.",
+			"zeroBalance": "Anda tidak mempunyai syiling dalam bank anda.",
+			"invalidAmount": "Sila berikan jumlah yang sah untuk dikeluarkan. ",
+			"tooHigh": "Anda tidak boleh mengeluarkan lebih daripada apa yang anda ada di bank anda.",
+			"success": "{{coinEmote}} **Kejayaan, {{user}}!**\n{{amount}} syiling** daripada bank anda.",
+			"error": "Terdapat ralat memproses permintaan pengeluaran anda."
+		}
+	},
+	"emoteMessages": {
+		"angryMessages": {
+			"title": "Masa Marah!",
+			"description": "**{{user}}** menunjukkan ekspresi marah mereka!",
+			"error": "Terdapat ralat memproses emosi marah anda."
+		},
+		"cryMessages": {
+			"title": "Masa Menangis!",
+			"description": "**{{user}}** menangis!",
+			"error": "Terdapat ralat semasa memproses emosi tangisan anda."
+		},
+		"cuteMessages": {
+			"title": "Masa yang comel!",
+			"description": "**{{user}}** menunjukkan ekspresi paling comel mereka!",
+			"error": "Terdapat ralat memproses emote comel anda."
+		},
+		"danceMessages": {
+			"title": "Masa Menari!",
+			"description": "**{{user}}** menunjukkan beberapa gerakan tarian yang mengagumkan!",
+			"error": "Terdapat ralat memproses emote tarian anda."
+		},
+		"exerciseMessages": {
+			"title": "Masa Bersenam!",
+			"description": "**{{user}}** semakin bergerak dan kekal cergas!",
+			"error": "Terdapat ralat semasa memproses emosi senaman anda."
+		},
+		"happyMessages": {
+			"title": "Happy Vibes!",
+			"description": "**{{user}}** sedang menyebarkan kegembiraan dan kebahagiaan!",
+			"error": "Terdapat ralat semasa memproses emosi gembira anda."
+		},
+		"laughMessages": {
+			"title": "Ketawa Terbahak-bahak!",
+			"description": "**{{user}}** berkongsi ketawa gembira!",
+			"error": "Terdapat ralat memproses emote ketawa anda."
+		},
+		"makeupMessages": {
+			"title": "Masa Solek!",
+			"description": "**{{user}}** menggunakan beberapa solek yang hebat dan bersinar terang!",
+			"error": "Terdapat ralat semasa memproses emote solek anda."
+		},
+		"eatMessages": {
+			"title": "Masa Makan!",
+			"description": "**{{user}}** sedang menikmati makanan yang lazat!",
+			"error": "Terdapat ralat memproses emote makan anda."
+		},
+		"playGameMessages": {
+			"title": "Masa Permainan!",
+			"description": "**{{user}}** sedang bersedia untuk bermain!",
+			"error": "Terdapat ralat semasa memproses emot permainan anda."
+		},
+		"roarMessages": {
+			"title": "Masa Mengaum!",
+			"description": "**{{user}}** mengeluarkan raungan yang kuat!",
+			"error": "Berlaku ralat semasa memproses emosi raungan anda."
+		},
+		"sadMessages": {
+			"title": "Rasa Sedih",
+			"description": "**{{user}}** sedang meluahkan rasa sedih.",
+			"error": "Terdapat ralat memproses emosi sedih anda."
+		},
+		"scareMessages": {
+			"title": "Takut!",
+			"description": "**{{user}}** menunjukkan sisi ketakutan mereka!",
+			"error": "Terdapat ralat semasa memproses emote menakutkan anda."
+		},
+		"showerMessages": {
+			"title": "Masa Mandi!",
+			"description": "**{{user}}** sedang menikmati mandian yang menyegarkan!",
+			"error": "Terdapat ralat semasa memproses emote mandi anda."
+		},
+		"shyMessages": {
+			"title": "pemalu!",
+			"description": "**{{user}}** menunjukkan ekspresi malu mereka!",
+			"error": "Terdapat ralat semasa memproses emosi malu anda."
+		}
+	},
+	"funMessage": {
+		"animalOfYear": {
+			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑",
+			"selectAnimal": "Pilih haiwan",
+			"noAnimals": "Tiada haiwan tersedia",
+			"animalNotFound": "Haiwan tidak ditemui.",
+			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Penerangan",
+			"requestBy": "Permintaan Oleh",
+			"id": "ID"
+		},
+		"province": {
+			"title": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Pilih wilayah",
+			"noProvinces": "Tiada wilayah tersedia",
+			"notFound": "Wilayah tidak ditemui.",
+			"detailTitle": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Penerangan",
+			"requestBy": "Permintaan Oleh",
+			"id": "ID"
+		},
+		"randomColor": {
+			"title": "Inilah warna rawak untuk anda!",
+			"description": "Warna: {color}",
+			"requestedBy": "Diminta oleh"
+		},
+		"reverseText": {
+			"title": "Teks Terbalik",
+			"description": "**Teks ​​Asal:** {originalText}\n",
+			"requestedBy": "Diminta oleh"
+		},
+		"wallpaper": {
+			"selectCategory": "Pilih kategori...",
+			"selectWallpaper": "Pilih kertas dinding...",
+			"noWallpapers": "Tiada kertas dinding tersedia dalam kategori ini.",
+			"wallpaperNotFound": "Kertas dinding tidak ditemui.",
+			"wallpaperDetailsTitle": "Butiran Kertas Dinding",
+			"descriptionLabel": "Penerangan",
+			"categoryLabel": "kategori"
+		},
+		"weather": {
+			"title": "𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Pilih wilayah",
+			"noProvinces": "Tiada wilayah tersedia",
+			"notFound": "Wilayah tidak ditemui.",
+			"provinceNotFound": "Wilayah tidak ditemui.",
+			"dataFetchFailed": "Gagal mendapatkan semula data cuaca. "
+		}
+	},
+	"gamblingMessages": {
+		"blackjackMessages": {
+			"title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
+			"youWon": "Anda memenangi **`%{coin}`** %{coinEmote}",
+			"youLost": "Anda kehilangan **`%{coin}`** %{coinEmote}",
+			"bothBust": "Anda berdua awek!",
+			"tied": "Anda terikat!",
+			"winnerInfo": "Pemenang ialah orang yang paling hampir dengan 21.",
+			"gameInProgress": "Permainan anda sedang berjalan!",
+			"gameOver": "Permainan anda sudah tamat."
+		},
+		"slotMessages": {
+			"title": "𝐒𝐋𝐎𝐓𝐒",
+			"youBet": "Anda bertaruh **`%{coin}`** %{coinEmote}",
+			"youWon": "Anda memenangi **`%{coin}`** %{coinEmote}",
+			"youLost": "Anda kehilangan **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "Permainan anda sedang berjalan!",
+			"gameOver": "Permainan anda sudah tamat."
+		},
+		"coinflipMessages": {
+			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
+			"description": "**%{author}** membelanjakan **`%{coin}`** %{coinEmote} pilih **%{choice}**! ",
+			"resultDescription": "**%{author}** membelanjakan **`%{coin}`** %{coinEmote} pilih **%{choice}**",
+			"youWon": "Anda memenangi **`%{coin}`** %{coinEmote}",
+			"youLost": "Anda kehilangan **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "Permainan anda sedang berjalan!",
+			"gameOver": "Permainan anda sudah tamat."
+		}
+	},
+	"inventoryMessages": {
+		"inventoryHeader": "inventori %{author}!",
+		"inventoryEmptyName": "Inventori Kosong",
+		"inventoryEmptyValue": "Inventori semasa anda kosong.",
+		"itemNotFound": "ID item **`%{itemId}`** tidak ditemui di kedai!",
+		"sellDisabled": "Menjual item ini dilumpuhkan.",
+		"useDisabled": "Penggunaan item ini dilumpuhkan."
+	},
+	"themeMessages": {
+		"themeApplied": "Anda telah berjaya menggunakan tema %{itemEmote} **`%{itemName}`** pada benam anda!",
+		"themeUnavailable": "Tema **`%{itemName}`** tidak tersedia untuk digunakan.",
+		"themeNotOwned": "Anda tidak memiliki tema **`%{itemName}`**. ",
+		"invalidThemeID": "ID tema **`%{itemId}`** tidak sah. ",
+		"themeAlreadyOwned": "Anda sudah memiliki tema **`%{itemName}`** dan tidak boleh membelinya lagi."
+	},
+	"information": {
+		"helpMessages": {
+			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
+			"description": "Berikut adalah arahan yang tersedia:",
+			"note": "Nota: Sesetengah arahan mungkin memaparkan nama pengguna dalam senarai yang diambil oleh bot.",
+			"footer": "© Hak Cipta Oleh KYUU",
+			"supportButton": "Klik untuk sokongan",
+			"commandNotFound": "Perintah tidak ditemui:",
+			"commandTitle": "Bantuan untuk arahan",
+			"category": "kategori",
+			"aliases": "Alias:",
+			"cooldown": "Cooldown",
+			"botPermissions": "Kebenaran Bot:",
+			"examples": "Contoh:"
+		},
+		"infoMessages": {
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
+			"description": "ialah bot Discord pelbagai guna anda yang direka untuk keseronokan, hiburan dan utiliti. ",
+			"developer": {
+				"title": "𝐃𝐄𝐕",
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+			},
+			"footer": "Menghadapi sebarang isu, memerlukan bantuan atau ingin melaporkan pepijat? ",
+			"supportButton": {
+				"label": "Klik untuk sokongan"
+			}
+		}
+	}
+}

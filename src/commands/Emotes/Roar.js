@@ -1,7 +1,5 @@
 const { Command } = require('../../structures/index.js');
 
-const roar = []
-
 module.exports = class Roar extends Command {
     constructor(client) {
         super(client, {
@@ -26,14 +24,23 @@ module.exports = class Roar extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.roars);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Roar Time! ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Unleash the roar!');
+        const roarMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.roarMessages;
 
-        await ctx.sendMessage({ embeds: [embed] });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.roars);
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(roarMessages.title) // Use localized title
+                .setImage(client.utils.emojiToImage(randomEmoji)) // Set random roar emoji image
+                .setDescription(roarMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                });
+
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Error processing roar command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, roarMessages.error, color); // Use localized error message
+        }
     }
 };

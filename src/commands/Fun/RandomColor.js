@@ -24,14 +24,15 @@ module.exports = class RandomColor extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const randomColorStrings = language.locales.get(language.defaultLocale)?.funMessage?.randomColor; // Localized color strings
         const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16).toUpperCase()}`;
 
         const embed = client.embed()
             .setColor(randomColor)
-            .setTitle("Here's a random color for you!")
-            .setDescription(`Color: ${randomColor}`)
+            .setTitle(randomColorStrings.title) // Use localized title
+            .setDescription(randomColorStrings.description.replace("{color}", randomColor)) // Use localized description with dynamic color
             .setFooter({
-                text: `Requested by ${ctx.author.displayName}`,
+                text: `${randomColorStrings.requestedBy} ${ctx.author.displayName}`, // Use localized footer text
                 iconURL: ctx.author.displayAvatarURL(),
             })
             .setTimestamp();

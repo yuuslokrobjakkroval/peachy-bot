@@ -28,10 +28,12 @@ module.exports = class Weekly extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const weeklyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.weeklyMessages; // Access messages
+
         try {
             const user = await Users.findOne({ userId: ctx.author.id }).exec();
             if (!user) {
-                return client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
+                return client.utils.sendErrorMessage(client, ctx, weeklyMessages.userNotFound, color);
             }
 
             const { coin, bank } = user.balance;
@@ -39,31 +41,16 @@ module.exports = class Weekly extends Command {
             const newBalance = coin + baseCoins;
 
             const now = moment().tz('Asia/Bangkok');
-            const hours = now.hour();
-            const nextWeekly = new Date();
-            nextWeekly.setDate(now.date() + 7);
+            const nextWeekly = moment(now).add(1, 'week').toDate(); // Calculate next weekly
 
-            const timeUntilNextWeekly = nextWeekly - now;
-
+            const timeUntilNextWeekly = nextWeekly - now.toDate();
             const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
 
             if (!isCooldownExpired) {
                 const lastCooldownTimestamp = await getCooldown(ctx.author.id, this.name.toLowerCase());
                 const remainingTime = Math.ceil((lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000);
-                const days = Math.floor(remainingTime / 86400);
-                const hours = Math.floor((remainingTime % 86400) / 3600);
-                const minutes = Math.floor((remainingTime % 3600) / 60);
-                const seconds = remainingTime % 60;
+                const cooldownMessage = this.getCooldownMessage(remainingTime, client, language, weeklyMessages); // Updated call
 
-                let cooldownMessage;
-                if (days > 1) {
-                    cooldownMessage = `Weekly is on cooldown!\nTry again after **${days} day${days > 1 ? 's' : ''} and ${hours}hr${hours > 1 ? 's' : ''}**, **${minutes}min${minutes > 1 ? 's' : ''}**, and **${seconds}sec${seconds > 1 ? 's' : ''}**.`;
-                } else if (days === 1) {
-
-                    cooldownMessage = `Weekly is on cooldown!\nTry again after **${days} day, ${hours}hr${hours > 1 ? 's' : ''}, ${minutes}min${minutes > 1 ? 's' : ''}, and ${seconds}sec${seconds > 1 ? 's' : ''}**.`;
-                } else {
-                    cooldownMessage = `Weekly is on cooldown!\nTry again after **${hours}hr${hours > 1 ? 's' : ''}, ${minutes}min${minutes > 1 ? 's' : ''}, and ${seconds}sec${seconds > 1 ? 's' : ''}**.`;
-                }
                 const cooldownEmbed = client
                     .embed()
                     .setColor(color.red)
@@ -72,8 +59,9 @@ module.exports = class Weekly extends Command {
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
             }
 
-            const baseExp = chance.integer({ min: 30, max: 50 });
+            const baseExp = chance.integer({ min: 200, max: 250 });
             const newExp = user.profile.xp + baseExp;
+
             await Promise.all([
                 Users.updateOne({ userId: ctx.author.id }, {
                     $set: {
@@ -85,24 +73,48 @@ module.exports = class Weekly extends Command {
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly)
             ]);
 
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(`${ctx.author.displayName} claimed their weekly reward!`)
-                .setThumbnail(client.utils.emojiToImage(`${hours >= 6 && hours < 18 ? `${emoji.time.day}` : `${emoji.time.night}`}`))
-                .setDescription(
-                    client.i18n.get(language, 'commands', 'weekly_success', {
-                        coinEmote: emoji.coin,
-                        coin: client.utils.formatNumber(baseCoins),
-                        exp: client.utils.formatNumber(baseExp),
-                    })
-                );
-
+            const embed = this.createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages); // Pass weeklyMessages
             return await ctx.sendMessage({ embeds: [embed] });
 
         } catch (error) {
             console.error('Error processing weekly command:', error);
-            return client.utils.sendErrorMessage(client, ctx, 'There was an error processing your weekly claim.', color);
+            return client.utils.sendErrorMessage(client, ctx, weeklyMessages.error, color);
         }
+    }
+
+    getCooldownMessage(remainingTime, client, language, weeklyMessages) {
+        const days = Math.floor(remainingTime / 86400);
+        const hours = Math.floor((remainingTime % 86400) / 3600);
+        const minutes = Math.floor((remainingTime % 3600) / 60);
+        const seconds = remainingTime % 60;
+
+        if (days > 1) {
+            return weeklyMessages.cooldown.multipleDays.replace('{{days}}', days)
+                .replace('{{hours}}', hours)
+                .replace('{{minutes}}', minutes)
+                .replace('{{seconds}}', seconds);
+        } else if (days === 1) {
+            return weeklyMessages.cooldown.singleDay.replace('{{days}}', days)
+                .replace('{{hours}}', hours)
+                .replace('{{minutes}}', minutes)
+                .replace('{{seconds}}', seconds);
+        } else {
+            return weeklyMessages.cooldown.noDays.replace('{{hours}}', hours)
+                .replace('{{minutes}}', minutes)
+                .replace('{{seconds}}', seconds);
+        }
+    }
+
+    createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages) {
+        return client
+            .embed()
+            .setColor(client.config.color.main)
+            .setTitle(`${ctx.author.displayName} claimed their weekly reward!`)
+            .setThumbnail(client.utils.emojiToImage(`${now.hour() >= 6 && now.hour() < 18 ? `${emoji.time.day}` : `${emoji.time.night}`}`))
+            .setDescription(
+                weeklyMessages.success.replace('{{coinEmote}}', emoji.coin)
+                    .replace('{{coin}}', client.utils.formatNumber(baseCoins))
+                    .replace('{{exp}}', client.utils.formatNumber(baseExp))
+            );
     }
 };

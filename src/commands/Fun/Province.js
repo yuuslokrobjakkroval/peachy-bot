@@ -27,6 +27,7 @@ module.exports = class Province extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const province = language.locales.get(language.defaultLocale)?.funMessage?.province; // Localized province structure
         const selectedProvinces = Provinces; // All provinces
 
         const pages = [];
@@ -34,29 +35,26 @@ module.exports = class Province extends Command {
         const totalPages = Math.ceil(selectedProvinces.length / itemsPerPage);
 
         for (let i = 0; i < totalPages; i++) {
-            const currentItems = selectedProvinces.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
-            const provinceList = currentItems.map((province, index) => `${index + 1}. ${province.emoji} **${province.name}**`).join('\n\n');
-
             const embed = client.embed()
                 .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒 ${emoji.mainRight}`)
+                .setTitle(`${emoji.mainLeft} ${province.title} ${emoji.mainRight}`) // Use province title
                 .setImage('https://i.imgur.com/5CZWtLN.png')
                 .setFooter({
-                    text: `Request By ${ctx.author.displayName}`,
+                    text: `${province.requestBy} ${ctx.author.displayName}`, // Use province requestBy
                     iconURL: ctx.author.displayAvatarURL(),
-                })
+                });
 
             pages.push({ embed });
         }
 
-        await paginateProvinces(client, ctx, color, emoji, pages);
+        await paginateProvinces(client, ctx, color, emoji, pages, province); // Pass the province object
     }
 };
 
-async function paginateProvinces(client, ctx, color, emoji, pages) {
+async function paginateProvinces(client, ctx, color, emoji, pages, province) { // Accept province object
     let page = 0;
     let selectedItemIndex = null; // No item selected initially
-    let selectedProvinceName = 'Select a province'; // Default placeholder
+    let selectedProvinceName = province.selectProvince; // Use province selectProvince
     const totalProvinces = Provinces.length; // Total number of provinces
 
     const getButtonRow = () => {
@@ -72,7 +70,7 @@ async function paginateProvinces(client, ctx, color, emoji, pages) {
         const itemSelect = new StringSelectMenuBuilder()
             .setCustomId('item_select')
             .setPlaceholder(selectedProvinceName) // Use the selected province's name
-            .addOptions(itemOptions.length ? itemOptions : [{ label: 'No provinces available', value: 'none' }]);
+            .addOptions(itemOptions.length ? itemOptions : [{ label: province.noProvinces, value: 'none' }]); // Use noProvinces
 
         const row1 = new ActionRowBuilder().addComponents(itemSelect);
         const row2 = new ActionRowBuilder().addComponents(homeButton, prevButton, nextButton); // Added Home button
@@ -81,21 +79,21 @@ async function paginateProvinces(client, ctx, color, emoji, pages) {
     };
 
     const displayItemDetails = (index) => {
-        const province = Provinces[index];
-        if (!province) {
+        const provinceData = Provinces[index];
+        if (!provinceData) {
             console.error('Province not found at index:', index);
-            return { embed: client.embed().setDescription('Province not found.').setColor(color.red) };
+            return { embed: client.embed().setDescription(province.notFound).setColor(color.red) }; // Use notFound
         }
 
         const embed = client.embed()
             .setColor(color.main)
-            .setTitle(`𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄 𝐃𝐄𝐓𝐀𝐈𝐋 : ${province.name}`)
-            .setDescription(`**ID : ${province.id}** \n**Description : **\n${province.description}`)
-            .setImage(province.image)
+            .setTitle(`${province.detailTitle} : ${provinceData.name}`) // Use detailTitle
+            .setDescription(`**${province.id} : ${provinceData.id}** \n**${province.description} : **\n${provinceData.description}`) // Use description
+            .setImage(provinceData.image)
             .setFooter({
-                text: `Request By ${ctx.author.displayName}`,
+                text: `${province.requestBy} ${ctx.author.displayName}`, // Use requestBy
                 iconURL: ctx.author.displayAvatarURL(),
-            })
+            });
 
         return { embed };
     };
@@ -119,7 +117,7 @@ async function paginateProvinces(client, ctx, color, emoji, pages) {
             if (int.customId === 'home') {
                 // Reset to the home screen
                 selectedItemIndex = null; // Reset selection
-                selectedProvinceName = 'Select a province'; // Reset placeholder
+                selectedProvinceName = province.selectProvince; // Reset placeholder
                 page = 0; // Reset to first page
                 await int.update({ ...getButtonRow(), embeds: [pages[page]?.embed] });
             } else if (int.customId === 'prev_item') {
@@ -151,7 +149,12 @@ async function paginateProvinces(client, ctx, color, emoji, pages) {
                     selectedProvinceName = Provinces[selectedItemIndex].name;
                     await int.update({ embeds: [displayItemDetails(selectedItemIndex).embed], components: getButtonRow().components });
                 } else {
-                    await int.update({ embeds: [client.embed().setDescription('Province not found.').setColor(color.red)], components: getButtonRow().components });
+                    await int.update({
+                        embeds: [
+                            client.embed().setDescription(province.notFound).setColor(color.red) // Use notFound
+                        ],
+                        components: getButtonRow().components
+                    });
                 }
             }
         } else {

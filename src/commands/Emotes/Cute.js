@@ -24,14 +24,23 @@ module.exports = class Cute extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.cute);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Cute! ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Show off your cutest expression!');
+        const cuteMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cuteMessages; // Access localized messages
 
-        await ctx.sendMessage({ embeds: [embed] });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.cute); // Get a random cute emoji
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(cuteMessages.title) // Use localized title
+                .setDescription(cuteMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                })
+                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random cute emoji image
+
+            await ctx.sendMessage({ embeds: [embed] }); // Send the embed message
+        } catch (error) {
+            console.error('Error processing cute command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, cuteMessages.error, color); // Use localized error message
+        }
     }
 };

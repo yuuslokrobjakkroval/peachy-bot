@@ -1,10 +1,11 @@
 const Command = require('../../structures/Command.js');
 const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
+
 const font = {
   Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
   Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
   Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
-  fun: '𝐅𝐔𝐍',
+  Fun: '𝐅𝐔𝐍',
   Games: '𝐆𝐀𝐌𝐄𝐒',
   Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
   Giveaway: '𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘',
@@ -53,11 +54,11 @@ module.exports = class Help extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    const helpMessages = language.locales.get(language.defaultLocale)?.information?.helpMessages;
     const embed = client.embed();
     const prefix = client.config.prefix;
-
     const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
-    let categories = ['Actions', 'Economy', 'Inventory', 'fun', 'Games', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info'];
+    let categories = ['Actions', 'Economy', 'Inventory', 'Fun', 'Games', 'Gambling', 'Profile', 'Social', 'Emotes', 'Utility', 'Info'];
 
     if (!args[0]) {
       const sortedCommands = {};
@@ -67,16 +68,15 @@ module.exports = class Help extends Command {
 
       const helpEmbed = embed
           .setColor(color.main)
-          .setTitle(`${emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 𝐇𝐞𝐥𝐩 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬 ${emoji.mainRight}`)
+          .setTitle(`${emoji.mainLeft} ${helpMessages.title} ${emoji.mainRight}`)
           .setDescription(
-              `Use **\`${prefix}help [command]\`** to get more help!
-Example: **\`${prefix}help balance\`**
-
-Note that certain commands might display usernames in lists retrieved by the bot. Check command details for more information.`
+              `${helpMessages.description} **\`${prefix}help [command]\`**\n` +
+              `${helpMessages.examples}: **\`${prefix}help balance\`**\n\n` +
+              `${helpMessages.note}`
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: `© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐊𝐘𝐔𝐔`,
+            text: helpMessages.footer,
             iconURL: client.user.displayAvatarURL(),
           });
 
@@ -93,12 +93,8 @@ Note that certain commands might display usernames in lists retrieved by the bot
         }
       }
 
-      const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
-
       const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setLabel('Click for support').setStyle(5).setURL(client.config.links.support), // Link button style 5
-        // new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
-        // new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
+          new ButtonBuilder().setLabel(helpMessages.supportButton).setStyle(5).setURL(client.config.links.support)
       );
 
       await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
@@ -106,36 +102,36 @@ Note that certain commands might display usernames in lists retrieved by the bot
       const command = client.commands.get(args[0].toLowerCase());
       if (!command)
         return await ctx.sendMessage({
-          embeds: [client.embed().setColor(color.red).setDescription(`Command \`${args[0]}\` not found`)],
+          embeds: [client.embed().setColor(color.red).setDescription(`${helpMessages.commandNotFound} \`${args[0]}\``)],
         });
 
       const helpEmbed = embed
           .setColor(color.main)
-          .setTitle(`Help - ${command.name}`)
+          .setTitle(`${helpMessages.commandTitle} - ${command.name}`)
           .setDescription(command.description.content)
           .addFields([
             {
-              name: `Category`,
+              name: `${helpMessages.category}`,
               value: `${command.category}`,
               inline: false,
             },
             {
-              name: `Aliases:`,
+              name: `${helpMessages.aliases}`,
               value: `${command.aliases.map(alias => `\`${alias}\``).join(', ')}`,
               inline: false,
             },
             {
-              name: `Cooldown`,
+              name: `${helpMessages.cooldown}`,
               value: `\`[${client.utils.formatTime(command.cooldown)}]\``,
               inline: false,
             },
             {
-              name: `Bot Permissions:`,
+              name: `${helpMessages.botPermissions}`,
               value: `${command.permissions.client.map(perm => `\`${perm}\``).join(', ')}`,
               inline: false,
             },
             {
-              name: 'Example(s):',
+              name: `${helpMessages.examples}`,
               value: `\`\`\`arm\n${command.description.examples.map(example => `${prefix.prefix}${example}`).join('\n')}\n\`\`\``,
               inline: false,
             },

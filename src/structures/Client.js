@@ -134,46 +134,79 @@ module.exports = class PeachyClient extends Client {
     }
 
     async setColorBasedOnTheme(userId) {
-        const user = await Users.findOne({ userId });
-        let color;
-        let emoji;
+        try {
+            const user = await Users.findOne({ userId });
+            let userLanguage;
 
-        if (user && user.preferences && user.preferences.theme) {
-            switch (user.preferences.theme) {
-                case 't01':
-                    color = configOcean.color;
-                    emoji = emojiOcean;
-                    break;
-                case 't02':
-                    color = configPjum.color;
-                    emoji = emojiPjum;
-                    break;
-                case 'st01':
-                    color = configHeaven.color;
-                    emoji = emojiHeaven;
-                    break;
-                case 'halloween':
-                    color = configHalloween.color;
-                    emoji = emojiHalloween;
-                    break;
-                case 'peach':
-                    color = configPeach.color;
-                    emoji = emojiPeach;
-                    break;
-                case 'goma':
-                    color = configGoma.color;
-                    emoji = emojiGoma;
-                    break;
-                default:
-                    color = config.color;
-                    emoji = emojis;
-                    break;
+            // Determine the user's language preference
+            if (user && user.preferences) {
+                const { language = this.config.language.defaultLocale } = user.preferences;
+
+                userLanguage = {
+                    defaultLocale: language.split('-')[0],
+                    directory: path.resolve(`./src/languages`),
+                };
+            } else {
+                userLanguage = {
+                    defaultLocale: this.config.language.defaultLocale,
+                    directory: path.resolve(`./src/languages`),
+                };
             }
-        } else {
-            color = config.color;
-            emoji = emojis;
-        }
 
-        return { color, emoji };
+            const language = new I18n({
+                defaultLocale: userLanguage.defaultLocale,
+                directory: userLanguage.directory,
+            });
+
+            const localePath = path.join(userLanguage.directory, `${userLanguage.defaultLocale}.json`);
+            if (fs.existsSync(localePath)) {
+                const localeData = JSON.parse(fs.readFileSync(localePath, 'utf8'));
+                language.locales.set(userLanguage.defaultLocale, localeData);
+            } else {
+                console.error("Locale file not found:", localePath);
+            }
+
+            if (!language.locales.size) {
+                console.error("No locales loaded for language:", userLanguage.defaultLocale);
+            }
+
+            let color = config.color;
+            let emoji = emojis;
+
+            if (user && user.preferences && user.preferences.theme) {
+                switch (user.preferences.theme) {
+                    case 't01':
+                        color = configOcean.color;
+                        emoji = emojiOcean;
+                        break;
+                    case 't02':
+                        color = configPjum.color;
+                        emoji = emojiPjum;
+                        break;
+                    case 'st01':
+                        color = configHeaven.color;
+                        emoji = emojiHeaven;
+                        break;
+                    case 'halloween':
+                        color = configHalloween.color;
+                        emoji = emojiHalloween;
+                        break;
+                    case 'peach':
+                        color = configPeach.color;
+                        emoji = emojiPeach;
+                        break;
+                    case 'goma':
+                        color = configGoma.color;
+                        emoji = emojiGoma;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return { color, emoji, language };
+        } catch (error) {
+            console.error("Error setting color and theme:", error.message);
+            return { color: config.color, emoji: emojis, language: this.config.language };
+        }
     }
 };

@@ -1,0 +1,187 @@
+{
+	"generalMessages": {
+		"permissionsClientError": "我没有足够的权限来执行此命令。",
+		"permissionsUserError": "你没有足够的权限来使用此命令。",
+		"argumentsMissingTitle": "缺少参数",
+		"argumentsMissingDescription": "请为命令 `{commandName}` 提供必要的参数。",
+		"usageHeader": "用法",
+		"examplesHeader": "示例",
+		"syntaxInstructions": "语法: [] = 可选, <> = 必需",
+		"noEveryoneOrHereError": "你不能将此命令用于所有人或在这里。",
+		"userNotFound": "在数据库中未找到用户。",
+		"alreadyInGame": "你已经在游戏中。请完成当前游戏后再开始新游戏。",
+		"zeroBalance": "你的余额为零。请先赚取一些硬币再试。",
+		"invalidAmount": "无效金额。请输入一个正数。"
+	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "咬一口的时间!",
+			"description": "充满爱的咬",
+			"errors": {
+				"noUser": "你必须提到一个用户来咬。",
+				"selfBite": "你不能咬自己。",
+				"fetchFail": "获取咬GIF时发生错误。"
+			}
+		},
+		"hugMessages": {
+			"title": "拥抱时间!",
+			"description": "温暖的拥抱",
+			"errors": {
+				"noUser": "你必须提到一个用户来拥抱。",
+				"selfHug": "你不能拥抱自己。",
+				"fetchFail": "获取拥抱GIF时发生错误。"
+			}
+		},
+		"kissMessages": {
+			"title": "亲吻时间!",
+			"description": "亲吻",
+			"errors": {
+				"noUser": "你必须提到一个用户来亲吻。",
+				"selfKiss": "你不能亲吻自己。",
+				"fetchFail": "获取亲吻GIF时发生错误。"
+			}
+		},
+		"punchMessages": {
+			"title": "拳头时间!",
+			"description": "友好的拳头",
+			"errors": {
+				"noUser": "你必须提到一个用户来拳打。",
+				"selfPunch": "你不能拳打自己。",
+				"fetchFail": "获取拳打GIF时发生错误。"
+			}
+		},
+		"slapMessages": {
+			"title": "掌掴时间!",
+			"description": "充满爱的掌掴",
+			"errors": {
+				"noUser": "你必须提到一个用户来掌掴。",
+				"selfSlap": "你不能掌掴自己。",
+				"fetchFail": "获取掌掴GIF时发生错误。"
+			}
+		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"title": "%{displayName}的余额",
+			"description": "%{coinEmote} **`%{coin}`** 硬币\n%{bankEmote} **`%{bank}`** 硬币",
+			"errors": {
+				"noUser": "未找到用户。",
+				"fetchFail": "获取你的余额时发生错误。"
+			}
+		},
+		"dailyMessages": {
+			"title": "%{displayName}的每日奖励",
+			"success": "%{coinEmote} **`+%{coin}`** 硬币\n经验值: **`+%{exp}`** xp",
+			"cooldown": "你的每日奖励正在等待中。请在 **%{time}** 后再试。",
+			"errors": {
+				"noUser": "未找到用户。",
+				"fetchFail": "处理你的每日请求时发生错误。"
+			}
+		},
+		"depositMessages": {
+			"zeroBalance": "你没有硬币可以存入。",
+			"invalidAmount": "无效金额。请输入有效金额或使用 `全部` 或 `一半`。",
+			"success": "你已存入 %{coinEmote} **`%{amount}`** 硬币到你的银行。",
+			"errors": {
+				"noUser": "未找到用户。"
+			}
+		},
+		"gomaMessages": {
+			"success": {
+				"title": "你已请求goma！",
+				"description": "你已赚取 %{coinEmote} **`%{coin}`** 硬币。"
+			},
+			"cooldown": "goma 正在等待中！\n请在 **%{minutes}分钟和%{seconds}秒** 后再试。",
+			"errors": {
+				"noUser": "未找到用户。"
+			}
+		},
+		"peachyMessages": {
+			"errors": {
+				"noUser": "未找到用户。"
+			},
+			"cooldown": "peachy 正在等待中！\n请在 **%{minutes}分钟和%{seconds}秒** 后再试。",
+			"success": {
+				"title": "你已请求 peachy！",
+				"description": "你已赚取 %{coinEmote} **`%{coin}`** 硬币。"
+			}
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "尚未有人赚取硬币。",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "尚未有人在名单上。",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "尚未有人在名单上。",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "无效的排名类型。"
+		},
+		"transferMessages": {
+			"selfTransfer": "你不能将硬币转给自己。",
+			"botTransfer": "你不能将硬币转给机器人。",
+			"pendingTransfer": "有一笔交易在等待中。请在开始新交易之前确认或取消它。",
+			"invalidAmount": "请指定有效的用户和金额。",
+			"noUser": "请指定有效的用户。",
+			"balanceNotExist": "没有余额记录。",
+			"insufficientBalance": "指定金额无效或余额不足。",
+			"zeroBalance": "你没有硬币可以发送。",
+			"transactionConfirm": "你将向 {{user}} 转账 {{amount}} {{emoji}}。你确定吗？",
+			"transactionSuccess": "你已向 {{user}} 转账 {{amount}} {{emoji}}。",
+			"transactionCancel": "你已取消交易。硬币未被转移。",
+			"transactionTimeout": "由于没有活动，交易已超时。请重试。",
+			"transactionTimeoutAction": "请重新执行命令以进行转账。",
+			"amountTooHigh": "金额超出余额。",
+			"transferTooFrequent": "你频繁发送硬币。请稍等。",
+			"transferLimitExceeded": "超过了最大转账限制。",
+			"transferInsufficientFunds": "你没有足够的硬币来完成此交易。",
+			"transferInvalidUser": "指定的用户无效或未找到。",
+			"transferConfirmPrompt": "请点击下面的按钮确认转账。",
+			"transactionExpired": "交易已过期"
+		},
+		"weeklyMessages": {
+			"userNotFound": "未找到用户。",
+			"cooldown": {
+				"multipleDays": "你的周奖励正在等待中！\n请在 **{{days}}天{{days > 1 ? 's' : ''}}和{{hours}}小时{{hours > 1 ? 's' : ''}}** 后再试。",
+				"singleDay": "你的周奖励正在等待中！\n请在 **{{hours}}小时{{hours > 1 ? 's' : ''}}**, **{{minutes}}分钟{{minutes > 1 ? 's' : ''}}**, 和 **{{seconds}}秒{{seconds > 1 ? 's' : ''}}** 后再试。",
+				"noDays": "你的周奖励正在等待中！\n请在 **{{hours}}小时{{hours > 1 ? 's' : ''}}**, **{{minutes}}分钟{{minutes > 1 ? 's' : ''}}**, 和 **{{seconds}}秒{{seconds > 1 ? 's' : ''}}** 后再试。"
+			},
+			"success": {
+				"title": "周奖励 %{displayName}",
+				"description": "%{coinEmote} **`+%{coin}`** 硬币"
+			}
+		}
+	},
+	"information": {
+		"helpMessages": {
+			"title": "𝐔𝐏𝐃𝐀𝐓𝐄 𝐇𝐄𝐋𝐏",
+			"description": "以下是可用命令：",
+			"note": "注意：某些命令可能会在机器人检索的列表中显示用户名。",
+			"footer": "© 版权 KYUU",
+			"supportButton": "点击获取支持",
+			"commandNotFound": "未找到命令：",
+			"commandTitle": "命令帮助",
+			"category": "类别",
+			"aliases": "别名：",
+			"cooldown": "冷却时间",
+			"botPermissions": "机器人权限：",
+			"examples": "示例："
+		},
+		"infoMessages": {
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
+			"description": "是一个多功能的 Discord 机器人，旨在提供乐趣、娱乐和实用性。通过功能，试试你的运气，参与赌博、玩迷你游戏等等！",
+			"developer": {
+				"title": "𝐃𝐄𝐕",
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+			},
+			"footer": "遇到任何问题、需要帮助或想报告错误？请点击下面的链接",
+			"supportButton": {
+				"label": "点击获取支持"
+			}
+		}
+	}
+}

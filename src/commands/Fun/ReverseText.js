@@ -34,12 +34,15 @@ module.exports = class ReverseText extends Command {
         const text = ctx.isInteraction ? ctx.interaction.options.getString('text') : args.join(" ");
         const reversedText = text.split("").reverse().join("");
 
+        // Get localized strings
+        const reverseTextStrings = language.locales.get(language.defaultLocale)?.funMessage?.reverseText;
+
         const embed = client.embed()
             .setColor(color.main)
-            .setTitle("Reversed Text")
-            .setDescription(`**Original Text:** ${text}\n**Reversed Text:** ${reversedText}`)
+            .setTitle(reverseTextStrings.title) // Use localized title
+            .setDescription(reverseTextStrings.description.replace("{originalText}", text).replace("{reversedText}", reversedText)) // Use localized description with placeholders
             .setFooter({
-                text: `Requested by ${ctx.author.displayName}`,
+                text: `${reverseTextStrings.requestedBy} ${ctx.author.displayName}`, // Use localized footer text
                 iconURL: ctx.author.displayAvatarURL(),
             })
             .setTimestamp();

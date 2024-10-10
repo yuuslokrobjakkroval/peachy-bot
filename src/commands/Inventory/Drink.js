@@ -50,6 +50,9 @@ module.exports = class Drink extends Command {
         const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() : args[0];
         const itemInfo = AllItems.find(({ id }) => id === itemId.toLowerCase());
 
+        if (!itemInfo) {
+            return await client.utils.sendErrorMessage(client, ctx, `Item with ID \`${itemId}\` not found.`, color);
+        }
         // Check if the item is food and return a message
         if (itemInfo.type === 'food') {
             return await client.utils.sendErrorMessage(client, ctx, `You can't drink ${itemInfo.emoji} **${itemInfo.name}**. It's food!`, color);

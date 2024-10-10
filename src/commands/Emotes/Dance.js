@@ -24,16 +24,23 @@ module.exports = class Dance extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.dances);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Dancing Time! ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Let\'s dance the night away!');
+        const danceMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.danceMessages; // Access localized messages
 
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.dances); // Get a random dance emoji
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(danceMessages.title) // Use localized title
+                .setDescription(danceMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                })
+                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random dance emoji image
 
-        await ctx.sendMessage({ embeds: [embed] });
-
+            await ctx.sendMessage({ embeds: [embed] }); // Send the embed message
+        } catch (error) {
+            console.error('Error processing dance command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, danceMessages.error, color); // Use localized error message
+        }
     }
 };

@@ -30,6 +30,7 @@ module.exports = class Wallpaper extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         let selectedCategory = args[0] || wallpaperCategories[0];  // Default to the first category
+        const wallpaper = language.locales.get(language.defaultLocale)?.funMessage?.wallpaper;
         let selectedWallpapers = Wallpapers.filter(wallpaper => wallpaper.type === selectedCategory);
 
         const pages = [];
@@ -50,11 +51,11 @@ module.exports = class Wallpaper extends Command {
             pages.push({ embed });
         }
 
-        await paginateWallpapers(client, ctx, color, emoji, pages, selectedCategory, selectedWallpapers);
+        await paginateWallpapers(client, ctx, color, emoji, pages, selectedCategory, selectedWallpapers, wallpaper);
     }
 };
 
-async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCategory, selectedWallpapers) {
+async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCategory, selectedWallpapers, wallpaper) {
     let page = 0;
     let selectedItemIndex = null; // For selecting specific wallpaper within the category
     const itemsPerPage = 5;  // Number of wallpapers per page
@@ -94,7 +95,7 @@ async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCate
 
         const categorySelect = new StringSelectMenuBuilder()
             .setCustomId('category_select')
-            .setPlaceholder('Select Wallpaper Category')
+            .setPlaceholder(wallpaper.selectCategory)
             .addOptions(categoryOptions);
 
         const itemOptions = selectedWallpapers
@@ -107,8 +108,8 @@ async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCate
 
         const itemSelect = new StringSelectMenuBuilder()
             .setCustomId('item_select')
-            .setPlaceholder('Select a wallpaper')
-            .addOptions(itemOptions.length ? itemOptions : [{ label: 'No wallpapers available', value: 'none' }]);
+            .setPlaceholder(wallpaper.selectWallpaper)
+            .addOptions(itemOptions.length ? itemOptions : [{ label: wallpaper.noWallpapers, value: 'none' }]);
 
         const row1 = new ActionRowBuilder().addComponents(categorySelect);
         const row2 = new ActionRowBuilder().addComponents(itemSelect);
@@ -127,19 +128,18 @@ async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCate
 
         if (!wallpaper) {
             console.error('Wallpaper not found at index:', selectedItemIndex);
-            return { embed: client.embed().setDescription('Wallpaper not found.').setColor(color.red) };
+            return { embed: client.embed().setDescription(wallpaper.wallpaperNotFound).setColor(color.red) }; // Localized message
         }
 
         const embed = client.embed()
             .setColor(color.main)
-            .setTitle(`𝐖𝐀𝐋𝐋𝐏𝐀𝐏𝐄𝐑 𝐃𝐄𝐓𝐀𝐈𝐋\n${emoji.mainLeft} ${wallpaper.name} ${emoji.mainRight}`)
+            .setTitle(`${wallpaper.wallpaper.DetailsTitle} \n${emoji.mainLeft} ${wallpaper.name} ${emoji.mainRight}`) // Localized title
             .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setDescription(`**ID : ${wallpaper.id}** \n**Description : ** ${wallpaper.description}\n**Category : ** ${client.utils.formatCapitalize(wallpaper.type)}`)
+            .setDescription(`**ID : ${wallpaper.id}** \n**${wallpaper.descriptionLabel} : ** ${wallpaper.description}\n**${wallpaper.categoryLabel} : ** ${client.utils.formatCapitalize(wallpaper.type)}`)
             .setImage(wallpaper.image);
 
         return { embed };
     };
-
 
     const msg = ctx.isInteraction
         ? await ctx.interaction.reply({ ...getButtonRow(), fetchReply: true })
@@ -186,13 +186,11 @@ async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCate
             selectedItemIndex = selectedWallpapers.findIndex(w => w.id.toString() === int.values[0]);
             if (selectedItemIndex !== -1) {
                 await int.update({ embeds: [displayItemDetails(selectedItemIndex).embed], components: getButtonRow().components });
-            } else {
-                await int.update({ embeds: [client.embed().setDescription('Wallpaper not found.').setColor(color.red)], components: getButtonRow().components });
             }
         }
     });
 
     collector.on('end', () => {
-        msg.edit({ components: [] });
+        msg.edit({ components: [] }); // Disable the buttons after the collector ends
     });
 }

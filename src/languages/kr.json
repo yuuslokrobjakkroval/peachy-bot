@@ -1,0 +1,187 @@
+{
+	"generalMessages": {
+		"permissionsClientError": "이 명령을 실행할 수 있는 권한이 부족합니다.",
+		"permissionsUserError": "이 명령을 사용할 수 있는 권한이 부족합니다.",
+		"argumentsMissingTitle": "인수 부족",
+		"argumentsMissingDescription": "명령어 `{commandName}`에 필요한 인수를 제공하세요.",
+		"usageHeader": "사용법",
+		"examplesHeader": "예시",
+		"syntaxInstructions": "구문: [] = 선택사항, <> = 필수",
+		"noEveryoneOrHereError": "이 명령은 모든 사용자 또는 현재 사용자에게 사용할 수 없습니다.",
+		"userNotFound": "데이터베이스에서 사용자를 찾을 수 없습니다.",
+		"alreadyInGame": "이미 게임 중입니다. 현재 게임을 종료한 후 새로운 게임을 시작하세요.",
+		"zeroBalance": "잔액이 없습니다. 다시 시도하기 전에 동전을 획득하세요.",
+		"invalidAmount": "유효하지 않은 금액입니다. 양수 숫자를 입력하세요."
+	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "물기 시간!",
+			"description": "사랑스럽게 물다",
+			"errors": {
+				"noUser": "물 사용자에게 언급해야 합니다.",
+				"selfBite": "자신을 물 수 없습니다.",
+				"fetchFail": "물기 GIF를 가져오는 중 오류가 발생했습니다."
+			}
+		},
+		"hugMessages": {
+			"title": "포옹 시간!",
+			"description": "따뜻하게 포옹하다",
+			"errors": {
+				"noUser": "포옹할 사용자에게 언급해야 합니다.",
+				"selfHug": "자신을 포옹할 수 없습니다.",
+				"fetchFail": "포옹 GIF를 가져오는 중 오류가 발생했습니다."
+			}
+		},
+		"kissMessages": {
+			"title": "키스 시간!",
+			"description": "키스하다",
+			"errors": {
+				"noUser": "키스할 사용자에게 언급해야 합니다.",
+				"selfKiss": "자신에게 키스할 수 없습니다.",
+				"fetchFail": "키스 GIF를 가져오는 중 오류가 발생했습니다."
+			}
+		},
+		"punchMessages": {
+			"title": "주먹 시간!",
+			"description": "친근하게 주먹질하다",
+			"errors": {
+				"noUser": "주먹질할 사용자에게 언급해야 합니다.",
+				"selfPunch": "자신을 주먹질할 수 없습니다.",
+				"fetchFail": "주먹질 GIF를 가져오는 중 오류가 발생했습니다."
+			}
+		},
+		"slapMessages": {
+			"title": "때리기 시간!",
+			"description": "애정 어린 뺨을 때리다",
+			"errors": {
+				"noUser": "때릴 사용자에게 언급해야 합니다.",
+				"selfSlap": "자신을 때릴 수 없습니다.",
+				"fetchFail": "때리기 GIF를 가져오는 중 오류가 발생했습니다."
+			}
+		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"title": "%{displayName}의 잔액",
+			"description": "%{coinEmote} **`%{coin}`** 동전\n%{bankEmote} **`%{bank}`** 동전",
+			"errors": {
+				"noUser": "사용자를 찾을 수 없습니다.",
+				"fetchFail": "잔액을 가져오는 중 오류가 발생했습니다."
+			}
+		},
+		"dailyMessages": {
+			"title": "%{displayName}의 일일 보상",
+			"success": "%{coinEmote} **`+%{coin}`** 동전\nXP: **`+%{exp}`** xp",
+			"cooldown": "일일 보상이 대기 중입니다. **%{time}** 후에 다시 시도하세요.",
+			"errors": {
+				"noUser": "사용자를 찾을 수 없습니다.",
+				"fetchFail": "일일 요청을 처리하는 중 오류가 발생했습니다."
+			}
+		},
+		"depositMessages": {
+			"zeroBalance": "예치할 동전이 없습니다.",
+			"invalidAmount": "유효하지 않은 금액입니다. 유효한 숫자를 입력하거나 `모두` 또는 `반`을 사용하세요.",
+			"success": "은행에 %{coinEmote} **`%{amount}`** 동전을 예치했습니다.",
+			"errors": {
+				"noUser": "사용자를 찾을 수 없습니다."
+			}
+		},
+		"gomaMessages": {
+			"success": {
+				"title": "goma를 요청했습니다!",
+				"description": "당신은 %{coinEmote} **`%{coin}`** 동전을 얻었습니다."
+			},
+			"cooldown": "Goma가 대기 중입니다!\n**%{minutes}분 및 %{seconds}초** 후에 다시 시도하세요.",
+			"errors": {
+				"noUser": "사용자를 찾을 수 없습니다."
+			}
+		},
+		"peachyMessages": {
+			"errors": {
+				"noUser": "사용자를 찾을 수 없습니다."
+			},
+			"cooldown": "Peachy가 대기 중입니다!\n**%{minutes}분 및 %{seconds}초** 후에 다시 시도하세요.",
+			"success": {
+				"title": "peachy를 요청했습니다!",
+				"description": "당신은 %{coinEmote} **`%{coin}`** 동전을 얻었습니다."
+			}
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "아직 동전을 얻은 사람이 없습니다.",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "아직 시리즈가 없습니다.",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "아직 시리즈가 없습니다.",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "유효하지 않은 순위 유형입니다."
+		},
+		"transferMessages": {
+			"selfTransfer": "자신에게 동전을 전송할 수 없습니다.",
+			"botTransfer": "봇에게 동전을 전송할 수 없습니다.",
+			"pendingTransfer": "이미 대기 중인 전송이 있습니다. 새로 시작하기 전에 확인하거나 취소하세요.",
+			"invalidAmount": "유효한 사용자 및 금액을 지정하세요.",
+			"noUser": "유효한 사용자를 지정하세요.",
+			"balanceNotExist": "잔액 기록이 존재하지 않습니다.",
+			"insufficientBalance": "지정한 금액이 유효하지 않거나 잔액이 부족합니다.",
+			"zeroBalance": "전송할 동전이 없습니다.",
+			"transactionConfirm": "당신은 {{amount}} {{emoji}}를 {{user}}에게 줄 준비가 되었습니다. 확인하시겠습니까?",
+			"transactionSuccess": "당신은 {{user}}에게 {{amount}} {{emoji}}를 주었습니다.",
+			"transactionCancel": "전송을 취소했습니다. 동전이 전송되지 않았습니다.",
+			"transactionTimeout": "활동 부족으로 인해 거래가 만료되었습니다. 다시 시도하세요.",
+			"transactionTimeoutAction": "전송을 수행하려면 명령을 다시 시작하세요.",
+			"amountTooHigh": "금액이 사용 가능한 잔액을 초과했습니다.",
+			"transferTooFrequent": "너무 자주 동전을 전송하고 있습니다. 잠시 기다리세요.",
+			"transferLimitExceeded": "최대 전송 한도를 초과했습니다.",
+			"transferInsufficientFunds": "이 전송을 완료하기에 동전이 부족합니다.",
+			"transferInvalidUser": "지정한 사용자가 유효하지 않거나 찾을 수 없습니다.",
+			"transferConfirmPrompt": "아래 버튼을 클릭하여 전송을 확인하세요.",
+			"transactionExpired": "거래 만료"
+		},
+		"weeklyMessages": {
+			"userNotFound": "사용자를 찾을 수 없습니다.",
+			"cooldown": {
+				"multipleDays": "주간 보상이 대기 중입니다!\n**{{days}}일{{days > 1 ? 's' : ''}} 및 {{hours}}시간{{hours > 1 ? 's' : ''}}** 후에 다시 시도하세요.",
+				"singleDay": "주간 보상이 대기 중입니다!\n**{{hours}}시간{{hours > 1 ? 's' : ''}}**, **{{minutes}}분{{minutes > 1 ? 's' : ''}}**, 및 **{{seconds}}초{{seconds > 1 ? 's' : ''}}** 후에 다시 시도하세요.",
+				"noDays": "주간 보상이 대기 중입니다!\n**{{hours}}시간{{hours > 1 ? 's' : ''}}**, **{{minutes}}분{{minutes > 1 ? 's' : ''}}**, 및 **{{seconds}}초{{seconds > 1 ? 's' : ''}}** 후에 다시 시도하세요."
+			},
+			"success": {
+				"title": "%{displayName}의 주간 보상",
+				"description": "%{coinEmote} **`+%{coin}`** 동전"
+			}
+		}
+	},
+	"information": {
+		"helpMessages": {
+			"title": "𝐨𝐩𝐞𝐫𝐚𝐭𝐢𝐨𝐧 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬",
+			"description": "사용 가능한 명령어는 다음과 같습니다:",
+			"note": "주의: 일부 명령어는 봇에서 가져온 목록에 사용자 이름을 표시할 수 있습니다.",
+			"footer": "© 저작권 KYUU",
+			"supportButton": "지원 요청 클릭",
+			"commandNotFound": "명령어를 찾을 수 없음:",
+			"commandTitle": "명령어 도움말",
+			"category": "카테고리",
+			"aliases": "별칭:",
+			"cooldown": "재사용 대기시간",
+			"botPermissions": "봇 권한:",
+			"examples": "예시:"
+		},
+		"infoMessages": {
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
+			"description": "는 재미, 오락 및 유용성을 위해 설계된 다목적 Discord 봇입니다. 기능을 통해 도박을 시도하고 미니 게임을 플레이하는 등 많은 것을 경험해 보세요!",
+			"developer": {
+				"title": "𝐃𝐄𝐕",
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+			},
+			"footer": "문제가 있거나 도움이 필요하시거나 버그를 신고하고 싶으신가요? 아래 링크를 클릭하세요",
+			"supportButton": {
+				"label": "지원 요청 클릭"
+			}
+		}
+	}
+}

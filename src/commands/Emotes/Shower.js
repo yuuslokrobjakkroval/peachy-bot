@@ -24,14 +24,23 @@ module.exports = class Shower extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.shower);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Shower Time! ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Enjoy a refreshing shower!');
+        const showerMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.showerMessages;
 
-        await ctx.sendMessage({ embeds: [embed] });
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.shower);
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(showerMessages.title) // Use localized title
+                .setImage(client.utils.emojiToImage(randomEmoji)) // Set random shower emoji image
+                .setDescription(showerMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                });
+
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Error processing shower command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, showerMessages.error, color); // Use localized error message
+        }
     }
 };

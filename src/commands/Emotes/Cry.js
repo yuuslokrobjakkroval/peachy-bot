@@ -24,14 +24,22 @@ module.exports = class Cry extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const randomEmoji = client.utils.getRandomElement(emoji.emotes.cry);
-        const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Crying Time ${emoji.mainRight}`)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription('Sometimes, expressing tears is the best way to handle emotions.');
+        const cryMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cryMessages;
+        try {
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes.cry);
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(cryMessages.title) // Use localized title
+                .setDescription(cryMessages.description, { // Use localized description
+                    user: ctx.author.displayName
+                })
+                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random crying emoji image
 
-        await ctx.sendMessage({ embeds: [embed] });
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Error processing cry command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, cryMessages.error, color); // Use localized error message
+        }
     }
 };

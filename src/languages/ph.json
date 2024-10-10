@@ -1,0 +1,363 @@
+{
+	"generalMessages": {
+		"permissionsClientError": "Wala akong sapat na mga pahintulot upang isagawa ang utos na ito.",
+		"permissionsUserError": "Wala kang sapat na pahintulot para gamitin ang command na ito.",
+		"argumentsMissingTitle": "Mga Nawawalang Argumento",
+		"argumentsMissingDescription": "Pakibigay ang mga kinakailangang argumento para sa command na `{commandName}`.",
+		"usageHeader": "Paggamit",
+		"examplesHeader": "Mga halimbawa",
+		"syntaxInstructions": "Syntax: [] = opsyonal, <> = kinakailangan",
+		"noEveryoneOrHereError": "Hindi mo magagamit ang command na ito sa lahat o dito.",
+		"userNotFound": "Hindi nakita ang user sa database.",
+		"alreadyInGame": "Nasa laro ka na. ",
+		"zeroBalance": "Ang iyong balanse ay zero. ",
+		"invalidAmount": "Di-wastong halaga. "
+	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "Bite Time!",
+			"description": "mapaglarong kumagat",
+			"errors": {
+				"noUser": "Kailangan mong banggitin ang isang user na makakagat.",
+				"selfBite": "Hindi mo maaaring kagatin ang iyong sarili.",
+				"fetchFail": "Nagkaproblema habang kinukuha ang kagat na GIF."
+			}
+		},
+		"hugMessages": {
+			"title": "Hug Time!",
+			"description": "nagbibigay ng mainit na yakap kay",
+			"errors": {
+				"noUser": "Kailangan mong banggitin ang isang gumagamit na yakapin.",
+				"selfHug": "Hindi mo mayakap ang iyong sarili.",
+				"fetchFail": "Nagkaproblema habang kinukuha ang yakap na GIF."
+			}
+		},
+		"kissMessages": {
+			"title": "Kiss Time!",
+			"description": "nagbibigay ng isang cute na halik sa",
+			"errors": {
+				"noUser": "Kailangan mong banggitin ang isang user para halikan.",
+				"selfKiss": "Hindi mo maaaring halikan ang iyong sarili.",
+				"fetchFail": "Nagkaproblema habang kinukuha ang halik GIF."
+			}
+		},
+		"punchMessages": {
+			"title": "Punch Time!",
+			"description": "naghahagis ng mapaglarong suntok",
+			"errors": {
+				"noUser": "Kailangan mong banggitin ang isang user na susuntukin.",
+				"selfPunch": "Hindi mo masusuntok ang iyong sarili.",
+				"fetchFail": "Nagkaproblema habang kinukuha ang punch GIF."
+			}
+		},
+		"slapMessages": {
+			"title": "Oras ng Sampal!",
+			"description": "mapaglarong sampal",
+			"errors": {
+				"noUser": "Kailangan mong banggitin ang isang user na sasampal.",
+				"selfSlap": "Hindi mo kayang sampalin ang sarili mo.",
+				"fetchFail": "Nagkaproblema habang kinukuha ang sampal na GIF."
+			}
+		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"title": "Balanse ng %{displayName}",
+			"description": "%{coinEmote} **`%{coin}`** na mga barya\n",
+			"errors": {
+				"noUser": "Hindi nahanap ang user.",
+				"fetchFail": "Nagkaproblema habang kinukuha ang iyong balanse."
+			}
+		},
+		"dailyMessages": {
+			"title": "Pang-araw-araw na Gantimpala ni %{displayName}.",
+			"success": "%{coinEmote} **`+%{coin}`** na mga barya\n",
+			"cooldown": "Ang iyong pang-araw-araw na reward ay nasa cooldown. ",
+			"errors": {
+				"noUser": "Hindi nahanap ang user.",
+				"fetchFail": "Nagkaroon ng error sa pagproseso ng iyong pang-araw-araw na claim."
+			}
+		},
+		"depositMessages": {
+			"zeroBalance": "Wala kang anumang barya na idedeposito.",
+			"invalidAmount": "Di-wastong halaga. ",
+			"success": "Nag-deposito ka ng %{coinEmote} **`%{amount}`** coin sa iyong bangko.",
+			"errors": {
+				"noUser": "Hindi nahanap ang user."
+			}
+		},
+		"gomaMessages": {
+			"success": {
+				"title": "inangkin si goma!",
+				"description": "Nakakuha ka ng %{coinEmote} **`%{coin}`** coin."
+			},
+			"cooldown": "Si Goma ay nasa cooldown!\n",
+			"errors": {
+				"noUser": "Hindi nahanap ang user."
+			}
+		},
+		"peachyMessages": {
+			"errors": {
+				"noUser": "Hindi nahanap ang user."
+			},
+			"cooldown": "Si Peachy ay nasa cooldown!\n",
+			"success": {
+				"title": "nag-claim ng peachy!",
+				"description": "Nakakuha ka ng %{coinEmote} **`%{coin}`** coin."
+			}
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "Wala pang nakakakuha ng barya.",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "Wala pang streak.",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "Wala pang streak.",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "Di-wastong uri ng leaderboard."
+		},
+		"transferMessages": {
+			"selfTransfer": "Hindi ka maaaring maglipat ng mga barya sa iyong sarili.",
+			"botTransfer": "Hindi ka maaaring maglipat ng mga barya sa bot.",
+			"pendingTransfer": "Mayroon ka nang nakabinbing paglipat. ",
+			"invalidAmount": "Mangyaring magbanggit ng wastong user at halaga.",
+			"noUser": "Mangyaring magbanggit ng wastong user.",
+			"balanceNotExist": "Ang iyong talaan ng balanse ay hindi umiiral.",
+			"insufficientBalance": "Di-wastong halaga na tinukoy o hindi sapat na balanse.",
+			"zeroBalance": "Wala kang maililipat na barya.",
+			"transactionConfirm": "Malapit ka nang magbigay {{amount}} {{emoji}} sa {{user}}. ",
+			"transactionSuccess": "Ikaw ay nagbigay {{amount}} {{emoji}} sa {{user}}.",
+			"transactionCancel": "Kinansela mo ang transaksyon. ",
+			"transactionTimeout": "Nag-time out ang transaksyon dahil sa kawalan ng aktibidad. ",
+			"transactionTimeoutAction": "Kung gusto mong gumawa ng paglipat, pakisimulan muli ang command.",
+			"amountTooHigh": "Ang halaga ay lumampas sa iyong magagamit na balanse.",
+			"transferTooFrequent": "Masyado kang madalas na naglilipat ng mga barya. ",
+			"transferLimitExceeded": "Lumampas ka sa maximum na limitasyon sa paglipat.",
+			"transferInsufficientFunds": "Wala kang sapat na mga barya para makumpleto ang paglilipat na ito.",
+			"transferInvalidUser": "Ang tinukoy na user ay hindi wasto o hindi nahanap.",
+			"transferConfirmPrompt": "Kumpirmahin ang paglipat sa pamamagitan ng pag-click sa button sa ibaba.",
+			"transactionExpired": "Nag-expire na ang Transaksyon"
+		},
+		"weeklyMessages": {
+			"userNotFound": "Hindi nahanap ang user.",
+			"cooldown": {
+				"multipleDays": "Lingguhan ay nasa cooldown!\n{{days}} araw{{days > 1 ? 's' : ''}} at {{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, at **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
+				"singleDay": "Lingguhan ay nasa cooldown!\n{{days}} araw, {{hours}}hr{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, at {{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
+				"noDays": "Lingguhan ay nasa cooldown!\n{{hours}}hr{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, at {{seconds}}sec{{seconds > 1 ? 's' : ''}}**."
+			},
+			"success": "{{coinEmote}} **Binabati kita, {{user}}!**\n{{coin}} mga barya** at **{{exp}} XP**!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong lingguhang claim."
+		},
+		"withdrawMessages": {
+			"noUser": "Hindi nahanap ang user.",
+			"zeroBalance": "Wala kang barya sa iyong bangko.",
+			"invalidAmount": "Mangyaring magbigay ng wastong halaga upang i-withdraw. ",
+			"tooHigh": "Hindi ka maaaring mag-withdraw ng higit sa kung ano ang mayroon ka sa iyong bangko.",
+			"success": "{{coinEmote}} ** Tagumpay, {{user}}!**\n{{amount}} mga barya** mula sa iyong bangko.",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong kahilingan sa pag-withdraw."
+		}
+	},
+	"emoteMessages": {
+		"angryMessages": {
+			"title": "Galit na Oras!",
+			"description": "**{{user}}** nagpapakita ng kanilang pinaka galit na ekspresyon!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong galit na emote."
+		},
+		"cryMessages": {
+			"title": "Oras ng Pag-iyak!",
+			"description": "**{{user}}** umiiyak!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong umiiyak na emote."
+		},
+		"cuteMessages": {
+			"title": "Cute Time!",
+			"description": "**{{user}}** nagpapakita ng kanilang cutest expression!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong cute na emote."
+		},
+		"danceMessages": {
+			"title": "Oras ng Pagsasayaw!",
+			"description": "**{{user}}** nagpapakita ng ilang kahanga-hangang sayaw na galaw!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong dance emote."
+		},
+		"exerciseMessages": {
+			"title": "Oras ng Pag-eehersisyo!",
+			"description": "**{{user}}** ay gumagalaw at nananatiling fit!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong exercise emote."
+		},
+		"happyMessages": {
+			"title": "Happy Vibes!",
+			"description": "**{{user}}** ay nagkakalat ng kagalakan at kaligayahan!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong masayang emote."
+		},
+		"laughMessages": {
+			"title": "Tumawa ng Malakas!",
+			"description": "**{{user}}** nagbabahagi ng isang nakabubusog na tawa!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong laugh emote."
+		},
+		"makeupMessages": {
+			"title": "Oras ng Pampaganda!",
+			"description": "**{{user}}** nalalapat ang ilang kamangha-manghang makeup at kumikinang nang maliwanag!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong makeup emote."
+		},
+		"eatMessages": {
+			"title": "Oras ng Pagkain!",
+			"description": "**{{user}}** ay tinatangkilik ang ilang masasarap na pagkain!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong eat emote."
+		},
+		"playGameMessages": {
+			"title": "Oras ng Laro!",
+			"description": "**{{user}}** ay naghahanda upang maglaro!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong play game emote."
+		},
+		"roarMessages": {
+			"title": "Oras ng dagundong!",
+			"description": "**{{user}}** naglalabas ng malakas na dagundong!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong roar emote."
+		},
+		"sadMessages": {
+			"title": "Nakakaramdam ng Lungkot",
+			"description": "**{{user}}** ay nagpapahayag ng kalungkutan.",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong malungkot na emote."
+		},
+		"scareMessages": {
+			"title": "Natatakot!",
+			"description": "**{{user}}** ipinapakita ang kanilang nakakatakot na bahagi!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong scare emote."
+		},
+		"showerMessages": {
+			"title": "Oras ng Shower!",
+			"description": "**{{user}}** ay nag-e-enjoy sa isang nakakapreskong shower!",
+			"error": "Nagkaroon ng error sa pagproseso ng iyong shower emote."
+		},
+		"shyMessages": {
+			"title": "Mahiyain!",
+			"description": "**{{user}}** nagpapakita ng kanilang nahihiyang ekspresyon!",
+			"error": "Nagkaroon ng error sa pagpoproseso ng iyong nahihiyang emote."
+		}
+	},
+	"funMessage": {
+		"animalOfYear": {
+			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑",
+			"selectAnimal": "Pumili ng hayop",
+			"noAnimals": "Walang available na hayop",
+			"animalNotFound": "Hindi natagpuan ang hayop.",
+			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Paglalarawan",
+			"requestBy": "Kahilingan Ni",
+			"id": "ID"
+		},
+		"province": {
+			"title": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Pumili ng probinsya",
+			"noProvinces": "Walang available na probinsya",
+			"notFound": "Hindi natagpuan ang lalawigan.",
+			"detailTitle": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Paglalarawan",
+			"requestBy": "Kahilingan Ni",
+			"id": "ID"
+		},
+		"randomColor": {
+			"title": "Narito ang isang random na kulay para sa iyo!",
+			"description": "Kulay: {color}",
+			"requestedBy": "Hiniling ni"
+		},
+		"reverseText": {
+			"title": "Binaliktad na Teksto",
+			"description": "**Orihinal na Teksto:** {originalText}\n",
+			"requestedBy": "Hiniling ni"
+		},
+		"wallpaper": {
+			"selectCategory": "Pumili ng kategorya...",
+			"selectWallpaper": "Pumili ng wallpaper...",
+			"noWallpapers": "Walang available na wallpaper sa kategoryang ito.",
+			"wallpaperNotFound": "Hindi nahanap ang wallpaper.",
+			"wallpaperDetailsTitle": "Mga Detalye ng Wallpaper",
+			"descriptionLabel": "Paglalarawan",
+			"categoryLabel": "Kategorya"
+		},
+		"weather": {
+			"title": "𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Pumili ng probinsya",
+			"noProvinces": "Walang available na probinsya",
+			"notFound": "Hindi natagpuan ang lalawigan.",
+			"provinceNotFound": "Hindi nahanap ang probinsya.",
+			"dataFetchFailed": "Nabigong makuha ang data ng lagay ng panahon. "
+		}
+	},
+	"gamblingMessages": {
+		"blackjackMessages": {
+			"title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
+			"youWon": "Nanalo ka **`%{coin}`** %{coinEmote}",
+			"youLost": "Nawala mo ang **`%{coin}`** %{coinEmote}",
+			"bothBust": "Pareho kayong bust!",
+			"tied": "nakatali ka!",
+			"winnerInfo": "Ang nagwagi ay ang pinakamalapit sa 21.",
+			"gameInProgress": "Ang iyong laro ay isinasagawa!",
+			"gameOver": "Tapos na ang laro mo."
+		},
+		"slotMessages": {
+			"title": "𝐒𝐋𝐎𝐓𝐒",
+			"youBet": "Taya mo **`%{coin}`** %{coinEmote}",
+			"youWon": "Nanalo ka **`%{coin}`** %{coinEmote}",
+			"youLost": "Nawala mo ang **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "Ang iyong laro ay isinasagawa!",
+			"gameOver": "Tapos na ang laro mo."
+		},
+		"coinflipMessages": {
+			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
+			"description": "**%{author}** nagastos **`%{coin}`** %{coinEmote} pumili **%{choice}**! ",
+			"resultDescription": "**%{author}** nagastos **`%{coin}`** %{coinEmote} pumili **%{choice}**",
+			"youWon": "Nanalo ka **`%{coin}`** %{coinEmote}",
+			"youLost": "Nawala mo ang **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "Ang iyong laro ay isinasagawa!",
+			"gameOver": "Tapos na ang laro mo."
+		}
+	},
+	"inventoryMessages": {
+		"inventoryHeader": "imbentaryo ni %{author}!",
+		"inventoryEmptyName": "Walang laman na Imbentaryo",
+		"inventoryEmptyValue": "Walang laman ang iyong kasalukuyang imbentaryo.",
+		"itemNotFound": "Ang item ID **`%{itemId}`** ay hindi mahanap sa shop!",
+		"sellDisabled": "Ang pagbebenta ng item na ito ay hindi pinagana.",
+		"useDisabled": "Ang paggamit sa item na ito ay hindi pinagana."
+	},
+	"themeMessages": {
+		"themeApplied": "Matagumpay mong nailapat ang %{itemEmote} **`%{itemName}`** na tema sa iyong embed!",
+		"themeUnavailable": "Ang temang **`%{itemName}`** ay hindi magagamit para sa paggamit.",
+		"themeNotOwned": "Hindi mo pagmamay-ari ang tema **`%{itemName}`**. ",
+		"invalidThemeID": "Ang theme ID **`%{itemId}`** ay hindi wasto. ",
+		"themeAlreadyOwned": "Pagmamay-ari mo na ang temang **`%{itemName}`** at hindi na ito mabibiling muli."
+	},
+	"information": {
+		"helpMessages": {
+			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
+			"description": "Narito ang mga utos na magagamit:",
+			"note": "Tandaan: Ang ilang mga command ay maaaring magpakita ng mga username sa mga listahang nakuha ng bot.",
+			"footer": "© Copyright Ni KYUU",
+			"supportButton": "Mag-click para sa suporta",
+			"commandNotFound": "Hindi nahanap ang utos:",
+			"commandTitle": "Tulong para sa utos",
+			"category": "Kategorya",
+			"aliases": "Mga alias:",
+			"cooldown": "Cooldown",
+			"botPermissions": "Mga Pahintulot sa Bot:",
+			"examples": "(mga) Halimbawa:"
+		},
+		"infoMessages": {
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
+			"description": "ay ang iyong multi-purpose Discord bot na idinisenyo para sa kasiyahan, entertainment, at utility. ",
+			"developer": {
+				"title": "𝐃𝐄𝐕",
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+			},
+			"footer": "Nagkakaroon ng anumang mga isyu, kailangan ng tulong, o gustong mag-ulat ng mga bug? ",
+			"supportButton": {
+				"label": "Mag-click para sa suporta"
+			}
+		}
+	}
+}

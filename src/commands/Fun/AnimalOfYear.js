@@ -27,36 +27,33 @@ module.exports = class AnimalOfYear extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const animalOfYear = language.locales.get(language.defaultLocale)?.funMessage?.animalOfYear;
         const selectedAnimals = Animals; // All animals
-
         const pages = [];
         const itemsPerPage = 12; // Adjust the number of animals per page
         const totalPages = Math.ceil(selectedAnimals.length / itemsPerPage);
 
         for (let i = 0; i < totalPages; i++) {
-            const currentItems = selectedAnimals.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
-            const animalList = currentItems.map((animal, index) => `**${animal.name}** ${animal.emoji}`).join('\n\n');
-
             const embed = client.embed()
                 .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} 𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑 ${emoji.mainRight}`)
+                .setTitle(`${emoji.mainLeft} ${animalOfYear.title} ${emoji.mainRight}`)
                 .setImage('https://image.freshnewsasia.com/2020/id-06/fn-2020-04-13-07-12-12-0.jpg') // Placeholder image, replace with your own if needed
                 .setFooter({
-                    text: `Request By ${ctx.author.displayName}`,
+                    text: `${animalOfYear.requestBy} ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
             pages.push({ embed });
         }
 
-        await paginateAnimals(client, ctx, color, emoji, pages);
+        await paginateAnimals(client, ctx, color, emoji, pages, animalOfYear);
     }
 };
 
-async function paginateAnimals(client, ctx, color, emoji, pages) {
+async function paginateAnimals(client, ctx, color, emoji, pages, animalOfYear) {
     let page = 0;
     let selectedItemIndex = null;
-    let selectedAnimalName = 'Select an animal';
+    let selectedAnimalName = animalOfYear.selectAnimal; // Directly use the selectAnimal key
     const totalAnimals = Animals.length;
 
     const getButtonRow = () => {
@@ -72,7 +69,7 @@ async function paginateAnimals(client, ctx, color, emoji, pages) {
         const itemSelect = new StringSelectMenuBuilder()
             .setCustomId('item_select')
             .setPlaceholder(selectedAnimalName) // Use the selected animal's name
-            .addOptions(itemOptions.length ? itemOptions : [{ label: 'No animals available', value: 'none' }]);
+            .addOptions(itemOptions.length ? itemOptions : [{ label: animalOfYear.noAnimals, value: 'none' }]); // Use noAnimals key
 
         const row1 = new ActionRowBuilder().addComponents(itemSelect);
         const row2 = new ActionRowBuilder().addComponents(homeButton, prevButton, nextButton); // Added Home button
@@ -84,16 +81,16 @@ async function paginateAnimals(client, ctx, color, emoji, pages) {
         const animal = Animals[index];
         if (!animal) {
             console.error('Animal not found at index:', index);
-            return { embed: client.embed().setDescription('Animal not found.').setColor(color.red) };
+            return { embed: client.embed().setDescription(animalOfYear.animalNotFound).setColor(color.red) }; // Use animalOfYear directly
         }
 
         const embed = client.embed()
             .setColor(color.main)
-            .setTitle(`𝐀𝐍𝐈𝐌𝐀𝐋 𝐃𝐄𝐓𝐀𝐈𝐋 : ${animal.name}`)
+            .setTitle(`${animalOfYear.detailTitle} : ${animal.name}`) // Directly use detailTitle
             .setThumbnail(client.utils.emojiToImage(animal.emoji))
-            .setDescription(`**ID : ${animal.id}** \n**Description : **\n${animal.description}`)
+            .setDescription(`**${animalOfYear.id} : ${animal.id}** \n**${animalOfYear.description} : **\n${animal.description}`)
             .setFooter({
-                text: `Request By ${ctx.author.displayName}`,
+                text: `${animalOfYear.requestBy} ${ctx.author.displayName}`, // Directly use requestBy
                 iconURL: ctx.author.displayAvatarURL(),
             });
 
@@ -118,7 +115,7 @@ async function paginateAnimals(client, ctx, color, emoji, pages) {
         if (ctx.author.id === int.user.id) {
             if (int.customId === 'home') {
                 selectedItemIndex = null;
-                selectedAnimalName = 'Select an animal';
+                selectedAnimalName = animalOfYear.selectAnimal; // Reset to selectAnimal
                 page = 0;
                 await int.update({ ...getButtonRow(), embeds: [pages[page]?.embed] });
             } else if (int.customId === 'prev_item') {
@@ -145,7 +142,14 @@ async function paginateAnimals(client, ctx, color, emoji, pages) {
                     selectedAnimalName = Animals[selectedItemIndex].name;
                     await int.update({ embeds: [displayItemDetails(selectedItemIndex).embed], components: getButtonRow().components });
                 } else {
-                    await int.update({ embeds: [client.embed().setDescription('Animal not found.').setColor(color.red)], components: getButtonRow().components });
+                    await int.update({
+                        embeds: [
+                            client.embed()
+                                .setDescription(animalOfYear.animalNotFound) // Use animalOfYear for not found message
+                                .setColor(color.red)
+                        ],
+                        components: getButtonRow().components
+                    });
                 }
             }
         } else {
