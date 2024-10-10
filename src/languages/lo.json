@@ -146,9 +146,9 @@
 		"weeklyMessages": {
 			"userNotFound": "ບໍ່ພົບຜູ້ໃຊ້.",
 			"cooldown": {
-				"multipleDays": "ທຸກໆອາທິດຢູ່ໃນ cooldown!\n{{days}} ມື້{{days > 1 ? 's' : ''}} ແລະ {{hours}}ຊົ່ວໂມງ{{hours > 1 ? 's' : ''}}**, **{{minutes}}ນາທີ{{minutes > 1 ? 's' : ''}}**, ແລະ **{{seconds}}ວິ{{seconds > 1 ? 's' : ''}}**.",
-				"singleDay": "ທຸກໆອາທິດຢູ່ໃນ cooldown!\n{{days}} ມື້, {{hours}}ຊົ່ວໂມງ{{hours > 1 ? 's' : ''}}, {{minutes}}ນາທີ{{minutes > 1 ? 's' : ''}}, ແລະ {{seconds}}ວິ{{seconds > 1 ? 's' : ''}}**.",
-				"noDays": "ທຸກໆອາທິດຢູ່ໃນ cooldown!\n{{hours}}ຊົ່ວໂມງ{{hours > 1 ? 's' : ''}}, {{minutes}}ນາທີ{{minutes > 1 ? 's' : ''}}, ແລະ {{seconds}}ວິ{{seconds > 1 ? 's' : ''}}**."
+				"multipleDays": "ທຸກໆອາທິດຢູ່ໃນ cooldown!\n{{days}} ແລະ {{hours}}**, **{{minutes}}**, ແລະ **{{seconds}}**.",
+				"singleDay": "ທຸກໆອາທິດຢູ່ໃນ cooldown!\n{{days}}**, **{{hours}}**, **{{minutes}}**, ແລະ **{{seconds}}**.",
+				"noDays": "ທຸກໆອາທິດຢູ່ໃນ cooldown!\n{{hours}}**, **{{minutes}}**, ແລະ **{{seconds}}**."
 			},
 			"success": "{{coinEmote}} ** ຊົມເຊີຍ, {{user}}!**\n{{coin}} ຫຼຽນ ** ແລະ **{{exp}} XP**!",
 			"error": "ມີຄວາມຜິດພາດໃນການປະມວນຜົນການຮຽກຮ້ອງປະຈໍາອາທິດຂອງທ່ານ."

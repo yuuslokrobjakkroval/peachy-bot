@@ -146,9 +146,9 @@
 		"weeklyMessages": {
 			"userNotFound": "အသုံးပြုသူကို ရှာမတွေ့ပါ။",
 			"cooldown": {
-				"multipleDays": "အပတ်စဉ် Cooldown ရှိသည်။\n{{days}} နေ့{{days > 1 ? 's' : ''}} နှင့် {{hours}}နာရီ{{hours > 1 ? 's' : ''}}**၊**{{minutes}}မိ{{minutes > 1 ? 's' : ''}}** နှင့် **{{seconds}}စက္ကန့်{{seconds > 1 ? 's' : ''}}**။",
-				"singleDay": "အပတ်စဉ် Cooldown ရှိသည်။\n{{days}} နေ့၊ {{hours}}နာရီ{{hours > 1 ? 's' : ''}}၊ {{minutes}}မိ{{minutes > 1 ? 's' : ''}}, နှင့် {{seconds}}စက္ကန့်{{seconds > 1 ? 's' : ''}}**။",
-				"noDays": "အပတ်စဉ် Cooldown ရှိသည်။\n{{hours}}နာရီ{{hours > 1 ? 's' : ''}}၊ {{minutes}}မိ{{minutes > 1 ? 's' : ''}}, နှင့် {{seconds}}စက္ကန့်{{seconds > 1 ? 's' : ''}}**။"
+				"multipleDays": "အပတ်စဉ် Cooldown ရှိသည်။\n{{days}} နှင့် {{hours}}**၊**{{minutes}}** နှင့် **{{seconds}}**။",
+				"singleDay": "အပတ်စဉ် Cooldown ရှိသည်။\n{{days}}**၊**{{hours}}**၊**{{minutes}}** နှင့် **{{seconds}}**။",
+				"noDays": "အပတ်စဉ် Cooldown ရှိသည်။\n{{hours}}**၊**{{minutes}}** နှင့် **{{seconds}}**။"
 			},
 			"success": "{{coinEmote}} **ဂုဏ်ယူပါတယ် {{user}}!**\n{{coin}} အကြွေ ** နှင့် **{{exp}} XP**",
 			"error": "သင်၏ အပတ်စဉ် အရေးဆိုမှုကို လုပ်ဆောင်ရာတွင် အမှားအယွင်း ရှိခဲ့သည်။"

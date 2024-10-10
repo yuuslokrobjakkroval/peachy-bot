@@ -146,14 +146,20 @@
 		"weeklyMessages": {
 			"userNotFound": "ユーザーが見つかりません。",
 			"cooldown": {
-				"multipleDays": "あなたの週間報酬は待機中です！\n**{{days}}日{{days > 1 ? 's' : ''}}および{{hours}}時間{{hours > 1 ? 's' : ''}}**後に再試行してください。",
-				"singleDay": "あなたの週間報酬は待機中です！\n**{{hours}}時間{{hours > 1 ? 's' : ''}}**, **{{minutes}}分{{minutes > 1 ? 's' : ''}}**, および**{{seconds}}秒{{seconds > 1 ? 's' : ''}}**後に再試行してください。",
-				"noDays": "あなたの週間報酬は待機中です！\n**{{hours}}時間{{hours > 1 ? 's' : ''}}**, **{{minutes}}分{{minutes > 1 ? 's' : ''}}**, および**{{seconds}}秒{{seconds > 1 ? 's' : ''}}**後に再試行してください。"
+				"multipleDays": "ウィークリーはクールダウン中です！\n{{days}} そして {{hours}}**、**{{minutes}}**、 そして **{{seconds}}**。",
+				"singleDay": "ウィークリーはクールダウン中です！\n{{days}}**、**{{hours}}**、**{{minutes}}**、 そして **{{seconds}}**。",
+				"noDays": "ウィークリーはクールダウン中です！\n{{hours}}**、**{{minutes}}**、 そして **{{seconds}}**。"
 			},
-			"success": {
-				"title": "%{displayName}の週間報酬",
-				"description": "%{coinEmote} **`+%{coin}`** コイン"
-			}
+			"success": "{{coinEmote}} **おめでとう、 {{user}}!**\n{{coin}} コイン**と**{{exp}} XP**!",
+			"error": "毎週の請求の処理中にエラーが発生しました。"
+		},
+		"withdrawMessages": {
+			"noUser": "ユーザーが見つかりません。",
+			"zeroBalance": "銀行に硬貨がありません。",
+			"invalidAmount": "出金するには有効な金額を入力してください。 ",
+			"tooHigh": "銀行に預けている以上の金額を引き出すことはできません。",
+			"success": "{{coinEmote}} **成功、 {{user}}!**\n{{amount}} 銀行からのコイン**。",
+			"error": "出金リクエストの処理中にエラーが発生しました。"
 		}
 	},
 	"information": {

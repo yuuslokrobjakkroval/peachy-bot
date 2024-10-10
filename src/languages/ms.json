@@ -146,9 +146,9 @@
 		"weeklyMessages": {
 			"userNotFound": "Pengguna tidak ditemui.",
 			"cooldown": {
-				"multipleDays": "Mingguan sedang bertenang!\n{{days}} hari{{days > 1 ? 's' : ''}} dan {{hours}}jam{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, dan **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
-				"singleDay": "Mingguan sedang bertenang!\n{{days}} hari, {{hours}}jam{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, dan {{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
-				"noDays": "Mingguan sedang bertenang!\n{{hours}}jam{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, dan {{seconds}}sec{{seconds > 1 ? 's' : ''}}**."
+				"multipleDays": "Mingguan sedang bertenang!\n{{days}} dan {{hours}}**, **{{minutes}}**, dan **{{seconds}}**.",
+				"singleDay": "Mingguan sedang bertenang!\n{{days}}**, **{{hours}}**, **{{minutes}}**, dan **{{seconds}}**.",
+				"noDays": "Mingguan sedang bertenang!\n{{hours}}**, **{{minutes}}**, dan **{{seconds}}**."
 			},
 			"success": "{{coinEmote}} **Tahniah, {{user}}!**\n{{coin}} syiling** dan **{{exp}} XP**!",
 			"error": "Terdapat ralat memproses tuntutan mingguan anda."

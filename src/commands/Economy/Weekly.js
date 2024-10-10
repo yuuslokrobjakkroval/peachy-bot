@@ -88,20 +88,29 @@ module.exports = class Weekly extends Command {
         const minutes = Math.floor((remainingTime % 3600) / 60);
         const seconds = remainingTime % 60;
 
+        // Pluralization logic for each time unit
+        const daysString = days > 1 ? `${days} days` : `${days} day`;
+        const hoursString = hours > 1 ? `${hours} hrs` : `${hours} hr`;
+        const minutesString = minutes > 1 ? `${minutes} mins` : `${minutes} min`;
+        const secondsString = seconds > 1 ? `${seconds} secs` : `${seconds} sec`;
+
         if (days > 1) {
-            return weeklyMessages.cooldown.multipleDays.replace('{{days}}', days)
-                .replace('{{hours}}', hours)
-                .replace('{{minutes}}', minutes)
-                .replace('{{seconds}}', seconds);
+            return weeklyMessages.cooldown.multipleDays
+                .replace('{{days}}', daysString)
+                .replace('{{hours}}', hoursString)
+                .replace('{{minutes}}', minutesString)
+                .replace('{{seconds}}', secondsString);
         } else if (days === 1) {
-            return weeklyMessages.cooldown.singleDay.replace('{{days}}', days)
-                .replace('{{hours}}', hours)
-                .replace('{{minutes}}', minutes)
-                .replace('{{seconds}}', seconds);
+            return weeklyMessages.cooldown.singleDay
+                .replace('{{days}}', daysString)
+                .replace('{{hours}}', hoursString)
+                .replace('{{minutes}}', minutesString)
+                .replace('{{seconds}}', secondsString);
         } else {
-            return weeklyMessages.cooldown.noDays.replace('{{hours}}', hours)
-                .replace('{{minutes}}', minutes)
-                .replace('{{seconds}}', seconds);
+            return weeklyMessages.cooldown.noDays
+                .replace('{{hours}}', hoursString)
+                .replace('{{minutes}}', minutesString)
+                .replace('{{seconds}}', secondsString);
         }
     }
 

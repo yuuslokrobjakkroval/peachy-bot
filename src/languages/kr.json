@@ -146,14 +146,20 @@
 		"weeklyMessages": {
 			"userNotFound": "사용자를 찾을 수 없습니다.",
 			"cooldown": {
-				"multipleDays": "주간 보상이 대기 중입니다!\n**{{days}}일{{days > 1 ? 's' : ''}} 및 {{hours}}시간{{hours > 1 ? 's' : ''}}** 후에 다시 시도하세요.",
-				"singleDay": "주간 보상이 대기 중입니다!\n**{{hours}}시간{{hours > 1 ? 's' : ''}}**, **{{minutes}}분{{minutes > 1 ? 's' : ''}}**, 및 **{{seconds}}초{{seconds > 1 ? 's' : ''}}** 후에 다시 시도하세요.",
-				"noDays": "주간 보상이 대기 중입니다!\n**{{hours}}시간{{hours > 1 ? 's' : ''}}**, **{{minutes}}분{{minutes > 1 ? 's' : ''}}**, 및 **{{seconds}}초{{seconds > 1 ? 's' : ''}}** 후에 다시 시도하세요."
+				"multipleDays": "주간은 휴지 상태입니다!\n{{days}} 그리고 {{hours}}**, **{{minutes}}**, 그리고 **{{seconds}}**.",
+				"singleDay": "주간은 휴지 상태입니다!\n{{days}}**, **{{hours}}**, **{{minutes}}**, 그리고 **{{seconds}}**.",
+				"noDays": "주간은 휴지 상태입니다!\n{{hours}}**, **{{minutes}}**, 그리고 **{{seconds}}**."
 			},
-			"success": {
-				"title": "%{displayName}의 주간 보상",
-				"description": "%{coinEmote} **`+%{coin}`** 동전"
-			}
+			"success": "{{coinEmote}} **축하해요, {{user}}!**\n{{coin}} 동전** 및 **{{exp}} XP**!",
+			"error": "주간 청구를 처리하는 중에 오류가 발생했습니다."
+		},
+		"withdrawMessages": {
+			"noUser": "사용자를 찾을 수 없습니다.",
+			"zeroBalance": "당신의 은행에는 동전이 없습니다.",
+			"invalidAmount": "인출할 유효한 금액을 입력하세요. ",
+			"tooHigh": "은행에 보유하고 있는 것보다 더 많은 금액을 인출할 수 없습니다.",
+			"success": "{{coinEmote}} **성공, {{user}}!**\n{{amount}} 은행에서 동전**을 받을 수 있습니다.",
+			"error": "출금 요청을 처리하는 중에 오류가 발생했습니다."
 		}
 	},
 	"information": {

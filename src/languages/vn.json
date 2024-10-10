@@ -146,14 +146,20 @@
 		"weeklyMessages": {
 			"userNotFound": "Không tìm thấy người dùng.",
 			"cooldown": {
-				"multipleDays": "Phần thưởng hàng tuần của bạn đang chờ!\nVui lòng thử lại sau **{{days}} ngày{{days > 1 ? 's' : ''}} và {{hours}} giờ{{hours > 1 ? 's' : ''}}**.",
-				"singleDay": "Phần thưởng hàng tuần của bạn đang chờ!\nVui lòng thử lại sau **{{hours}} giờ{{hours > 1 ? 's' : ''}}**, **{{minutes}} phút{{minutes > 1 ? 's' : ''}}**, và **{{seconds}} giây{{seconds > 1 ? 's' : ''}}**.",
-				"noDays": "Phần thưởng hàng tuần của bạn đang chờ!\nVui lòng thử lại sau **{{hours}} giờ{{hours > 1 ? 's' : ''}}**, **{{minutes}} phút{{minutes > 1 ? 's' : ''}}**, và **{{seconds}} giây{{seconds > 1 ? 's' : ''}}**."
+				"multipleDays": "Hàng tuần đang trong thời gian hồi chiêu!\n{{days}} Và {{hours}}**, **{{minutes}}**, Và **{{seconds}}**.",
+				"singleDay": "Hàng tuần đang trong thời gian hồi chiêu!\n{{days}}**, **{{hours}}**, **{{minutes}}**, Và **{{seconds}}**.",
+				"noDays": "Hàng tuần đang trong thời gian hồi chiêu!\n{{hours}}**, **{{minutes}}**, Và **{{seconds}}**."
 			},
-			"success": {
-				"title": "Phần thưởng hàng tuần %{displayName}",
-				"description": "%{coinEmote} **`+%{coin}`** xu"
-			}
+			"success": "{{coinEmote}} **Chúc mừng, {{user}}!**\n{{coin}} tiền xu** và **{{exp}} XP**!",
+			"error": "Đã xảy ra lỗi khi xử lý yêu cầu hàng tuần của bạn."
+		},
+		"withdrawMessages": {
+			"noUser": "Không tìm thấy người dùng.",
+			"zeroBalance": "Bạn không có tiền trong ngân hàng của bạn.",
+			"invalidAmount": "Vui lòng cung cấp số tiền hợp lệ để rút. ",
+			"tooHigh": "Bạn không thể rút nhiều hơn số tiền bạn có trong ngân hàng.",
+			"success": "{{coinEmote}} **Thành công, {{user}}!**\n{{amount}} tiền** từ ngân hàng của bạn.",
+			"error": "Đã xảy ra lỗi khi xử lý yêu cầu rút tiền của bạn."
 		}
 	},
 	"information": {

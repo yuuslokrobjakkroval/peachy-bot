@@ -146,14 +146,20 @@
 		"weeklyMessages": {
 			"userNotFound": "未找到用戶。",
 			"cooldown": {
-				"multipleDays": "你的週獎勵正在等待中！\n請在 **{{days}}天{{days > 1 ? 's' : ''}}和{{hours}}小時{{hours > 1 ? 's' : ''}}** 後再試。",
-				"singleDay": "你的週獎勵正在等待中！\n請在 **{{hours}}小時{{hours > 1 ? 's' : ''}}**, **{{minutes}}分鐘{{minutes > 1 ? 's' : ''}}**, 和 **{{seconds}}秒{{seconds > 1 ? 's' : ''}}** 後再試。",
-				"noDays": "你的週獎勵正在等待中！\n請在 **{{hours}}小時{{hours > 1 ? 's' : ''}}**, **{{minutes}}分鐘{{minutes > 1 ? 's' : ''}}**, 和 **{{seconds}}秒{{seconds > 1 ? 's' : ''}}** 後再試。"
+				"multipleDays": "每周正在冷卻！\n{{days}} 和 {{hours}}**, **{{minutes}}**， 和 **{{seconds}}**。",
+				"singleDay": "每周正在冷卻！\n{{days}}**, **{{hours}}**, **{{minutes}}**， 和 **{{seconds}}**。",
+				"noDays": "每周正在冷卻！\n{{hours}}**, **{{minutes}}**， 和 **{{seconds}}**。"
 			},
-			"success": {
-				"title": "週獎勵 %{displayName}",
-				"description": "%{coinEmote} **`+%{coin}`** 硬幣"
-			}
+			"success": "{{coinEmote}} **恭喜， {{user}}!**\n{{coin}} 硬幣**和**{{exp}} XP**！",
+			"error": "處理您的每週索賠時出錯。"
+		},
+		"withdrawMessages": {
+			"noUser": "未找到用戶。",
+			"zeroBalance": "您的銀行裡沒有硬幣。",
+			"invalidAmount": "請提供有效的提款金額。",
+			"tooHigh": "您提取的金額不得超過銀行存款金額。",
+			"success": "{{coinEmote}} **成功， {{user}}!**\n{{amount}} 您銀行的硬幣**。",
+			"error": "處理您的提款請求時發生錯誤。"
 		}
 	},
 	"information": {

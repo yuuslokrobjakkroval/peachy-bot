@@ -146,9 +146,9 @@
 		"weeklyMessages": {
 			"userNotFound": "ไม่พบผู้ใช้",
 			"cooldown": {
-				"multipleDays": "รายสัปดาห์อยู่ในช่วงคูลดาวน์!\n{{days}} วัน{{days > 1 ? 's' : ''}} และ {{hours}}ชม{{hours > 1 ? 's' : ''}}-{{minutes}}นาที{{minutes > 1 ? 's' : ''}}**, และ **{{seconds}}วินาที{{seconds > 1 ? 's' : ''}}-",
-				"singleDay": "รายสัปดาห์อยู่ในช่วงคูลดาวน์!\n{{days}} วัน, {{hours}}ชม{{hours > 1 ? 's' : ''}}- {{minutes}}นาที{{minutes > 1 ? 's' : ''}}, และ {{seconds}}วินาที{{seconds > 1 ? 's' : ''}}-",
-				"noDays": "รายสัปดาห์อยู่ในช่วงคูลดาวน์!\n{{hours}}ชม{{hours > 1 ? 's' : ''}}- {{minutes}}นาที{{minutes > 1 ? 's' : ''}}, และ {{seconds}}วินาที{{seconds > 1 ? 's' : ''}}-"
+				"multipleDays": "รายสัปดาห์อยู่ในช่วงคูลดาวน์!\n{{days}} และ {{hours}}-{{minutes}}**, และ **{{seconds}}-",
+				"singleDay": "รายสัปดาห์อยู่ในช่วงคูลดาวน์!\n{{days}}-{{hours}}-{{minutes}}**, และ **{{seconds}}-",
+				"noDays": "รายสัปดาห์อยู่ในช่วงคูลดาวน์!\n{{hours}}-{{minutes}}**, และ **{{seconds}}-"
 			},
 			"success": "{{coinEmote}} **ยินดีด้วย, {{user}}-\n{{coin}} เหรียญ** และ **{{exp}} เอ็กซ์พี**!",
 			"error": "เกิดข้อผิดพลาดในการประมวลผลการอ้างสิทธิ์รายสัปดาห์ของคุณ"

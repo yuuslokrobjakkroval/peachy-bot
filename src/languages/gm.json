@@ -146,9 +146,9 @@
 		"weeklyMessages": {
 			"userNotFound": "Benutzer nicht gefunden.",
 			"cooldown": {
-				"multipleDays": "Wöchentlich ist in der Abklingzeit!\n{{days}} Tag{{days > 1 ? 's' : ''}} Und {{hours}}Std{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, Und **{{seconds}}Sek{{seconds > 1 ? 's' : ''}}**.",
-				"singleDay": "Wöchentlich ist in der Abklingzeit!\n{{days}} Tag, {{hours}}Std{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, Und {{seconds}}Sek{{seconds > 1 ? 's' : ''}}**.",
-				"noDays": "Wöchentlich ist in der Abklingzeit!\n{{hours}}Std{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, Und {{seconds}}Sek{{seconds > 1 ? 's' : ''}}**."
+				"multipleDays": "Wöchentlich ist in der Abklingzeit!\n{{days}} Und {{hours}}**, **{{minutes}}**, Und **{{seconds}}**.",
+				"singleDay": "Wöchentlich ist in der Abklingzeit!\n{{days}}**, **{{hours}}**, **{{minutes}}**, Und **{{seconds}}**.",
+				"noDays": "Wöchentlich ist in der Abklingzeit!\n{{hours}}**, **{{minutes}}**, Und **{{seconds}}**."
 			},
 			"success": "{{coinEmote}} **Glückwunsch, {{user}}!**\n{{coin}} Münzen** und **{{exp}} XP**!",
 			"error": "Bei der Bearbeitung Ihres wöchentlichen Anspruchs ist ein Fehler aufgetreten."

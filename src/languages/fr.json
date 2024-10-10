@@ -144,16 +144,22 @@
 			"transactionExpired": "Transaction Expirée"
 		},
 		"weeklyMessages": {
-			"userNotFound": "Utilisateur non trouvé.",
+			"userNotFound": "Utilisateur introuvable.",
 			"cooldown": {
-				"multipleDays": "Hebdomadaire est en attente !\nRéessayez après **{{days}} jour{{days > 1 ? 's' : ''}} et {{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, et **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
-				"singleDay": "Hebdomadaire est en attente !\nRéessayez après **{{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, et **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
-				"noDays": "Hebdomadaire est en attente !\nRéessayez après **{{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, et **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**."
+				"multipleDays": "La semaine est en temps de recharge!\n{{days}} et {{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
+				"singleDay": "La semaine est en temps de recharge!\n{{days}}**, **{{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
+				"noDays": "La semaine est en temps de recharge!\n{{hours}}**, **{{minutes}}**, et **{{seconds}}**."
 			},
-			"success": {
-				"title": "Récompense Hebdomadaire de %{displayName}",
-				"description": "%{coinEmote} **`+%{coin}`** pièces"
-			}
+			"success": "{{coinEmote}} **Félicitations, {{user}}!**\n{{coin}} pièces** et **{{exp}} XP**!",
+			"error": "Une erreur s'est produite lors du traitement de votre demande hebdomadaire."
+		},
+		"withdrawMessages": {
+			"noUser": "Utilisateur introuvable.",
+			"zeroBalance": "Vous n'avez aucune pièce dans votre banque.",
+			"invalidAmount": "Veuillez fournir un montant valide à retirer. ",
+			"tooHigh": "Vous ne pouvez pas retirer plus que ce que vous avez en banque.",
+			"success": "{{coinEmote}} **Succès, {{user}}!**\n{{amount}} pièces** de votre banque.",
+			"error": "Une erreur s'est produite lors du traitement de votre demande de retrait."
 		}
 	},
 	"information": {

@@ -146,9 +146,9 @@
 		"weeklyMessages": {
 			"userNotFound": "Hindi nahanap ang user.",
 			"cooldown": {
-				"multipleDays": "Lingguhan ay nasa cooldown!\n{{days}} araw{{days > 1 ? 's' : ''}} at {{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, at **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
-				"singleDay": "Lingguhan ay nasa cooldown!\n{{days}} araw, {{hours}}hr{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, at {{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
-				"noDays": "Lingguhan ay nasa cooldown!\n{{hours}}hr{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, at {{seconds}}sec{{seconds > 1 ? 's' : ''}}**."
+				"multipleDays": "Lingguhan ay nasa cooldown!\n{{days}} at {{hours}}**, **{{minutes}}**, at **{{seconds}}**.",
+				"singleDay": "Lingguhan ay nasa cooldown!\n{{days}}**, **{{hours}}**, **{{minutes}}**, at **{{seconds}}**.",
+				"noDays": "Lingguhan ay nasa cooldown!\n{{hours}}**, **{{minutes}}**, at **{{seconds}}**."
 			},
 			"success": "{{coinEmote}} **Binabati kita, {{user}}!**\n{{coin}} mga barya** at **{{exp}} XP**!",
 			"error": "Nagkaroon ng error sa pagproseso ng iyong lingguhang claim."

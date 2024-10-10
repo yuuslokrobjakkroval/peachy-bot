@@ -146,9 +146,9 @@
 		"weeklyMessages": {
 			"userNotFound": "User not found.",
 			"cooldown": {
-				"multipleDays": "Weekly is on cooldown!\nTry again after **{{days}} day{{days > 1 ? 's' : ''}} and {{hours}}hr{{hours > 1 ? 's' : ''}}**, **{{minutes}}min{{minutes > 1 ? 's' : ''}}**, and **{{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
-				"singleDay": "Weekly is on cooldown!\nTry again after **{{days}} day, {{hours}}hr{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, and {{seconds}}sec{{seconds > 1 ? 's' : ''}}**.",
-				"noDays": "Weekly is on cooldown!\nTry again after **{{hours}}hr{{hours > 1 ? 's' : ''}}, {{minutes}}min{{minutes > 1 ? 's' : ''}}, and {{seconds}}sec{{seconds > 1 ? 's' : ''}}**."
+				"multipleDays": "Weekly is on cooldown!\nTry again after **{{days}} and {{hours}}**, **{{minutes}}**, and **{{seconds}}**.",
+				"singleDay": "Weekly is on cooldown!\nTry again after **{{days}}**, **{{hours}}**, **{{minutes}}**, and **{{seconds}}**.",
+				"noDays": "Weekly is on cooldown!\nTry again after **{{hours}}**, **{{minutes}}**, and **{{seconds}}**."
 			},
 			"success": "{{coinEmote}} **Congratulations, {{user}}!**\nYou have claimed your weekly reward of **{{coin}} coins** and **{{exp}} XP**!",
 			"error": "There was an error processing your weekly claim."

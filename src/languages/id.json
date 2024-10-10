@@ -146,14 +146,20 @@
 		"weeklyMessages": {
 			"userNotFound": "Pengguna tidak ditemukan.",
 			"cooldown": {
-				"multipleDays": "Hadiah mingguan Anda sedang menunggu!\nSilakan coba lagi setelah **{{days}} hari{{days > 1 ? 's' : ''}} dan {{hours}} jam{{hours > 1 ? 's' : ''}}**.",
-				"singleDay": "Hadiah mingguan Anda sedang menunggu!\nSilakan coba lagi setelah **{{hours}} jam{{hours > 1 ? 's' : ''}}**, **{{minutes}} menit{{minutes > 1 ? 's' : ''}}**, dan **{{seconds}} detik{{seconds > 1 ? 's' : ''}}**.",
-				"noDays": "Hadiah mingguan Anda sedang menunggu!\nSilakan coba lagi setelah **{{hours}} jam{{hours > 1 ? 's' : ''}}**, **{{minutes}} menit{{minutes > 1 ? 's' : ''}}**, dan **{{seconds}} detik{{seconds > 1 ? 's' : ''}}**."
+				"multipleDays": "Mingguan sedang dalam masa cooldown!\n{{days}} Dan {{hours}}**, **{{minutes}}**, Dan **{{seconds}}**.",
+				"singleDay": "Mingguan sedang dalam masa cooldown!\n{{days}}**, **{{hours}}**, **{{minutes}}**, Dan **{{seconds}}**.",
+				"noDays": "Mingguan sedang dalam masa cooldown!\n{{hours}}**, **{{minutes}}**, Dan **{{seconds}}**."
 			},
-			"success": {
-				"title": "Hadiah Mingguan %{displayName}",
-				"description": "%{coinEmote} **`+%{coin}`** koin"
-			}
+			"success": "{{coinEmote}} **Selamat, {{user}}!**\n{{coin}} koin** dan **{{exp}} XP**!",
+			"error": "Terjadi kesalahan saat memproses klaim mingguan Anda."
+		},
+		"withdrawMessages": {
+			"noUser": "Pengguna tidak ditemukan.",
+			"zeroBalance": "Anda tidak memiliki koin di bank Anda.",
+			"invalidAmount": "Harap berikan jumlah yang valid untuk ditarik. ",
+			"tooHigh": "Anda tidak dapat menarik lebih dari yang Anda miliki di bank Anda.",
+			"success": "{{coinEmote}} **Kesuksesan, {{user}}!**\n{{amount}} koin** dari bank Anda.",
+			"error": "Terjadi kesalahan saat memproses permintaan penarikan Anda."
 		}
 	},
 	"information": {

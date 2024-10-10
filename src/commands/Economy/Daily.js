@@ -44,7 +44,10 @@ module.exports = class Daily extends Command {
             // Get current time and determine the next 5 PM
             const now = moment().tz('Asia/Bangkok');
             const hours = now.hour();
-            let nextDate = now.hour() >= 17 ? now.add(1, 'days') : now;
+            let nextDate = moment().tz('Asia/Bangkok');
+            if(now.isAfter(moment().tz('Asia/Bangkok').hour(17).minute(0).second(0))) {
+                nextDate = moment().tz('Asia/Bangkok').add(1, 'days')
+            }
             const next5PM = nextDate.set({ hour: 17, minute: 0, second: 0, millisecond: 0 });
             const timeUntilNext5PM = moment.duration(next5PM.diff(now));
 
