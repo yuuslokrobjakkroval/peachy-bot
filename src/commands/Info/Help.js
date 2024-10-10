@@ -71,7 +71,7 @@ module.exports = class Help extends Command {
           .setTitle(`${emoji.mainLeft} ${helpMessages.title} ${emoji.mainRight}`)
           .setDescription(
               `${helpMessages.description} **\`${prefix}help [command]\`**\n` +
-              `${helpMessages.examples}: **\`${prefix}help balance\`**\n\n` +
+              `${helpMessages.examples} **\`${prefix}help balance\`**\n\n` +
               `${helpMessages.note}`
           )
           .setImage(client.config.links.banner)
