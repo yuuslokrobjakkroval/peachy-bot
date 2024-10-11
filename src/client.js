@@ -18,6 +18,8 @@ setInterval(async () => {
   const now = Date.now();
   const giveaways = await GiveawaySchema.find({ endTime: { $lte: now }, ended: false });
 
+  if(!giveaways) return;
+
   for (const giveaway of giveaways) {
     try {
 
