@@ -104,6 +104,10 @@ module.exports = class Utils {
         return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
     }
 
+    static generateVerificationCode() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
     static formatString(number, decimals = 2) {
         if (number === 0) return '0';
         const k = 1000;

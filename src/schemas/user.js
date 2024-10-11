@@ -41,7 +41,12 @@ const ProfileSchema = new Schema({
 // Verification Schema
 const VerificationSchema = new Schema({
     code: { type: String },
-    status: { type: String, default: 'unverified' },
+    verify: {
+        payment: { type: String, default: 'unpaid' },
+        status: { type: String, default: 'unverified' },
+        code: { type: String, default: null },
+        message: { type: String, default: null }
+    },
     warnings: [{
         reason: { type: String },
         date: { type: Date, default: Date.now },
@@ -112,13 +117,6 @@ const userSchema = new Schema({
     goma: {
         streak: { type: Number, default: 0 }
     },
-    // quest: [{
-    //     id: { type: String, required: true },
-    //     type: { type: String, enum: ['peach', 'transfer'], required: true },
-    //     progress: { type: Number, default: 0 },
-    //     requiredAmount: { type: Number, default: 0 },
-    //     completed: { type: Boolean, default: false },
-    // }],
     profile: { type: ProfileSchema, default: () => ({}) },
     relationship: RelationshipSchema,
     inventory: { type: [InventoryItemSchema], default: [] },

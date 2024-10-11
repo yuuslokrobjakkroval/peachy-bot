@@ -2,6 +2,9 @@ module.exports = {
     // GLOBAL
     congratulation: '<a:congratulation:1287438960477474957>',
 
+    // VERIFY
+    normal: '<:NORMAL:1294270096109211658>',
+
     // SHOP
     // FOOD
     bun: '<:retrodumplings:1287302759674286193>',
