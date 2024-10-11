@@ -39,9 +39,21 @@ module.exports = class Daily extends Command {
 
             const { coin, bank } = user.balance;
             const baseCoins = chance.integer({ min: 300000, max: 500000 });
-            const newBalance = coin + baseCoins;
+            const baseExp = chance.integer({ min: 100, max: 150 });
 
-            // Get current time and determine the next 5 PM
+            let bonusCoins = 0;
+            let bonusExp = 0;
+
+            // Check if the user is verified
+            if (user.verification.verify.status === 'verified') {
+                bonusCoins = Math.floor(baseCoins * 0.20);
+                bonusExp = Math.floor(baseExp * 0.20);
+            }
+
+            const totalCoins = baseCoins + bonusCoins;
+            const totalExp = baseExp + bonusExp;
+            const newBalance = coin + totalCoins;
+
             const now = moment().tz('Asia/Bangkok');
             const hours = now.hour();
             let nextDate = moment().tz('Asia/Bangkok');
@@ -64,8 +76,7 @@ module.exports = class Daily extends Command {
             }
 
             // Calculate and update balance and experience
-            const baseExp = chance.integer({ min: 100, max: 150 });
-            const newExp = user.profile.xp + baseExp;
+            const newExp = user.profile.xp + totalExp;
 
             await Promise.all([
                 Users.updateOne({ userId: ctx.author.id }, {
@@ -78,6 +89,11 @@ module.exports = class Daily extends Command {
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM)
             ]);
 
+            let bonusMessage = '';
+            if (bonusCoins > 0 || bonusExp > 0) {
+                bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} XP`;
+            }
+
             // Prepare the embed
             const embed = client
                 .embed()
@@ -89,6 +105,7 @@ module.exports = class Daily extends Command {
                         .replace('%{coinEmote}', emoji.coin)
                         .replace('%{coin}', client.utils.formatNumber(baseCoins))
                         .replace('%{exp}', client.utils.formatNumber(baseExp))
+                        .replace('%{bonusMessage}', bonusMessage)
                 );
 
             return await ctx.sendMessage({ embeds: [embed] });

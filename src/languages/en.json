@@ -73,7 +73,7 @@
 		},
 		"dailyMessages": {
 			"title": "%{displayName}'s Daily Reward",
-			"success": "%{coinEmote} **`+%{coin}`** coins\nXP: **`+%{exp}`** xp",
+			"success": "%{coinEmote} **`+%{coin}`** coins\nXP: **`+%{exp}`** xp%{bonusMessage}",
 			"cooldown": "Your daily reward is on cooldown. Please try again after **%{time}**.",
 			"errors": {
 				"noUser": "User not found.",

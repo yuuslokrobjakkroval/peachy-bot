@@ -28,6 +28,15 @@ module.exports = class Verify extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const user = await Users.findOne({ userId: ctx.author.id });
+
+        if (!user) {
+            return await client.utils.sendErrorMessage(client, ctx, "You do not have an account. Please register first.", color);
+        }
+
+        if (user.verification.verify.status === 'verified') {
+            return await client.utils.sendErrorMessage(client, ctx, "You are already verified.", color);
+        }
+
         const confirmButton = new ButtonBuilder()
             .setCustomId('confirm')
             .setLabel('Confirm')
@@ -136,6 +145,8 @@ module.exports = class Verify extends Command {
                             .setThumbnail(client.utils.emojiToImage(emojiImage.normal))
 
                         await modalInteraction.reply({ embeds: [successEmbed] });
+                        const messageToUpdate = await modalInteraction.channel.messages.fetch(i.message.id);
+                        await messageToUpdate.edit({ content: 'Verification complete.', embeds: [], components: [] });
                     } else {
                         await modalInteraction.reply({ content: "Payment verification failed or the code is incorrect. Please try again.", ephemeral: true });
                     }
