@@ -162,7 +162,6 @@ class InteractionCreate extends Event {
               ephemeral: true,
             });
 
-            // Collect button interaction
             const filter = int => int.isButton() && int.user.id === interaction.user.id;
             await interaction.channel
                 .awaitMessageComponent({ filter, time: 30000 })
@@ -236,14 +235,22 @@ class InteractionCreate extends Event {
             });
           }
 
-          const participants = data.entered
-              .map((id, index) => `${index + 1}. ${interaction.guild.members.cache.get(id)?.user?.username || 'Unknown User'} (**1** entry)`)
-              .join('\n');
+          const participants = await Promise.all(data.entered.map(async (id, index) => {
+            let member = interaction.guild.members.cache.get(id);
+            if (!member) {
+              try {
+                member = await interaction.guild.members.fetch(id);
+              } catch (err) {
+                console.error(`Unable to fetch member with ID: ${id}`, err);
+              }
+            }
+            return `${index + 1}. <@${id}> (**1** entry)`;
+          }));
 
           const embed = this.client.embed()
               .setTitle('Giveaway Participants')
               .setColor(color.main)
-              .setDescription(`These are the members who participated in the giveaway of **${data.prize}**:\n\n${participants}\n\nTotal Participants: **${data.entered.length}**`);
+              .setDescription(`These are the members who participated in the giveaway of **${data.prize}**:\n\n${participants.join('\n')}\n\nTotal Participants: **${data.entered.length}**`);
 
           await interaction.reply({ embeds: [embed], ephemeral: true });
           break;
