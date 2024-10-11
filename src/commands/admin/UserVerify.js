@@ -6,9 +6,9 @@ module.exports = class UpdatePaymentStatus extends Command {
         super(client, {
             name: 'updatepayment',
             description: {
-                content: 'Update a user\'s verification payment status to either "paid" or "unpaid".',
-                examples: ['updatepayment <userId> <paid|unpaid>'],
-                usage: 'updatepayment <userId> <paid|unpaid>',
+                content: 'Update a user\'s verification payment status or reset the verification.',
+                examples: ['updatepayment <userId> <paid|unpaid>', 'updatepayment <userId> reset'],
+                usage: 'updatepayment <userId> <paid|unpaid|reset>',
             },
             category: 'developer',
             aliases: ['uppay', 'setpay'],
@@ -28,7 +28,7 @@ module.exports = class UpdatePaymentStatus extends Command {
                 },
                 {
                     name: 'status',
-                    description: 'The new payment status, either "paid" or "unpaid".',
+                    description: 'The new payment status, either "paid", "unpaid", or "reset".',
                     type: 3, // String type
                     required: true,
                 },
@@ -40,11 +40,11 @@ module.exports = class UpdatePaymentStatus extends Command {
         const userId = ctx.isInteraction ? ctx.interaction.options.getString('userid') : args[0];
         const status = ctx.isInteraction ? ctx.interaction.options.getString('status') : args[1];
 
-        if (!userId || !status || !['paid', 'unpaid'].includes(status.toLowerCase())) {
+        if (!userId || !status || !['paid', 'unpaid', 'reset'].includes(status.toLowerCase())) {
             return await this.sendReply(ctx, {
                 embeds: [
                     client.embed().setColor(color.red)
-                        .setDescription('Please provide a valid user ID and payment status ("paid" or "unpaid").'),
+                        .setDescription('Please provide a valid user ID and payment status ("paid", "unpaid", or "reset").'),
                 ],
             });
         }
@@ -58,6 +58,24 @@ module.exports = class UpdatePaymentStatus extends Command {
                     embeds: [
                         client.embed().setColor(color.red)
                             .setDescription(`No user found with ID: ${userId}`),
+                    ],
+                });
+            }
+
+            // Check if we need to reset the verification
+            if (status.toLowerCase() === 'reset') {
+                user.verification.verify = {
+                    payment: 'unpaid', // or any default value you want
+                    status: 'unverified', // reset status if necessary
+                    code: null,
+                    message: null
+                };
+                await user.save();
+
+                return await this.sendReply(ctx, {
+                    embeds: [
+                        client.embed().setColor(color.green)
+                            .setDescription(`Successfully reset verification for user <@${userId}>.`),
                     ],
                 });
             }
