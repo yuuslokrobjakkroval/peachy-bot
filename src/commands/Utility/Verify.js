@@ -53,7 +53,6 @@ module.exports = class Verify extends Command {
 
         collector.on('collect', async i => {
             const userPaymentStatus = user.verification.verify.payment;
-            console.log(userPaymentStatus !== 'paid')
             if (i.customId === 'confirm') {
                 const codeNumber = client.utils.generateVerificationCode();
                 const qrCodeUrl = gif.qrUSD;
