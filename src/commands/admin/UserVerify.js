@@ -4,14 +4,14 @@ const Users = require('../../schemas/user.js');
 module.exports = class UpdatePaymentStatus extends Command {
     constructor(client) {
         super(client, {
-            name: 'updatepayment',
+            name: 'userverify',
             description: {
                 content: 'Update a user\'s verification payment status or reset the verification.',
-                examples: ['updatepayment <userId> <paid|unpaid>', 'updatepayment <userId> reset'],
-                usage: 'updatepayment <userId> <paid|unpaid|reset>',
+                examples: ['userverify <userId> <paid|unpaid>', 'userverify <userId> reset'],
+                usage: 'userverify <userId> <paid|unpaid|reset>',
             },
             category: 'developer',
-            aliases: ['uppay', 'setpay'],
+            aliases: ['uv', 'setpay'],
             args: true,
             permissions: {
                 dev: true,
