@@ -6,7 +6,7 @@
 		"argumentsMissingDescription": "Veuillez fournir les arguments requis pour la commande `{commandName}`.",
 		"usageHeader": "Usage",
 		"examplesHeader": "Exemples",
-		"syntaxInstructions": "Syntaxe : [] = facultatif, <> = obligatoire",
+		"syntaxInstructions": "Syntaxe: [] = facultatif, <> = obligatoire",
 		"noEveryoneOrHereError": "Vous ne pouvez pas utiliser cette commande avec tout le monde ou ici.",
 		"userNotFound": "Utilisateur introuvable dans la base de données.",
 		"alreadyInGame": "Vous êtes déjà dans un jeu. ",
@@ -17,7 +17,7 @@
 	},
 	"actionMessages": {
 		"biteMessages": {
-			"title": "C'est l'heure de la bouchée !",
+			"title": "C'est l'heure de la bouchée!",
 			"description": "mord de manière ludique",
 			"errors": {
 				"noUser": "Vous devez mentionner un utilisateur pour mordre.",
@@ -26,7 +26,7 @@
 			}
 		},
 		"hugMessages": {
-			"title": "C'est l'heure des câlins !",
+			"title": "C'est l'heure des câlins!",
 			"description": "donne un câlin chaleureux à",
 			"errors": {
 				"noUser": "Vous devez mentionner un utilisateur à embrasser.",
@@ -35,7 +35,7 @@
 			}
 		},
 		"kissMessages": {
-			"title": "C'est l'heure des baisers !",
+			"title": "C'est l'heure des baisers!",
 			"description": "donne un joli baiser à",
 			"errors": {
 				"noUser": "Vous devez mentionner un utilisateur à embrasser.",
@@ -44,7 +44,7 @@
 			}
 		},
 		"punchMessages": {
-			"title": "C'est l'heure du coup de poing !",
+			"title": "C'est l'heure du coup de poing!",
 			"description": "donne un coup de poing ludique à",
 			"errors": {
 				"noUser": "Vous devez mentionner un utilisateur pour pointer.",
@@ -53,7 +53,7 @@
 			}
 		},
 		"slapMessages": {
-			"title": "C'est l'heure de la claque !",
+			"title": "C'est l'heure de la claque!",
 			"description": "gifle de manière ludique",
 			"errors": {
 				"noUser": "Vous devez mentionner un utilisateur pour gifler.",
@@ -93,7 +93,7 @@
 				"title": "J'ai revendiqué Goma !",
 				"description": "Vous avez gagné %{coinEmote} **`%{coin}`** pièces."
 			},
-			"cooldown": "Goma est en temps de recharge !\n",
+			"cooldown": "Goma est en temps de recharge!\n",
 			"errors": {
 				"noUser": "Utilisateur introuvable."
 			}
@@ -102,7 +102,7 @@
 			"errors": {
 				"noUser": "Utilisateur introuvable."
 			},
-			"cooldown": "Peachy est en temps de recharge !\n",
+			"cooldown": "Peachy est en temps de recharge!\n",
 			"success": {
 				"title": "ont réclamé pêche!",
 				"description": "Vous avez gagné %{coinEmote} **`%{coin}`** pièces."
@@ -149,11 +149,11 @@
 		"weeklyMessages": {
 			"userNotFound": "Utilisateur introuvable.",
 			"cooldown": {
-				"multipleDays": "La semaine est en temps de recharge !\n{{days}} et {{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
-				"singleDay": "La semaine est en temps de recharge !\n{{days}}**, **{{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
-				"noDays": "La semaine est en temps de recharge !\n{{hours}}**, **{{minutes}}**, et **{{seconds}}**."
+				"multipleDays": "La semaine est en temps de recharge!\n{{days}} et {{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
+				"singleDay": "La semaine est en temps de recharge!\n{{days}}**, **{{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
+				"noDays": "La semaine est en temps de recharge!\n{{hours}}**, **{{minutes}}**, et **{{seconds}}**."
 			},
-			"success": "{{coinEmote}} **Félicitations, {{user}}!**\n{{coin}} pièces** et **{{exp}} XP** !",
+			"success": "{{coinEmote}} **Félicitations, {{user}}!**\n{{coin}} pièces** et **{{exp}} XP**!",
 			"error": "Une erreur s'est produite lors du traitement de votre demande hebdomadaire."
 		},
 		"withdrawMessages": {
@@ -167,57 +167,57 @@
 	},
 	"emoteMessages": {
 		"angryMessages": {
-			"title": "Temps de colère !",
-			"description": "**{{user}}** montre son expression la plus en colère !",
+			"title": "Temps de colère!",
+			"description": "**{{user}}** montre son expression la plus en colère!",
 			"error": "Une erreur s'est produite lors du traitement de votre emote de colère."
 		},
 		"cryMessages": {
-			"title": "C'est l'heure de pleurer !",
+			"title": "C'est l'heure de pleurer!",
 			"description": "**{{user}}** pleure !",
 			"error": "Une erreur s'est produite lors du traitement de votre emote qui pleure."
 		},
 		"cuteMessages": {
 			"title": "Moment mignon!",
-			"description": "**{{user}}** montre leur expression la plus mignonne !",
+			"description": "**{{user}}** montre leur expression la plus mignonne!",
 			"error": "Une erreur s'est produite lors du traitement de votre jolie emote."
 		},
 		"danceMessages": {
-			"title": "C'est l'heure de danser !",
-			"description": "**{{user}}** montre des mouvements de danse impressionnants !",
+			"title": "C'est l'heure de danser!",
+			"description": "**{{user}}** montre des mouvements de danse impressionnants!",
 			"error": "Une erreur s'est produite lors du traitement de votre emote de danse."
 		},
 		"exerciseMessages": {
-			"title": "C'est l'heure de l'exercice !",
+			"title": "C'est l'heure de l'exercice!",
 			"description": "**{{user}}** c'est bouger et rester en forme !",
 			"error": "Une erreur s'est produite lors du traitement de votre emote d'exercice."
 		},
 		"happyMessages": {
-			"title": "Bonnes vibrations !",
+			"title": "Bonnes vibrations!",
 			"description": "**{{user}}** répand la joie et le bonheur !",
 			"error": "Une erreur s'est produite lors du traitement de votre emote heureuse."
 		},
 		"laughMessages": {
 			"title": "Rire aux éclats!",
-			"description": "**{{user}}** partage un rire chaleureux !",
+			"description": "**{{user}}** partage un rire chaleureux!",
 			"error": "Une erreur s'est produite lors du traitement de votre emote de rire."
 		},
 		"makeupMessages": {
 			"title": "C'est l'heure du maquillage !",
-			"description": "**{{user}}** applique un maquillage fabuleux et brille de mille feux !",
+			"description": "**{{user}}** applique un maquillage fabuleux et brille de mille feux!",
 			"error": "Une erreur s'est produite lors du traitement de votre emote de maquillage."
 		},
 		"eatMessages": {
-			"title": "C'est l'heure de manger !",
-			"description": "**{{user}}** savoure de la nourriture délicieuse !",
+			"title": "C'est l'heure de manger!",
+			"description": "**{{user}}** savoure de la nourriture délicieuse!",
 			"error": "Une erreur s'est produite lors du traitement de votre emote manger."
 		},
 		"playGameMessages": {
-			"title": "C'est l'heure du jeu !",
-			"description": "**{{user}}** se prépare à jouer !",
+			"title": "C'est l'heure du jeu!",
+			"description": "**{{user}}** se prépare à jouer!",
 			"error": "Une erreur s'est produite lors du traitement de votre emote de jeu."
 		},
 		"roarMessages": {
-			"title": "C'est l'heure du rugissement !",
+			"title": "C'est l'heure du rugissement!",
 			"description": "**{{user}}** laisse échapper un puissant rugissement !",
 			"error": "Une erreur s'est produite lors du traitement de votre emote de rugissement."
 		},
@@ -228,11 +228,11 @@
 		},
 		"scareMessages": {
 			"title": "Effrayé!",
-			"description": "**{{user}}** montre leur côté effrayé !",
+			"description": "**{{user}}** montre leur côté effrayé!",
 			"error": "Une erreur s'est produite lors du traitement de votre emote effrayante."
 		},
 		"showerMessages": {
-			"title": "C'est l'heure de la douche !",
+			"title": "C'est l'heure de la douche!",
 			"description": "**{{user}}** profite d'une douche rafraîchissante !",
 			"error": "Une erreur s'est produite lors du traitement de votre emote de douche."
 		},
@@ -264,13 +264,13 @@
 			"id": "IDENTIFIANT"
 		},
 		"randomColor": {
-			"title": "Voici une couleur aléatoire pour vous !",
-			"description": "Couleur : {couleur}",
+			"title": "Voici une couleur aléatoire pour vous!",
+			"description": "Couleur:{couleur}",
 			"requestedBy": "Demandé par"
 		},
 		"reverseText": {
 			"title": "Texte inversé",
-			"description": "**Texte original :** {originalText}\n",
+			"description": "**Texte original:**{originalText}\n",
 			"requestedBy": "Demandé par"
 		},
 		"wallpaper": {
@@ -297,9 +297,9 @@
 			"youWon": "Vous avez gagné **`%{coin}`** %{coinEmote}",
 			"youLost": "Vous avez perdu **`%{coin}`** %{coinEmote}",
 			"bothBust": "Vous vous cassez tous les deux !",
-			"tied": "Vous êtes à égalité !",
+			"tied": "Vous êtes à égalité!",
 			"winnerInfo": "Le gagnant est celui qui se rapproche le plus du 21.",
-			"gameInProgress": "Votre jeu est en cours !",
+			"gameInProgress": "Votre jeu est en cours!",
 			"gameOver": "Votre partie est terminée."
 		},
 		"slotMessages": {
@@ -307,29 +307,29 @@
 			"youBet": "Vous pariez **`%{coin}`** %{coinEmote}",
 			"youWon": "Vous avez gagné **`%{coin}`** %{coinEmote}",
 			"youLost": "Vous avez perdu **`%{coin}`** %{coinEmote}",
-			"gameInProgress": "Votre jeu est en cours !",
+			"gameInProgress": "Votre jeu est en cours!",
 			"gameOver": "Votre partie est terminée."
 		},
 		"coinflipMessages": {
 			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
-			"description": "**%{author}** dépensé **`%{coin}`** %{coinEmote} choisissez **%{choice}** ! ",
+			"description": "**%{author}** dépensé **`%{coin}`** %{coinEmote} choisissez **%{choice}**! ",
 			"resultDescription": "**%{author}** dépensé **`%{coin}`** %{coinEmote} choisissez **%{choice}**",
 			"youWon": "Vous avez gagné **`%{coin}`** %{coinEmote}",
 			"youLost": "Vous avez perdu **`%{coin}`** %{coinEmote}",
-			"gameInProgress": "Votre jeu est en cours !",
+			"gameInProgress": "Votre jeu est en cours!",
 			"gameOver": "Votre partie est terminée."
 		}
 	},
 	"inventoryMessages": {
-		"inventoryHeader": "Inventaire de %{auteur} !",
+		"inventoryHeader": "Inventaire de %{auteur}!",
 		"inventoryEmptyName": "Inventaire vide",
 		"inventoryEmptyValue": "Votre inventaire actuel est vide.",
-		"itemNotFound": "L'ID d'article **`%{itemId}`** est introuvable dans la boutique !",
+		"itemNotFound": "L'ID d'article **`%{itemId}`** est introuvable dans la boutique!",
 		"sellDisabled": "La vente de cet article est désactivée.",
 		"useDisabled": "L'utilisation de cet élément est désactivée."
 	},
 	"themeMessages": {
-		"themeApplied": "Vous avez appliqué avec succès le thème %{itemEmote} **`%{itemName}`** à votre intégration !",
+		"themeApplied": "Vous avez appliqué avec succès le thème %{itemEmote} **`%{itemName}`** à votre intégration!",
 		"themeUnavailable": "Le thème **`%{itemName}`** n'est pas disponible.",
 		"themeNotOwned": "Vous ne possédez pas le thème **`%{itemName}`**. ",
 		"invalidThemeID": "L'ID de thème **`%{itemId}`** n'est pas valide. ",
@@ -339,16 +339,16 @@
 		"helpMessages": {
 			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "Voici les commandes disponibles :",
-			"note": "Remarque : Certaines commandes peuvent afficher les noms d'utilisateur dans des listes récupérées par le bot.",
+			"note": "Remarque: Certaines commandes peuvent afficher les noms d'utilisateur dans des listes récupérées par le bot.",
 			"footer": "© Droit d'auteur par KYUU",
 			"supportButton": "Cliquez pour obtenir de l'aide",
-			"commandNotFound": "Commande introuvable :",
+			"commandNotFound": "Commande introuvable:",
 			"commandTitle": "Aide pour la commande",
 			"category": "Catégorie",
-			"aliases": "Alias :",
+			"aliases": "Alias:",
 			"cooldown": "Refroidir",
-			"botPermissions": "Autorisations du robot :",
-			"examples": "Exemple(s) :",
+			"botPermissions": "Autorisations du robot:",
+			"examples": "Exemple(s):",
 			"categoriesMessages": {
 				"actions": "ACTES",
 				"economy": "ÉCONOMIE",
@@ -448,10 +448,82 @@
 				"title": "𝐃𝐄𝐕",
 				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
 			},
-			"footer": "Vous rencontrez des problèmes, avez besoin d'aide ou souhaitez signaler des bugs ? ",
+			"footer": "Vous rencontrez des problèmes, avez besoin d'aide ou souhaitez signaler des bugs? ",
 			"supportButton": {
 				"label": "Cliquez pour obtenir de l'aide"
 			}
+		},
+		"privacyMessages": {
+			"title": "politique de confidentialité",
+			"description": "Votre vie privée est importante pour nous. ",
+			"policies": [
+				{
+					"name": "1. Collecte de données",
+					"value": "Nous collectons uniquement les données nécessaires pour fournir et améliorer les fonctionnalités du bot. "
+				},
+				{
+					"name": "2. Utilisation des données",
+					"value": "Les données collectées sont utilisées exclusivement pour les opérations du robot et ne sont pas partagées avec des tiers."
+				},
+				{
+					"name": "3. Conservation des données",
+					"value": "Les données ne sont conservées que le temps nécessaire à la réalisation des objectifs du robot ou tel que requis par la loi."
+				},
+				{
+					"name": "4. Droits des utilisateurs",
+					"value": "Vous avez le droit de demander la suppression de vos données ou d'obtenir une copie de vos données à tout moment. "
+				},
+				{
+					"name": "5. Modifications de la politique",
+					"value": "Nous pouvons mettre à jour cette politique de confidentialité si nécessaire. "
+				}
+			],
+			"footer": "Pour plus de détails, contactez le propriétaire du bot."
+		},
+		"registerMessages": {
+			"alreadyRegistered": "Vous êtes déjà inscrit. ",
+			"registrationSuccessful": "Vous avez été inscrit avec succès, {username}! ",
+			"titleAlreadyRegistered": "Déjà inscrit",
+			"titleRegistrationSuccessful": "Inscription réussie",
+			"footer": "Si vous avez besoin d'aide ou avez des questions, utilisez les commandes ci-dessous."
+		},
+		"rulesMessages": {
+			"title": "Règles des robots",
+			"description": "Veuillez lire et suivre les règles ci-dessous pour garantir une expérience fluide et agréable pour tous:",
+			"rules": [
+				{
+					"name": "1. Respectez les autres",
+					"value": "Traitez tout le monde avec respect. "
+				},
+				{
+					"name": "2. Pas de spam",
+					"value": "Évitez de spammer des commandes ou des messages dans le chat. "
+				},
+				{
+					"name": "3. Suivez les règles du serveur",
+					"value": "En plus de ces règles spécifiques aux robots, assurez-vous de suivre également les règles du serveur sur lequel vous vous trouvez."
+				},
+				{
+					"name": "4. Contenu approprié",
+					"value": "Assurez-vous que tout le contenu partagé ou généré à l'aide du bot est approprié et respecte les directives du serveur."
+				},
+				{
+					"name": "5. Signaler les problèmes",
+					"value": "Si vous rencontrez des problèmes ou des bugs avec le bot, signalez-les au propriétaire ou aux modérateurs du bot."
+				}
+			],
+			"footer": "Merci d'utiliser {botName}!"
+		},
+		"statsMessages": {
+			"title": "Statistiques de {botName}",
+			"description": "Voici quelques statistiques sur {botName}:",
+			"fields": {
+				"servers": "Serveurs:{guildCount}",
+				"users": "Utilisateurs:{userCount}",
+				"channels": "Chaînes:{channelCount}",
+				"uptime": "Temps de disponibilité:{uptime}minutes"
+			},
+			"footer": "Pour plus d'informations, cliquez sur les boutons ci-dessous."
 		}
 	}
 }

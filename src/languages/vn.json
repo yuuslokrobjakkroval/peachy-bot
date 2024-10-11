@@ -452,6 +452,78 @@
 			"supportButton": {
 				"label": "Bấm để được hỗ trợ"
 			}
+		},
+		"privacyMessages": {
+			"title": "Chính sách bảo mật",
+			"description": "Sự riêng tư của bạn rất quan trọng đối với chúng tôi. ",
+			"policies": [
+				{
+					"name": "1. Thu thập dữ liệu",
+					"value": "Chúng tôi chỉ thu thập dữ liệu cần thiết để cung cấp và cải thiện chức năng của bot. "
+				},
+				{
+					"name": "2. Sử dụng dữ liệu",
+					"value": "Dữ liệu được thu thập được sử dụng riêng cho hoạt động của bot và không được chia sẻ với bên thứ ba."
+				},
+				{
+					"name": "3. Lưu giữ dữ liệu",
+					"value": "Dữ liệu chỉ được lưu giữ trong thời gian cần thiết để hoàn thành mục đích của bot hoặc theo yêu cầu của pháp luật."
+				},
+				{
+					"name": "4. Quyền của người dùng",
+					"value": "Bạn có quyền yêu cầu xóa dữ liệu hoặc lấy bản sao dữ liệu của mình bất kỳ lúc nào. "
+				},
+				{
+					"name": "5. Thay đổi chính sách",
+					"value": "Chúng tôi có thể cập nhật chính sách quyền riêng tư này khi cần thiết. "
+				}
+			],
+			"footer": "Để biết thêm chi tiết, hãy liên hệ với chủ sở hữu bot."
+		},
+		"registerMessages": {
+			"alreadyRegistered": "Bạn đã đăng ký. ",
+			"registrationSuccessful": "Bạn đã đăng ký thành công, {username}! ",
+			"titleAlreadyRegistered": "Đã đăng ký",
+			"titleRegistrationSuccessful": "Đăng ký thành công",
+			"footer": "Nếu bạn cần trợ giúp hoặc có thắc mắc, hãy sử dụng các lệnh bên dưới."
+		},
+		"rulesMessages": {
+			"title": "Quy tắc bot",
+			"description": "Vui lòng đọc và làm theo các quy tắc dưới đây để đảm bảo trải nghiệm suôn sẻ và thú vị cho mọi người:",
+			"rules": [
+				{
+					"name": "1. Tôn trọng người khác",
+					"value": "Hãy đối xử với mọi người bằng sự tôn trọng. "
+				},
+				{
+					"name": "2. Không gửi thư rác",
+					"value": "Tránh spam các lệnh hoặc tin nhắn trong trò chuyện. "
+				},
+				{
+					"name": "3. Tuân theo Quy tắc máy chủ",
+					"value": "Ngoài các quy tắc dành riêng cho bot này, hãy đảm bảo bạn cũng tuân theo các quy tắc của máy chủ mà bạn đang sử dụng."
+				},
+				{
+					"name": "4. Nội dung phù hợp",
+					"value": "Đảm bảo rằng tất cả nội dung được chia sẻ hoặc tạo bằng bot đều phù hợp và tuân thủ các nguyên tắc của máy chủ."
+				},
+				{
+					"name": "5. Báo cáo vấn đề",
+					"value": "Nếu bạn gặp bất kỳ vấn đề hoặc lỗi nào với bot, hãy báo cáo chúng cho chủ sở hữu hoặc người kiểm duyệt bot."
+				}
+			],
+			"footer": "Cảm ơn bạn đã sử dụng {botName}!"
+		},
+		"statsMessages": {
+			"title": "Thống kê của {botName}",
+			"description": "Dưới đây là một số thống kê về {botName}:",
+			"fields": {
+				"servers": "Máy chủ: {guildCount}",
+				"users": "Người dùng: {userCount}",
+				"channels": "Kênh: {channelCount}",
+				"uptime": "Thời gian hoạt động: {uptime} phút"
+			},
+			"footer": "Để biết thêm thông tin, hãy nhấp vào các nút bên dưới."
 		}
 	}
 }

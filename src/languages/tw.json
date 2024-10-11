@@ -452,6 +452,78 @@
 			"supportButton": {
 				"label": "點擊獲取支持"
 			}
+		},
+		"privacyMessages": {
+			"title": "隱私權政策",
+			"description": "您的隱私對我們很重要。",
+			"policies": [
+				{
+					"name": "1. 數據收集",
+					"value": "我們僅收集提供和改進機器人功能所需的數據。"
+				},
+				{
+					"name": "2. 數據使用",
+					"value": "收集的數據僅用於機器人操作，不會與第三方共享。"
+				},
+				{
+					"name": "3. 資料保留",
+					"value": "僅在實現機器人目的所需或法律要求的範圍內保留資料。"
+				},
+				{
+					"name": "4. 用戶權利",
+					"value": "您有權隨時要求刪除資料或取得您的資料副本。"
+				},
+				{
+					"name": "5. 政策變更",
+					"value": "我們可能會根據需要更新本隱私權政策。"
+				}
+			],
+			"footer": "有關更多詳細信息，請聯繫機器人所有者。"
+		},
+		"registerMessages": {
+			"alreadyRegistered": "您已經註冊了。",
+			"registrationSuccessful": "您已成功註冊，{username}！",
+			"titleAlreadyRegistered": "已註冊",
+			"titleRegistrationSuccessful": "註冊成功",
+			"footer": "如果您需要協助或有疑問，請使用以下命令。"
+		},
+		"rulesMessages": {
+			"title": "機器人規則",
+			"description": "請閱讀並遵守以下規則，確保每個人都能獲得順利、愉快的體驗：",
+			"rules": [
+				{
+					"name": "1.尊重他人",
+					"value": "尊重每個人。"
+				},
+				{
+					"name": "2. 禁止發送垃圾郵件",
+					"value": "避免在聊天中發送垃圾命令或訊息。"
+				},
+				{
+					"name": "3.遵守伺服器規則",
+					"value": "除了這些特定於機器人的規則之外，請確保您也遵循您所在伺服器的規則。"
+				},
+				{
+					"name": "4. 適當的內容",
+					"value": "確保使用機器人共享或產生的所有內容都是適當的並遵守伺服器的準則。"
+				},
+				{
+					"name": "5. 報告問題",
+					"value": "如果您遇到機器人的任何問題或錯誤，請將其報告給機器人所有者或版主。"
+				}
+			],
+			"footer": "感謝您使用 {botName}！"
+		},
+		"statsMessages": {
+			"title": "{botName} 的統計數據",
+			"description": "以下是有關 {botName} 的一些統計資料：",
+			"fields": {
+				"servers": "伺服器：{guildCount}",
+				"users": "使用者：{userCount}",
+				"channels": "頻道：{channelCount}",
+				"uptime": "正常運作時間：{uptime} 分鐘"
+			},
+			"footer": "欲了解更多信息，請單擊下面的按鈕。"
 		}
 	}
 }

@@ -1,5 +1,5 @@
 const { Command } = require("../../structures/index.js");
-const {ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = class Rules extends Command {
   constructor(client) {
@@ -30,29 +30,30 @@ module.exports = class Rules extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    const rulesMessages = language.locales.get(language.defaultLocale)?.rulesMessages;
+
     const embed = this.client.embed()
-      .setColor(color.main)
-      .setTitle(`Bot Rules`)
-      .setDescription(`Please read and follow the rules below to ensure a smooth and enjoyable experience for everyone:`)
-      .addFields(
-        { name: "1. Respect Others", value: "Treat everyone with respect. Harassment, abuse, and hate speech are not tolerated.", inline: false },
-        { name: "2. No Spamming", value: "Avoid spamming commands or messages in chat. It disrupts the experience for others.", inline: false },
-        { name: "3. Follow the Server Rules", value: "In addition to these bot-specific rules, ensure you also follow the rules of the server you're in.", inline: false },
-        { name: "4. Appropriate Content", value: "Ensure that all content shared or generated using the bot is appropriate and adheres to the server's guidelines.", inline: false },
-        { name: "5. Report Issues", value: "If you encounter any issues or bugs with the bot, report them to the bot owner or moderators.", inline: false }
-      )
-      .setFooter({
-        text: `Thank you for using ${this.client.user.username}!`,
-        iconURL: this.client.user.displayAvatarURL(),
-      })
-      .setTimestamp();
+        .setColor(color.main)
+        .setTitle(rulesMessages.title)
+        .setDescription(rulesMessages.description)
+        .setFooter({
+          text: rulesMessages.footer.replace('{botName}', this.client.user.username),
+          iconURL: this.client.user.displayAvatarURL(),
+        })
+        .setTimestamp();
+
+    // Add each rule to the embed
+    rulesMessages.rules.forEach(rule => {
+      embed.addFields({ name: rule.name, value: rule.value, inline: false });
+    });
 
     const row = new ActionRowBuilder().addComponents(
         new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary),
+        // Uncomment below lines if you want to add more buttons
         // new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
         // new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
     );
 
-    ctx.sendMessage({ embeds: [embed], components: [row] });
+    return await ctx.sendMessage({ embeds: [embed], components: [row] });
   }
-}
+};

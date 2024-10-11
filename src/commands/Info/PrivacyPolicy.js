@@ -1,7 +1,7 @@
 const { Command } = require("../../structures/index.js");
 const {ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
-class PrivacyPolicy extends Command {
+module.exports = class PrivacyPolicy extends Command {
   constructor(client) {
     super(client, {
       name: "privacy",
@@ -30,31 +30,27 @@ class PrivacyPolicy extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    const privacyMessages = language.locales.get(language.defaultLocale)?.privacyMessages;
+
     const embed = this.client.embed()
-      .setColor(color.main)
-      .setTitle(`Privacy Policy`)
-      .setDescription(`Your privacy is important to us. Please read our privacy policy below:`)
-      .addFields(
-        { name: "1. Data Collection", value: "We collect only the necessary data to provide and improve the bot's functionality. This may include user IDs, messages, and server information.", inline: false },
-        { name: "2. Data Usage", value: "The collected data is used exclusively for bot operations and is not shared with third parties.", inline: false },
-        { name: "3. Data Retention", value: "Data is retained only as long as necessary to fulfill the bot's purposes or as required by law.", inline: false },
-        { name: "4. User Rights", value: "You have the right to request data deletion or obtain a copy of your data at any time. Please contact the bot owner for such requests.", inline: false },
-        { name: "5. Changes to Policy", value: "We may update this privacy policy as needed. Continued use of the bot constitutes acceptance of any changes.", inline: false }
-      )
-      .setFooter({
-        text: `For more details, contact the bot owner.`,
-        iconURL: this.client.user.displayAvatarURL(),
-      })
-      .setTimestamp();
+        .setColor(color.main)
+        .setTitle(privacyMessages.title)
+        .setDescription(privacyMessages.description);
+
+    // Add fields dynamically from the policies array
+    privacyMessages.policies.forEach(policy => {
+      embed.addFields({ name: policy.name, value: policy.value, inline: false });
+    });
+
+    embed.setFooter({
+      text: privacyMessages.footer.replace('{botName}', this.client.user.username), // Replace {botName} with actual bot name
+      iconURL: this.client.user.displayAvatarURL(),
+    }).setTimestamp();
 
     const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary),
-        // new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
-        // new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
+        new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary)
     );
 
-    ctx.sendMessage({ embeds: [embed], components: [row] });
+    return await ctx.sendMessage({ embeds: [embed], components: [row] });
   }
 }
-
-module.exports = PrivacyPolicy;

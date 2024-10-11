@@ -26,14 +26,16 @@ module.exports = class Register extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const registerMessages = language.locales.get(language.defaultLocale)?.registerMessages;
         const user = await Users.findOne({ userId: ctx.author.id }).exec();
+
         if (user) {
             return await ctx.sendMessage({
                 embeds: [
                     this.client.embed()
                         .setColor(color.red)
-                        .setTitle('Already Registered')
-                        .setDescription('You are already registered. If you need assistance, please contact an admin.')
+                        .setTitle(registerMessages.titleAlreadyRegistered)
+                        .setDescription(registerMessages.alreadyRegistered)
                 ],
                 ephemeral: true,
             });
@@ -48,12 +50,13 @@ module.exports = class Register extends Command {
         const embed = this.client
             .embed()
             .setColor(color.main)
-            .setTitle('Registration Successful')
-            .setDescription(`You have been successfully registered, ${ctx.author.username}! You can now start using all features of the bot.`)
-            .setFooter({ text: 'If you need help or have questions, use the commands below.' });
+            .setTitle(registerMessages.titleRegistrationSuccessful)
+            .setDescription(registerMessages.registrationSuccessful.replace('{username}', ctx.author.username))
+            .setFooter({ text: registerMessages.footer });
 
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary),
+            // Uncomment below lines if you want to add more buttons
             // new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
             // new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
         );

@@ -452,6 +452,78 @@
 			"supportButton": {
 				"label": "点击获取支持"
 			}
+		},
+		"privacyMessages": {
+			"title": "隐私政策",
+			"description": "您的隐私对我们很重要。",
+			"policies": [
+				{
+					"name": "1. 数据收集",
+					"value": "我们仅收集提供和改进机器人功能所需的数据。"
+				},
+				{
+					"name": "2. 数据使用",
+					"value": "收集的数据仅用于机器人操作，不会与第三方共享。"
+				},
+				{
+					"name": "3. 数据保留",
+					"value": "仅在实现机器人目的所需或法律要求的范围内保留数据。"
+				},
+				{
+					"name": "4. 用户权利",
+					"value": "您有权随时要求删除数据或获取您的数据副本。"
+				},
+				{
+					"name": "5. 政策变更",
+					"value": "我们可能会根据需要更新本隐私政策。"
+				}
+			],
+			"footer": "有关更多详细信息，请联系机器人所有者。"
+		},
+		"registerMessages": {
+			"alreadyRegistered": "您已经注册了。",
+			"registrationSuccessful": "您已成功注册，{username}！",
+			"titleAlreadyRegistered": "已注册",
+			"titleRegistrationSuccessful": "注册成功",
+			"footer": "如果您需要帮助或有疑问，请使用以下命令。"
+		},
+		"rulesMessages": {
+			"title": "机器人规则",
+			"description": "请阅读并遵守以下规则，以确保每个人都能获得顺利、愉快的体验：",
+			"rules": [
+				{
+					"name": "1.尊重他人",
+					"value": "尊重每个人。"
+				},
+				{
+					"name": "2. 禁止发送垃圾邮件",
+					"value": "避免在聊天中发送垃圾命令或消息。"
+				},
+				{
+					"name": "3.遵守服务器规则",
+					"value": "除了这些特定于机器人的规则之外，请确保您还遵循您所在服务器的规则。"
+				},
+				{
+					"name": "4. 适当的内容",
+					"value": "确保使用机器人共享或生成的所有内容都是适当的并遵守服务器的准则。"
+				},
+				{
+					"name": "5. 报告问题",
+					"value": "如果您遇到机器人的任何问题或错误，请将其报告给机器人所有者或版主。"
+				}
+			],
+			"footer": "感谢您使用 {botName}！"
+		},
+		"statsMessages": {
+			"title": "{botName} 的统计数据",
+			"description": "以下是有关 {botName} 的一些统计信息：",
+			"fields": {
+				"servers": "服务器：{guildCount}",
+				"users": "用户：{userCount}",
+				"channels": "频道：{channelCount}",
+				"uptime": "正常运行时间：{uptime} 分钟"
+			},
+			"footer": "欲了解更多信息，请单击下面的按钮。"
 		}
 	}
 }
