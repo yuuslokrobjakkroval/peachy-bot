@@ -1,22 +1,6 @@
 const Command = require('../../structures/Command.js');
 const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
 
-const font = {
-  Actions: '𝐀𝐂𝐓𝐈𝐎𝐍𝐒',
-  Economy: '𝐄𝐂𝐎𝐍𝐎𝐌𝐘',
-  Inventory: '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘',
-  Fun: '𝐅𝐔𝐍',
-  Games: '𝐆𝐀𝐌𝐄𝐒',
-  Gambling: '𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆',
-  Giveaway: '𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘',
-  Profile: '𝐏𝐑𝐎𝐅𝐈𝐋𝐄',
-  Pjumben: '𝐏𝐉𝐔𝐌𝐁𝐄𝐍',
-  Social: '𝐒𝐎𝐂𝐈𝐀𝐋',
-  Emotes: '𝐄𝐌𝐎𝐓𝐄𝐒',
-  Utility: '𝐔𝐓𝐈𝐋𝐈𝐓𝐘',
-  Info: '𝐈𝐍𝐅𝐎',
-};
-
 module.exports = class Help extends Command {
   constructor(client) {
     super(client, {
@@ -55,6 +39,8 @@ module.exports = class Help extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const helpMessages = language.locales.get(language.defaultLocale)?.information?.helpMessages;
+    const categoriesMessages = language.locales.get(language.defaultLocale)?.information?.helpMessages?.categoriesMessages;
+    const directoriesMessages = language.locales.get(language.defaultLocale)?.information?.helpMessages?.directoriesMessages;
     const embed = client.embed();
     const prefix = client.config.prefix;
     const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
@@ -83,10 +69,10 @@ module.exports = class Help extends Command {
       for (const category in sortedCommands) {
         if (Object.prototype.hasOwnProperty.call(sortedCommands, category)) {
           const categoryCommands = sortedCommands[category];
-          const commandNames = categoryCommands.map(cmd => `\`${cmd.name}\``).join(', ');
+          const commandNames = categoryCommands.map(cmd => `\`${directoriesMessages[cmd.name]}\``).join(', ');
 
           helpEmbed.addFields([{
-            name: `${emoji.help[category.toLowerCase()]} ${font[category]}`,
+            name: `${emoji.help[category.toLowerCase()]} ${categoriesMessages[category.toLowerCase()]}`,
             value: commandNames,
             inline: false,
           }]);

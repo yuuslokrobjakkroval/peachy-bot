@@ -1,97 +1,99 @@
 {
 	"generalMessages": {
-		"permissionsClientError": "このコマンドを実行する権限が不足しています。",
-		"permissionsUserError": "このコマンドを使用する権限が不足しています。",
-		"argumentsMissingTitle": "引数が不足しています",
-		"argumentsMissingDescription": "コマンド `{commandName}` に必要な引数を提供してください。",
-		"usageHeader": "使い方",
+		"permissionsClientError": "このコマンドを実行するための十分な権限がありません。",
+		"permissionsUserError": "このコマンドを使用するための十分な権限がありません。",
+		"argumentsMissingTitle": "引数が欠落しています",
+		"argumentsMissingDescription": "`{commandName}` コマンドに必要な引数を指定してください。",
+		"usageHeader": "使用法",
 		"examplesHeader": "例",
 		"syntaxInstructions": "構文: [] = オプション、<> = 必須",
-		"noEveryoneOrHereError": "このコマンドは全員またはここに使用することはできません。",
-		"userNotFound": "データベース内にユーザーが見つかりませんでした。",
-		"alreadyInGame": "すでにゲーム中です。現在のゲームを終了した後、新しいゲームを開始してください。",
-		"zeroBalance": "残高がありません。再試行する前にコインを獲得してください。",
-		"invalidAmount": "無効な金額です。正の数を入力してください。"
+		"noEveryoneOrHereError": "このコマンドを他の人やここで使用することはできません。",
+		"userNotFound": "ユーザーがデータベースに見つかりません。",
+		"alreadyInGame": "あなたはすでにゲームの中にいます。",
+		"zeroBalance": "残高はゼロです。",
+		"invalidAmount": "無効な金額です。",
+		"notForYou": "この行動はあなたのためのものではありません。",
+		"databaseUpdate": "データベースの更新中にエラーが発生しました。"
 	},
 	"actionMessages": {
 		"biteMessages": {
-			"title": "噛む時間！",
-			"description": "愛情を込めて噛む",
+			"title": "バイトタイム！",
+			"description": "ふざけて噛む",
 			"errors": {
-				"noUser": "噛む相手を指定する必要があります。",
+				"noUser": "噛むにはユーザーにメンションする必要があります。",
 				"selfBite": "自分自身を噛むことはできません。",
-				"fetchFail": "噛むGIFを取得中にエラーが発生しました。"
+				"fetchFail": "バイト GIF の取得中に問題が発生しました。"
 			}
 		},
 		"hugMessages": {
-			"title": "ハグの時間！",
-			"description": "温かく抱きしめる",
+			"title": "ハグタイム！",
+			"description": "～に温かい抱擁を与える",
 			"errors": {
-				"noUser": "ハグする相手を指定する必要があります。",
-				"selfHug": "自分自身をハグすることはできません。",
-				"fetchFail": "ハグGIFを取得中にエラーが発生しました。"
+				"noUser": "ハグするにはユーザーに言及する必要があります。",
+				"selfHug": "自分自身を抱き締めることはできません。",
+				"fetchFail": "ハグ GIF の取得中に問題が発生しました。"
 			}
 		},
 		"kissMessages": {
-			"title": "キスの時間！",
-			"description": "キスする",
+			"title": "キスタイム！",
+			"description": "にかわいいキスをする",
 			"errors": {
-				"noUser": "キスする相手を指定する必要があります。",
+				"noUser": "キスするにはユーザーにメンションする必要があります。",
 				"selfKiss": "自分自身にキスすることはできません。",
-				"fetchFail": "キスGIFを取得中にエラーが発生しました。"
+				"fetchFail": "キス GIF の取得中に問題が発生しました。"
 			}
 		},
 		"punchMessages": {
-			"title": "パンチの時間！",
-			"description": "友好的にパンチする",
+			"title": "パンチタイム！",
+			"description": "～にふざけたパンチを投げる",
 			"errors": {
-				"noUser": "パンチする相手を指定する必要があります。",
-				"selfPunch": "自分自身をパンチすることはできません。",
-				"fetchFail": "パンチGIFを取得中にエラーが発生しました。"
+				"noUser": "パンチするにはユーザーにメンションする必要があります。",
+				"selfPunch": "自分自身を殴ることはできません。",
+				"fetchFail": "パンチ GIF の取得中に問題が発生しました。"
 			}
 		},
 		"slapMessages": {
-			"title": "平手打ちの時間！",
-			"description": "愛情を込めて平手打ち",
+			"title": "スラップタイム！",
+			"description": "ふざけて平手打ちする",
 			"errors": {
-				"noUser": "平手打ちする相手を指定する必要があります。",
-				"selfSlap": "自分自身を平手打ちすることはできません。",
-				"fetchFail": "平手打ちGIFを取得中にエラーが発生しました。"
+				"noUser": "叩くユーザーにメンションする必要があります。",
+				"selfSlap": "自分を平手打ちすることはできません。",
+				"fetchFail": "スラップ GIF の取得中に問題が発生しました。"
 			}
 		}
 	},
 	"economyMessages": {
 		"balanceMessages": {
-			"title": "%{displayName}の残高",
-			"description": "%{coinEmote} **`%{coin}`** コイン\n%{bankEmote} **`%{bank}`** コイン",
+			"title": "%{displayName} の残高",
+			"description": "%{coinEmote} **`%{coin}`** コイン\n",
 			"errors": {
 				"noUser": "ユーザーが見つかりません。",
-				"fetchFail": "残高を取得中にエラーが発生しました。"
+				"fetchFail": "残高の取得中に問題が発生しました。"
 			}
 		},
 		"dailyMessages": {
-			"title": "%{displayName}のデイリー報酬",
-			"success": "%{coinEmote} **`+%{coin}`** コイン\nXP: **`+%{exp}`** xp",
-			"cooldown": "デイリー報酬は待機中です。**%{time}** 後に再試行してください。",
+			"title": "%{displayName} のデイリー報酬",
+			"success": "%{coinEmote} **`+%{coin}`** コイン\n",
+			"cooldown": "毎日の報酬はクールダウン中です。 ",
 			"errors": {
 				"noUser": "ユーザーが見つかりません。",
-				"fetchFail": "デイリーリクエストの処理中にエラーが発生しました。"
+				"fetchFail": "毎日の請求の処理中にエラーが発生しました。"
 			}
 		},
 		"depositMessages": {
-			"zeroBalance": "預け入れるコインがありません。",
-			"invalidAmount": "無効な金額です。有効な数値を入力してください。`全て`または`半分`を使用することもできます。",
-			"success": "%{coinEmote} **`%{amount}`** コインを銀行に預けました。",
+			"zeroBalance": "入金するコインがありません。",
+			"invalidAmount": "無効な金額です。",
+			"success": "%{coinEmote} **`%{amount}`** コインを銀行に入金しました。",
 			"errors": {
 				"noUser": "ユーザーが見つかりません。"
 			}
 		},
 		"gomaMessages": {
 			"success": {
-				"title": "gomaを要求しました！",
-				"description": "%{coinEmote} **`%{coin}`** コインを得ました。"
+				"title": "ゴマを主張しました！",
+				"description": "%{coinEmote} **`%{coin}`** コインを獲得しました。"
 			},
-			"cooldown": "Gomaが待機中です！\n**%{minutes}分と%{seconds}秒**後に再試行してください。",
+			"cooldown": "ゴマはクールダウン中です！\n",
 			"errors": {
 				"noUser": "ユーザーが見つかりません。"
 			}
@@ -100,48 +102,49 @@
 			"errors": {
 				"noUser": "ユーザーが見つかりません。"
 			},
-			"cooldown": "Peachyが待機中です！\n**%{minutes}分と%{seconds}秒**後に再試行してください。",
+			"cooldown": "ピーチはクールダウン中です！\n",
 			"success": {
-				"title": "peachyを要求しました！",
-				"description": "%{coinEmote} **`%{coin}`** コインを得ました。"
+				"title": "ピーチを主張しました！",
+				"description": "%{coinEmote} **`%{coin}`** コインを獲得しました。"
 			}
 		},
 		"rankingMessages": {
 			"bal": {
-				"noUsers": "まだコインを獲得した人はいません。",
+				"noUsers": "まだ誰もコインを獲得していません。",
 				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"peachy": {
-				"noUsers": "まだシリーズがありません。",
+				"noUsers": "まだ誰もストリークを持っていません。",
 				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"goma": {
-				"noUsers": "まだシリーズがありません。",
+				"noUsers": "まだ誰もストリークを持っていません。",
 				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
 			},
-			"invalidType": "無効なランクタイプです。"
+			"invalidType": "リーダーボードのタイプが無効です。"
 		},
 		"transferMessages": {
-			"selfTransfer": "自分自身にコインを送ることはできません。",
-			"botTransfer": "ボットにコインを送ることはできません。",
-			"pendingTransfer": "保留中の転送があります。新しい転送を開始する前に確認またはキャンセルしてください。",
-			"invalidAmount": "有効なユーザーと金額を指定してください。",
+			"title": "**取引 - {{user}}**",
+			"selfTransfer": "コインを自分に送金することはできません。",
+			"botTransfer": "ボットにコインを転送することはできません。",
+			"pendingTransfer": "すでに保留中の転送があります。",
+			"invalidAmount": "有効なユーザーと金額を明記してください。",
 			"noUser": "有効なユーザーを指定してください。",
-			"balanceNotExist": "残高のレコードがありません。",
-			"insufficientBalance": "指定された金額が無効または残高が不足しています。",
-			"zeroBalance": "送信するコインがありません。",
-			"transactionConfirm": "{{user}}に{{amount}} {{emoji}}を渡します。よろしいですか？",
-			"transactionSuccess": "{{user}}に{{amount}} {{emoji}}を渡しました。",
-			"transactionCancel": "転送をキャンセルしました。コインは送信されませんでした。",
-			"transactionTimeout": "アクティビティがないため、トランザクションが期限切れになりました。再試行してください。",
-			"transactionTimeoutAction": "転送を行うには、コマンドを再実行してください。",
-			"amountTooHigh": "金額が残高を超えています。",
-			"transferTooFrequent": "コインを頻繁に送信しています。少し待ってください。",
-			"transferLimitExceeded": "最大転送制限を超えました。",
-			"transferInsufficientFunds": "この転送を完了するための十分なコインがありません。",
-			"transferInvalidUser": "指定したユーザーが無効または見つかりません。",
-			"transferConfirmPrompt": "下のボタンをクリックして転送を確認してください。",
-			"transactionExpired": "トランザクションが期限切れになりました"
+			"balanceNotExist": "あなたの残高記録は存在しません。",
+			"insufficientBalance": "指定した金額が無効か、残高が不足しています。",
+			"zeroBalance": "転送するコインがありません。",
+			"confirm": "あなたは与えようとしています {{amount}} {{emoji}} に {{user}}。",
+			"success": "あなたが与えてくれた {{amount}} {{emoji}} に {{user}}。",
+			"cancel": "取引をキャンセルしました。",
+			"timeout": "非アクティブのため、トランザクションがタイムアウトしました。",
+			"timeoutAction": "転送する場合は、コマンドを再度開始してください。",
+			"amountTooHigh": "金額が利用可能な残高を超えています。",
+			"tooFrequent": "コインを頻繁に送金しすぎています。",
+			"limitExceeded": "最大転送制限を超えています。",
+			"insufficientFunds": "この送金を完了するのに十分なコインがありません。",
+			"invalidUser": "指定されたユーザーが無効であるか、見つかりません。",
+			"confirmPrompt": "下のボタンをクリックして転送を確認してください。",
+			"expire": "トランザクションの有効期限が切れました"
 		},
 		"weeklyMessages": {
 			"userNotFound": "ユーザーが見つかりません。",
@@ -162,31 +165,292 @@
 			"error": "出金リクエストの処理中にエラーが発生しました。"
 		}
 	},
+	"emoteMessages": {
+		"angryMessages": {
+			"title": "怒りの時間！",
+			"description": "**{{user}}**は怒りの表情を浮かべます！",
+			"error": "怒りのエモートの処理中にエラーが発生しました。"
+		},
+		"cryMessages": {
+			"title": "クライングタイム！",
+			"description": "**{{user}}**が泣いています！",
+			"error": "泣いているエモートの処理中にエラーが発生しました。"
+		},
+		"cuteMessages": {
+			"title": "キュートタイム！",
+			"description": "**{{user}}**は最高にキュートな表情を見せます!",
+			"error": "かわいいエモートの処理中にエラーが発生しました。"
+		},
+		"danceMessages": {
+			"title": "ダンシングタイム！",
+			"description": "**{{user}}** 印象的なダンスを披露！",
+			"error": "ダンスエモートの処理中にエラーが発生しました。"
+		},
+		"exerciseMessages": {
+			"title": "エクササイズタイム！",
+			"description": "**{{user}}** は体を動かし、健康を維持しています!",
+			"error": "エクササイズエモートの処理中にエラーが発生しました。"
+		},
+		"happyMessages": {
+			"title": "ハッピーバイブス！",
+			"description": "**{{user}}**は喜びと幸せを広げます!",
+			"error": "ハッピーエモートの処理中にエラーが発生しました。"
+		},
+		"laughMessages": {
+			"title": "大声で笑う！",
+			"description": "**{{user}}** は心から笑いました!",
+			"error": "笑いのエモートの処理中にエラーが発生しました。"
+		},
+		"makeupMessages": {
+			"title": "メイクタイム！",
+			"description": "**{{user}}** 素敵なメイクを施し、明るく輝いています!",
+			"error": "メイクアップエモートの処理中にエラーが発生しました。"
+		},
+		"eatMessages": {
+			"title": "食事の時間！",
+			"description": "**{{user}}**はおいしいものを食べています!",
+			"error": "食べるエモートの処理中にエラーが発生しました。"
+		},
+		"playGameMessages": {
+			"title": "ゲームタイム！",
+			"description": "**{{user}}** はプレイの準備をしています!",
+			"error": "プレイゲームエモートの処理中にエラーが発生しました。"
+		},
+		"roarMessages": {
+			"title": "咆哮タイム！",
+			"description": "**{{user}}** 雄大な咆哮をあげる！",
+			"error": "咆哮エモートの処理中にエラーが発生しました。"
+		},
+		"sadMessages": {
+			"title": "悲しい気持ち",
+			"description": "**{{user}}**は悲しみを表現しています。",
+			"error": "悲しいエモートの処理中にエラーが発生しました。"
+		},
+		"scareMessages": {
+			"title": "怖がった！",
+			"description": "**{{user}}＊＊は怖い一面を見せます！",
+			"error": "恐怖のエモートの処理中にエラーが発生しました。"
+		},
+		"showerMessages": {
+			"title": "シャワータイム！",
+			"description": "**{{user}}** は爽やかなシャワーを楽しんでいます!",
+			"error": "シャワー エモートの処理中にエラーが発生しました。"
+		},
+		"shyMessages": {
+			"title": "シャイ！",
+			"description": "**{{user}}＊＊は恥じらいの表情を披露！",
+			"error": "シャイなエモートの処理中にエラーが発生しました。"
+		}
+	},
+	"funMessage": {
+		"animalOfYear": {
+			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒",
+			"selectAnimal": "動物を選択してください",
+			"noAnimals": "利用可能な動物はありません",
+			"animalNotFound": "動物が見つかりません。",
+			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋",
+			"description": "説明",
+			"requestBy": "リクエスト者",
+			"id": "ID"
+		},
+		"province": {
+			"title": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "都道府県を選択してください",
+			"noProvinces": "利用可能な州がありません",
+			"notFound": "県が見つかりません。",
+			"detailTitle": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄",
+			"description": "説明",
+			"requestBy": "リクエスト者",
+			"id": "ID"
+		},
+		"randomColor": {
+			"title": "こちらはランダムカラーです！",
+			"description": "色: {色}",
+			"requestedBy": "リクエスト者"
+		},
+		"reverseText": {
+			"title": "反転されたテキスト",
+			"description": "**原文:** {originalText}\n",
+			"requestedBy": "リクエスト者"
+		},
+		"wallpaper": {
+			"selectCategory": "カテゴリを選択してください...",
+			"selectWallpaper": "壁紙を選択してください...",
+			"noWallpapers": "このカテゴリでは利用可能な壁紙がありません。",
+			"wallpaperNotFound": "壁紙が見つかりません。",
+			"wallpaperDetailsTitle": "壁紙の詳細",
+			"descriptionLabel": "説明",
+			"categoryLabel": "カテゴリ"
+		},
+		"weather": {
+			"title": "𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂",
+			"selectProvince": "都道府県を選択してください",
+			"noProvinces": "利用可能な州がありません",
+			"notFound": "県が見つかりません。",
+			"provinceNotFound": "県が見つかりません。",
+			"dataFetchFailed": "気象データの取得に失敗しました。 "
+		}
+	},
+	"gamblingMessages": {
+		"blackjackMessages": {
+			"title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
+			"youWon": "**`%{coin}`** %{coinEmote} を獲得しました",
+			"youLost": "**`%{coin}`** %{coinEmote} を失いました",
+			"bothBust": "二人ともバストしてるよ！",
+			"tied": "結んだよ！",
+			"winnerInfo": "勝者は21に最も近い人です。",
+			"gameInProgress": "ゲームが進行中です!",
+			"gameOver": "あなたのゲームは終わりました。"
+		},
+		"slotMessages": {
+			"title": "𝐒𝐋𝐎𝐓𝐒",
+			"youBet": "**`%{coin}`** %{coinEmote} に賭けます",
+			"youWon": "**`%{coin}`** %{coinEmote} を獲得しました",
+			"youLost": "**`%{coin}`** %{coinEmote} を失いました",
+			"gameInProgress": "ゲームが進行中です!",
+			"gameOver": "あなたのゲームは終わりました。"
+		},
+		"coinflipMessages": {
+			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
+			"description": "**%{author}** は **`%{coin}`** を使いました %{coinEmote} は **%{choice}** を選択してください!",
+			"resultDescription": "**%{author}** は **`%{coin}`** を使いました %{coinEmote} は **%{choice}** を選択しました",
+			"youWon": "**`%{coin}`** %{coinEmote} を獲得しました",
+			"youLost": "**`%{coin}`** %{coinEmote} を失いました",
+			"gameInProgress": "ゲームが進行中です!",
+			"gameOver": "あなたのゲームは終わりました。"
+		}
+	},
+	"inventoryMessages": {
+		"inventoryHeader": "%{author} の在庫です!",
+		"inventoryEmptyName": "空のインベントリ",
+		"inventoryEmptyValue": "現在の在庫は空です。",
+		"itemNotFound": "アイテム ID **`%{itemId}`** がショップで見つかりませんでした。",
+		"sellDisabled": "この商品は販売不可となっております。",
+		"useDisabled": "このアイテムの使用は無効になっています。"
+	},
+	"themeMessages": {
+		"themeApplied": "%{itemEmote} **`%{itemName}`** テーマを埋め込みに適用しました。",
+		"themeUnavailable": "テーマ **`%{itemName}`** は使用できません。",
+		"themeNotOwned": "あなたはテーマ **`%{itemName}`** を所有していません。",
+		"invalidThemeID": "テーマ ID **`%{itemId}`** は無効です。",
+		"themeAlreadyOwned": "テーマ **`%{itemName}`** はすでに所有しているため、再度購入することはできません。"
+	},
 	"information": {
 		"helpMessages": {
-			"title": "𝐘𝐎𝐔𝐑 𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
-			"description": "利用可能なコマンドは以下の通りです:",
-			"note": "注意: 一部のコマンドは、ボットから取得したリストにユーザー名を表示する場合があります。",
-			"footer": "© 著作権 KYUU",
-			"supportButton": "サポートをクリック",
+			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
+			"description": "利用可能なコマンドは次のとおりです。",
+			"note": "注: 一部のコマンドでは、ボットによって取得されたリストにユーザー名が表示される場合があります。",
+			"footer": "© Copyright By KYUU",
+			"supportButton": "クリックしてサポートしてください",
 			"commandNotFound": "コマンドが見つかりません:",
 			"commandTitle": "コマンドのヘルプ",
-			"category": "カテゴリー",
+			"category": "カテゴリ",
 			"aliases": "別名:",
 			"cooldown": "クールダウン",
 			"botPermissions": "ボットの権限:",
-			"examples": "例:"
+			"examples": "例:",
+			"categoriesMessages": {
+				"actions": "アクション",
+				"economy": "経済",
+				"inventory": "在庫",
+				"fun": "楽しい",
+				"games": "ゲーム",
+				"gambling": "ギャンブル",
+				"profile": "プロフィール",
+				"social": "社交",
+				"emotes": "エモート",
+				"utility": "ユーティリティ",
+				"info": "情報"
+			},
+			"directoriesMessages": {
+				"bite": "噛む",
+				"hug": "ハグ",
+				"kiss": "キス",
+				"punch": "パンチ",
+				"slap": "平手打ち",
+				"balance": "バランス",
+				"daily": "毎日",
+				"deposit": "デポジット",
+				"goma": "ゴマ",
+				"peachy": "桃っぽい",
+				"ranking": "ランキング",
+				"transfer": "移行",
+				"weekly": "毎週",
+				"withdraw": "撤回する",
+				"buy": "買う",
+				"drink": "飲む",
+				"eat": "食べる",
+				"giveitem": "アイテムを与える",
+				"inventory": "在庫",
+				"sell": "売る",
+				"shop": "店",
+				"shopinfo": "ショップ情報",
+				"use": "使用",
+				"animalofyear": "今年の動物",
+				"province": "州",
+				"color": "色",
+				"reverse": "逆行する",
+				"wallpaper": "壁紙",
+				"weather": "天気",
+				"emoji-puzzle": "絵文字パズル",
+				"guessnumber": "推測番号",
+				"roll": "ロール",
+				"blackjack": "ブラックジャック",
+				"coinflip": "コインフリップ",
+				"slots": "スロット",
+				"bio": "バイオ",
+				"birthday": "誕生日",
+				"gender": "性別",
+				"level": "レベル",
+				"profile": "プロフィール",
+				"relationship": "関係",
+				"username": "ユーザー名",
+				"facebook": "フェイスブック",
+				"instagram": "インスタグラム",
+				"socials": "ソーシャル",
+				"tiktok": "ティックトック",
+				"angry": "怒り",
+				"cry": "泣く",
+				"cute": "かわいい",
+				"dance": "ダンス",
+				"exercise": "エクササイズ",
+				"happy": "ハッピー",
+				"laugh": "笑う",
+				"makeup": "補う",
+				"nham": "ナム",
+				"playgame": "ゲームをする",
+				"roar": "轟音",
+				"sad": "悲しい",
+				"scare": "怖い",
+				"shower": "シャワー",
+				"shy": "シャイ",
+				"avatar": "アバター",
+				"emoji": "絵文字",
+				"language": "言語",
+				"qr": "qr",
+				"serverinfo": "サーバー情報",
+				"theme": "テーマ",
+				"userinfo": "ユーザー情報",
+				"help": "ヘルプ",
+				"info": "情報",
+				"invite": "招待する",
+				"ping": "ピング",
+				"privacy": "プライバシー",
+				"register": "登録する",
+				"rules": "ルール",
+				"stats": "統計"
+			}
 		},
 		"infoMessages": {
 			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
-			"description": "は、楽しさ、エンターテイメント、ユーティリティのために設計された多目的Discordボットです。機能を利用して、ギャンブルに挑戦したり、ミニゲームをプレイしたり、その他たくさんのことを楽しんでください！",
+			"description": "は、楽しさ、エンターテイメント、実用性を目的に設計された多目的 Discord ボットです。",
 			"developer": {
 				"title": "𝐃𝐄𝐕",
-				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘"
 			},
-			"footer": "問題がある、助けが必要、またはバグを報告したい場合は、以下のリンクをクリックしてください",
+			"footer": "何か問題がある場合、サポートが必要な場合、またはバグを報告したい場合がありますか?",
 			"supportButton": {
-				"label": "サポートをクリック"
+				"label": "クリックしてサポートしてください"
 			}
 		}
 	}

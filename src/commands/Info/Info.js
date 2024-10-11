@@ -43,7 +43,7 @@ module.exports = class Info extends Command {
         .addFields([
           {
             name: infoMessages.developer.title,
-            value: `[${infoMessages.developer.value}](${client.config.links.developer})`,
+            value: `[${infoMessages.developer.value}](${client.config.links.support})`,
             inline: false,
           },
         ])

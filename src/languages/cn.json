@@ -1,97 +1,99 @@
 {
 	"generalMessages": {
 		"permissionsClientError": "我没有足够的权限来执行此命令。",
-		"permissionsUserError": "你没有足够的权限来使用此命令。",
+		"permissionsUserError": "您没有足够的权限来使用此命令。",
 		"argumentsMissingTitle": "缺少参数",
-		"argumentsMissingDescription": "请为命令 `{commandName}` 提供必要的参数。",
+		"argumentsMissingDescription": "请提供“{commandName}”命令所需的参数。",
 		"usageHeader": "用法",
 		"examplesHeader": "示例",
-		"syntaxInstructions": "语法: [] = 可选, <> = 必需",
-		"noEveryoneOrHereError": "你不能将此命令用于所有人或在这里。",
-		"userNotFound": "在数据库中未找到用户。",
-		"alreadyInGame": "你已经在游戏中。请完成当前游戏后再开始新游戏。",
-		"zeroBalance": "你的余额为零。请先赚取一些硬币再试。",
-		"invalidAmount": "无效金额。请输入一个正数。"
+		"syntaxInstructions": "语法：[] = 可选，<> = 必需",
+		"noEveryoneOrHereError": "您不能对所有人或此处使用此命令。",
+		"userNotFound": "在数据库中找不到用户。",
+		"alreadyInGame": "你已经在游戏中了。",
+		"zeroBalance": "您的余额为零。",
+		"invalidAmount": "金额无效。",
+		"notForYou": "这个动作不适合你。",
+		"databaseUpdate": "更新数据库时出错。"
 	},
 	"actionMessages": {
 		"biteMessages": {
-			"title": "咬一口的时间!",
-			"description": "充满爱的咬",
+			"title": "咬合时间！",
+			"description": "顽皮地咬",
 			"errors": {
-				"noUser": "你必须提到一个用户来咬。",
+				"noUser": "你需要提到一个用户来咬。",
 				"selfBite": "你不能咬自己。",
-				"fetchFail": "获取咬GIF时发生错误。"
+				"fetchFail": "获取咬合 GIF 时出现问题。"
 			}
 		},
 		"hugMessages": {
-			"title": "拥抱时间!",
-			"description": "温暖的拥抱",
+			"title": "拥抱时间！",
+			"description": "给予一个温暖的拥抱",
 			"errors": {
-				"noUser": "你必须提到一个用户来拥抱。",
-				"selfHug": "你不能拥抱自己。",
-				"fetchFail": "获取拥抱GIF时发生错误。"
+				"noUser": "你需要提到一个用户来拥抱。",
+				"selfHug": "你无法拥抱自己。",
+				"fetchFail": "获取拥抱 GIF 时出现问题。"
 			}
 		},
 		"kissMessages": {
-			"title": "亲吻时间!",
-			"description": "亲吻",
+			"title": "亲吻时间！",
+			"description": "给一个可爱的吻",
 			"errors": {
-				"noUser": "你必须提到一个用户来亲吻。",
+				"noUser": "您需要提及要亲吻的用户。",
 				"selfKiss": "你不能亲吻自己。",
-				"fetchFail": "获取亲吻GIF时发生错误。"
+				"fetchFail": "获取接吻 GIF 时出现问题。"
 			}
 		},
 		"punchMessages": {
-			"title": "拳头时间!",
-			"description": "友好的拳头",
+			"title": "打卡时间！",
+			"description": "顽皮地打了一拳",
 			"errors": {
-				"noUser": "你必须提到一个用户来拳打。",
-				"selfPunch": "你不能拳打自己。",
-				"fetchFail": "获取拳打GIF时发生错误。"
+				"noUser": "您需要提及一个用户才能打卡。",
+				"selfPunch": "你不能打自己。",
+				"fetchFail": "获取打孔 GIF 时出现问题。"
 			}
 		},
 		"slapMessages": {
-			"title": "掌掴时间!",
-			"description": "充满爱的掌掴",
+			"title": "拍打时间！",
+			"description": "顽皮地打耳光",
 			"errors": {
-				"noUser": "你必须提到一个用户来掌掴。",
-				"selfSlap": "你不能掌掴自己。",
-				"fetchFail": "获取掌掴GIF时发生错误。"
+				"noUser": "你需要提到一个用户才能打耳光。",
+				"selfSlap": "你不能打自己一巴掌。",
+				"fetchFail": "获取巴掌 GIF 时出现问题。"
 			}
 		}
 	},
 	"economyMessages": {
 		"balanceMessages": {
-			"title": "%{displayName}的余额",
-			"description": "%{coinEmote} **`%{coin}`** 硬币\n%{bankEmote} **`%{bank}`** 硬币",
+			"title": "%{displayName} 的余额",
+			"description": "%{coinEmote} **`%{coin}`** 硬币\n",
 			"errors": {
 				"noUser": "未找到用户。",
-				"fetchFail": "获取你的余额时发生错误。"
+				"fetchFail": "获取余额时出现问题。"
 			}
 		},
 		"dailyMessages": {
 			"title": "%{displayName}的每日奖励",
-			"success": "%{coinEmote} **`+%{coin}`** 硬币\n经验值: **`+%{exp}`** xp",
-			"cooldown": "你的每日奖励正在等待中。请在 **%{time}** 后再试。",
+			"success": "%{coinEmote} **`+%{coin}`** 硬币\n",
+			"cooldown": "您的每日奖励正在冷却。",
 			"errors": {
 				"noUser": "未找到用户。",
-				"fetchFail": "处理你的每日请求时发生错误。"
+				"fetchFail": "处理您的每日索赔时出错。"
 			}
 		},
 		"depositMessages": {
-			"zeroBalance": "你没有硬币可以存入。",
-			"invalidAmount": "无效金额。请输入有效金额或使用 `全部` 或 `一半`。",
-			"success": "你已存入 %{coinEmote} **`%{amount}`** 硬币到你的银行。",
+			"zeroBalance": "您没有任何硬币可以存入。",
+			"invalidAmount": "金额无效。",
+			"success": "您已将 %{coinEmote} **`%{amount}`** 硬币存入您的银行。",
 			"errors": {
 				"noUser": "未找到用户。"
 			}
 		},
 		"gomaMessages": {
 			"success": {
-				"title": "你已请求goma！",
-				"description": "你已赚取 %{coinEmote} **`%{coin}`** 硬币。"
+				"title": "已认领戈马！",
+				"description": "您已赚取 %{coinEmote} **`%{coin}`** 金币。"
 			},
-			"cooldown": "goma 正在等待中！\n请在 **%{minutes}分钟和%{seconds}秒** 后再试。",
+			"cooldown": "戈马正在冷却！\n",
 			"errors": {
 				"noUser": "未找到用户。"
 			}
@@ -100,48 +102,49 @@
 			"errors": {
 				"noUser": "未找到用户。"
 			},
-			"cooldown": "peachy 正在等待中！\n请在 **%{minutes}分钟和%{seconds}秒** 后再试。",
+			"cooldown": "桃子正在冷却！\n",
 			"success": {
-				"title": "你已请求 peachy！",
-				"description": "你已赚取 %{coinEmote} **`%{coin}`** 硬币。"
+				"title": "已经声称桃色了！",
+				"description": "您已赚取 %{coinEmote} **`%{coin}`** 金币。"
 			}
 		},
 		"rankingMessages": {
 			"bal": {
-				"noUsers": "尚未有人赚取硬币。",
+				"noUsers": "尚未有人获得金币。",
 				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"peachy": {
-				"noUsers": "尚未有人在名单上。",
+				"noUsers": "还没人有连胜。",
 				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"goma": {
-				"noUsers": "尚未有人在名单上。",
-				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+				"noUsers": "还没人有连胜。",
+				"topGoma": "𝐓𝐎𝐏𝐆𝐎𝐌𝐀𝐂𝐋𝐀𝐈𝐌"
 			},
-			"invalidType": "无效的排名类型。"
+			"invalidType": "排行榜类型无效。"
 		},
 		"transferMessages": {
-			"selfTransfer": "你不能将硬币转给自己。",
-			"botTransfer": "你不能将硬币转给机器人。",
-			"pendingTransfer": "有一笔交易在等待中。请在开始新交易之前确认或取消它。",
-			"invalidAmount": "请指定有效的用户和金额。",
-			"noUser": "请指定有效的用户。",
-			"balanceNotExist": "没有余额记录。",
+			"title": "**交易 - {{user}}**",
+			"selfTransfer": "您不能将硬币转移给自己。",
+			"botTransfer": "您无法将硬币转移给机器人。",
+			"pendingTransfer": "您已有一笔待处理的转账。",
+			"invalidAmount": "请注明有效用户和金额。",
+			"noUser": "请提及有效用户。",
+			"balanceNotExist": "您的余额记录不存在。",
 			"insufficientBalance": "指定金额无效或余额不足。",
-			"zeroBalance": "你没有硬币可以发送。",
-			"transactionConfirm": "你将向 {{user}} 转账 {{amount}} {{emoji}}。你确定吗？",
-			"transactionSuccess": "你已向 {{user}} 转账 {{amount}} {{emoji}}。",
-			"transactionCancel": "你已取消交易。硬币未被转移。",
-			"transactionTimeout": "由于没有活动，交易已超时。请重试。",
-			"transactionTimeoutAction": "请重新执行命令以进行转账。",
-			"amountTooHigh": "金额超出余额。",
-			"transferTooFrequent": "你频繁发送硬币。请稍等。",
-			"transferLimitExceeded": "超过了最大转账限制。",
-			"transferInsufficientFunds": "你没有足够的硬币来完成此交易。",
-			"transferInvalidUser": "指定的用户无效或未找到。",
-			"transferConfirmPrompt": "请点击下面的按钮确认转账。",
-			"transactionExpired": "交易已过期"
+			"zeroBalance": "您没有可以转移的硬币。",
+			"confirm": "你即将给予 {{amount}} {{emoji}} 到 {{user}}。",
+			"success": "你已经给了 {{amount}} {{emoji}} 到 {{user}}。",
+			"cancel": "您已取消交易。",
+			"timeout": "由于不活动，交易已超时。",
+			"timeoutAction": "如果您想进行转账，请重新发起命令。",
+			"amountTooHigh": "该金额超出您的可用余额。",
+			"tooFrequent": "您转移硬币过于频繁。",
+			"limitExceeded": "您已超出最大转账限额。",
+			"insufficientFunds": "您没有足够的硬币来完成此转账。",
+			"invalidUser": "指定的用户无效或未找到。",
+			"confirmPrompt": "单击下面的按钮确认转移。",
+			"expire": "交易已过期"
 		},
 		"weeklyMessages": {
 			"userNotFound": "未找到用户。",
@@ -162,29 +165,290 @@
 			"error": "处理您的提款请求时出错。"
 		}
 	},
+	"emoteMessages": {
+		"angryMessages": {
+			"title": "愤怒时刻！",
+			"description": "**{{user}}** 展现出他们最愤怒的表情！",
+			"error": "处理您的愤怒表情时出错。"
+		},
+		"cryMessages": {
+			"title": "哭泣时间！",
+			"description": "**{{user}}**哭了！",
+			"error": "处理您的哭泣表情时出错。"
+		},
+		"cuteMessages": {
+			"title": "可爱的时光！",
+			"description": "**{{user}}** 展示他们最可爱的表情！",
+			"error": "处理您的可爱表情时出错。"
+		},
+		"danceMessages": {
+			"title": "跳舞时间！",
+			"description": "**{{user}}** 展示一些令人印象深刻的舞蹈动作！",
+			"error": "处理您的舞蹈表情时出错。"
+		},
+		"exerciseMessages": {
+			"title": "锻炼时间！",
+			"description": "**{{user}}** 正在运动并保持健康！",
+			"error": "处理您的锻炼表情时出错。"
+		},
+		"happyMessages": {
+			"title": "快乐的共鸣！",
+			"description": "**{{user}}**正在传播欢乐和幸福！",
+			"error": "处理您的快乐表情时出错。"
+		},
+		"laughMessages": {
+			"title": "大笑！",
+			"description": "**{{user}}** 分享开怀大笑！",
+			"error": "处理您的笑表情时出错。"
+		},
+		"makeupMessages": {
+			"title": "化妆时间！",
+			"description": "**{{user}}** 涂上一些精美的妆容，闪闪发光！",
+			"error": "处理您的化妆表情时出错。"
+		},
+		"eatMessages": {
+			"title": "吃饭时间！",
+			"description": "**{{user}}** 正在享受美味的食物！",
+			"error": "处理您的吃饭表情时出错。"
+		},
+		"playGameMessages": {
+			"title": "游戏时间！",
+			"description": "**{{user}}** 准备开始玩了！",
+			"error": "处理您玩游戏的表情时出错。"
+		},
+		"roarMessages": {
+			"title": "咆哮时间！",
+			"description": "**{{user}}** 发出一声威猛的怒吼！",
+			"error": "处理您的咆哮表情时出错。"
+		},
+		"sadMessages": {
+			"title": "感到悲伤",
+			"description": "**{{user}}**表示悲伤。",
+			"error": "处理您的悲伤表情时出错。"
+		},
+		"scareMessages": {
+			"title": "害怕的！",
+			"description": "**{{user}}**展现出他们害怕的一面！",
+			"error": "处理您的恐惧表情时出错。"
+		},
+		"showerMessages": {
+			"title": "淋浴时间！",
+			"description": "**{{user}}** 正在享受清爽的淋浴！",
+			"error": "处理您的淋浴表情时出错。"
+		},
+		"shyMessages": {
+			"title": "害羞的！",
+			"description": "**{{user}}** 展示他们害羞的表情！",
+			"error": "处理您害羞的表情时出错。"
+		}
+	},
+	"funMessage": {
+		"animalOfYear": {
+			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑",
+			"selectAnimal": "选择一种动物",
+			"noAnimals": "没有可用的动物",
+			"animalNotFound": "未发现动物。",
+			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "描述",
+			"requestBy": "请求者",
+			"id": "ID"
+		},
+		"province": {
+			"title": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "选择省份",
+			"noProvinces": "没有可用的省份",
+			"notFound": "未找到省份。",
+			"detailTitle": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "描述",
+			"requestBy": "请求者",
+			"id": "ID"
+		},
+		"randomColor": {
+			"title": "这里有一个随机颜色给你！",
+			"description": "颜色：{颜色}",
+			"requestedBy": "请求者"
+		},
+		"reverseText": {
+			"title": "反转文本",
+			"description": "**原文：** {originalText}\n",
+			"requestedBy": "请求者"
+		},
+		"wallpaper": {
+			"selectCategory": "选择一个类别...",
+			"selectWallpaper": "选择壁纸...",
+			"noWallpapers": "此类别中没有可用的壁纸。",
+			"wallpaperNotFound": "找不到壁纸。",
+			"wallpaperDetailsTitle": "壁纸详情",
+			"descriptionLabel": "描述",
+			"categoryLabel": "类别"
+		},
+		"weather": {
+			"title": "𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "选择省份",
+			"noProvinces": "没有可用的省份",
+			"notFound": "未找到省份。",
+			"provinceNotFound": "未找到省份。",
+			"dataFetchFailed": "检索天气数据失败。"
+		}
+	},
+	"gamblingMessages": {
+		"blackjackMessages": {
+			"title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
+			"youWon": "您赢得了 **`%{coin}`** %{coinEmote}",
+			"youLost": "您失去了 **`%{coin}`** %{coinEmote}",
+			"bothBust": "你们俩都破产了！",
+			"tied": "你绑了！",
+			"winnerInfo": "最接近 21 的人获胜。",
+			"gameInProgress": "您的游戏正在进行中！",
+			"gameOver": "你的游戏结束了。"
+		},
+		"slotMessages": {
+			"title": "𝐒𝐋𝐎𝐓𝐒",
+			"youBet": "您下注 **`%{coin}`** %{coinEmote}",
+			"youWon": "您赢得了 **`%{coin}`** %{coinEmote}",
+			"youLost": "您失去了 **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "您的游戏正在进行中！",
+			"gameOver": "你的游戏结束了。"
+		},
+		"coinflipMessages": {
+			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
+			"description": "**%{author}** 花费 **`%{coin}`** %{coinEmote} 选择 **%{choice}**！",
+			"resultDescription": "**%{author}** 花费 **`%{coin}`** %{coinEmote} 选择 **%{choice}**",
+			"youWon": "您赢得了 **`%{coin}`** %{coinEmote}",
+			"youLost": "您失去了 **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "您的游戏正在进行中！",
+			"gameOver": "你的游戏结束了。"
+		}
+	},
+	"inventoryMessages": {
+		"inventoryHeader": "%{author} 的库存！",
+		"inventoryEmptyName": "库存清空",
+		"inventoryEmptyValue": "您当前的库存是空的。",
+		"itemNotFound": "在商店中找不到商品 ID **`%{itemId}`**！",
+		"sellDisabled": "出售该物品已被禁用。",
+		"useDisabled": "使用该项目已被禁用。"
+	},
+	"themeMessages": {
+		"themeApplied": "您已成功将 %{itemEmote} **`%{itemName}`** 主题应用到您的嵌入内容！",
+		"themeUnavailable": "主题 **`%{itemName}`** 无法使用。",
+		"themeNotOwned": "您不拥有主题 **`%{itemName}`**。",
+		"invalidThemeID": "主题 ID **`%{itemId}`** 无效。",
+		"themeAlreadyOwned": "您已经拥有该主题 **`%{itemName}`** 并且无法再次购买。"
+	},
 	"information": {
 		"helpMessages": {
-			"title": "𝐔𝐏𝐃𝐀𝐓𝐄 𝐇𝐄𝐋𝐏",
-			"description": "以下是可用命令：",
+			"title": "𝐇𝐄𝐋𝐏𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
+			"description": "以下是可用的命令：",
 			"note": "注意：某些命令可能会在机器人检索的列表中显示用户名。",
-			"footer": "© 版权 KYUU",
+			"footer": "© KYUU 版权所有",
 			"supportButton": "点击获取支持",
 			"commandNotFound": "未找到命令：",
 			"commandTitle": "命令帮助",
 			"category": "类别",
 			"aliases": "别名：",
-			"cooldown": "冷却时间",
+			"cooldown": "冷却",
 			"botPermissions": "机器人权限：",
-			"examples": "示例："
+			"examples": "示例：",
+			"categoriesMessages": {
+				"actions": "行动",
+				"economy": "经济",
+				"inventory": "存货",
+				"fun": "乐趣",
+				"games": "游戏",
+				"gambling": "赌博",
+				"profile": "轮廓",
+				"social": "社会的",
+				"emotes": "表情",
+				"utility": "公用事业",
+				"info": "信息"
+			},
+			"directoriesMessages": {
+				"bite": "咬",
+				"hug": "拥抱",
+				"kiss": "吻",
+				"punch": "冲床",
+				"slap": "拍击",
+				"balance": "平衡",
+				"daily": "日常的",
+				"deposit": "订金",
+				"goma": "戈马",
+				"peachy": "桃色的",
+				"ranking": "排行",
+				"transfer": "转移",
+				"weekly": "每周",
+				"withdraw": "提取",
+				"buy": "买",
+				"drink": "喝",
+				"eat": "吃",
+				"giveitem": "给予项目",
+				"inventory": "存货",
+				"sell": "卖",
+				"shop": "店铺",
+				"shopinfo": "商店信息",
+				"use": "使用",
+				"animalofyear": "年度动物",
+				"province": "省",
+				"color": "颜色",
+				"reverse": "撤销",
+				"wallpaper": "墙纸",
+				"weather": "天气",
+				"emoji-puzzle": "表情符号拼图",
+				"guessnumber": "猜数",
+				"roll": "卷",
+				"blackjack": "二十一点",
+				"coinflip": "抛硬币",
+				"slots": "插槽",
+				"bio": "生物",
+				"birthday": "生日",
+				"gender": "性别",
+				"level": "等级",
+				"profile": "轮廓",
+				"relationship": "关系",
+				"username": "用户名",
+				"facebook": "Facebook",
+				"instagram": "Instagram",
+				"socials": "社交",
+				"tiktok": "抖音",
+				"angry": "生气的",
+				"cry": "哭",
+				"cute": "可爱的",
+				"dance": "舞蹈",
+				"exercise": "锻炼",
+				"happy": "快乐的",
+				"laugh": "笑",
+				"makeup": "化妆品",
+				"nham": "纳姆",
+				"playgame": "琐事",
+				"roar": "吼",
+				"sad": "伤心",
+				"scare": "吓",
+				"shower": "淋浴",
+				"shy": "害羞的",
+				"avatar": "头像",
+				"emoji": "表情符号",
+				"language": "语言",
+				"qr": "qr",
+				"serverinfo": "服务器信息",
+				"theme": "主题",
+				"userinfo": "用户信息",
+				"help": "帮助",
+				"info": "信息",
+				"invite": "邀请",
+				"ping": "平",
+				"privacy": "隐私",
+				"register": "登记",
+				"rules": "规则",
+				"stats": "统计数据"
+			}
 		},
 		"infoMessages": {
-			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
-			"description": "是一个多功能的 Discord 机器人，旨在提供乐趣、娱乐和实用性。通过功能，试试你的运气，参与赌博、玩迷你游戏等等！",
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍！",
+			"description": "是一款多功能 Discord 机器人，专为乐趣、娱乐和实用而设计。",
 			"developer": {
 				"title": "𝐃𝐄𝐕",
-				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+				"value": "𝐏𝐄𝐀𝐂𝐇𝐘𝐓𝐄𝐀𝐌"
 			},
-			"footer": "遇到任何问题、需要帮助或想报告错误？请点击下面的链接",
+			"footer": "有任何问题、需要帮助或想要报告错误吗？",
 			"supportButton": {
 				"label": "点击获取支持"
 			}

@@ -1,108 +1,110 @@
 {
 	"generalMessages": {
-		"permissionsClientError": "Je n'ai pas assez de permissions pour exécuter cette commande.",
-		"permissionsUserError": "Vous n'avez pas assez de permissions pour utiliser cette commande.",
-		"argumentsMissingTitle": "Arguments Manquants",
+		"permissionsClientError": "Je n'ai pas suffisamment d'autorisations pour exécuter cette commande.",
+		"permissionsUserError": "Vous ne disposez pas de suffisamment d'autorisations pour utiliser cette commande.",
+		"argumentsMissingTitle": "Arguments manquants",
 		"argumentsMissingDescription": "Veuillez fournir les arguments requis pour la commande `{commandName}`.",
-		"usageHeader": "Utilisation",
+		"usageHeader": "Usage",
 		"examplesHeader": "Exemples",
-		"syntaxInstructions": "Syntaxe : [] = optionnel, <> = requis",
+		"syntaxInstructions": "Syntaxe : [] = facultatif, <> = obligatoire",
 		"noEveryoneOrHereError": "Vous ne pouvez pas utiliser cette commande avec tout le monde ou ici.",
-		"userNotFound": "Utilisateur non trouvé dans la base de données.",
-		"alreadyInGame": "Vous êtes déjà dans un jeu. Veuillez terminer votre jeu actuel avant de commencer un nouveau.",
-		"zeroBalance": "Votre solde est nul. Veuillez gagner des pièces avant d'essayer à nouveau.",
-		"invalidAmount": "Montant invalide. Veuillez entrer un nombre positif."
+		"userNotFound": "Utilisateur introuvable dans la base de données.",
+		"alreadyInGame": "Vous êtes déjà dans un jeu. ",
+		"zeroBalance": "Votre solde est nul. ",
+		"invalidAmount": "Montant invalide. ",
+		"notForYou": "Cette action n'est pas pour vous.",
+		"databaseUpdate": "Une erreur s'est produite lors de la mise à jour de la base de données."
 	},
 	"actionMessages": {
 		"biteMessages": {
-			"title": "Temps de Mordre !",
-			"description": "mord affectueusement",
+			"title": "C'est l'heure de la bouchée !",
+			"description": "mord de manière ludique",
 			"errors": {
-				"noUser": "Vous devez mentionner un utilisateur à mordre.",
+				"noUser": "Vous devez mentionner un utilisateur pour mordre.",
 				"selfBite": "Vous ne pouvez pas vous mordre.",
 				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de morsure."
 			}
 		},
 		"hugMessages": {
-			"title": "Temps de Câlin !",
+			"title": "C'est l'heure des câlins !",
 			"description": "donne un câlin chaleureux à",
 			"errors": {
-				"noUser": "Vous devez mentionner un utilisateur à câliner.",
-				"selfHug": "Vous ne pouvez pas vous câliner.",
+				"noUser": "Vous devez mentionner un utilisateur à embrasser.",
+				"selfHug": "Vous ne pouvez pas vous serrer dans vos bras.",
 				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de câlin."
 			}
 		},
 		"kissMessages": {
-			"title": "Temps de Bisous !",
-			"description": "donne un petit bisou à",
+			"title": "C'est l'heure des baisers !",
+			"description": "donne un joli baiser à",
 			"errors": {
 				"noUser": "Vous devez mentionner un utilisateur à embrasser.",
 				"selfKiss": "Vous ne pouvez pas vous embrasser.",
-				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de bisou."
+				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF du baiser."
 			}
 		},
 		"punchMessages": {
-			"title": "Temps de Frapper !",
-			"description": "donne un coup amical à",
+			"title": "C'est l'heure du coup de poing !",
+			"description": "donne un coup de poing ludique à",
 			"errors": {
-				"noUser": "Vous devez mentionner un utilisateur à frapper.",
+				"noUser": "Vous devez mentionner un utilisateur pour pointer.",
 				"selfPunch": "Vous ne pouvez pas vous frapper.",
-				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de coup."
+				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF du coup de poing."
 			}
 		},
 		"slapMessages": {
-			"title": "Temps de Gifler !",
-			"description": "donne une gifle affectueuse à",
+			"title": "C'est l'heure de la claque !",
+			"description": "gifle de manière ludique",
 			"errors": {
-				"noUser": "Vous devez mentionner un utilisateur à gifler.",
+				"noUser": "Vous devez mentionner un utilisateur pour gifler.",
 				"selfSlap": "Vous ne pouvez pas vous gifler.",
-				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF de gifle."
+				"fetchFail": "Une erreur s'est produite lors de la récupération du GIF slap."
 			}
 		}
 	},
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "Solde de %{displayName}",
-			"description": "%{coinEmote} **`%{coin}`** pièces\n%{bankEmote} **`%{bank}`** pièces",
+			"description": "%{coinEmote} **`%{coin}`** pièces\n",
 			"errors": {
-				"noUser": "Utilisateur non trouvé.",
+				"noUser": "Utilisateur introuvable.",
 				"fetchFail": "Une erreur s'est produite lors de la récupération de votre solde."
 			}
 		},
 		"dailyMessages": {
-			"title": "Récompense Quotidienne de %{displayName}",
-			"success": "%{coinEmote} **`+%{coin}`** pièces\nXP: **`+%{exp}`** xp",
-			"cooldown": "Votre récompense quotidienne est en attente. Veuillez réessayer après **%{time}**.",
+			"title": "Récompense quotidienne de %{displayName}",
+			"success": "%{coinEmote} **`+%{coin}`** pièces\n",
+			"cooldown": "Votre récompense quotidienne est en temps de recharge. ",
 			"errors": {
-				"noUser": "Utilisateur non trouvé.",
-				"fetchFail": "Une erreur s'est produite lors du traitement de votre demande quotidienne."
+				"noUser": "Utilisateur introuvable.",
+				"fetchFail": "Une erreur s'est produite lors du traitement de votre réclamation quotidienne."
 			}
 		},
 		"depositMessages": {
 			"zeroBalance": "Vous n'avez aucune pièce à déposer.",
-			"invalidAmount": "Montant invalide. Veuillez entrer un nombre valide ou utiliser `tout` ou `moitié`.",
+			"invalidAmount": "Montant invalide. ",
 			"success": "Vous avez déposé %{coinEmote} **`%{amount}`** pièces dans votre banque.",
 			"errors": {
-				"noUser": "Utilisateur non trouvé."
+				"noUser": "Utilisateur introuvable."
 			}
 		},
 		"gomaMessages": {
 			"success": {
-				"title": "vous avez réclamé goma !",
+				"title": "J'ai revendiqué Goma !",
 				"description": "Vous avez gagné %{coinEmote} **`%{coin}`** pièces."
 			},
-			"cooldown": "Goma est en attente !\nRéessayez après **%{minutes}mins et %{seconds}secs**.",
+			"cooldown": "Goma est en temps de recharge !\n",
 			"errors": {
-				"noUser": "Utilisateur non trouvé."
+				"noUser": "Utilisateur introuvable."
 			}
 		},
 		"peachyMessages": {
 			"errors": {
-				"noUser": "Utilisateur non trouvé."
+				"noUser": "Utilisateur introuvable."
 			},
-			"cooldown": "Peachy est en attente !\nRéessayez après **%{minutes}mins et %{seconds}secs**.",
+			"cooldown": "Peachy est en temps de recharge !\n",
 			"success": {
-				"title": "vous avez réclamé peachy !",
+				"title": "ont réclamé pêche!",
 				"description": "Vous avez gagné %{coinEmote} **`%{coin}`** pièces."
 			}
 		},
@@ -112,45 +114,46 @@
 				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"peachy": {
-				"noUsers": "Personne n'a encore de série.",
+				"noUsers": "Personne n’a encore de séquence.",
 				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"goma": {
-				"noUsers": "Personne n'a encore de série.",
+				"noUsers": "Personne n’a encore de séquence.",
 				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"invalidType": "Type de classement invalide."
 		},
 		"transferMessages": {
-			"selfTransfer": "Vous ne pouvez pas transférer des pièces à vous-même.",
-			"botTransfer": "Vous ne pouvez pas transférer des pièces au bot.",
-			"pendingTransfer": "Vous avez déjà un transfert en attente. Veuillez le confirmer ou l'annuler avant de commencer un nouveau.",
-			"invalidAmount": "Veuillez mentionner un utilisateur valide et un montant.",
+			"title": "**Opérations - {{user}}**",
+			"selfTransfer": "Vous ne pouvez pas vous transférer de pièces.",
+			"botTransfer": "Vous ne pouvez pas transférer de pièces vers le bot.",
+			"pendingTransfer": "Vous avez déjà un transfert en attente. ",
+			"invalidAmount": "Veuillez mentionner un utilisateur et un montant valides.",
 			"noUser": "Veuillez mentionner un utilisateur valide.",
-			"balanceNotExist": "Votre enregistrement de solde n'existe pas.",
-			"insufficientBalance": "Montant spécifié invalide ou solde insuffisant.",
-			"zeroBalance": "Vous n'avez pas de pièces à transférer.",
-			"transactionConfirm": "Vous êtes sur le point de donner {{amount}} {{emoji}} à {{user}}. Confirmer ?",
-			"transactionSuccess": "Vous avez donné {{amount}} {{emoji}} à {{user}}.",
-			"transactionCancel": "Vous avez annulé la transaction. Aucune pièce n'a été transférée.",
-			"transactionTimeout": "La transaction a expiré en raison d'inactivité. Veuillez réessayer.",
-			"transactionTimeoutAction": "Si vous souhaitez effectuer un transfert, veuillez réinitier la commande.",
+			"balanceNotExist": "Votre relevé de solde n'existe pas.",
+			"insufficientBalance": "Montant spécifié non valide ou solde insuffisant.",
+			"zeroBalance": "Vous n'avez aucune pièce à transférer.",
+			"confirm": "Tu es sur le point de donner {{amount}} {{emoji}} à {{user}}. ",
+			"success": "Vous avez donné {{amount}} {{emoji}} à {{user}}.",
+			"cancel": "Vous avez annulé la transaction. ",
+			"timeout": "La transaction a expiré en raison d'une inactivité. ",
+			"timeoutAction": "Si vous souhaitez effectuer un transfert, veuillez relancer la commande.",
 			"amountTooHigh": "Le montant dépasse votre solde disponible.",
-			"transferTooFrequent": "Vous transférez des pièces trop fréquemment. Veuillez attendre un moment.",
-			"transferLimitExceeded": "Vous avez dépassé la limite de transfert maximum.",
-			"transferInsufficientFunds": "Vous n'avez pas assez de pièces pour compléter ce transfert.",
-			"transferInvalidUser": "L'utilisateur spécifié n'est pas valide ou introuvable.",
-			"transferConfirmPrompt": "Confirmez le transfert en cliquant sur le bouton ci-dessous.",
-			"transactionExpired": "Transaction Expirée"
+			"tooFrequent": "Vous transférez des pièces trop fréquemment. ",
+			"limitExceeded": "Vous avez dépassé la limite maximale de transfert.",
+			"insufficientFunds": "Vous n'avez pas assez de pièces pour effectuer ce transfert.",
+			"invalidUser": "L'utilisateur spécifié n'est pas valide ou est introuvable.",
+			"confirmPrompt": "Confirmez le transfert en cliquant sur le bouton ci-dessous.",
+			"expire": "Transaction expirée"
 		},
 		"weeklyMessages": {
 			"userNotFound": "Utilisateur introuvable.",
 			"cooldown": {
-				"multipleDays": "La semaine est en temps de recharge!\n{{days}} et {{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
-				"singleDay": "La semaine est en temps de recharge!\n{{days}}**, **{{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
-				"noDays": "La semaine est en temps de recharge!\n{{hours}}**, **{{minutes}}**, et **{{seconds}}**."
+				"multipleDays": "La semaine est en temps de recharge !\n{{days}} et {{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
+				"singleDay": "La semaine est en temps de recharge !\n{{days}}**, **{{hours}}**, **{{minutes}}**, et **{{seconds}}**.",
+				"noDays": "La semaine est en temps de recharge !\n{{hours}}**, **{{minutes}}**, et **{{seconds}}**."
 			},
-			"success": "{{coinEmote}} **Félicitations, {{user}}!**\n{{coin}} pièces** et **{{exp}} XP**!",
+			"success": "{{coinEmote}} **Félicitations, {{user}}!**\n{{coin}} pièces** et **{{exp}} XP** !",
 			"error": "Une erreur s'est produite lors du traitement de votre demande hebdomadaire."
 		},
 		"withdrawMessages": {
@@ -162,31 +165,292 @@
 			"error": "Une erreur s'est produite lors du traitement de votre demande de retrait."
 		}
 	},
+	"emoteMessages": {
+		"angryMessages": {
+			"title": "Temps de colère !",
+			"description": "**{{user}}** montre son expression la plus en colère !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote de colère."
+		},
+		"cryMessages": {
+			"title": "C'est l'heure de pleurer !",
+			"description": "**{{user}}** pleure !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote qui pleure."
+		},
+		"cuteMessages": {
+			"title": "Moment mignon!",
+			"description": "**{{user}}** montre leur expression la plus mignonne !",
+			"error": "Une erreur s'est produite lors du traitement de votre jolie emote."
+		},
+		"danceMessages": {
+			"title": "C'est l'heure de danser !",
+			"description": "**{{user}}** montre des mouvements de danse impressionnants !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote de danse."
+		},
+		"exerciseMessages": {
+			"title": "C'est l'heure de l'exercice !",
+			"description": "**{{user}}** c'est bouger et rester en forme !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote d'exercice."
+		},
+		"happyMessages": {
+			"title": "Bonnes vibrations !",
+			"description": "**{{user}}** répand la joie et le bonheur !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote heureuse."
+		},
+		"laughMessages": {
+			"title": "Rire aux éclats!",
+			"description": "**{{user}}** partage un rire chaleureux !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote de rire."
+		},
+		"makeupMessages": {
+			"title": "C'est l'heure du maquillage !",
+			"description": "**{{user}}** applique un maquillage fabuleux et brille de mille feux !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote de maquillage."
+		},
+		"eatMessages": {
+			"title": "C'est l'heure de manger !",
+			"description": "**{{user}}** savoure de la nourriture délicieuse !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote manger."
+		},
+		"playGameMessages": {
+			"title": "C'est l'heure du jeu !",
+			"description": "**{{user}}** se prépare à jouer !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote de jeu."
+		},
+		"roarMessages": {
+			"title": "C'est l'heure du rugissement !",
+			"description": "**{{user}}** laisse échapper un puissant rugissement !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote de rugissement."
+		},
+		"sadMessages": {
+			"title": "Se sentir triste",
+			"description": "**{{user}}** exprime sa tristesse.",
+			"error": "Une erreur s'est produite lors du traitement de votre emote triste."
+		},
+		"scareMessages": {
+			"title": "Effrayé!",
+			"description": "**{{user}}** montre leur côté effrayé !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote effrayante."
+		},
+		"showerMessages": {
+			"title": "C'est l'heure de la douche !",
+			"description": "**{{user}}** profite d'une douche rafraîchissante !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote de douche."
+		},
+		"shyMessages": {
+			"title": "Timide!",
+			"description": "**{{user}}** montre leur expression timide !",
+			"error": "Une erreur s'est produite lors du traitement de votre emote timide."
+		}
+	},
+	"funMessage": {
+		"animalOfYear": {
+			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑",
+			"selectAnimal": "Sélectionnez un animal",
+			"noAnimals": "Aucun animal disponible",
+			"animalNotFound": "Animal introuvable.",
+			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Description",
+			"requestBy": "Demande par",
+			"id": "IDENTIFIANT"
+		},
+		"province": {
+			"title": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Sélectionnez une province",
+			"noProvinces": "Aucune province disponible",
+			"notFound": "Province introuvable.",
+			"detailTitle": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Description",
+			"requestBy": "Demande par",
+			"id": "IDENTIFIANT"
+		},
+		"randomColor": {
+			"title": "Voici une couleur aléatoire pour vous !",
+			"description": "Couleur : {couleur}",
+			"requestedBy": "Demandé par"
+		},
+		"reverseText": {
+			"title": "Texte inversé",
+			"description": "**Texte original :** {originalText}\n",
+			"requestedBy": "Demandé par"
+		},
+		"wallpaper": {
+			"selectCategory": "Sélectionnez une catégorie...",
+			"selectWallpaper": "Sélectionnez un fond d'écran...",
+			"noWallpapers": "Aucun fond d'écran disponible dans cette catégorie.",
+			"wallpaperNotFound": "Fond d'écran introuvable.",
+			"wallpaperDetailsTitle": "Détails du papier peint",
+			"descriptionLabel": "Description",
+			"categoryLabel": "Catégorie"
+		},
+		"weather": {
+			"title": "𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Sélectionnez une province",
+			"noProvinces": "Aucune province disponible",
+			"notFound": "Province introuvable.",
+			"provinceNotFound": "Province introuvable.",
+			"dataFetchFailed": "Échec de la récupération des données météorologiques. "
+		}
+	},
+	"gamblingMessages": {
+		"blackjackMessages": {
+			"title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
+			"youWon": "Vous avez gagné **`%{coin}`** %{coinEmote}",
+			"youLost": "Vous avez perdu **`%{coin}`** %{coinEmote}",
+			"bothBust": "Vous vous cassez tous les deux !",
+			"tied": "Vous êtes à égalité !",
+			"winnerInfo": "Le gagnant est celui qui se rapproche le plus du 21.",
+			"gameInProgress": "Votre jeu est en cours !",
+			"gameOver": "Votre partie est terminée."
+		},
+		"slotMessages": {
+			"title": "𝐒𝐋𝐎𝐓𝐒",
+			"youBet": "Vous pariez **`%{coin}`** %{coinEmote}",
+			"youWon": "Vous avez gagné **`%{coin}`** %{coinEmote}",
+			"youLost": "Vous avez perdu **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "Votre jeu est en cours !",
+			"gameOver": "Votre partie est terminée."
+		},
+		"coinflipMessages": {
+			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
+			"description": "**%{author}** dépensé **`%{coin}`** %{coinEmote} choisissez **%{choice}** ! ",
+			"resultDescription": "**%{author}** dépensé **`%{coin}`** %{coinEmote} choisissez **%{choice}**",
+			"youWon": "Vous avez gagné **`%{coin}`** %{coinEmote}",
+			"youLost": "Vous avez perdu **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "Votre jeu est en cours !",
+			"gameOver": "Votre partie est terminée."
+		}
+	},
+	"inventoryMessages": {
+		"inventoryHeader": "Inventaire de %{auteur} !",
+		"inventoryEmptyName": "Inventaire vide",
+		"inventoryEmptyValue": "Votre inventaire actuel est vide.",
+		"itemNotFound": "L'ID d'article **`%{itemId}`** est introuvable dans la boutique !",
+		"sellDisabled": "La vente de cet article est désactivée.",
+		"useDisabled": "L'utilisation de cet élément est désactivée."
+	},
+	"themeMessages": {
+		"themeApplied": "Vous avez appliqué avec succès le thème %{itemEmote} **`%{itemName}`** à votre intégration !",
+		"themeUnavailable": "Le thème **`%{itemName}`** n'est pas disponible.",
+		"themeNotOwned": "Vous ne possédez pas le thème **`%{itemName}`**. ",
+		"invalidThemeID": "L'ID de thème **`%{itemId}`** n'est pas valide. ",
+		"themeAlreadyOwned": "Vous possédez déjà le thème **`%{itemName}`** et vous ne pouvez pas l'acheter à nouveau."
+	},
 	"information": {
 		"helpMessages": {
-			"title": "𝐃𝐄𝐒 𝐓𝐀𝐑𝐆𝐄𝐓𝐒 𝐃𝐄 𝐌𝐀𝐈𝐍",
+			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "Voici les commandes disponibles :",
-			"note": "Remarque : Certaines commandes peuvent afficher des noms d'utilisateur dans les listes récupérées par le bot.",
-			"footer": "© Copyright Par KYUU",
-			"supportButton": "Cliquez pour le support",
-			"commandNotFound": "Commande non trouvée :",
+			"note": "Remarque : Certaines commandes peuvent afficher les noms d'utilisateur dans des listes récupérées par le bot.",
+			"footer": "© Droit d'auteur par KYUU",
+			"supportButton": "Cliquez pour obtenir de l'aide",
+			"commandNotFound": "Commande introuvable :",
 			"commandTitle": "Aide pour la commande",
 			"category": "Catégorie",
-			"aliases": "Alias :",
-			"cooldown": "Temps de recharge",
-			"botPermissions": "Permissions du bot :",
-			"examples": "Exemple(s) :"
+			"aliases": "Alias :",
+			"cooldown": "Refroidir",
+			"botPermissions": "Autorisations du robot :",
+			"examples": "Exemple(s) :",
+			"categoriesMessages": {
+				"actions": "ACTES",
+				"economy": "ÉCONOMIE",
+				"inventory": "INVENTAIRE",
+				"fun": "AMUSANT",
+				"games": "JEUX",
+				"gambling": "JEU D'ARGENT",
+				"profile": "PROFIL",
+				"social": "SOCIALE",
+				"emotes": "ÉMOTIONS",
+				"utility": "UTILITAIRE",
+				"info": "INFOS"
+			},
+			"directoriesMessages": {
+				"bite": "mordre",
+				"hug": "câlin",
+				"kiss": "baiser",
+				"punch": "punch",
+				"slap": "gifler",
+				"balance": "équilibre",
+				"daily": "tous les jours",
+				"deposit": "dépôt",
+				"goma": "goma",
+				"peachy": "pêche",
+				"ranking": "classement",
+				"transfer": "transfert",
+				"weekly": "hebdomadaire",
+				"withdraw": "retirer",
+				"buy": "acheter",
+				"drink": "boire",
+				"eat": "manger",
+				"giveitem": "donner un article",
+				"inventory": "inventaire",
+				"sell": "vendre",
+				"shop": "boutique",
+				"shopinfo": "infosboutique",
+				"use": "utiliser",
+				"animalofyear": "animaldel'année",
+				"province": "province",
+				"color": "couleur",
+				"reverse": "inverse",
+				"wallpaper": "papier peint",
+				"weather": "météo",
+				"emoji-puzzle": "puzzle-emoji",
+				"guessnumber": "deviner le numéro",
+				"roll": "rouler",
+				"blackjack": "blackjack",
+				"coinflip": "tirage au sort",
+				"slots": "machines à sous",
+				"bio": "biographie",
+				"birthday": "anniversaire",
+				"gender": "genre",
+				"level": "niveau",
+				"profile": "profil",
+				"relationship": "relation",
+				"username": "nom d'utilisateur",
+				"facebook": "Facebook",
+				"instagram": "Instagram",
+				"socials": "réseaux sociaux",
+				"tiktok": "tic tac",
+				"angry": "en colère",
+				"cry": "pleurer",
+				"cute": "mignon",
+				"dance": "danse",
+				"exercise": "exercice",
+				"happy": "heureux",
+				"laugh": "rire",
+				"makeup": "se maquiller",
+				"nham": "nham",
+				"playgame": "jouer à un jeu",
+				"roar": "rugir",
+				"sad": "triste",
+				"scare": "effrayer",
+				"shower": "douche",
+				"shy": "timide",
+				"avatar": "avatar",
+				"emoji": "émoticône",
+				"language": "langue",
+				"qr": "qr",
+				"serverinfo": "informations sur le serveur",
+				"theme": "thème",
+				"userinfo": "informations utilisateur",
+				"help": "aide",
+				"info": "infos",
+				"invite": "inviter",
+				"ping": "pinger",
+				"privacy": "confidentialité",
+				"register": "registre",
+				"rules": "règles",
+				"stats": "statistiques"
+			}
 		},
 		"infoMessages": {
-			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
-			"description": "est votre bot Discord polyvalent conçu pour le plaisir, le divertissement et l'utilité. Avec ses fonctionnalités, tentez votre chance au jeu, jouez à des mini-jeux, et bien plus encore!",
+			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍 !",
+			"description": "est votre robot Discord polyvalent conçu pour le plaisir, le divertissement et l'utilité. ",
 			"developer": {
 				"title": "𝐃𝐄𝐕",
 				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
 			},
-			"footer": "Vous avez des problèmes, avez besoin d'aide ou souhaitez signaler des bugs ? Cliquez sur le lien ci-dessous",
+			"footer": "Vous rencontrez des problèmes, avez besoin d'aide ou souhaitez signaler des bugs ? ",
 			"supportButton": {
-				"label": "Cliquez pour le support"
+				"label": "Cliquez pour obtenir de l'aide"
 			}
 		}
 	}

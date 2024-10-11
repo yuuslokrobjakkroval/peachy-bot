@@ -1,86 +1,88 @@
 {
 	"generalMessages": {
-		"permissionsClientError": "Tôi không có quyền đủ để thực hiện lệnh này.",
-		"permissionsUserError": "Bạn không có quyền đủ để sử dụng lệnh này.",
-		"argumentsMissingTitle": "Thiếu đối số",
-		"argumentsMissingDescription": "Vui lòng cung cấp các đối số cần thiết cho lệnh `{commandName}`.",
+		"permissionsClientError": "Tôi không có đủ quyền để thực hiện lệnh này.",
+		"permissionsUserError": "Bạn không có đủ quyền để sử dụng lệnh này.",
+		"argumentsMissingTitle": "Đối số bị thiếu",
+		"argumentsMissingDescription": "Vui lòng cung cấp các đối số bắt buộc cho lệnh `{commandName}`.",
 		"usageHeader": "Cách sử dụng",
 		"examplesHeader": "Ví dụ",
 		"syntaxInstructions": "Cú pháp: [] = tùy chọn, <> = bắt buộc",
-		"noEveryoneOrHereError": "Bạn không thể sử dụng lệnh này cho mọi người hoặc ở đây.",
-		"userNotFound": "Không tìm thấy người dùng trong cơ sở dữ liệu.",
-		"alreadyInGame": "Bạn đã ở trong một trò chơi. Vui lòng hoàn thành trò chơi hiện tại trước khi bắt đầu một trò chơi mới.",
-		"zeroBalance": "Số dư của bạn bằng không. Vui lòng kiếm được xu trước khi thử lại.",
-		"invalidAmount": "Số tiền không hợp lệ. Vui lòng nhập một số dương."
+		"noEveryoneOrHereError": "Bạn không thể sử dụng lệnh này với mọi người hoặc ở đây.",
+		"userNotFound": "Người dùng không được tìm thấy trong cơ sở dữ liệu.",
+		"alreadyInGame": "Bạn đã ở trong một trò chơi. ",
+		"zeroBalance": "Số dư của bạn bằng không. ",
+		"invalidAmount": "Số tiền không hợp lệ. ",
+		"notForYou": "Hành động này không dành cho bạn.",
+		"databaseUpdate": "Đã xảy ra lỗi khi cập nhật cơ sở dữ liệu."
 	},
 	"actionMessages": {
 		"biteMessages": {
 			"title": "Thời gian cắn!",
-			"description": "cắn với tình yêu",
+			"description": "cắn tinh nghịch",
 			"errors": {
-				"noUser": "Bạn phải đề cập đến người dùng để cắn.",
-				"selfBite": "Bạn không thể cắn chính mình.",
-				"fetchFail": "Đã xảy ra lỗi khi lấy GIF cắn."
+				"noUser": "Bạn cần đề cập đến một người dùng để cắn.",
+				"selfBite": "Bạn không thể tự cắn mình.",
+				"fetchFail": "Đã xảy ra lỗi khi tìm nạp ảnh GIF vết cắn."
 			}
 		},
 		"hugMessages": {
-			"title": "Thời gian ôm!",
-			"description": "ôm ấm áp",
+			"title": "Ôm thời gian!",
+			"description": "trao một cái ôm ấm áp",
 			"errors": {
-				"noUser": "Bạn phải đề cập đến người dùng để ôm.",
+				"noUser": "Bạn cần đề cập đến một người dùng để ôm.",
 				"selfHug": "Bạn không thể ôm chính mình.",
-				"fetchFail": "Đã xảy ra lỗi khi lấy GIF ôm."
+				"fetchFail": "Đã xảy ra lỗi khi tìm nạp ảnh GIF ôm."
 			}
 		},
 		"kissMessages": {
 			"title": "Thời gian hôn!",
-			"description": "hôn",
+			"description": "trao một nụ hôn dễ thương cho",
 			"errors": {
-				"noUser": "Bạn phải đề cập đến người dùng để hôn.",
+				"noUser": "Bạn cần đề cập đến một người dùng để hôn.",
 				"selfKiss": "Bạn không thể hôn chính mình.",
-				"fetchFail": "Đã xảy ra lỗi khi lấy GIF hôn."
+				"fetchFail": "Đã xảy ra lỗi khi tìm nạp ảnh GIF nụ hôn."
 			}
 		},
 		"punchMessages": {
-			"title": "Thời gian đấm!",
-			"description": "đấm thân thiện",
+			"title": "Cú đấm thời gian!",
+			"description": "tung một cú đấm vui tươi vào",
 			"errors": {
-				"noUser": "Bạn phải đề cập đến người dùng để đấm.",
-				"selfPunch": "Bạn không thể đấm chính mình.",
-				"fetchFail": "Đã xảy ra lỗi khi lấy GIF đấm."
+				"noUser": "Bạn cần đề cập đến một người dùng để đấm.",
+				"selfPunch": "Bạn không thể tự đấm mình.",
+				"fetchFail": "Đã xảy ra lỗi khi tìm nạp ảnh GIF cú đấm."
 			}
 		},
 		"slapMessages": {
-			"title": "Thời gian tát!",
-			"description": "tát với tình yêu",
+			"title": "Tát thời gian!",
+			"description": "những cái tát tinh nghịch",
 			"errors": {
-				"noUser": "Bạn phải đề cập đến người dùng để tát.",
-				"selfSlap": "Bạn không thể tát chính mình.",
-				"fetchFail": "Đã xảy ra lỗi khi lấy GIF tát."
+				"noUser": "Bạn cần đề cập đến một người dùng để tát.",
+				"selfSlap": "Bạn không thể tự tát mình.",
+				"fetchFail": "Đã xảy ra lỗi khi tìm nạp ảnh GIF tát."
 			}
 		}
 	},
 	"economyMessages": {
 		"balanceMessages": {
-			"title": "Số dư %{displayName}",
-			"description": "%{coinEmote} **`%{coin}`** xu\n%{bankEmote} **`%{bank}`** xu",
+			"title": "Số dư của %{displayName}",
+			"description": "%{coinEmote} **`%{coin}`** xu\n",
 			"errors": {
 				"noUser": "Không tìm thấy người dùng.",
-				"fetchFail": "Đã xảy ra lỗi khi lấy số dư của bạn."
+				"fetchFail": "Đã xảy ra lỗi khi tìm nạp số dư của bạn."
 			}
 		},
 		"dailyMessages": {
-			"title": "Phần thưởng hàng ngày %{displayName}",
-			"success": "%{coinEmote} **`+%{coin}`** xu\nXP: **`+%{exp}`** xp",
-			"cooldown": "Phần thưởng hàng ngày của bạn đang chờ. Vui lòng thử lại sau **%{time}**.",
+			"title": "Phần thưởng hàng ngày của %{displayName}",
+			"success": "%{coinEmote} **`+%{coin}`** xu\n",
+			"cooldown": "Phần thưởng hàng ngày của bạn đang trong thời gian hồi chiêu. ",
 			"errors": {
 				"noUser": "Không tìm thấy người dùng.",
 				"fetchFail": "Đã xảy ra lỗi khi xử lý yêu cầu hàng ngày của bạn."
 			}
 		},
 		"depositMessages": {
-			"zeroBalance": "Bạn không có xu để gửi.",
-			"invalidAmount": "Số tiền không hợp lệ. Vui lòng nhập số hợp lệ hoặc sử dụng `tất cả` hoặc `một nửa`.",
+			"zeroBalance": "Bạn không có xu nào để gửi.",
+			"invalidAmount": "Số tiền không hợp lệ. ",
 			"success": "Bạn đã gửi %{coinEmote} **`%{amount}`** xu vào ngân hàng của mình.",
 			"errors": {
 				"noUser": "Không tìm thấy người dùng."
@@ -88,10 +90,10 @@
 		},
 		"gomaMessages": {
 			"success": {
-				"title": "Bạn đã yêu cầu goma!",
+				"title": "đã tuyên bố goma!",
 				"description": "Bạn đã kiếm được %{coinEmote} **`%{coin}`** xu."
 			},
-			"cooldown": "Goma đang chờ!\nVui lòng thử lại sau **%{minutes} phút và %{seconds} giây**.",
+			"cooldown": "Goma đang trong thời gian hồi chiêu!\n",
 			"errors": {
 				"noUser": "Không tìm thấy người dùng."
 			}
@@ -100,48 +102,49 @@
 			"errors": {
 				"noUser": "Không tìm thấy người dùng."
 			},
-			"cooldown": "Peachy đang chờ!\nVui lòng thử lại sau **%{minutes} phút và %{seconds} giây**.",
+			"cooldown": "Peachy đang trong thời gian hồi chiêu!\n",
 			"success": {
-				"title": "Bạn đã yêu cầu peachy!",
+				"title": "đã tuyên bố đào!",
 				"description": "Bạn đã kiếm được %{coinEmote} **`%{coin}`** xu."
 			}
 		},
 		"rankingMessages": {
 			"bal": {
-				"noUsers": "Chưa có ai kiếm được xu.",
+				"noUsers": "Chưa có ai kiếm được tiền.",
 				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"peachy": {
-				"noUsers": "Chưa có ai trong danh sách.",
+				"noUsers": "Chưa có ai có một vệt nào cả.",
 				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"goma": {
-				"noUsers": "Chưa có ai trong danh sách.",
+				"noUsers": "Chưa có ai có một vệt nào cả.",
 				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
 			},
-			"invalidType": "Loại xếp hạng không hợp lệ."
+			"invalidType": "Loại bảng xếp hạng không hợp lệ."
 		},
 		"transferMessages": {
+			"title": "**Giao dịch - {{user}}**",
 			"selfTransfer": "Bạn không thể chuyển xu cho chính mình.",
-			"botTransfer": "Bạn không thể chuyển xu cho bot.",
-			"pendingTransfer": "Có một giao dịch đang chờ. Vui lòng xác nhận hoặc hủy giao dịch trước khi bắt đầu một giao dịch mới.",
-			"invalidAmount": "Vui lòng chỉ định người dùng và số tiền hợp lệ.",
-			"noUser": "Vui lòng chỉ định một người dùng hợp lệ.",
-			"balanceNotExist": "Không có bản ghi số dư.",
-			"insufficientBalance": "Số tiền đã chỉ định không hợp lệ hoặc không đủ số dư.",
-			"zeroBalance": "Bạn không có xu để gửi.",
-			"transactionConfirm": "Bạn sẽ chuyển {{amount}} {{emoji}} cho {{user}}. Bạn có chắc không?",
-			"transactionSuccess": "Bạn đã chuyển {{amount}} {{emoji}} cho {{user}}.",
-			"transactionCancel": "Bạn đã hủy giao dịch. Xu không được chuyển.",
-			"transactionTimeout": "Giao dịch đã hết hạn do không có hoạt động. Vui lòng thử lại.",
-			"transactionTimeoutAction": "Vui lòng bắt đầu lại lệnh để thực hiện chuyển giao.",
-			"amountTooHigh": "Số tiền vượt quá số dư hiện có.",
-			"transferTooFrequent": "Bạn đang chuyển xu quá thường xuyên. Vui lòng chờ một chút.",
-			"transferLimitExceeded": "Bạn đã vượt quá giới hạn chuyển tối đa.",
-			"transferInsufficientFunds": "Bạn không có đủ xu để hoàn tất giao dịch này.",
-			"transferInvalidUser": "Người dùng bạn chỉ định không hợp lệ hoặc không tìm thấy.",
-			"transferConfirmPrompt": "Vui lòng nhấp vào nút bên dưới để xác nhận chuyển giao.",
-			"transactionExpired": "Giao dịch đã hết hạn"
+			"botTransfer": "Bạn không thể chuyển xu vào bot.",
+			"pendingTransfer": "Bạn đã có một giao dịch chuyển đang chờ xử lý. ",
+			"invalidAmount": "Vui lòng đề cập đến người dùng và số tiền hợp lệ.",
+			"noUser": "Vui lòng đề cập đến một người dùng hợp lệ.",
+			"balanceNotExist": "Hồ sơ số dư của bạn không tồn tại.",
+			"insufficientBalance": "Số tiền được chỉ định không hợp lệ hoặc số dư không đủ.",
+			"zeroBalance": "Bạn không có xu để chuyển.",
+			"confirm": "Bạn sắp cho {{amount}} {{emoji}} ĐẾN {{user}}. ",
+			"success": "Bạn đã cho {{amount}} {{emoji}} ĐẾN {{user}}.",
+			"cancel": "Bạn đã hủy giao dịch. ",
+			"timeout": "Giao dịch đã hết thời gian chờ do không hoạt động. ",
+			"timeoutAction": "Nếu bạn muốn thực hiện chuyển khoản, vui lòng thực hiện lại lệnh.",
+			"amountTooHigh": "Số tiền vượt quá số dư khả dụng của bạn.",
+			"tooFrequent": "Bạn đang chuyển tiền quá thường xuyên. ",
+			"limitExceeded": "Bạn đã vượt quá giới hạn chuyển tối đa.",
+			"insufficientFunds": "Bạn không có đủ xu để hoàn tất việc chuyển tiền này.",
+			"invalidUser": "Người dùng được chỉ định không hợp lệ hoặc không được tìm thấy.",
+			"confirmPrompt": "Xác nhận việc chuyển bằng cách nhấp vào nút bên dưới.",
+			"expire": "Giao dịch đã hết hạn"
 		},
 		"weeklyMessages": {
 			"userNotFound": "Không tìm thấy người dùng.",
@@ -162,31 +165,292 @@
 			"error": "Đã xảy ra lỗi khi xử lý yêu cầu rút tiền của bạn."
 		}
 	},
+	"emoteMessages": {
+		"angryMessages": {
+			"title": "Thời gian giận dữ!",
+			"description": "**{{user}}** thể hiện biểu cảm giận dữ nhất!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc tức giận của bạn."
+		},
+		"cryMessages": {
+			"title": "Giờ Khóc!",
+			"description": "**{{user}}** đang khóc!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc đang khóc của bạn."
+		},
+		"cuteMessages": {
+			"title": "Thời gian dễ thương!",
+			"description": "**{{user}}** thể hiện biểu cảm đáng yêu nhất của mình!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc dễ thương của bạn."
+		},
+		"danceMessages": {
+			"title": "Thời gian khiêu vũ!",
+			"description": "**{{user}}** thể hiện một số bước nhảy ấn tượng!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc khiêu vũ của bạn."
+		},
+		"exerciseMessages": {
+			"title": "Giờ tập thể dục!",
+			"description": "**{{user}}** đang vận động và giữ dáng!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc bài tập của bạn."
+		},
+		"happyMessages": {
+			"title": "Chúc mừng Vibes!",
+			"description": "**{{user}}** đang lan tỏa niềm vui và hạnh phúc!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc vui vẻ của bạn."
+		},
+		"laughMessages": {
+			"title": "Cười lớn!",
+			"description": "**{{user}}** chia sẻ một tiếng cười nồng nhiệt!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc cười của bạn."
+		},
+		"makeupMessages": {
+			"title": "Thời gian trang điểm!",
+			"description": "**{{user}}** áp dụng một số trang điểm tuyệt vời và tỏa sáng!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc trang điểm của bạn."
+		},
+		"eatMessages": {
+			"title": "Giờ ăn!",
+			"description": "**{{user}}** đang thưởng thức một số món ăn ngon!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng ăn uống của bạn."
+		},
+		"playGameMessages": {
+			"title": "Giờ chơi!",
+			"description": "**{{user}}** đã sẵn sàng để chơi!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc khi chơi trò chơi của bạn."
+		},
+		"roarMessages": {
+			"title": "Thời gian gầm thét!",
+			"description": "**{{user}}** phát ra một tiếng gầm hùng mạnh!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc gầm thét của bạn."
+		},
+		"sadMessages": {
+			"title": "Cảm thấy buồn",
+			"description": "**{{user}}** đang thể hiện sự buồn bã.",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc buồn của bạn."
+		},
+		"scareMessages": {
+			"title": "Sợ hãi!",
+			"description": "**{{user}}** thể hiện khía cạnh sợ hãi của họ!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc sợ hãi của bạn."
+		},
+		"showerMessages": {
+			"title": "Giờ tắm!",
+			"description": "**{{user}}** đang tận hưởng cảm giác sảng khoái khi tắm!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc khi tắm của bạn."
+		},
+		"shyMessages": {
+			"title": "Xấu hổ!",
+			"description": "**{{user}}** thể hiện vẻ mặt ngại ngùng!",
+			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc nhút nhát của bạn."
+		}
+	},
+	"funMessage": {
+		"animalOfYear": {
+			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑",
+			"selectAnimal": "Chọn một con vật",
+			"noAnimals": "Không có động vật có sẵn",
+			"animalNotFound": "Không tìm thấy động vật.",
+			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Sự miêu tả",
+			"requestBy": "Yêu cầu bởi",
+			"id": "NHẬN DẠNG"
+		},
+		"province": {
+			"title": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Chọn một tỉnh",
+			"noProvinces": "Không có tỉnh nào",
+			"notFound": "Tỉnh không tìm thấy.",
+			"detailTitle": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄 𝐃𝐄𝐓𝐀𝐈𝐋",
+			"description": "Sự miêu tả",
+			"requestBy": "Yêu cầu bởi",
+			"id": "NHẬN DẠNG"
+		},
+		"randomColor": {
+			"title": "Đây là màu ngẫu nhiên dành cho bạn!",
+			"description": "Màu sắc: {màu}",
+			"requestedBy": "Được yêu cầu bởi"
+		},
+		"reverseText": {
+			"title": "Văn bản đảo ngược",
+			"description": "**Văn bản gốc:** {originText}\n",
+			"requestedBy": "Được yêu cầu bởi"
+		},
+		"wallpaper": {
+			"selectCategory": "Chọn một danh mục...",
+			"selectWallpaper": "Chọn hình nền...",
+			"noWallpapers": "Không có hình nền có sẵn trong danh mục này.",
+			"wallpaperNotFound": "Không tìm thấy hình nền.",
+			"wallpaperDetailsTitle": "Chi tiết hình nền",
+			"descriptionLabel": "Sự miêu tả",
+			"categoryLabel": "Loại"
+		},
+		"weather": {
+			"title": "𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
+			"selectProvince": "Chọn một tỉnh",
+			"noProvinces": "Không có tỉnh nào",
+			"notFound": "Tỉnh không tìm thấy.",
+			"provinceNotFound": "Tỉnh không tìm thấy.",
+			"dataFetchFailed": "Không thể truy xuất dữ liệu thời tiết. "
+		}
+	},
+	"gamblingMessages": {
+		"blackjackMessages": {
+			"title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
+			"youWon": "Bạn đã thắng **`%{coin}`** %{coinEmote}",
+			"youLost": "Bạn đã thua **`%{coin}`** %{coinEmote}",
+			"bothBust": "Cả hai người đều phá sản!",
+			"tied": "Bạn đã buộc!",
+			"winnerInfo": "Người chiến thắng là người có số điểm gần 21 nhất.",
+			"gameInProgress": "Trò chơi của bạn đang được tiến hành!",
+			"gameOver": "Trò chơi của bạn đã kết thúc."
+		},
+		"slotMessages": {
+			"title": "𝐒𝐋𝐎𝐓𝐒",
+			"youBet": "Bạn đặt cược **`%{coin}`** %{coinEmote}",
+			"youWon": "Bạn đã thắng **`%{coin}`** %{coinEmote}",
+			"youLost": "Bạn đã thua **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "Trò chơi của bạn đang được tiến hành!",
+			"gameOver": "Trò chơi của bạn đã kết thúc."
+		},
+		"coinflipMessages": {
+			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
+			"description": "**%{author}** đã chi **`%{coin}`** %{coinEmote} chọn **%{choice}**! ",
+			"resultDescription": "**%{author}** đã chi **`%{coin}`** %{coinEmote} chọn **%{choice}**",
+			"youWon": "Bạn đã thắng **`%{coin}`** %{coinEmote}",
+			"youLost": "Bạn đã thua **`%{coin}`** %{coinEmote}",
+			"gameInProgress": "Trò chơi của bạn đang được tiến hành!",
+			"gameOver": "Trò chơi của bạn đã kết thúc."
+		}
+	},
+	"inventoryMessages": {
+		"inventoryHeader": "Kho của %{author}!",
+		"inventoryEmptyName": "Hàng tồn kho trống",
+		"inventoryEmptyValue": "Khoảng không quảng cáo hiện tại của bạn trống.",
+		"itemNotFound": "Không thể tìm thấy ID mặt hàng **`%{itemId}`** trong cửa hàng!",
+		"sellDisabled": "Bán mặt hàng này bị vô hiệu hóa.",
+		"useDisabled": "Sử dụng mục này bị vô hiệu hóa."
+	},
+	"themeMessages": {
+		"themeApplied": "Bạn đã áp dụng thành công chủ đề %{itemEmote} **`%{itemName}`** cho nội dung nhúng của mình!",
+		"themeUnavailable": "Chủ đề **`%{itemName}`** không có sẵn để sử dụng.",
+		"themeNotOwned": "Bạn không sở hữu chủ đề **`%{itemName}`**. ",
+		"invalidThemeID": "ID chủ đề **`%{itemId}`** không hợp lệ. ",
+		"themeAlreadyOwned": "Bạn đã sở hữu chủ đề **`%{itemName}`** và không thể mua lại."
+	},
 	"information": {
 		"helpMessages": {
-			"title": "𝐈𝐓𝐒 𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
+			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "Dưới đây là các lệnh có sẵn:",
-			"note": "Lưu ý: Một số lệnh có thể hiển thị tên người dùng trong danh sách được bot lấy.",
-			"footer": "© Bản quyền KYUU",
-			"supportButton": "Nhấn để được hỗ trợ",
-			"commandNotFound": "Không tìm thấy lệnh:",
-			"commandTitle": "Trợ giúp cho lệnh",
-			"category": "Danh mục",
-			"aliases": "Biệt danh:",
-			"cooldown": "Thời gian chờ",
+			"note": "Lưu ý: Một số lệnh có thể hiển thị tên người dùng trong danh sách được bot truy xuất.",
+			"footer": "© Bản quyền thuộc về KYUU",
+			"supportButton": "Bấm để được hỗ trợ",
+			"commandNotFound": "Lệnh không tìm thấy:",
+			"commandTitle": "Trợ giúp về lệnh",
+			"category": "Loại",
+			"aliases": "Bí danh:",
+			"cooldown": "Thời gian hồi chiêu",
 			"botPermissions": "Quyền của bot:",
-			"examples": "Ví dụ:"
+			"examples": "(Các) ví dụ:",
+			"categoriesMessages": {
+				"actions": "HÀNH ĐỘNG",
+				"economy": "KINH TẾ",
+				"inventory": "HÀNG TỒN KHO",
+				"fun": "VUI VẺ",
+				"games": "TRÒ CHƠI",
+				"gambling": "CÁ BẠC",
+				"profile": "HỒ SƠ",
+				"social": "XÃ HỘI",
+				"emotes": "CẢM XÚC",
+				"utility": "TÍNH THIẾT THỰC",
+				"info": "THÔNG TIN"
+			},
+			"directoriesMessages": {
+				"bite": "cắn",
+				"hug": "ôm",
+				"kiss": "hôn",
+				"punch": "cú đấm",
+				"slap": "cái tát",
+				"balance": "THĂNG BẰNG",
+				"daily": "hằng ngày",
+				"deposit": "tiền gửi",
+				"goma": "goma",
+				"peachy": "đào",
+				"ranking": "xếp hạng",
+				"transfer": "chuyển khoản",
+				"weekly": "hàng tuần",
+				"withdraw": "rút",
+				"buy": "mua",
+				"drink": "uống",
+				"eat": "ăn",
+				"giveitem": "tặng vật phẩm",
+				"inventory": "hàng tồn kho",
+				"sell": "bán",
+				"shop": "cửa hàng",
+				"shopinfo": "thông tin cửa hàng",
+				"use": "sử dụng",
+				"animalofyear": "động vật trong năm",
+				"province": "tỉnh",
+				"color": "màu sắc",
+				"reverse": "đảo ngược",
+				"wallpaper": "hình nền",
+				"weather": "thời tiết",
+				"emoji-puzzle": "câu đố biểu tượng cảm xúc",
+				"guessnumber": "số đoán",
+				"roll": "cuộn",
+				"blackjack": "bài xì dách",
+				"coinflip": "lật đồng xu",
+				"slots": "khe cắm",
+				"bio": "sinh học",
+				"birthday": "sinh nhật",
+				"gender": "giới tính",
+				"level": "mức độ",
+				"profile": "hồ sơ",
+				"relationship": "mối quan hệ",
+				"username": "tên người dùng",
+				"facebook": "facebook",
+				"instagram": "instagram",
+				"socials": "xã hội",
+				"tiktok": "tiktok",
+				"angry": "tức giận",
+				"cry": "khóc",
+				"cute": "dễ thương",
+				"dance": "nhảy",
+				"exercise": "bài tập",
+				"happy": "vui mừng",
+				"laugh": "cười",
+				"makeup": "trang điểm",
+				"nham": "nham",
+				"playgame": "chơi trò chơi",
+				"roar": "kêu la",
+				"sad": "buồn",
+				"scare": "sự sợ hãi",
+				"shower": "vòi sen",
+				"shy": "xấu hổ",
+				"avatar": "hình đại diện",
+				"emoji": "biểu tượng cảm xúc",
+				"language": "ngôn ngữ",
+				"qr": "qr",
+				"serverinfo": "thông tin máy chủ",
+				"theme": "chủ đề",
+				"userinfo": "thông tin người dùng",
+				"help": "giúp đỡ",
+				"info": "thông tin",
+				"invite": "mời",
+				"ping": "ping",
+				"privacy": "sự riêng tư",
+				"register": "đăng ký",
+				"rules": "quy tắc",
+				"stats": "số liệu thống kê"
+			}
 		},
 		"infoMessages": {
 			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
-			"description": "là bot Discord đa năng được thiết kế cho sự vui vẻ, giải trí và tiện ích. Với các tính năng của bot, hãy thử vận may của bạn với trò chơi đánh bạc, chơi các trò chơi nhỏ và nhiều hơn nữa!",
+			"description": "là bot Discord đa năng của bạn được thiết kế để giải trí, giải trí và tiện ích. ",
 			"developer": {
 				"title": "𝐃𝐄𝐕",
 				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
 			},
-			"footer": "Gặp vấn đề, cần giúp đỡ, hoặc muốn báo cáo lỗi? Nhấp vào liên kết bên dưới",
+			"footer": "Bạn có bất kỳ vấn đề nào, cần trợ giúp hoặc muốn báo cáo lỗi? ",
 			"supportButton": {
-				"label": "Nhấp để hỗ trợ"
+				"label": "Bấm để được hỗ trợ"
 			}
 		}
 	}
