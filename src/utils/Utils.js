@@ -345,11 +345,11 @@ module.exports = class Utils {
         });
     }
 
-    static async sendErrorMessage(client, ctx, args, color, time) {
+    static async sendErrorMessage(client, ctx, args, color, time, ephemeral) {
         const embed = client.embed()
             .setColor(color.red)
             .setDescription(args)
-        await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
+        await ctx.sendMessage({ embeds: [embed], ephemeral }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
