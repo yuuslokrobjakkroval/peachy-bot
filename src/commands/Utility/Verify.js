@@ -1,8 +1,8 @@
 const { Command } = require("../../structures/index.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
 const Users = require("../../schemas/user.js");
-const gif = require("../../utils/Gif");
-const emojiImage = require("../../utils/Emoji");
+const gif = require("../../utils/Gif.js");
+const emojiImage = require("../../utils/Emoji.js");
 
 module.exports = class Verify extends Command {
     constructor(client) {
@@ -119,7 +119,7 @@ module.exports = class Verify extends Command {
             const verificationCode = submittedCode;
 
             // Handle modal submission
-            client.on('interactionCreate', async (modalInteraction) => {
+            client.once('interactionCreate', async (modalInteraction) => {
                 if (!modalInteraction.isModalSubmit()) return;
 
                 if (modalInteraction.customId === 'inputCodeModal') {
@@ -142,9 +142,16 @@ module.exports = class Verify extends Command {
                             .setColor(color.main)
                             .setTitle(`${emoji.mainLeft} Verification Successful ${emoji.mainRight}`)
                             .setDescription(`Thank you for supporting and verifying with PEACHY!\nYour benefit is to all claim +20% and better luck with gambling! ${emojiImage.congratulation}`)
-                            .setThumbnail(client.utils.emojiToImage(emojiImage.normal))
+                            .setThumbnail(client.utils.emojiToImage(emojiImage.normal));
 
-                        await modalInteraction.reply({ embeds: [successEmbed] });
+                        // Use reply based on interaction state
+                        if (modalInteraction.replied || modalInteraction.deferred) {
+                            await modalInteraction.followUp({ embeds: [successEmbed] });
+                        } else {
+                            await modalInteraction.reply({ embeds: [successEmbed] });
+                        }
+
+                        // Update the original verification embed to remove components and embed
                         const messageToUpdate = await modalInteraction.channel.messages.fetch(i.message.id);
                         await messageToUpdate.edit({ content: 'Verification complete.', embeds: [], components: [] });
                     } else {
