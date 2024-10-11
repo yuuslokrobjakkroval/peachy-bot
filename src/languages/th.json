@@ -335,7 +335,7 @@
 		"invalidThemeID": "รหัสธีม **`%{itemId}`** ไม่ถูกต้อง ",
 		"themeAlreadyOwned": "คุณเป็นเจ้าของธีม **`%{itemName}`** อยู่แล้ว และไม่สามารถซื้อได้อีก"
 	},
-	"information": {
+	"informationMessages": {
 		"helpMessages": {
 			"title": "ได้รับการตรวจสอบแล้ว",
 			"description": "นี่คือคำสั่งที่ใช้ได้:",

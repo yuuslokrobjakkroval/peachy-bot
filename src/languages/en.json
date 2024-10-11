@@ -336,7 +336,7 @@
 		"invalidThemeID": "The theme ID **`%{itemId}`** is not valid. Please check the available themes.",
 		"themeAlreadyOwned": "You already own the theme **`%{itemName}`** and cannot buy it again."
 	},
-	"information": {
+	"informationMessages": {
 		"helpMessages": {
 			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "Here are the commands available:",

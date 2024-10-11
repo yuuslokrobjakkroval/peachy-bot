@@ -26,7 +26,7 @@ module.exports = class Register extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const registerMessages = language.locales.get(language.defaultLocale)?.registerMessages;
+        const registerMessages = language.locales.get(language.defaultLocale)?.informationMessages?.registerMessages;
         const user = await Users.findOne({ userId: ctx.author.id }).exec();
 
         if (user) {

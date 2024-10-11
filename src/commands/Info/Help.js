@@ -38,9 +38,9 @@ module.exports = class Help extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const helpMessages = language.locales.get(language.defaultLocale)?.information?.helpMessages;
-    const categoriesMessages = language.locales.get(language.defaultLocale)?.information?.helpMessages?.categoriesMessages;
-    const directoriesMessages = language.locales.get(language.defaultLocale)?.information?.helpMessages?.directoriesMessages;
+    const helpMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages;
+    const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
+    const directoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.directoriesMessages;
     const embed = client.embed();
     const prefix = client.config.prefix;
     const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');

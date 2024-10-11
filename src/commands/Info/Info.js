@@ -31,7 +31,7 @@ module.exports = class Info extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const infoMessages = language.locales.get(language.defaultLocale)?.information?.infoMessages;
+    const infoMessages = language.locales.get(language.defaultLocale)?.informationMessages?.infoMessages;
 
     const embed = this.client
         .embed()

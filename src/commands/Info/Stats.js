@@ -25,7 +25,7 @@ module.exports = class Stats extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const statsMessages = language.locales.get(language.defaultLocale)?.statsMessages;
+        const statsMessages = language.locales.get(language.defaultLocale)?.informationMessages?.statsMessages;
 
         const guildCount = client.guilds.cache.size;
         const userCount = client.users.cache.size;

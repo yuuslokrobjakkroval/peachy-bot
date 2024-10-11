@@ -335,7 +335,7 @@
 		"invalidThemeID": "ID chủ đề **`%{itemId}`** không hợp lệ. ",
 		"themeAlreadyOwned": "Bạn đã sở hữu chủ đề **`%{itemName}`** và không thể mua lại."
 	},
-	"information": {
+	"informationMessages": {
 		"helpMessages": {
 			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "Dưới đây là các lệnh có sẵn:",

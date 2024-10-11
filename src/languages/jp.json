@@ -335,7 +335,7 @@
 		"invalidThemeID": "テーマ ID **`%{itemId}`** は無効です。",
 		"themeAlreadyOwned": "テーマ **`%{itemName}`** はすでに所有しているため、再度購入することはできません。"
 	},
-	"information": {
+	"informationMessages": {
 		"helpMessages": {
 			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "利用可能なコマンドは次のとおりです。",

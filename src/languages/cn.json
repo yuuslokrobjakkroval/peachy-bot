@@ -335,7 +335,7 @@
 		"invalidThemeID": "主题 ID **`%{itemId}`** 无效。",
 		"themeAlreadyOwned": "您已经拥有该主题 **`%{itemName}`** 并且无法再次购买。"
 	},
-	"information": {
+	"informationMessages": {
 		"helpMessages": {
 			"title": "𝐇𝐄𝐋𝐏𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "以下是可用的命令：",

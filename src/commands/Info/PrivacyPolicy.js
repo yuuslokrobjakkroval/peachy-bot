@@ -30,7 +30,7 @@ module.exports = class PrivacyPolicy extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const privacyMessages = language.locales.get(language.defaultLocale)?.privacyMessages;
+    const privacyMessages = language.locales.get(language.defaultLocale)?.informationMessages?.privacyMessages;
 
     const embed = this.client.embed()
         .setColor(color.main)
