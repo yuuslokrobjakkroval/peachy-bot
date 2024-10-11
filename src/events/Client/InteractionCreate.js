@@ -235,18 +235,17 @@ class InteractionCreate extends Event {
             });
           }
 
-          const participants = await Promise.all(data.entered.map(async (id, index) => {
-            let member = interaction.guild.members.cache.get(id);
-            if (!member) {
-              try {
-                member = await interaction.guild.members.fetch(id);
-                console.log(member)
-              } catch (err) {
-                console.error(`Unable to fetch member with ID: ${id}`, err);
-              }
-            }
-            return `${index + 1}. <@${id}> (**1** entry)`;
-          }));
+          // const participants = await Promise.all(data.entered.map(async (id, index) => {
+          //   let member = interaction.guild.members.cache.get(id);
+          //   if (!member) {
+          //     try {
+          //       console.log('get member <3')
+          //     } catch (err) {
+          //       console.error(`Unable to fetch member with ID: ${id}`, err);
+          //     }
+          //   }
+          //   return `${index + 1}. <@${id}> (**1** entry)`;
+          // }));
 
           const embed = this.client.embed()
               .setTitle('Giveaway Participants')
