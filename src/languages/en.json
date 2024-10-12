@@ -329,12 +329,14 @@
 		"sellDisabled": "Selling this item is disabled.",
 		"useDisabled": "Using this item is disabled."
 	},
-	"themeMessages": {
-		"themeApplied": "You have successfully applied %{itemEmote} **`%{itemName}`** theme to your embed!",
-		"themeUnavailable": "The theme **`%{itemName}`** is not available for use.",
-		"themeNotOwned": "You don't own the theme **`%{itemName}`**. Please purchase it first.",
-		"invalidThemeID": "The theme ID **`%{itemId}`** is not valid. Please check the available themes.",
-		"themeAlreadyOwned": "You already own the theme **`%{itemName}`** and cannot buy it again."
+	"utilityMessages": {
+		"themeMessages": {
+			"applied": "You have successfully applied %{itemEmote} **`%{itemName}`** theme to your embed!",
+			"unavailable": "The theme **`%{itemName}`** is not available for use.",
+			"notOwned": "You don't own the theme **`%{itemName}`**. Please purchase it first.",
+			"themeID": "The theme ID **`%{itemId}`** is not valid. Please check the available themes.",
+			"themeAlreadyOwned": "You already own the theme **`%{itemName}`** and cannot buy it again."
+		}
 	},
 	"informationMessages": {
 		"helpMessages": {

@@ -72,7 +72,10 @@ module.exports = class Withdraw extends Command {
         const embed = client
             .embed()
             .setColor(color.main)
-            .setDescription(withdrawMessages.success, {
+            .setDescription(
+                withdrawMessages.success
+                    .replace('{{coinEmote}}', emoji.coin)
+                    .replace('{{coin}}', client.utils.formatNumber(baseCoins)), {
                 coinEmote: emoji.coin,
                 user: ctx.author.username,
                 amount: client.utils.formatNumber(baseCoins),
