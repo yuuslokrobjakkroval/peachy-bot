@@ -187,6 +187,7 @@ module.exports = class PeachyClient extends Client {
                         color = configHeaven.color;
                         emoji = emojiHeaven;
                         break;
+                    case 't03':
                     case 'halloween':
                         color = configHalloween.color;
                         emoji = emojiHalloween;
