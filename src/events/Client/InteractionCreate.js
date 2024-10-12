@@ -239,7 +239,8 @@ class InteractionCreate extends Event {
             let member = interaction.guild.members.cache.get(id);
             if (!member) {
               try {
-                console.log('get member <3')
+                member = await interaction.guild.members.fetch(id);
+                console.log(member)
               } catch (err) {
                 console.error(`Unable to fetch member with ID: ${id}`, err);
               }

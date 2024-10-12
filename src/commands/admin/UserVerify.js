@@ -65,8 +65,7 @@ module.exports = class UpdatePaymentStatus extends Command {
             // Check if we need to reset the verification
             if (status.toLowerCase() === 'reset') {
                 user.verification.verify = {
-                    payment: 'unpaid', // or any default value you want
-                    status: 'unverified', // reset status if necessary
+                    status: 'unverified',
                     code: null,
                     message: null
                 };
