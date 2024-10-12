@@ -53,7 +53,7 @@ module.exports = class Verify extends Command {
             .setColor(color.main)
             .setTitle(`${emoji.mainLeft} Verify Account ${emoji.mainRight}`)
             .setDescription(
-                "Are you sure you want to verify with **PEACHY**?\n\n" +
+                "Are you sure ? you want to verify with **PEACHY**?\n\n" +
                 "To verify, you need to pay **$0.99/month**.\n\n" +
                 "**Benefits**\n" +
                 "**・** Role verification in our server\n" +
@@ -86,11 +86,12 @@ module.exports = class Verify extends Command {
                             ? `Click Button Submit for verification code`
                             : `បន្តពីបង់ប្រាក់រួច សូមរង់ចាំបន្តិច\n\nសុំជួយផ្ញើររូបមកកាន់ខ្ញុំផង <@966688007493140591>`)
                     )
-                    .setImage(userPaymentStatus === 'paid' ? gif.thanks : qrCodeUrl)
                     .setFooter({
                         text: `Request By ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
                     });
+
+                userPaymentStatus !== 'paid' && verificationEmbed.setImage(qrCodeUrl)
 
                 const submitButton = new ButtonBuilder()
                     .setCustomId(`submit_${codeNumber}`)
@@ -155,9 +156,9 @@ module.exports = class Verify extends Command {
 
                         const successEmbed = client.embed()
                             .setColor(color.main)
-                            .setTitle(`${emoji.mainLeft} Verification Successful ${emojiImage.congratulation} ${emoji.mainRight}`)
+                            .setTitle(`${emoji.mainLeft} Verification Successful ${emoji.mainRight}`)
                             .setDescription(`Thank you for supporting and verifying ${emojiImage.verify} with PEACHY!\n `)
-                            .setImage(client.utils.emojiToImage(emojiImage.thankYou))
+                            .setImage(gif.thanks)
                             .setFooter({
                                 text: `Request By ${ctx.author.displayName}`,
                                 iconURL: ctx.author.displayAvatarURL(),
@@ -174,7 +175,7 @@ module.exports = class Verify extends Command {
                         const messageToUpdate = await modalInteraction.channel.messages.fetch(i.message.id);
                         await messageToUpdate.edit({ content: 'Verification complete.', embeds: [], components: [] });
                     } else {
-                        await modalInteraction.reply({ content: "Payment verification failed or the code is incorrect. Please try again.", ephemeral: true });
+                        await modalInteraction.reply({ content: "verification failed or the code is incorrect. Please try again.", ephemeral: true });
                     }
                 }
             });
