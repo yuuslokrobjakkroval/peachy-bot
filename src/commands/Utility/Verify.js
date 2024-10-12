@@ -86,7 +86,7 @@ module.exports = class Verify extends Command {
                             ? `Click Button Submit for verification code`
                             : `បន្តពីបង់ប្រាក់រួច សូមរង់ចាំបន្តិច\n\nសុំជួយផ្ញើររូបមកកាន់ខ្ញុំផង <@966688007493140591>`)
                     )
-                    .setImage(qrCodeUrl)
+                    .setImage(userPaymentStatus === 'paid' ? gif.thanks : qrCodeUrl)
                     .setFooter({
                         text: `Request By ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
