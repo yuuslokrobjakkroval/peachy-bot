@@ -23,7 +23,14 @@ module.exports = class AddItem extends Command {
                 user: [],
             },
             slashCommand: false,
-            options: [],
+            options: [
+                {
+                    name: 'user',
+                    description: 'The Discord user ID of the user.',
+                    type: 3, // String type
+                    required: true,
+                },
+            ],
         });
     }
 

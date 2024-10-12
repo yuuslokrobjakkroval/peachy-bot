@@ -6,12 +6,12 @@ module.exports = class UpdatePaymentStatus extends Command {
         super(client, {
             name: 'userverify',
             description: {
-                content: 'Update a user\'s verification payment status or reset the verification.',
-                examples: ['userverify <userId> <paid|unpaid>', 'userverify <userId> reset'],
-                usage: 'userverify <userId> <paid|unpaid|reset>',
+                content: 'Update a user\'s verification status, reset, or clear the verification.',
+                examples: ['userverify <userId> <paid|unpaid|clear>', 'userverify <userId> reset'],
+                usage: 'userverify <userId> <paid|unpaid|reset|clear>',
             },
             category: 'developer',
-            aliases: ['uv', 'setpay'],
+            aliases: ['uv'],
             args: true,
             permissions: {
                 dev: true,
@@ -28,7 +28,7 @@ module.exports = class UpdatePaymentStatus extends Command {
                 },
                 {
                     name: 'status',
-                    description: 'The new payment status, either "paid", "unpaid", or "reset".',
+                    description: 'The new payment status, either "paid", "unpaid", "reset", or "clear".',
                     type: 3, // String type
                     required: true,
                 },
@@ -37,10 +37,13 @@ module.exports = class UpdatePaymentStatus extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const userId = ctx.isInteraction ? ctx.interaction.options.getString('userid') : args[0];
+        const user = ctx.isInteraction
+            ? ctx.interaction.options.getUser('user') || ctx.author
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]);
+        const userId = user.id;
         const status = ctx.isInteraction ? ctx.interaction.options.getString('status') : args[1];
 
-        if (!userId || !status || !['paid', 'unpaid', 'reset'].includes(status.toLowerCase())) {
+        if (!userId || !status || !['paid', 'unpaid', 'reset', 'clear'].includes(status.toLowerCase())) {
             return await this.sendReply(ctx, {
                 embeds: [
                     client.embed().setColor(color.red)
@@ -51,7 +54,7 @@ module.exports = class UpdatePaymentStatus extends Command {
 
         try {
             // Find the user by the provided userId
-            const user = await Users.findOne({ userId: userId });
+            const user = await Users.findOne({ userId });
 
             if (!user) {
                 return await this.sendReply(ctx, {
@@ -65,6 +68,7 @@ module.exports = class UpdatePaymentStatus extends Command {
             // Check if we need to reset the verification
             if (status.toLowerCase() === 'reset') {
                 user.verification.verify = {
+                    payment: 'paid',
                     status: 'unverified',
                     code: null,
                     message: null
@@ -79,6 +83,23 @@ module.exports = class UpdatePaymentStatus extends Command {
                 });
             }
 
+            if (status.toLowerCase() === 'clear') {
+                user.verification.verify = {
+                    payment: 'unpaid',
+                    status: 'unverified',
+                    code: null,
+                    message: null
+                };
+                await user.save();
+
+                return await this.sendReply(ctx, {
+                    embeds: [
+                        client.embed().setColor(color.green)
+                            .setDescription(`Successfully clear verification for user <@${userId}>.`),
+                    ],
+                });
+            }
+
             // Update the user's verification payment status
             user.verification.verify.payment = status.toLowerCase();
             await user.save();
@@ -86,7 +107,7 @@ module.exports = class UpdatePaymentStatus extends Command {
             return await this.sendReply(ctx, {
                 embeds: [
                     client.embed().setColor(color.green)
-                        .setDescription(`Successfully updated payment status to **${status}** for user <@${userId}>.`),
+                        .setDescription(`Successfully updated payment status to **${client.utils.formatCapitalize(status)}** for user <@${userId}>.`),
                 ],
             });
 

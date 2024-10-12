@@ -14,7 +14,7 @@ module.exports = class Verify extends Command {
                 usage: "verify",
             },
             category: "utility",
-            aliases: ["verification"],
+            aliases: ["verification", "v"],
             cooldown: 3,
             permissions: {
                 dev: false,
@@ -52,8 +52,19 @@ module.exports = class Verify extends Command {
         const confirmEmbed = client.embed()
             .setColor(color.main)
             .setTitle(`${emoji.mainLeft} Verify Account ${emoji.mainRight}`)
-            .setDescription("Are you sure you want to verify with PEACHY?\nTo verify, you need to pay **$0.99/month**.");
-
+            .setDescription(
+                "Are you sure you want to verify with **PEACHY**?\n\n" +
+                "To verify, you need to pay **$0.99/month**.\n\n" +
+                "**Benefits**\n" +
+                "**・** Role verification in our server\n" +
+                "**・** Get an emoji while playing the bot\n" +
+                "**・** Add 20% to all rewards when claiming\n" +
+                "**・** Better luck with gambling!"
+            )
+            .setFooter({
+                text: `Request By ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            });
         await ctx.sendMessage({ embeds: [confirmEmbed], components: [row], ephemeral: true });
 
         // Step 3: Create collector to handle button interactions
@@ -70,16 +81,20 @@ module.exports = class Verify extends Command {
                     .setColor(color.main)
                     .setTitle(`${emoji.mainLeft} Verification Request ${emoji.mainRight}`)
                     .setDescription(
-                        `You have requested to verify with PEACHY.\n\n` +
+                        `You have requested to verify with PEACHY.\n` +
                         (userPaymentStatus === 'paid'
-                            ? `Your code number is: **${codeNumber}**`
-                            : `បន្តពីបង់ប្រាក់រួច សុំជួយផ្ញើររូបមកកាន់ខ្ញុំផង\n\n<@966688007493140591>`)
+                            ? `Click Button Submit for verification code`
+                            : `បន្តពីបង់ប្រាក់រួច សូមរង់ចាំបន្តិច\n\nសុំជួយផ្ញើររូបមកកាន់ខ្ញុំផង <@966688007493140591>`)
                     )
-                    .setImage(qrCodeUrl);
+                    .setImage(qrCodeUrl)
+                    .setFooter({
+                        text: `Request By ${ctx.author.displayName}`,
+                        iconURL: ctx.author.displayAvatarURL(),
+                    });
 
                 const submitButton = new ButtonBuilder()
                     .setCustomId(`submit_${codeNumber}`)
-                    .setLabel(`Submit Payment Confirmation`)
+                    .setLabel(`Submit`)
                     .setStyle(ButtonStyle.Primary);
 
                 const verificationRow = userPaymentStatus === 'paid' && new ActionRowBuilder().addComponents(submitButton);
@@ -105,9 +120,9 @@ module.exports = class Verify extends Command {
 
             const inputField = new TextInputBuilder()
                 .setCustomId('verificationCodeInput')
-                .setLabel('Enter your verification code:')
+                .setLabel(`Verification Code: ${submittedCode}`)
                 .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Your verification code here')
+                .setPlaceholder('Enter your verification code here')
                 .setRequired(true);
 
             const actionRow = new ActionRowBuilder().addComponents(inputField);
@@ -133,16 +148,20 @@ module.exports = class Verify extends Command {
                                     "verification.verify.payment": "paid",
                                     "verification.verify.code": verificationCode,
                                     "verification.verify.status": "verified",
-                                    "verification.verify.message": "Thank you for supporting and verifying with PEACHY! Your benefit is to all claim +20% and better luck with gambling!"
+                                    "verification.verify.message": "Thank you for supporting and verifying with PEACHY!"
                                 }
                             }
                         );
 
                         const successEmbed = client.embed()
                             .setColor(color.main)
-                            .setTitle(`${emoji.mainLeft} Verification Successful ${emoji.mainRight}`)
-                            .setDescription(`Thank you for supporting and verifying with PEACHY!\nYour benefit is to all claim +20% and better luck with gambling! ${emojiImage.congratulation}`)
-                            .setThumbnail(client.utils.emojiToImage(emojiImage.normal));
+                            .setThumbnail(client.utils.emojiToImage(emojiImage.normal))
+                            .setTitle(`${emoji.mainLeft} Verification Successful ${emojiImage.congratulation} ${emoji.mainRight}`)
+                            .setDescription(`Thank you for supporting and verifying with PEACHY!\n `)
+                            .setFooter({
+                                text: `Request By ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
 
                         // Use reply based on interaction state
                         if (modalInteraction.replied || modalInteraction.deferred) {
