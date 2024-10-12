@@ -157,7 +157,7 @@ module.exports = class Verify extends Command {
                         const successEmbed = client.embed()
                             .setColor(color.main)
                             .setTitle(`${emoji.mainLeft} Verification Successful ${emoji.mainRight}`)
-                            .setDescription(`Thank you for supporting and verifying ${emojiImage.verify} with PEACHY!\n `)
+                            .setDescription(`Thank you for supporting and verifying ${emojiImage.verify}!\n `)
                             .setImage(gif.thanks)
                             .setFooter({
                                 text: `Request By ${ctx.author.displayName}`,
