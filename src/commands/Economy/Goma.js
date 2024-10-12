@@ -3,6 +3,7 @@ const { checkCooldown, updateCooldown, getCooldown } = require('../../functions/
 const Users = require('../../schemas/user.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
+const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Goma extends Command {
     constructor(client) {
@@ -33,6 +34,7 @@ module.exports = class Goma extends Command {
         try {
             // Fetch user data
             const user = await Users.findOne({ userId: ctx.author.id }).exec();
+            const verify = user.verification.verify.status === 'verified';
 
             if (!user) {
                 return await client.utils.sendErrorMessage(client, ctx, gomaMessages.errors.noUser, color);
@@ -82,7 +84,11 @@ module.exports = class Goma extends Command {
                     gomaMessages.success.description
                         .replace('%{coinEmote}', emoji.coin)
                         .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                );
+                )
+                .setFooter({
+                    text: `Request By ${ctx.author.displayName}`,
+                    iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
+                })
 
             return await ctx.sendMessage({ embeds: [successEmbed] });
         } catch (error) {

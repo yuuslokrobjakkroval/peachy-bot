@@ -3,6 +3,7 @@ const Users = require('../../schemas/user.js');
 const { checkCooldown, updateCooldown } = require('../../functions/function');
 const chance = require('chance').Chance();
 const moment = require('moment-timezone');
+const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Daily extends Command {
     constructor(client) {
@@ -31,6 +32,7 @@ module.exports = class Daily extends Command {
         try {
             const dailyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.dailyMessages;
             const user = await Users.findOne({ userId: ctx.author.id }).exec();
+            const verify = user.verification.verify.status === 'verified';
 
             // User not found in the database
             if (!user) {
@@ -106,7 +108,11 @@ module.exports = class Daily extends Command {
                         .replace('%{coin}', client.utils.formatNumber(baseCoins))
                         .replace('%{exp}', client.utils.formatNumber(baseExp))
                         .replace('%{bonusMessage}', bonusMessage)
-                );
+                )
+                .setFooter({
+                    text: `Request By ${ctx.author.displayName}`,
+                    iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
+                })
 
             return await ctx.sendMessage({ embeds: [embed] });
 

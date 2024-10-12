@@ -2,6 +2,7 @@ const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const numeral = require("numeral");
 const random = require("random-number-csprng");
+const emojiImage = require("../../utils/Emoji");
 
 const maxAmount = 250000;
 
@@ -38,6 +39,7 @@ module.exports = class Slots extends Command {
 	async run(client, ctx, args, color, emoji, language) {
 		const SLOTS = [emoji.slots.cat, emoji.slots.coffee, emoji.slots.heart, emoji.slots.cake, emoji.slots.milk, emoji.slots.peachy]
 		const user = await Users.findOne({ userId: ctx.author.id }).exec();
+		const verify = user.verification.verify.status === 'verified';
 		const { coin, bank } = user.balance;
 		if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'), color);
 
@@ -62,31 +64,60 @@ module.exports = class Slots extends Command {
 		let rand = (await random(1, 1000)) / 10;
 		let win = 0;
 
-		if (rand <= 20) { // 20%
-			win = baseCoins;
-			rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-		} else if (rand <= 33) { // 13%
-			win = baseCoins * 2;
-			rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-		} else if (rand <= 40) { // 7%
-			win = baseCoins * 3;
-			rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-		} else if (rand <= 45) { // 5%
-			win = 0;
-			rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-		} else if (rand <= 48.50) { // 3.5%
-			win = baseCoins * 4;
-			rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-		} else if (rand <= 50.50) { // 2%
-			win = baseCoins * 10;
-			rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-		} else { // 49.50%
-			let slot1 = Math.floor(Math.random() * SLOTS.length);
-			let slot2 = Math.floor(Math.random() * SLOTS.length);
-			let slot3 = Math.floor(Math.random() * SLOTS.length);
-			if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
-			if (slot3 === slot1 || slot3 === slot2) slot3 = (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
-			rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
+		if(verify) {
+			if (rand <= 20) { // 20%
+				win = baseCoins;
+				rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
+			} else if (rand <= 30) { // 10%
+				win = baseCoins * 2;
+				rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
+			} else if (rand <= 36) { // 6%
+				win = baseCoins * 3;
+				rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
+			} else if (rand <= 46) { // 10%
+				win = 0;
+				rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
+			} else if (rand <= 50) { // 4%
+				win = baseCoins * 4;
+				rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
+			} else if (rand <= 53) { // 3%
+				win = baseCoins * 10;
+				rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
+			} else { // 49.50%
+				let slot1 = Math.floor(Math.random() * SLOTS.length);
+				let slot2 = Math.floor(Math.random() * SLOTS.length);
+				let slot3 = Math.floor(Math.random() * SLOTS.length);
+				if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+				if (slot3 === slot1 || slot3 === slot2) slot3 = (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+				rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
+			}
+		} else {
+			if (rand <= 20) { // 20%
+				win = baseCoins;
+				rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
+			} else if (rand <= 33) { // 13%
+				win = baseCoins * 2;
+				rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
+			} else if (rand <= 40) { // 7%
+				win = baseCoins * 3;
+				rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
+			} else if (rand <= 45) { // 5%
+				win = 0;
+				rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
+			} else if (rand <= 48.50) { // 3.5%
+				win = baseCoins * 4;
+				rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
+			} else if (rand <= 50.50) { // 2%
+				win = baseCoins * 10;
+				rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
+			} else { // 49.50%
+				let slot1 = Math.floor(Math.random() * SLOTS.length);
+				let slot2 = Math.floor(Math.random() * SLOTS.length);
+				let slot3 = Math.floor(Math.random() * SLOTS.length);
+				if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+				if (slot3 === slot1 || slot3 === slot2) slot3 = (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+				rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
+			}
 		}
 
 		let newBalance = coin + win - baseCoins;
@@ -96,7 +127,7 @@ module.exports = class Slots extends Command {
 			.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${emoji.slots.spin} ${emoji.slots.spin} ${emoji.slots.spin}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${emoji.coin}**\n`)
 			.setFooter({
 				text: `${ctx.author.displayName}, your game is in progress!`,
-				iconURL: ctx.author.displayAvatarURL(),
+				iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
 			})
 
 		await ctx.sendMessage({ embeds: [initialEmbed] });
@@ -108,7 +139,7 @@ module.exports = class Slots extends Command {
 			.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${emoji.slots.spin} ${emoji.slots.spin}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${emoji.coin}**\n`)
 			.setFooter({
 				text: `${ctx.author.displayName}, your game is in progress!`,
-				iconURL: ctx.author.displayAvatarURL(),
+				iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
 			})
 
 		const spinSecondEmbed = client.embed()
@@ -117,7 +148,7 @@ module.exports = class Slots extends Command {
 			.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${emoji.slots.spin} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${emoji.coin}**\n`)
 			.setFooter({
 				text: `${ctx.author.displayName}, your game is in progress!`,
-				iconURL: ctx.author.displayAvatarURL(),
+				iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
 			})
 
 		const resultEmbed = client.embed()
@@ -126,7 +157,7 @@ module.exports = class Slots extends Command {
 			.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${rslots[1]} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou bet \`${numeral(baseCoins).format()}\` ${emoji.coin}**\n**${win === 0 ? `and lost \`${numeral(baseCoins).format()}\`` : `and won \`${numeral(win).format()}\``} ${emoji.coin}**`)
 			.setFooter({
 				text: `${ctx.author.displayName}! your game is over.`,
-				iconURL: ctx.author.displayAvatarURL(),
+				iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
 			})
 
 		setTimeout(async function () {

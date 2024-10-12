@@ -3,6 +3,7 @@ const { checkCooldown, updateCooldown, getCooldown } = require('../../functions/
 const Users = require('../../schemas/user.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
+const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Peachy extends Command {
     constructor(client) {
@@ -29,9 +30,9 @@ module.exports = class Peachy extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const peachyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.peachyMessages;
-
         try {
             const user = await Users.findOne({ userId: ctx.author.id }).exec();
+            const verify = user.verification.verify.status === 'verified';
 
             if (!user) {
                 return await client.utils.sendErrorMessage(client, ctx, peachyMessages.errors.noUser, color);
@@ -81,7 +82,11 @@ module.exports = class Peachy extends Command {
                     peachyMessages.success.description
                         .replace('%{coinEmote}', emoji.coin)
                         .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                );
+                )
+                .setFooter({
+                    text: `Request By ${ctx.author.displayName}`,
+                    iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
+                })
 
             return await ctx.sendMessage({ embeds: [successEmbed] });
         } catch (error) {

@@ -3,6 +3,7 @@ const Users = require('../../schemas/user.js');
 const { checkCooldown, getCooldown, updateCooldown } = require('../../functions/function');
 const moment = require("moment-timezone");
 const chance = require('chance').Chance();
+const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Weekly extends Command {
     constructor(client) {
@@ -28,10 +29,11 @@ module.exports = class Weekly extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const weeklyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.weeklyMessages; // Access messages
-
         try {
+            const weeklyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.weeklyMessages; // Access messages
             const user = await Users.findOne({ userId: ctx.author.id }).exec();
+            const verify = user.verification.verify.status === 'verified';
+
             if (!user) {
                 return client.utils.sendErrorMessage(client, ctx, weeklyMessages.userNotFound, color);
             }
@@ -124,6 +126,10 @@ module.exports = class Weekly extends Command {
                 weeklyMessages.success.replace('{{coinEmote}}', emoji.coin)
                     .replace('{{coin}}', client.utils.formatNumber(baseCoins))
                     .replace('{{exp}}', client.utils.formatNumber(baseExp))
-            );
+            )
+            .setFooter({
+                text: `Request By ${ctx.author.displayName}`,
+                iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
+            })
     }
 };

@@ -1,9 +1,11 @@
 module.exports = {
     // GLOBAL
     congratulation: '<a:congratulation:1287438960477474957>',
+    thankYou: '<a:PTY:1294514862390644782>',
 
     // VERIFY
     normal: '<:NORMAL:1294270096109211658>',
+    verify: '<:VERIFY:1294514114856615947>',
 
     // SHOP
     // FOOD
