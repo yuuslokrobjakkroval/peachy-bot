@@ -124,6 +124,7 @@ module.exports = class Weekly extends Command {
             .setThumbnail(client.utils.emojiToImage(`${now.hour() >= 6 && now.hour() < 18 ? `${emoji.time.day}` : `${emoji.time.night}`}`))
             .setDescription(
                 weeklyMessages.success.replace('{{coinEmote}}', emoji.coin)
+                    .replace('{{user}}', ctx.author.displayName)
                     .replace('{{coin}}', client.utils.formatNumber(baseCoins))
                     .replace('{{exp}}', client.utils.formatNumber(baseExp))
             )
