@@ -17,7 +17,7 @@ module.exports = class Slots extends Command {
 			},
 			category: 'gambling',
 			aliases: ['slot', 's'],
-			cooldown: 5,
+			cooldown: 3,
 			args: false,
 			permissions: {
 				dev: false,
@@ -37,22 +37,23 @@ module.exports = class Slots extends Command {
 	}
 
 	async run(client, ctx, args, color, emoji, language) {
-		const SLOTS = [emoji.slots.cat, emoji.slots.coffee, emoji.slots.heart, emoji.slots.cake, emoji.slots.milk, emoji.slots.peachy]
+		const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 		const user = await Users.findOne({ userId: ctx.author.id }).exec();
+		const SLOTS = [emoji.slots.cat, emoji.slots.coffee, emoji.slots.heart, emoji.slots.cake, emoji.slots.milk, emoji.slots.peachy]
 		const verify = user.verification.verify.status === 'verified';
 		const { coin, bank } = user.balance;
-		if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'), color);
+
+		if (coin < 1) {
+			return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
+		}
 
 		let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
 		if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
 			const amountMap = { all: coin, half: Math.ceil(coin / 2) };
-			if (amount in amountMap) amount = amountMap[amount];
-			else {
-				return await ctx.sendMessage({
-					embeds: [
-						client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
-					],
-				});
+			if (amount in amountMap) {
+				amount = amountMap[amount];
+			} else {
+				return await client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
 			}
 		}
 
