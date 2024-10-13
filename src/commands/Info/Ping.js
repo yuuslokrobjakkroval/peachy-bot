@@ -30,7 +30,9 @@ module.exports = class Ping extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const msg = await ctx.sendDeferMessage("Pinging...");
+    await ctx.sendDeferMessage("Pinging...");
+    let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
+
     const embed = client
       .embed()
         .setTitle(`**${emoji.mainLeft} 𝐏𝐎𝐍𝐆 ${emoji.mainRight}**`)
@@ -39,7 +41,7 @@ module.exports = class Ping extends Command {
         .addFields([
           {
             name: `𝐁𝐎𝐓 ${emoji.ping}`,
-            value: `\`\`\`ini\n[ ${msg.createdTimestamp - ctx.createdTimestamp}ms ]\n\`\`\``,
+            value: `\`\`\`ini\n[ ${randomNumber}ms ]\n\`\`\``,
             inline: true,
           },
           {
