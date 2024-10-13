@@ -4,6 +4,7 @@ const Users = require("../../schemas/user");
 const config = require("../../config.js");
 const gif = require("../../utils/Gif");
 const numeral = require("numeral");
+const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Transfer extends Command {
     constructor(client) {
@@ -54,21 +55,22 @@ module.exports = class Transfer extends Command {
         }
 
         // Fetch user data for both sender and receiver
-        const sourceUserData = await Users.findOne({ userId: ctx.author.id });
-        const targetUserData = await Users.findOne({ userId: targetUser.id }) || new Users({ userId: targetUser.id, balance: { coin: 0, bank: 0 } });
+        const user = await Users.findOne({ userId: ctx.author.id });
+        const verify = user.verification.verify.status === 'verified';
+        const target = await Users.findOne({ userId: targetUser.id }) || new Users({ userId: targetUser.id, balance: { coin: 0, bank: 0 } });
 
         // Ensure sender has a balance record
-        if (!sourceUserData) {
+        if (!user) {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.balanceNotExist, color);
         }
 
         // Handle 'all' amount transfer
         if (amount === 'all') {
-            amount = sourceUserData.balance.coin;
+            amount = user.balance.coin;
         }
 
         // Check for sufficient balance
-        if (sourceUserData.balance.coin < amount) {
+        if (user.balance.coin < amount) {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.insufficientFunds, color);
         }
 
@@ -101,12 +103,12 @@ module.exports = class Transfer extends Command {
 
                 if (interaction.customId === 'confirm_button') {
                     // Perform the transfer
-                    sourceUserData.balance.coin -= amount;
-                    targetUserData.balance.coin += amount;
+                    user.balance.coin -= amount;
+                    target.balance.coin += amount;
 
                     try {
-                        await Users.findOneAndUpdate({userId: ctx.author.id}, {balance: sourceUserData.balance});
-                        await Users.findOneAndUpdate({userId: targetUser.id}, {balance: targetUserData.balance}, {upsert: true});
+                        await Users.findOneAndUpdate({userId: ctx.author.id}, { balance: user.balance });
+                        await Users.findOneAndUpdate({userId: targetUser.id}, { balance: target.balance }, {upsert: true});
 
                         const confirmationEmbed = client.embed()
                             .setColor(config.color.main)
@@ -115,7 +117,11 @@ module.exports = class Transfer extends Command {
                                 .replace('{{amount}}', formattedAmount)
                                 .replace('{{emoji}}', emoji.coin)
                                 .replace('{{user}}', targetUsername)
-                            );
+                            )
+                            .setFooter({
+                                text: `Request By ${ctx.author.displayName}`,
+                                iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
+                            });
 
                         await ctx.channel.send({embeds: [confirmationEmbed]});
 
@@ -147,7 +153,7 @@ module.exports = class Transfer extends Command {
             if (collected.size === 0) {
                 const timeoutEmbed = client.embed()
                     .setColor(config.color.warning)
-                    .setTitle(transferMessages.expired)
+                    .setTitle(transferMessages.expire)
                     .setDescription(transferMessages.timeout);
 
                 messageEmbed.edit({ embeds: [timeoutEmbed], components: [] });

@@ -161,7 +161,7 @@
 			"zeroBalance": "You have no coins in your bank.",
 			"invalidAmount": "Please provide a valid amount to withdraw. You can withdraw 'all', 'half', or a specific number.",
 			"tooHigh": "You cannot withdraw more than what you have in your bank.",
-			"success": "{{coinEmote}} **Success, {{user}}!**\nYou have successfully withdrawn **{{amount}} coins** from your bank.",
+			"success": "You have withdrawn {{coinEmote}} **{{amount}}** coins from your bank.",
 			"error": "There was an error processing your withdrawal request."
 		}
 	},

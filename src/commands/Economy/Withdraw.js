@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require("../../schemas/user.js");
+const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Withdraw extends Command {
     constructor(client) {
@@ -33,8 +34,9 @@ module.exports = class Withdraw extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const withdrawMessages = language.locales.get(language.defaultLocale)?.economyMessages?.withdrawMessages; // Access messages
-
         const user = await Users.findOne({ userId: ctx.author.id });
+        const verify = user.verification.verify.status === 'verified';
+
         if (!user) {
             return await client.utils.sendErrorMessage(client, ctx, withdrawMessages.noUser, color);
         }
@@ -75,10 +77,10 @@ module.exports = class Withdraw extends Command {
             .setDescription(
                 withdrawMessages.success
                     .replace('{{coinEmote}}', emoji.coin)
-                    .replace('{{coin}}', client.utils.formatNumber(baseCoins)), {
-                coinEmote: emoji.coin,
-                user: ctx.author.username,
-                amount: client.utils.formatNumber(baseCoins),
+                    .replace('{{amount}}', client.utils.formatNumber(baseCoins)))
+            .setFooter({
+                text: `Request By ${ctx.author.displayName}`,
+                iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
             });
 
         await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newCoin, 'balance.bank': newBank } }).exec();
