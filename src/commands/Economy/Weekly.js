@@ -75,7 +75,7 @@ module.exports = class Weekly extends Command {
                 updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly)
             ]);
 
-            const embed = this.createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages); // Pass weeklyMessages
+            const embed = this.createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages, verify); // Pass weeklyMessages
             return await ctx.sendMessage({ embeds: [embed] });
 
         } catch (error) {
@@ -116,7 +116,7 @@ module.exports = class Weekly extends Command {
         }
     }
 
-    createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages) {
+    createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages, verify) {
         return client
             .embed()
             .setColor(client.config.color.main)
