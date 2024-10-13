@@ -434,6 +434,7 @@
 				"serverinfo": "serverinfo",
 				"theme": "theme",
 				"userinfo": "userinfo",
+				"verify": "verify",
 				"help": "help",
 				"info": "info",
 				"invite": "invite",
