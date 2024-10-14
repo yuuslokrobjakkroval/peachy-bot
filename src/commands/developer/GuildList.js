@@ -24,19 +24,19 @@ module.exports = class GuildList extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const guilds = this.client.guilds.cache.map(g => `Name : **${g.name}**\nID : **${g.id}**`);
+    async run(client, ctx) {
+        const guilds = this.client.guilds.cache.map(g => `${g.name} (${g.id})`);
         let chunks = client.utils.chunk(guilds, 10);
         if (chunks.length === 0) chunks = 1;
         const pages = [];
         for (let i = 0; i < chunks.length; i++) {
             const embed = this.client
                 .embed()
-                .setColor(color.main)
-                .setDescription(chunks[i].join('\n\n'))
+                .setColor(this.client.color.main)
+                .setDescription(chunks[i].join('\n'))
                 .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
             pages.push(embed);
         }
-        return await client.utils.reactionPaginate(ctx, pages);
+        return await client.utils.paginate(ctx, pages);
     }
 };

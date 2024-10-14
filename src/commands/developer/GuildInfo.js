@@ -25,7 +25,7 @@ module.exports = class GuildInfo extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args) {
         // Fetch the guild from the cache based on the provided guild ID
         const guild = this.client.guilds.cache.get(args[0]);
         if (!guild) {
@@ -56,13 +56,13 @@ module.exports = class GuildInfo extends Command {
         }
 
         // Create an invite link with no expiration and a maximum of 5 uses
-        let invite = await channel.createInvite({ maxAge: 0, maxUses: 5, reason: `Requested by Peachy Dev` });
+        let invite = await channel.createInvite({ maxAge: 0, maxUses: 5, reason: `Requested by Miku Dev` });
         let inviteLink = invite?.url || `https://discord.gg/${invite?.code}`;
 
         // Create and send an embed with guild information and invite link
         const embed = this.client
             .embed()
-            .setColor(this.client.config.color.green)
+            .setColor(this.client.config.color.success)
             .setAuthor({ name: guild.name, iconURL: guild.iconURL({ format: 'jpeg' }) })
             .setDescription(`**${guild.name}** has been added to my guilds!`)
             .setThumbnail(guild.iconURL({ format: 'jpeg' }))

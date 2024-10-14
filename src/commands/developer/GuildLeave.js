@@ -24,7 +24,7 @@ module.exports = class GuildLeave extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args) {
         const guild = this.client.guilds.cache.get(args[0]);
         if (!guild) return await ctx.sendMessage('Guild not found');
 

@@ -130,7 +130,7 @@ module.exports = class Buy extends Command {
             );
 
         // Update user's inventory and balance
-        const existingItem = user.inventory.find(invItem => invItem.id === itemId);
+        const existingItem = user.inventory.find(invItem => invItem.id.toLowerCase() === itemId);
 
         if (existingItem) {
             await Users.updateOne(

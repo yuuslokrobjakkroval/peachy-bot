@@ -35,13 +35,14 @@ module.exports = class MessageCreate extends Event {
     const prefix = this.client.config.prefix;
 
     if (user?.verification?.isBanned) {
-      return await message.channel.send({
-        embeds: [
-          this.client.embed()
-              .setColor(color.red)
-              .setDescription(`You is already banned for: \`${user.verification.banReason || 'No reason provided'}\`.`)
-        ]
-      });
+      // return await message.channel.send({
+      //   embeds: [
+      //     this.client.embed()
+      //         .setColor(color.red)
+      //         .setDescription(`You is already banned for: \`${user.verification.banReason || 'No reason provided'}\`.`)
+      //   ]
+      // });
+      return;
     }
 
     const now = new Date();

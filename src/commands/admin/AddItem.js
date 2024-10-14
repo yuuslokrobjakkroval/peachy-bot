@@ -2,8 +2,8 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const ShopItems = require('../../assets/inventory/ShopItems.js')
 const ImportantItems = require('../../assets/inventory/ImportantItems.js')
-const MoreItems = ShopItems.flatMap(shop => shop.inventory);
-const AllItems = [...ImportantItems, ...MoreItems];
+const moreItems = ShopItems.flatMap(shop => shop.inventory);
+const allItems = moreItems.concat(ImportantItems);
 
 module.exports = class AddItem extends Command {
     constructor(client) {
@@ -11,7 +11,7 @@ module.exports = class AddItem extends Command {
             name: 'additem',
             description: {
                 content: '',
-                examples: ['additem pickaxe 2'],
+                examples: ['additem peach 2'],
                 usage: 'additem <item> <quantity>',
             },
             category: 'dev',
@@ -53,7 +53,7 @@ module.exports = class AddItem extends Command {
         }
 
         const itemId = args[1]?.toLowerCase();
-        const itemInfo = AllItems.find(({ id }) => id === itemId);
+        const itemInfo = allItems.find((item) => item.id?.toLowerCase() === itemId);
 
         if (!itemInfo) {
             return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'invalid_item'), color);

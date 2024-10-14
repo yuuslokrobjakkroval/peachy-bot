@@ -11,6 +11,7 @@ const {
 const { Context, Event } = require('../../structures/index.js');
 const GiveawaySchema = require('../../schemas/giveaway.js');
 const { endGiveaway } = require('../../utils/Utils.js');
+const Users = require("../../schemas/user");
 
 class InteractionCreate extends Event {
   constructor(client, file) {
@@ -22,6 +23,51 @@ class InteractionCreate extends Event {
     if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
       const command = this.client.commands.get(interaction.commandName);
       if (!command) return;
+
+      let user = await Users.findOne({ userId: message.author.id });
+
+      if (user?.verification?.isBanned) {
+        // return await message.channel.send({
+        //   embeds: [
+        //     this.client.embed()
+        //         .setColor(color.red)
+        //         .setDescription(`You is already banned for: \`${user.verification.banReason || 'No reason provided'}\`.`)
+        //   ]
+        // });
+        return;
+      }
+
+      const now = new Date();
+      if (user?.verification?.timeout?.expiresAt && user.verification.timeout.expiresAt > now) {
+        const remainingTime = user.verification.timeout.expiresAt - now; // Remaining time in milliseconds
+
+        // Calculate hours, minutes, and seconds
+        const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+        // Construct the remaining time string
+        let timeString = '';
+        if (hours > 0) {
+          timeString += `${hours} hr${hours > 1 ? 's' : ''}`;
+        }
+        if (minutes > 0) {
+          if (timeString) timeString += ', ';
+          timeString += `${minutes} min${minutes > 1 ? 's' : ''}`;
+        }
+        if (seconds > 0 || timeString === '') {
+          if (timeString) timeString += ', ';
+          timeString += `${seconds} sec${seconds > 1 ? 's' : ''}`;
+        }
+
+        return await interaction.message.send({
+          embeds: [
+            this.client.embed()
+                .setColor(color.red)
+                .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
+          ]
+        });
+      }
 
       try {
         const ctx = new Context(interaction, interaction.options.data);

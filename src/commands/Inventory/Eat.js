@@ -48,7 +48,7 @@ module.exports = class Eat extends Command {
         }
 
         const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() : args[0];
-        const itemInfo = AllItems.find(({ id }) => id === itemId.toLowerCase());
+        const itemInfo = AllItems.find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
 
         if (!itemInfo) {
             return await client.utils.sendErrorMessage(client, ctx, `Item not found in inventory.`, color);

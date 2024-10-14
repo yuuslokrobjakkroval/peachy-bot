@@ -18,8 +18,30 @@ module.exports = {
     top: 'https://i.imgur.com/BrmPIPw.gif',
 
     // PROFILE
+    // NORMAL PEACH GOMA
     peachLoadingScreen: 'https://i.imgur.com/bxTfMAh.gif',
     gomaLoadingScreen: 'https://i.imgur.com/xSBbJRS.gif',
+
+    // HEAVEN
+    skyLoadingScreen: 'https://i.imgur.com/R5wzyct.gif',
+    birdLoadingScreen: 'https://i.imgur.com/UeDjukL.gif',
+
+    // SAKURA
+    treeLoadingScreen: 'https://i.imgur.com/Ad7D7gp.gif',
+    leapLoadingScreen: 'https://i.imgur.com/CUOPXpu.gif',
+
+    // PJUMBEN
+    pjumbenFirstLoadingScreen: 'https://i.imgur.com/o8xSIxJ.jpg',
+    pjumbenSecondLoadingScreen: 'https://i.imgur.com/o8xSIxJ.jpg',
+
+    // OCEAN
+    seaLoadingScreen: 'https://i.imgur.com/qdwYzOn.gif',
+    sunriseLoadingScreen: 'https://i.imgur.com/Ad7D7gp.gif',
+
+    // HALLOWEEN
+    halloweenLoadingScreen: 'https://i.imgur.com/pTCOMQq.gif',
+    ghostLoadingScreen: 'https://i.imgur.com/DDRgOEA.gif',
+
 
     ownerBackgroundImage: 'https://i.imgur.com/6us5gBb.png',
     babeOwnerBackgroundImage: 'https://i.imgur.com/UKmcxbK.png',

@@ -2,8 +2,8 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
-const MoreItems = ShopItems.flatMap(shop => shop.inventory);
-const Items = [...ImportantItems, ...MoreItems];
+const moreItems = ShopItems.flatMap(shop => shop.inventory);
+const allItems = moreItems.concat(ImportantItems);
 
 module.exports = class RemoveItem extends Command {
     constructor(client) {
@@ -11,7 +11,7 @@ module.exports = class RemoveItem extends Command {
             name: 'removeitem',
             description: {
                 content: '',
-                examples: ['removeitem gem 2'],
+                examples: ['removeitem peach 2'],
                 usage: 'removeitem <item> [quantity]',
             },
             category: 'dev',
@@ -33,8 +33,8 @@ module.exports = class RemoveItem extends Command {
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         if (mention.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'), color);
 
-        const itemName = args[1]?.toLowerCase();
-        const itemInfo = Items.find(({ id }) => id === itemName);
+        const itemId = args[1]?.toLowerCase();
+        const itemInfo = allItems.find((item) => item.id?.toLowerCase() === itemId);
 
         if (!itemInfo) {
             return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'invalid_item'), color);
@@ -48,13 +48,13 @@ module.exports = class RemoveItem extends Command {
         const baseQuantity = parseInt(quantity);
         try {
             await Users.updateOne(
-                { userId: mention.id, 'inventory.item': itemName },
+                { userId: mention.id, 'inventory.id': itemId },
                 { $inc: { 'inventory.$.quantity': -baseQuantity } }
             );
 
             await Users.updateOne(
                 { userId: mention.id, 'inventory.quantity': { $lte: 0 } },
-                { $pull: { inventory: { item: itemName } } }
+                { $pull: { inventory: { id: itemId } } }
             );
             const embed = client
                 .embed()
