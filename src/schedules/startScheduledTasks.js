@@ -38,12 +38,12 @@ async function checkBirthdays(client) {
             const xp = parseInt(day) + (new Date(Date.parse(`${month} 1, 2020`)).getMonth() + 1) + parseInt(year.slice(-2));
 
             const birthdayEmbed = client.embed()
-                .setColor(color.main)
+                .setColor('Green')
                 .setTitle(`🎉 Happy Birthday, ${user.profile.username || user.username}! 🎂`)
                 .setDescription(`On this special day, we celebrate you and all the joy you bring into our lives! May your year ahead be filled with exciting adventures, unforgettable moments, and everything you've ever wished for. Remember, you are loved and cherished by all of us! 🎈`)
                 .addFields(
                     {name: '🎁 Your Birthday Gift:', value: `${giftBalance} coins`, inline: true},
-                    {name: '✨ Your Birthday XP::', value:  `${xp} XP`, inline: true}
+                    {name: '✨ Your Birthday XP:', value:  `${xp} XP`, inline: true}
                 )
                 .setFooter('Have an amazing birthday filled with love and happiness!')
                 .setTimestamp();
@@ -97,7 +97,7 @@ async function checkGiveaways(client) {
 function startScheduledTasks(client) {
     // Schedule the birthday check every day at 7AM
     cron.schedule('0 7 * * *', () => {
-        checkBirthdays(client).then(r => logger.start(`[Giveaway] Scheduled tasks started: ${r}`));
+        checkBirthdays(client).then(r => logger.error(`Birthday Check Is Error: ${r}`));
     });
 
     // // Schedule the giveaway check every hour
