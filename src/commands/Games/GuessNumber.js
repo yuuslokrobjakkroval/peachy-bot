@@ -64,7 +64,6 @@ module.exports = class GuessNumber extends Command {
 
         collector.on('collect', async response => {
             const guess = parseInt(response.content);
-            console.log(numberToGuess)
             if (guess === numberToGuess) {
                 const coinEarned = Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000;
                 const xpEarned = Math.floor(Math.random() * 51) + 30;

@@ -31,8 +31,6 @@ module.exports = class Rules extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const rulesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.rulesMessages;
-
-    console.log(rulesMessages)
     const embed = this.client.embed()
         .setColor(color.main)
         .setTitle(rulesMessages.title)
