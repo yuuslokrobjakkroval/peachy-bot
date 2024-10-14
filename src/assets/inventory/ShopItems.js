@@ -276,22 +276,6 @@ module.exports = [
                 price: { buy: 1e6, sell: 5e5 },
                 limit: 100,
             },
-            {
-                id: 'st01',
-                name: 'Celestial Grace',
-                description: 'A divine theme that bathes your embed in heavenly whites and golds, with ethereal emojis to match.',
-                type: 'theme',
-                able: {
-                    use: true,
-                    gift: false,
-                    multiple: false,
-                },
-                quantity: 1,
-                emoji: emoji.heaven,
-                available: ['use'],
-                price: { buy: 200e7, sell: 7e6 },
-                limit: 30,
-            },
         ],
     },
 ];

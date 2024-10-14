@@ -348,8 +348,8 @@ module.exports = [
     },
     {
         id: 'st02',
-        name: 'Celestial Grace',
-        description: 'A divine theme that bathes your embed in heavenly whites and golds, with ethereal emojis to match.',
+        name: 'Sakura Serenity',
+        description: 'Immerse your embed in the soft, tranquil beauty of cherry blossoms with delicate pinks and gentle whites. Embrace a peaceful atmosphere with serene sakura emojis to enhance your design.',
         type: 'theme',
         able: {
             use: true,
