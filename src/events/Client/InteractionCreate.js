@@ -24,7 +24,7 @@ class InteractionCreate extends Event {
       const command = this.client.commands.get(interaction.commandName);
       if (!command) return;
 
-      let user = await Users.findOne({ userId: message.author.id });
+      let user = await Users.findOne({ userId: interaction.author.id });
 
       if (user?.verification?.isBanned) {
         // return await message.channel.send({
