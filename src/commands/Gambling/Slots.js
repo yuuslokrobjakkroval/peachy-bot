@@ -66,25 +66,25 @@ module.exports = class Slots extends Command {
 		let win = 0;
 
 		if (verify) {
-			if (rand <= 20) { // 20%
+			if (rand <= 24) { // 24%
 				win = baseCoins;
 				rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-			} else if (rand <= 30) { // 10%
+			} else if (rand <= 38) { // 12%
 				win = baseCoins * 2;
 				rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-			} else if (rand <= 36) { // 6%
+			} else if (rand <= 46) { // 8%
 				win = baseCoins * 3;
 				rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-			} else if (rand <= 46) { // 10%
+			} else if (rand <= 55) { // 9%
 				win = 0;
 				rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-			} else if (rand <= 50) { // 4%
+			} else if (rand <= 58) { // 3%
 				win = baseCoins * 4;
 				rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-			} else if (rand <= 53) { // 3%
+			} else if (rand <= 60) { // 2%
 				win = baseCoins * 10;
 				rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-			} else { // 49.50%
+			} else { // 40%
 				let slot1 = Math.floor(Math.random() * SLOTS.length);
 				let slot2 = Math.floor(Math.random() * SLOTS.length);
 				let slot3 = Math.floor(Math.random() * SLOTS.length);
@@ -93,22 +93,22 @@ module.exports = class Slots extends Command {
 				rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
 			}
 		} else {
-			if (rand <= 20) { // 20%
+			if (rand <= 22) { // 22%
 				win = baseCoins;
 				rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-			} else if (rand <= 33) { // 13%
+			} else if (rand <= 34) { // 12%
 				win = baseCoins * 2;
 				rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-			} else if (rand <= 40) { // 7%
+			} else if (rand <= 42) { // 8%
 				win = baseCoins * 3;
 				rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-			} else if (rand <= 45) { // 5%
+			} else if (rand <= 50) { // 8%
 				win = 0;
 				rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-			} else if (rand <= 48.50) { // 3.5%
+			} else if (rand <= 52.5) { // 2.5%
 				win = baseCoins * 4;
 				rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-			} else if (rand <= 50.50) { // 2%
+			} else if (rand <= 54) { // 1.5%
 				win = baseCoins * 10;
 				rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 			} else { // 49.50%
