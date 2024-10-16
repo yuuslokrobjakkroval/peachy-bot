@@ -36,7 +36,7 @@ module.exports = {
 
     // OCEAN
     seaLoadingScreen: 'https://i.imgur.com/qdwYzOn.gif',
-    sunriseLoadingScreen: 'https://i.imgur.com/Ad7D7gp.gif',
+    sunriseLoadingScreen: 'https://i.imgur.com/XJtojtA.gif',
 
     // HALLOWEEN
     halloweenLoadingScreen: 'https://i.imgur.com/pTCOMQq.gif',
