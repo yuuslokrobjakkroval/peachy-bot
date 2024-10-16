@@ -322,12 +322,84 @@
 
 	},
 	"inventoryMessages": {
-		"inventoryHeader": "%{author}'s inventory!",
-		"inventoryEmptyName": "Empty Inventory",
-		"inventoryEmptyValue": "Your current inventory is empty.",
-		"itemNotFound": "The item ID **`%{itemId}`** couldn't be found in the shop!",
-		"sellDisabled": "Selling this item is disabled.",
-		"useDisabled": "Using this item is disabled."
+		"buyMessages": {
+			"invalidItem": "The item with ID `{{itemId}}` was not found. Please check the shop for available items.",
+			"themeAlreadyOwned": "You already own the theme {{itemEmote}} **{{itemName}}**. You cannot buy it again.",
+			"itemCannotBeBought": "The item {{itemEmote}} **{{itemName}}** is not available for purchase.",
+			"notEnoughCoins": "You need {{coinEmote}}{{neededCoins}} more to buy {{itemEmote}} **{{itemName}}**.",
+			"success": "successfully purchased",
+			"partial": "but you could only afford",
+			"description": "You have {{afford}} {{itemEmote}} **{{itemName}}** for {{coinEmote}}{{totalPrice}}. You bought **{{amountToBuy}}** items.",
+			"buyDisable": "This item {{itemEmote}} **{{itemName}}** cannot be purchased at this time.",
+			"zeroBalance": "You have no coins to make a purchase. Earn coins first before buying items."
+		},
+		"drinkMessages": {
+			"emptyInventory": "Your inventory is empty.",
+			"itemNotFound": "The item with ID `{{itemId}}` was not found. Please check your inventory.",
+			"cannotDrinkFood": "You can't drink {{itemEmote}} **{{itemName}}**. It's food!",
+			"notDrinkable": "The item you selected is not drinkable.",
+			"noDrinkItem": "You don't have this drink item in your inventory.",
+			"invalidAmount": "Invalid amount. Please enter a positive integer value.",
+			"successDrink": "You drank {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} and gained **{{xpGained}} XP**."
+		},
+		"eatMessages": {
+			"emptyInventory": "Your inventory is empty.",
+			"itemNotFound": "The item with ID `{{itemId}}` was not found. Please check your inventory.",
+			"cannotEatDrink": "You can't eat {{itemEmote}} **{{itemName}}**. It's a drink!",
+			"notEdible": "This item is not edible.",
+			"noFoodItem": "You don't have this food item in your inventory.",
+			"invalidAmount": "Invalid amount. Please enter a positive integer value.",
+			"successEat": "You ate {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} and gained **{{xpGained}} XP**."
+		},
+		"giveItemMessages": {
+			"emptyInventory": "Your inventory is empty.",
+			"noUser": "No user was mentioned or found.",
+			"mentionToBot": "You cannot give items to a bot.",
+			"mentionToSelf": "You cannot give items to yourself.",
+			"itemNotFound": "The item with ID `{{itemId}}` was not found!",
+			"noItemInInventory": "You don't have {{itemEmote}} **{{itemName}}** in your inventory.",
+			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** cannot be given.",
+			"invalidAmount": "Invalid amount specified.",
+			"confirmationTitle": "Give Item - {{author}}",
+			"confirmationDescription": "{{author}}, select **Accept** to proceed with the transaction or **Cancel** to decline.",
+			"sentItem": "Sent item",
+			"receivedItem": "Received item",
+			"transactionSuccess": "You have accepted the transaction. {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} has been transferred to **{{target}}**.",
+			"transactionCancelled": "You have canceled the transaction. No items have been transferred."
+		},
+		"invMessages": {
+			"noInventory": "You don't have any items in your inventory.",
+			"emptyInventoryFieldName": "Inventory",
+			"emptyInventoryFieldValue": "Your inventory is currently empty.",
+			"inventoryNet": "Inventory Net",
+			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+			"footerText": "Requested by {user}",
+			"error": "An error occurred while retrieving your inventory."
+		},
+		"sellMessages": {
+			"inventoryEmpty": "Your inventory is empty.",
+			"itemNotOwned": "You don't have **{item}** in your inventory.",
+			"itemNotSellable": "The item **{item}** is not sellable!",
+			"itemNotFound": "The item with id **{item}** couldn't be found!",
+			"sellSuccess": "You sold **{quantity}** **{item}** for **{price}** coins.",
+			"noSellableItems": "You don't have any sellable items in your inventory.",
+			"cancelled": "Sell canceled.",
+			"acceptSell": "You sold your items for **{price}** coins.",
+			"invalidQuantity": "Invalid quantity specified.",
+			"sellError": "An error occurred while processing your sell request."
+		},
+		"shopInfoMessages": {
+			"itemNotFound": "Item with ID `{id}` not found.",
+			"noItemsAvailable": "No items available in the shop.",
+			"noAdditionalCommands": "No additional commands available for this item.",
+			"itemDetailsHeader": "Item Details",
+			"itemLimit": "Limit",
+			"itemPrice": "Price",
+			"itemSellPrice": "Sell Price",
+			"itemDescription": "Description",
+			"shopItemListHeader": "Here is the list of all items sorted by type:",
+			"itemListFooter": "Use `shopinfo <id>` to get more details about an item."
+		}
 	},
 	"utilityMessages": {
 		"themeMessages": {

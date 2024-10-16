@@ -40,36 +40,39 @@ module.exports = class Eat extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const eatMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.eatMessages;
         const authorId = ctx.author.id;
         const user = await Users.findOne({ userId: authorId });
 
         if (!user || user.inventory.length === 0) {
-            return await client.utils.sendErrorMessage(client, ctx, 'Your inventory is empty.', color);
+            return await client.utils.sendErrorMessage(client, ctx, eatMessages.emptyInventory, color);
         }
 
         const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() : args[0];
         const itemInfo = AllItems.find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
 
         if (!itemInfo) {
-            return await client.utils.sendErrorMessage(client, ctx, `Item not found in inventory.`, color);
+            return await client.utils.sendErrorMessage(client, ctx, eatMessages.itemNotFound.replace('{{itemId}}', itemId), color);
         }
 
         if (itemInfo.type === 'drink') {
-            return await client.utils.sendErrorMessage(client, ctx, `You can't eat ${itemInfo.emoji} **${itemInfo.name}**. It's a drink!`, color);
+            return await client.utils.sendErrorMessage(client, ctx, eatMessages.cannotEatDrink
+                .replace('{{itemEmote}}', itemInfo.emoji)
+                .replace('{{itemName}}', itemInfo.name), color);
         }
 
         if (itemInfo.type !== 'food') {
-            return await client.utils.sendErrorMessage(client, ctx, `This item is not edible.`, color);
+            return await client.utils.sendErrorMessage(client, ctx, eatMessages.notEdible, color);
         }
 
         const hasItems = user.inventory.find(item => item.id === itemId);
         if (!hasItems) {
-            return await client.utils.sendErrorMessage(client, ctx, `You don't have this food item.`, color);
+            return await client.utils.sendErrorMessage(client, ctx, eatMessages.noFoodItem, color);
         }
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.')) {
-            return await client.utils.sendErrorMessage(client, ctx, 'Invalid amount.', color);
+            return await client.utils.sendErrorMessage(client, ctx, eatMessages.invalidAmount, color);
         }
 
         const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
@@ -87,7 +90,11 @@ module.exports = class Eat extends Command {
         const embed = client
             .embed()
             .setColor(color.main)
-            .setDescription(`You ate ${itemInfo.emoji} **\`x${itemAmount}\`** ${itemInfo.name} and gained **${xpGained} XP**.`);
+            .setDescription(eatMessages.successEat
+                .replace('{{itemEmote}}', itemInfo.emoji)
+                .replace('{{itemAmount}}', itemAmount)
+                .replace('{{itemName}}', itemInfo.name)
+                .replace('{{xpGained}}', xpGained));
 
         await ctx.sendMessage({ embeds: [embed] });
     }

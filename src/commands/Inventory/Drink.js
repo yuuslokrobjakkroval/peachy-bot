@@ -40,37 +40,40 @@ module.exports = class Drink extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const drinkMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.drinkMessages;
         const authorId = ctx.author.id;
         const user = await Users.findOne({ userId: authorId });
 
         if (!user || user.inventory.length === 0) {
-            return await client.utils.sendErrorMessage(client, ctx, 'Your inventory is empty.', color);
+            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.emptyInventory, color);
         }
 
         const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() : args[0];
         const itemInfo = AllItems.find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
 
         if (!itemInfo) {
-            return await client.utils.sendErrorMessage(client, ctx, `Item with ID \`${itemId}\` not found.`, color);
+            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.itemNotFound.replace('{{itemId}}', itemId), color);
         }
-        // Check if the item is food and return a message
+
         if (itemInfo.type === 'food') {
-            return await client.utils.sendErrorMessage(client, ctx, `You can't drink ${itemInfo.emoji} **${itemInfo.name}**. It's food!`, color);
+            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.cannotDrinkFood
+                .replace('{{itemEmote}}', itemInfo.emoji)
+                .replace('{{itemName}}', itemInfo.name), color);
         }
 
         if (itemInfo.type !== 'drink') {
-            return await client.utils.sendErrorMessage(client, ctx, `This item is not drinkable.`, color);
+            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.notDrinkable, color);
         }
 
         const hasItems = user.inventory.find(item => item.id === itemId);
 
         if (!itemInfo || !hasItems) {
-            return await client.utils.sendErrorMessage(client, ctx, `You don't have this drink item.`, color);
+            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.noDrinkItem, color);
         }
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.')) {
-            return await client.utils.sendErrorMessage(client, ctx, 'Invalid amount.', color);
+            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.invalidAmount, color);
         }
 
         const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
@@ -88,7 +91,11 @@ module.exports = class Drink extends Command {
         const embed = client
             .embed()
             .setColor(color.main)
-            .setDescription(`You drank ${itemInfo.emoji} **\`x${itemAmount}\`** ${itemInfo.name} and gained **${xpGained} XP**.`);
+            .setDescription(drinkMessages.successDrink
+                .replace('{{itemEmote}}', itemInfo.emoji)
+                .replace('{{itemAmount}}', itemAmount)
+                .replace('{{itemName}}', itemInfo.name)
+                .replace('{{xpGained}}', xpGained));
 
         await ctx.sendMessage({ embeds: [embed] });
     }

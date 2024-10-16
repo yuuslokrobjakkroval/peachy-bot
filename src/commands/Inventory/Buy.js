@@ -41,65 +41,89 @@ module.exports = class Buy extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const user = await Users.findOne({ userId: ctx.author.id });
-        const { coin, bank } = user.balance;
-        if (coin < 1) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'zero_balance'), color);
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const buyMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.buyMessages;
 
-        const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString().toLowerCase() : args[0].toLowerCase();
+        // Fetch the user data
+        const user = await Users.findOne({ userId: ctx.author.id });
+
+        // Ensure the user has coins
+        const { coin, bank } = user.balance;
+        if (coin < 1) {
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
+        }
+
+        // Get the item ID
+        const itemId = ctx.isInteraction
+            ? ctx.interaction.options.data[0]?.value.toString().toLowerCase()
+            : args[0].toLowerCase();
+
+        // Find the item by ID
         const itemInfo = Items.find((item) => item.id === itemId);
 
+        // If item not found, send error message
         if (!itemInfo) {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                client.i18n.get(language, 'commands', 'invalid_item', { itemId: args.join(' ') }),
+                buyMessages.invalidItem.replace('{{itemId}}', args.join(' ')),
                 color
             );
         }
 
-        // Check if the item is a theme and if the user already owns it
+        // Check if the item is a theme and the user already owns it
         if (itemInfo.type === 'theme') {
             const themeExists = user.inventory.find(invItem => invItem.id === itemId);
             if (themeExists) {
                 return await client.utils.sendErrorMessage(
                     client,
                     ctx,
-                    client.i18n.get(language, 'commands', 'theme_already_owned', { itemEmote: itemInfo.emoji, itemName: itemInfo.name }),
+                    buyMessages.themeAlreadyOwned
+                        .replace('{{itemEmote}}', itemInfo.emoji)
+                        .replace('{{itemName}}', itemInfo.name),
                     color
                 );
             }
         }
 
+        // Prevent buying items that can't be purchased
         if (itemInfo.price.buy === 0) {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                client.i18n.get(language, 'commands', 'buydisable', { itemEmote: itemInfo.emoji, itemName: itemInfo.name }),
+                buyMessages.itemCannotBeBought
+                    .replace('{{itemEmote}}', itemInfo.emoji)
+                    .replace('{{itemName}}', itemInfo.name),
                 color
             );
         }
 
+        // Check if user has enough coins
         if (itemInfo.price.buy > coin) {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                client.i18n.get(language, 'commands', 'buy_afford', {
-                    coinEmote: emoji.coin,
-                    needCoin: itemInfo.price.buy - coin,
-                    itemEmote: itemInfo.emoji,
-                    itemName: itemInfo.name,
-                }),
+                buyMessages.notEnoughCoins
+                    .replace('{{coinEmote}}', emoji.coin)
+                    .replace('{{neededCoins}}', itemInfo.price.buy - coin)
+                    .replace('{{itemEmote}}', itemInfo.emoji)
+                    .replace('{{itemName}}', itemInfo.name),
                 color
             );
         }
 
+        // Calculate max amount and handle amount logic
         let maxAmountToBuy = Math.floor(coin / itemInfo.price.buy);
         let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
+
         if (isNaN(amount) || amount < 1 || amount.toString().includes('.') || amount.toString().includes(',')) {
             const amountMap = { all: coin, half: Math.ceil(coin / 2) };
 
-            if (amount in amountMap) amount = amountMap[amount];
-            else return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'invalid_amount'), color);
+            if (amount in amountMap) {
+                amount = amountMap[amount];
+            } else {
+                return await client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
+            }
         }
 
         let totalPrice = Math.floor(itemInfo.price.buy * amount);
@@ -113,20 +137,17 @@ module.exports = class Buy extends Command {
 
         const amountToBuy = parseInt(Math.min(amount, maxAmountToBuy));
 
-        const embed = client
-            .embed()
+        // Success embed with item purchase details
+        const embed = client.embed()
             .setColor(color.main)
             .setDescription(
-                client.i18n.get(language, 'commands', 'buy_description', {
-                    afford: afford
-                        ? client.i18n.get(language, 'commands', 'buy_successfully')
-                        : client.i18n.get(language, 'commands', 'buy_afford_to_buy'),
-                    itemEmote: itemInfo.emoji,
-                    itemName: itemInfo.name,
-                    coinEmote: emoji.coin,
-                    totalPrice: client.utils.formatNumber(totalPrice),
-                    amountToBuy,
-                })
+                buyMessages.description
+                    .replace('{{afford}}', afford ? buyMessages.success : buyMessages.partial)
+                    .replace('{{itemEmote}}', itemInfo.emoji)
+                    .replace('{{itemName}}', itemInfo.name)
+                    .replace('{{coinEmote}}', emoji.coin)
+                    .replace('{{totalPrice}}', client.utils.formatNumber(totalPrice))
+                    .replace('{{amountToBuy}}', amountToBuy)
             );
 
         // Update user's inventory and balance
@@ -154,6 +175,7 @@ module.exports = class Buy extends Command {
             ).exec();
         }
 
+        // Send the purchase confirmation
         return await ctx.sendMessage({ embeds: [embed] });
     }
 };

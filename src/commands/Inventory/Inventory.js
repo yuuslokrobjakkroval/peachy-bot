@@ -29,20 +29,25 @@ module.exports = class Inventory extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const invMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.invMessages;
+
         try {
+            // Retrieve user data
             const user = await Users.findOne({ userId: ctx.author.id });
             if (!user || !user.inventory) {
+                // Use localized error message
                 return await client.utils.sendErrorMessage(
                     client,
                     ctx,
-                    'No inventory data found for this user.',
+                    invMessages.noInventory || 'No inventory data found for this user.', // Fallback in case localization key is missing
                     color
                 );
             }
 
             const itemList = {};
-
             let totalWorth = 0;
+
+            // Loop through user's inventory and calculate total worth
             user.inventory.forEach(item => {
                 if (item.quantity > 0) {
                     const itemInfo = Items.concat(ImportantItems).find(({ id }) => id === item.id);
@@ -60,16 +65,16 @@ module.exports = class Inventory extends Command {
                 }
             });
 
-
             const fields = [];
             const inventoryTypes = ['milk', 'food', 'drink', 'theme'];
 
+            // Organize items by type and ensure they fit into Discord's embed field length limits
             inventoryTypes.forEach(type => {
                 const items = itemList[type];  // Extract the items of this type
                 if (items && items.length > 0) {
                     let chunk = [];
                     let chunkLength = 0;
-                    const isInline = type !== 'milk';  // Inline true only for 'tool'
+                    const isInline = type !== 'milk';  // Inline true only for non-'milk' types
 
                     items.forEach(item => {
                         if (chunkLength + item.length + 1 > 1024) {
@@ -95,36 +100,43 @@ module.exports = class Inventory extends Command {
                 }
             });
 
-
+            // Prepare fields for the embed with the inventory total worth
             const embedFields = [
                 {
-                    name: 'Inventory Net',
+                    name: invMessages.inventoryNet || 'Inventory Net',  // Localized label for total worth
                     value: `**\`${client.utils.formatNumber(totalWorth)}\`** ${emoji.coin}`,
                     inline: false,
                 },
                 ...(fields.length ? fields : [
                     {
-                        name: client.i18n.get(language, 'commands', 'inventory_fields_name'),
-                        value: client.i18n.get(language, 'commands', 'inventory_fields_value'),
+                        name: invMessages.emptyInventoryFieldName || 'Inventory',
+                        value: invMessages.emptyInventoryFieldValue || 'Your inventory is currently empty.',
                     },
                 ])
             ];
 
+            // Build the embed
             const embed = client
                 .embed()
                 .setColor(color.main)
-                .setDescription(`## ${emoji.inventory.mainLeft} 𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘 ${emoji.inventory.mainRight}`)
+                .setDescription(`## ${emoji.inventory.mainLeft} ${invMessages.inventoryTitle || '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘'} ${emoji.inventory.mainRight}`)
                 .setThumbnail(client.utils.emojiToImage(emoji.inventory.main))
                 .addFields(embedFields)
                 .setFooter({
-                    text: `Request By ${ctx.author.displayName}`,
+                    text: invMessages.footerText?.replace('{user}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
-                })
+                });
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Error in Inventory command:', error);
-            await client.utils.sendErrorMessage(client, ctx, 'An error occurred while retrieving your inventory.', color);
+            // Send error message from localization
+            await client.utils.sendErrorMessage(
+                client,
+                ctx,
+                invMessages.error || 'An error occurred while retrieving your inventory.',  // Fallback message
+                color
+            );
         }
     }
 };

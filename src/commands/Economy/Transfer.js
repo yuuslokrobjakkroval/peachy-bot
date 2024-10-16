@@ -30,8 +30,8 @@ module.exports = class Transfer extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const transferMessages = language.locales.get(language.defaultLocale)?.economyMessages?.transferMessages;
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const transferMessages = language.locales.get(language.defaultLocale)?.economyMessages?.transferMessages;
 
         // Fetch the target user
         const targetUser = ctx.isInteraction
@@ -94,13 +94,15 @@ module.exports = class Transfer extends Command {
             );
 
         const messageEmbed = await ctx.channel.send({ embeds: [embed], components: [allButtons] });
-        const collector = getCollectionButton(messageEmbed);
+
+        const filter = (interaction) => interaction.user.id === ctx.author.id;
+        const collector = messageEmbed.createMessageComponentCollector({ filter, time: 300000 });
 
         collector.on('collect', async (interaction) => {
             if (interaction.user.id !== ctx.author.id) {
                 return await interaction.reply({ content: generalMessages.notForYou || "This action is not for you.", ephemeral: true });
             } else {
-
+                await interaction.deferUpdate();
                 if (interaction.customId === 'confirm_button') {
                     // Perform the transfer
                     user.balance.coin -= amount;
@@ -123,7 +125,7 @@ module.exports = class Transfer extends Command {
                                 iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
                             });
 
-                        await ctx.channel.send({embeds: [confirmationEmbed]});
+                        await ctx.channel.send({ embeds: [confirmationEmbed] });
 
                         // Optional: Thanks GIF message
                         setTimeout(async () => {
@@ -132,7 +134,7 @@ module.exports = class Transfer extends Command {
                                 .setDescription(`${targetUser} wants to say thanks to ${ctx.author}.`)
                                 .setImage(gif.thanks);
 
-                            await ctx.channel.send({embeds: [imageEmbed]});
+                            await ctx.channel.send({ embeds: [imageEmbed] });
                         }, 2000);
 
                         await messageEmbed.delete();

@@ -34,24 +34,26 @@ module.exports = class ShopInfo extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji) {
+    async run(client, ctx, args, color, emoji, language) {
+        const shopInfoMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.shopInfoMessages; // Reference shopInfoMessages
+
         const itemId = args[0];
 
         if (itemId === 'list') {
-            return this.listAllItems(client, ctx, color, emoji);
+            return this.listAllItems(client, ctx, color, emoji, shopInfoMessages);
         }
 
         const item = AllItems.find(i => i.id === itemId);
 
         if (!item) {
-            return await client.utils.sendErrorMessage(client, ctx, `Item with ID \`${itemId}\` not found.`, color);
+            return await client.utils.sendErrorMessage(client, ctx, shopInfoMessages.itemNotFound.replace('{id}', itemId), color); // Use localized message
         }
 
-        const embed = this.createItemEmbed(client, ctx, item, color, emoji);
+        const embed = this.createItemEmbed(client, ctx, item, color, emoji, shopInfoMessages); // Pass messages to embed creation
         await ctx.channel.send({ embeds: [embed] });
     }
 
-    async listAllItems(client, ctx, color) {
+    async listAllItems(client, ctx, color, emoji, shopInfoMessages) {
         const categorizedItems = {
             Food: [],
             Drink: [],
@@ -73,8 +75,11 @@ module.exports = class ShopInfo extends Command {
                 case 'milk':
                     categorizedItems.Milk.push(`**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`);
                     break;
+                default:
+                    break; // Optionally handle unknown item types
             }
         }
+
         const itemList = [
             ...categorizedItems.Food,
             ...categorizedItems.Drink,
@@ -82,24 +87,22 @@ module.exports = class ShopInfo extends Command {
             ...categorizedItems.Milk
         ];
 
-        let chunks = client.utils.chunk(itemList, 10);
-        const pages = [];
-        for (let i = 0; i < chunks.length; i++) {
-            const embed = client.embed()
-                .setColor(color.main)
-                .setDescription(chunks[i].join('\n\n'))
-                .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
-            pages.push(embed);
+        if (itemList.length === 0) {
+            return ctx.reply(shopInfoMessages.noItemsAvailable); // Use localized message
         }
 
-        if (pages.length === 0) {
-            return ctx.reply('No items available.');
-        }
+        let chunks = client.utils.chunk(itemList, 10);
+        const pages = chunks.map((chunk, index) => {
+            return client.embed()
+                .setColor(color.main)
+                .setDescription(chunk.join('\n\n'))
+                .setFooter({ text: `Page ${index + 1} of ${chunks.length}` });
+        });
 
         return await client.utils.reactionPaginate(ctx, pages);
     }
 
-    createItemEmbed(client, ctx, item, color, emoji) {
+    createItemEmbed(client, ctx, item, color, emoji, shopInfoMessages) {
         let helpCommand;
         switch (item.type) {
             case 'food':
@@ -115,7 +118,8 @@ module.exports = class ShopInfo extends Command {
                 helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`psell ${item.id}\``;
                 break;
             default:
-                return;
+                helpCommand = shopInfoMessages.noAdditionalCommands; // Fallback for unrecognized types
+                break;
         }
 
         return client.embed()
