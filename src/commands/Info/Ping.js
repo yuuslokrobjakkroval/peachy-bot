@@ -33,7 +33,24 @@ module.exports = class Ping extends Command {
     await ctx.sendDeferMessage("Pinging...");
     let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
 
-
+    const embed = client
+        .embed()
+        .setTitle(`**${emoji.mainLeft} 𝐏𝐎𝐍𝐆 ${emoji.mainRight}**`)
+        .setColor(color.main)
+        .setThumbnail(ctx.author.displayAvatarURL())
+        .addFields([
+          {
+            name: `𝐁𝐎𝐓 ${emoji.ping}`,
+            value: `\`\`\`ini\n[ ${randomNumber}ms ]\n\`\`\``,
+            inline: true,
+          },
+          {
+            name: `𝐀𝐏𝐈 ${emoji.ping}`,
+            value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
+            inline: true,
+          },
+        ])
+        .setTimestamp();
     await ctx.editMessage({ content: "", embeds: [embed] });
   }
 }
