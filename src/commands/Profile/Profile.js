@@ -115,6 +115,8 @@ module.exports = class Profile extends Command {
                     embeds: [embed],
                 });
 
+                await new Promise(resolve => setTimeout(resolve, 2500));
+
                 const canvas = createCanvas(720, 400);
                 const context = canvas.getContext('2d');
                 const backgroundImage = await loadImage(await backgroundImages(targetUser.id, userData?.profile?.gender));
@@ -130,72 +132,72 @@ module.exports = class Profile extends Command {
                     files: [attachment],
                 });
 
-                // const emojiOptions = [
-                //     emoji.social.facebook,
-                //     emoji.social.instagram,
-                //     emoji.social.tiktok,
-                // ];
-                //
-                // const emojiMap = {
-                //     'facebook': emojiOptions[0]?.name || emojiOptions[0],
-                //     'instagram': emojiOptions[1]?.name || emojiOptions[1],
-                //     'tiktok': emojiOptions[2]?.name || emojiOptions[2],
-                // };
-                //
-                // for (const emoji of emojiOptions) {
-                //     await loadingMessage.react(emoji);
-                // }
-                //
-                // const filter = (reaction, user) => {
-                //     const reactionEmoji = reaction.emoji.toString();
-                //     const validReactions = Object.values(emojiMap);
-                //     return validReactions.includes(reactionEmoji) && user.id === ctx.author.id;
-                // };
-                //
-                // const collector = loadingMessage.createReactionCollector({ filter });
-                //
-                // collector.on('collect', async (reaction) => {
-                //     let responseMessage = '';
-                //     const reactionEmoji = reaction.emoji.toString();
-                //     const platform = Object.keys(emojiMap).find(key => emojiMap[key] === reactionEmoji);
-                //
-                //     switch (platform) {
-                //         case 'facebook':
-                //             responseMessage = userData.social.facebook.name && userData.social.facebook.link
-                //                 ? `Here is the Facebook link for ${targetUser.displayName}: [${userData.social.facebook.name}](${userData.social.facebook.link})`
-                //                 : `${targetUser.displayName} has not set a Facebook link.`;
-                //             break;
-                //         case 'instagram':
-                //             responseMessage = userData.social.instagram.name && userData.social.instagram.link
-                //                 ? `Here is the Instagram link for ${targetUser.displayName}: [${userData.social.instagram.name}](${userData.social.instagram.link})`
-                //                 : `${targetUser.displayName} has not set an Instagram link.`;
-                //             break;
-                //         case 'tiktok':
-                //             responseMessage = userData.social.tiktok.name && userData.social.tiktok.link
-                //                 ? `Here is the TikTok link for ${targetUser.displayName}: [${userData.social.tiktok.name}](${userData.social.tiktok.link})`
-                //                 : `${targetUser.displayName} has not set a TikTok link.`;
-                //             break;
-                //     }
-                //
-                //     if (responseMessage) {
-                //         const embeds = client.embed()
-                //             .setTitle(`${emoji.mainLeft} ${client.utils.formatCapitalize(platform)} Link for ${targetUser.displayName} ${emoji.mainRight}`)
-                //             .setColor(color.main)
-                //             .setDescription(responseMessage);
-                //         const message = await ctx.sendMessage({ embeds: [embeds] });
-                //
-                //         // Delete the message after 5 seconds
-                //         setTimeout(() => {
-                //             message.delete().catch(err => console.error('Failed to delete message:', err));
-                //         }, 5000); // 5000 milliseconds = 5 seconds
-                //     }
-                // });
-                //
-                // collector.on('end', (collected, reason) => {
-                //     if (reason === 'time') {
-                //         ctx.sendMessage('The reaction session has ended. Please use the command again to view the profile.');
-                //     }
-                // });
+                const emojiOptions = [
+                    emoji.social.facebook,
+                    emoji.social.instagram,
+                    emoji.social.tiktok,
+                ];
+
+                const emojiMap = {
+                    'facebook': emojiOptions[0]?.name || emojiOptions[0],
+                    'instagram': emojiOptions[1]?.name || emojiOptions[1],
+                    'tiktok': emojiOptions[2]?.name || emojiOptions[2],
+                };
+
+                for (const emoji of emojiOptions) {
+                    await loadingMessage.react(emoji);
+                }
+
+                const filter = (reaction, user) => {
+                    const reactionEmoji = reaction.emoji.toString();
+                    const validReactions = Object.values(emojiMap);
+                    return validReactions.includes(reactionEmoji) && user.id === ctx.author.id;
+                };
+
+                const collector = loadingMessage.createReactionCollector({ filter });
+
+                collector.on('collect', async (reaction) => {
+                    let responseMessage = '';
+                    const reactionEmoji = reaction.emoji.toString();
+                    const platform = Object.keys(emojiMap).find(key => emojiMap[key] === reactionEmoji);
+
+                    switch (platform) {
+                        case 'facebook':
+                            responseMessage = userData.social.facebook.name && userData.social.facebook.link
+                                ? `Here is the Facebook link for ${targetUser.displayName}: [${userData.social.facebook.name}](${userData.social.facebook.link})`
+                                : `${targetUser.displayName} has not set a Facebook link.`;
+                            break;
+                        case 'instagram':
+                            responseMessage = userData.social.instagram.name && userData.social.instagram.link
+                                ? `Here is the Instagram link for ${targetUser.displayName}: [${userData.social.instagram.name}](${userData.social.instagram.link})`
+                                : `${targetUser.displayName} has not set an Instagram link.`;
+                            break;
+                        case 'tiktok':
+                            responseMessage = userData.social.tiktok.name && userData.social.tiktok.link
+                                ? `Here is the TikTok link for ${targetUser.displayName}: [${userData.social.tiktok.name}](${userData.social.tiktok.link})`
+                                : `${targetUser.displayName} has not set a TikTok link.`;
+                            break;
+                    }
+
+                    if (responseMessage) {
+                        const embeds = client.embed()
+                            .setTitle(`${emoji.mainLeft} ${client.utils.formatCapitalize(platform)} Link for ${targetUser.displayName} ${emoji.mainRight}`)
+                            .setColor(color.main)
+                            .setDescription(responseMessage);
+                        const message = await ctx.sendMessage({ embeds: [embeds] });
+
+                        // Delete the message after 5 seconds
+                        setTimeout(() => {
+                            message.delete().catch(err => console.error('Failed to delete message:', err));
+                        }, 5000); // 5000 milliseconds = 5 seconds
+                    }
+                });
+
+                collector.on('end', (collected, reason) => {
+                    if (reason === 'time') {
+                        ctx.sendMessage('The reaction session has ended. Please use the command again to view the profile.');
+                    }
+                });
             }
         } catch (error) {
             await loadingMessage?.edit({
