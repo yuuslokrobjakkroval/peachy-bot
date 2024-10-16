@@ -42,9 +42,8 @@ module.exports = {
     halloweenLoadingScreen: 'https://i.imgur.com/pTCOMQq.gif',
     ghostLoadingScreen: 'https://i.imgur.com/DDRgOEA.gif',
 
-
-    ownerBackgroundImage: 'https://i.imgur.com/6us5gBb.png',
-    babeOwnerBackgroundImage: 'https://i.imgur.com/UKmcxbK.png',
+    ownerBackgroundImage: 'https://i.imgur.com/LxGus3x.png',
+    babeOwnerBackgroundImage: 'https://i.imgur.com/Il2bMbl.png',
     adminBackgroundImage: 'https://i.imgur.com/CFiR4He.png',
     maleBackgroundImage: 'https://i.imgur.com/o5VLCYz.png',
     femaleBackgroundImage: 'https://i.imgur.com/pKkVaQD.jpg',
