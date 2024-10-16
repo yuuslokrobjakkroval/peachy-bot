@@ -115,7 +115,7 @@ module.exports = class Profile extends Command {
                     embeds: [embed],
                 });
 
-                await new Promise(resolve => setTimeout(resolve, 2500));
+                await new Promise(resolve => setTimeout(resolve, 2000));
 
                 const canvas = createCanvas(720, 400);
                 const context = canvas.getContext('2d');
