@@ -357,7 +357,7 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.heaven,
+        emoji: emoji.sakura,
         available: ['use'],
         price: { buy: 2e7, sell: 1e7 },
         limit: 30,
