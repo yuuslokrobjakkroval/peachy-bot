@@ -102,13 +102,13 @@ module.exports = class Slots extends Command {
 			} else if (rand <= 42) { // 8%
 				win = baseCoins * 3;
 				rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-			} else if (rand <= 50) { // 8%
+			} else if (rand <= 51) { // 9%
 				win = 0;
 				rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-			} else if (rand <= 52.5) { // 2.5%
+			} else if (rand <= 53.5) { // 2.5%
 				win = baseCoins * 4;
 				rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-			} else if (rand <= 54) { // 1.5%
+			} else if (rand <= 55) { // 1.5%
 				win = baseCoins * 10;
 				rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 			} else { // 49.50%
