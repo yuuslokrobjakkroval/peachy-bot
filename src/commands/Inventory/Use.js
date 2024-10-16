@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require("../../schemas/user");
+const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems');
 const inventory = ShopItems.flatMap(shop => shop.inventory);
 const Themes = inventory.filter(value => value.type === 'theme').sort((a, b) => a.price.buy - b.price.buy);
@@ -38,7 +39,7 @@ module.exports = class Use extends Command {
         const themeMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.themeMessages; // Access messages
         const user = await Users.findOne({ userId: ctx.author.id });
         const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString().toLowerCase() : args[0].toLowerCase();
-        const themeItem = Themes.find((item) => item.id === itemId);
+        const themeItem = Themes.concat(ImportantItems).find((item) => item.id === itemId);
 
         if (!themeItem) {
             return await client.utils.sendErrorMessage(
