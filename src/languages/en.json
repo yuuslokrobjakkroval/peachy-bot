@@ -717,7 +717,8 @@
 					"notSet": "This user has not set a TikTok link.",
 					"linkText": "TikTok: [{name}]({link})"
 				}
-			}
+			},
+			"reactionSessionEnded": "The reaction session has ended. Please use the command again to view the profile."
 		},
 		"relationshipMessages": {
 			"success": {
