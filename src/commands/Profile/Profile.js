@@ -124,7 +124,7 @@ module.exports = class Profile extends Command {
                 const backgroundImage = await loadImage(await backgroundImages(targetUser.id, userData?.profile?.gender));
                 const stickerImage = await loadImage(userData?.profile?.gender === 'male' ? 'https://i.imgur.com/QVC2s9Q.png' : 'https://i.imgur.com/KGVDMub.png');
                 await drawBackground(context, backgroundImage);
-                await drawProfile(context, client, targetUser, userData, '', emoji, stickerImage);
+                await drawProfile(context, client, targetUser, userData, pfMessages, '', emoji, stickerImage);
 
                 const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.displayName}.png` });
 
@@ -215,7 +215,7 @@ function drawBackground(ctx, bannerImage) {
     ctx.drawImage(bannerImage, 0, 0, 720, 400);
 }
 
-async function drawProfile(context, client, ctx, user, userAvatarFrame, emoji, sticker) {
+async function drawProfile(context, client, ctx, pfMessages, user, userAvatarFrame, emoji, sticker) {
     // User avatar
     const userAvatar = await loadImage(ctx.displayAvatarURL({ format: 'png', size: 256 }));
     const userAvatarX = 113;
