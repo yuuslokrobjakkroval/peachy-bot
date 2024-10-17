@@ -36,7 +36,7 @@
 		},
 		"kissMessages": {
 			"title": "Thời gian hôn!",
-			"description": "trao một nụ hôn dễ thương cho",
+			"description": "trao một nụ hôn dễ thương",
 			"errors": {
 				"noUser": "Bạn cần đề cập đến một người dùng để hôn.",
 				"selfKiss": "Bạn không thể hôn chính mình.",
@@ -58,7 +58,7 @@
 			"errors": {
 				"noUser": "Bạn cần đề cập đến một người dùng để tát.",
 				"selfSlap": "Bạn không thể tự tát mình.",
-				"fetchFail": "Đã xảy ra lỗi khi tìm nạp ảnh GIF tát."
+				"fetchFail": "Đã xảy ra lỗi khi tìm nạp ảnh GIF tát vào mặt."
 			}
 		}
 	},
@@ -161,14 +161,14 @@
 			"zeroBalance": "Bạn không có tiền trong ngân hàng của bạn.",
 			"invalidAmount": "Vui lòng cung cấp số tiền hợp lệ để rút. ",
 			"tooHigh": "Bạn không thể rút nhiều hơn số tiền bạn có trong ngân hàng.",
-			"success": "{{coinEmote}} **Thành công, {{user}}!**\n{{amount}} tiền** từ ngân hàng của bạn.",
+			"success": "Bạn đã rút tiền {{coinEmote}} **{{amount}}** tiền từ ngân hàng của bạn.",
 			"error": "Đã xảy ra lỗi khi xử lý yêu cầu rút tiền của bạn."
 		}
 	},
 	"emoteMessages": {
 		"angryMessages": {
 			"title": "Thời gian giận dữ!",
-			"description": "**{{user}}** thể hiện biểu cảm giận dữ nhất!",
+			"description": "**{{user}}** thể hiện biểu cảm tức giận nhất!",
 			"error": "Đã xảy ra lỗi khi xử lý biểu tượng cảm xúc tức giận của bạn."
 		},
 		"cryMessages": {
@@ -247,7 +247,7 @@
 			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑",
 			"selectAnimal": "Chọn một con vật",
 			"noAnimals": "Không có động vật có sẵn",
-			"animalNotFound": "Không tìm thấy động vật.",
+			"animalNotFound": "Động vật không được tìm thấy.",
 			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋 𝐃𝐄𝐓𝐀𝐈𝐋",
 			"description": "Sự miêu tả",
 			"requestBy": "Yêu cầu bởi",
@@ -320,20 +320,58 @@
 			"gameOver": "Trò chơi của bạn đã kết thúc."
 		}
 	},
-	"inventoryMessages": {
-		"inventoryHeader": "Kho của %{author}!",
-		"inventoryEmptyName": "Hàng tồn kho trống",
-		"inventoryEmptyValue": "Khoảng không quảng cáo hiện tại của bạn trống.",
-		"itemNotFound": "Không thể tìm thấy ID mặt hàng **`%{itemId}`** trong cửa hàng!",
-		"sellDisabled": "Bán mặt hàng này bị vô hiệu hóa.",
-		"useDisabled": "Sử dụng mục này bị vô hiệu hóa."
-	},
-	"themeMessages": {
-		"themeApplied": "Bạn đã áp dụng thành công chủ đề %{itemEmote} **`%{itemName}`** cho nội dung nhúng của mình!",
-		"themeUnavailable": "Chủ đề **`%{itemName}`** không có sẵn để sử dụng.",
-		"themeNotOwned": "Bạn không sở hữu chủ đề **`%{itemName}`**. ",
-		"invalidThemeID": "ID chủ đề **`%{itemId}`** không hợp lệ. ",
-		"themeAlreadyOwned": "Bạn đã sở hữu chủ đề **`%{itemName}`** và không thể mua lại."
+	"gameMessages": {
+		"puzzleMessages": {
+			"title": "🧩 Câu đố biểu tượng cảm xúc",
+			"prompt": "Điều này có nghĩa là gì?",
+			"correct": {
+				"title": "Chính xác!",
+				"description": "Làm tốt lắm, bạn đã đoán đúng câu đố biểu tượng cảm xúc!"
+			},
+			"wrong": {
+				"title": "❌ Sai rồi!",
+				"description": "bạn có",
+				"guessesLeft": "đoán còn lại."
+			},
+			"timeout": {
+				"title": "⏳ Thời gian đã hết!",
+				"description": "Câu trả lời đúng là"
+			},
+			"gameOver": {
+				"title": "❌ Trò chơi kết thúc!",
+				"description": "Bạn đã sử dụng tất cả các dự đoán của mình! "
+			}
+		},
+		"guessNumberMessages": {
+			"insufficientBalance": {
+				"title": "Số dư không đủ",
+				"description": "Bạn cần ít nhất 1000 xu để chơi trò chơi Đoán số. "
+			},
+			"description": "Tôi đã chọn một số từ 1 đến 100. Bạn có 3 trái tim. ",
+			"correct": {
+				"description": "Chúc mừng"
+			},
+			"incorrect": {
+				"description": "❌ Không đúng! "
+			},
+			"hint": {
+				"bigger": "Con số lớn hơn dự đoán của bạn.",
+				"smaller": "Con số nhỏ hơn dự đoán của bạn.",
+				"range": "Đây là một gợi ý: Số nằm giữa"
+			},
+			"gameOver": {
+				"description": "💔 Bạn hết tim rồi! "
+			},
+			"timeout": {
+				"description": "⏳ Thời gian đã hết! "
+			}
+		},
+		"rollMessages": {
+			"invalidDice": "Loại xúc xắc không hợp lệ! ",
+			"invalidSides": "Số mặt không hợp lệ cho một viên xúc xắc.",
+			"win": "Bạn thắng!",
+			"lose": "Bạn thua!"
+		}
 	},
 	"informationMessages": {
 		"helpMessages": {
@@ -431,6 +469,7 @@
 				"serverinfo": "thông tin máy chủ",
 				"theme": "chủ đề",
 				"userinfo": "thông tin người dùng",
+				"verify": "xác minh",
 				"help": "giúp đỡ",
 				"info": "thông tin",
 				"invite": "mời",
@@ -524,6 +563,377 @@
 				"uptime": "Thời gian hoạt động: {uptime} phút"
 			},
 			"footer": "Để biết thêm thông tin, hãy nhấp vào các nút bên dưới."
+		}
+	},
+	"inventoryMessages": {
+		"buyMessages": {
+			"invalidItem": "Mục có ID `{{itemId}}` không được tìm thấy. ",
+			"themeAlreadyOwned": "Bạn đã sở hữu chủ đề này {{itemEmote}} **{{itemName}}**. ",
+			"itemCannotBeBought": "Mục {{itemEmote}} **{{itemName}}** không có sẵn để mua.",
+			"notEnoughCoins": "Bạn cần {{coinEmote}}{{neededCoins}} nhiều hơn để mua {{itemEmote}} **{{itemName}}**.",
+			"success": "đã mua thành công",
+			"partial": "nhưng bạn chỉ có đủ khả năng",
+			"description": "bạn có {{afford}} {{itemEmote}} **{{itemName}}** vì {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** mặt hàng.",
+			"buyDisable": "Mục này {{itemEmote}} **{{itemName}}** không thể mua được vào thời điểm này.",
+			"zeroBalance": "Bạn không có xu để mua hàng. "
+		},
+		"drinkMessages": {
+			"emptyInventory": "Khoảng không quảng cáo của bạn trống.",
+			"itemNotFound": "Mục có ID `{{itemId}}` không được tìm thấy. ",
+			"cannotDrinkFood": "Bạn không thể uống {{itemEmote}} **{{itemName}}**. ",
+			"notDrinkable": "Món bạn chọn không thể uống được.",
+			"noDrinkItem": "Bạn không có mặt hàng đồ uống này trong kho của mình.",
+			"invalidAmount": "Số tiền không hợp lệ. ",
+			"successDrink": "bạn đã uống {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} và đạt được **{{xpGained}} XP**."
+		},
+		"eatMessages": {
+			"emptyInventory": "Khoảng không quảng cáo của bạn trống.",
+			"itemNotFound": "Mục có ID `{{itemId}}` không được tìm thấy. ",
+			"cannotEatDrink": "Bạn không thể ăn {{itemEmote}} **{{itemName}}**. ",
+			"notEdible": "Món này không ăn được.",
+			"noFoodItem": "Bạn không có mặt hàng thực phẩm này trong kho của mình.",
+			"invalidAmount": "Số tiền không hợp lệ. ",
+			"successEat": "bạn đã ăn {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} và đạt được **{{xpGained}} XP**."
+		},
+		"giveItemMessages": {
+			"emptyInventory": "Khoảng không quảng cáo của bạn trống.",
+			"noUser": "Không có người dùng nào được đề cập hoặc tìm thấy.",
+			"mentionToBot": "Bạn không thể đưa vật phẩm cho bot.",
+			"mentionToSelf": "Bạn không thể tặng vật phẩm cho chính mình.",
+			"itemNotFound": "Mục có ID `{{itemId}}` không được tìm thấy!",
+			"noItemInInventory": "Bạn không có {{itemEmote}} **{{itemName}}** trong kho của bạn.",
+			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** không thể được đưa ra.",
+			"invalidAmount": "Số tiền được chỉ định không hợp lệ.",
+			"confirmationTitle": "Tặng vật phẩm - {{author}}",
+			"confirmationDescription": "{{author}}, chọn **Chấp nhận** để tiếp tục giao dịch hoặc **Hủy** để từ chối.",
+			"sentItem": "Mục đã gửi",
+			"receivedItem": "Đã nhận được mặt hàng",
+			"transactionSuccess": "Bạn đã chấp nhận giao dịch. {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} đã được chuyển sang **{{target}}**.",
+			"transactionCancelled": "Bạn đã hủy giao dịch. "
+		},
+		"invMessages": {
+			"noInventory": "Bạn không có bất kỳ mặt hàng nào trong kho của bạn.",
+			"emptyInventoryFieldName": "Hàng tồn kho",
+			"emptyInventoryFieldValue": "Khoảng không quảng cáo của bạn hiện đang trống.",
+			"inventoryNet": "Mạng tồn kho",
+			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+			"footerText": "Được yêu cầu bởi {user}",
+			"error": "Đã xảy ra lỗi khi truy xuất kho hàng của bạn."
+		},
+		"sellMessages": {
+			"inventoryEmpty": "Khoảng không quảng cáo của bạn trống.",
+			"itemNotOwned": "Bạn không có **{item}** trong kho của mình.",
+			"itemNotSellable": "Mặt hàng **{item}** không thể bán được!",
+			"itemNotFound": "Không thể tìm thấy mục có id **{item}**!",
+			"sellSuccess": "Bạn đã bán **{quantity}** **{item}** với giá **{price}** xu.",
+			"noSellableItems": "Bạn không có bất kỳ mặt hàng nào có thể bán được trong kho của mình.",
+			"cancelled": "Bán bị hủy bỏ.",
+			"acceptSell": "Bạn đã bán các mặt hàng của mình với giá **{price}** xu.",
+			"invalidQuantity": "Số lượng được chỉ định không hợp lệ.",
+			"sellError": "Đã xảy ra lỗi khi xử lý yêu cầu bán hàng của bạn."
+		},
+		"shopMessages": {
+			"shopTitle": "CỬA HÀNG",
+			"requestedBy": "Được yêu cầu bởi %{user}",
+			"unknownItemId": "ID không xác định",
+			"unnamedItem": "Mục chưa đặt tên",
+			"selectCategoryPlaceholder": "Chọn một danh mục",
+			"selectItemPlaceholder": "Chọn một mục",
+			"itemDetail": "CHI TIẾT MỤC HÀNG",
+			"noDescription": "Không có mô tả nào",
+			"unknownType": "Loại không xác định"
+		},
+		"shopInfoMessages": {
+			"itemNotFound": "Không tìm thấy mục có ID `{id}`.",
+			"noItemsAvailable": "Không có mặt hàng nào có sẵn trong cửa hàng.",
+			"noAdditionalCommands": "Không có lệnh bổ sung có sẵn cho mục này.",
+			"itemDetailsHeader": "Chi tiết mặt hàng",
+			"itemLimit": "Giới hạn",
+			"itemPrice": "Giá",
+			"itemSellPrice": "Giá bán",
+			"itemDescription": "Sự miêu tả",
+			"shopItemListHeader": "Dưới đây là danh sách tất cả các mục được sắp xếp theo loại:",
+			"itemListFooter": "Sử dụng `shopinfo <id>` để biết thêm chi tiết về một mặt hàng."
+		},
+		"useMessages": {
+			"themeID": "Không tìm thấy chủ đề có ID `{itemId}`.",
+			"notOwned": "Bạn không sở hữu chủ đề `{itemName}`.",
+			"unavailable": "Chủ đề `{itemName}` không có sẵn để sử dụng.",
+			"applied": "Đã áp dụng thành công chủ đề `{itemEmote} {itemName}`!"
+		}
+	},
+	"profileMessages": {
+		"bioMessages": {
+			"usage": "Cách sử dụng:",
+			"resetSuccess": "Tiểu sử của bạn đã được thiết lập lại.",
+			"noBio": "Không có tiểu sử viết.",
+			"provideText": "Vui lòng cung cấp văn bản tiểu sử hoặc lệnh phụ hợp lệ.",
+			"tooLong": "Tiểu sử không thể dài hơn 40 ký tự.",
+			"setSuccess": "Tiểu sử cho bạn đã được thiết lập."
+		},
+		"bdMessages": {
+			"resetSuccess": "Ngày sinh và cung hoàng đạo của bạn đã được đặt lại.",
+			"noBirthday": "Không có ngày sinh nhật.",
+			"noZodiac": "Không có cung hoàng đạo nào được đặt.",
+			"provideDate": "Vui lòng cung cấp ngày hợp lệ cho ngày sinh nhật của bạn hoặc một lệnh phụ hợp lệ.",
+			"invalidDate": "Ngày phải ở một trong các định dạng được hỗ trợ:",
+			"setSuccess": "Ngày sinh của bạn đã được đặt thành",
+			"zodiacSuccess": "Cung hoàng đạo của bạn là"
+		},
+		"genderMessages": {
+			"usage": "Cách sử dụng",
+			"resetSuccess": "Giới tính của bạn đã được đặt lại.",
+			"setSuccess": "Giới tính của bạn đã được đặt thành",
+			"current": "Giới tính của bạn được đặt thành",
+			"notSpecified": "Giới tính của bạn không được chỉ định."
+		},
+		"levelMessages": {
+			"generating": "Đang tạo cấp độ của bạn...",
+			"userNotFound": "Không tìm thấy người dùng.",
+			"levelText": "Mức độ:",
+			"xpText": "XP:",
+			"error": "Đã xảy ra lỗi khi tìm nạp cấp độ của bạn."
+		},
+		"pfMessages": {
+			"loading": "Đang tải hồ sơ của bạn...",
+			"userNotFound": "Không tìm thấy người dùng.",
+			"privateProfile": "Hồ sơ này là riêng tư.",
+			"defaultBio": "Người dùng này chưa thiết lập tiểu sử.",
+			"defaultBirthday": "Người dùng này chưa đặt ngày sinh.",
+			"genderText": "Giới tính:",
+			"zodiacSignText": "Cung hoàng đạo:",
+			"error": "Đã xảy ra lỗi khi tạo hồ sơ của bạn.",
+			"socialMediaLinks": {
+				"facebook": {
+					"notSet": "Người dùng này chưa đặt liên kết Facebook.",
+					"linkText": "Facebook: [{name}]({link})"
+				},
+				"instagram": {
+					"notSet": "Người dùng này chưa đặt liên kết Instagram.",
+					"linkText": "Instagram: [{name}]({link})"
+				},
+				"tiktok": {
+					"notSet": "Người dùng này chưa đặt liên kết TikTok.",
+					"linkText": "TikTok: [{name}]({link})"
+				}
+			}
+		},
+		"relationshipMessages": {
+			"success": {
+				"add": "Đã thêm thành công",
+				"remove": "Đã xóa thành công"
+			},
+			"error": {
+				"userNotMentioned": "Vui lòng đề cập đến một người dùng để quản lý mối quan hệ của bạn.",
+				"notRegistered": "Bạn chưa được đăng ký trong cơ sở dữ liệu.",
+				"targetNotRegistered": "Người dùng bạn đang cố gắng sửa đổi chưa được đăng ký.",
+				"invalidType": "Loại mối quan hệ không hợp lệ.",
+				"partner": {
+					"error": {
+						"alreadyExists": "Bạn đã có một đối tác.",
+						"notFound": "Người dùng này không phải là đối tác của bạn."
+					}
+				},
+				"bro": {
+					"error": {
+						"limitExceeded": "Bạn chỉ có thể có tối đa 4 anh em.",
+						"alreadyExists": "Người dùng này đã là anh trai của bạn.",
+						"notFound": "Người dùng này không phải là anh trai của bạn."
+					}
+				},
+				"sister": {
+					"error": {
+						"limitExceeded": "Bạn chỉ có thể có tối đa 4 chị em gái.",
+						"alreadyExists": "Người dùng này đã là em gái của bạn.",
+						"notFound": "Người dùng này không phải là em gái của bạn."
+					}
+				},
+				"bestie": {
+					"error": {
+						"limitExceeded": "Bạn chỉ có thể có tối đa 4 người bạn thân.",
+						"alreadyExists": "Người dùng này đã là bạn thân của bạn.",
+						"notFound": "Người dùng này không phải là bạn thân của bạn."
+					}
+				},
+				"confidant": {
+					"error": {
+						"limitExceeded": "Bạn chỉ có thể có tối đa 4 người bạn tâm tình.",
+						"alreadyExists": "Người dùng này đã là người bạn tâm tình của bạn.",
+						"notFound": "Người dùng này không phải là người bạn tâm giao của bạn."
+					}
+				}
+			}
+		},
+		"userNameMessages": {
+			"help": {
+				"usage": "Cách sử dụng: `tên người dùng <text || reset || show || help>`",
+				"examples": [
+					"tên người dùng đào",
+					"đặt lại tên người dùng",
+					"hiển thị tên người dùng",
+					"trợ giúp tên người dùng"
+				]
+			},
+			"reset": "Tên người dùng của bạn đã được đặt lại về mặc định.",
+			"show": {
+				"usernameSet": "Tên người dùng hiện tại của bạn là: `{{username}}`",
+				"noUsername": "Chưa đặt tên người dùng."
+			},
+			"set": {
+				"success": "Tên người dùng của bạn đã được đặt thành: `{{username}}`",
+				"error": {
+					"long": "Tên người dùng không thể dài hơn 40 ký tự.",
+					"empty": "Vui lòng cung cấp tên người dùng."
+				}
+			}
+		}
+	},
+	"socialMessages": {
+		"fbMessages": {
+			"userNotFound": "Không tìm thấy người dùng.",
+			"settingsTitle": "Cài đặt Facebook",
+			"invalidName": "Vui lòng cung cấp tên Facebook hợp lệ (tối đa 21 ký tự).",
+			"nameUpdated": "Tên Facebook của bạn đã được đặt.",
+			"newName": "Tên Facebook mới",
+			"linkUpdated": "Liên kết Facebook của bạn đã được thiết lập.",
+			"newLink": "Liên kết Facebook mới",
+			"invalidLink": "Vui lòng cung cấp liên kết Facebook hợp lệ.",
+			"helpTitle": "Trợ giúp lệnh Facebook",
+			"helpDescription": "Quản lý chi tiết Facebook của bạn bằng các lệnh phụ sau:",
+			"showDetails": "Hiển thị chi tiết Facebook",
+			"setName": "Đặt tên Facebook",
+			"setLink": "Đặt liên kết Facebook",
+			"commandHelp": "Trợ giúp lệnh",
+			"notSet": "Chưa đặt"
+		},
+		"igMessages": {
+			"userNotFound": "Không tìm thấy người dùng.",
+			"settingsTitle": "Cài đặt Instagram",
+			"invalidName": "Vui lòng cung cấp tên Instagram hợp lệ (tối đa 21 ký tự).",
+			"nameUpdated": "Tên Instagram của bạn đã được đặt.",
+			"newName": "Tên Instagram mới",
+			"linkUpdated": "Liên kết Instagram của bạn đã được thiết lập.",
+			"newLink": "Liên kết Instagram mới",
+			"invalidLink": "Vui lòng cung cấp liên kết Instagram hợp lệ.",
+			"helpTitle": "Trợ giúp lệnh Instagram",
+			"helpDescription": "Quản lý chi tiết Instagram của bạn bằng các lệnh phụ sau:",
+			"showDetails": "Hiển thị chi tiết Instagram",
+			"setName": "Đặt tên Instagram",
+			"setLink": "Đặt liên kết Instagram",
+			"commandHelp": "Trợ giúp lệnh",
+			"notSet": "Chưa đặt"
+		},
+		"smMessages": {
+			"userNotFound": "Không tìm thấy người dùng.",
+			"title": "📱 Hồ sơ truyền thông xã hội",
+			"notSet": "Chưa đặt"
+		},
+		"ttMessages": {
+			"userNotFound": "Không tìm thấy người dùng.",
+			"settingsTitle": "Cài đặt TikTok",
+			"invalidName": "Vui lòng cung cấp tên TikTok hợp lệ (tối đa 21 ký tự).",
+			"nameUpdated": "Tên TikTok của bạn đã được đặt.",
+			"newName": "Tên TikTok mới",
+			"linkUpdated": "Liên kết TikTok của bạn đã được đặt.",
+			"newLink": "Liên kết TikTok mới",
+			"invalidLink": "Vui lòng cung cấp liên kết TikTok hợp lệ.",
+			"helpTitle": "Trợ giúp lệnh TikTok",
+			"helpDescription": "Quản lý chi tiết TikTok của bạn bằng các lệnh phụ sau:",
+			"showDetails": "Hiển thị chi tiết TikTok",
+			"setName": "Đặt tên TikTok",
+			"setLink": "Đặt liên kết TikTok",
+			"commandHelp": "Trợ giúp lệnh",
+			"notSet": "Chưa đặt"
+		}
+	},
+	"utilityMessages": {
+		"avatarMessages": {
+			"avatarTitle": "Hình đại diện của %{username}",
+			"requestedBy": "Được yêu cầu bởi %{username}",
+			"noUserMentioned": "Không có người dùng nào được đề cập, vui lòng đề cập đến ai đó để xem hình đại diện của họ."
+		},
+		"emojiMessages": {
+			"emojiTitle": "Hình ảnh biểu tượng cảm xúc",
+			"emojiDescription": "Đây là hình ảnh của biểu tượng cảm xúc:",
+			"requestedBy": "Được yêu cầu bởi %{username}",
+			"invalidEmoji": "Biểu tượng cảm xúc được cung cấp không hợp lệ. "
+		},
+		"languageMessages": {
+			"title": "CÀI ĐẶT NGÔN NGỮ",
+			"languageSetTitle": "NGÔN NGỮ",
+			"languageSetDescription": "Ngôn ngữ của bạn đã được đặt thành **%{ngôn ngữ}**.",
+			"helpTitle": "TRỢ GIÚP NGÔN NGỮ",
+			"helpDescription": "Quản lý cài đặt ngôn ngữ của bạn.",
+			"examples": "Ví dụ",
+			"exampleCommands": "• ngôn ngữ\n",
+			"usage": "Cách sử dụng",
+			"usageCommands": "• ngôn ngữ - Hiển thị ngôn ngữ hiện tại của bạn\n",
+			"currentLanguageTitle": "NGÔN NGỮ",
+			"currentLanguageDescription": "Ngôn ngữ hiện tại của bạn là **%{ngôn ngữ}**.",
+			"requestedBy": "Được yêu cầu bởi %{username}"
+		},
+		"qrMessages": {
+			"title": "Mã QR cho %{currency}",
+			"description": "Đây là mã QR cho %{currency}:",
+			"invalidOption": "Tùy chọn không hợp lệ! "
+		},
+		"serverInfoMessages": {
+			"title": "Thông tin máy chủ: %{server}",
+			"nameLabel": "Tên",
+			"idLabel": "Mã máy chủ",
+			"ownerLabel": "Người sở hữu",
+			"membersLabel": "Thành viên",
+			"rolesLabel": "Vai trò",
+			"createdLabel": "Được tạo vào ngày",
+			"footer": "Được yêu cầu bởi %{user}"
+		},
+		"themeMessages": {
+			"title": "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒",
+			"setThemeMessage": "Chủ đề của bạn đã được đặt thành **%{theme}**.",
+			"currentThemeMessage": "Chủ đề hiện tại của bạn là **%{theme}**.",
+			"helpTitle": "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏",
+			"helpDescription": "Quản lý cài đặt chủ đề của bạn.",
+			"examplesLabel": "Ví dụ",
+			"usageLabel": "Cách sử dụng",
+			"footer": "Được yêu cầu bởi %{user}"
+		},
+		"userInfoMessages": {
+			"title": "Thông tin người dùng: %{user}",
+			"username": "Tên người dùng",
+			"userId": "ID người dùng",
+			"joinedServer": "Máy chủ đã tham gia",
+			"accountCreated": "Đã tạo tài khoản",
+			"roles": "Vai trò",
+			"noRoles": "Không có",
+			"userNotFound": "Không tìm thấy người dùng! ",
+			"footer": "Được yêu cầu bởi %{user}"
+		},
+		"verifyMessages": {
+			"noAccount": "Bạn không có tài khoản. ",
+			"alreadyVerified": "Bạn đã được xác minh.",
+			"confirmButtonLabel": "Xác nhận",
+			"cancelButtonLabel": "Hủy bỏ",
+			"title": "Xác minh tài khoản",
+			"confirmationMessage": "Bạn có chắc chắn muốn xác minh bằng **PEACHY** không?",
+			"paymentInfo": "Để xác minh, bạn cần trả **$0,99/tháng**.",
+			"benefitsTitle": "**Những lợi ích**",
+			"benefits": "• Xác minh vai trò trong máy chủ của chúng tôi\n",
+			"requestedBy": "được yêu cầu bởi",
+			"verificationRequest": "Yêu cầu xác minh",
+			"verificationMessage": "Bạn đã yêu cầu xác minh với PEACHY.",
+			"clickToSubmit": "Bấm vào nút Gửi để lấy mã xác minh",
+			"waitingMessage": "Nếu bạn đã thanh toán rồi, vui lòng đợi một lát.  <@966688007493140591>",
+			"submitButtonLabel": "Nộp",
+			"thankYouMessage": "Cảm ơn!",
+			"modalTitle": "Nhập mã xác minh",
+			"inputLabel": "Mã xác minh:",
+			"inputPlaceholder": "Nhập mã xác minh của bạn vào đây",
+			"verificationSuccess": "Cảm ơn bạn đã ủng hộ và xác minh cùng PEACHY!",
+			"verificationSuccessTitle": "Xác minh thành công",
+			"thankYouForVerifying": "Cảm ơn bạn đã hỗ trợ và xác minh!",
+			"verificationComplete": "Xác minh hoàn tất.",
+			"verificationFailed": "Xác minh không thành công hoặc mã không chính xác. ",
+			"noResponseReceived": "Không nhận được phản hồi. "
 		}
 	}
 }

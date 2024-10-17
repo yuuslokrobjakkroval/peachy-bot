@@ -321,93 +321,57 @@
 		}
 
 	},
-	"inventoryMessages": {
-		"buyMessages": {
-			"invalidItem": "The item with ID `{{itemId}}` was not found. Please check the shop for available items.",
-			"themeAlreadyOwned": "You already own the theme {{itemEmote}} **{{itemName}}**. You cannot buy it again.",
-			"itemCannotBeBought": "The item {{itemEmote}} **{{itemName}}** is not available for purchase.",
-			"notEnoughCoins": "You need {{coinEmote}}{{neededCoins}} more to buy {{itemEmote}} **{{itemName}}**.",
-			"success": "successfully purchased",
-			"partial": "but you could only afford",
-			"description": "You have {{afford}} {{itemEmote}} **{{itemName}}** for {{coinEmote}}{{totalPrice}}. You bought **{{amountToBuy}}** items.",
-			"buyDisable": "This item {{itemEmote}} **{{itemName}}** cannot be purchased at this time.",
-			"zeroBalance": "You have no coins to make a purchase. Earn coins first before buying items."
+	"gameMessages": {
+		"puzzleMessages": {
+			"title": "🧩 Emoji Puzzle",
+			"prompt": "What does this mean?",
+			"correct": {
+				"title": "Correct!",
+				"description": "Well done, you guessed the emoji puzzle correctly!"
+			},
+			"wrong": {
+				"title": "❌ Wrong!",
+				"description": "You have",
+				"guessesLeft": "guesses left."
+			},
+			"timeout": {
+				"title": "⏳ Time is up!",
+				"description": "The correct answer was"
+			},
+			"gameOver": {
+				"title": "❌ Game Over!",
+				"description": "You've used all your guesses! The correct answer was"
+			}
 		},
-		"drinkMessages": {
-			"emptyInventory": "Your inventory is empty.",
-			"itemNotFound": "The item with ID `{{itemId}}` was not found. Please check your inventory.",
-			"cannotDrinkFood": "You can't drink {{itemEmote}} **{{itemName}}**. It's food!",
-			"notDrinkable": "The item you selected is not drinkable.",
-			"noDrinkItem": "You don't have this drink item in your inventory.",
-			"invalidAmount": "Invalid amount. Please enter a positive integer value.",
-			"successDrink": "You drank {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} and gained **{{xpGained}} XP**."
+		"guessNumberMessages": {
+			"insufficientBalance": {
+				"title": "Insufficient Balance",
+				"description": "You need at least 1000 coins to play the Guess the Number game. Your current balance is"
+			},
+			"description": "I have picked a number between 1 and 100. You have 3 hearts. React with the number you guess or type your guess in the chat!",
+			"correct": {
+				"description": "Congratulations"
+			},
+			"incorrect": {
+				"description": "❌ Incorrect! You have"
+			},
+			"hint": {
+				"bigger": "The number is bigger than your guess.",
+				"smaller": "The number is smaller than your guess.",
+				"range": "Here's a hint: The number is between"
+			},
+			"gameOver": {
+				"description": "💔 You've run out of hearts! The correct number was"
+			},
+			"timeout": {
+				"description": "⏳ Time is up! You didn't guess the number in time."
+			}
 		},
-		"eatMessages": {
-			"emptyInventory": "Your inventory is empty.",
-			"itemNotFound": "The item with ID `{{itemId}}` was not found. Please check your inventory.",
-			"cannotEatDrink": "You can't eat {{itemEmote}} **{{itemName}}**. It's a drink!",
-			"notEdible": "This item is not edible.",
-			"noFoodItem": "You don't have this food item in your inventory.",
-			"invalidAmount": "Invalid amount. Please enter a positive integer value.",
-			"successEat": "You ate {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} and gained **{{xpGained}} XP**."
-		},
-		"giveItemMessages": {
-			"emptyInventory": "Your inventory is empty.",
-			"noUser": "No user was mentioned or found.",
-			"mentionToBot": "You cannot give items to a bot.",
-			"mentionToSelf": "You cannot give items to yourself.",
-			"itemNotFound": "The item with ID `{{itemId}}` was not found!",
-			"noItemInInventory": "You don't have {{itemEmote}} **{{itemName}}** in your inventory.",
-			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** cannot be given.",
-			"invalidAmount": "Invalid amount specified.",
-			"confirmationTitle": "Give Item - {{author}}",
-			"confirmationDescription": "{{author}}, select **Accept** to proceed with the transaction or **Cancel** to decline.",
-			"sentItem": "Sent item",
-			"receivedItem": "Received item",
-			"transactionSuccess": "You have accepted the transaction. {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} has been transferred to **{{target}}**.",
-			"transactionCancelled": "You have canceled the transaction. No items have been transferred."
-		},
-		"invMessages": {
-			"noInventory": "You don't have any items in your inventory.",
-			"emptyInventoryFieldName": "Inventory",
-			"emptyInventoryFieldValue": "Your inventory is currently empty.",
-			"inventoryNet": "Inventory Net",
-			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
-			"footerText": "Requested by {user}",
-			"error": "An error occurred while retrieving your inventory."
-		},
-		"sellMessages": {
-			"inventoryEmpty": "Your inventory is empty.",
-			"itemNotOwned": "You don't have **{item}** in your inventory.",
-			"itemNotSellable": "The item **{item}** is not sellable!",
-			"itemNotFound": "The item with id **{item}** couldn't be found!",
-			"sellSuccess": "You sold **{quantity}** **{item}** for **{price}** coins.",
-			"noSellableItems": "You don't have any sellable items in your inventory.",
-			"cancelled": "Sell canceled.",
-			"acceptSell": "You sold your items for **{price}** coins.",
-			"invalidQuantity": "Invalid quantity specified.",
-			"sellError": "An error occurred while processing your sell request."
-		},
-		"shopInfoMessages": {
-			"itemNotFound": "Item with ID `{id}` not found.",
-			"noItemsAvailable": "No items available in the shop.",
-			"noAdditionalCommands": "No additional commands available for this item.",
-			"itemDetailsHeader": "Item Details",
-			"itemLimit": "Limit",
-			"itemPrice": "Price",
-			"itemSellPrice": "Sell Price",
-			"itemDescription": "Description",
-			"shopItemListHeader": "Here is the list of all items sorted by type:",
-			"itemListFooter": "Use `shopinfo <id>` to get more details about an item."
-		}
-	},
-	"utilityMessages": {
-		"themeMessages": {
-			"applied": "You have successfully applied %{itemEmote} **`%{itemName}`** theme to your embed!",
-			"unavailable": "The theme **`%{itemName}`** is not available for use.",
-			"notOwned": "You don't own the theme **`%{itemName}`**. Please purchase it first.",
-			"themeID": "The theme ID **`%{itemId}`** is not valid. Please check the available themes.",
-			"themeAlreadyOwned": "You already own the theme **`%{itemName}`** and cannot buy it again."
+		"rollMessages": {
+			"invalidDice": "Invalid dice type! Use something like d6, d20, etc.",
+			"invalidSides": "Invalid number of sides for a dice.",
+			"win": "You win!",
+			"lose": "You lose!"
 		}
 	},
 	"informationMessages": {
@@ -600,6 +564,377 @@
 				"uptime": "Uptime: {uptime} minutes"
 			},
 			"footer": "For more information, click the buttons below."
+		}
+	},
+	"inventoryMessages": {
+		"buyMessages": {
+			"invalidItem": "The item with ID `{{itemId}}` was not found. Please check the shop for available items.",
+			"themeAlreadyOwned": "You already own the theme {{itemEmote}} **{{itemName}}**. You cannot buy it again.",
+			"itemCannotBeBought": "The item {{itemEmote}} **{{itemName}}** is not available for purchase.",
+			"notEnoughCoins": "You need {{coinEmote}}{{neededCoins}} more to buy {{itemEmote}} **{{itemName}}**.",
+			"success": "successfully purchased",
+			"partial": "but you could only afford",
+			"description": "You have {{afford}} {{itemEmote}} **{{itemName}}** for {{coinEmote}}{{totalPrice}}. You bought **{{amountToBuy}}** items.",
+			"buyDisable": "This item {{itemEmote}} **{{itemName}}** cannot be purchased at this time.",
+			"zeroBalance": "You have no coins to make a purchase. Earn coins first before buying items."
+		},
+		"drinkMessages": {
+			"emptyInventory": "Your inventory is empty.",
+			"itemNotFound": "The item with ID `{{itemId}}` was not found. Please check your inventory.",
+			"cannotDrinkFood": "You can't drink {{itemEmote}} **{{itemName}}**. It's food!",
+			"notDrinkable": "The item you selected is not drinkable.",
+			"noDrinkItem": "You don't have this drink item in your inventory.",
+			"invalidAmount": "Invalid amount. Please enter a positive integer value.",
+			"successDrink": "You drank {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} and gained **{{xpGained}} XP**."
+		},
+		"eatMessages": {
+			"emptyInventory": "Your inventory is empty.",
+			"itemNotFound": "The item with ID `{{itemId}}` was not found. Please check your inventory.",
+			"cannotEatDrink": "You can't eat {{itemEmote}} **{{itemName}}**. It's a drink!",
+			"notEdible": "This item is not edible.",
+			"noFoodItem": "You don't have this food item in your inventory.",
+			"invalidAmount": "Invalid amount. Please enter a positive integer value.",
+			"successEat": "You ate {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} and gained **{{xpGained}} XP**."
+		},
+		"giveItemMessages": {
+			"emptyInventory": "Your inventory is empty.",
+			"noUser": "No user was mentioned or found.",
+			"mentionToBot": "You cannot give items to a bot.",
+			"mentionToSelf": "You cannot give items to yourself.",
+			"itemNotFound": "The item with ID `{{itemId}}` was not found!",
+			"noItemInInventory": "You don't have {{itemEmote}} **{{itemName}}** in your inventory.",
+			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** cannot be given.",
+			"invalidAmount": "Invalid amount specified.",
+			"confirmationTitle": "Give Item - {{author}}",
+			"confirmationDescription": "{{author}}, select **Accept** to proceed with the transaction or **Cancel** to decline.",
+			"sentItem": "Sent item",
+			"receivedItem": "Received item",
+			"transactionSuccess": "You have accepted the transaction. {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} has been transferred to **{{target}}**.",
+			"transactionCancelled": "You have canceled the transaction. No items have been transferred."
+		},
+		"invMessages": {
+			"noInventory": "You don't have any items in your inventory.",
+			"emptyInventoryFieldName": "Inventory",
+			"emptyInventoryFieldValue": "Your inventory is currently empty.",
+			"inventoryNet": "Inventory Net",
+			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+			"footerText": "Requested by {user}",
+			"error": "An error occurred while retrieving your inventory."
+		},
+		"sellMessages": {
+			"inventoryEmpty": "Your inventory is empty.",
+			"itemNotOwned": "You don't have **{item}** in your inventory.",
+			"itemNotSellable": "The item **{item}** is not sellable!",
+			"itemNotFound": "The item with id **{item}** couldn't be found!",
+			"sellSuccess": "You sold **{quantity}** **{item}** for **{price}** coins.",
+			"noSellableItems": "You don't have any sellable items in your inventory.",
+			"cancelled": "Sell canceled.",
+			"acceptSell": "You sold your items for **{price}** coins.",
+			"invalidQuantity": "Invalid quantity specified.",
+			"sellError": "An error occurred while processing your sell request."
+		},
+		"shopMessages": {
+			"shopTitle": "SHOP",
+			"requestedBy": "Requested By %{user}",
+			"unknownItemId": "Unknown ID",
+			"unnamedItem": "Unnamed Item",
+			"selectCategoryPlaceholder": "Select a Category",
+			"selectItemPlaceholder": "Select an Item",
+			"itemDetail": "ITEM DETAIL",
+			"noDescription": "No description available",
+			"unknownType": "Unknown Type"
+		},
+		"shopInfoMessages": {
+			"itemNotFound": "Item with ID `{id}` not found.",
+			"noItemsAvailable": "No items available in the shop.",
+			"noAdditionalCommands": "No additional commands available for this item.",
+			"itemDetailsHeader": "Item Details",
+			"itemLimit": "Limit",
+			"itemPrice": "Price",
+			"itemSellPrice": "Sell Price",
+			"itemDescription": "Description",
+			"shopItemListHeader": "Here is the list of all items sorted by type:",
+			"itemListFooter": "Use `shopinfo <id>` to get more details about an item."
+		},
+		"useMessages": {
+			"themeID": "Theme with ID `{itemId}` not found.",
+			"notOwned": "You do not own the theme `{itemName}`.",
+			"unavailable": "The theme `{itemName}` is not available for use.",
+			"applied": "Successfully applied the theme `{itemEmote} {itemName}`!"
+		}
+	},
+	"profileMessages": {
+		"bioMessages": {
+			"usage": "Usage:",
+			"resetSuccess": "The bio for you has been reset.",
+			"noBio": "No bio written.",
+			"provideText": "Please provide a bio text or a valid subcommand.",
+			"tooLong": "The bio cannot be longer than 40 characters.",
+			"setSuccess": "The bio for you has been set."
+		},
+		"bdMessages": {
+			"resetSuccess": "Your birthday and zodiac sign have been reset.",
+			"noBirthday": "No birthday set.",
+			"noZodiac": "No zodiac sign set.",
+			"provideDate": "Please provide a valid date for your birthday or a valid subcommand.",
+			"invalidDate": "The date must be in one of the supported formats:",
+			"setSuccess": "Your birthday has been set to",
+			"zodiacSuccess": "Your zodiac sign is"
+		},
+		"genderMessages": {
+			"usage": "Usage",
+			"resetSuccess": "Your gender has been reset.",
+			"setSuccess": "Your gender has been set to",
+			"current": "Your gender is set to",
+			"notSpecified": "Your gender is not specified."
+		},
+		"levelMessages": {
+			"generating": "Generating your level...",
+			"userNotFound": "User not found.",
+			"levelText": "Level:",
+			"xpText": "XP:",
+			"error": "An error occurred while fetching your level."
+		},
+		"pfMessages": {
+			"loading": "Loading your profile...",
+			"userNotFound": "User not found.",
+			"privateProfile": "This profile is private.",
+			"defaultBio": "This user has not set a bio.",
+			"defaultBirthday": "This user has not set a birthday.",
+			"genderText": "Gender:",
+			"zodiacSignText": "Zodiac Sign:",
+			"error": "An error occurred while generating your profile.",
+			"socialMediaLinks": {
+				"facebook": {
+					"notSet": "This user has not set a Facebook link.",
+					"linkText": "Facebook: [{name}]({link})"
+				},
+				"instagram": {
+					"notSet": "This user has not set an Instagram link.",
+					"linkText": "Instagram: [{name}]({link})"
+				},
+				"tiktok": {
+					"notSet": "This user has not set a TikTok link.",
+					"linkText": "TikTok: [{name}]({link})"
+				}
+			}
+		},
+		"relationshipMessages": {
+			"success": {
+				"add": "Successfully added",
+				"remove": "Successfully removed"
+			},
+			"error": {
+				"userNotMentioned": "Please mention a user to manage your relationship.",
+				"notRegistered": "You are not registered in the database.",
+				"targetNotRegistered": "The user you are trying to modify is not registered.",
+				"invalidType": "Invalid relationship type.",
+				"partner": {
+					"error": {
+						"alreadyExists": "You already have a partner.",
+						"notFound": "This user is not your partner."
+					}
+				},
+				"bro": {
+					"error": {
+						"limitExceeded": "You can only have up to 4 bros.",
+						"alreadyExists": "This user is already your bro.",
+						"notFound": "This user is not your bro."
+					}
+				},
+				"sister": {
+					"error": {
+						"limitExceeded": "You can only have up to 4 sisters.",
+						"alreadyExists": "This user is already your sister.",
+						"notFound": "This user is not your sister."
+					}
+				},
+				"bestie": {
+					"error": {
+						"limitExceeded": "You can only have up to 4 besties.",
+						"alreadyExists": "This user is already your bestie.",
+						"notFound": "This user is not your bestie."
+					}
+				},
+				"confidant": {
+					"error": {
+						"limitExceeded": "You can only have up to 4 confidants.",
+						"alreadyExists": "This user is already your confidant.",
+						"notFound": "This user is not your confidant."
+					}
+				}
+			}
+		},
+		"userNameMessages": {
+			"help": {
+				"usage": "Usage: `username <text || reset || show || help>`",
+				"examples": [
+					"username peachy",
+					"username reset",
+					"username show",
+					"username help"
+				]
+			},
+			"reset": "Your username has been reset to the default.",
+			"show": {
+				"usernameSet": "Your current username is: `{{username}}`",
+				"noUsername": "No username set."
+			},
+			"set": {
+				"success": "Your username has been set to: `{{username}}`",
+				"error": {
+					"long": "The username cannot be longer than 40 characters.",
+					"empty": "Please provide a username."
+				}
+			}
+		}
+	},
+	"socialMessages": {
+		"fbMessages": {
+			"userNotFound": "User not found.",
+			"settingsTitle": "Facebook Settings",
+			"invalidName": "Please provide a valid Facebook name (up to 21 characters).",
+			"nameUpdated": "Your Facebook name has been set.",
+			"newName": "New Facebook Name",
+			"linkUpdated": "Your Facebook link has been set.",
+			"newLink": "New Facebook Link",
+			"invalidLink": "Please provide a valid Facebook link.",
+			"helpTitle": "Facebook Command Help",
+			"helpDescription": "Manage your Facebook details with the following subcommands:",
+			"showDetails": "Show Facebook Details",
+			"setName": "Set Facebook Name",
+			"setLink": "Set Facebook Link",
+			"commandHelp": "Command Help",
+			"notSet": "Not set"
+		},
+		"igMessages": {
+			"userNotFound": "User not found.",
+			"settingsTitle": "Instagram Settings",
+			"invalidName": "Please provide a valid Instagram name (up to 21 characters).",
+			"nameUpdated": "Your Instagram name has been set.",
+			"newName": "New Instagram Name",
+			"linkUpdated": "Your Instagram link has been set.",
+			"newLink": "New Instagram Link",
+			"invalidLink": "Please provide a valid Instagram link.",
+			"helpTitle": "Instagram Command Help",
+			"helpDescription": "Manage your Instagram details with the following subcommands:",
+			"showDetails": "Show Instagram Details",
+			"setName": "Set Instagram Name",
+			"setLink": "Set Instagram Link",
+			"commandHelp": "Command Help",
+			"notSet": "Not set"
+		},
+		"smMessages": {
+			"userNotFound": "User not found.",
+			"title": "📱 Social Media Profiles",
+			"notSet": "Not set"
+		},
+		"ttMessages": {
+			"userNotFound": "User not found.",
+			"settingsTitle": "TikTok Settings",
+			"invalidName": "Please provide a valid TikTok name (up to 21 characters).",
+			"nameUpdated": "Your TikTok name has been set.",
+			"newName": "New TikTok Name",
+			"linkUpdated": "Your TikTok link has been set.",
+			"newLink": "New TikTok Link",
+			"invalidLink": "Please provide a valid TikTok link.",
+			"helpTitle": "TikTok Command Help",
+			"helpDescription": "Manage your TikTok details with the following subcommands:",
+			"showDetails": "Show TikTok Details",
+			"setName": "Set TikTok Name",
+			"setLink": "Set TikTok Link",
+			"commandHelp": "Command Help",
+			"notSet": "Not set"
+		}
+	},
+	"utilityMessages": {
+		"avatarMessages": {
+			"avatarTitle": "Avatar of %{username}",
+			"requestedBy": "Requested by %{username}",
+			"noUserMentioned": "No user mentioned, please mention someone to view their avatar."
+		},
+		"emojiMessages": {
+			"emojiTitle": "Emoji Image",
+			"emojiDescription": "Here is the image of the emoji:",
+			"requestedBy": "Requested by %{username}",
+			"invalidEmoji": "Invalid emoji provided. Please provide a valid custom emoji."
+		},
+		"languageMessages": {
+			"title": "LANGUAGE SETTINGS",
+			"languageSetTitle": "LANGUAGE",
+			"languageSetDescription": "Your language has been set to **%{language}**.",
+			"helpTitle": "LANGUAGE HELP",
+			"helpDescription": "Manage your language settings.",
+			"examples": "Examples",
+			"exampleCommands": "• language\n• language en\n• language kh\n• language cn\n• language tw\n• language jp\n• language kr\n• language fr\n• language vn\n• language lo",
+			"usage": "Usage",
+			"usageCommands": "• language - Shows your current language\n• language en - Sets your language to English\n• language kh - Sets your language to Khmer\n• language cn - Sets your language to Chinese (CN)\n• language tw - Sets your language to Chinese (TW)\n• language jp - Sets your language to Japanese\n• language kr - Sets your language to Korean\n• language fr - Sets your language to French\n• language vn - Sets your language to Vietnamese\n• language lo - Sets your language to Lao",
+			"currentLanguageTitle": "LANGUAGE",
+			"currentLanguageDescription": "Your current language is **%{language}**.",
+			"requestedBy": "Requested by %{username}"
+		},
+		"qrMessages": {
+			"title": "QR Code for %{currency}",
+			"description": "Here is the QR code for %{currency}:",
+			"invalidOption": "Invalid option! Please use 'kh' or 'usd'."
+		},
+		"serverInfoMessages": {
+			"title": "Server Info: %{server}",
+			"nameLabel": "Name",
+			"idLabel": "Server ID",
+			"ownerLabel": "Owner",
+			"membersLabel": "Members",
+			"rolesLabel": "Roles",
+			"createdLabel": "Created On",
+			"footer": "Requested by %{user}"
+		},
+		"themeMessages": {
+			"title": "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒",
+			"setThemeMessage": "Your theme has been set to **%{theme}**.",
+			"currentThemeMessage": "Your current theme is **%{theme}**.",
+			"helpTitle": "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏",
+			"helpDescription": "Manage your theme settings.",
+			"examplesLabel": "Examples",
+			"usageLabel": "Usage",
+			"footer": "Requested by %{user}"
+		},
+		"userInfoMessages": {
+			"title": "User Info: %{user}",
+			"username": "Username",
+			"userId": "User ID",
+			"joinedServer": "Joined Server",
+			"accountCreated": "Account Created",
+			"roles": "Roles",
+			"noRoles": "None",
+			"userNotFound": "User not found! Please mention a valid user or provide a valid user ID.",
+			"footer": "Requested by %{user}"
+		},
+		"verifyMessages": {
+			"noAccount": "You do not have an account. Please register first.",
+			"alreadyVerified": "You are already verified.",
+			"confirmButtonLabel": "Confirm",
+			"cancelButtonLabel": "Cancel",
+			"title": "Verify Account",
+			"confirmationMessage": "Are you sure you want to verify with **PEACHY**?",
+			"paymentInfo": "To verify, you need to pay **$0.99/month**.",
+			"benefitsTitle": "**Benefits**",
+			"benefits": "• Role verification in our server\n• Get an emoji while playing the bot\n• Add 20% to all rewards when claiming\n• Better luck with gambling!",
+			"requestedBy": "Requested By",
+			"verificationRequest": "Verification Request",
+			"verificationMessage": "You have requested to verify with PEACHY.",
+			"clickToSubmit": "Click Button Submit for verification code",
+			"waitingMessage": "If you have already paid, please wait a moment. Please send an image to <@966688007493140591>",
+			"submitButtonLabel": "Submit",
+			"thankYouMessage": "Thank you!",
+			"modalTitle": "Input Verification Code",
+			"inputLabel": "Verification Code:",
+			"inputPlaceholder": "Enter your verification code here",
+			"verificationSuccess": "Thank you for supporting and verifying with PEACHY!",
+			"verificationSuccessTitle": "Verification Successful",
+			"thankYouForVerifying": "Thank you for supporting and verifying!",
+			"verificationComplete": "Verification complete.",
+			"verificationFailed": "Verification failed or the code is incorrect. Please try again.",
+			"noResponseReceived": "No response received. Please try again."
 		}
 	}
 }

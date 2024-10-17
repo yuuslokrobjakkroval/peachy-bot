@@ -14,7 +14,7 @@ module.exports = class Facebook extends Command {
                     'facebook link https://facebook.com/YourFacebookLink - Sets your Facebook link.',
                     'facebook help - Shows command usage examples.'
                 ],
-                usage: 'facebook\nfacebook @mention\n facebook name <YourFacebookName>\n facebook link <YourFacebookLink>\n facebook help',
+                usage: 'facebook\nfacebook @mention\nfacebook name <YourFacebookName>\nfacebook link <YourFacebookLink>\nfacebook help',
             },
             category: 'profile',
             aliases: ['fb'],
@@ -63,26 +63,28 @@ module.exports = class Facebook extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const fbMessages = language.locales.get(language.defaultLocale)?.socialMessages?.fbMessages;
+
         const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
         const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
         const user = await Users.findOne({ userId: targetUserId });
         const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
 
-        if(!user) {
-            return await client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
+        if (!user) {
+            return await client.utils.sendErrorMessage(client, ctx, fbMessages?.userNotFound || 'User not found.', color);
         }
 
-        const embed = client.embed().setTitle(`${emoji.mainLeft} Facebook Settings for ${targetUsername} ${emoji.mainRight}`);
+        const embed = client.embed().setTitle(`${emoji.mainLeft} ${fbMessages?.settingsTitle || 'Facebook Settings'} ${emoji.mainRight}`);
 
         switch (subCommand) {
             case 'name': {
                 const name = ctx.isInteraction ? ctx.interaction.options.getString('name') : args.slice(1).join(' ');
                 if (!name || name.length > 21) {
-                    return await client.utils.oops(client, ctx, 'Please provide a valid Facebook name (up to 21 characters).', color);
+                    return await client.utils.oops(client, ctx, fbMessages?.invalidName || 'Please provide a valid Facebook name (up to 21 characters).', color);
                 }
 
-                embed.setDescription('Your Facebook name has been set.').addFields([{ name: 'New Facebook Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
+                embed.setDescription(fbMessages?.nameUpdated || 'Your Facebook name has been set.').addFields([{ name: fbMessages?.newName || 'New Facebook Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.facebook.name': name } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -94,10 +96,10 @@ module.exports = class Facebook extends Command {
                 const urlPattern = /^https?:\/\/[^\s$.?#].[^\s]*$/;
 
                 if (!link || !urlPattern.test(link)) {
-                    return await client.utils.oops(client, ctx, 'Please provide a valid Facebook link.', color);
+                    return await client.utils.oops(client, ctx, fbMessages?.invalidLink || 'Please provide a valid Facebook link.', color);
                 }
 
-                embed.setDescription('Your Facebook link has been set.').addFields([{ name: 'New Facebook Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
+                embed.setDescription(fbMessages?.linkUpdated || 'Your Facebook link has been set.').addFields([{ name: fbMessages?.newLink || 'New Facebook Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.facebook.link': link } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -105,13 +107,13 @@ module.exports = class Facebook extends Command {
             }
 
             case 'help': {
-                embed.setTitle('Facebook Command Help')
-                    .setDescription('Manage your Facebook details with the following subcommands:')
+                embed.setTitle(fbMessages?.helpTitle || 'Facebook Command Help')
+                    .setDescription(fbMessages?.helpDescription || 'Manage your Facebook details with the following subcommands:')
                     .addFields([
-                        { name: 'Show Facebook Details', value: '`\`\`\`facebook` or `facebook @mention\`\`\``', inline: false },
-                        { name: 'Set Facebook Name', value: '`\`\`\`facebook name YourFacebookName\`\`\``', inline: false },
-                        { name: 'Set Facebook Link', value: '`\`\`\`facebook link https://facebook.com/YourFacebookLink`\`\`\`', inline: false },
-                        { name: 'Command Help', value: '`\`\`\`facebook help\`\`\``', inline: false }
+                        { name: fbMessages?.showDetails || 'Show Facebook Details', value: '`\`\`\`facebook` or `facebook @mention\`\`\`', inline: false },
+                        { name: fbMessages?.setName || 'Set Facebook Name', value: '`\`\`\`facebook name YourFacebookName\`\`\`', inline: false },
+                        { name: fbMessages?.setLink || 'Set Facebook Link', value: '`\`\`\`facebook link https://facebook.com/YourFacebookLink`\`\`\`', inline: false },
+                        { name: fbMessages?.commandHelp || 'Command Help', value: '`\`\`\`facebook help\`\`\`', inline: false }
                     ]);
 
                 await ctx.sendMessage({ embeds: [embed] });
@@ -119,11 +121,11 @@ module.exports = class Facebook extends Command {
             }
 
             default: {
-                const fbName = user.social.facebook.name || 'Not set';
+                const fbName = user.social.facebook.name || fbMessages?.notSet || 'Not set';
                 const fbLink = user.social.facebook.link || '';
 
                 embed.setColor(color.main).setDescription(
-                    `**${emoji.social.facebook} : ${fbName && fbLink ? `[${fbName}](${fbLink})` : fbName ? fbName : 'Not set'}**`)
+                    `**${emoji.social.facebook} : ${fbName && fbLink ? `[${fbName}](${fbLink})` : fbName ? fbName : fbMessages?.notSet || 'Not set'}**`);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;

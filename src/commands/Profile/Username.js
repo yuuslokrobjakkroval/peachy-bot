@@ -62,13 +62,16 @@ module.exports = class Username extends Command {
         const user = await Users.findOne({ userId: ctx.author.id });
         const embed = client.embed().setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() });
 
+        // Get messages from localization
+        const userNameMessages = language.locales.get(language.defaultLocale)?.profileMessages?.userNameMessages;
+
         const subCommand = ctx.isInteraction ? ctx.interaction.options.data[0].name : args[0];
 
         switch (subCommand) {
             case 'help': {
                 embed
                     .setColor(color.main)
-                    .setDescription(`**Usage:** \`username <text || reset || show || help>\`\n\n**Examples:**\n\`username CodingMaster\`\n\`username reset\`\n\`username show\`\n\`username help\``);
+                    .setDescription(userNameMessages.help.usage + '\n\n**Examples:**\n' + userNameMessages.help.examples.map(example => `\`${example}\``).join('\n'));
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -77,7 +80,7 @@ module.exports = class Username extends Command {
             case 'reset': {
                 embed
                     .setColor(color.main)
-                    .setDescription('Your username has been reset.');
+                    .setDescription(userNameMessages.reset);
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.username': 'No username set.' } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -87,7 +90,7 @@ module.exports = class Username extends Command {
             case 'show': {
                 embed
                     .setColor(color.main)
-                    .setDescription(user.profile.username ? `\`\`\`arm\n${user.profile.username}\`\`\`` : 'No username set.');
+                    .setDescription(user.profile.username ? userNameMessages.show.usernameSet.replace('{{username}}', user.profile.username) : userNameMessages.show.noUsername);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -97,18 +100,17 @@ module.exports = class Username extends Command {
                 const text = ctx.isInteraction ? ctx.interaction.options.data[0]?.options[0]?.value?.toString() : args.join(' ');
 
                 if (!text) {
-                    await client.utils.oops(client, ctx, 'Please provide a username or a valid subcommand.', color);
+                    await client.utils.oops(client, ctx, userNameMessages.set.error.empty, color);
                     return;
                 }
 
                 if (text.length > 40) {
-                    await client.utils.oops(client, ctx, 'The username cannot be longer than 40 characters.', color);
+                    await client.utils.oops(client, ctx, userNameMessages.set.error.long, color);
                     return;
                 }
 
                 embed
-                    .setDescription('Your username has been set.')
-                    .addFields([{ name: 'New username', value: `\`\`\`arm\n${text}\n\`\`\``, inline: false }]);
+                    .setDescription(userNameMessages.set.success.replace('{{username}}', text));
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.username': text } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });

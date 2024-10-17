@@ -31,8 +31,10 @@ module.exports = class Emoji extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const emojiMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.emojiMessages;
+
         const emojiInput = ctx.isInteraction
-            ? ctx.interaction.options.getString('emoji')
+            ? ctx.interaction.options.getString("emoji")
             : args[0];
 
         // Regex to match emoji, both static and animated
@@ -40,20 +42,21 @@ module.exports = class Emoji extends Command {
         const match = emojiInput.match(emojiRegex);
 
         if (!match) {
-            return await client.utils.sendErrorMessage(client, ctx, "Invalid emoji provided.", color);
+            const errorMessage = emojiMessages?.invalidEmoji || "Invalid emoji provided.";
+            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
         const isAnimated = emojiInput.startsWith("<a:");
         const emojiID = match[2];
-        const emojiURL = `https://cdn.discordapp.com/emojis/${emojiID}.${isAnimated ? 'gif' : 'png'}?size=1024&quality=lossless`;
+        const emojiURL = `https://cdn.discordapp.com/emojis/${emojiID}.${isAnimated ? "gif" : "png"}?size=1024&quality=lossless`;
 
         const embed = client.embed()
             .setColor(color.main)
-            .setTitle("Emoji Image")
-            .setDescription(`Here is the image of the emoji:`)
+            .setTitle(emojiMessages?.emojiTitle || "Emoji Image")
+            .setDescription(emojiMessages?.emojiDescription || "Here is the image of the emoji:")
             .setImage(emojiURL)
             .setFooter({
-                text: `Requested by ${ctx.author.displayName}`,
+                text: emojiMessages?.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
             })
             .setTimestamp();

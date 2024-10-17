@@ -32,31 +32,33 @@ module.exports = class Socials extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const smMessages = language.locales.get(language.defaultLocale)?.socialMessages?.smMessages;
+
         const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
         const user = await Users.findOne({ userId: targetUserId });
         const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
 
         if (!user) {
-            const embed = client.embed().setColor(color.red).setDescription(`User not found.`);
+            const embed = client.embed().setColor(color.red).setDescription(smMessages?.userNotFound || 'User not found.');
             return ctx.sendMessage({ embeds: [embed] });
         }
 
-        const fbName = user.social.facebook.name || 'Not set';
+        const fbName = user.social.facebook.name || smMessages?.notSet || 'Not set';
         const fbLink = user.social.facebook.link || '';
-        const igName = user.social.instagram.name || 'Not set';
+        const igName = user.social.instagram.name || smMessages?.notSet || 'Not set';
         const igLink = user.social.instagram.link || '';
-        const ttName = user.social.tiktok.name || 'Not set';
+        const ttName = user.social.tiktok.name || smMessages?.notSet || 'Not set';
         const ttLink = user.social.tiktok.link || '';
 
         const socialDescription = `
-        **${emoji.social.facebook} : ${fbName && fbLink  ? `[${fbName}](${fbLink})` : fbName ? fbName : 'Not Set'}**\n
-        **${emoji.social.instagram} : ${igName && igLink  ? `[${igName}](${igLink})` : igName ? igName : 'Not Set'}**\n
-        **${emoji.social.tiktok} : ${ttName && ttLink  ? `[${ttName}](${ttLink})` : ttName ? ttName : 'Not Set'}**\n
+        **${emoji.social.facebook} : ${fbName && fbLink ? `[${fbName}](${fbLink})` : fbName}**\n
+        **${emoji.social.instagram} : ${igName && igLink ? `[${igName}](${igLink})` : igName}**\n
+        **${emoji.social.tiktok} : ${ttName && ttLink ? `[${ttName}](${ttLink})` : ttName}**\n
         `;
 
         const embed = client.embed()
-            .setTitle(`📱 Social Media for ${targetUsername} 📱`)
+            .setTitle(`${smMessages?.title || '📱 Social Media Profiles'} for ${targetUsername} 📱`)
             .setDescription(socialDescription)
             .setColor(color.main);
 

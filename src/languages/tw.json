@@ -3,7 +3,7 @@
 		"permissionsClientError": "我沒有足夠的權限來執行此命令。",
 		"permissionsUserError": "您沒有足夠的權限來使用此命令。",
 		"argumentsMissingTitle": "缺少參數",
-		"argumentsMissingDescription": "請提供“{commandName}”指令所需的參數。",
+		"argumentsMissingDescription": "請提供「{commandName}」指令所需的參數。",
 		"usageHeader": "用法",
 		"examplesHeader": "範例",
 		"syntaxInstructions": "語法：[] = 可選，<> = 必需",
@@ -119,7 +119,7 @@
 			},
 			"goma": {
 				"noUsers": "還沒人有連勝。",
-				"topGoma": "𝐓𝐎𝐏𝐆𝐎𝐌𝐀𝐂𝐋𝐀𝐈𝐌"
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"invalidType": "排行榜類型無效。"
 		},
@@ -161,7 +161,7 @@
 			"zeroBalance": "您的銀行裡沒有硬幣。",
 			"invalidAmount": "請提供有效的提款金額。",
 			"tooHigh": "您提取的金額不得超過銀行存款金額。",
-			"success": "{{coinEmote}} **成功， {{user}}!**\n{{amount}} 您銀行的硬幣**。",
+			"success": "您已撤回 {{coinEmote}} **{{amount}}** 您銀行的硬幣。",
 			"error": "處理您的提款請求時發生錯誤。"
 		}
 	},
@@ -208,7 +208,7 @@
 		},
 		"eatMessages": {
 			"title": "吃飯時間！",
-			"description": "**{{user}}** 正在享用美味的食物！",
+			"description": "**{{user}}** 正在享受美味的食物！",
 			"error": "處理您的吃飯表情時出錯。"
 		},
 		"playGameMessages": {
@@ -228,7 +228,7 @@
 		},
 		"scareMessages": {
 			"title": "害怕的！",
-			"description": "**{{user}}**展現出他們害怕的一面！",
+			"description": "**{{user}}**展現了他們害怕的一面！",
 			"error": "處理您的恐懼表情時出錯。"
 		},
 		"showerMessages": {
@@ -320,20 +320,58 @@
 			"gameOver": "你的遊戲結束了。"
 		}
 	},
-	"inventoryMessages": {
-		"inventoryHeader": "%{author} 的庫存！",
-		"inventoryEmptyName": "庫存清空",
-		"inventoryEmptyValue": "您目前的庫存是空的。",
-		"itemNotFound": "在商店中找不到商品 ID **`%{itemId}`**！",
-		"sellDisabled": "出售該物品已被禁用。",
-		"useDisabled": "使用該項目已停用。"
-	},
-	"themeMessages": {
-		"themeApplied": "您已成功將 %{itemEmote} **`%{itemName}`** 主題套用到您的嵌入內容！",
-		"themeUnavailable": "主題 **`%{itemName}`** 無法使用。",
-		"themeNotOwned": "您不擁有主題 **`%{itemName}`**。",
-		"invalidThemeID": "主題 ID **`%{itemId}`** 無效。",
-		"themeAlreadyOwned": "您已經擁有該主題 **`%{itemName}`** 並且無法再次購買。"
+	"gameMessages": {
+		"puzzleMessages": {
+			"title": "🧩 表情符號拼圖",
+			"prompt": "這意味著什麼？",
+			"correct": {
+				"title": "正確的！",
+				"description": "幹得好，您猜對了表情符號謎題！"
+			},
+			"wrong": {
+				"title": "❌錯了！",
+				"description": "你有",
+				"guessesLeft": "剩下的猜測。"
+			},
+			"timeout": {
+				"title": "⏳ 時間到了！",
+				"description": "正確答案是"
+			},
+			"gameOver": {
+				"title": "❌遊戲結束！",
+				"description": "你已經用盡了所有的猜測！"
+			}
+		},
+		"guessNumberMessages": {
+			"insufficientBalance": {
+				"title": "餘額不足",
+				"description": "您至少需要 1000 個金幣才能玩猜數字遊戲。"
+			},
+			"description": "我選了 1 到 100 之間的數字。",
+			"correct": {
+				"description": "恭喜你"
+			},
+			"incorrect": {
+				"description": "❌ 錯誤！"
+			},
+			"hint": {
+				"bigger": "這個數字比你的猜測還要大。",
+				"smaller": "這個數字比你的猜測還要小。",
+				"range": "這裡有一個提示：數字介於"
+			},
+			"gameOver": {
+				"description": "💔 你的心已經用完了！"
+			},
+			"timeout": {
+				"description": "⏳ 時間到了！"
+			}
+		},
+		"rollMessages": {
+			"invalidDice": "骰子類型無效！",
+			"invalidSides": "骰子的面數無效。",
+			"win": "你贏了！",
+			"lose": "你輸了！"
+		}
 	},
 	"informationMessages": {
 		"helpMessages": {
@@ -431,6 +469,7 @@
 				"serverinfo": "伺服器資訊",
 				"theme": "主題",
 				"userinfo": "使用者資訊",
+				"verify": "核實",
 				"help": "幫助",
 				"info": "資訊",
 				"invite": "邀請",
@@ -501,7 +540,7 @@
 				},
 				{
 					"name": "3.遵守伺服器規則",
-					"value": "除了這些特定於機器人的規則之外，請確保您也遵循您所在伺服器的規則。"
+					"value": "除了這些特定於機器人的規則之外，請確保您還遵守您所在伺服器的規則。"
 				},
 				{
 					"name": "4. 適當的內容",
@@ -524,6 +563,377 @@
 				"uptime": "正常運作時間：{uptime} 分鐘"
 			},
 			"footer": "欲了解更多信息，請單擊下面的按鈕。"
+		}
+	},
+	"inventoryMessages": {
+		"buyMessages": {
+			"invalidItem": "ID 為 ` 的項目{{itemId}}` 沒有找到。",
+			"themeAlreadyOwned": "您已經擁有該主題 {{itemEmote}} **{{itemName}}**。",
+			"itemCannotBeBought": "該專案 {{itemEmote}} **{{itemName}}** 不可購買。",
+			"notEnoughCoins": "你需要 {{coinEmote}}{{neededCoins}} 更多要買 {{itemEmote}} **{{itemName}}**。",
+			"success": "購買成功",
+			"partial": "但你只能負擔得起",
+			"description": "你有 {{afford}} {{itemEmote}} **{{itemName}}** 為了 {{coinEmote}}{{totalPrice}}。{{amountToBuy}}** 專案.",
+			"buyDisable": "此項 {{itemEmote}} **{{itemName}}** 目前無法購買。",
+			"zeroBalance": "您沒有硬幣可供購買。"
+		},
+		"drinkMessages": {
+			"emptyInventory": "你的庫存是空的。",
+			"itemNotFound": "ID 為 ` 的項目{{itemId}}` 沒有找到。",
+			"cannotDrinkFood": "你不能喝酒 {{itemEmote}} **{{itemName}}**。",
+			"notDrinkable": "您選擇的產品不可飲用。",
+			"noDrinkItem": "您的庫存中沒有此飲料。",
+			"invalidAmount": "金額無效。",
+			"successDrink": "你喝了 {{itemEmote}} **`x{{itemAmount}}``** {{itemName}} 並獲得**{{xpGained}} XP**。"
+		},
+		"eatMessages": {
+			"emptyInventory": "你的庫存是空的。",
+			"itemNotFound": "ID 為 ` 的項目{{itemId}}` 沒有找到。",
+			"cannotEatDrink": "你不能吃 {{itemEmote}} **{{itemName}}**。",
+			"notEdible": "該物品不可食用。",
+			"noFoodItem": "您的庫存中沒有該食品。",
+			"invalidAmount": "金額無效。",
+			"successEat": "你吃了 {{itemEmote}} **`x{{itemAmount}}``** {{itemName}} 並獲得**{{xpGained}} XP**。"
+		},
+		"giveItemMessages": {
+			"emptyInventory": "你的庫存是空的。",
+			"noUser": "未提及或找到任何用戶。",
+			"mentionToBot": "您不能將物品交給機器人。",
+			"mentionToSelf": "您不能將物品送給自己。",
+			"itemNotFound": "ID 為 ` 的項目{{itemId}}` 沒找到！",
+			"noItemInInventory": "你沒有 {{itemEmote}} **{{itemName}}** 在您的庫存中。",
+			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** 無法給出。",
+			"invalidAmount": "指定的金額無效。",
+			"confirmationTitle": "給予物品 - {{author}}",
+			"confirmationDescription": "{{author}}，選擇 **接受** 繼續交易或選擇 **取消** 拒絕。",
+			"sentItem": "已發送項目",
+			"receivedItem": "收到物品",
+			"transactionSuccess": "您已接受交易。 {{itemEmote}} **`x{{itemAmount}}``** {{itemName}} 已轉移至**{{target}}**。",
+			"transactionCancelled": "您已取消交易。"
+		},
+		"invMessages": {
+			"noInventory": "您的庫存中沒有任何物品。",
+			"emptyInventoryFieldName": "存貨",
+			"emptyInventoryFieldValue": "您的庫存目前為空。",
+			"inventoryNet": "庫存網",
+			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+			"footerText": "由{用戶}請求",
+			"error": "檢索您的庫存時發生錯誤。"
+		},
+		"sellMessages": {
+			"inventoryEmpty": "你的庫存是空的。",
+			"itemNotOwned": "您的庫存中沒有 **{item}**。",
+			"itemNotSellable": "該商品 **{item}** 不可出售！",
+			"itemNotFound": "找不到 ID 為 **{item}** 的項目！",
+			"sellSuccess": "您以 **{價格}** 的價格出售了 **{數量}** **{商品}**。",
+			"noSellableItems": "您的庫存中沒有任何可銷售的商品。",
+			"cancelled": "出售取消。",
+			"acceptSell": "您以 **{price}** 硬幣的價格出售了您的物品。",
+			"invalidQuantity": "指定的數量無效。",
+			"sellError": "處理您的銷售請求時發生錯誤。"
+		},
+		"shopMessages": {
+			"shopTitle": "店鋪",
+			"requestedBy": "%{user} 請求",
+			"unknownItemId": "未知身分",
+			"unnamedItem": "未命名項目",
+			"selectCategoryPlaceholder": "選擇類別",
+			"selectItemPlaceholder": "選擇一個項目",
+			"itemDetail": "商品詳情",
+			"noDescription": "無可用描述",
+			"unknownType": "未知類型"
+		},
+		"shopInfoMessages": {
+			"itemNotFound": "未找到 ID 為“{id}”的項目。",
+			"noItemsAvailable": "商店中沒有商品。",
+			"noAdditionalCommands": "沒有適用於此項目的其他命令。",
+			"itemDetailsHeader": "項目詳情",
+			"itemLimit": "限制",
+			"itemPrice": "價格",
+			"itemSellPrice": "售價",
+			"itemDescription": "描述",
+			"shopItemListHeader": "以下是按類型排序的所有項目的清單：",
+			"itemListFooter": "使用“商店資訊” <id>` 取得更多有關某個項目的詳細資訊。"
+		},
+		"useMessages": {
+			"themeID": "未找到 ID 為「{itemId}」的主題。",
+			"notOwned": "您不擁有主題“{itemName}”。",
+			"unavailable": "主題“{itemName}”無法使用。",
+			"applied": "已成功套用主題「{itemEmote} {itemName}」！"
+		}
+	},
+	"profileMessages": {
+		"bioMessages": {
+			"usage": "用法：",
+			"resetSuccess": "您的個人簡介已重設。",
+			"noBio": "沒有寫履歷。",
+			"provideText": "請提供簡介文字或有效的子命令。",
+			"tooLong": "個人簡介不能超過 40 個字元。",
+			"setSuccess": "您的履歷已設定。"
+		},
+		"bdMessages": {
+			"resetSuccess": "您的生日和星座已重置。",
+			"noBirthday": "沒有設定生日。",
+			"noZodiac": "沒有設置星座。",
+			"provideDate": "請提供您的生日的有效日期或有效的子命令。",
+			"invalidDate": "日期必須採用支援的格式之一：",
+			"setSuccess": "您的生日已設定為",
+			"zodiacSuccess": "你的星座是"
+		},
+		"genderMessages": {
+			"usage": "用法",
+			"resetSuccess": "您的性別已重置。",
+			"setSuccess": "您的性別已設定為",
+			"current": "您的性別設定為",
+			"notSpecified": "未指定您的性別。"
+		},
+		"levelMessages": {
+			"generating": "生成你的等級...",
+			"userNotFound": "未找到用戶。",
+			"levelText": "等級：",
+			"xpText": "經驗值：",
+			"error": "取得您的等級時發生錯誤。"
+		},
+		"pfMessages": {
+			"loading": "正在載入您的個人資料...",
+			"userNotFound": "未找到用戶。",
+			"privateProfile": "此個人資料是私人的。",
+			"defaultBio": "該用戶尚未設定個人簡介。",
+			"defaultBirthday": "該用戶尚未設定生日。",
+			"genderText": "性別：",
+			"zodiacSignText": "十二生肖：",
+			"error": "產生您的個人資料時發生錯誤。",
+			"socialMediaLinks": {
+				"facebook": {
+					"notSet": "該用戶尚未設定 Facebook 連結。",
+					"linkText": "臉書：[{name}]({link})"
+				},
+				"instagram": {
+					"notSet": "該用戶尚未設定 Instagram 連結。",
+					"linkText": "Instagram：[{name}]({link})"
+				},
+				"tiktok": {
+					"notSet": "該用戶尚未設定 TikTok 連結。",
+					"linkText": "抖音：[{name}]({link})"
+				}
+			}
+		},
+		"relationshipMessages": {
+			"success": {
+				"add": "添加成功",
+				"remove": "已成功刪除"
+			},
+			"error": {
+				"userNotMentioned": "請提及一個使用者來管理您的關係。",
+				"notRegistered": "您尚未在資料庫中註冊。",
+				"targetNotRegistered": "您嘗試修改的用戶尚未註冊。",
+				"invalidType": "關係類型無效。",
+				"partner": {
+					"error": {
+						"alreadyExists": "你已經有一個夥伴了。",
+						"notFound": "該用戶不是您的合作夥伴。"
+					}
+				},
+				"bro": {
+					"error": {
+						"limitExceeded": "你最多只能有 4 個兄弟。",
+						"alreadyExists": "這個用戶已經是你的兄弟了。",
+						"notFound": "這個用戶不是你的兄弟。"
+					}
+				},
+				"sister": {
+					"error": {
+						"limitExceeded": "您最多只能有 4 個姊妹。",
+						"alreadyExists": "這個用戶已經是你的妹妹了。",
+						"notFound": "這個用戶不是你的妹妹。"
+					}
+				},
+				"bestie": {
+					"error": {
+						"limitExceeded": "你最多只能有 4 個好友。",
+						"alreadyExists": "該用戶已經是你的好朋友了。",
+						"notFound": "該用戶不是您的好朋友。"
+					}
+				},
+				"confidant": {
+					"error": {
+						"limitExceeded": "您最多只能有 4 位密友。",
+						"alreadyExists": "該用戶已經是您的知己了。",
+						"notFound": "該用戶不是您的知己。"
+					}
+				}
+			}
+		},
+		"userNameMessages": {
+			"help": {
+				"usage": "用法：`用戶名 <text || reset || show || help>`",
+				"examples": [
+					"使用者名稱 桃色",
+					"使用者名稱重置",
+					"使用者名稱顯示",
+					"用戶名幫助"
+				]
+			},
+			"reset": "您的用戶名已重設為預設值。",
+			"show": {
+				"usernameSet": "您目前的使用者名稱是：`{{username}}`",
+				"noUsername": "未設定用戶名。"
+			},
+			"set": {
+				"success": "您的使用者名稱已設定為：`{{username}}`",
+				"error": {
+					"long": "使用者名稱不能超過 40 個字元。",
+					"empty": "請提供使用者名稱。"
+				}
+			}
+		}
+	},
+	"socialMessages": {
+		"fbMessages": {
+			"userNotFound": "未找到用戶。",
+			"settingsTitle": "臉書設定",
+			"invalidName": "請提供有效的 Facebook 名稱（最多 21 個字元）。",
+			"nameUpdated": "您的 Facebook 名稱已設定。",
+			"newName": "新的 Facebook 名稱",
+			"linkUpdated": "您的 Facebook 連結已設定。",
+			"newLink": "新的臉書鏈接",
+			"invalidLink": "請提供有效的 Facebook 連結。",
+			"helpTitle": "Facebook 命令協助",
+			"helpDescription": "使用以下子命令管理您的 Facebook 詳細資訊：",
+			"showDetails": "顯示 Facebook 詳細信息",
+			"setName": "設定 Facebook 名稱",
+			"setLink": "設定 Facebook 連結",
+			"commandHelp": "命令幫助",
+			"notSet": "未設定"
+		},
+		"igMessages": {
+			"userNotFound": "未找到用戶。",
+			"settingsTitle": "Instagram 設定",
+			"invalidName": "請提供有效的 Instagram 名稱（最多 21 個字元）。",
+			"nameUpdated": "您的 Instagram 名稱已設定。",
+			"newName": "Instagram 新名稱",
+			"linkUpdated": "您的 Instagram 連結已設定。",
+			"newLink": "新的 Instagram 鏈接",
+			"invalidLink": "請提供有效的 Instagram 連結。",
+			"helpTitle": "Instagram 命令協助",
+			"helpDescription": "使用以下子命令管理您的 Instagram 詳細資訊：",
+			"showDetails": "顯示 Instagram 詳細信息",
+			"setName": "設定 Instagram 名稱",
+			"setLink": "設定 Instagram 連結",
+			"commandHelp": "命令幫助",
+			"notSet": "未設定"
+		},
+		"smMessages": {
+			"userNotFound": "未找到用戶。",
+			"title": "📱 社群媒體資料",
+			"notSet": "未設定"
+		},
+		"ttMessages": {
+			"userNotFound": "未找到用戶。",
+			"settingsTitle": "抖音設定",
+			"invalidName": "請提供有效的 TikTok 名稱（最多 21 個字元）。",
+			"nameUpdated": "您的 TikTok 名稱已設定。",
+			"newName": "新的 TikTok 名稱",
+			"linkUpdated": "您的 TikTok 連結已設定。",
+			"newLink": "新的 TikTok 鏈接",
+			"invalidLink": "請提供有效的 TikTok 連結。",
+			"helpTitle": "TikTok 命令幫助",
+			"helpDescription": "使用以下子命令管理您的 TikTok 詳細資訊：",
+			"showDetails": "顯示 TikTok 詳細信息",
+			"setName": "設定 TikTok 名稱",
+			"setLink": "設定 TikTok 鏈接",
+			"commandHelp": "命令幫助",
+			"notSet": "未設定"
+		}
+	},
+	"utilityMessages": {
+		"avatarMessages": {
+			"avatarTitle": "%{使用者名稱}的頭像",
+			"requestedBy": "%{使用者名稱} 請求",
+			"noUserMentioned": "沒有提及用戶，請提及某人以查看他們的頭像。"
+		},
+		"emojiMessages": {
+			"emojiTitle": "表情符號圖像",
+			"emojiDescription": "這是表情符號的圖像：",
+			"requestedBy": "%{使用者名稱} 請求",
+			"invalidEmoji": "提供的表情符號無效。"
+		},
+		"languageMessages": {
+			"title": "語言設定",
+			"languageSetTitle": "語言",
+			"languageSetDescription": "您的語言已設定為 **%{語言}**。",
+			"helpTitle": "語言幫助",
+			"helpDescription": "管理您的語言設定。",
+			"examples": "範例",
+			"exampleCommands": "• 語言\n",
+			"usage": "用法",
+			"usageCommands": "• 語言 - 顯示您目前的語言\n",
+			"currentLanguageTitle": "語言",
+			"currentLanguageDescription": "您目前的語言是 **%{語言}**。",
+			"requestedBy": "%{使用者名稱} 請求"
+		},
+		"qrMessages": {
+			"title": "%{currency} 的二維碼",
+			"description": "這是 %{currency} 的二維碼：",
+			"invalidOption": "無效選項！"
+		},
+		"serverInfoMessages": {
+			"title": "伺服器資訊：%{伺服器}",
+			"nameLabel": "姓名",
+			"idLabel": "伺服器ID",
+			"ownerLabel": "擁有者",
+			"membersLabel": "會員",
+			"rolesLabel": "角色",
+			"createdLabel": "創建於",
+			"footer": "%{user} 請求"
+		},
+		"themeMessages": {
+			"title": "𝐓𝐇𝐄𝐌𝐄𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒",
+			"setThemeMessage": "您的主題已設定為 **%{theme}**。",
+			"currentThemeMessage": "您目前的主題是 **%{theme}**。",
+			"helpTitle": "𝐓𝐇𝐄𝐌𝐄𝐇𝐄𝐋𝐏",
+			"helpDescription": "管理您的主題設定。",
+			"examplesLabel": "範例",
+			"usageLabel": "用法",
+			"footer": "%{user} 請求"
+		},
+		"userInfoMessages": {
+			"title": "使用者資訊：%{user}",
+			"username": "使用者名稱",
+			"userId": "使用者身分",
+			"joinedServer": "已加入伺服器",
+			"accountCreated": "帳戶已建立",
+			"roles": "角色",
+			"noRoles": "沒有任何",
+			"userNotFound": "未找到用戶！",
+			"footer": "%{user} 請求"
+		},
+		"verifyMessages": {
+			"noAccount": "您沒有帳戶。",
+			"alreadyVerified": "您已經通過驗證。",
+			"confirmButtonLabel": "確認",
+			"cancelButtonLabel": "取消",
+			"title": "驗證帳戶",
+			"confirmationMessage": "您確定要透過 **PEACHY** 進行驗證嗎？",
+			"paymentInfo": "要驗證，您需要支付 **0.99 美元/月**。",
+			"benefitsTitle": "**好處**",
+			"benefits": "• 我們伺服器中的角色驗證\n",
+			"requestedBy": "請求者",
+			"verificationRequest": "驗證請求",
+			"verificationMessage": "您已請求與 PEACHY 核實。",
+			"clickToSubmit": "點擊提交按鈕以取得驗證碼",
+			"waitingMessage": "如果您已經付款，請稍等一下。 <@966688007493140591>",
+			"submitButtonLabel": "提交",
+			"thankYouMessage": "謝謝你！",
+			"modalTitle": "輸入驗證碼",
+			"inputLabel": "驗證碼：",
+			"inputPlaceholder": "在此輸入您的驗證碼",
+			"verificationSuccess": "感謝您對PEACHY的支持與驗證！",
+			"verificationSuccessTitle": "驗證成功",
+			"thankYouForVerifying": "感謝您的支持與驗證！",
+			"verificationComplete": "驗證完成。",
+			"verificationFailed": "驗證失敗或程式碼不正確。",
+			"noResponseReceived": "沒有收到回覆。"
 		}
 	}
 }

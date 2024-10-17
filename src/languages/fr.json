@@ -161,7 +161,7 @@
 			"zeroBalance": "Vous n'avez aucune pièce dans votre banque.",
 			"invalidAmount": "Veuillez fournir un montant valide à retirer. ",
 			"tooHigh": "Vous ne pouvez pas retirer plus que ce que vous avez en banque.",
-			"success": "{{coinEmote}} **Succès, {{user}}!**\n{{amount}} pièces** de votre banque.",
+			"success": "Vous avez retiré {{coinEmote}} **{{amount}}** pièces de votre banque.",
 			"error": "Une erreur s'est produite lors du traitement de votre demande de retrait."
 		}
 	},
@@ -203,7 +203,7 @@
 		},
 		"makeupMessages": {
 			"title": "C'est l'heure du maquillage !",
-			"description": "**{{user}}** applique un maquillage fabuleux et brille de mille feux!",
+			"description": "**{{user}}** applique un maquillage fabuleux et brille de mille feux !",
 			"error": "Une erreur s'est produite lors du traitement de votre emote de maquillage."
 		},
 		"eatMessages": {
@@ -320,20 +320,58 @@
 			"gameOver": "Votre partie est terminée."
 		}
 	},
-	"inventoryMessages": {
-		"inventoryHeader": "Inventaire de %{auteur}!",
-		"inventoryEmptyName": "Inventaire vide",
-		"inventoryEmptyValue": "Votre inventaire actuel est vide.",
-		"itemNotFound": "L'ID d'article **`%{itemId}`** est introuvable dans la boutique!",
-		"sellDisabled": "La vente de cet article est désactivée.",
-		"useDisabled": "L'utilisation de cet élément est désactivée."
-	},
-	"themeMessages": {
-		"themeApplied": "Vous avez appliqué avec succès le thème %{itemEmote} **`%{itemName}`** à votre intégration!",
-		"themeUnavailable": "Le thème **`%{itemName}`** n'est pas disponible.",
-		"themeNotOwned": "Vous ne possédez pas le thème **`%{itemName}`**. ",
-		"invalidThemeID": "L'ID de thème **`%{itemId}`** n'est pas valide. ",
-		"themeAlreadyOwned": "Vous possédez déjà le thème **`%{itemName}`** et vous ne pouvez pas l'acheter à nouveau."
+	"gameMessages": {
+		"puzzleMessages": {
+			"title": "🧩 Casse-tête Emoji",
+			"prompt": "Qu'est-ce que cela signifie?",
+			"correct": {
+				"title": "Correct!",
+				"description": "Bravo, vous avez bien deviné le puzzle emoji!"
+			},
+			"wrong": {
+				"title": "❌Faux !",
+				"description": "Tu as",
+				"guessesLeft": "il reste des suppositions."
+			},
+			"timeout": {
+				"title": "⏳ Le temps est écoulé !",
+				"description": "La bonne réponse était"
+			},
+			"gameOver": {
+				"title": "❌Game Over !",
+				"description": "Vous avez utilisé toutes vos suppositions! "
+			}
+		},
+		"guessNumberMessages": {
+			"insufficientBalance": {
+				"title": "Solde insuffisant",
+				"description": "Vous avez besoin d'au moins 1 000 pièces pour jouer au jeu Devinez le nombre. "
+			},
+			"description": "J'ai choisi un nombre entre 1 et 100. Vous avez 3 cœurs. ",
+			"correct": {
+				"description": "Félicitations"
+			},
+			"incorrect": {
+				"description": "❌ Incorrect ! "
+			},
+			"hint": {
+				"bigger": "Le nombre est plus grand que ce que vous pensez.",
+				"smaller": "Le nombre est inférieur à votre estimation.",
+				"range": "Voici un indice: le nombre est compris entre"
+			},
+			"gameOver": {
+				"description": "💔 Vous n'avez plus de cœur ! "
+			},
+			"timeout": {
+				"description": "⏳ Le temps est écoulé ! "
+			}
+		},
+		"rollMessages": {
+			"invalidDice": "Type de dés invalide! ",
+			"invalidSides": "Nombre de faces invalide pour un dé.",
+			"win": "Vous gagnez!",
+			"lose": "Vous perdez !"
+		}
 	},
 	"informationMessages": {
 		"helpMessages": {
@@ -431,6 +469,7 @@
 				"serverinfo": "informations sur le serveur",
 				"theme": "thème",
 				"userinfo": "informations utilisateur",
+				"verify": "vérifier",
 				"help": "aide",
 				"info": "infos",
 				"invite": "inviter",
@@ -524,6 +563,377 @@
 				"uptime": "Temps de disponibilité:{uptime}minutes"
 			},
 			"footer": "Pour plus d'informations, cliquez sur les boutons ci-dessous."
+		}
+	},
+	"inventoryMessages": {
+		"buyMessages": {
+			"invalidItem": "L'élément avec l'ID `{{itemId}}`n'a pas été trouvé. ",
+			"themeAlreadyOwned": "Vous possédez déjà le thème {{itemEmote}} **{{itemName}}**. ",
+			"itemCannotBeBought": "L'article {{itemEmote}} **{{itemName}}** n'est pas disponible à l'achat.",
+			"notEnoughCoins": "Vous avez besoin {{coinEmote}}{{neededCoins}} plus à acheter {{itemEmote}} **{{itemName}}**.",
+			"success": "acheté avec succès",
+			"partial": "mais tu ne pouvais que te permettre",
+			"description": "Tu as {{afford}} {{itemEmote}} **{{itemName}}** pour {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** articles.",
+			"buyDisable": "Cet article {{itemEmote}} **{{itemName}}** ne peut pas être acheté pour le moment.",
+			"zeroBalance": "Vous n'avez pas de pièces pour effectuer un achat. "
+		},
+		"drinkMessages": {
+			"emptyInventory": "Votre inventaire est vide.",
+			"itemNotFound": "L'élément avec l'ID `{{itemId}}`n'a pas été trouvé. ",
+			"cannotDrinkFood": "Tu ne peux pas boire {{itemEmote}} **{{itemName}}**. ",
+			"notDrinkable": "L'article que vous avez sélectionné n'est pas potable.",
+			"noDrinkItem": "Vous n'avez pas cette boisson dans votre inventaire.",
+			"invalidAmount": "Montant invalide. ",
+			"successDrink": "tu as bu {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} et gagné **{{xpGained}} XP**."
+		},
+		"eatMessages": {
+			"emptyInventory": "Votre inventaire est vide.",
+			"itemNotFound": "L'élément avec l'ID `{{itemId}}`n'a pas été trouvé. ",
+			"cannotEatDrink": "Tu ne peux pas manger {{itemEmote}} **{{itemName}}**. ",
+			"notEdible": "Cet article n'est pas comestible.",
+			"noFoodItem": "Vous n'avez pas cet aliment dans votre inventaire.",
+			"invalidAmount": "Montant invalide. ",
+			"successEat": "tu as mangé {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} et gagné **{{xpGained}} XP**."
+		},
+		"giveItemMessages": {
+			"emptyInventory": "Votre inventaire est vide.",
+			"noUser": "Aucun utilisateur n'a été mentionné ou trouvé.",
+			"mentionToBot": "Vous ne pouvez pas donner d'objets à un bot.",
+			"mentionToSelf": "Vous ne pouvez pas vous donner d'objets.",
+			"itemNotFound": "L'élément avec l'ID `{{itemId}}` n'a pas été trouvé!",
+			"noItemInInventory": "Tu n'as pas {{itemEmote}} **{{itemName}}** dans votre inventaire.",
+			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** ne peut pas être donné.",
+			"invalidAmount": "Montant spécifié non valide.",
+			"confirmationTitle": "Donner l'article - {{author}}",
+			"confirmationDescription": "{{author}}, sélectionnez **Accepter** pour poursuivre la transaction ou **Annuler** pour refuser.",
+			"sentItem": "Article envoyé",
+			"receivedItem": "Article reçu",
+			"transactionSuccess": "Vous avez accepté la transaction. {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} a été transféré à **{{target}}**.",
+			"transactionCancelled": "Vous avez annulé la transaction. "
+		},
+		"invMessages": {
+			"noInventory": "Vous n'avez aucun objet dans votre inventaire.",
+			"emptyInventoryFieldName": "Inventaire",
+			"emptyInventoryFieldValue": "Votre inventaire est actuellement vide.",
+			"inventoryNet": "Inventaire net",
+			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+			"footerText": "Demandé par {utilisateur}",
+			"error": "Une erreur s'est produite lors de la récupération de votre inventaire."
+		},
+		"sellMessages": {
+			"inventoryEmpty": "Votre inventaire est vide.",
+			"itemNotOwned": "Vous n'avez pas **{item}** dans votre inventaire.",
+			"itemNotSellable": "L'article **{item}** n'est pas vendable!",
+			"itemNotFound": "L'élément avec l'identifiant **{item}** est introuvable!",
+			"sellSuccess": "Vous avez vendu **{quantity}** **{item}** pour **{price}** pièces.",
+			"noSellableItems": "Vous n'avez aucun objet vendable dans votre inventaire.",
+			"cancelled": "Vente annulée.",
+			"acceptSell": "Vous avez vendu vos objets pour **{price}** pièces.",
+			"invalidQuantity": "Quantité spécifiée non valide.",
+			"sellError": "Une erreur s'est produite lors du traitement de votre demande de vente."
+		},
+		"shopMessages": {
+			"shopTitle": "BOUTIQUE",
+			"requestedBy": "Demandé par %{user}",
+			"unknownItemId": "ID inconnu",
+			"unnamedItem": "Article sans nom",
+			"selectCategoryPlaceholder": "Sélectionnez une catégorie",
+			"selectItemPlaceholder": "Sélectionnez un article",
+			"itemDetail": "DÉTAIL DE L'ARTICLE",
+			"noDescription": "Aucune description disponible",
+			"unknownType": "Type inconnu"
+		},
+		"shopInfoMessages": {
+			"itemNotFound": "L'élément avec l'ID `{id}` est introuvable.",
+			"noItemsAvailable": "Aucun article disponible dans la boutique.",
+			"noAdditionalCommands": "Aucune commande supplémentaire disponible pour cet élément.",
+			"itemDetailsHeader": "Détails de l'article",
+			"itemLimit": "Limite",
+			"itemPrice": "Prix",
+			"itemSellPrice": "Prix ​​de vente",
+			"itemDescription": "Description",
+			"shopItemListHeader": "Voici la liste de tous les éléments triés par type :",
+			"itemListFooter": "Utilisez `shopinfo <id>` pour obtenir plus de détails sur un élément."
+		},
+		"useMessages": {
+			"themeID": "Thème avec l'ID `{itemId}` introuvable.",
+			"notOwned": "Vous ne possédez pas le thème `{itemName}`.",
+			"unavailable": "Le thème `{itemName}` n'est pas disponible.",
+			"applied": "Application réussie du thème `{itemEmote} {itemName}`!"
+		}
+	},
+	"profileMessages": {
+		"bioMessages": {
+			"usage": "Usage:",
+			"resetSuccess": "La bio pour vous a été réinitialisée.",
+			"noBio": "Aucune biographie écrite.",
+			"provideText": "Veuillez fournir un texte biographique ou une sous-commande valide.",
+			"tooLong": "La biographie ne peut pas dépasser 40 caractères.",
+			"setSuccess": "La bio pour vous a été définie."
+		},
+		"bdMessages": {
+			"resetSuccess": "Votre anniversaire et votre signe du zodiaque ont été réinitialisés.",
+			"noBirthday": "Pas de set d'anniversaire.",
+			"noZodiac": "Aucun signe du zodiaque défini.",
+			"provideDate": "Veuillez fournir une date valide pour votre anniversaire ou une sous-commande valide.",
+			"invalidDate": "La date doit être dans l'un des formats pris en charge:",
+			"setSuccess": "Votre anniversaire a été fixé à",
+			"zodiacSuccess": "Votre signe du zodiaque est"
+		},
+		"genderMessages": {
+			"usage": "Usage",
+			"resetSuccess": "Votre sexe a été réinitialisé.",
+			"setSuccess": "Votre sexe a été défini sur",
+			"current": "Votre sexe est défini sur",
+			"notSpecified": "Votre sexe n'est pas précisé."
+		},
+		"levelMessages": {
+			"generating": "Générer votre niveau...",
+			"userNotFound": "Utilisateur introuvable.",
+			"levelText": "Niveau:",
+			"xpText": "XP:",
+			"error": "Une erreur s'est produite lors de la récupération de votre niveau."
+		},
+		"pfMessages": {
+			"loading": "Chargement de votre profil...",
+			"userNotFound": "Utilisateur introuvable.",
+			"privateProfile": "Ce profil est privé.",
+			"defaultBio": "Cet utilisateur n'a pas défini de bio.",
+			"defaultBirthday": "Cet utilisateur n'a pas défini d'anniversaire.",
+			"genderText": "Genre:",
+			"zodiacSignText": "Signe du zodiaque:",
+			"error": "Une erreur s'est produite lors de la génération de votre profil.",
+			"socialMediaLinks": {
+				"facebook": {
+					"notSet": "Cet utilisateur n'a pas défini de lien Facebook.",
+					"linkText": "Facebook: [{name}]({link})"
+				},
+				"instagram": {
+					"notSet": "Cet utilisateur n'a pas défini de lien Instagram.",
+					"linkText": "Instagram: [{name}]({link})"
+				},
+				"tiktok": {
+					"notSet": "Cet utilisateur n'a pas défini de lien TikTok.",
+					"linkText": "TikTok: [{name}]({link})"
+				}
+			}
+		},
+		"relationshipMessages": {
+			"success": {
+				"add": "Ajouté avec succès",
+				"remove": "Supprimé avec succès"
+			},
+			"error": {
+				"userNotMentioned": "Merci de mentionner un utilisateur pour gérer votre relation.",
+				"notRegistered": "Vous n'êtes pas inscrit dans la base de données.",
+				"targetNotRegistered": "L'utilisateur que vous essayez de modifier n'est pas enregistré.",
+				"invalidType": "Type de relation non valide.",
+				"partner": {
+					"error": {
+						"alreadyExists": "Vous avez déjà un partenaire.",
+						"notFound": "Cet utilisateur n'est pas votre partenaire."
+					}
+				},
+				"bro": {
+					"error": {
+						"limitExceeded": "Vous ne pouvez avoir que 4 frères maximum.",
+						"alreadyExists": "Cet utilisateur est déjà votre frère.",
+						"notFound": "Cet utilisateur n'est pas votre frère."
+					}
+				},
+				"sister": {
+					"error": {
+						"limitExceeded": "Vous ne pouvez avoir que 4 sœurs maximum.",
+						"alreadyExists": "Cet utilisateur est déjà votre sœur.",
+						"notFound": "Cet utilisateur n'est pas votre sœur."
+					}
+				},
+				"bestie": {
+					"error": {
+						"limitExceeded": "Vous ne pouvez avoir que 4 meilleurs amis.",
+						"alreadyExists": "Cet utilisateur est déjà votre meilleur ami.",
+						"notFound": "Cet utilisateur n'est pas votre meilleur ami."
+					}
+				},
+				"confidant": {
+					"error": {
+						"limitExceeded": "Vous ne pouvez avoir que 4 confidents maximum.",
+						"alreadyExists": "Cet utilisateur est déjà votre confident.",
+						"notFound": "Cet utilisateur n'est pas votre confident."
+					}
+				}
+			}
+		},
+		"userNameMessages": {
+			"help": {
+				"usage": "Utilisation: `nom d'utilisateur <text || reset || show || help>`",
+				"examples": [
+					"nom d'utilisateur Peachy",
+					"réinitialisation du nom d'utilisateur",
+					"afficher le nom d'utilisateur",
+					"aide sur le nom d'utilisateur"
+				]
+			},
+			"reset": "Votre nom d'utilisateur a été réinitialisé à sa valeur par défaut.",
+			"show": {
+				"usernameSet": "Votre nom d'utilisateur actuel est: `{{username}}`",
+				"noUsername": "Aucun nom d'utilisateur défini."
+			},
+			"set": {
+				"success": "Votre nom d'utilisateur a été défini sur: `{{username}}`",
+				"error": {
+					"long": "Le nom d'utilisateur ne peut pas comporter plus de 40 caractères.",
+					"empty": "Veuillez fournir un nom d'utilisateur."
+				}
+			}
+		}
+	},
+	"socialMessages": {
+		"fbMessages": {
+			"userNotFound": "Utilisateur introuvable.",
+			"settingsTitle": "Paramètres Facebook",
+			"invalidName": "Veuillez fournir un nom Facebook valide (jusqu'à 21 caractères).",
+			"nameUpdated": "Votre nom Facebook a été défini.",
+			"newName": "Nouveau nom Facebook",
+			"linkUpdated": "Votre lien Facebook a été défini.",
+			"newLink": "Nouveau lien Facebook",
+			"invalidLink": "Veuillez fournir un lien Facebook valide.",
+			"helpTitle": "Aide sur la commande Facebook",
+			"helpDescription": "Gérez vos informations Facebook avec les sous-commandes suivantes:",
+			"showDetails": "Afficher les détails de Facebook",
+			"setName": "Définir le nom Facebook",
+			"setLink": "Définir le lien Facebook",
+			"commandHelp": "Aide sur les commandes",
+			"notSet": "Non défini"
+		},
+		"igMessages": {
+			"userNotFound": "Utilisateur introuvable.",
+			"settingsTitle": "Paramètres Instagram",
+			"invalidName": "Veuillez fournir un nom Instagram valide (jusqu'à 21 caractères).",
+			"nameUpdated": "Votre nom Instagram a été défini.",
+			"newName": "Nouveau nom Instagram",
+			"linkUpdated": "Votre lien Instagram a été défini.",
+			"newLink": "Nouveau lien Instagram",
+			"invalidLink": "Veuillez fournir un lien Instagram valide.",
+			"helpTitle": "Aide sur la commande Instagram",
+			"helpDescription": "Gérez vos détails Instagram avec les sous-commandes suivantes:",
+			"showDetails": "Afficher les détails d'Instagram",
+			"setName": "Définir le nom Instagram",
+			"setLink": "Définir le lien Instagram",
+			"commandHelp": "Aide sur les commandes",
+			"notSet": "Non défini"
+		},
+		"smMessages": {
+			"userNotFound": "Utilisateur introuvable.",
+			"title": "📱 Profils de médias sociaux",
+			"notSet": "Non défini"
+		},
+		"ttMessages": {
+			"userNotFound": "Utilisateur introuvable.",
+			"settingsTitle": "Paramètres TikTok",
+			"invalidName": "Veuillez fournir un nom TikTok valide (jusqu'à 21 caractères).",
+			"nameUpdated": "Votre nom TikTok a été défini.",
+			"newName": "Nouveau nom TikTok",
+			"linkUpdated": "Votre lien TikTok a été défini.",
+			"newLink": "Nouveau lien TikTok",
+			"invalidLink": "Veuillez fournir un lien TikTok valide.",
+			"helpTitle": "Aide sur la commande TikTok",
+			"helpDescription": "Gérez vos détails TikTok avec les sous-commandes suivantes:",
+			"showDetails": "Afficher les détails de TikTok",
+			"setName": "Définir le nom TikTok",
+			"setLink": "Définir le lien TikTok",
+			"commandHelp": "Aide sur les commandes",
+			"notSet": "Non défini"
+		}
+	},
+	"utilityMessages": {
+		"avatarMessages": {
+			"avatarTitle": "Avatar de %{username}",
+			"requestedBy": "Demandé par %{username}",
+			"noUserMentioned": "Aucun utilisateur mentionné, merci de mentionner quelqu'un pour voir son avatar."
+		},
+		"emojiMessages": {
+			"emojiTitle": "Image émoji",
+			"emojiDescription": "Voici l'image de l'emoji :",
+			"requestedBy": "Demandé par %{username}",
+			"invalidEmoji": "Emoji non valide fourni. "
+		},
+		"languageMessages": {
+			"title": "PARAMÈTRES DE LANGUE",
+			"languageSetTitle": "LANGUE",
+			"languageSetDescription": "Votre langue a été définie sur **%{langue}**.",
+			"helpTitle": "AIDE LANGUE",
+			"helpDescription": "Gérez vos paramètres de langue.",
+			"examples": "Exemples",
+			"exampleCommands": "• langue\n",
+			"usage": "Usage",
+			"usageCommands": "• langue - Affiche votre langue actuelle\n",
+			"currentLanguageTitle": "LANGUE",
+			"currentLanguageDescription": "Votre langue actuelle est **%{langue}**.",
+			"requestedBy": "Demandé par %{username}"
+		},
+		"qrMessages": {
+			"title": "Code QR pour %{currency}",
+			"description": "Voici le code QR pour %{currency}:",
+			"invalidOption": "Option invalide! "
+		},
+		"serverInfoMessages": {
+			"title": "Informations sur le serveur: %{server}",
+			"nameLabel": "Nom",
+			"idLabel": "ID du serveur",
+			"ownerLabel": "Propriétaire",
+			"membersLabel": "Membres",
+			"rolesLabel": "Rôles",
+			"createdLabel": "Créé le",
+			"footer": "Demandé par %{user}"
+		},
+		"themeMessages": {
+			"title": "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒",
+			"setThemeMessage": "Votre thème a été défini sur **%{theme}**.",
+			"currentThemeMessage": "Votre thème actuel est **%{theme}**.",
+			"helpTitle": "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏",
+			"helpDescription": "Gérez les paramètres de votre thème.",
+			"examplesLabel": "Exemples",
+			"usageLabel": "Usage",
+			"footer": "Demandé par %{user}"
+		},
+		"userInfoMessages": {
+			"title": "Informations utilisateur: %{user}",
+			"username": "Nom d'utilisateur",
+			"userId": "ID de l'utilisateur",
+			"joinedServer": "Serveur rejoint",
+			"accountCreated": "Compte créé",
+			"roles": "Rôles",
+			"noRoles": "Aucun",
+			"userNotFound": "Utilisateur introuvable! ",
+			"footer": "Demandé par %{user}"
+		},
+		"verifyMessages": {
+			"noAccount": "Vous n'avez pas de compte. ",
+			"alreadyVerified": "Vous êtes déjà vérifié.",
+			"confirmButtonLabel": "Confirmer",
+			"cancelButtonLabel": "Annuler",
+			"title": "Vérifier le compte",
+			"confirmationMessage": "Êtes-vous sûr de vouloir vérifier avec **PEACHY**?",
+			"paymentInfo": "Pour vérifier, vous devez payer **0,99$/mois**.",
+			"benefitsTitle": "**Avantages**",
+			"benefits": "• Vérification du rôle sur notre serveur\n",
+			"requestedBy": "Demandé par",
+			"verificationRequest": "Demande de vérification",
+			"verificationMessage": "Vous avez demandé à vérifier auprès de PEACHY.",
+			"clickToSubmit": "Cliquez sur le bouton Soumettre pour le code de vérification",
+			"waitingMessage": "Si vous avez déjà payé, veuillez patienter un instant.  <@966688007493140591>",
+			"submitButtonLabel": "Soumettre",
+			"thankYouMessage": "Merci!",
+			"modalTitle": "Code de vérification d'entrée",
+			"inputLabel": "Le code de vérification:",
+			"inputPlaceholder": "Entrez votre code de vérification ici",
+			"verificationSuccess": "Merci de soutenir et de vérifier avec PEACHY!",
+			"verificationSuccessTitle": "Vérification réussie",
+			"thankYouForVerifying": "Merci de votre soutien et de votre vérification!",
+			"verificationComplete": "Vérification terminée.",
+			"verificationFailed": "La vérification a échoué ou le code est incorrect. ",
+			"noResponseReceived": "Aucune réponse reçue. "
 		}
 	}
 }

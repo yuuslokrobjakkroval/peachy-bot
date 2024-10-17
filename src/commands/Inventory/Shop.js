@@ -30,6 +30,7 @@ module.exports = class Shop extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const shopMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.shopMessages; // Access shopMessages
         const categories = Shops.map(shop => shop.type);
         let selectedCategory = args[0] || categories[0];
         let selectedShop = Shops.find(shop => shop.type === selectedCategory);
@@ -42,8 +43,8 @@ module.exports = class Shop extends Command {
         for (let i = 0; i < totalPages; i++) {
             const currentItems = items.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
             const itemList = currentItems.map(item => {
-                let id = item.id ? item.id : 'Unknown';
-                let name = item.name ? item.name : 'Unnamed';
+                let id = item.id ? item.id : shopMessages?.unknownItemId;
+                let name = item.name ? item.name : shopMessages?.unnamedItem;
                 return `**${id}** ${item.emoji} ${name} - ${formatString(item.price.buy)} \` ${emoji.coin} \``;
             }).join('\n');
 
@@ -51,21 +52,22 @@ module.exports = class Shop extends Command {
                 .embed()
                 .setColor(color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setDescription(`# ${emoji.shop.mainLeft} 𝐒𝐇𝐎𝐏 : ${selectedShop.name} ${emoji.shop.mainRight}\n${selectedShop.description}\n${itemList}`)
+                .setDescription(`# ${emoji.shop.mainLeft} ${shopMessages?.shopTitle}: ${selectedShop.name} ${emoji.shop.mainRight}\n${selectedShop.description}\n${itemList}`)
                 .setImage(selectedCategory === 'food' ? gif.foodShop : gif.drinkShop)
                 .setFooter({
-                    text: `Request By ${ctx.author.displayName}`,
+                    text: shopMessages?.requestedBy.replace('%{user}', ctx.author.displayName),
                     iconURL: ctx.author.displayAvatarURL(),
-                })
+                });
 
             pages.push({ embed });
         }
 
-        await paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage);
+        await paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage, language);
     }
 };
 
-async function paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage) {
+async function paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage, language) {
+    const shopMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.shopMessages; // Access shopMessages
     let page = 0;
     let selectedItemIndex = null;
     let items = Shops.find(shop => shop.type === selectedCategory).inventory;
@@ -85,8 +87,8 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
 
             const itemList = currentItems.map(item => {
                 let price = formatString(item.price.buy);
-                let id = item.id ? item.id : 'Unknown';
-                let name = item.name ? item.name : 'Unnamed';
+                let id = item.id ? item.id : shopMessages?.unknownItemId;
+                let name = item.name ? item.name : shopMessages?.unnamedItem;
 
                 let idPadding = ' '.repeat(Math.max(0, maxIdLength - id.length));
                 let namePadding = ' '.repeat(Math.max(0, maxNameLength - name.length));
@@ -98,12 +100,12 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
                 .embed()
                 .setColor(color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setDescription(`# ${emoji.shop.mainLeft} 𝐒𝐇𝐎𝐏 : ${selectedShop.name} ${emoji.shop.mainRight}\n${selectedShop.description}\n\n${itemList}`)
+                .setDescription(`# ${emoji.shop.mainLeft} ${shopMessages?.shopTitle}: ${selectedShop.name} ${emoji.shop.mainRight}\n${selectedShop.description}\n\n${itemList}`)
                 .setImage(selectedCategory === 'food' ? gif.foodShop : gif.drinkShop)
                 .setFooter({
-                    text: `Request By ${ctx.author.displayName}`,
+                    text: shopMessages?.requestedBy.replace('%{user}', ctx.author.displayName),
                     iconURL: ctx.author.displayAvatarURL(),
-                })
+                });
 
             pages.push({ embed });
         }
@@ -116,7 +118,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
 
         const filterButton = new StringSelectMenuBuilder()
             .setCustomId('category_select')
-            .setPlaceholder('Select a category')
+            .setPlaceholder(shopMessages?.selectCategoryPlaceholder)
             .addOptions(categories.map(cat => ({
                 label: Shops.find(shop => shop.type === cat).name,
                 value: cat,
@@ -125,10 +127,10 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
 
         const itemSelectButton = new StringSelectMenuBuilder()
             .setCustomId('item_select')
-            .setPlaceholder('Select an item')
+            .setPlaceholder(shopMessages?.selectItemPlaceholder)
             .addOptions(items.map(item => ({
-                label: item.name || 'Unnamed',
-                value: item.id || 'Unknown',
+                label: item.name || shopMessages?.unnamedItem,
+                value: item.id || shopMessages?.unknownItemId,
                 default: item.id === items[selectedItemIndex]?.id
             })).slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage));
 
@@ -146,12 +148,12 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
             .embed()
             .setColor(color.main)
             .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setDescription(`# 𝐈𝐓𝐄𝐌 𝐃𝐄𝐓𝐀𝐈𝐋 \n${emoji.shop.mainLeft}  ${item.name || 'Unnamed'} ${emoji.shop.mainRight}\n**ID:** \`${item.id || 'Unknown'}\`\n**Description:** ${item.description || 'No description available'}\n**Price:** ${formatString(item.price.buy)} ${emoji.coin}\n**Type:** ${formatCapitalize(item.type || 'Unknown')}`)
+            .setDescription(`# ${shopMessages?.itemDetail}\n${emoji.shop.mainLeft}  ${item.name || shopMessages?.unnamedItem} ${emoji.shop.mainRight}\n**ID:** \`${item.id || shopMessages?.unknownItemId}\`\n**Description:** ${item.description || shopMessages?.noDescription}\n**Price:** ${formatString(item.price.buy)} ${emoji.coin}\n**Type:** ${formatCapitalize(item.type || shopMessages?.unknownType)}`)
             .setImage(client.utils.emojiToImage(item.emoji))
             .setFooter({
-                text: `Request By ${ctx.author.displayName}`,
+                text: shopMessages?.requestedBy.replace('%{user}', ctx.author.displayName),
                 iconURL: ctx.author.displayAvatarURL(),
-            })
+            });
 
         return { embed };
     };

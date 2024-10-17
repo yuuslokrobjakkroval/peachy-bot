@@ -3,7 +3,7 @@ const Users = require("../../schemas/user.js");
 const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const gif = require("../../utils/Gif");
-const {formatUsername} = require("../../utils/Utils");
+const { formatUsername } = require("../../utils/Utils");
 
 GlobalFonts.registerFromPath('./fonts/EmOne-SemiBold.ttf', 'EmOne-SemiBold');
 GlobalFonts.registerFromPath('./fonts/EmOne-SemiBoldItalic.ttf', 'EmOne-SemiBoldItalic');
@@ -33,20 +33,22 @@ module.exports = class Level extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         let loadingMessage;
+        const levelMessages = language.locales.get(language.defaultLocale)?.profileMessages?.levelMessages;
+
         try {
             const loadingScreen = [gif.peachLoadingScreen, gif.gomaLoadingScreen];
             const randomLoadingScreen = client.utils.getRandomElement(loadingScreen);
             const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`**${emoji.mainLeft} 𝐋𝐄𝐕𝐄𝐋 ${emoji.mainRight}**`)
-                .setDescription('**Generating your level...**')
+                .setDescription(levelMessages?.generating || '**Generating your level...**')
                 .setImage(randomLoadingScreen);
             loadingMessage = await ctx.sendDeferMessage({
                 embeds: [embed],
             });
             const user = await Users.findOne({ userId: ctx.author.id });
             if (!user) {
-                return await client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
+                return await client.utils.sendErrorMessage(client, ctx, levelMessages?.userNotFound || 'User not found.', color);
             }
 
             // Extract XP, level, and level experience
@@ -101,12 +103,12 @@ module.exports = class Level extends Command {
             // Add level text
             ctxCanvas.font = 'bold italic 30px EmOne-SemiBoldItalic';
             ctxCanvas.textAlign = 'left';
-            ctxCanvas.fillText(`Level: ${level}`, 280, 106);
+            ctxCanvas.fillText(`${levelMessages?.levelText || 'Level:'} ${level}`, 280, 106);
 
             // Add XP progress text
             ctxCanvas.font = 'bold italic 30px EmOne-SemiBoldItalic';
             ctxCanvas.textAlign = 'left';
-            ctxCanvas.fillText(`XP: ${xp} / ${levelXp}`, 280, 166);
+            ctxCanvas.fillText(`${levelMessages?.xpText || 'XP:'} ${xp} / ${levelXp}`, 280, 166);
 
             // Draw rounded progress bar background
             ctxCanvas.fillStyle = '#AC7D67'; // Background color for the progress bar
@@ -131,7 +133,7 @@ module.exports = class Level extends Command {
             });
         } catch (error) {
             console.error('Error in Level command:', error);
-            await client.utils.sendErrorMessage(client, ctx, 'An error occurred while fetching your level.', color);
+            await client.utils.sendErrorMessage(client, ctx, levelMessages?.error || 'An error occurred while fetching your level.', color);
         }
     }
 };

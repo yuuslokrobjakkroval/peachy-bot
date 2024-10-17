@@ -6,7 +6,7 @@
 		"argumentsMissingDescription": "សូមផ្តល់អាគុយម៉ង់ដែលត្រូវការសម្រាប់ពាក្យបញ្ជា `{commandName}`។",
 		"usageHeader": "ការប្រើប្រាស់",
 		"examplesHeader": "ឧទាហរណ៍",
-		"syntaxInstructions": "វាក្យសម្ពន្ធ៖ [] = ស្រេចចិត្ត, <> = ទាមទារ",
+		"syntaxInstructions": "វាក្យសម្ព័ន្ធ៖ [] = ស្រេចចិត្ត, <> = ទាមទារ",
 		"noEveryoneOrHereError": "អ្នកមិនអាចប្រើពាក្យបញ្ជានេះជាមួយមនុស្សគ្រប់គ្នា ឬនៅទីនេះបានទេ។",
 		"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់នៅក្នុងមូលដ្ឋានទិន្នន័យទេ។",
 		"alreadyInGame": "អ្នកស្ថិតនៅក្នុងហ្គេមរួចហើយ។ ",
@@ -74,7 +74,7 @@
 		"dailyMessages": {
 			"title": "រង្វាន់ប្រចាំថ្ងៃរបស់ %{displayName}",
 			"success": "%{coinEmote} **`+%{coin}`** កាក់\n",
-			"cooldown": "រង្វាន់ប្រចាំថ្ងៃរបស់អ្នកស្ថិតក្នុងការរង់ចាំ! សូមព្យាយាមម្តងទៀតបន្ទាប់ពី **%{time}**។",
+			"cooldown": "រង្វាន់ប្រចាំថ្ងៃរបស់អ្នកស្ថិតក្នុងភាពត្រជាក់។ ",
 			"errors": {
 				"noUser": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
 				"fetchFail": "មានកំហុសក្នុងដំណើរការការទាមទារប្រចាំថ្ងៃរបស់អ្នក។"
@@ -90,8 +90,8 @@
 		},
 		"gomaMessages": {
 			"success": {
-				"title": "បាន claimed Goma!",
-				"description": "អ្នកបានទទួល %{coinEmote} **`%{coin}`** កាក់។"
+				"title": "បានអះអាងថា Goma!",
+				"description": "អ្នកទទួលបាន %{coinEmote} **`%{coin}`** កាក់។"
 			},
 			"cooldown": "Goma ធ្លាក់ចុះ!\n",
 			"errors": {
@@ -104,8 +104,8 @@
 			},
 			"cooldown": "Peachy ធ្លាក់ចុះ!\n",
 			"success": {
-				"title": "បាន claimed peachy!",
-				"description": "អ្នកបានទទួល %{coinEmote} **`%{coin}`** កាក់។"
+				"title": "បានអះអាងថា peachy!",
+				"description": "អ្នកទទួលបាន %{coinEmote} **`%{coin}`** កាក់។"
 			}
 		},
 		"rankingMessages": {
@@ -124,11 +124,11 @@
 			"invalidType": "ប្រភេទតារាងពិន្ទុមិនត្រឹមត្រូវ។"
 		},
 		"transferMessages": {
-			"title": "**ការផ្ទេរកាក់ - {{user}}**",
+			"title": "** ប្រតិបត្តិការ - {{user}}**",
 			"selfTransfer": "អ្នកមិនអាចផ្ទេរកាក់ទៅខ្លួនអ្នកបានទេ។",
 			"botTransfer": "អ្នកមិនអាចផ្ទេរកាក់ទៅបូតបានទេ។",
 			"pendingTransfer": "អ្នកមានការផ្ទេរដែលមិនទាន់សម្រេចរួចហើយ។ ",
-			"invalidAmount": "សូមរៀបរាប់ពីអ្នកប្រើប្រាស់ និងចំនួនត្រឹមត្រូវ។",
+			"invalidAmount": "សូមរៀបរាប់ពីអ្នកប្រើប្រាស់ និងចំនួនទឹកប្រាក់ត្រឹមត្រូវ។",
 			"noUser": "សូមលើកឡើងពីអ្នកប្រើប្រាស់ត្រឹមត្រូវ។",
 			"balanceNotExist": "កំណត់ត្រាសមតុល្យរបស់អ្នកមិនមានទេ។",
 			"insufficientBalance": "ចំនួនទឹកប្រាក់ដែលបានបញ្ជាក់មិនត្រឹមត្រូវ ឬសមតុល្យមិនគ្រប់គ្រាន់។",
@@ -144,14 +144,14 @@
 			"insufficientFunds": "អ្នកមិនមានកាក់គ្រប់គ្រាន់ដើម្បីបញ្ចប់ការផ្ទេរនេះទេ។",
 			"invalidUser": "អ្នកប្រើប្រាស់ដែលបានបញ្ជាក់មិនត្រឹមត្រូវ ឬរកមិនឃើញ។",
 			"confirmPrompt": "បញ្ជាក់ការផ្ទេរដោយចុចប៊ូតុងខាងក្រោម។",
-			"expire": "ប្រតិបត្តិការបានផុតកំណត់"
+			"expire": "ប្រតិបត្តិការផុតកំណត់"
 		},
 		"weeklyMessages": {
 			"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
 			"cooldown": {
-				"multipleDays": "ប្រចាំសប្តាហ៍គឺនៅក្នុងការរង់ចាំ!\n{{days}} និង {{hours}}**, **{{minutes}}** និង **{{seconds}}**។",
-				"singleDay": "ប្រចាំសប្តាហ៍កំពុងស្ថិតក្នុងការចុះត្រជាក់!\n{{days}}**, **{{hours}}**, **{{minutes}}** និង **{{seconds}}**។",
-				"noDays": "ប្រចាំសប្តាហ៍គឺនៅក្នុងការរង់ចាំ!\n{{hours}}**, **{{minutes}}** និង **{{seconds}}**។"
+				"multipleDays": "ប្រចាំសប្តាហ៍គឺនៅក្នុងការបញ្ចុះតម្លៃ!\n{{days}} និង {{hours}}**, **{{minutes}}** និង **{{seconds}}**។",
+				"singleDay": "ប្រចាំសប្តាហ៍គឺនៅក្នុងការបញ្ចុះតម្លៃ!\n{{days}}**, **{{hours}}**, **{{minutes}}** និង **{{seconds}}**។",
+				"noDays": "ប្រចាំសប្តាហ៍គឺនៅក្នុងការបញ្ចុះតម្លៃ!\n{{hours}}**, **{{minutes}}** និង **{{seconds}}**។"
 			},
 			"success": "{{coinEmote}} ** អបអរសាទរ {{user}}!**\n{{coin}} កាក់ ** និង **{{exp}} XP**!",
 			"error": "មានកំហុសក្នុងដំណើរការការទាមទារប្រចាំសប្តាហ៍របស់អ្នក។"
@@ -161,7 +161,7 @@
 			"zeroBalance": "អ្នកមិនមានកាក់នៅក្នុងធនាគាររបស់អ្នកទេ។",
 			"invalidAmount": "សូមផ្តល់ចំនួនត្រឹមត្រូវដើម្បីដកប្រាក់។ ",
 			"tooHigh": "អ្នកមិនអាចដកប្រាក់លើសពីអ្វីដែលអ្នកមាននៅក្នុងធនាគាររបស់អ្នកបានទេ។",
-			"success": "{{coinEmote}} ** ជោគជ័យ, {{user}}!**\n{{amount}} កាក់ ** ពីធនាគាររបស់អ្នក។",
+			"success": "អ្នកបានដកចេញ {{coinEmote}} **{{amount}}** កាក់ពីធនាគាររបស់អ្នក។",
 			"error": "មានកំហុសក្នុងដំណើរការសំណើដកប្រាក់របស់អ្នក។"
 		}
 	},
@@ -234,12 +234,12 @@
 		"showerMessages": {
 			"title": "ម៉ោងងូតទឹក!",
 			"description": "**{{user}}** រីករាយនឹងការងូតទឹកដ៏ស្រស់ស្រាយ!",
-			"error": "មានបញ្ហាក្នុងការដំណើរការសញ្ញាអារម្មណ៍ងូតទឹករបស់អ្នក។"
+			"error": "មានបញ្ហាក្នុងការដំណើរការសញ្ញាអារម្មណ៍ផ្កាឈូករបស់អ្នក។"
 		},
 		"shyMessages": {
 			"title": "ខ្មាស់!",
 			"description": "**{{user}}** បង្ហាញទឹកមុខខ្មាស់គេ!",
-			"error": "មានបញ្ហាក្នុងការដំណើរការអារម្មណ៍អៀនរបស់អ្នក។"
+			"error": "មានបញ្ហាក្នុងការដំណើរការអារម្មណ៍អៀនប្រៀនរបស់អ្នក។"
 		}
 	},
 	"funMessage": {
@@ -297,7 +297,7 @@
 			"youWon": "អ្នកឈ្នះ **`%{coin}`** %{coinEmote}",
 			"youLost": "អ្នកបានបាត់បង់ **`%{coin}`** %{coinEmote}",
 			"bothBust": "អ្នកទាំងពីរគាំង!",
-			"tied": "ស្មើរគ្នា!",
+			"tied": "អ្នកចង!",
 			"winnerInfo": "អ្នកឈ្នះគឺជាអ្នកដែលនៅជិត 21 បំផុត។",
 			"gameInProgress": "ហ្គេមរបស់អ្នកកំពុងដំណើរការ!",
 			"gameOver": "ហ្គេមរបស់អ្នកចប់ហើយ។"
@@ -320,27 +320,65 @@
 			"gameOver": "ហ្គេមរបស់អ្នកចប់ហើយ។"
 		}
 	},
-	"inventoryMessages": {
-		"inventoryHeader": "សារពើភ័ណ្ឌរបស់ %{author}!",
-		"inventoryEmptyName": "សារពើភ័ណ្ឌទទេ",
-		"inventoryEmptyValue": "សារពើភ័ណ្ឌបច្ចុប្បន្នរបស់អ្នកគឺទទេ។",
-		"itemNotFound": "លេខសម្គាល់ទំនិញ **`%{itemId}`** រកមិនឃើញនៅក្នុងហាងទេ!",
-		"sellDisabled": "ការលក់ទំនិញនេះត្រូវបានបិទ។",
-		"useDisabled": "ការប្រើប្រាស់ធាតុនេះត្រូវបានបិទ។"
-	},
-	"themeMessages": {
-		"themeApplied": "អ្នកបានអនុវត្តប្រធានបទ %{itemEmote} **`%{itemName}`** ដោយជោគជ័យក្នុងការបង្កប់របស់អ្នក!",
-		"themeUnavailable": "ប្រធានបទ **`%{itemName}`** មិនអាចប្រើបានទេ។",
-		"themeNotOwned": "អ្នកមិនមែនជាម្ចាស់ប្រធានបទ **`%{itemName}`** ។ ",
-		"invalidThemeID": "លេខសម្គាល់ស្បែក **`%{itemId}`** មិនត្រឹមត្រូវទេ។ ",
-		"themeAlreadyOwned": "អ្នកជាម្ចាស់ប្រធានបទ **`%{itemName}`** រួចហើយ ហើយមិនអាចទិញវាម្តងទៀតបានទេ។"
+	"gameMessages": {
+		"puzzleMessages": {
+			"title": "🧩 Emoji Puzzle",
+			"prompt": "តើនេះមានន័យយ៉ាងណា?",
+			"correct": {
+				"title": "ត្រឹមត្រូវ!",
+				"description": "ធ្វើបានល្អ អ្នកបានទាយរូប Emoji យ៉ាងត្រឹមត្រូវ!"
+			},
+			"wrong": {
+				"title": "❌ខុសហើយ!",
+				"description": "អ្នកមាន",
+				"guessesLeft": "ស្មានទុក។"
+			},
+			"timeout": {
+				"title": "⏳ ដល់ម៉ោងហើយ!",
+				"description": "ចម្លើយត្រឹមត្រូវគឺ"
+			},
+			"gameOver": {
+				"title": "❌ ចប់ហ្គេមហើយ!",
+				"description": "អ្នកបានប្រើការស្មានរបស់អ្នកទាំងអស់! "
+			}
+		},
+		"guessNumberMessages": {
+			"insufficientBalance": {
+				"title": "សមតុល្យមិនគ្រប់គ្រាន់",
+				"description": "អ្នកត្រូវការកាក់យ៉ាងហោចណាស់ 1000 ដើម្បីលេងហ្គេម Guess the Number។ "
+			},
+			"description": "ខ្ញុំបានជ្រើសរើសលេខមួយរវាង 1 និង 100។ អ្នកមានបេះដូង 3 ។ ",
+			"correct": {
+				"description": "សូមអបអរសាទរ"
+			},
+			"incorrect": {
+				"description": "❌ខុស! "
+			},
+			"hint": {
+				"bigger": "លេខគឺធំជាងការស្មានរបស់អ្នក។",
+				"smaller": "ចំនួននេះតូចជាងការស្មានរបស់អ្នក។",
+				"range": "នេះជាព័ត៌មានជំនួយ៖ ចំនួនគឺនៅចន្លោះ"
+			},
+			"gameOver": {
+				"description": "💔 អូនអស់បេះដូងហើយ! "
+			},
+			"timeout": {
+				"description": "⏳ ដល់ម៉ោងហើយ! "
+			}
+		},
+		"rollMessages": {
+			"invalidDice": "ប្រភេទគ្រាប់ឡុកឡាក់មិនត្រឹមត្រូវ! ",
+			"invalidSides": "ចំនួនជ្រុងមិនត្រឹមត្រូវសម្រាប់គ្រាប់ឡុកឡាក់។",
+			"win": "អ្នកឈ្នះ!",
+			"lose": "អ្នកចាញ់!"
+		}
 	},
 	"informationMessages": {
 		"helpMessages": {
 			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "នេះគឺជាពាក្យបញ្ជាដែលមាន៖",
 			"note": "ចំណាំ៖ ពាក្យបញ្ជាមួយចំនួនអាចបង្ហាញឈ្មោះអ្នកប្រើប្រាស់នៅក្នុងបញ្ជីដែលទាញយកដោយ bot ។",
-			"footer": "© រក្សាសិទ្ធដោយ KYUU",
+			"footer": "© រក្សាសិទ្ធិដោយ KYUU",
 			"supportButton": "ចុចសម្រាប់ការគាំទ្រ",
 			"commandNotFound": "រកមិនឃើញពាក្យបញ្ជា៖",
 			"commandTitle": "ជំនួយសម្រាប់បញ្ជា",
@@ -357,7 +395,7 @@
 				"games": "ហ្គេម",
 				"gambling": "ល្បែងស៊ីសង",
 				"profile": "ប្រវត្តិរូប",
-				"social": "បណ្ដាញសង្គម",
+				"social": "សង្គម",
 				"emotes": "អារម្មណ៍",
 				"utility": "ឧបករណ៍ប្រើប្រាស់",
 				"info": "ព័ត៌មាន"
@@ -366,39 +404,39 @@
 				"bite": "ខាំ",
 				"hug": "ឱប",
 				"kiss": "ថើប",
-				"punch": "វាយ",
+				"punch": "កណ្តាប់ដៃ",
 				"slap": "ទះ",
-				"balance": "ចំនួនកាក់",
+				"balance": "តុល្យភាព",
 				"daily": "ប្រចាំថ្ងៃ",
-				"deposit": "ដាក់កាក់ចូលធនាគារ",
-				"goma": "goma",
+				"deposit": "ប្រាក់បញ្ញើ",
+				"goma": "ហ្គោម៉ា",
 				"peachy": "peachy",
 				"ranking": "ចំណាត់ថ្នាក់",
-				"transfer": "ផ្ទេរកាក់",
+				"transfer": "ផ្ទេរ",
 				"weekly": "ប្រចាំសប្តាហ៍",
-				"withdraw": "ដកកាក់ពីធនាគារ",
+				"withdraw": "ដក",
 				"buy": "ទិញ",
 				"drink": "ផឹក",
 				"eat": "បរិភោគ",
-				"giveitem": "ឲ្យរបស់ ឬទំនិញ",
+				"giveitem": "អំណោយ",
 				"inventory": "សារពើភ័ណ្ឌ",
 				"sell": "លក់",
 				"shop": "ហាង",
-				"shopinfo": "ព័ត៌មានទំនិញក្នុងហាង",
-				"use": "ប្រើប្រាស់",
-				"animalofyear": "ឆ្នាំសត្វទាំង ១២",
+				"shopinfo": "ព័ត៌មានហាង",
+				"use": "ប្រើ",
+				"animalofyear": "ឆ្នាំសត្វ",
 				"province": "ខេត្ត",
 				"color": "ពណ៌",
 				"reverse": "បញ្ច្រាស",
 				"wallpaper": "ផ្ទាំងរូបភាព",
 				"weather": "អាកាសធាតុ",
-				"emoji-puzzle": "ល្បែងផ្គុំរូបសញ្ញាអារម្មណ៍",
-				"guessnumber": "ទាយលេខ",
+				"emoji-puzzle": "រូបអារម្មណ៍ - ល្បែងផ្គុំរូប",
+				"guessnumber": "លេខទាយ",
 				"roll": "រមៀល",
-				"blackjack": "បៀរ",
-				"coinflip": "បង្វិលកាក់",
-				"slots": "slots",
-				"bio": "bio",
+				"blackjack": "ខ្មៅដៃ",
+				"coinflip": "coinflip",
+				"slots": "រន្ធ",
+				"bio": "ជីវ",
 				"birthday": "ថ្ងៃកំណើត",
 				"gender": "ភេទ",
 				"level": "កម្រិត",
@@ -407,7 +445,7 @@
 				"username": "ឈ្មោះអ្នកប្រើប្រាស់",
 				"facebook": "ហ្វេសប៊ុក",
 				"instagram": "instagram",
-				"socials": "បណ្ដាញសង្គម",
+				"socials": "សង្គម",
 				"tiktok": "tiktok",
 				"angry": "ខឹង",
 				"cry": "យំ",
@@ -417,25 +455,25 @@
 				"happy": "រីករាយ",
 				"laugh": "សើច",
 				"makeup": "ការតុបតែងមុខ",
-				"nham": "ញ៉ាំ",
-				"playgame": "លេងហ្គេម",
+				"nham": "ញឹម",
+				"playgame": "ហ្គេម",
 				"roar": "គ្រហឹម",
-				"sad": "សេដ / សោកសៅ",
+				"sad": "សោកសៅ",
 				"scare": "បន្លាច",
-				"shower": "ងូតទឹក",
+				"shower": "ផ្កាឈូក",
 				"shy": "ខ្មាស់អៀន",
 				"avatar": "រូបតំណាង",
 				"emoji": "រូបអារម្មណ៍",
 				"language": "ភាសា",
 				"qr": "qr",
-				"serverinfo": "ព័ត៌មាន Server",
-				"theme": "theme",
+				"serverinfo": "serverinfo",
+				"theme": "ប្រធានបទ",
 				"userinfo": "ព័ត៌មានអ្នកប្រើប្រាស់",
-				"verify": "សៀវភៅគ្រួសារ",
+				"verify": "ផ្ទៀងផ្ទាត់",
 				"help": "ជួយ",
 				"info": "ព័ត៌មាន",
 				"invite": "អញ្ជើញ",
-				"ping": "ping",
+				"ping": "ភីង",
 				"privacy": "ឯកជនភាព",
 				"register": "ចុះឈ្មោះ",
 				"rules": "ច្បាប់",
@@ -444,7 +482,7 @@
 		},
 		"infoMessages": {
 			"title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
-			"description": "គឺជា Discord Bot ពហុគោលបំណងរបស់អ្នកដែលត្រូវបានរចនាឡើងសម្រាប់ការកម្សាន្ត ការកម្សាន្ត និងឧបករណ៍ប្រើប្រាស់។ ",
+			"description": "គឺជារូបយន្ត Discord ពហុគោលបំណងរបស់អ្នកដែលត្រូវបានរចនាឡើងសម្រាប់ការកម្សាន្ត ការកម្សាន្ត និងឧបករណ៍ប្រើប្រាស់។ ",
 			"developer": {
 				"title": "𝐃𝐄𝐕",
 				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
@@ -489,8 +527,8 @@
 			"footer": "ប្រសិនបើអ្នកត្រូវការជំនួយ ឬមានសំណួរ សូមប្រើពាក្យបញ្ជាខាងក្រោម។"
 		},
 		"rulesMessages": {
-			"title": "ច្បាប់",
-			"description": "សូមអាននិងអនុវត្តតាមច្បាប់ខាងក្រោមដើម្បីធានាបាននូវបទពិសោធន៍ដ៏រលូននិងរីករាយសម្រាប់អ្នកទាំងអស់គ្នា៖",
+			"title": "ច្បាប់បូត",
+			"description": "សូមអាន និងអនុវត្តតាមច្បាប់ខាងក្រោម ដើម្បីធានាបាននូវបទពិសោធន៍ដ៏រលូន និងរីករាយសម្រាប់អ្នកទាំងអស់គ្នា៖",
 			"rules": [
 				{
 					"name": "1. គោរពអ្នកដទៃ",
@@ -501,16 +539,16 @@
 					"value": "ជៀសវាងពាក្យបញ្ជាសារឥតបានការឬសារក្នុងការជជែក។ "
 				},
 				{
-					"name": "3. អនុវត្តតាមច្បាប់ Server",
-					"value": "បន្ថែមពីលើច្បាប់ជាក់លាក់នៃ bot ទាំងនេះ ត្រូវប្រាកដថាអ្នកអនុវត្តតាមច្បាប់នៃ Server ដែលអ្នកកំពុងស្ថិតនៅ។"
+					"name": "3. អនុវត្តតាមច្បាប់ម៉ាស៊ីនមេ",
+					"value": "បន្ថែមពីលើច្បាប់ជាក់លាក់នៃ bot ទាំងនេះ ត្រូវប្រាកដថាអ្នកអនុវត្តតាមច្បាប់នៃម៉ាស៊ីនមេដែលអ្នកកំពុងស្ថិតនៅ។"
 				},
 				{
 					"name": "4. មាតិកាសមស្រប",
-					"value": "ត្រូវប្រាកដថាខ្លឹមសារទាំងអស់ដែលបានចែករំលែកឬបង្កើតដោយប្រើ bot គឺសមរម្យនិងគោរពតាមគោលការណ៍ណែនាំរបស់ Server ។"
+					"value": "ត្រូវប្រាកដថាខ្លឹមសារទាំងអស់ដែលបានចែករំលែក ឬបង្កើតដោយប្រើ bot គឺសមរម្យ និងគោរពតាមគោលការណ៍ណែនាំរបស់ម៉ាស៊ីនមេ។"
 				},
 				{
 					"name": "5. រាយការណ៍បញ្ហា",
-					"value": "ប្រសិនបើអ្នកជួបប្រទះបញ្ហាឬកំហុសណាមួយជាមួយ bot សូមរាយការណ៍ពួកវាទៅម្ចាស់ bot ឬអ្នកសម្របសម្រួល។"
+					"value": "ប្រសិនបើអ្នកជួបប្រទះបញ្ហា ឬកំហុសណាមួយជាមួយបូត សូមរាយការណ៍ពួកវាទៅម្ចាស់បូត ឬអ្នកសម្របសម្រួល។"
 				}
 			],
 			"footer": "សូមអរគុណចំពោះការប្រើប្រាស់ {botName}!"
@@ -519,12 +557,383 @@
 			"title": "ស្ថិតិរបស់ {botName}",
 			"description": "នេះគឺជាស្ថិតិមួយចំនួនអំពី {botName}៖",
 			"fields": {
-				"servers": "Server៖ {guildCount}",
+				"servers": "ម៉ាស៊ីនមេ៖ {guildCount}",
 				"users": "អ្នកប្រើប្រាស់៖ {userCount}",
 				"channels": "ប៉ុស្តិ៍៖ {channelCount}",
 				"uptime": "ម៉ោងធ្វើការ៖ {uptime} នាទី។"
 			},
 			"footer": "សម្រាប់ព័ត៌មានបន្ថែម សូមចុចលើប៊ូតុងខាងក្រោម។"
+		}
+	},
+	"inventoryMessages": {
+		"buyMessages": {
+			"invalidItem": "ធាតុដែលមានលេខសម្គាល់ `{{itemId}}`រកមិនឃើញទេ។ ",
+			"themeAlreadyOwned": "អ្នកជាម្ចាស់ប្រធានបទរួចហើយ {{itemEmote}} **{{itemName}}**។ ",
+			"itemCannotBeBought": "ធាតុ {{itemEmote}} **{{itemName}}** មិនអាចរកបានសម្រាប់ការទិញ។",
+			"notEnoughCoins": "អ្នកត្រូវការ {{coinEmote}}{{neededCoins}} ច្រើនទៀតដើម្បីទិញ {{itemEmote}} **{{itemName}}**។",
+			"success": "បានទិញដោយជោគជ័យ",
+			"partial": "ប៉ុន្តែអ្នកអាចមានលទ្ធភាពតែប៉ុណ្ណោះ",
+			"description": "អ្នកមាន {{afford}} {{itemEmote}} **{{itemName}}** សម្រាប់ {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** ធាតុ។",
+			"buyDisable": "ធាតុនេះ។ {{itemEmote}} **{{itemName}}** មិនអាចទិញបានទេនៅពេលនេះ។",
+			"zeroBalance": "អ្នកមិនមានកាក់ដើម្បីទិញទេ។ "
+		},
+		"drinkMessages": {
+			"emptyInventory": "សារពើភ័ណ្ឌរបស់អ្នកគឺទទេ។",
+			"itemNotFound": "ធាតុដែលមានលេខសម្គាល់ `{{itemId}}`រកមិនឃើញទេ។ ",
+			"cannotDrinkFood": "អ្នកមិនអាចផឹកបានទេ។ {{itemEmote}} **{{itemName}}**។ ",
+			"notDrinkable": "វត្ថុដែលអ្នកបានជ្រើសរើសគឺមិនអាចផឹកបានទេ។",
+			"noDrinkItem": "អ្នកមិនមានភេសជ្ជៈនេះនៅក្នុងសារពើភ័ណ្ឌរបស់អ្នកទេ។",
+			"invalidAmount": "ចំនួនទឹកប្រាក់មិនត្រឹមត្រូវ។ ",
+			"successDrink": "អ្នកបានផឹក {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} និងទទួលបាន **{{xpGained}} XP ** ។"
+		},
+		"eatMessages": {
+			"emptyInventory": "សារពើភ័ណ្ឌរបស់អ្នកគឺទទេ។",
+			"itemNotFound": "ធាតុដែលមានលេខសម្គាល់ `{{itemId}}`រកមិនឃើញទេ។ ",
+			"cannotEatDrink": "អ្នកមិនអាចញ៉ាំបានទេ។ {{itemEmote}} **{{itemName}}**។ ",
+			"notEdible": "ធាតុនេះមិនអាចបរិភោគបានទេ។",
+			"noFoodItem": "អ្នកមិនមានមុខម្ហូបនេះនៅក្នុងសារពើភ័ណ្ឌរបស់អ្នកទេ។",
+			"invalidAmount": "ចំនួនទឹកប្រាក់មិនត្រឹមត្រូវ។ ",
+			"successEat": "អ្នកបានញ៉ាំ {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} និងទទួលបាន **{{xpGained}} XP ** ។"
+		},
+		"giveItemMessages": {
+			"emptyInventory": "សារពើភ័ណ្ឌរបស់អ្នកគឺទទេ។",
+			"noUser": "គ្មានអ្នកប្រើប្រាស់ត្រូវបានលើកឡើង ឬរកឃើញទេ។",
+			"mentionToBot": "អ្នកមិនអាចផ្តល់ធាតុទៅបូតបានទេ។",
+			"mentionToSelf": "អ្នកមិនអាចផ្តល់វត្ថុឱ្យខ្លួនឯងបានទេ។",
+			"itemNotFound": "ធាតុដែលមានលេខសម្គាល់ `{{itemId}}`រកមិនឃើញ!",
+			"noItemInInventory": "អ្នកមិនមានទេ។ {{itemEmote}} **{{itemName}}** នៅក្នុងសារពើភ័ណ្ឌរបស់អ្នក។",
+			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** មិនអាចផ្តល់ឱ្យបានទេ។",
+			"invalidAmount": "ចំនួនទឹកប្រាក់ដែលបានបញ្ជាក់មិនត្រឹមត្រូវ។",
+			"confirmationTitle": "ផ្តល់ធាតុ - {{author}}",
+			"confirmationDescription": "{{author}}ជ្រើសរើស **ទទួលយក** ដើម្បីបន្តប្រតិបត្តិការ ឬ **បោះបង់** ដើម្បីបដិសេធ។",
+			"sentItem": "បានផ្ញើធាតុ",
+			"receivedItem": "ធាតុដែលបានទទួល",
+			"transactionSuccess": "អ្នកបានទទួលយកប្រតិបត្តិការ។ {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} ត្រូវបានផ្ទេរទៅ **{{target}}**។",
+			"transactionCancelled": "អ្នកបានលុបចោលប្រតិបត្តិការ។ "
+		},
+		"invMessages": {
+			"noInventory": "អ្នកមិនមានធាតុណាមួយនៅក្នុងសារពើភ័ណ្ឌរបស់អ្នកទេ។",
+			"emptyInventoryFieldName": "សារពើភ័ណ្ឌ",
+			"emptyInventoryFieldValue": "សារពើភ័ណ្ឌរបស់អ្នកបច្ចុប្បន្នទទេ។",
+			"inventoryNet": "សារពើភ័ណ្ឌសុទ្ធ",
+			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+			"footerText": "បានស្នើសុំដោយ {user}",
+			"error": "កំហុសបានកើតឡើងខណៈពេលកំពុងទាញយកសារពើភ័ណ្ឌរបស់អ្នក។"
+		},
+		"sellMessages": {
+			"inventoryEmpty": "សារពើភ័ណ្ឌរបស់អ្នកគឺទទេ។",
+			"itemNotOwned": "អ្នកមិនមាន **{item}** នៅក្នុងសារពើភ័ណ្ឌរបស់អ្នកទេ។",
+			"itemNotSellable": "ទំនិញ **{item}** មិនអាចលក់បានទេ!",
+			"itemNotFound": "រកមិនឃើញធាតុដែលមានលេខសម្គាល់ **{item}** ទេ!",
+			"sellSuccess": "អ្នកបានលក់ **{quantity}** **{item}** ក្នុងតម្លៃ **{price}**កាក់។",
+			"noSellableItems": "អ្នកមិនមានទំនិញដែលអាចលក់បាននៅក្នុងសារពើភ័ណ្ឌរបស់អ្នកទេ។",
+			"cancelled": "ការលក់ត្រូវបានលុបចោល។",
+			"acceptSell": "អ្នកបានលក់ទំនិញរបស់អ្នកសម្រាប់កាក់ **{price}**។",
+			"invalidQuantity": "បរិមាណដែលបានបញ្ជាក់មិនត្រឹមត្រូវ។",
+			"sellError": "កំហុសបានកើតឡើងនៅពេលដំណើរការសំណើលក់របស់អ្នក។"
+		},
+		"shopMessages": {
+			"shopTitle": "ហាង",
+			"requestedBy": "បានស្នើសុំដោយ %{user}",
+			"unknownItemId": "មិនស្គាល់អត្តសញ្ញាណ",
+			"unnamedItem": "ធាតុគ្មានឈ្មោះ",
+			"selectCategoryPlaceholder": "ជ្រើសរើសប្រភេទមួយ។",
+			"selectItemPlaceholder": "ជ្រើសរើសធាតុមួយ។",
+			"itemDetail": "ធាតុលម្អិត",
+			"noDescription": "មិនមានការពិពណ៌នាទេ។",
+			"unknownType": "ប្រភេទមិនស្គាល់"
+		},
+		"shopInfoMessages": {
+			"itemNotFound": "រកមិនឃើញធាតុដែលមានលេខសម្គាល់ `{id}` ទេ។",
+			"noItemsAvailable": "មិនមានទំនិញនៅក្នុងហាងទេ។",
+			"noAdditionalCommands": "មិនមានពាក្យបញ្ជាបន្ថែមសម្រាប់ធាតុនេះទេ។",
+			"itemDetailsHeader": "ព័ត៌មានលម្អិតអំពីធាតុ",
+			"itemLimit": "ដែនកំណត់",
+			"itemPrice": "តម្លៃ",
+			"itemSellPrice": "តម្លៃលក់",
+			"itemDescription": "ការពិពណ៌នា",
+			"shopItemListHeader": "នេះគឺជាបញ្ជីនៃធាតុទាំងអស់ដែលបានតម្រៀបតាមប្រភេទ៖",
+			"itemListFooter": "ប្រើ`ព័ត៌មានហាង <id>` ដើម្បីទទួលបានព័ត៌មានលម្អិតបន្ថែមអំពីធាតុមួយ។"
+		},
+		"useMessages": {
+			"themeID": "រកមិនឃើញស្បែកដែលមានលេខសម្គាល់ `{itemId}` ទេ។",
+			"notOwned": "អ្នកមិនមែនជាម្ចាស់ប្រធានបទ `{itemName}` ទេ។",
+			"unavailable": "ប្រធានបទ `{itemName}` មិនអាចប្រើបានទេ។",
+			"applied": "អនុវត្តប្រធានបទ `{itemEmote} {itemName}` ដោយជោគជ័យ!"
+		}
+	},
+	"profileMessages": {
+		"bioMessages": {
+			"usage": "ការប្រើប្រាស់៖",
+			"resetSuccess": "ជីវប្រវត្តិសម្រាប់អ្នកត្រូវបានកំណត់ឡើងវិញ។",
+			"noBio": "មិនមានសរសេរជីវប្រវត្តិទេ។",
+			"provideText": "សូមផ្តល់អត្ថបទជីវប្រវត្តិ ឬពាក្យបញ្ជារងដែលមានសុពលភាព។",
+			"tooLong": "ជីវប្រវត្តិមិនអាចលើសពី 40 តួអក្សរបានទេ។",
+			"setSuccess": "ជីវប្រវត្តិសម្រាប់អ្នកត្រូវបានកំណត់។"
+		},
+		"bdMessages": {
+			"resetSuccess": "ថ្ងៃកំណើត និងសញ្ញារាសីចក្ររបស់អ្នកត្រូវបានកំណត់ឡើងវិញ។",
+			"noBirthday": "មិនមានកំណត់ថ្ងៃកំណើតទេ។",
+			"noZodiac": "មិនមានកំណត់សញ្ញារាសីចក្រទេ។",
+			"provideDate": "សូមផ្តល់កាលបរិច្ឆេទត្រឹមត្រូវសម្រាប់ថ្ងៃកំណើតរបស់អ្នក ឬពាក្យបញ្ជារងដែលមានសុពលភាព។",
+			"invalidDate": "កាលបរិច្ឆេទត្រូវតែជាទម្រង់មួយក្នុងចំណោមទម្រង់ដែលបានគាំទ្រ៖",
+			"setSuccess": "ថ្ងៃកំណើតរបស់អ្នកត្រូវបានកំណត់ទៅ",
+			"zodiacSuccess": "សញ្ញារាសីចក្ររបស់អ្នកគឺ"
+		},
+		"genderMessages": {
+			"usage": "ការប្រើប្រាស់",
+			"resetSuccess": "ភេទរបស់អ្នកត្រូវបានកំណត់ឡើងវិញ។",
+			"setSuccess": "ភេទរបស់អ្នកត្រូវបានកំណត់",
+			"current": "ភេទរបស់អ្នកត្រូវបានកំណត់",
+			"notSpecified": "ភេទរបស់អ្នកមិនត្រូវបានបញ្ជាក់ទេ។"
+		},
+		"levelMessages": {
+			"generating": "កំពុងបង្កើតកម្រិតរបស់អ្នក...",
+			"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
+			"levelText": "កម្រិត៖",
+			"xpText": "XP៖",
+			"error": "កំហុសបានកើតឡើងខណៈពេលកំពុងទាញយកកម្រិតរបស់អ្នក។"
+		},
+		"pfMessages": {
+			"loading": "កំពុងផ្ទុកប្រវត្តិរូបរបស់អ្នក...",
+			"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
+			"privateProfile": "កម្រងព័ត៌មាននេះគឺឯកជន។",
+			"defaultBio": "អ្នកប្រើប្រាស់នេះមិនបានកំណត់ជីវប្រវត្តិទេ។",
+			"defaultBirthday": "អ្នកប្រើប្រាស់នេះមិនបានកំណត់ថ្ងៃកំណើតទេ។",
+			"genderText": "ភេទ៖",
+			"zodiacSignText": "សញ្ញារាសីចក្រ៖",
+			"error": "កំហុសបានកើតឡើងនៅពេលបង្កើតកម្រងព័ត៌មានរបស់អ្នក។",
+			"socialMediaLinks": {
+				"facebook": {
+					"notSet": "អ្នកប្រើប្រាស់នេះមិនបានកំណត់តំណ Facebook ទេ។",
+					"linkText": "ហ្វេសប៊ុក៖ [{name}]({link})"
+				},
+				"instagram": {
+					"notSet": "អ្នកប្រើប្រាស់នេះមិនបានកំណត់តំណ Instagram ទេ។",
+					"linkText": "Instagram៖ [{name}]({link})"
+				},
+				"tiktok": {
+					"notSet": "អ្នកប្រើប្រាស់នេះមិនបានកំណត់តំណ TikTok ទេ។",
+					"linkText": "TikTok៖ [{name}]({link})"
+				}
+			}
+		},
+		"relationshipMessages": {
+			"success": {
+				"add": "បន្ថែមដោយជោគជ័យ",
+				"remove": "បានយកចេញដោយជោគជ័យ"
+			},
+			"error": {
+				"userNotMentioned": "សូមលើកឡើងពីអ្នកប្រើប្រាស់ ដើម្បីគ្រប់គ្រងទំនាក់ទំនងរបស់អ្នក។",
+				"notRegistered": "អ្នកមិនត្រូវបានចុះឈ្មោះក្នុងមូលដ្ឋានទិន្នន័យទេ។",
+				"targetNotRegistered": "អ្នកប្រើប្រាស់ដែលអ្នកកំពុងព្យាយាមកែប្រែមិនត្រូវបានចុះឈ្មោះទេ។",
+				"invalidType": "ប្រភេទទំនាក់ទំនងមិនត្រឹមត្រូវ។",
+				"partner": {
+					"error": {
+						"alreadyExists": "អ្នកមានដៃគូរួចហើយ។",
+						"notFound": "អ្នកប្រើប្រាស់នេះមិនមែនជាដៃគូរបស់អ្នកទេ។"
+					}
+				},
+				"bro": {
+					"error": {
+						"limitExceeded": "អ្នកអាចមានដល់ទៅ 4 បងប្អូន។",
+						"alreadyExists": "អ្នកប្រើប្រាស់នេះគឺជាបងប្រុសរបស់អ្នករួចហើយ។",
+						"notFound": "អ្នកប្រើប្រាស់នេះមិនមែនជាបងប្រុសរបស់អ្នកទេ។"
+					}
+				},
+				"sister": {
+					"error": {
+						"limitExceeded": "អ្នកអាចមានបងប្អូនស្រីរហូតដល់ទៅ ៤ នាក់ប៉ុណ្ណោះ។",
+						"alreadyExists": "អ្នកប្រើប្រាស់នេះគឺជាប្អូនស្រីរបស់អ្នកហើយ។",
+						"notFound": "អ្នកប្រើប្រាស់នេះមិនមែនជាប្អូនស្រីរបស់អ្នកទេ។"
+					}
+				},
+				"bestie": {
+					"error": {
+						"limitExceeded": "អ្នកអាចមានសត្វល្អិតដល់ទៅ ៤ នាក់ប៉ុណ្ណោះ។",
+						"alreadyExists": "អ្នកប្រើនេះគឺជាមិត្តរបស់អ្នករួចទៅហើយ។",
+						"notFound": "អ្នកប្រើប្រាស់នេះមិនមែនជាមិត្តល្អរបស់អ្នកទេ។"
+					}
+				},
+				"confidant": {
+					"error": {
+						"limitExceeded": "អ្នកអាចមានអ្នកជឿដល់ទៅ 4 នាក់ប៉ុណ្ណោះ។",
+						"alreadyExists": "អ្នកប្រើនេះគឺជាអ្នកទុកចិត្តរបស់អ្នករួចហើយ។",
+						"notFound": "អ្នកប្រើប្រាស់នេះមិនមែនជាអ្នកទុកចិត្តរបស់អ្នកទេ។"
+					}
+				}
+			}
+		},
+		"userNameMessages": {
+			"help": {
+				"usage": "ការប្រើប្រាស់៖ `ឈ្មោះអ្នកប្រើប្រាស់ <text || reset || show || help>`",
+				"examples": [
+					"ឈ្មោះអ្នកប្រើ peachy",
+					"កំណត់ឈ្មោះអ្នកប្រើប្រាស់ឡើងវិញ",
+					"ឈ្មោះអ្នកប្រើបង្ហាញ",
+					"ឈ្មោះអ្នកប្រើជំនួយ"
+				]
+			},
+			"reset": "ឈ្មោះអ្នកប្រើរបស់អ្នកត្រូវបានកំណត់ឡើងវិញទៅលំនាំដើម។",
+			"show": {
+				"usernameSet": "ឈ្មោះអ្នកប្រើប្រាស់បច្ចុប្បន្នរបស់អ្នកគឺ៖ `{{username}}`",
+				"noUsername": "គ្មានឈ្មោះអ្នកប្រើបានកំណត់។"
+			},
+			"set": {
+				"success": "ឈ្មោះអ្នកប្រើរបស់អ្នកត្រូវបានកំណត់ទៅ៖ `{{username}}`",
+				"error": {
+					"long": "ឈ្មោះអ្នកប្រើមិនអាចវែងជាង 40 តួអក្សរទេ។",
+					"empty": "សូមផ្តល់ឈ្មោះអ្នកប្រើប្រាស់។"
+				}
+			}
+		}
+	},
+	"socialMessages": {
+		"fbMessages": {
+			"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
+			"settingsTitle": "ការកំណត់ហ្វេសប៊ុក",
+			"invalidName": "សូមផ្តល់ឈ្មោះ Facebook ដែលមានសុពលភាព (រហូតដល់ 21 តួអក្សរ)។",
+			"nameUpdated": "ឈ្មោះ Facebook របស់អ្នកត្រូវបានកំណត់។",
+			"newName": "ឈ្មោះ Facebook ថ្មី។",
+			"linkUpdated": "តំណ Facebook របស់អ្នកត្រូវបានកំណត់។",
+			"newLink": "តំណភ្ជាប់ Facebook ថ្មី។",
+			"invalidLink": "សូមផ្តល់តំណ Facebook ត្រឹមត្រូវ។",
+			"helpTitle": "ជំនួយពាក្យបញ្ជាហ្វេសប៊ុក",
+			"helpDescription": "គ្រប់គ្រងព័ត៌មានលម្អិត Facebook របស់អ្នកដោយប្រើពាក្យបញ្ជារងខាងក្រោម៖",
+			"showDetails": "បង្ហាញព័ត៌មានលម្អិត Facebook",
+			"setName": "កំណត់ឈ្មោះហ្វេសប៊ុក",
+			"setLink": "កំណត់ Facebook Link",
+			"commandHelp": "ជំនួយពាក្យបញ្ជា",
+			"notSet": "មិនបានកំណត់"
+		},
+		"igMessages": {
+			"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
+			"settingsTitle": "ការកំណត់ Instagram",
+			"invalidName": "សូមផ្តល់ឈ្មោះ Instagram ដែលមានសុពលភាព (រហូតដល់ 21 តួអក្សរ)។",
+			"nameUpdated": "ឈ្មោះ Instagram របស់អ្នកត្រូវបានកំណត់។",
+			"newName": "ឈ្មោះ Instagram ថ្មី។",
+			"linkUpdated": "តំណ Instagram របស់អ្នកត្រូវបានកំណត់។",
+			"newLink": "តំណ Instagram ថ្មី។",
+			"invalidLink": "សូមផ្តល់តំណ Instagram ត្រឹមត្រូវ។",
+			"helpTitle": "ជំនួយពាក្យបញ្ជា Instagram",
+			"helpDescription": "គ្រប់គ្រងព័ត៌មានលម្អិត Instagram របស់អ្នកដោយប្រើពាក្យបញ្ជារងខាងក្រោម៖",
+			"showDetails": "បង្ហាញព័ត៌មានលម្អិត Instagram",
+			"setName": "កំណត់ឈ្មោះ Instagram",
+			"setLink": "កំណត់តំណ Instagram",
+			"commandHelp": "ជំនួយពាក្យបញ្ជា",
+			"notSet": "មិនបានកំណត់"
+		},
+		"smMessages": {
+			"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
+			"title": "📱ទម្រង់ប្រព័ន្ធផ្សព្វផ្សាយសង្គម",
+			"notSet": "មិនបានកំណត់"
+		},
+		"ttMessages": {
+			"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
+			"settingsTitle": "ការកំណត់ TikTok",
+			"invalidName": "សូមផ្តល់ឈ្មោះ TikTok ដែលមានសុពលភាព (រហូតដល់ 21 តួអក្សរ)។",
+			"nameUpdated": "ឈ្មោះ TikTok របស់អ្នកត្រូវបានកំណត់។",
+			"newName": "ឈ្មោះ TikTok ថ្មី។",
+			"linkUpdated": "តំណ TikTok របស់អ្នកត្រូវបានកំណត់។",
+			"newLink": "តំណភ្ជាប់ TikTok ថ្មី។",
+			"invalidLink": "សូមផ្តល់តំណ TikTok ត្រឹមត្រូវ។",
+			"helpTitle": "ជំនួយពាក្យបញ្ជា TikTok",
+			"helpDescription": "គ្រប់គ្រងព័ត៌មានលម្អិត TikTok របស់អ្នកជាមួយនឹងពាក្យបញ្ជារងខាងក្រោម៖",
+			"showDetails": "បង្ហាញព័ត៌មានលម្អិត TikTok",
+			"setName": "កំណត់ឈ្មោះ TikTok",
+			"setLink": "កំណត់តំណ TikTok",
+			"commandHelp": "ជំនួយពាក្យបញ្ជា",
+			"notSet": "មិនបានកំណត់"
+		}
+	},
+	"utilityMessages": {
+		"avatarMessages": {
+			"avatarTitle": "Avatar នៃ %{username}",
+			"requestedBy": "បានស្នើដោយ %{username}",
+			"noUserMentioned": "គ្មានអ្នកប្រើបានលើកឡើងទេ សូមប្រាប់អ្នកណាម្នាក់ដើម្បីមើលរូបតំណាងរបស់ពួកគេ។"
+		},
+		"emojiMessages": {
+			"emojiTitle": "រូបភាព Emoji",
+			"emojiDescription": "នេះជារូបភាពរបស់ Emoji៖",
+			"requestedBy": "បានស្នើដោយ %{username}",
+			"invalidEmoji": "បានផ្តល់សញ្ញាអារម្មណ៍មិនត្រឹមត្រូវ។ "
+		},
+		"languageMessages": {
+			"title": "ការកំណត់ភាសា",
+			"languageSetTitle": "ភាសា",
+			"languageSetDescription": "ភាសារបស់អ្នកត្រូវបានកំណត់ទៅជា **%{language}**។",
+			"helpTitle": "ជំនួយភាសា",
+			"helpDescription": "គ្រប់គ្រងការកំណត់ភាសារបស់អ្នក។",
+			"examples": "ឧទាហរណ៍",
+			"exampleCommands": "• ភាសា\n",
+			"usage": "ការប្រើប្រាស់",
+			"usageCommands": "• ភាសា - បង្ហាញភាសាបច្ចុប្បន្នរបស់អ្នក។\n",
+			"currentLanguageTitle": "ភាសា",
+			"currentLanguageDescription": "ភាសាបច្ចុប្បន្នរបស់អ្នកគឺ **%{language}**។",
+			"requestedBy": "បានស្នើដោយ %{username}"
+		},
+		"qrMessages": {
+			"title": "កូដ QR សម្រាប់ %{currency}",
+			"description": "នេះគឺជាកូដ QR សម្រាប់ %{currency}៖",
+			"invalidOption": "ជម្រើសមិនត្រឹមត្រូវ! "
+		},
+		"serverInfoMessages": {
+			"title": "ព័ត៌មានម៉ាស៊ីនមេ៖ %{server}",
+			"nameLabel": "ឈ្មោះ",
+			"idLabel": "លេខសម្គាល់ម៉ាស៊ីនមេ",
+			"ownerLabel": "ម្ចាស់",
+			"membersLabel": "សមាជិក",
+			"rolesLabel": "តួនាទី",
+			"createdLabel": "បានបង្កើតនៅលើ",
+			"footer": "បានស្នើដោយ %{user}"
+		},
+		"themeMessages": {
+			"title": "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒",
+			"setThemeMessage": "រូបរាងរបស់អ្នកត្រូវបានកំណត់ទៅជា **%{theme}**។",
+			"currentThemeMessage": "រចនាប័ទ្មបច្ចុប្បន្នរបស់អ្នកគឺ **%{theme}** ។",
+			"helpTitle": "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏",
+			"helpDescription": "គ្រប់គ្រងការកំណត់រចនាប័ទ្មរបស់អ្នក។",
+			"examplesLabel": "ឧទាហរណ៍",
+			"usageLabel": "ការប្រើប្រាស់",
+			"footer": "បានស្នើដោយ %{user}"
+		},
+		"userInfoMessages": {
+			"title": "ព័ត៌មានអ្នកប្រើប្រាស់៖ %{user}",
+			"username": "ឈ្មោះអ្នកប្រើប្រាស់",
+			"userId": "លេខសម្គាល់អ្នកប្រើប្រាស់",
+			"joinedServer": "បានចូលរួម Server",
+			"accountCreated": "បានបង្កើតគណនី",
+			"roles": "តួនាទី",
+			"noRoles": "គ្មាន",
+			"userNotFound": "រកមិនឃើញអ្នកប្រើប្រាស់! ",
+			"footer": "បានស្នើដោយ %{user}"
+		},
+		"verifyMessages": {
+			"noAccount": "អ្នកមិនមានគណនីទេ។ ",
+			"alreadyVerified": "អ្នកត្រូវបានផ្ទៀងផ្ទាត់រួចហើយ។",
+			"confirmButtonLabel": "បញ្ជាក់",
+			"cancelButtonLabel": "បោះបង់",
+			"title": "ផ្ទៀងផ្ទាត់គណនី",
+			"confirmationMessage": "តើអ្នកប្រាកដជាចង់ផ្ទៀងផ្ទាត់ជាមួយ **PEACY** ទេ?",
+			"paymentInfo": "ដើម្បីផ្ទៀងផ្ទាត់ អ្នកត្រូវបង់ប្រាក់ **$0.99/ខែ**។",
+			"benefitsTitle": "**អត្ថប្រយោជន៍**",
+			"benefits": "• ការផ្ទៀងផ្ទាត់តួនាទីនៅក្នុងម៉ាស៊ីនមេរបស់យើង។\n",
+			"requestedBy": "ស្នើសុំដោយ",
+			"verificationRequest": "សំណើផ្ទៀងផ្ទាត់",
+			"verificationMessage": "អ្នកបានស្នើសុំផ្ទៀងផ្ទាត់ជាមួយ PEACY ។",
+			"clickToSubmit": "ចុចលើប៊ូតុង បញ្ជូនសម្រាប់លេខកូដផ្ទៀងផ្ទាត់",
+			"waitingMessage": "ប្រសិនបើអ្នកបានបង់ប្រាក់រួចហើយ សូមរង់ចាំបន្តិច។  <@966688007493140591>",
+			"submitButtonLabel": "ដាក់ស្នើ",
+			"thankYouMessage": "សូមអរគុណ!",
+			"modalTitle": "បញ្ចូលលេខកូដផ្ទៀងផ្ទាត់",
+			"inputLabel": "លេខកូដផ្ទៀងផ្ទាត់៖",
+			"inputPlaceholder": "បញ្ចូលលេខកូដផ្ទៀងផ្ទាត់របស់អ្នកនៅទីនេះ",
+			"verificationSuccess": "អរគុណសម្រាប់ការគាំទ្រ និងផ្ទៀងផ្ទាត់ជាមួយ PEACY!",
+			"verificationSuccessTitle": "ការផ្ទៀងផ្ទាត់បានជោគជ័យ",
+			"thankYouForVerifying": "សូមអរគុណចំពោះការគាំទ្រ និងផ្ទៀងផ្ទាត់!",
+			"verificationComplete": "ការផ្ទៀងផ្ទាត់បានបញ្ចប់។",
+			"verificationFailed": "ការផ្ទៀងផ្ទាត់បានបរាជ័យ ឬលេខកូដមិនត្រឹមត្រូវ។ ",
+			"noResponseReceived": "មិនបានទទួលការឆ្លើយតបទេ។ "
 		}
 	}
 }

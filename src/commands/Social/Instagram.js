@@ -14,7 +14,7 @@ module.exports = class Instagram extends Command {
                     'instagram link https://instagram.com/YourInstagramLink - Sets your Instagram link.',
                     'instagram help - Shows command usage examples.'
                 ],
-                usage: 'instagram\ninstagram @mention\n instagram name <YourInstagramName>\n instagram link <YourInstagramLink>\n instagram help',
+                usage: 'instagram\ninstagram @mention\ninstagram name <YourInstagramName>\ninstagram link <YourInstagramLink>\ninstagram help',
             },
             category: 'profile',
             aliases: ['ig'],
@@ -63,26 +63,28 @@ module.exports = class Instagram extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const igMessages = language.locales.get(language.defaultLocale)?.socialMessages?.igMessages;
+
         const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
         const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
         const user = await Users.findOne({ userId: targetUserId });
         const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
 
-        if(!user) {
-            return await client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
+        if (!user) {
+            return await client.utils.sendErrorMessage(client, ctx, igMessages?.userNotFound || 'User not found.', color);
         }
 
-        const embed = client.embed().setTitle(`${emoji.mainLeft} Instagram Settings for ${targetUsername} ${emoji.mainRight}`);
+        const embed = client.embed().setTitle(`${emoji.mainLeft} ${igMessages?.settingsTitle || 'Instagram Settings for'} ${targetUsername} ${emoji.mainRight}`);
 
         switch (subCommand) {
             case 'name': {
                 const name = ctx.isInteraction ? ctx.interaction.options.getString('name') : args.slice(1).join(' ');
                 if (!name || name.length > 21) {
-                    return await client.utils.oops(client, ctx, 'Please provide a valid Instagram name (up to 21 characters).', color);
+                    return await client.utils.oops(client, ctx, igMessages?.invalidName || 'Please provide a valid Instagram name (up to 21 characters).', color);
                 }
 
-                embed.setDescription('Your Instagram name has been set.').addFields([{ name: 'New Instagram Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
+                embed.setDescription(igMessages?.nameUpdated || 'Your Instagram name has been set.').addFields([{ name: igMessages?.newName || 'New Instagram Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.instagram.name': name } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -94,10 +96,10 @@ module.exports = class Instagram extends Command {
                 const urlPattern = /^https?:\/\/[^\s$.?#].[^\s]*$/;
 
                 if (!link || !urlPattern.test(link)) {
-                    return await client.utils.oops(client, ctx, 'Please provide a valid Instagram link.', color);
+                    return await client.utils.oops(client, ctx, igMessages?.invalidLink || 'Please provide a valid Instagram link.', color);
                 }
 
-                embed.setDescription('Your Instagram link has been set.').addFields([{ name: 'New Instagram Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
+                embed.setDescription(igMessages?.linkUpdated || 'Your Instagram link has been set.').addFields([{ name: igMessages?.newLink || 'New Instagram Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.instagram.link': link } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -105,13 +107,13 @@ module.exports = class Instagram extends Command {
             }
 
             case 'help': {
-                embed.setTitle('Instagram Command Help')
-                    .setDescription('Manage your Instagram details with the following subcommands:')
+                embed.setTitle(igMessages?.helpTitle || 'Instagram Command Help')
+                    .setDescription(igMessages?.helpDescription || 'Manage your Instagram details with the following subcommands:')
                     .addFields([
-                        { name: 'Show Instagram Details', value: '`\`\`\`instagram` or `instagram @mention\`\`\``', inline: false },
-                        { name: 'Set Instagram Name', value: '`\`\`\`instagram name YourInstagramName\`\`\``', inline: false },
-                        { name: 'Set Instagram Link', value: '`\`\`\`instagram link https://instagram.com/YourInstagramLink\`\`\``', inline: false },
-                        { name: 'Command Help', value: '`\`\`\`instagram help\`\`\``', inline: false }
+                        { name: igMessages?.showDetails || 'Show Instagram Details', value: '`\`\`\`instagram` or `instagram @mention\`\`\`', inline: false },
+                        { name: igMessages?.setName || 'Set Instagram Name', value: '`\`\`\`instagram name YourInstagramName\`\`\`', inline: false },
+                        { name: igMessages?.setLink || 'Set Instagram Link', value: '`\`\`\`instagram link https://instagram.com/YourInstagramLink\`\`\`', inline: false },
+                        { name: igMessages?.commandHelp || 'Command Help', value: '`\`\`\`instagram help\`\`\`', inline: false }
                     ]);
 
                 await ctx.sendMessage({ embeds: [embed] });
@@ -119,11 +121,11 @@ module.exports = class Instagram extends Command {
             }
 
             default: {
-                const igName = user.social.instagram.name || 'Not set';
+                const igName = user.social.instagram.name || igMessages?.notSet || 'Not set';
                 const igLink = user.social.instagram.link || '';
 
                 embed.setColor(color.main).setDescription(
-                    `**${emoji.social.instagram} : ${igName && igLink ? `[${igName}](${igLink})` : igName ? igName : 'Not set'}**`)
+                    `**${emoji.social.instagram} : ${igName && igLink ? `[${igName}](${igLink})` : igName ? igName : igMessages?.notSet || 'Not set'}**`);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;

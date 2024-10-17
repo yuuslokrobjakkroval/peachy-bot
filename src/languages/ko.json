@@ -7,12 +7,12 @@
 		"usageHeader": "용법",
 		"examplesHeader": "예",
 		"syntaxInstructions": "구문: [] = 선택 사항, <> = 필수",
-		"noEveryoneOrHereError": "모든 사람이나 여기에서는 이 명령을 사용할 수 없습니다.",
+		"noEveryoneOrHereError": "모든 사람이나 여기서는 이 명령을 사용할 수 없습니다.",
 		"userNotFound": "데이터베이스에서 사용자를 찾을 수 없습니다.",
 		"alreadyInGame": "당신은 이미 게임에 참여하고 있습니다. ",
 		"zeroBalance": "귀하의 잔액은 0입니다. ",
 		"invalidAmount": "금액이 잘못되었습니다. ",
-		"notForYou": "이 작업은 귀하를 위한 것이 아닙니다.",
+		"notForYou": "이 조치는 귀하를 위한 것이 아닙니다.",
 		"databaseUpdate": "데이터베이스를 업데이트하는 중에 오류가 발생했습니다."
 	},
 	"actionMessages": {
@@ -22,7 +22,7 @@
 			"errors": {
 				"noUser": "물릴 사용자를 언급해야 합니다.",
 				"selfBite": "당신은 자신을 물 수 없습니다.",
-				"fetchFail": "물린 GIF를 가져오는 중에 문제가 발생했습니다."
+				"fetchFail": "바이트 GIF를 가져오는 중에 문제가 발생했습니다."
 			}
 		},
 		"hugMessages": {
@@ -161,7 +161,7 @@
 			"zeroBalance": "당신의 은행에는 동전이 없습니다.",
 			"invalidAmount": "인출할 유효한 금액을 입력하세요. ",
 			"tooHigh": "은행에 보유하고 있는 것보다 더 많은 금액을 인출할 수 없습니다.",
-			"success": "{{coinEmote}} **성공, {{user}}!**\n{{amount}} 은행에서 동전**을 받을 수 있습니다.",
+			"success": "탈퇴하셨습니다 {{coinEmote}} **{{amount}}** 은행의 동전.",
 			"error": "출금 요청을 처리하는 중에 오류가 발생했습니다."
 		}
 	},
@@ -276,7 +276,7 @@
 		"wallpaper": {
 			"selectCategory": "카테고리를 선택하세요...",
 			"selectWallpaper": "배경화면을 선택하세요...",
-			"noWallpapers": "이 카테고리에는 사용할 수 있는 배경화면이 없습니다.",
+			"noWallpapers": "이 카테고리에는 배경화면이 없습니다.",
 			"wallpaperNotFound": "배경화면을 찾을 수 없습니다.",
 			"wallpaperDetailsTitle": "배경화면 세부정보",
 			"descriptionLabel": "설명",
@@ -304,7 +304,7 @@
 		},
 		"slotMessages": {
 			"title": "𝐒𝐋𝐎𝐓𝐒",
-			"youBet": "**`%{coin}`** %{coinEmote}에 걸었습니다",
+			"youBet": "**`%{coin}`** %{coinEmote}에 ​​걸었습니다",
 			"youWon": "**`%{coin}`** %{coinEmote}을(를) 획득하셨습니다",
 			"youLost": "**`%{coin}`** %{coinEmote}을(를) 잃었습니다.",
 			"gameInProgress": "게임이 진행 중입니다!",
@@ -312,7 +312,7 @@
 		},
 		"coinflipMessages": {
 			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
-			"description": "**%{author}** 지출 **`%{coin}`** %{coinEmote} 선택 **%{choice}**! ",
+			"description": "**%{author}** 지출 **`%{coin}`** %{coinEmote}가 **%{choice}**를 선택했습니다! ",
 			"resultDescription": "**%{author}** 지출 **`%{coin}`** %{coinEmote} 선택 **%{choice}**",
 			"youWon": "**`%{coin}`** %{coinEmote}을(를) 획득하셨습니다",
 			"youLost": "**`%{coin}`** %{coinEmote}을(를) 잃었습니다.",
@@ -320,20 +320,58 @@
 			"gameOver": "게임이 끝났습니다."
 		}
 	},
-	"inventoryMessages": {
-		"inventoryHeader": "%{author}의 인벤토리입니다!",
-		"inventoryEmptyName": "빈 인벤토리",
-		"inventoryEmptyValue": "현재 인벤토리가 비어 있습니다.",
-		"itemNotFound": "아이템 ID **`%{itemId}`**를 상점에서 찾을 수 없습니다!",
-		"sellDisabled": "이 항목을 판매할 수 없습니다.",
-		"useDisabled": "이 항목을 사용할 수 없습니다."
-	},
-	"themeMessages": {
-		"themeApplied": "%{itemEmote} **`%{itemName}`** 테마를 삽입에 성공적으로 적용했습니다!",
-		"themeUnavailable": "**`%{itemName}`** 테마를 사용할 수 없습니다.",
-		"themeNotOwned": "**`%{itemName}`** 테마를 소유하고 있지 않습니다. ",
-		"invalidThemeID": "테마 ID **`%{itemId}`**가 유효하지 않습니다. ",
-		"themeAlreadyOwned": "귀하는 이미 **`%{itemName}`** 테마를 소유하고 있으므로 다시 구매할 수 없습니다."
+	"gameMessages": {
+		"puzzleMessages": {
+			"title": "🧩 이모티콘 퍼즐",
+			"prompt": "이것은 무엇을 의미합니까?",
+			"correct": {
+				"title": "옳은!",
+				"description": "잘하셨습니다. 이모티콘 퍼즐을 정확하게 맞히셨나요?"
+			},
+			"wrong": {
+				"title": "❌ 틀렸어!",
+				"description": "당신은",
+				"guessesLeft": "추측이 남았습니다."
+			},
+			"timeout": {
+				"title": "⏳ 시간이 다 됐어요!",
+				"description": "정답은"
+			},
+			"gameOver": {
+				"title": "❌ 게임 오버!",
+				"description": "당신은 모든 추측을 사용했습니다! "
+			}
+		},
+		"guessNumberMessages": {
+			"insufficientBalance": {
+				"title": "잔액 부족",
+				"description": "숫자 추측 게임을 플레이하려면 최소 1000개의 동전이 필요합니다. "
+			},
+			"description": "저는 1에서 100 사이의 숫자를 골랐습니다. 당신은 하트가 3개 있습니다. ",
+			"correct": {
+				"description": "축하해요"
+			},
+			"incorrect": {
+				"description": "❌ 틀렸어요! "
+			},
+			"hint": {
+				"bigger": "숫자가 생각보다 큽니다.",
+				"smaller": "숫자가 생각보다 작습니다.",
+				"range": "힌트는 다음과 같습니다. 숫자는 다음 사이입니다."
+			},
+			"gameOver": {
+				"description": "💔 하트가 부족해요! "
+			},
+			"timeout": {
+				"description": "⏳ 시간이 다 됐어요! "
+			}
+		},
+		"rollMessages": {
+			"invalidDice": "잘못된 주사위 유형입니다! ",
+			"invalidSides": "주사위의 면 수가 잘못되었습니다.",
+			"win": "당신이 이겼어요!",
+			"lose": "당신은 패배합니다!"
+		}
 	},
 	"informationMessages": {
 		"helpMessages": {
@@ -431,6 +469,7 @@
 				"serverinfo": "서버 정보",
 				"theme": "주제",
 				"userinfo": "사용자 정보",
+				"verify": "확인하다",
 				"help": "돕다",
 				"info": "정보",
 				"invite": "초대하다",
@@ -524,6 +563,377 @@
 				"uptime": "가동 시간: {uptime}분"
 			},
 			"footer": "자세한 내용을 보려면 아래 버튼을 클릭하세요."
+		}
+	},
+	"inventoryMessages": {
+		"buyMessages": {
+			"invalidItem": "ID가 `인 항목{{itemId}}`를 찾을 수 없습니다. ",
+			"themeAlreadyOwned": "이미 해당 테마를 소유하고 있습니다. {{itemEmote}} **{{itemName}}**. ",
+			"itemCannotBeBought": "항목 {{itemEmote}} **{{itemName}}** 구매가 불가능합니다.",
+			"notEnoughCoins": "당신은 필요 {{coinEmote}}{{neededCoins}} 더 구매할 것 {{itemEmote}} **{{itemName}}**.",
+			"success": "성공적으로 구매했습니다",
+			"partial": "하지만 당신은 감당할 수 밖에",
+			"description": "당신은 {{afford}} {{itemEmote}} **{{itemName}}** 을 위한 {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** 품목.",
+			"buyDisable": "이 항목 {{itemEmote}} **{{itemName}}** 현재는 구매하실 수 없습니다.",
+			"zeroBalance": "구매할 수 있는 코인이 없습니다. "
+		},
+		"drinkMessages": {
+			"emptyInventory": "귀하의 인벤토리가 비어 있습니다.",
+			"itemNotFound": "ID가 `인 항목{{itemId}}`를 찾을 수 없습니다. ",
+			"cannotDrinkFood": "당신은 술을 마실 수 없습니다 {{itemEmote}} **{{itemName}}**. ",
+			"notDrinkable": "선택하신 상품은 마실 수 없습니다.",
+			"noDrinkItem": "귀하의 인벤토리에 이 음료 아이템이 없습니다.",
+			"invalidAmount": "금액이 잘못되었습니다. ",
+			"successDrink": "당신은 마셨다 {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} 그리고 **를 얻었습니다{{xpGained}} XP**."
+		},
+		"eatMessages": {
+			"emptyInventory": "귀하의 인벤토리가 비어 있습니다.",
+			"itemNotFound": "ID가 `인 항목{{itemId}}`를 찾을 수 없습니다. ",
+			"cannotEatDrink": "넌 먹을 수 없어 {{itemEmote}} **{{itemName}}**. ",
+			"notEdible": "이 품목은 먹을 수 없습니다.",
+			"noFoodItem": "귀하의 인벤토리에 이 음식 아이템이 없습니다.",
+			"invalidAmount": "금액이 잘못되었습니다. ",
+			"successEat": "당신은 먹었습니다 {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} 그리고 **를 얻었습니다{{xpGained}} XP**."
+		},
+		"giveItemMessages": {
+			"emptyInventory": "귀하의 인벤토리가 비어 있습니다.",
+			"noUser": "언급되거나 발견된 사용자가 없습니다.",
+			"mentionToBot": "봇에게 아이템을 줄 수는 없습니다.",
+			"mentionToSelf": "자신에게 아이템을 줄 수는 없습니다.",
+			"itemNotFound": "ID가 `인 항목{{itemId}}`를 찾을 수 없습니다!",
+			"noItemInInventory": "당신은 가지고 있지 않습니다 {{itemEmote}} **{{itemName}}** 귀하의 인벤토리에 있습니다.",
+			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** 줄 수 없습니다.",
+			"invalidAmount": "금액이 잘못 지정되었습니다.",
+			"confirmationTitle": "아이템 주기 - {{author}}",
+			"confirmationDescription": "{{author}}에서 **수락**을 선택하여 거래를 진행하거나 **취소**를 선택하여 거부하세요.",
+			"sentItem": "보낸 항목",
+			"receivedItem": "받은 아이템",
+			"transactionSuccess": "거래를 수락했습니다. {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} **로 이전되었습니다.{{target}}**.",
+			"transactionCancelled": "거래를 취소하셨습니다. "
+		},
+		"invMessages": {
+			"noInventory": "귀하의 인벤토리에 아이템이 없습니다.",
+			"emptyInventoryFieldName": "목록",
+			"emptyInventoryFieldValue": "현재 귀하의 인벤토리가 비어 있습니다.",
+			"inventoryNet": "재고 순",
+			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+			"footerText": "{user}님이 요청함",
+			"error": "인벤토리를 검색하는 동안 오류가 발생했습니다."
+		},
+		"sellMessages": {
+			"inventoryEmpty": "귀하의 인벤토리가 비어 있습니다.",
+			"itemNotOwned": "인벤토리에 **{item}**이(가) 없습니다.",
+			"itemNotSellable": "**{item}** 항목은 판매할 수 없습니다!",
+			"itemNotFound": "ID가 **{item}**인 항목을 찾을 수 없습니다!",
+			"sellSuccess": "**{수량}** **{항목}**을 **{가격}** 코인에 판매하셨습니다.",
+			"noSellableItems": "귀하의 인벤토리에 판매 가능한 품목이 없습니다.",
+			"cancelled": "판매가 취소되었습니다.",
+			"acceptSell": "귀하의 아이템을 **{price}** 코인에 판매하셨습니다.",
+			"invalidQuantity": "잘못된 수량을 지정했습니다.",
+			"sellError": "판매 요청을 처리하는 동안 오류가 발생했습니다."
+		},
+		"shopMessages": {
+			"shopTitle": "가게",
+			"requestedBy": "요청자: %{user}",
+			"unknownItemId": "알 수 없는 ID",
+			"unnamedItem": "이름이 없는 항목",
+			"selectCategoryPlaceholder": "카테고리를 선택하세요",
+			"selectItemPlaceholder": "항목을 선택하세요",
+			"itemDetail": "품목 세부정보",
+			"noDescription": "설명이 없습니다.",
+			"unknownType": "알 수 없는 유형"
+		},
+		"shopInfoMessages": {
+			"itemNotFound": "ID가 `{id}`인 항목을 찾을 수 없습니다.",
+			"noItemsAvailable": "상점에서 구매할 수 있는 품목이 없습니다.",
+			"noAdditionalCommands": "이 항목에 사용할 수 있는 추가 명령이 없습니다.",
+			"itemDetailsHeader": "품목 세부정보",
+			"itemLimit": "한계",
+			"itemPrice": "가격",
+			"itemSellPrice": "판매 가격",
+			"itemDescription": "설명",
+			"shopItemListHeader": "유형별로 정렬된 모든 항목의 목록은 다음과 같습니다.",
+			"itemListFooter": "`상점 정보'를 사용하세요. <id>` 항목에 대한 자세한 내용을 보려면."
+		},
+		"useMessages": {
+			"themeID": "ID가 '{itemId}'인 테마를 찾을 수 없습니다.",
+			"notOwned": "귀하는 `{itemName}` 테마를 소유하고 있지 않습니다.",
+			"unavailable": "`{itemName}` 테마를 사용할 수 없습니다.",
+			"applied": "`{itemEmote} {itemName}` 테마를 성공적으로 적용했습니다!"
+		}
+	},
+	"profileMessages": {
+		"bioMessages": {
+			"usage": "용법:",
+			"resetSuccess": "귀하의 소개가 재설정되었습니다.",
+			"noBio": "자기 소개가 작성되지 않았습니다.",
+			"provideText": "소개 텍스트나 유효한 하위 명령을 입력하세요.",
+			"tooLong": "약력은 40자를 초과할 수 없습니다.",
+			"setSuccess": "귀하의 소개가 설정되었습니다."
+		},
+		"bdMessages": {
+			"resetSuccess": "생일과 별자리가 재설정되었습니다.",
+			"noBirthday": "설정된 생일이 없습니다.",
+			"noZodiac": "별자리가 설정되지 않았습니다.",
+			"provideDate": "유효한 생일 날짜나 유효한 하위 명령을 입력하세요.",
+			"invalidDate": "날짜는 지원되는 형식 중 하나여야 합니다.",
+			"setSuccess": "생일이 다음으로 설정되었습니다.",
+			"zodiacSuccess": "당신의 별자리는"
+		},
+		"genderMessages": {
+			"usage": "용법",
+			"resetSuccess": "성별이 재설정되었습니다.",
+			"setSuccess": "귀하의 성별은 다음과 같이 설정되었습니다.",
+			"current": "귀하의 성별은 다음과 같이 설정되었습니다.",
+			"notSpecified": "성별이 지정되지 않았습니다."
+		},
+		"levelMessages": {
+			"generating": "레벨 생성 중...",
+			"userNotFound": "사용자를 찾을 수 없습니다.",
+			"levelText": "수준:",
+			"xpText": "XP:",
+			"error": "레벨을 가져오는 중에 오류가 발생했습니다."
+		},
+		"pfMessages": {
+			"loading": "프로필 로드 중...",
+			"userNotFound": "사용자를 찾을 수 없습니다.",
+			"privateProfile": "이 프로필은 비공개입니다.",
+			"defaultBio": "이 사용자는 약력을 설정하지 않았습니다.",
+			"defaultBirthday": "이 사용자는 생일을 설정하지 않았습니다.",
+			"genderText": "성별:",
+			"zodiacSignText": "조디악 로그인:",
+			"error": "프로필을 생성하는 동안 오류가 발생했습니다.",
+			"socialMediaLinks": {
+				"facebook": {
+					"notSet": "이 사용자는 Facebook 링크를 설정하지 않았습니다.",
+					"linkText": "Facebook: [{name}]({link})"
+				},
+				"instagram": {
+					"notSet": "이 사용자는 Instagram 링크를 설정하지 않았습니다.",
+					"linkText": "인스타그램: [{name}]({link})"
+				},
+				"tiktok": {
+					"notSet": "이 사용자는 TikTok 링크를 설정하지 않았습니다.",
+					"linkText": "TikTok: [{이름}]({링크})"
+				}
+			}
+		},
+		"relationshipMessages": {
+			"success": {
+				"add": "성공적으로 추가되었습니다",
+				"remove": "성공적으로 제거되었습니다"
+			},
+			"error": {
+				"userNotMentioned": "관계를 관리할 사용자를 언급해 주세요.",
+				"notRegistered": "귀하는 데이터베이스에 등록되어 있지 않습니다.",
+				"targetNotRegistered": "수정하려는 사용자가 등록되어 있지 않습니다.",
+				"invalidType": "잘못된 관계 유형입니다.",
+				"partner": {
+					"error": {
+						"alreadyExists": "당신은 이미 파트너가 있습니다.",
+						"notFound": "이 사용자는 귀하의 파트너가 아닙니다."
+					}
+				},
+				"bro": {
+					"error": {
+						"limitExceeded": "최대 4명의 형제만 가질 수 있습니다.",
+						"alreadyExists": "이 사용자는 이미 귀하의 형제입니다.",
+						"notFound": "이 사용자는 당신의 형제가 아닙니다."
+					}
+				},
+				"sister": {
+					"error": {
+						"limitExceeded": "자매는 최대 4명까지만 가질 수 있습니다.",
+						"alreadyExists": "이 사용자는 이미 귀하의 자매입니다.",
+						"notFound": "이 사용자는 당신의 여동생이 아닙니다."
+					}
+				},
+				"bestie": {
+					"error": {
+						"limitExceeded": "절친은 최대 4명까지만 가질 수 있습니다.",
+						"alreadyExists": "이 사용자는 이미 당신의 절친입니다.",
+						"notFound": "이 사용자는 당신의 절친이 아닙니다."
+					}
+				},
+				"confidant": {
+					"error": {
+						"limitExceeded": "최대 4명의 동료만 가질 수 있습니다.",
+						"alreadyExists": "이 사용자는 이미 귀하의 친구입니다.",
+						"notFound": "이 사용자는 귀하의 친구가 아닙니다."
+					}
+				}
+			}
+		},
+		"userNameMessages": {
+			"help": {
+				"usage": "사용법: `사용자 이름 <text || reset || show || help>`",
+				"examples": [
+					"사용자 이름 복숭아",
+					"사용자 이름 재설정",
+					"사용자 이름 표시",
+					"사용자 이름 도움말"
+				]
+			},
+			"reset": "귀하의 사용자 이름이 기본값으로 재설정되었습니다.",
+			"show": {
+				"usernameSet": "귀하의 현재 사용자 이름은 다음과 같습니다: `{{username}}`",
+				"noUsername": "사용자 이름이 설정되지 않았습니다."
+			},
+			"set": {
+				"success": "귀하의 사용자 이름은 다음과 같이 설정되었습니다: `{{username}}`",
+				"error": {
+					"long": "사용자 이름은 40자를 초과할 수 없습니다.",
+					"empty": "사용자 이름을 입력하세요."
+				}
+			}
+		}
+	},
+	"socialMessages": {
+		"fbMessages": {
+			"userNotFound": "사용자를 찾을 수 없습니다.",
+			"settingsTitle": "페이스북 설정",
+			"invalidName": "유효한 Facebook 이름(최대 21자)을 입력하세요.",
+			"nameUpdated": "귀하의 Facebook 이름이 설정되었습니다.",
+			"newName": "새로운 페이스북 이름",
+			"linkUpdated": "귀하의 페이스북 링크가 설정되었습니다.",
+			"newLink": "새로운 페이스북 링크",
+			"invalidLink": "유효한 Facebook 링크를 제공해 주세요.",
+			"helpTitle": "Facebook 명령 도움말",
+			"helpDescription": "다음 하위 명령을 사용하여 Facebook 세부 정보를 관리하세요.",
+			"showDetails": "Facebook 세부정보 표시",
+			"setName": "페이스북 이름 설정",
+			"setLink": "페이스북 링크 설정",
+			"commandHelp": "명령 도움말",
+			"notSet": "설정되지 않음"
+		},
+		"igMessages": {
+			"userNotFound": "사용자를 찾을 수 없습니다.",
+			"settingsTitle": "인스타그램 설정",
+			"invalidName": "유효한 Instagram 이름(최대 21자)을 입력하세요.",
+			"nameUpdated": "귀하의 인스타그램 이름이 설정되었습니다.",
+			"newName": "새로운 인스타그램 이름",
+			"linkUpdated": "귀하의 인스타그램 링크가 설정되었습니다.",
+			"newLink": "새로운 인스타그램 링크",
+			"invalidLink": "유효한 Instagram 링크를 제공해 주세요.",
+			"helpTitle": "Instagram 명령 도움말",
+			"helpDescription": "다음 하위 명령을 사용하여 Instagram 세부 정보를 관리하세요.",
+			"showDetails": "인스타그램 세부정보 표시",
+			"setName": "인스타그램 이름 설정",
+			"setLink": "인스타그램 링크 설정",
+			"commandHelp": "명령 도움말",
+			"notSet": "설정되지 않음"
+		},
+		"smMessages": {
+			"userNotFound": "사용자를 찾을 수 없습니다.",
+			"title": "📱 소셜 미디어 프로필",
+			"notSet": "설정되지 않음"
+		},
+		"ttMessages": {
+			"userNotFound": "사용자를 찾을 수 없습니다.",
+			"settingsTitle": "틱톡 설정",
+			"invalidName": "유효한 TikTok 이름(최대 21자)을 입력하세요.",
+			"nameUpdated": "귀하의 TikTok 이름이 설정되었습니다.",
+			"newName": "새로운 틱톡 이름",
+			"linkUpdated": "TikTok 링크가 설정되었습니다.",
+			"newLink": "새로운 틱톡 링크",
+			"invalidLink": "유효한 TikTok 링크를 제공해주세요.",
+			"helpTitle": "TikTok 명령 도움말",
+			"helpDescription": "다음 하위 명령을 사용하여 TikTok 세부 정보를 관리하세요:",
+			"showDetails": "TikTok 세부 정보 표시",
+			"setName": "틱톡 이름 설정",
+			"setLink": "틱톡 링크 설정",
+			"commandHelp": "명령 도움말",
+			"notSet": "설정되지 않음"
+		}
+	},
+	"utilityMessages": {
+		"avatarMessages": {
+			"avatarTitle": "%{username}의 아바타",
+			"requestedBy": "%{username}님이 요청하셨습니다",
+			"noUserMentioned": "언급된 사용자가 없습니다. 아바타를 보려면 다른 사람을 언급하세요."
+		},
+		"emojiMessages": {
+			"emojiTitle": "이모티콘 이미지",
+			"emojiDescription": "이모티콘 이미지는 다음과 같습니다.",
+			"requestedBy": "%{username}님이 요청하셨습니다",
+			"invalidEmoji": "잘못된 이모티콘이 제공되었습니다. "
+		},
+		"languageMessages": {
+			"title": "언어 설정",
+			"languageSetTitle": "언어",
+			"languageSetDescription": "귀하의 언어는 **%{언어}**로 설정되었습니다.",
+			"helpTitle": "언어 지원",
+			"helpDescription": "언어 설정을 관리하세요.",
+			"examples": "예",
+			"exampleCommands": "• 언어\n",
+			"usage": "용법",
+			"usageCommands": "• 언어 - 현재 언어를 표시합니다.\n",
+			"currentLanguageTitle": "언어",
+			"currentLanguageDescription": "귀하의 현재 언어는 **%{언어}**입니다.",
+			"requestedBy": "%{username}님이 요청하셨습니다"
+		},
+		"qrMessages": {
+			"title": "%{통화}에 대한 QR 코드",
+			"description": "다음은 %{currency}에 대한 QR 코드입니다.",
+			"invalidOption": "잘못된 옵션입니다! "
+		},
+		"serverInfoMessages": {
+			"title": "서버 정보: %{server}",
+			"nameLabel": "이름",
+			"idLabel": "서버ID",
+			"ownerLabel": "소유자",
+			"membersLabel": "회원",
+			"rolesLabel": "역할",
+			"createdLabel": "생성 날짜",
+			"footer": "%{user}님이 요청함"
+		},
+		"themeMessages": {
+			"title": "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒",
+			"setThemeMessage": "테마가 **%{theme}**로 설정되었습니다.",
+			"currentThemeMessage": "현재 테마는 **%{theme}**입니다.",
+			"helpTitle": "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏",
+			"helpDescription": "테마 설정을 관리하세요.",
+			"examplesLabel": "예",
+			"usageLabel": "용법",
+			"footer": "%{user}님이 요청함"
+		},
+		"userInfoMessages": {
+			"title": "사용자 정보: %{user}",
+			"username": "사용자 이름",
+			"userId": "사용자 ID",
+			"joinedServer": "가입된 서버",
+			"accountCreated": "계정이 생성되었습니다",
+			"roles": "역할",
+			"noRoles": "없음",
+			"userNotFound": "사용자를 찾을 수 없습니다! ",
+			"footer": "%{user}님이 요청함"
+		},
+		"verifyMessages": {
+			"noAccount": "귀하는 계정이 없습니다. ",
+			"alreadyVerified": "이미 확인되었습니다.",
+			"confirmButtonLabel": "확인하다",
+			"cancelButtonLabel": "취소",
+			"title": "계정 확인",
+			"confirmationMessage": "**PEACHY**로 인증하시겠습니까?",
+			"paymentInfo": "확인하려면 **$0.99/월**을 지불해야 합니다.",
+			"benefitsTitle": "**이익**",
+			"benefits": "• 당사 서버의 역할 확인\n",
+			"requestedBy": "요청자",
+			"verificationRequest": "확인요청",
+			"verificationMessage": "PEACHY 인증을 요청하셨습니다.",
+			"clickToSubmit": "확인 코드를 받으려면 버튼 제출을 클릭하세요.",
+			"waitingMessage": "이미 결제하셨다면 잠시만 기다려주세요.  <@966688007493140591>",
+			"submitButtonLabel": "제출하다",
+			"thankYouMessage": "감사합니다!",
+			"modalTitle": "인증코드 입력",
+			"inputLabel": "인증 코드:",
+			"inputPlaceholder": "여기에 인증 코드를 입력하세요",
+			"verificationSuccess": "PEACHY를 응원하고 검증해주셔서 감사합니다!",
+			"verificationSuccessTitle": "확인 성공",
+			"thankYouForVerifying": "지원하고 확인해 주셔서 감사합니다!",
+			"verificationComplete": "확인이 완료되었습니다.",
+			"verificationFailed": "인증에 실패했거나 코드가 올바르지 않습니다. ",
+			"noResponseReceived": "응답이 수신되지 않았습니다. "
 		}
 	}
 }

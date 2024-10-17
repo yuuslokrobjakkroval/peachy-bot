@@ -24,18 +24,21 @@ module.exports = class GuessNumber extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const guessNumberMessages = language.locales.get(language.defaultLocale)?.gameMessages?.guessNumberMessages;
         const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
         const user = await Users.findOne({ userId: ctx.author.id });
+
         if (user.balance.coin < 1000) {
             return ctx.sendMessage({
                 embeds: [
                     client.embed()
-                        .setTitle('Insufficient Balance')
+                        .setTitle(guessNumberMessages.insufficientBalance.title)
                         .setColor(color.red)
-                        .setDescription(`You need at least 1000 coins to play the Guess the Number game. Your current balance is ${user.balance.coin} coins.`)
+                        .setDescription(`${guessNumberMessages.insufficientBalance.description} ${user.balance.coin} coins.`)
                 ]
             });
         }
+
         user.balance.coin -= 1000;
         await user.save();
 
@@ -47,11 +50,11 @@ module.exports = class GuessNumber extends Command {
             .setTitle(`${emoji.mainLeft} 𝐆𝐔𝐄𝐒𝐒 𝐓𝐇𝐄 𝐍𝐔𝐌𝐁𝐄𝐑! ${emoji.mainRight}`)
             .setColor(color.main)
             .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setDescription('I have picked a number between 1 and 100. You have 3 hearts. React with the number you guess or type your guess in the chat!')
+            .setDescription(guessNumberMessages.description)
             .setFooter({
                 text: `Request By ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
-            })
+            });
 
         const message = await ctx.sendMessage({ embeds: [embed] });
 
@@ -74,11 +77,11 @@ module.exports = class GuessNumber extends Command {
                 const resultEmbed = client.embed()
                     .setTitle(`${emoji.mainLeft} 𝐂𝐎𝐑𝐑𝐄𝐂𝐓 𝐀𝐍𝐒𝐖𝐄𝐑! ${emoji.mainRight}`)
                     .setColor(color.green)
-                    .setDescription(`Congratulations ${client.utils.getRandomElement(congratulations)} !!!\nYou guessed the number correctly: **${numberToGuess}**.\nYou've earned ${client.utils.formatNumber(coinEarned)} ${emoji.coin} and ${xpEarned} XP.`)
+                    .setDescription(`${guessNumberMessages.correct.description} ${client.utils.getRandomElement(congratulations)} !!!\nYou guessed the number correctly: **${numberToGuess}**.\nYou've earned ${client.utils.formatNumber(coinEarned)} ${emoji.coin} and ${xpEarned} XP.`)
                     .setFooter({
                         text: `${ctx.author.displayName}, your game is over`,
                         iconURL: ctx.author.displayAvatarURL(),
-                    })
+                    });
 
                 await ctx.sendMessage({ embeds: [resultEmbed] });
                 collector.stop();
@@ -86,36 +89,37 @@ module.exports = class GuessNumber extends Command {
                 hearts -= 1;
                 incorrectGuesses += 1;
                 let resultEmbed;
+
                 if (hearts > 0) {
                     let hint = '';
                     if (incorrectGuesses === 1) {
-                        hint = guess < numberToGuess ? 'The number is bigger than your guess.' : 'The number is smaller than your guess.';
+                        hint = guess < numberToGuess ? guessNumberMessages.hint.bigger : guessNumberMessages.hint.smaller;
                     } else if (incorrectGuesses === 2) {
                         const rangeSize = Math.floor(Math.random() * 16) + 5;
                         const minRange = Math.max(1, numberToGuess - rangeSize);
                         const maxRange = Math.min(100, numberToGuess + rangeSize);
-                        hint = `Here's a hint: The number is between **${minRange}** and **${maxRange}**.`;
+                        hint = `${guessNumberMessages.hint.range} **${minRange}** and **${maxRange}**.`;
                     }
 
                     resultEmbed = client.embed()
                         .setTitle(`${emoji.mainLeft} 𝐖𝐑𝐎𝐍𝐆 𝐀𝐍𝐒𝐖𝐄𝐑! ${emoji.mainRight}`)
                         .setColor(color.red)
-                        .setDescription(`❌ Incorrect! You have **${hearts}** hearts left. ${hint}`)
+                        .setDescription(`${guessNumberMessages.incorrect.description} **${hearts}** hearts left. ${hint}`)
                         .setFooter({
                             text: `Reply to ${ctx.author.displayName}`,
                             iconURL: ctx.author.displayAvatarURL(),
-                        })
+                        });
 
                     await ctx.sendMessage({ embeds: [resultEmbed] });
                 } else {
                     resultEmbed = client.embed()
                         .setTitle(`${emoji.mainLeft} 𝐆𝐀𝐌𝐄 𝐎𝐕𝐄𝐑! ${emoji.mainRight}`)
                         .setColor(color.red)
-                        .setDescription(`💔 You've run out of hearts! The correct number was **${numberToGuess}**.`)
+                        .setDescription(`${guessNumberMessages.gameOver.description} **${numberToGuess}**.`)
                         .setFooter({
                             text: `${ctx.author.displayName}, your game is over`,
                             iconURL: ctx.author.displayAvatarURL(),
-                        })
+                        });
 
                     await ctx.sendMessage({ embeds: [resultEmbed] });
                     collector.stop();
@@ -128,11 +132,12 @@ module.exports = class GuessNumber extends Command {
                 const timeoutEmbed = client.embed()
                     .setTitle(`${emoji.mainLeft} 𝐓𝐈𝐌𝐄 𝐈𝐒 𝐔𝐏! ${emoji.mainRight}`)
                     .setColor(color.orange)
-                    .setDescription('⏳ Time is up! You didn\'t guess the number in time.')
+                    .setDescription(guessNumberMessages.timeout.description)
                     .setFooter({
                         text: `${ctx.author.displayName}, please start again`,
                         iconURL: ctx.author.displayAvatarURL(),
-                    })
+                    });
+
                 ctx.sendMessage({ embeds: [timeoutEmbed] });
             }
         });

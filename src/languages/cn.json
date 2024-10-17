@@ -119,7 +119,7 @@
 			},
 			"goma": {
 				"noUsers": "还没人有连胜。",
-				"topGoma": "𝐓𝐎𝐏𝐆𝐎𝐌𝐀𝐂𝐋𝐀𝐈𝐌"
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
 			},
 			"invalidType": "排行榜类型无效。"
 		},
@@ -161,7 +161,7 @@
 			"zeroBalance": "您的银行里没有硬币。",
 			"invalidAmount": "请提供有效的提款金额。",
 			"tooHigh": "您提取的金额不得超过银行存款金额。",
-			"success": "{{coinEmote}} **成功， {{user}}!**\n{{amount}} 您银行的硬币**。",
+			"success": "您已撤回 {{coinEmote}} **{{amount}}** 您银行的硬币。",
 			"error": "处理您的提款请求时出错。"
 		}
 	},
@@ -228,7 +228,7 @@
 		},
 		"scareMessages": {
 			"title": "害怕的！",
-			"description": "**{{user}}**展现出他们害怕的一面！",
+			"description": "**{{user}}**展现了他们害怕的一面！",
 			"error": "处理您的恐惧表情时出错。"
 		},
 		"showerMessages": {
@@ -320,20 +320,58 @@
 			"gameOver": "你的游戏结束了。"
 		}
 	},
-	"inventoryMessages": {
-		"inventoryHeader": "%{author} 的库存！",
-		"inventoryEmptyName": "库存清空",
-		"inventoryEmptyValue": "您当前的库存是空的。",
-		"itemNotFound": "在商店中找不到商品 ID **`%{itemId}`**！",
-		"sellDisabled": "出售该物品已被禁用。",
-		"useDisabled": "使用该项目已被禁用。"
-	},
-	"themeMessages": {
-		"themeApplied": "您已成功将 %{itemEmote} **`%{itemName}`** 主题应用到您的嵌入内容！",
-		"themeUnavailable": "主题 **`%{itemName}`** 无法使用。",
-		"themeNotOwned": "您不拥有主题 **`%{itemName}`**。",
-		"invalidThemeID": "主题 ID **`%{itemId}`** 无效。",
-		"themeAlreadyOwned": "您已经拥有该主题 **`%{itemName}`** 并且无法再次购买。"
+	"gameMessages": {
+		"puzzleMessages": {
+			"title": "🧩 表情符号拼图",
+			"prompt": "这意味着什么？",
+			"correct": {
+				"title": "正确的！",
+				"description": "干得好，您猜对了表情符号谜题！"
+			},
+			"wrong": {
+				"title": "❌错了！",
+				"description": "你有",
+				"guessesLeft": "剩下的猜测。"
+			},
+			"timeout": {
+				"title": "⏳ 时间到了！",
+				"description": "正确答案是"
+			},
+			"gameOver": {
+				"title": "❌游戏结束！",
+				"description": "你已经用尽了所有的猜测！"
+			}
+		},
+		"guessNumberMessages": {
+			"insufficientBalance": {
+				"title": "余额不足",
+				"description": "您至少需要 1000 个金币才能玩猜数字游戏。"
+			},
+			"description": "我选择了 1 到 100 之间的数字。你有 3 颗心。",
+			"correct": {
+				"description": "恭喜你"
+			},
+			"incorrect": {
+				"description": "❌ 错误！"
+			},
+			"hint": {
+				"bigger": "这个数字比你的猜测还要大。",
+				"smaller": "这个数字比你的猜测要小。",
+				"range": "这里有一个提示：数字介于"
+			},
+			"gameOver": {
+				"description": "💔 你的心已经用完了！"
+			},
+			"timeout": {
+				"description": "⏳ 时间到了！"
+			}
+		},
+		"rollMessages": {
+			"invalidDice": "骰子类型无效！",
+			"invalidSides": "骰子的面数无效。",
+			"win": "你赢了！",
+			"lose": "你输了！"
+		}
 	},
 	"informationMessages": {
 		"helpMessages": {
@@ -431,6 +469,7 @@
 				"serverinfo": "服务器信息",
 				"theme": "主题",
 				"userinfo": "用户信息",
+				"verify": "核实",
 				"help": "帮助",
 				"info": "信息",
 				"invite": "邀请",
@@ -524,6 +563,377 @@
 				"uptime": "正常运行时间：{uptime} 分钟"
 			},
 			"footer": "欲了解更多信息，请单击下面的按钮。"
+		}
+	},
+	"inventoryMessages": {
+		"buyMessages": {
+			"invalidItem": "ID 为 ` 的项目{{itemId}}` 没有找到。",
+			"themeAlreadyOwned": "您已经拥有该主题 {{itemEmote}} **{{itemName}}**。",
+			"itemCannotBeBought": "该项目 {{itemEmote}} **{{itemName}}** 不可购买。",
+			"notEnoughCoins": "你需要 {{coinEmote}}{{neededCoins}} 更多要买 {{itemEmote}} **{{itemName}}**。",
+			"success": "购买成功",
+			"partial": "但你只能负担得起",
+			"description": "你有 {{afford}} {{itemEmote}} **{{itemName}}** 为了 {{coinEmote}}{{totalPrice}}。{{amountToBuy}}** 项目。",
+			"buyDisable": "此项 {{itemEmote}} **{{itemName}}** 目前无法购买。",
+			"zeroBalance": "您没有硬币可供购买。"
+		},
+		"drinkMessages": {
+			"emptyInventory": "你的库存是空的。",
+			"itemNotFound": "ID 为 ` 的项目{{itemId}}` 没有找到。",
+			"cannotDrinkFood": "你不能喝酒 {{itemEmote}} **{{itemName}}**。",
+			"notDrinkable": "您选择的产品不可饮用。",
+			"noDrinkItem": "您的库存中没有此饮料。",
+			"invalidAmount": "金额无效。",
+			"successDrink": "你喝了 {{itemEmote}} **`x{{itemAmount}}``** {{itemName}} 并获得**{{xpGained}} XP**。"
+		},
+		"eatMessages": {
+			"emptyInventory": "你的库存是空的。",
+			"itemNotFound": "ID 为 ` 的项目{{itemId}}` 没有找到。",
+			"cannotEatDrink": "你不能吃 {{itemEmote}} **{{itemName}}**。",
+			"notEdible": "该物品不可食用。",
+			"noFoodItem": "您的库存中没有此食品。",
+			"invalidAmount": "金额无效。",
+			"successEat": "你吃了 {{itemEmote}} **`x{{itemAmount}}``** {{itemName}} 并获得**{{xpGained}} XP**。"
+		},
+		"giveItemMessages": {
+			"emptyInventory": "你的库存是空的。",
+			"noUser": "未提及或找到任何用户。",
+			"mentionToBot": "您不能将物品交给机器人。",
+			"mentionToSelf": "您不能将物品送给自己。",
+			"itemNotFound": "ID 为 ` 的项目{{itemId}}` 没有找到！",
+			"noItemInInventory": "你没有 {{itemEmote}} **{{itemName}}** 在您的库存中。",
+			"itemNotGiftable": "{{itemEmote}} **{{itemName}}** 无法给出。",
+			"invalidAmount": "指定的金额无效。",
+			"confirmationTitle": "给予物品 - {{author}}",
+			"confirmationDescription": "{{author}}，选择 **接受** 继续交易或选择 **取消** 拒绝。",
+			"sentItem": "已发送项目",
+			"receivedItem": "收到物品",
+			"transactionSuccess": "您已接受交易。 {{itemEmote}} **`x{{itemAmount}}``** {{itemName}} 已转移至**{{target}}**。",
+			"transactionCancelled": "您已取消交易。"
+		},
+		"invMessages": {
+			"noInventory": "您的库存中没有任何物品。",
+			"emptyInventoryFieldName": "存货",
+			"emptyInventoryFieldValue": "您的库存目前为空。",
+			"inventoryNet": "库存网",
+			"inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+			"footerText": "由{用户}请求",
+			"error": "检索您的库存时发生错误。"
+		},
+		"sellMessages": {
+			"inventoryEmpty": "你的库存是空的。",
+			"itemNotOwned": "您的库存中没有 **{item}**。",
+			"itemNotSellable": "该商品 **{item}** 不可出售！",
+			"itemNotFound": "找不到 ID 为 **{item}** 的项目！",
+			"sellSuccess": "您以 **{价格}** 的价格出售了 **{数量}** **{商品}**。",
+			"noSellableItems": "您的库存中没有任何可销售的商品。",
+			"cancelled": "出售取消。",
+			"acceptSell": "您以 **{price}** 硬币的价格出售了您的物品。",
+			"invalidQuantity": "指定的数量无效。",
+			"sellError": "处理您的销售请求时发生错误。"
+		},
+		"shopMessages": {
+			"shopTitle": "店铺",
+			"requestedBy": "%{user} 请求",
+			"unknownItemId": "未知身份",
+			"unnamedItem": "未命名项目",
+			"selectCategoryPlaceholder": "选择类别",
+			"selectItemPlaceholder": "选择一个项目",
+			"itemDetail": "商品详情",
+			"noDescription": "无可用描述",
+			"unknownType": "未知类型"
+		},
+		"shopInfoMessages": {
+			"itemNotFound": "未找到 ID 为“{id}”的项目。",
+			"noItemsAvailable": "商店中没有商品。",
+			"noAdditionalCommands": "没有适用于此项目的其他命令。",
+			"itemDetailsHeader": "项目详情",
+			"itemLimit": "限制",
+			"itemPrice": "价格",
+			"itemSellPrice": "售价",
+			"itemDescription": "描述",
+			"shopItemListHeader": "以下是按类型排序的所有项目的列表：",
+			"itemListFooter": "使用“商店信息” <id>` 获取有关某个项目的更多详细信息。"
+		},
+		"useMessages": {
+			"themeID": "未找到 ID 为“{itemId}”的主题。",
+			"notOwned": "您不拥有主题“{itemName}”。",
+			"unavailable": "主题“{itemName}”无法使用。",
+			"applied": "已成功应用主题“{itemEmote} {itemName}”！"
+		}
+	},
+	"profileMessages": {
+		"bioMessages": {
+			"usage": "用法：",
+			"resetSuccess": "您的个人简介已重置。",
+			"noBio": "没有写简历。",
+			"provideText": "请提供简介文本或有效的子命令。",
+			"tooLong": "简介不能超过 40 个字符。",
+			"setSuccess": "您的简历已设置。"
+		},
+		"bdMessages": {
+			"resetSuccess": "您的生日和星座已重置。",
+			"noBirthday": "没有设定生日。",
+			"noZodiac": "没有设置星座。",
+			"provideDate": "请提供您的生日的有效日期或有效的子命令。",
+			"invalidDate": "日期必须采用支持的格式之一：",
+			"setSuccess": "您的生日已设置为",
+			"zodiacSuccess": "你的星座是"
+		},
+		"genderMessages": {
+			"usage": "用法",
+			"resetSuccess": "您的性别已重置。",
+			"setSuccess": "您的性别已设置为",
+			"current": "您的性别设置为",
+			"notSpecified": "未指定您的性别。"
+		},
+		"levelMessages": {
+			"generating": "生成你的等级...",
+			"userNotFound": "未找到用户。",
+			"levelText": "等级：",
+			"xpText": "经验值：",
+			"error": "获取您的级别时发生错误。"
+		},
+		"pfMessages": {
+			"loading": "正在加载您的个人资料...",
+			"userNotFound": "未找到用户。",
+			"privateProfile": "此个人资料是私人的。",
+			"defaultBio": "该用户尚未设置个人简介。",
+			"defaultBirthday": "该用户尚未设置生日。",
+			"genderText": "性别：",
+			"zodiacSignText": "十二生肖：",
+			"error": "生成您的个人资料时出错。",
+			"socialMediaLinks": {
+				"facebook": {
+					"notSet": "该用户尚未设置 Facebook 链接。",
+					"linkText": "脸书：[{name}]({link})"
+				},
+				"instagram": {
+					"notSet": "该用户尚未设置 Instagram 链接。",
+					"linkText": "Instagram：[{name}]({link})"
+				},
+				"tiktok": {
+					"notSet": "该用户尚未设置 TikTok 链接。",
+					"linkText": "抖音：[{name}]({link})"
+				}
+			}
+		},
+		"relationshipMessages": {
+			"success": {
+				"add": "添加成功",
+				"remove": "已成功删除"
+			},
+			"error": {
+				"userNotMentioned": "请提及一个用户来管理您的关系。",
+				"notRegistered": "您尚未在数据库中注册。",
+				"targetNotRegistered": "您尝试修改的用户尚未注册。",
+				"invalidType": "关系类型无效。",
+				"partner": {
+					"error": {
+						"alreadyExists": "你已经有一个伙伴了。",
+						"notFound": "该用户不是您的合作伙伴。"
+					}
+				},
+				"bro": {
+					"error": {
+						"limitExceeded": "你最多只能有 4 个兄弟。",
+						"alreadyExists": "这个用户已经是你的兄弟了。",
+						"notFound": "这个用户不是你的兄弟。"
+					}
+				},
+				"sister": {
+					"error": {
+						"limitExceeded": "您最多只能有 4 个姐妹。",
+						"alreadyExists": "这个用户已经是你的妹妹了。",
+						"notFound": "这个用户不是你的妹妹。"
+					}
+				},
+				"bestie": {
+					"error": {
+						"limitExceeded": "你最多只能有 4 个好友。",
+						"alreadyExists": "该用户已经是你的好朋友了。",
+						"notFound": "该用户不是您的好朋友。"
+					}
+				},
+				"confidant": {
+					"error": {
+						"limitExceeded": "您最多只能有 4 个密友。",
+						"alreadyExists": "该用户已经是您的知己了。",
+						"notFound": "该用户不是您的知己。"
+					}
+				}
+			}
+		},
+		"userNameMessages": {
+			"help": {
+				"usage": "用法：`用户名 <text || reset || show || help>`",
+				"examples": [
+					"用户名 桃色",
+					"用户名重置",
+					"用户名显示",
+					"用户名帮助"
+				]
+			},
+			"reset": "您的用户名已重置为默认值。",
+			"show": {
+				"usernameSet": "您当前的用户名是：`{{username}}`",
+				"noUsername": "未设置用户名。"
+			},
+			"set": {
+				"success": "您的用户名已设置为：`{{username}}`",
+				"error": {
+					"long": "用户名不能超过 40 个字符。",
+					"empty": "请提供用户名。"
+				}
+			}
+		}
+	},
+	"socialMessages": {
+		"fbMessages": {
+			"userNotFound": "未找到用户。",
+			"settingsTitle": "脸书设置",
+			"invalidName": "请提供有效的 Facebook 名称（最多 21 个字符）。",
+			"nameUpdated": "您的 Facebook 名称已设置。",
+			"newName": "新的 Facebook 名称",
+			"linkUpdated": "您的 Facebook 链接已设置。",
+			"newLink": "新的脸书链接",
+			"invalidLink": "请提供有效的 Facebook 链接。",
+			"helpTitle": "Facebook 命令帮助",
+			"helpDescription": "使用以下子命令管理您的 Facebook 详细信息：",
+			"showDetails": "显示 Facebook 详细信息",
+			"setName": "设置 Facebook 名称",
+			"setLink": "设置 Facebook 链接",
+			"commandHelp": "命令帮助",
+			"notSet": "未设置"
+		},
+		"igMessages": {
+			"userNotFound": "未找到用户。",
+			"settingsTitle": "Instagram 设置",
+			"invalidName": "请提供有效的 Instagram 名称（最多 21 个字符）。",
+			"nameUpdated": "您的 Instagram 名称已设置。",
+			"newName": "Instagram 新名称",
+			"linkUpdated": "您的 Instagram 链接已设置。",
+			"newLink": "新的 Instagram 链接",
+			"invalidLink": "请提供有效的 Instagram 链接。",
+			"helpTitle": "Instagram 命令帮助",
+			"helpDescription": "使用以下子命令管理您的 Instagram 详细信息：",
+			"showDetails": "显示 Instagram 详细信息",
+			"setName": "设置 Instagram 名称",
+			"setLink": "设置 Instagram 链接",
+			"commandHelp": "命令帮助",
+			"notSet": "未设置"
+		},
+		"smMessages": {
+			"userNotFound": "未找到用户。",
+			"title": "📱 社交媒体资料",
+			"notSet": "未设置"
+		},
+		"ttMessages": {
+			"userNotFound": "未找到用户。",
+			"settingsTitle": "抖音设置",
+			"invalidName": "请提供有效的 TikTok 名称（最多 21 个字符）。",
+			"nameUpdated": "您的 TikTok 名称已设置。",
+			"newName": "新的 TikTok 名称",
+			"linkUpdated": "您的 TikTok 链接已设置。",
+			"newLink": "新的 TikTok 链接",
+			"invalidLink": "请提供有效的 TikTok 链接。",
+			"helpTitle": "TikTok 命令帮助",
+			"helpDescription": "使用以下子命令管理您的 TikTok 详细信息：",
+			"showDetails": "显示 TikTok 详细信息",
+			"setName": "设置 TikTok 名称",
+			"setLink": "设置 TikTok 链接",
+			"commandHelp": "命令帮助",
+			"notSet": "未设置"
+		}
+	},
+	"utilityMessages": {
+		"avatarMessages": {
+			"avatarTitle": "%{用户名}的头像",
+			"requestedBy": "%{用户名} 请求",
+			"noUserMentioned": "没有提及用户，请提及某人以查看他们的头像。"
+		},
+		"emojiMessages": {
+			"emojiTitle": "表情符号图片",
+			"emojiDescription": "这是表情符号的图像：",
+			"requestedBy": "%{用户名} 请求",
+			"invalidEmoji": "提供的表情符号无效。"
+		},
+		"languageMessages": {
+			"title": "语言设置",
+			"languageSetTitle": "语言",
+			"languageSetDescription": "您的语言已设置为 **%{语言}**。",
+			"helpTitle": "语言帮助",
+			"helpDescription": "管理您的语言设置。",
+			"examples": "示例",
+			"exampleCommands": "• 语言\n",
+			"usage": "用法",
+			"usageCommands": "• 语言 - 显示您当前的语言\n",
+			"currentLanguageTitle": "语言",
+			"currentLanguageDescription": "您当前的语言是 **%{语言}**。",
+			"requestedBy": "%{用户名} 请求"
+		},
+		"qrMessages": {
+			"title": "%{currency} 的二维码",
+			"description": "这是 %{currency} 的二维码：",
+			"invalidOption": "无效选项！"
+		},
+		"serverInfoMessages": {
+			"title": "服务器信息：%{服务器}",
+			"nameLabel": "姓名",
+			"idLabel": "服务器ID",
+			"ownerLabel": "所有者",
+			"membersLabel": "会员",
+			"rolesLabel": "角色",
+			"createdLabel": "创建于",
+			"footer": "%{user} 请求"
+		},
+		"themeMessages": {
+			"title": "𝐓𝐇𝐄𝐌𝐄𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒",
+			"setThemeMessage": "您的主题已设置为 **%{theme}**。",
+			"currentThemeMessage": "您当前的主题是 **%{theme}**。",
+			"helpTitle": "𝐓𝐇𝐄𝐌𝐄𝐇𝐄𝐋𝐏",
+			"helpDescription": "管理您的主题设置。",
+			"examplesLabel": "示例",
+			"usageLabel": "用法",
+			"footer": "%{user} 请求"
+		},
+		"userInfoMessages": {
+			"title": "用户信息：%{user}",
+			"username": "用户名",
+			"userId": "用户身份",
+			"joinedServer": "已加入服务器",
+			"accountCreated": "帐户已创建",
+			"roles": "角色",
+			"noRoles": "没有任何",
+			"userNotFound": "未找到用户！",
+			"footer": "%{user} 请求"
+		},
+		"verifyMessages": {
+			"noAccount": "您没有帐户。",
+			"alreadyVerified": "您已经通过验证。",
+			"confirmButtonLabel": "确认",
+			"cancelButtonLabel": "取消",
+			"title": "验证账户",
+			"confirmationMessage": "您确定要通过 **PEACHY** 进行验证吗？",
+			"paymentInfo": "要验证，您需要支付 **0.99 美元/月**。",
+			"benefitsTitle": "**好处**",
+			"benefits": "• 我们服务器中的角色验证\n",
+			"requestedBy": "请求者",
+			"verificationRequest": "验证请求",
+			"verificationMessage": "您已请求与 PEACHY 核实。",
+			"clickToSubmit": "点击提交按钮获取验证码",
+			"waitingMessage": "如果您已经付款，请稍等一下。 <@966688007493140591>",
+			"submitButtonLabel": "提交",
+			"thankYouMessage": "谢谢你！",
+			"modalTitle": "输入验证码",
+			"inputLabel": "验证码：",
+			"inputPlaceholder": "在此输入您的验证码",
+			"verificationSuccess": "感谢您对PEACHY的支持和验证！",
+			"verificationSuccessTitle": "验证成功",
+			"thankYouForVerifying": "感谢您的支持和验证！",
+			"verificationComplete": "验证完成。",
+			"verificationFailed": "验证失败或代码不正确。",
+			"noResponseReceived": "没有收到回复。"
 		}
 	}
 }

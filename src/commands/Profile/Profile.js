@@ -63,6 +63,8 @@ module.exports = class Profile extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const pfMessages = language.locales.get(language.defaultLocale)?.profileMessages?.pfMessages;
+
         let loadingMessage;
         try {
             const targetUser = ctx.isInteraction ? ctx.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
@@ -71,14 +73,14 @@ module.exports = class Profile extends Command {
             if (!userData) {
                 const embed = client.embed()
                     .setColor(color.main)
-                    .setDescription('User Not Found');
+                    .setDescription(pfMessages.userNotFound);
                 loadingMessage = await ctx.sendMessage({
                     embeds: [embed],
                 });
             } else if (userData.profile.visibility.status && targetUser.id !== ctx.author.id) {
                 const embed = client.embed()
                     .setColor(color.main)
-                    .setDescription(userData.profile.visibility.message ? userData.profile.visibility.message : 'This profile is private and cannot be viewed.');
+                    .setDescription(userData.profile.visibility.message ? userData.profile.visibility.message : pfMessages.privateProfile);
                 loadingMessage = await ctx.sendMessage({
                     embeds: [embed],
                 });
@@ -109,7 +111,7 @@ module.exports = class Profile extends Command {
                 const embed = client.embed()
                     .setColor(color.main)
                     .setTitle(`**${emoji.mainLeft} 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 ${emoji.mainRight}**`)
-                    .setDescription('**Generating your profile...**')
+                    .setDescription(pfMessages.loadingProfile)
                     .setImage(randomLoadingScreen);
                 loadingMessage = await ctx.sendDeferMessage({
                     embeds: [embed],
@@ -164,17 +166,17 @@ module.exports = class Profile extends Command {
                     switch (platform) {
                         case 'facebook':
                             responseMessage = userData.social.facebook.name && userData.social.facebook.link
-                                ? `Here is the Facebook link for ${targetUser.displayName}: [${userData.social.facebook.name}](${userData.social.facebook.link})`
+                                ? pfMessages.socialMediaLink('Facebook', userData.social.facebook.link)
                                 : `${targetUser.displayName} has not set a Facebook link.`;
                             break;
                         case 'instagram':
                             responseMessage = userData.social.instagram.name && userData.social.instagram.link
-                                ? `Here is the Instagram link for ${targetUser.displayName}: [${userData.social.instagram.name}](${userData.social.instagram.link})`
+                                ? pfMessages.socialMediaLink('Instagram', userData.social.instagram.link)
                                 : `${targetUser.displayName} has not set an Instagram link.`;
                             break;
                         case 'tiktok':
                             responseMessage = userData.social.tiktok.name && userData.social.tiktok.link
-                                ? `Here is the TikTok link for ${targetUser.displayName}: [${userData.social.tiktok.name}](${userData.social.tiktok.link})`
+                                ? pfMessages.socialMediaLink('TikTok', userData.social.tiktok.link)
                                 : `${targetUser.displayName} has not set a TikTok link.`;
                             break;
                     }
@@ -195,7 +197,7 @@ module.exports = class Profile extends Command {
 
                 collector.on('end', (collected, reason) => {
                     if (reason === 'time') {
-                        ctx.sendMessage('The reaction session has ended. Please use the command again to view the profile.');
+                        ctx.sendMessage(pfMessages.reactionSessionEnded);
                     }
                 });
             }
@@ -227,83 +229,29 @@ async function drawProfile(context, client, ctx, user, userAvatarFrame, emoji, s
     context.drawImage(userAvatar, userAvatarX, userAvatarY, userAvatarSize, userAvatarSize);
     context.restore();
 
-    // User Avatar Decoration
-    if (userAvatarFrame) {
-        context.drawImage(userAvatarFrame, userAvatarX - (228 - userAvatarSize) / 2, userAvatarY - (228 - userAvatarSize) / 2, 228, 228);
-    } else {
-        context.beginPath();
-        context.arc(userAvatarX + userAvatarSize / 2, userAvatarY + userAvatarSize / 2, userAvatarSize / 2 + 2, 0, Math.PI * 2, true); // Slightly larger circle
-        context.lineWidth = 4;
-        context.strokeStyle = user.profile.gender === 'male' ? '#AC7D67' : user.profile.gender === 'female' ? '#F582AE' : '#000000'
-        context.stroke();
-    }
+    // Profile details
+    context.fillStyle = '#fff';
+    context.font = '30px EmOne-SemiBold';
+    context.fillText(user.username, 270, 140); // Username
+    context.font = '24px EmOne-SemiBold';
+    context.fillText(user.discriminator, 270, 170); // Discriminator
 
-    // Define text properties
-    const textColor = '#FFFFFF';
-    const borderColor = user.profile.gender === 'male' ? '#AC7D67' : user.profile.gender === 'female' ? '#F582AE' : '#000000';
-    const borderPadding = 15; // Padding between text and border
+    // Bio
+    const bioMessage = user?.profile?.bio || pfMessages.defaultProfileBio;
+    context.fillText(`Bio: ${bioMessage}`, 270, 210);
 
-    function drawTextWithBorder(ctx, text, x, y, font, textColor, borderColor, padding) {
-        ctx.font = font;
-        ctx.fillStyle = borderColor;
-        ctx.strokeStyle = borderColor;
-        ctx.lineWidth = padding * 2;
-        ctx.strokeText(text, x, y);
-        ctx.fillStyle = textColor;
-        ctx.fillText(text, x, y);
-    }
+    // Birthday
+    const birthdayMessage = user?.profile?.birthday ? moment(user.profile.birthday).format('MMMM Do YYYY') : pfMessages.defaultProfileBirthday;
+    context.fillText(`Birthday: ${birthdayMessage}`, 270, 240);
 
-    // Draw texts with border padding
-    context.textAlign = 'center';
-    drawTextWithBorder(context,`LEVEL ${user.profile.level || 1}`, 304, 225, 'bold 18px EmOne-SemiBoldItalic', textColor, borderColor, borderPadding);
-    drawTextWithBorder(context,`XP ${user.profile.xp || 0}/${user.profile.levelXp || 1000}`, 471, 225, 'bold 18px EmOne-SemiBoldItalic', textColor, borderColor, borderPadding);
+    // Gender
+    const genderMessage = user?.profile?.gender || pfMessages.noGenderInfo;
+    context.fillText(`Gender: ${genderMessage}`, 270, 270);
 
-    // Remaining Color and Text
-    context.fillStyle = user.profile.gender === 'male' ? '#000000' : '#FFFFFF';
-    context.textAlign = 'center';
-    context.font = 'bold italic 26px Name EmOne-SemiBoldItalic';
-    context.fillText(formatUsername(ctx.username), 178, 278);
-    context.font = 'bold italic 16px EmOne-SemiBoldItalic';
-    context.fillText(formatUpperCase(user.profile.bio || 'Not Set'), 178, 317);
-    context.fillText(formatUpperCase(splitToSpace(user.profile.birthday || 'Not Set')), 158, 357);
-    context.textAlign = 'left';
+    // Zodiac Sign
+    const zodiacSign = getZodiacSign(user?.profile?.birthday) || pfMessages.noZodiacSign;
+    context.fillText(`Zodiac Sign: ${zodiacSign}`, 270, 300);
 
-    if (user.profile.birthday) {
-        const birthday = moment(user.profile.birthday, 'DD-MMM');
-        const day = birthday.date();
-        const month = birthday.month() + 1;
-        const zodiacSign = getZodiacSign(emoji.zodiac, day, month);
-        // Assuming emojiToImage returns a URL
-        const zodiacEmojiURL = client.utils.emojiToImage(zodiacSign.emoji);
-
-        try {
-            const zodiacEmojiImage = await loadImage(zodiacEmojiURL);
-            context.drawImage(zodiacEmojiImage, 510, 258, 64, 64);
-        } catch (error) {
-            console.error('Error loading zodiac emoji image:', error);
-        }
-
-        context.fillText(`ZODIAC SIGNS: `, 360, 298);
-    } else {
-        context.fillText(`ZODIAC SIGNS: Not Set`, 360, 298);
-    }
-
-    if (user.profile.gender) {
-        const genderEmoji = user.profile.gender === 'male' ? emoji.gender.male : emoji.gender.female;
-        const genderEmojiURL = client.utils.emojiToImage(genderEmoji);
-
-        try {
-            const genderEmojiImage = await loadImage(genderEmojiURL);
-            context.drawImage(genderEmojiImage, 460, 323, 32, 32);
-        } catch (error) {
-            console.error('Error loading zodiac emoji image:', error);
-        }
-        context.fillText(`GENDER: `, 360, 348);
-    } else {
-        context.fillText(`GENDER: Not Set`, 360, 348);
-    }
-
-    context.drawImage(sticker, 545, 208, 192, 192);
+    // Sticker
+    context.drawImage(sticker, 580, 60, 80, 80);
 }
-
-

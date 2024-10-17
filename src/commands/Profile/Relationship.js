@@ -68,6 +68,8 @@ module.exports = class ManageRelationship extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const relationshipMessages = language.locales.get(language.defaultLocale)?.profileMessages?.relationshipMessages;
+
         const action = ctx.isInteraction ? ctx.interaction.options.getString('action') : args[0];
 
         if (action === 'help') {
@@ -79,24 +81,24 @@ module.exports = class ManageRelationship extends Command {
         const relationship = ctx.isInteraction ? ctx.interaction.options.getString('relationship') : args[1];
 
         if (!userToModify) {
-            return await client.utils.sendErrorMessage(client, ctx, 'Please mention a user to manage your relationship.', color);
+            return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
         }
 
         const userData = await Users.findOne({ userId: author.id });
         if (!userData) {
-            return await client.utils.sendErrorMessage(client, ctx, 'You are not registered in the database.', color);
+            return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
         }
 
         const targetUserData = await Users.findOne({ userId: userToModify });
         if (!targetUserData) {
-            return await client.utils.sendErrorMessage(client, ctx, 'The user you are trying to modify is not registered.', color);
+            return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
         }
 
         switch (relationship) {
             case 'partner':
                 if (action === 'add') {
                     if (userData.relationship.partner.id) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'You already have a partner.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.partner.error.alreadyExists, color);
                     }
                     userData.relationship.partner = {
                         id: userToModify,
@@ -106,7 +108,7 @@ module.exports = class ManageRelationship extends Command {
                     };
                 } else if (action === 'remove') {
                     if (userData.relationship.partner.id !== userToModify) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is not your partner.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.partner.error.notFound, color);
                     }
                     userData.relationship.partner = { id: null, name: null, xp: 0, level: 1 };
                 }
@@ -115,10 +117,10 @@ module.exports = class ManageRelationship extends Command {
             case 'bro':
                 if (action === 'add') {
                     if (userData.relationship.brothers.length >= 4) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'You can only have up to 4 bros.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.limitExceeded, color);
                     }
                     if (userData.relationship.brothers.some(bro => bro.id === userToModify)) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is already your bro.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.alreadyExists, color);
                     }
                     userData.relationship.brothers.push({
                         id: userToModify,
@@ -128,7 +130,7 @@ module.exports = class ManageRelationship extends Command {
                     });
                 } else if (action === 'remove') {
                     if (!userData.relationship.brothers.some(bro => bro.id === userToModify)) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is not your bro.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.notFound, color);
                     }
                     userData.relationship.brothers = userData.relationship.brothers.filter(bro => bro.id !== userToModify);
                 }
@@ -137,10 +139,10 @@ module.exports = class ManageRelationship extends Command {
             case 'sister':
                 if (action === 'add') {
                     if (userData.relationship.sisters.length >= 4) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'You can only have up to 4 sisters.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.sister.error.limitExceeded, color);
                     }
                     if (userData.relationship.sisters.some(sister => sister.id === userToModify)) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is already your sister.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.sister.error.alreadyExists, color);
                     }
                     userData.relationship.sisters.push({
                         id: userToModify,
@@ -150,7 +152,7 @@ module.exports = class ManageRelationship extends Command {
                     });
                 } else if (action === 'remove') {
                     if (!userData.relationship.sisters.some(sister => sister.id === userToModify)) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is not your sister.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.sister.error.notFound, color);
                     }
                     userData.relationship.sisters = userData.relationship.sisters.filter(sister => sister.id !== userToModify);
                 }
@@ -159,10 +161,10 @@ module.exports = class ManageRelationship extends Command {
             case 'bestie':
                 if (action === 'add') {
                     if (userData.relationship.besties.length >= 4) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'You can only have up to 4 besties.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.limitExceeded, color);
                     }
                     if (userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is already your bestie.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.alreadyExists, color);
                     }
                     userData.relationship.besties.push({
                         id: userToModify,
@@ -172,7 +174,7 @@ module.exports = class ManageRelationship extends Command {
                     });
                 } else if (action === 'remove') {
                     if (!userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is not your bestie.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.notFound, color);
                     }
                     userData.relationship.besties = userData.relationship.besties.filter(bestie => bestie.id !== userToModify);
                 }
@@ -181,10 +183,10 @@ module.exports = class ManageRelationship extends Command {
             case 'confidant':
                 if (action === 'add') {
                     if (userData.relationship.confidants.length >= 4) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'You can only have up to 4 confidants.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.confidant.error.limitExceeded, color);
                     }
                     if (userData.relationship.confidants.some(confidant => confidant.id === userToModify)) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is already your confidant.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.confidant.error.alreadyExists, color);
                     }
                     userData.relationship.confidants.push({
                         id: userToModify,
@@ -194,18 +196,18 @@ module.exports = class ManageRelationship extends Command {
                     });
                 } else if (action === 'remove') {
                     if (!userData.relationship.confidants.some(confidant => confidant.id === userToModify)) {
-                        return await client.utils.sendErrorMessage(client, ctx, 'This user is not your confidant.', color);
+                        return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.confidant.error.notFound, color);
                     }
                     userData.relationship.confidants = userData.relationship.confidants.filter(confidant => confidant.id !== userToModify);
                 }
                 break;
 
             default:
-                return await client.utils.sendErrorMessage(client, ctx, 'Invalid relationship type.', color);
+                return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.invalidType, color);
         }
 
         await userData.save();
-        await client.utils.sendSuccessMessage(client, ctx, `Successfully ${action === 'add' ? 'added' : 'removed'} <@${userToModify}> as your ${relationship}.`, color);
+        await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your ${relationship}.`, color);
     }
 
     showHelp(client, ctx) {
@@ -220,7 +222,7 @@ module.exports = class ManageRelationship extends Command {
                 { name: '**Bestie**', value: '`relationship add bestie @user`\n`relationship remove bestie @user`', inline: false },
                 { name: '**Confidant**', value: '`relationship add confidant @user`\n`relationship remove confidant @user`', inline: false },
             ])
-            .setFooter({ text: 'for bro sister bestie and confidant can add or remove (up to 4).' });
+            .setFooter({ text: 'You can add or remove up to 4 for bro, sister, bestie, and confidant.' });
 
         return ctx.sendMessage({ embeds: [embed] });
     }

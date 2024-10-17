@@ -13,10 +13,9 @@ module.exports = class Theme extends Command {
                     'theme normal - Sets your theme to love.',
                     'theme peach - Sets your theme to peach.',
                     'theme goma - Sets your theme to goma.',
-                    'theme halloween - Sets your theme to halloween.',
                     'theme help - Shows command usage examples.'
                 ],
-                usage: 'theme show\n theme peach\n theme goma\n theme love\n theme help',
+                usage: 'theme show\n theme normal\n theme peach\n theme goma\n theme help',
             },
             category: 'utility',
             aliases: ['t'],
@@ -45,7 +44,9 @@ module.exports = class Theme extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
-        const embed = client.embed().setTitle(`${emoji.mainLeft} 𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒 ${emoji.mainRight}`);
+        const themeMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.themeMessages;
+
+        const embed = client.embed().setTitle(`${emoji.mainLeft} ${themeMessages?.title || '𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒'} ${emoji.mainRight}`);
 
         const convertSubCommand = subCommand?.toLowerCase();
         switch (convertSubCommand) {
@@ -56,12 +57,12 @@ module.exports = class Theme extends Command {
                 const images = theme === 'peach' ? gif.welcomeToPeach : theme === 'goma' ? gif.welcomeToGoma : gif.welcomeToPeachAndGoma;
                 embed
                     .setColor(color.main)
-                    .setDescription(`Your theme has been set to **${client.utils.formatCapitalize(theme)}**.`)
+                    .setDescription(themeMessages?.setThemeMessage.replace('%{theme}', client.utils.formatCapitalize(theme)) || `Your theme has been set to **${client.utils.formatCapitalize(theme)}**.`)
                     .setImage(images)
                     .setFooter({
-                        text: `Request By ${ctx.author.displayName}`,
+                        text: themeMessages?.footer.replace('%{user}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
-                    })
+                    });
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'preferences.theme': theme } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -69,17 +70,17 @@ module.exports = class Theme extends Command {
 
             case 'help': {
                 const embed = client.embed()
-                    .setTitle(`${emoji.mainLeft} 𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏 ${emoji.mainRight}`)
-                    .setDescription('Manage your theme settings.')
+                    .setTitle(`${emoji.mainLeft} ${themeMessages?.helpTitle || '𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏'} ${emoji.mainRight}`)
+                    .setDescription(themeMessages?.helpDescription || 'Manage your theme settings.')
                     .addFields([
-                        { name: 'Examples', value: '• theme\n• theme normal\n• theme peach\n• theme goma' },
-                        { name: 'Usage', value: '• theme - Shows your current theme\n• theme normal - Sets your theme to normal\n• theme peach - Sets your theme to peach\n• theme goma - Sets your theme to goma' }
+                        { name: themeMessages?.examplesLabel || 'Examples', value: '• theme\n• theme normal\n• theme peach\n• theme goma' },
+                        { name: themeMessages?.usageLabel || 'Usage', value: '• theme - Shows your current theme\n• theme normal - Sets your theme to normal\n• theme peach - Sets your theme to peach\n• theme goma - Sets your theme to goma' }
                     ])
                     .setColor(color.main)
                     .setFooter({
-                        text: `Request By ${ctx.author.displayName}`,
+                        text: themeMessages?.footer.replace('%{user}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
-                    })
+                    });
                 return ctx.sendMessage({ embeds: [embed] });
             }
 
@@ -113,12 +114,12 @@ module.exports = class Theme extends Command {
                 }
                 embed
                     .setColor(color.main)
-                    .setDescription(`Your current theme is **${client.utils.formatCapitalize(currentTheme)}**.`)
+                    .setDescription(themeMessages?.currentThemeMessage.replace('%{theme}', client.utils.formatCapitalize(currentTheme)) || `Your current theme is **${client.utils.formatCapitalize(currentTheme)}**.`)
                     .setImage(imageTheme)
                     .setFooter({
-                        text: `Request By ${ctx.author.displayName}`,
+                        text: themeMessages?.footer.replace('%{user}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
-                    })
+                    });
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;

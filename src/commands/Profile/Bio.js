@@ -28,7 +28,7 @@ module.exports = class Bio extends Command {
             options: [
                 {
                     name: 'set',
-                    description: 'Sets the bio in profile card',
+                    description: 'Sets the bio in the profile card',
                     type: 1,
                     options: [
                         {
@@ -59,6 +59,8 @@ module.exports = class Bio extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const bioMessages = language.locales.get(language.defaultLocale)?.profileMessages?.bioMessages;
+
         const user = await Users.findOne({ userId: ctx.author.id });
         const embed = client.embed().setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() });
 
@@ -68,7 +70,7 @@ module.exports = class Bio extends Command {
             case 'help': {
                 embed
                     .setColor(color.main)
-                    .setDescription(`**Usage:** \`bio <text || reset || show || help>\`\n\n**Examples:**\n\`bio I love coding\`\n\`bio reset\`\n\`bio show\`\n\`bio help\``);
+                    .setDescription(`${bioMessages?.usage || '**Usage:**'} \`bio <text || reset || show || help>\`\n\n**Examples:**\n\`bio I love coding\`\n\`bio reset\`\n\`bio show\`\n\`bio help\``);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -77,7 +79,7 @@ module.exports = class Bio extends Command {
             case 'reset': {
                 embed
                     .setColor(color.main)
-                    .setDescription('The bio for you has been reset.');
+                    .setDescription(bioMessages?.resetSuccess || 'The bio for you has been reset.');
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.bio': 'No bio written.' } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -87,7 +89,7 @@ module.exports = class Bio extends Command {
             case 'show': {
                 embed
                     .setColor(color.main)
-                    .setDescription(user.profile.bio ? `\`\`\`arm\n${user.profile.bio}\`\`\`` : 'No bio written.');
+                    .setDescription(user.profile.bio ? `\`\`\`arm\n${user.profile.bio}\`\`\`` : bioMessages?.noBio || 'No bio written.');
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;
@@ -97,17 +99,17 @@ module.exports = class Bio extends Command {
                 const text = ctx.isInteraction ? ctx.interaction.options.data[0]?.options[0]?.value?.toString() : args.join(' ');
 
                 if (!text) {
-                    await client.utils.oops(client, ctx, 'Please provide a bio text or a valid subcommand.', color);
+                    await client.utils.oops(client, ctx, bioMessages?.provideText || 'Please provide a bio text or a valid subcommand.', color);
                     return;
                 }
 
                 if (text.length > 40) {
-                    await client.utils.oops(client, ctx, 'The bio cannot be longer than 40 characters.', color);
+                    await client.utils.oops(client, ctx, bioMessages?.tooLong || 'The bio cannot be longer than 40 characters.', color);
                     return;
                 }
 
                 embed
-                    .setDescription('The bio for you has been set.')
+                    .setDescription(bioMessages?.setSuccess || 'The bio for you has been set.')
                     .addFields([{ name: 'New bio', value: `\`\`\`arm\n${text}\n\`\`\``, inline: false }]);
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.bio': text } }).exec();

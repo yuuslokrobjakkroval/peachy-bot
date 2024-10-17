@@ -36,6 +36,8 @@ module.exports = class QRCode extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const qrMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.qrMessages; // Access qrMessages
+
         const currency = ctx.isInteraction
             ? ctx.interaction.options.getString('currency')
             : args[0].toLowerCase();
@@ -46,13 +48,16 @@ module.exports = class QRCode extends Command {
         } else if (currency === 'usd') {
             qrCodeUrl = gif.qrUSD;
         } else {
-            return ctx.sendMessage({ content: "Invalid option! Please use 'kh' or 'usd'.", ephemeral: true });
+            return ctx.sendMessage({
+                content: qrMessages?.invalidOption || "Invalid option! Please use 'kh' or 'usd'.",
+                ephemeral: true
+            });
         }
 
         const embed = client.embed()
             .setColor(color.main)
-            .setTitle(`QR Code for ${currency.toUpperCase()}`)
-            .setDescription(`Here is the QR code for ${currency.toUpperCase()}:`)
+            .setTitle(qrMessages?.title.replace('%{currency}', currency.toUpperCase()) || `QR Code for ${currency.toUpperCase()}`)
+            .setDescription(qrMessages?.description.replace('%{currency}', currency.toUpperCase()) || `Here is the QR code for ${currency.toUpperCase()}:`)
             .setImage(qrCodeUrl);
 
         // Send the embed containing the QR code

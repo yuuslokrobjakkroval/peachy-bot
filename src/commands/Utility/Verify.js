@@ -27,44 +27,44 @@ module.exports = class Verify extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const verifyMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.verifyMessages;
+
         const user = await Users.findOne({ userId: ctx.author.id });
 
         if (!user) {
-            return await client.utils.sendErrorMessage(client, ctx, "You do not have an account. Please register first.", color);
+            return await client.utils.sendErrorMessage(client, ctx, verifyMessages?.noAccount || "You do not have an account. Please register first.", color);
         }
 
         if (user.verification.verify.status === 'verified') {
-            return await client.utils.sendErrorMessage(client, ctx, "You are already verified.", color);
+            return await client.utils.sendErrorMessage(client, ctx, verifyMessages?.alreadyVerified || "You are already verified.", color);
         }
 
         const confirmButton = new ButtonBuilder()
             .setCustomId('confirm')
-            .setLabel('Confirm')
+            .setLabel(verifyMessages?.confirmButtonLabel || 'Confirm')
             .setStyle(ButtonStyle.Success);
 
         const cancelButton = new ButtonBuilder()
             .setCustomId('cancel')
-            .setLabel('Cancel')
+            .setLabel(verifyMessages?.cancelButtonLabel || 'Cancel')
             .setStyle(ButtonStyle.Danger);
 
         const row = new ActionRowBuilder().addComponents(confirmButton, cancelButton);
 
         const confirmEmbed = client.embed()
             .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Verify Account ${emoji.mainRight}`)
+            .setTitle(`${emoji.mainLeft} ${verifyMessages?.title || 'Verify Account'} ${emoji.mainRight}`)
             .setDescription(
-                "Are you sure ? you want to verify with **PEACHY**?\n\n" +
-                "To verify, you need to pay **$0.99/month**.\n\n" +
-                "**Benefits**\n" +
-                "**・** Role verification in our server\n" +
-                "**・** Get an emoji while playing the bot\n" +
-                "**・** Add 20% to all rewards when claiming\n" +
-                "**・** Better luck with gambling!"
+                `${verifyMessages?.confirmationMessage || "Are you sure you want to verify with **PEACHY**?"}\n\n` +
+                `${verifyMessages?.paymentInfo || "To verify, you need to pay **$0.99/month**."}\n\n` +
+                `${verifyMessages?.benefitsTitle || "**Benefits**"}\n` +
+                `${verifyMessages?.benefits || "• Role verification in our server\n• Get an emoji while playing the bot\n• Add 20% to all rewards when claiming\n• Better luck with gambling!"}`
             )
             .setFooter({
-                text: `Request By ${ctx.author.displayName}`,
+                text: `${verifyMessages?.requestedBy || "Requested By"} ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
             });
+
         await ctx.sendMessage({ embeds: [confirmEmbed], components: [row], ephemeral: true });
 
         // Step 3: Create collector to handle button interactions
@@ -79,29 +79,29 @@ module.exports = class Verify extends Command {
 
                 const verificationEmbed = client.embed()
                     .setColor(color.main)
-                    .setTitle(`${emoji.mainLeft} Verification Request ${emoji.mainRight}`)
+                    .setTitle(`${emoji.mainLeft} ${verifyMessages?.verificationRequest || 'Verification Request'} ${emoji.mainRight}`)
                     .setDescription(
-                        `You have requested to verify with PEACHY.\n` +
+                        `${verifyMessages?.verificationMessage || "You have requested to verify with PEACHY."}\n` +
                         (userPaymentStatus === 'paid'
-                            ? `Click Button Submit for verification code`
-                            : `បន្តពីបង់ប្រាក់រួច សូមរង់ចាំបន្តិច\n\nសុំជួយផ្ញើររូបមកកាន់ខ្ញុំផង <@966688007493140591>`)
+                            ? `${verifyMessages?.submitButtonMessage || "Click the button below to submit your verification code."}`
+                            : `${verifyMessages?.waitForPayment || "If you've made a payment, please wait a moment. If not, please send a message to <@966688007493140591>."}`)
                     )
                     .setFooter({
-                        text: `Request By ${ctx.author.displayName}`,
+                        text: `${verifyMessages?.requestedBy || "Requested By"} ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
                     });
 
-                userPaymentStatus !== 'paid' && verificationEmbed.setImage(qrCodeUrl)
+                userPaymentStatus !== 'paid' && verificationEmbed.setImage(qrCodeUrl);
 
                 const submitButton = new ButtonBuilder()
                     .setCustomId(`submit_${codeNumber}`)
-                    .setLabel(`Submit`)
+                    .setLabel(verifyMessages?.submitButtonLabel || `Submit`)
                     .setStyle(ButtonStyle.Primary);
 
                 const verificationRow = userPaymentStatus === 'paid' && new ActionRowBuilder().addComponents(submitButton);
                 await i.update({ embeds: [verificationEmbed], components: userPaymentStatus === 'paid' ? [verificationRow] : [], ephemeral: true });
             } else if (i.customId === 'cancel') {
-                await i.update({ content: "Thank you!", embeds: [], components: [], ephemeral: true });
+                await i.update({ content: verifyMessages?.thankYouMessage || "Thank you!", embeds: [], components: [], ephemeral: true });
             }
 
             collector.stop();
@@ -117,13 +117,13 @@ module.exports = class Verify extends Command {
             // Display modal for user input
             const modal = new ModalBuilder()
                 .setCustomId('inputCodeModal')
-                .setTitle('Input Verification Code');
+                .setTitle(verifyMessages?.modalTitle || 'Input Verification Code');
 
             const inputField = new TextInputBuilder()
                 .setCustomId('verificationCodeInput')
-                .setLabel(`Verification Code: ${submittedCode}`)
+                .setLabel(`${verifyMessages?.verificationCodeLabel || 'Verification Code'}: ${submittedCode}`)
                 .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Enter your verification code here')
+                .setPlaceholder(verifyMessages?.placeholder || 'Enter your verification code here')
                 .setRequired(true);
 
             const actionRow = new ActionRowBuilder().addComponents(inputField);
@@ -149,18 +149,18 @@ module.exports = class Verify extends Command {
                                     "verification.verify.payment": "paid",
                                     "verification.verify.code": verificationCode,
                                     "verification.verify.status": "verified",
-                                    "verification.verify.message": "Thank you for supporting and verifying with PEACHY!"
+                                    "verification.verify.message": verifyMessages?.successMessage || "Thank you for supporting and verifying with PEACHY!"
                                 }
                             }
                         );
 
                         const successEmbed = client.embed()
                             .setColor(color.main)
-                            .setTitle(`${emoji.mainLeft} Verification Successful ${emoji.mainRight}`)
-                            .setDescription(`Thank you for supporting and verifying ${emojiImage.verify}!\n `)
+                            .setTitle(`${emoji.mainLeft} ${verifyMessages?.verificationSuccessful || 'Verification Successful'} ${emoji.mainRight}`)
+                            .setDescription(`${verifyMessages?.thankYouForVerifying || "Thank you for supporting and verifying!"} ${emojiImage.verify}\n `)
                             .setImage(gif.thanks)
                             .setFooter({
-                                text: `Request By ${ctx.author.displayName}`,
+                                text: `${verifyMessages?.requestedBy || "Requested By"} ${ctx.author.displayName}`,
                                 iconURL: ctx.author.displayAvatarURL(),
                             });
 
@@ -173,9 +173,9 @@ module.exports = class Verify extends Command {
 
                         // Update the original verification embed to remove components and embed
                         const messageToUpdate = await modalInteraction.channel.messages.fetch(i.message.id);
-                        await messageToUpdate.edit({ content: 'Verification complete.', embeds: [], components: [] });
+                        await messageToUpdate.edit({ content: verifyMessages?.verificationComplete || 'Verification complete.', embeds: [], components: [] });
                     } else {
-                        await modalInteraction.reply({ content: "verification failed or the code is incorrect. Please try again.", ephemeral: true });
+                        await modalInteraction.reply({ content: verifyMessages?.verificationFailed || "Verification failed or the code is incorrect. Please try again.", ephemeral: true });
                     }
                 }
             });
@@ -183,7 +183,7 @@ module.exports = class Verify extends Command {
 
         paymentCollector.on('end', collected => {
             if (collected.size === 0) {
-                ctx.sendMessage({ content: "No response received. Please try again.", ephemeral: true });
+                ctx.sendMessage({ content: verifyMessages?.noResponse || "No response received. Please try again.", ephemeral: true });
             }
         });
     }

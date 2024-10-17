@@ -63,26 +63,28 @@ module.exports = class TikTok extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const ttMessages = language.locales.get(language.defaultLocale)?.socialMessages?.ttMessages;
+
         const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
         const mentionedUser = ctx.isInteraction ? ctx.interaction.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
         const targetUserId = mentionedUser ? mentionedUser.id : ctx.author.id;
         const user = await Users.findOne({ userId: targetUserId });
         const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
 
-        if(!user) {
-            return await client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
+        if (!user) {
+            return await client.utils.sendErrorMessage(client, ctx, ttMessages?.userNotFound || 'User not found.', color);
         }
 
-        const embed = client.embed().setTitle(`${emoji.mainLeft} TikTok Settings for ${targetUsername} ${emoji.mainRight}`);
+        const embed = client.embed().setTitle(`${emoji.mainLeft} ${ttMessages?.settingsTitle || 'TikTok Settings for'} ${targetUsername} ${emoji.mainRight}`);
 
         switch (subCommand) {
             case 'name': {
                 const name = ctx.isInteraction ? ctx.interaction.options.getString('name') : args.slice(1).join(' ');
                 if (!name || name.length > 21) {
-                    return await client.utils.oops(client, ctx, 'Please provide a valid TikTok name (up to 21 characters).', color);
+                    return await client.utils.oops(client, ctx, ttMessages?.invalidName || 'Please provide a valid TikTok name (up to 21 characters).', color);
                 }
 
-                embed.setDescription('Your TikTok name has been set.').addFields([{ name: 'New TikTok Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
+                embed.setDescription(ttMessages?.nameUpdated || 'Your TikTok name has been set.').addFields([{ name: ttMessages?.newName || 'New TikTok Name', value: `\`\`\`${name}\n\`\`\``, inline: false }]);
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.tiktok.name': name } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -94,10 +96,10 @@ module.exports = class TikTok extends Command {
                 const urlPattern = /^https?:\/\/[^\s$.?#].[^\s]*$/;
 
                 if (!link || !urlPattern.test(link)) {
-                    return await client.utils.oops(client, ctx, 'Please provide a valid TikTok link.', color);
+                    return await client.utils.oops(client, ctx, ttMessages?.invalidLink || 'Please provide a valid TikTok link.', color);
                 }
 
-                embed.setDescription('Your TikTok link has been set.').addFields([{ name: 'New TikTok Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
+                embed.setDescription(ttMessages?.linkUpdated || 'Your TikTok link has been set.').addFields([{ name: ttMessages?.newLink || 'New TikTok Link', value: `\`\`\`${link}\n\`\`\``, inline: false }]).setURL(link);
 
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'social.tiktok.link': link } }).exec();
                 await ctx.sendMessage({ embeds: [embed] });
@@ -105,13 +107,13 @@ module.exports = class TikTok extends Command {
             }
 
             case 'help': {
-                embed.setTitle('TikTok Command Help')
-                    .setDescription('Manage your TikTok details with the following subcommands:')
+                embed.setTitle(ttMessages?.helpTitle || 'TikTok Command Help')
+                    .setDescription(ttMessages?.helpDescription || 'Manage your TikTok details with the following subcommands:')
                     .addFields([
-                        { name: 'Show TikTok Details', value: '`\`\`\`tiktok` or `tiktok @mention\`\`\``', inline: false },
-                        { name: 'Set TikTok Name', value: '`\`\`\`tiktok name YourTikTokName\`\`\``', inline: false },
-                        { name: 'Set TikTok Link', value: '`\`\`\`tiktok link https://tiktok.com/@YourTikTokLink\`\`\``', inline: false },
-                        { name: 'Command Help', value: '`\`\`\`tiktok help\`\`\``', inline: false }
+                        { name: ttMessages?.showDetails || 'Show TikTok Details', value: '`\`\`\`tiktok` or `tiktok @mention\`\`\`', inline: false },
+                        { name: ttMessages?.setName || 'Set TikTok Name', value: '`\`\`\`tiktok name YourTikTokName\`\`\`', inline: false },
+                        { name: ttMessages?.setLink || 'Set TikTok Link', value: '`\`\`\`tiktok link https://tiktok.com/@YourTikTokLink\`\`\`', inline: false },
+                        { name: ttMessages?.commandHelp || 'Command Help', value: '`\`\`\`tiktok help\`\`\`', inline: false }
                     ]);
 
                 await ctx.sendMessage({ embeds: [embed] });
@@ -119,11 +121,11 @@ module.exports = class TikTok extends Command {
             }
 
             default: {
-                const ttName = user.social.tiktok.name || 'Not set';
+                const ttName = user.social.tiktok.name || ttMessages?.notSet || 'Not set';
                 const ttLink = user.social.tiktok.link || '';
 
                 embed.setColor(color.main).setDescription(
-                    `**${emoji.social.tiktok} : ${ttName && ttLink ? `[${ttName}](${ttLink})` : ttName ? ttName : 'Not set'}**`)
+                    `**${emoji.social.tiktok} : ${ttName && ttLink ? `[${ttName}](${ttLink})` : ttName ? ttName : ttMessages?.notSet || 'Not set'}**`);
 
                 await ctx.sendMessage({ embeds: [embed] });
                 break;

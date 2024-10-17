@@ -37,31 +37,33 @@ module.exports = class UserInfo extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    const userInfoMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.userInfoMessages;
+
     const targetMember = ctx.isInteraction
         ? ctx.interaction.options.getUser('user') || ctx.author // Default to the author if no user is provided
         : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
 
     if (!targetMember) {
-      return ctx.sendMessage("User not found! Please mention a valid user or provide a valid user ID.");
+      return ctx.sendMessage(userInfoMessages?.userNotFound || "User not found! Please mention a valid user or provide a valid user ID.");
     }
 
     const embed = client.embed()
         .setColor(color.main)
         .setThumbnail(targetMember.user.displayAvatarURL({ dynamic: true }))
-        .setTitle(`User Info: ${targetMember.user.username}`)
+        .setTitle(`${userInfoMessages?.title.replace('%{user}', targetMember.user.username) || `User Info: ${targetMember.user.username}`}`)
         .addFields(
-            { name: "Username", value: targetMember.user.tag, inline: true },
-            { name: "User ID", value: targetMember.user.id, inline: true },
-            { name: "Joined Server", value: new Date(targetMember.joinedTimestamp).toLocaleDateString(), inline: true },
-            { name: "Account Created", value: new Date(targetMember.user.createdTimestamp).toLocaleDateString(), inline: true },
-            { name: "Roles", value: targetMember.roles.cache.map(role => role.name).join(', ') || 'None', inline: false }
+            { name: userInfoMessages?.username || "Username", value: targetMember.user.tag, inline: true },
+            { name: userInfoMessages?.userId || "User ID", value: targetMember.user.id, inline: true },
+            { name: userInfoMessages?.joinedServer || "Joined Server", value: new Date(targetMember.joinedTimestamp).toLocaleDateString(), inline: true },
+            { name: userInfoMessages?.accountCreated || "Account Created", value: new Date(targetMember.user.createdTimestamp).toLocaleDateString(), inline: true },
+            { name: userInfoMessages?.roles || "Roles", value: targetMember.roles.cache.map(role => role.name).join(', ') || userInfoMessages?.noRoles || 'None', inline: false }
         )
         .setFooter({
-          text: `Requested by ${ctx.author.displayName}`,
+          text: userInfoMessages?.footer.replace('%{user}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
 
     await ctx.sendMessage({ embeds: [embed] });
   }
-}
+};
