@@ -65,7 +65,7 @@
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "%{displayName} の残高",
-			"description": "%{coinEmote} **`%{coin}`** コイン\n",
+			"description": "%{coinEmote} : **`%{coin}`** コイン\n%{bankEmote} : **`%{bank}`** コイン",
 			"errors": {
 				"noUser": "ユーザーが見つかりません。",
 				"fetchFail": "残高の取得中に問題が発生しました。"

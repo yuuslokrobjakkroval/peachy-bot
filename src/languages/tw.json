@@ -65,7 +65,7 @@
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "%{displayName} 的餘額",
-			"description": "%{coinEmote} **`%{coin}`** 硬幣\n",
+			"description": "%{coinEmote} : **`%{coin}`** 硬幣\n%{bankEmote} : **`%{bank}`** 硬幣",
 			"errors": {
 				"noUser": "未找到用戶。",
 				"fetchFail": "取得餘額時出現問題。"

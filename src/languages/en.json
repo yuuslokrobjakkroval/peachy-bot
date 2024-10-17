@@ -65,7 +65,7 @@
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "Balance of %{displayName}",
-			"description": "%{coinEmote} **`%{coin}`** coins\n%{bankEmote} **`%{bank}`** coins",
+			"description": "%{coinEmote} : **`%{coin}`** coins\n%{bankEmote} : **`%{bank}`** coins",
 			"errors": {
 				"noUser": "User not found.",
 				"fetchFail": "Something went wrong while fetching your balance."

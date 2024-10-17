@@ -65,7 +65,7 @@
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "Số dư của %{displayName}",
-			"description": "%{coinEmote} **`%{coin}`** xu\n",
+			"description": "%{coinEmote} : **`%{coin}`** xu\n%{bankEmote} : **`%{bank}`** xu",
 			"errors": {
 				"noUser": "Không tìm thấy người dùng.",
 				"fetchFail": "Đã xảy ra lỗi khi tìm nạp số dư của bạn."

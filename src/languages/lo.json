@@ -65,7 +65,7 @@
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "ຍອດຄົງເຫຼືອຂອງ %{displayName}",
-			"description": "%{coinEmote} **`%{coin}`** ຫຼຽນ\n",
+			"description": "%{coinEmote} : **`%{coin}`** ຫຼຽນ\n%{bankEmote} : **`%{bank}`** ຫຼຽນ",
 			"errors": {
 				"noUser": "ບໍ່ພົບຜູ້ໃຊ້.",
 				"fetchFail": "ມີບາງຢ່າງຜິດພາດໃນຂະນະທີ່ດຶງຍອດເງິນຂອງທ່ານ."

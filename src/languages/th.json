@@ -65,7 +65,7 @@
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "ยอดคงเหลือของ %{displayName}",
-			"description": "%{coinEmote} **`%{coin}`** เหรียญ\n",
+			"description": "%{coinEmote} : **`%{coin}`** เหรียญ\n%{bankEmote} : **`%{bank}`** เหรียญ",
 			"errors": {
 				"noUser": "ไม่พบผู้ใช้",
 				"fetchFail": "เกิดข้อผิดพลาดขณะเรียกยอดเงินคงเหลือของคุณ"

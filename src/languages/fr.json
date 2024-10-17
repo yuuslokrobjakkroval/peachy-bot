@@ -65,7 +65,7 @@
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "Solde de %{displayName}",
-			"description": "%{coinEmote} **`%{coin}`** pièces\n",
+			"description": "%{coinEmote} : **`%{coin}`** pièces\n%{bankEmote} : **`%{bank}`** pièces",
 			"errors": {
 				"noUser": "Utilisateur introuvable.",
 				"fetchFail": "Une erreur s'est produite lors de la récupération de votre solde."

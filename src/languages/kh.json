@@ -65,7 +65,7 @@
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "សមតុល្យនៃ %{displayName}",
-			"description": "%{coinEmote} **`%{coin}`** កាក់\n",
+			"description": "%{coinEmote} : **`%{coin}`** កាក់\n%{bankEmote} : **`%{bank}`** កាក់",
 			"errors": {
 				"noUser": "រកមិនឃើញអ្នកប្រើប្រាស់ទេ។",
 				"fetchFail": "មានអ្វីមួយខុសពេលទៅយកសមតុល្យរបស់អ្នក។"
