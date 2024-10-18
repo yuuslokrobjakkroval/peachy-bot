@@ -631,7 +631,7 @@
 			"acceptSell": "アイテムを **{price}** コインで販売しました。",
 			"invalidQuantity": "無効な数量が指定されました。",
 			"sellError": "販売リクエストの処理中にエラーが発生しました。",
-			"itemSold": "{emoji} **\\{quantity}\\** {item} を {coinEmoji} **\\{price}\\** コインで販売しました。"
+			"itemSold": "{emoji} **{quantity}** {item} を {coinEmoji} **{price}** コインで販売しました。"
 		},
 		"shopMessages": {
 			"shopTitle": "店",

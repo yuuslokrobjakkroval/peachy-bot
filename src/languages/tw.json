@@ -631,7 +631,7 @@
 			"acceptSell": "您以 **{price}** 硬幣的價格出售了您的物品。",
 			"invalidQuantity": "指定的數量無效。",
 			"sellError": "處理您的銷售請求時發生錯誤。",
-			"itemSold": "您以 {coinEmoji} **\\{price}\\** 硬幣的價格出售了 {emoji} **\\{數量}\\** {item}。"
+			"itemSold": "您以 {coinEmoji} **{price}** 硬幣的價格出售了 {emoji} **{數量}** {item}。"
 		},
 		"shopMessages": {
 			"shopTitle": "店鋪",

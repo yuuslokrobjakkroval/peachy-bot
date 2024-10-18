@@ -631,7 +631,7 @@
 			"acceptSell": "ທ່ານຂາຍລາຍການຂອງທ່ານໃນລາຄາ **{price}** coins.",
 			"invalidQuantity": "ລະບຸປະລິມານບໍ່ຖືກຕ້ອງ.",
 			"sellError": "ມີຂໍ້ຜິດພາດເກີດຂຶ້ນໃນຂະນະທີ່ດໍາເນີນການຮ້ອງຂໍການຂາຍຂອງທ່ານ.",
-			"itemSold": "ທ່ານຂາຍ {emoji} **\\{quantity}\\** {item} ໃຫ້ກັບ {coinEmoji} **\\{price}\\** coins."
+			"itemSold": "ທ່ານຂາຍ {emoji} **{quantity}** {item} ໃຫ້ກັບ {coinEmoji} **{price}** coins."
 		},
 		"shopMessages": {
 			"shopTitle": "ຮ້ານຄ້າ",

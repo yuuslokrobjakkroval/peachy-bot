@@ -631,7 +631,7 @@
 			"acceptSell": "Bạn đã bán các mặt hàng của mình với giá **{price}** xu.",
 			"invalidQuantity": "Số lượng được chỉ định không hợp lệ.",
 			"sellError": "Đã xảy ra lỗi khi xử lý yêu cầu bán hàng của bạn.",
-			"itemSold": "Bạn đã bán {emoji} **\\`{quantity}\\`** {item} để lấy xu {coinEmoji} **\\`{price}\\`**."
+			"itemSold": "Bạn đã bán {emoji} **{quantity}** {item} để lấy xu {coinEmoji} **{price}**."
 		},
 		"shopMessages": {
 			"shopTitle": "CỬA HÀNG",
