@@ -130,7 +130,59 @@ module.exports = class GiveItem extends Command {
             await int.deferUpdate();
 
             if (int.customId === `${this.name}_accept`) {
-                // Your logic for accepting the transaction...
+                const user = await Users.findOne({ userId: authorId });
+                let targetUser = await Users.findOne({ userId: target.id });
+
+                if (!user || user.inventory.length === 0) {
+                    return await client.utils.sendErrorMessage(client, ctx, 'Your inventory is empty.', color);
+                }
+
+                if(!targetUser) {
+                    await Users.create({
+                        userId: target.id,
+                    });
+                }
+
+                const itemInfo = AllItems.concat(ImportantItems).find(({ id }) => id === itemId.toLowerCase());
+                const hasItems = user.inventory.find(item => item.id === itemId);
+                if (!itemInfo || !hasItems || !itemInfo.able.gift) {
+                    let errorMessage = '';
+
+                    if (!itemInfo) errorMessage += `The item with id \`${args.join(' ')}\` couldn't be found!`;
+                    if (!hasItems)
+                        errorMessage += `You don't have ${itemInfo.emoji} **${client.utils.toNameCase(itemInfo.id)}** in your inventory.`;
+                    if (!itemInfo.able.gift)
+                        errorMessage += `The item ${itemInfo.emoji} **${client.utils.toNameCase(itemInfo.id)}** is not giveable!`;
+                    return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+                }
+
+                const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
+
+                // Remove the item or reduce quantity for the author
+                if (hasItems.quantity - itemAmount === 0) {
+                    await Users.updateOne(
+                        { userId: authorId },
+                        { $pull: { inventory: { id: itemId } } }
+                    );
+                } else {
+                    await Users.updateOne(
+                        { userId: authorId, 'inventory.id': itemId },
+                        { $inc: { 'inventory.$.quantity': -itemAmount } }
+                    );
+                }
+
+                const targetHasItem = targetUser.inventory.find(item => item.id === itemId);
+                if (targetHasItem) {
+                    await Users.updateOne(
+                        { userId: target.id, 'inventory.id': itemId },
+                        { $inc: { 'inventory.$.quantity': itemAmount } }
+                    );
+                } else {
+                    await Users.updateOne(
+                        { userId: target.id },
+                        { $push: { inventory: { id: itemId, quantity: itemAmount } } }
+                    );
+                }
 
                 const embed = client
                     .embed()

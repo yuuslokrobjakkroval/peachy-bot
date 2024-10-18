@@ -92,7 +92,12 @@ module.exports = class Sell extends Command {
         return ctx.sendMessage({
             embeds: [
                 client.embed().setColor(color.main).setDescription(
-                    sellMessages.itemSold.replace('{item}', itemInfo.name).replace('{quantity}', quantity).replace('{price}', client.utils.formatNumber(totalSalePrice))
+                    sellMessages.itemSold
+                        .replace('{emoji}', itemInfo.emoji)
+                        .replace('{quantity}', quantity)
+                        .replace('{item}', itemInfo.name)
+                        .replace('{coinEmoji}', emoji.coin)
+                        .replace('{price}', client.utils.formatNumber(totalSalePrice))
                 )
             ]
         });

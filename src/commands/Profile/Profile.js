@@ -29,6 +29,10 @@ async function backgroundImages(userId, gender) {
             return gif.akitoBackgroundImage;
         case '1266535973810868307':
             return gif.pyyyBackgroundImage;
+        case '1147538170162974852':
+            return gif.evilBackgroundImage;
+        case '1248293110388228097':
+            return gif.cucumberBackgroundImage;
         default:
             return gender === 'male' ? gif.maleBackgroundImage : gif.femaleBackgroundImage;
     }

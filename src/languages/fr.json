@@ -630,7 +630,8 @@
 			"cancelled": "Vente annulée.",
 			"acceptSell": "Vous avez vendu vos objets pour **{price}** pièces.",
 			"invalidQuantity": "Quantité spécifiée non valide.",
-			"sellError": "Une erreur s'est produite lors du traitement de votre demande de vente."
+			"sellError": "Une erreur s'est produite lors du traitement de votre demande de vente.",
+			"itemSold": "Vous avez vendu {emoji} **\\`{quantity}\\`** {item} pour {coinEmoji} **\\`{price}\\`** pièces."
 		},
 		"shopMessages": {
 			"shopTitle": "BOUTIQUE",

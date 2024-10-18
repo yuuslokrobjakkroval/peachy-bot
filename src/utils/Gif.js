@@ -53,6 +53,8 @@ module.exports = {
     snaBackgroundImage: 'https://i.imgur.com/mpzbRTa.png',
     akitoBackgroundImage: 'https://i.imgur.com/zKBeyLh.png',
     pyyyBackgroundImage: 'https://i.imgur.com/TMJkBNe.png',
+    evilBackgroundImage: 'https://i.imgur.com/nzpo4U6.png',
+    cucumberBackgroundImage: 'https://i.imgur.com/6tBV1Hj.png',
 
     // LEVEL
     levelBackground: 'https://i.imgur.com/amb1Gpp.jpg',

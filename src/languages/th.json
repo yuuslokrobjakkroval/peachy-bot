@@ -630,7 +630,8 @@
 			"cancelled": "ยกเลิกการขายแล้ว",
 			"acceptSell": "คุณขายสินค้าของคุณในราคา **{price}** เหรียญ",
 			"invalidQuantity": "ระบุปริมาณไม่ถูกต้อง",
-			"sellError": "เกิดข้อผิดพลาดขณะประมวลผลคำขอขายของคุณ"
+			"sellError": "เกิดข้อผิดพลาดขณะประมวลผลคำขอขายของคุณ",
+			"itemSold": "คุณขาย {emoji} **\\`{quantity}\\`** {item} ด้วยราคา {coinEmoji} **\\`{price}\\`** เหรียญ"
 		},
 		"shopMessages": {
 			"shopTitle": "ร้านค้า",

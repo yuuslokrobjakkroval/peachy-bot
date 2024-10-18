@@ -630,7 +630,8 @@
 			"cancelled": "出售取消。",
 			"acceptSell": "您以 **{price}** 硬币的价格出售了您的物品。",
 			"invalidQuantity": "指定的数量无效。",
-			"sellError": "处理您的销售请求时发生错误。"
+			"sellError": "处理您的销售请求时发生错误。",
+			"itemSold": "您以 {coinEmoji} **\\`{price}\\`** 硬币的价格出售了 {emoji} **\\`{数量}\\`** {item}。"
 		},
 		"shopMessages": {
 			"shopTitle": "店铺",
