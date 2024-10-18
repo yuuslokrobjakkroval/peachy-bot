@@ -631,7 +631,7 @@
 			"acceptSell": "អ្នកបានលក់ទំនិញរបស់អ្នកសម្រាប់កាក់ **{price}**។",
 			"invalidQuantity": "បរិមាណដែលបានបញ្ជាក់មិនត្រឹមត្រូវ។",
 			"sellError": "កំហុសបានកើតឡើងនៅពេលដំណើរការសំណើលក់របស់អ្នក។",
-			"itemSold": "អ្នកបានលក់ {emoji} **\\`{quantity}\\`** {item} សម្រាប់ {coinEmoji} **\\`{price}\\`** កាក់។"
+			"itemSold": "អ្នកបានលក់ {emoji} **\\{quantity}\\** {item} សម្រាប់ {coinEmoji} **\\{price}\\** កាក់។"
 		},
 		"shopMessages": {
 			"shopTitle": "ហាង",

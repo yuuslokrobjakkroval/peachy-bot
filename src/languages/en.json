@@ -632,7 +632,7 @@
 			"acceptSell": "You sold your items for **{price}** coins.",
 			"invalidQuantity": "Invalid quantity specified.",
 			"sellError": "An error occurred while processing your sell request.",
-			"itemSold": "You sold {emoji} **\\`{quantity}\\`** {item} for {coinEmoji} **\\`{price}\\`** coins."
+			"itemSold": "You sold {emoji} **\\{quantity}\\** {item} for {coinEmoji} **\\{price}\\** coins."
 		},
 		"shopMessages": {
 			"shopTitle": "SHOP",

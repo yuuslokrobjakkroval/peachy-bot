@@ -631,7 +631,7 @@
 			"acceptSell": "귀하의 아이템을 **{price}** 코인에 판매하셨습니다.",
 			"invalidQuantity": "잘못된 수량을 지정했습니다.",
 			"sellError": "판매 요청을 처리하는 동안 오류가 발생했습니다.",
-			"itemSold": "귀하는 {emoji} **\\`{수량}\\`** {item}을(를) {coinEmoji} **\\`{price}\\`** 코인에 판매했습니다."
+			"itemSold": "귀하는 {emoji} **\\{quantity}\\** {item}을(를) {coinEmoji} **\\{price}\\** 코인에 판매했습니다."
 		},
 		"shopMessages": {
 			"shopTitle": "가게",
