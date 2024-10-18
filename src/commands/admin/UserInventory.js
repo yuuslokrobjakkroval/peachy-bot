@@ -29,11 +29,21 @@ module.exports = class UserInventory extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const giveItemMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.giveItemMessages;
+        const invMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.invMessages;
         try {
             const target = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
-            const user = await Users.findOne({ userId: target.id });
+            const user = await Users.findOne({ userId: ctx.author.id });
+            if (!user || !user.inventory) {
+                return await client.utils.sendErrorMessage(
+                    client,
+                    ctx,
+                    invMessages.noInventory || 'No inventory data found for this user.',
+                    color
+                );
+            }
             const isBot = target ? target.bot : false;
-            if (isBot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'), color);
+            if (isBot) return await client.utils.sendErrorMessage(client, ctx, giveItemMessages.mentionToBot, color);
 
             const itemList = {};
             let totalWorth = 0;
@@ -91,14 +101,14 @@ module.exports = class UserInventory extends Command {
 
             const embedFields = [
                 {
-                    name: 'Inventory Net',
+                    name: invMessages.inventoryNet || 'Inventory Net',
                     value: `**\`${client.utils.formatNumber(totalWorth)}\`** ${emoji.coin}`,
                     inline: false,
                 },
                 ...(fields.length ? fields : [
                     {
-                        name: client.i18n.get(language, 'commands', 'inventory_fields_name'),
-                        value: client.i18n.get(language, 'commands', 'inventory_fields_value'),
+                        name: invMessages.emptyInventoryFieldName || 'Inventory',
+                        value: invMessages.emptyInventoryFieldValue || 'Your inventory is currently empty.',
                     },
                 ])
             ];
@@ -106,18 +116,23 @@ module.exports = class UserInventory extends Command {
             const embed = client
                 .embed()
                 .setColor(color.main)
-                .setDescription(`## ${emoji.inventory.mainLeft} 𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘 ${emoji.inventory.mainRight}`)
+                .setDescription(`## ${emoji.inventory.mainLeft} ${invMessages.inventoryTitle || '𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘'} ${emoji.inventory.mainRight}`)
                 .setThumbnail(client.utils.emojiToImage(emoji.inventory.main))
                 .addFields(embedFields)
                 .setFooter({
-                    text: `Request By ${ctx.author.displayName}`,
+                    text: invMessages.footerText?.replace('{user}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
-                })
+                });
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Error in Inventory command:', error);
-            await client.utils.sendErrorMessage(client, ctx, 'An error occurred while retrieving your inventory.', color);
+            await client.utils.sendErrorMessage(
+                client,
+                ctx,
+                invMessages.error || 'An error occurred while retrieving your inventory.',
+                color
+            );
         }
     }
 };

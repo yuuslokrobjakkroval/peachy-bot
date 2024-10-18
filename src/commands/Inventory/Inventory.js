@@ -100,10 +100,9 @@ module.exports = class Inventory extends Command {
                 }
             });
 
-            // Prepare fields for the embed with the inventory total worth
             const embedFields = [
                 {
-                    name: invMessages.inventoryNet || 'Inventory Net',  // Localized label for total worth
+                    name: invMessages.inventoryNet || 'Inventory Net',
                     value: `**\`${client.utils.formatNumber(totalWorth)}\`** ${emoji.coin}`,
                     inline: false,
                 },
@@ -130,7 +129,6 @@ module.exports = class Inventory extends Command {
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Error in Inventory command:', error);
-            // Send error message from localization
             await client.utils.sendErrorMessage(
                 client,
                 ctx,
