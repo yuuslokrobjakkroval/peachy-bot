@@ -154,7 +154,7 @@ module.exports = class Transfer extends Command {
         collector.on('end', collected => {
             if (collected.size === 0) {
                 const timeoutEmbed = client.embed()
-                    .setColor(config.color.warning)
+                    .setColor(color.warning)
                     .setTitle(transferMessages.expire)
                     .setDescription(transferMessages.timeout);
 
