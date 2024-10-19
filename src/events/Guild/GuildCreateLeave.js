@@ -10,7 +10,7 @@ module.exports = class GuildCreate extends Event {
     }
 
     async run(guild) {
-        // const channelId = '1289803142606622771'; // Replace with your specific channel ID
+        const channelId = '1289803142606622771'; // Replace with your specific channel ID
         // if (guild.id !== config.guildId) {
         //     let owner;
         //     try {
