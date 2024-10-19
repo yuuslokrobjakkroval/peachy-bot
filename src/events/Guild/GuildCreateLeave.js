@@ -10,36 +10,36 @@ module.exports = class GuildCreate extends Event {
     }
 
     async run(guild) {
-        const channelId = '1289803142606622771'; // Replace with your specific channel ID
-        if (guild.id !== config.guildId) {
-            let owner;
-            try {
-                owner = await guild.fetchOwner();
-            } catch (e) {
-                owner = { user: { tag: 'Unknown#0000' } };
-            }
-            const memberCount = guild.memberCount ? guild.memberCount.toString() : 'Unknown';
-            const logChannel = this.client.channels.cache.get(channelId);
-            if (logChannel) {
-                const embed = this.client.embed()
-                    .setColor('Red')
-                    .setTitle('Unauthorized Guild Invite')
-                    .setDescription(`The bot was invited to an unauthorized guild and has now left.`)
-                    .addFields([
-                        { name: 'Guild Name', value: guild.name, inline: true },
-                        { name: 'Guild ID', value: guild.id, inline: true },
-                        { name: 'Owner', value: owner.user.tag, inline: true },
-                        { name: 'Owner ID', value: guild.ownerId, inline: true },
-                        { name: 'Member Count', value: memberCount, inline: true },
-                    ])
-                    .setTimestamp();
-
-                await logChannel.send({ embeds: [embed] });
-            } else {
-                console.log('Log channel not found!');
-            }
-            return await guild.leave().catch((err) => console.error(`Failed to leave the guild: ${err}`));
-        }
+        // const channelId = '1289803142606622771'; // Replace with your specific channel ID
+        // if (guild.id !== config.guildId) {
+        //     let owner;
+        //     try {
+        //         owner = await guild.fetchOwner();
+        //     } catch (e) {
+        //         owner = { user: { tag: 'Unknown#0000' } };
+        //     }
+        //     const memberCount = guild.memberCount ? guild.memberCount.toString() : 'Unknown';
+        //     const logChannel = this.client.channels.cache.get(channelId);
+        //     if (logChannel) {
+        //         const embed = this.client.embed()
+        //             .setColor('Red')
+        //             .setTitle('Unauthorized Guild Invite')
+        //             .setDescription(`The bot was invited to an unauthorized guild and has now left.`)
+        //             .addFields([
+        //                 { name: 'Guild Name', value: guild.name, inline: true },
+        //                 { name: 'Guild ID', value: guild.id, inline: true },
+        //                 { name: 'Owner', value: owner.user.tag, inline: true },
+        //                 { name: 'Owner ID', value: guild.ownerId, inline: true },
+        //                 { name: 'Member Count', value: memberCount, inline: true },
+        //             ])
+        //             .setTimestamp();
+        //
+        //         await logChannel.send({ embeds: [embed] });
+        //     } else {
+        //         console.log('Log channel not found!');
+        //     }
+        //     return await guild.leave().catch((err) => console.error(`Failed to leave the guild: ${err}`));
+        // }
         let owner;
         try {
             owner = guild.members.cache.get(guild?.ownerId);

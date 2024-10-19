@@ -79,8 +79,13 @@ module.exports = class Help extends Command {
         }
       }
 
+      // const row = new ActionRowBuilder().addComponents(
+      //     new ButtonBuilder().setLabel(helpMessages.supportButton).setStyle(5).setURL(client.config.links.support)
+      // )
       const row = new ActionRowBuilder().addComponents(
-          new ButtonBuilder().setLabel(helpMessages.supportButton).setStyle(5).setURL(client.config.links.support)
+          new ButtonBuilder().setLabel(helpMessages.supportButton).setStyle(5).setURL(client.config.links.support), // Link button style 5
+          new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
+          new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
       );
 
       await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
