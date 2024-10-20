@@ -3,8 +3,6 @@ const Users = require('../../schemas/user');
 
 const maxAmount = 250000;
 const random = require('random-number-csprng');
-const {getNumberEmoji} = require("../../functions/function");
-const gif = require("../../utils/Gif");
 
 module.exports = class Coinflip extends Command {
     constructor(client) {

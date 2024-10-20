@@ -287,7 +287,7 @@ function getLetterEmoji() {
 
 }
 
-function getNumberEmoji(client, rank) {
+function getNumberEmoji(client, color, emoji, rank) {
     switch (rank) {
         case 1:
             return emoji.number.one;

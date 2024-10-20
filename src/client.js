@@ -17,6 +17,7 @@ const client = new PeachyClient(clientOptions);
 setInterval(async () => {
   const now = Date.now();
   const giveaways = await GiveawaySchema.find({ endTime: { $lte: now }, ended: false });
+  if(giveaways) return;
   for (const giveaway of giveaways) {
     try {
 
@@ -26,6 +27,8 @@ setInterval(async () => {
 
         giveaway.ended = true;
         await giveaway.save();
+      } else {
+        return;
       }
     } catch (err) {
       console.error(`Error ending giveaway: ${err.message}`);
