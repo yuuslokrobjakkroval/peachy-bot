@@ -45,7 +45,7 @@ module.exports = class Use extends Command {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                useMessages?.themeID.replace('%{itemId}', itemId),
+                useMessages?.themeID.replace('{itemId}', itemId),
                 color
             );
         }
