@@ -1,9 +1,8 @@
 const { Command } = require("../../structures");
-const { getCollectionButton, ButtonStyle, twoButton, labelButton } = require('../../functions/function');
+const { ButtonStyle, twoButton, labelButton } = require('../../functions/function');
 const Users = require("../../schemas/user");
 const config = require("../../config.js");
 const gif = require("../../utils/Gif");
-const numeral = require("numeral");
 const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Transfer extends Command {
@@ -38,9 +37,6 @@ module.exports = class Transfer extends Command {
             ? ctx.interaction.options.getUser('user') || ctx.author
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
 
-        // Validate target user and amount
-        let amount = args[1] === 'all' ? 'all' : parseInt(args[1], 10);
-
         // Prevent transferring to self or bot
         if (ctx.author.id === targetUser.id) {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.selfTransfer, color);
@@ -49,33 +45,41 @@ module.exports = class Transfer extends Command {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.botTransfer, color);
         }
 
-        // Validate the amount
-        if (amount !== 'all' && (isNaN(amount) || amount <= 0)) {
-            return await client.utils.sendErrorMessage(client, ctx, transferMessages.invalidAmount, color);
-        }
-
         // Fetch user data for both sender and receiver
         const user = await Users.findOne({ userId: ctx.author.id });
         const verify = user.verification.verify.status === 'verified';
         const target = await Users.findOne({ userId: targetUser.id }) || new Users({ userId: targetUser.id, balance: { coin: 0, bank: 0 } });
 
-        // Ensure sender has a balance record
         if (!user) {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.balanceNotExist, color);
         }
 
-        // Handle 'all' amount transfer
-        if (amount === 'all') {
-            amount = user.balance.coin;
+        // Validate target user and amount
+        let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
+        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
+            const amountMap = { all: user.balance.coin, half: Math.ceil(user.balance.coin / 2) };
+            const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
+
+            if (amount in amountMap) {
+                amount = amountMap[amount]
+            } else if (amount.match(/\d+[kmbtq]/)) {
+                const unit = amount.slice(-1).toLowerCase();
+                const number = parseInt(amount);
+                amount = number * (multiplier[unit] || 1);
+            } else {
+                return await ctx.sendMessage({
+                    embeds: [
+                        client.embed().setColor(color.red).setDescription(transferMessages.invalidAmount),
+                    ],
+                });
+            }
         }
 
-        // Check for sufficient balance
         if (user.balance.coin < amount) {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.insufficientFunds, color);
         }
 
         const targetUsername = targetUser.displayName;
-        const formattedAmount = numeral(amount).format() || '0';
 
         // Create confirm and cancel buttons
         const confirmButton = labelButton('confirm_button', 'Confirm', ButtonStyle.Success);
@@ -88,7 +92,7 @@ module.exports = class Transfer extends Command {
             .setTitle(transferMessages.title.replace('{{user}}', ctx.author.displayName))
             // .setTitle(transferMessages.confirm)
             .setDescription(transferMessages.confirm
-                .replace('{{amount}}', formattedAmount)
+                .replace('{{amount}}', amount)
                 .replace('{{emoji}}',  emoji.coin)
                 .replace('{{user}}', targetUsername)
             );
@@ -116,7 +120,7 @@ module.exports = class Transfer extends Command {
                             .setColor(config.color.main)
                             .setTitle(transferMessages.title.replace('{{user}}', ctx.author.displayName))
                             .setDescription(transferMessages.success
-                                .replace('{{amount}}', formattedAmount)
+                                .replace('{{amount}}', amount)
                                 .replace('{{emoji}}', emoji.coin)
                                 .replace('{{user}}', targetUsername)
                             )
