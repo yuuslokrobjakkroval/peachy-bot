@@ -62,11 +62,11 @@ module.exports = class Ranking extends Command {
             const userPosition = users.findIndex(({ userId }) => userId === ctx.author.id) + 1;
             const user = users.find(({ userId }) => userId === ctx.author.id);
             const userRank = `**${user?.username || 'Unknown'} Rank: ${userPosition} ${handleEmoji(userPosition)}**\n**${client.utils.formatNumber(user?.[streakKey] || 0)} streaks**\n`;
-
             const leaderboardList = users.slice(0, 100).map((user, index) => {
+                console.log(user?.[streakKey], user[streakKey])
                 const position = index + 1;
                 const emoji = handleEmoji(position);
-                return `**${emoji} ${position}. ${user.username || 'Unknown'}**\n**${client.utils.formatNumber(user?.[streakKey])} streaks**`;
+                return `**${emoji} ${position}. ${user.username || 'Unknown'}**\n**${client.utils.formatNumber(user?.[streakKey] || 0)} streaks**`;
             });
 
             const chunks = client.utils.chunk(leaderboardList, 10);
