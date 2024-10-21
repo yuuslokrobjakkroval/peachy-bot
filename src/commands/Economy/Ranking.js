@@ -56,26 +56,32 @@ module.exports = class Ranking extends Command {
         const createLeaderboard = async (typeKey, streakKey, titleKey) => {
             const users = await Users.find({ [streakKey]: { $gt: 0 } }).sort({ [streakKey]: -1 }).exec();
             if (!users.length) {
-                return await client.utils.oops(client, ctx, rankingMessages.typeKey.noUsers, color);
+                return await client.utils.oops(client, ctx, rankingMessages[typeKey].noUsers, color);
             }
 
             const userPosition = users.findIndex(({ userId }) => userId === ctx.author.id) + 1;
             const user = users.find(({ userId }) => userId === ctx.author.id);
-            const userRank = `**${user?.username || 'Unknown'} Rank: ${userPosition} ${handleEmoji(userPosition)}**\n**${client.utils.formatNumber(user?.[streakKey] || 0)} streaks**\n`;
+
+            const keys = streakKey.split('.');
+            const streakValue = keys.reduce((obj, key) => obj?.[key], user);
+
+            const userRank = `**${user?.username || 'Unknown'} Rank: ${userPosition} ${handleEmoji(userPosition)}**\n**${client.utils.formatNumber(streakValue || 0)} streaks**\n`;
+
             const leaderboardList = users.slice(0, 100).map((user, index) => {
-                console.log(user?.[streakKey], user[streakKey])
                 const position = index + 1;
                 const emoji = handleEmoji(position);
-                return `**${emoji} ${position}. ${user.username || 'Unknown'}**\n**${client.utils.formatNumber(user?.[streakKey] || 0)} streaks**`;
+
+                const streakValue = keys.reduce((obj, key) => obj?.[key], user);
+                return `**${emoji} ${position}. ${user.username || 'Unknown'}**\n**${client.utils.formatNumber(streakValue || 0)} streaks**`;
             });
 
             const chunks = client.utils.chunk(leaderboardList, 10);
             const pages = chunks.map((chunk, i) => {
                 return client
                     .embed()
-                    .setTitle(`${emoji.rank.babyOwner} **${rankingMessages.typeKey[titleKey]}** ${emoji.rank.babyOwner}`)
+                    .setTitle(`${emoji.rank.babyOwner} **${rankingMessages[typeKey][titleKey]}** ${emoji.rank.babyOwner}`)
                     .setColor(color.main)
-                    .setDescription(`${userRank}\n${chunk.join('\n\n')}`)  // Include user rank message here
+                    .setDescription(`${userRank}\n${chunk.join('\n\n')}`)
                     .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
             });
 
