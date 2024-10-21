@@ -660,8 +660,8 @@
 		"useMessages": {
 			"themeID": "Theme with ID `{itemId}` not found.",
 			"notOwned": "You do not own the theme `{itemName}`.",
-			"unavailable": "The theme `{itemName}` is not available for use.",
-			"applied": "Successfully applied the theme `{itemEmote}` `{itemName}`!"
+			"unavailable": `The theme {itemName} is not available for use.`,
+			"applied": `Successfully applied the theme {itemEmote} {itemName}!`
 		}
 	},
 	"profileMessages": {
