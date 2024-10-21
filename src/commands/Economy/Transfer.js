@@ -79,8 +79,6 @@ module.exports = class Transfer extends Command {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.insufficientFunds, color);
         }
 
-        const targetUsername = targetUser.displayName;
-
         // Create confirm and cancel buttons
         const confirmButton = labelButton('confirm_button', 'Confirm', ButtonStyle.Success);
         const cancelButton = labelButton('cancel_button', 'Cancel', ButtonStyle.Danger);
@@ -94,7 +92,7 @@ module.exports = class Transfer extends Command {
             .setDescription(transferMessages.confirm
                 .replace('{{amount}}', amount)
                 .replace('{{emoji}}',  emoji.coin)
-                .replace('{{user}}', targetUsername)
+                .replace('{{user}}', targetUser.displayName)
             );
 
         const messageEmbed = await ctx.channel.send({ embeds: [embed], components: [allButtons] });
@@ -109,8 +107,8 @@ module.exports = class Transfer extends Command {
                 await interaction.deferUpdate();
                 if (interaction.customId === 'confirm_button') {
                     // Perform the transfer
-                    user.balance.coin -= amount;
-                    target.balance.coin += amount;
+                    user.balance.coin -= parseInt(amount);
+                    target.balance.coin += parseInt(amount);
 
                     try {
                         await Users.findOneAndUpdate({userId: ctx.author.id}, { balance: user.balance });
@@ -122,7 +120,7 @@ module.exports = class Transfer extends Command {
                             .setDescription(transferMessages.success
                                 .replace('{{amount}}', amount)
                                 .replace('{{emoji}}', emoji.coin)
-                                .replace('{{user}}', targetUsername)
+                                .replace('{{user}}', targetUser.displayName)
                             )
                             .setFooter({
                                 text: `Request By ${ctx.author.displayName}`,
