@@ -54,7 +54,7 @@ module.exports = class Ranking extends Command {
         };
 
         const createLeaderboard = async (typeKey, streakKey, titleKey) => {
-            const users = await Users.find({ [streakKey]: { $gt: 0 } }).sort({ [streakKey]: -1 }).exec();
+            const users = await Users.find({ streakKey: { $gt: 0 } }).sort({ streakKey: -1 }).exec();
             if (!users.length) {
                 return await client.utils.oops(client, ctx, rankingMessages.typeKey.noUsers, color);
             }
@@ -66,7 +66,7 @@ module.exports = class Ranking extends Command {
             const leaderboardList = users.slice(0, 100).map((user, index) => {
                 const position = index + 1;
                 const emoji = handleEmoji(position);
-                return `**${emoji} ${position}. ${user.username || 'Unknown'}**\n**${client.utils.formatNumber(user[streakKey])} streaks**`;
+                return `**${emoji} ${position}. ${user.username || 'Unknown'}**\n**${client.utils.formatNumber(user.streakKey)} streaks**`;
             });
 
             const chunks = client.utils.chunk(leaderboardList, 10);
