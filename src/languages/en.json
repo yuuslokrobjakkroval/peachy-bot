@@ -658,10 +658,10 @@
 			"itemListFooter": "Use `shopinfo <id>` to get more details about an item."
 		},
 		"useMessages": {
-			"themeID": "Theme with ID `{itemId}` not found.",
-			"notOwned": "You do not own the theme `{itemName}`.",
-			"unavailable": "`The theme {itemName} is not available for use.`",
-			"applied": "`Successfully applied the theme {itemEmote} {itemName}!`"
+			"themeID": "Theme with ID {{itemId}} not found.",
+			"notOwned": "You do not own the theme {{itemName}}.",
+			"unavailable": "The theme {itemName} is not available for use.",
+			"applied": "Successfully applied the theme {{itemEmote}} {{itemName}}!"
 		}
 	},
 	"profileMessages": {

@@ -45,7 +45,7 @@ module.exports = class Use extends Command {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                useMessages?.themeID.replace('{itemId}', itemId),
+                useMessages?.themeID.replace('{{itemId}}', itemId),
                 color
             );
         }
@@ -56,7 +56,7 @@ module.exports = class Use extends Command {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                useMessages?.notOwned.replace('{itemName}', themeItem.name),
+                useMessages?.notOwned.replace('{{itemName}}', themeItem.name),
                 color
             );
         }
@@ -65,7 +65,7 @@ module.exports = class Use extends Command {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                useMessages?.unavailable.replace('{itemName}', themeItem.name),
+                useMessages?.unavailable.replace('{{itemName}}', themeItem.name),
                 color
             );
         }
@@ -79,8 +79,8 @@ module.exports = class Use extends Command {
             .setColor(color.main)
             .setDescription(
                 useMessages?.applied
-                    .replace('{itemEmote}', themeItem.emoji)
-                    .replace('{itemName}', themeItem.name)
+                    .replace('{{itemEmote}}', themeItem.emoji)
+                    .replace('{{itemName}}', themeItem.name)
             );
 
         return await ctx.sendMessage({ embeds: [embed] });
