@@ -17,22 +17,20 @@ const client = new PeachyClient(clientOptions);
 setInterval(async () => {
   const now = Date.now();
   const giveaways = await GiveawaySchema.find({ endTime: { $lte: now }, ended: false });
+  if(!giveaways) return;
   for (const giveaway of giveaways) {
     try {
-
       const giveawayMessage = await client.channels.cache.get(giveaway.channelId)?.messages.fetch(giveaway.messageId);
       if (giveawayMessage) {
         await client.utils.endGiveaway(client, client.color, client.emoji, giveawayMessage, giveaway.autopay);
 
         giveaway.ended = true;
         await giveaway.save();
-      } else {
-        return;
       }
     } catch (err) {
       console.error(`Error ending giveaway: ${err.message}`);
     }
   }
-}, 360000);
+}, 60000);
 
 client.start(config.token);

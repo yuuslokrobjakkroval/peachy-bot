@@ -43,7 +43,6 @@ module.exports = class ReAutopay extends Command {
         }
 
         try {
-            // Find the giveaway by the provided messageId
             const giveaway = await GiveawaySchema.findOne({ messageId: messageId });
 
             if (!giveaway) {
@@ -61,9 +60,13 @@ module.exports = class ReAutopay extends Command {
                     ],
                 });
 
+
                 setTimeout(() => {
                     message.delete().catch(err => console.error('Failed to delete message:', err));
                 }, 5000); // 5000 milliseconds = 5 seconds
+
+                return;
+
             }
 
             const winners = giveaway.winnerId.length === 0 ? giveaway.entered : giveaway.winnerId;
