@@ -26,6 +26,8 @@ setInterval(async () => {
 
         giveaway.ended = true;
         await giveaway.save();
+      } else {
+        return;
       }
     } catch (err) {
       console.error(`Error ending giveaway: ${err.message}`);
