@@ -20,14 +20,12 @@ setInterval(async () => {
   if(!giveaways) return;
   for (const giveaway of giveaways) {
     try {
-      const giveawayMessage = await client.channels.cache.get(giveaway.channelId)?.messages.fetch(giveaway.messageId);
+      const giveawayMessage = await client.channels.cache.get(giveaway.channelId);
       if (giveawayMessage) {
         await client.utils.endGiveaway(client, client.color, client.emoji, giveawayMessage, giveaway.autopay);
 
         giveaway.ended = true;
         await giveaway.save();
-      } else {
-        return;
       }
     } catch (err) {
       console.error(`Error ending giveaway: ${err.message}`);
