@@ -58,12 +58,6 @@ module.exports = class Slots extends Command {
 			}
 
 			const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
-			Users.updateOne({userId: ctx.author.id}, {
-				$set: {
-					'balance.coin': coin - baseCoins,
-					'balance.bank': bank
-				}
-			}).exec();
 
 			// ===================================== > Decide Results < ===================================== \\
 			let rslots = [];
@@ -86,7 +80,7 @@ module.exports = class Slots extends Command {
 				} else if (rand <= 75) { // 5% chance for baseCoins * 5
 					win = baseCoins * 5;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 80) { // 5% chance for baseCoins * 10
+				} else if (rand <= 77.5) { // 5% chance for baseCoins * 10
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 				} else { // 20% chance for random non-winning combination
@@ -111,10 +105,10 @@ module.exports = class Slots extends Command {
 				} else if (rand <= 60) { // 10% chance for baseCoins * 4
 					win = baseCoins * 4;
 					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-				} else if (rand <= 65) { // 5% chance for baseCoins * 5
+				} else if (rand <= 63) { // 5% chance for baseCoins * 5
 					win = baseCoins * 5;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 70) { // 5% chance for baseCoins * 10
+				} else if (rand <= 65.5) { // 5% chance for baseCoins * 10
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 				} else { // 30% chance for random non-winning combination
@@ -139,8 +133,7 @@ module.exports = class Slots extends Command {
 				})
 
 			ctx.sendMessage({embeds: [initialEmbed]});
-			Users.updateOne({userId: ctx.author.id}, {$set: {'balance.coin': newBalance, 'balance.bank': bank}}).exec();
-
+			
 			const spinEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
@@ -177,6 +170,9 @@ module.exports = class Slots extends Command {
 					}, 1000);
 				}, 700);
 			}, 1000);
+			
+			user.balance.coin = newBalance;
+			user.save();
 		})
 	}
 }
