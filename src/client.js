@@ -32,6 +32,6 @@ setInterval(async () => {
             console.error(`Error ending giveaway: ${err.message}`);
         }
     }
-}, 3000);
+}, 30000);
 
 client.start(config.token);
