@@ -188,10 +188,11 @@ module.exports = class MessageCreate extends Event {
             );
 
             const msgPromise  = ctx.sendMessage({embeds: [embed], components: [row], fetchReply: true});
-            const filter = interaction => interaction.user.id === ctx.author.id;
-            const collector = msg.createMessageComponentCollector({ filter, time: 150000 });
 
             msgPromise.then(msg => {
+              const filter = interaction => interaction.user.id === ctx.author.id;
+              const collector = msg.createMessageComponentCollector({ filter, time: 150000 });
+
               collector.on('collect', async int => {
                 int.deferUpdate();
 
@@ -200,7 +201,7 @@ module.exports = class MessageCreate extends Event {
                     const embed = this.client.embed()
                         .setColor(color.main)
                         .setTitle(`${emoji.mainLeft} 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 ${emoji.mainRight}`)
-                        .setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
+                        .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                         .setDescription(
                             `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
                             `**Rules and Guidelines**\n\n` +
@@ -215,7 +216,6 @@ module.exports = class MessageCreate extends Event {
                             `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
                             `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
                         );
-
 
                     int.editReply({
                       content: '',
@@ -312,44 +312,31 @@ module.exports = class MessageCreate extends Event {
                   });
                 } else if (int.customId === 'confirm') {
                   const gift = 500000;
-                  const userInfo = this.client.users.fetch(int.user.id).catch(() => null);
-                  if (userInfo) {
-                    Users.updateOne(
-                        {userId: int.user.id},
-                        {
-                          $set: {
-                            username: userInfo.displayName,
-                            'profile.username': userInfo.displayName,
-                            balance: {
-                              coin: gift,
-                              bank: 0
-                            },
-                          }
-                        },
-                        {upsert: true}
-                    );
-                  } else {
-                    Users.updateOne(
-                        {userId: int.user.id},
-                        {
-                          $set: {
-                            username: 'Unknown',
-                            'profile.username': 'Unknown',
-                            balance: {
-                              coin: gift,
-                              bank: 0
-                            },
-                          }
-                        },
-                        {upsert: true}
-                    );
-                  }
+                  const userInfo = await this.client.users.fetch(int.user.id).catch(() => null);
+                  const username = userInfo ? userInfo.displayName : 'Unknown';
+
+                  await Users.updateOne(
+                      { userId: int.user.id },
+                      {
+                        $set: {
+                          username,
+                          'profile.username': username,
+                          balance: {
+                            coin: gift,
+                            bank: 0
+                          },
+                        }
+                      },
+                      { upsert: true }
+                  );
+
                   const embed = this.client.embed()
                       .setColor(color.main)
-                      .setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
+                      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                       .setTitle(`${emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${emoji.mainRight}`)
                       .setDescription(`Warming Gift for you ${emoji.congratulation}\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
-                      .setImage(this.client.utils.getRandomElement(welcome))
+                      .setImage(this.client.utils.getRandomElement(welcome));
+
                   int.editReply({
                     content: '',
                     embeds: [embed],
@@ -368,7 +355,7 @@ module.exports = class MessageCreate extends Event {
                     embeds: [
                       this.client.embed()
                           .setColor(color.main)
-                          .setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
+                          .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                           .setTitle(`${emoji.mainLeft} 𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 ${ctx.author.displayName} ${emoji.mainRight}`)
                           .setDescription(`Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`)
                     ],
@@ -376,13 +363,15 @@ module.exports = class MessageCreate extends Event {
                   });
                   activeGames.delete(ctx.author.id);
                 }
-              })
-              collector.on('end', async () => {
-                msg.edit({components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))]});
+              });
+
+              collector.on('end', () => {
+                msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
               });
             }).catch(error => {
               console.error('Error sending message:', error);
             });
+
           } else {
             this.client.users.fetch(user.userId).then(userInfo => {
               if (!user.username || user.username !== userInfo.displayName) {
