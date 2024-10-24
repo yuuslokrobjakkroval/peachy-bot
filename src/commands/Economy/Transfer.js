@@ -146,7 +146,6 @@ module.exports = class Transfer extends Command {
                         await messageEmbed.delete();
                     } catch (error) {
                         console.error('Database update error:', error);
-                        // Use generalMessages for database error
                         await ctx.channel.send(generalMessages.databaseUpdate);
                     }
                 } else if (interaction.customId === 'cancel_button') {
