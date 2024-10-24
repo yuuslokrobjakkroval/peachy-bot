@@ -380,7 +380,9 @@ module.exports = class MessageCreate extends Event {
               collector.on('end', async () => {
                 msg.edit({components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))]});
               });
-            })
+            }).catch(error => {
+              console.error('Error sending message:', error);
+            });
           } else {
             this.client.users.fetch(user.userId).then(userInfo => {
               if (!user.username || user.username !== userInfo.displayName) {
