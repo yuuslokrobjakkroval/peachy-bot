@@ -58,12 +58,7 @@ module.exports = class Slots extends Command {
 			}
 
 			const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
-			Users.updateOne({userId: ctx.author.id}, {
-				$set: {
-					'balance.coin': coin - baseCoins,
-					'balance.bank': bank
-				}
-			}).exec();
+			
 
 			// ===================================== > Decide Results < ===================================== \\
 			let rslots = [];
@@ -139,8 +134,9 @@ module.exports = class Slots extends Command {
 				})
 
 			ctx.sendMessage({embeds: [initialEmbed]});
-			Users.updateOne({userId: ctx.author.id}, {$set: {'balance.coin': newBalance, 'balance.bank': bank}}).exec();
-
+			user.balanace.coin = newBalance;
+			user.save();
+			
 			const spinEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
