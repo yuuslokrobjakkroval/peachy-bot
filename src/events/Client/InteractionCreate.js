@@ -27,13 +27,6 @@ module.exports = class InteractionCreate extends Event {
       let user = await Users.findOne({ userId: interaction.user.id });
 
       if (user?.verification?.isBanned) {
-        // return await message.channel.send({
-        //   embeds: [
-        //     this.client.embed()
-        //         .setColor(color.red)
-        //         .setDescription(`You is already banned for: \`${user.verification.banReason || 'No reason provided'}\`.`)
-        //   ]
-        // });
         return;
       }
 
