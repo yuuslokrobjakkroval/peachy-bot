@@ -5,6 +5,8 @@ const config = require("../../config.js");
 const gif = require("../../utils/Gif");
 const emojiImage = require("../../utils/Emoji");
 
+const pendingTransfers = new Map();
+
 module.exports = class Transfer extends Command {
     constructor(client) {
         super(client, {
@@ -36,6 +38,11 @@ module.exports = class Transfer extends Command {
         const targetUser = ctx.isInteraction
             ? ctx.interaction.options.getUser('user') || ctx.author
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
+
+        // Check if the user already has a pending transfer
+        if (pendingTransfers.has(ctx.author.id)) {
+            return await client.utils.sendErrorMessage(client, ctx, 'You already have a pending transfer. Please confirm or cancel it before starting a new one.');
+        }
 
         // Prevent transferring to self or bot
         if (ctx.author.id === targetUser.id) {
@@ -94,7 +101,7 @@ module.exports = class Transfer extends Command {
             .setTitle(transferMessages.title.replace('{{user}}', ctx.author.displayName))
             // .setTitle(transferMessages.confirm)
             .setDescription(transferMessages.confirm
-                .replace('{{amount}}', amount)
+                .replace('{{amount}}', client.utils.formatNumber(amount))
                 .replace('{{emoji}}',  emoji.coin)
                 .replace('{{user}}', targetUser.displayName)
             );
@@ -102,7 +109,7 @@ module.exports = class Transfer extends Command {
         const messageEmbed = await ctx.channel.send({ embeds: [embed], components: [allButtons] });
 
         const filter = (interaction) => interaction.user.id === ctx.author.id;
-        const collector = messageEmbed.createMessageComponentCollector({ filter, time: 300000 });
+        const collector = messageEmbed.createMessageComponentCollector({ filter, time: 8000 });
 
         collector.on('collect', async (interaction) => {
             if (interaction.user.id !== ctx.author.id) {
@@ -148,7 +155,10 @@ module.exports = class Transfer extends Command {
                         console.error('Database update error:', error);
                         await ctx.channel.send(generalMessages.databaseUpdate);
                     }
+                    // Remove the pending transfer after confirmation
+                    pendingTransfers.delete(ctx.author.id);
                 } else if (interaction.customId === 'cancel_button') {
+                    pendingTransfers.delete(ctx.author.id);
                     await ctx.channel.send(transferMessages.cancel);
                     await messageEmbed.delete();
                 }
@@ -157,6 +167,7 @@ module.exports = class Transfer extends Command {
         });
 
         collector.on('end', collected => {
+            pendingTransfers.delete(ctx.author.id);
             if (collected.size === 0) {
                 const timeoutEmbed = client.embed()
                     .setColor(color.warning)
