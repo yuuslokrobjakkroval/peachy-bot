@@ -33,27 +33,37 @@ module.exports = class Context {
 
     sendMessage(content) {
         if (this.isInteraction) {
-            this.msg = this.interaction.reply(content)
-                .then(() => this.interaction.fetchReply())
-                .catch(console.error);
-            return this.msg;
+            return this.interaction.reply(content)
+                .then(() => this.interaction.fetchReply()) // Fetch the actual message object
+                .then((msg) => {
+                    this.msg = msg; // Assign the fetched message to `this.msg`
+                    return this.msg;
+                })
+                .catch(console.error); // Catch any errors in interaction handling
         } else {
-            this.msg = this.message.channel.send(content);
-            return this.msg;
+            return this.message.channel.send(content)
+                .then((msg) => {
+                    this.msg = msg; // Assign the sent message to `this.msg`
+                    return this.msg;
+                })
+                .catch(console.error); // Catch any errors in message sending
         }
     }
 
     editMessage(content) {
         if (this.isInteraction) {
-            return this.msg.then((message) => {
-                return this.interaction.editReply(content).catch(console.error);
-            }).catch(console.error);
+            return this.msg
+                .then((msg) => {
+                    return this.interaction.editReply(content).catch(console.error); // Edit the interaction reply
+                })
+                .catch(console.error); // Catch any errors in fetching/editing
         } else {
             if (this.msg) {
-                return this.msg.edit(content).catch(console.error);
+                return this.msg.edit(content).catch(console.error); // Edit the message directly
             }
         }
     }
+
 
     async sendDeferMessage(content) {
         if (this.isInteraction) {
