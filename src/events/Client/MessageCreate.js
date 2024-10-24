@@ -90,34 +90,40 @@ module.exports = class MessageCreate extends Event {
             const celebrationCoin = user.profile.level * 250000;
             user.balance.coin += celebrationCoin;
 
-            // Ensure `levelUp` is a valid image buffer or path
-            const levelUpImage = new canvafy.LevelUp()
+            // Create the level up image
+            new canvafy.LevelUp()
                 .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
                 .setUsername(`${message.author.username}`, '#000000')
                 .setBorder('#8BD3DD')
                 .setBackground("image", gif.levelBackground)
                 .setLevels(user.profile.level - 1, user.profile.level)
-                .build(); // Assuming build() returns a buffer or string
+                .build() // This may need to return a promise
+                .then(levelUpImage => {
+                  // Check if levelUpImage is a valid resource
+                  if (!(typeof levelUpImage === 'string' || Buffer.isBuffer(levelUpImage))) {
+                    throw new TypeError("LevelUp image is not a valid string or Buffer.");
+                  }
 
-            // Assuming `levelUpImage` is a buffer or valid string at this point
-            const levelImage = {
-              attachment: levelUpImage, // Attach the image directly
-              name: 'level-up.png',
-            };
+                  const levelImage = {
+                    attachment: levelUpImage,
+                    name: 'level-up.png',
+                  };
 
-            const embed = this.client.embed()
-                .setColor(color.main)
-                .setTitle(`${message.author.displayName} - 𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
-                .setDescription(`Congratulations ${this.client.utils.getRandomElement(congratulations)} !!!\nYou leveled up to level ${user.profile.level}!\nYou have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${emoji.coin}.`)
-                .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-                .setImage('attachment://level-up.png');
+                  const embed = this.client.embed()
+                      .setColor(color.main)
+                      .setTitle(`${message.author.displayName} - 𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
+                      .setDescription(`Congratulations ${this.client.utils.getRandomElement(congratulations)} !!!\nYou leveled up to level ${user.profile.level}!\nYou have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${emoji.coin}.`)
+                      .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
+                      .setImage('attachment://level-up.png');
 
-            message.channel.send({
-              embeds: [embed],
-              files: [levelImage],
-            }).catch(err => {
-              console.error("Error sending message:", err);
-            });
+                message.channel.send({
+                  embeds: [embed],
+                  files: [levelImage],
+                });
+              })
+              .catch(err => {
+                console.error("Error sending message:", err);
+              });
           }
         }
       }
