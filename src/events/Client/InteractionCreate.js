@@ -68,7 +68,7 @@ module.exports = class InteractionCreate extends Event {
 
         if (!interaction.inGuild()) return;
 
-        const isRestrictedCommand = ['giveaway', 'level-setup', 'level-message', 'level-disable']
+        const isRestrictedCommand = ['giveaway']
         const hasDevRole = interaction.member.roles.cache.some(role => role.name === 'Developer');
         const isOwner = this.client.config.owners.includes(interaction.user.id);
 
