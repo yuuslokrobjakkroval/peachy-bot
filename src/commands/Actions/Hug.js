@@ -30,7 +30,7 @@ module.exports = class Hug extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
 
         const hugMessages = language.locales.get(language.defaultLocale)?.actionMessages?.hugMessages;
         const errorMessages = hugMessages.errors;
@@ -43,7 +43,7 @@ module.exports = class Hug extends Command {
             if (!target) errorMessage += errorMessages.noUser;
             if (target && target.id === ctx.author.id) errorMessage += `\n${errorMessages.selfHug}`;
 
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
         try {
@@ -56,10 +56,10 @@ module.exports = class Hug extends Command {
                 .setImage(client.utils.emojiToImage(randomEmoji))
                 .setDescription(`${ctx.author.displayName} ${hugMessages.description} ${target.displayName}!`);
 
-            await ctx.sendMessage({ embeds: [embed] });
+            return ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch hug GIF:', error);
-            return await client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
+            return client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
         }
     }
 };
