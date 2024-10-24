@@ -1,8 +1,7 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
-
-const maxAmount = 250000;
 const random = require('random-number-csprng');
+const maxAmount = 250000;
 
 module.exports = class Coinflip extends Command {
     constructor(client) {
@@ -44,77 +43,83 @@ module.exports = class Coinflip extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const user = await Users.findOne({ userId: ctx.author.id }).exec();
-        const { coin, bank } = user.balance;
 
-        if (coin < 1) {
-            return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
-        }
+        client.utils.getUser(ctx.author.id).then(user => {
+            const { coin, bank } = user.balance;
 
-        let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
-        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
-            const amountMap = { all: coin, half: Math.ceil(coin / 2) };
-            if (amount in amountMap) {
-                amount = amountMap[amount];
-            } else {
-                return await client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
+            if (coin < 1) {
+                return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
             }
-        }
 
-        const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
+            // Get the amount and choice from the interaction or args
+            let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
+            let choice = ctx.isInteraction ? ctx.interaction.options.data[1]?.value.toString() : args[1] || 'p';
+            choice = choice.toLowerCase();
 
-        // ===================================== > Choice < ===================================== \\
-        let choice = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() || 'p' : args[1] || 'p';
-        if (choice !== undefined) choice = choice.toLowerCase();
-        else if (choice === 'peach' || choice === 'p') choice = 'p';
-        else if (choice === 'goma' || choice === 'g') choice = 'g';
+            // Validate amount
+            if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
+                const amountMap = { all: coin, half: Math.ceil(coin / 2) };
+                if (amount in amountMap) {
+                    amount = amountMap[amount];
+                } else {
+                    return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
+                }
+            }
 
-        let rand = await random(0, 1);
-        let win = false;
-        if (rand === 0 && choice === 'g') win = true;
-        else if (rand === 1 && choice === 'p') win = true;
+            const baseCoins = Math.min(parseInt(amount), coin, maxAmount);
 
-        // ===================================== > Display < ===================================== \\
-        const flipEmbed = client.embed()
-            .setColor(color.main)
-            .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\` ${emoji.coin}** choose **${
-                choice === 'p' ? 'peach' : 'goma'
-            }**
-The coin is flips ${emoji.coinFlip.flip}`)
-            .setFooter({
-                text: `${ctx.author.displayName}, your game is in progress!`,
-                iconURL: ctx.author.displayAvatarURL(),
-            })
-
-        await ctx.sendDeferMessage({ embeds: [flipEmbed] });
-
-        const newBalance = win ? coin + baseCoins : coin - baseCoins;
-        await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec();
-
-        // ===================================== > Result < ===================================== \\
-        setTimeout(async function () {
-
-            const resultEmbed = client.embed()
-                .setColor(win ? color.green : color.red)
+            // Display initial flip embed
+            const flipEmbed = client.embed()
+                .setColor(color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${emoji.coin} choose **${
+                .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** bet **\`${baseCoins.toLocaleString()}\` ${emoji.coin}** and chose **${
                     choice === 'p' ? 'peach' : 'goma'
-                }**
-The coin is flips ${win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma)} and ${
-                    win
-                        ? `**Won \`${(baseCoins + baseCoins).toLocaleString()}\` ${emoji.coin}**`
-                        : `**Lose \`${baseCoins.toLocaleString()}\` ${emoji.coin}**`
-                }`)
+                }**.\nThe coin is flipping ${emoji.coinFlip.flip}...`)
                 .setFooter({
-                    text: `${ctx.author.displayName}! your game is over.`,
+                    text: `${ctx.author.displayName}, your game is in progress!`,
                     iconURL: ctx.author.displayAvatarURL(),
-                })
+                });
 
-            await ctx.editMessage({ embeds: [resultEmbed] });
-        }, 2000);
+            ctx.sendDeferMessage({ embeds: [flipEmbed] });
+
+            // Get random result for the coinflip
+            random(0, 1).then(rand => {
+                const win = (rand === 0 && choice === 'g') || (rand === 1 && choice === 'p');
+                const newBalance = win ? coin + baseCoins : coin - baseCoins;
+
+                // Update the user's balance based on the outcome
+                Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec().then(() => {
+
+                    // Display result after 2 seconds to simulate coin flip animation
+                    setTimeout(() => {
+                        const resultEmbed = client.embed()
+                            .setColor(win ? color.green : color.red)
+                            .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+                            .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** bet **\`${baseCoins.toLocaleString()}\`** ${emoji.coin} and chose **${
+                                choice === 'p' ? 'peach' : 'goma'
+                            }**.\nThe coin flipped ${
+                                win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.goma : emoji.coinFlip.peach)
+                            } and you **${win ? `won \`${(baseCoins * 2).toLocaleString()}\` ${emoji.coin}` : `lost \`${baseCoins.toLocaleString()}\` ${emoji.coin}`}**!`)
+                            .setFooter({
+                                text: `${ctx.author.displayName}, your game is over.`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
+
+                        ctx.editMessage({ embeds: [resultEmbed] });
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Error updating user balance:', err);
+                    client.utils.sendErrorMessage(client, ctx, generalMessages.databaseError, color);
+                });
+            }).catch(err => {
+                console.error('Error generating random number:', err);
+                client.utils.sendErrorMessage(client, ctx, generalMessages.randomError, color);
+            });
+        }).catch(err => {
+            console.error('Error fetching user:', err);
+            client.utils.sendErrorMessage(client, ctx, generalMessages.fetchFail, color);
+        });
     }
 };
-
