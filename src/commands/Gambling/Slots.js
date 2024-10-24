@@ -58,7 +58,6 @@ module.exports = class Slots extends Command {
 			}
 
 			const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
-			
 
 			// ===================================== > Decide Results < ===================================== \\
 			let rslots = [];
@@ -134,8 +133,6 @@ module.exports = class Slots extends Command {
 				})
 
 			ctx.sendMessage({embeds: [initialEmbed]});
-			user.balance.coin = newBalance;
-			user.save();
 			
 			const spinEmbed = client.embed()
 				.setColor(color.main)
@@ -173,6 +170,9 @@ module.exports = class Slots extends Command {
 					}, 1000);
 				}, 700);
 			}, 1000);
+			
+			user.balance.coin = newBalance;
+			user.save();
 		})
 	}
 }
