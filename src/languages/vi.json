@@ -862,7 +862,7 @@
 		"languageMessages": {
 			"title": "CÀI ĐẶT NGÔN NGỮ",
 			"languageSetTitle": "NGÔN NGỮ",
-			"languageSetDescription": "Ngôn ngữ của bạn đã được đặt thành **%{ngôn ngữ}**.",
+			"languageSetDescription": "Ngôn ngữ của bạn đã được đặt thành **%{language}**.",
 			"helpTitle": "TRỢ GIÚP NGÔN NGỮ",
 			"helpDescription": "Quản lý cài đặt ngôn ngữ của bạn.",
 			"examples": "Ví dụ",
@@ -870,7 +870,7 @@
 			"usage": "Cách sử dụng",
 			"usageCommands": "• ngôn ngữ - Hiển thị ngôn ngữ hiện tại của bạn\n",
 			"currentLanguageTitle": "NGÔN NGỮ",
-			"currentLanguageDescription": "Ngôn ngữ hiện tại của bạn là **%{ngôn ngữ}**.",
+			"currentLanguageDescription": "Ngôn ngữ hiện tại của bạn là **%{language}**.",
 			"requestedBy": "Được yêu cầu bởi %{username}"
 		},
 		"qrMessages": {

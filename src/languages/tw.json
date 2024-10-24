@@ -862,7 +862,7 @@
 		"languageMessages": {
 			"title": "語言設定",
 			"languageSetTitle": "語言",
-			"languageSetDescription": "您的語言已設定為 **%{語言}**。",
+			"languageSetDescription": "您的語言已設定為 **%{language}**。",
 			"helpTitle": "語言幫助",
 			"helpDescription": "管理您的語言設定。",
 			"examples": "範例",
@@ -870,7 +870,7 @@
 			"usage": "用法",
 			"usageCommands": "• 語言 - 顯示您目前的語言\n",
 			"currentLanguageTitle": "語言",
-			"currentLanguageDescription": "您目前的語言是 **%{語言}**。",
+			"currentLanguageDescription": "您目前的語言是 **%{language}**。",
 			"requestedBy": "%{使用者名稱} 請求"
 		},
 		"qrMessages": {

@@ -862,7 +862,7 @@
 		"languageMessages": {
 			"title": "语言设置",
 			"languageSetTitle": "语言",
-			"languageSetDescription": "您的语言已设置为 **%{语言}**。",
+			"languageSetDescription": "您的语言已设置为 **%{language}**。",
 			"helpTitle": "语言帮助",
 			"helpDescription": "管理您的语言设置。",
 			"examples": "示例",

@@ -862,7 +862,7 @@
 		"languageMessages": {
 			"title": "言語設定",
 			"languageSetTitle": "言語",
-			"languageSetDescription": "あなたの言語は **%{言語}** に設定されています。",
+			"languageSetDescription": "あなたの言語は **%{language}** に設定されています。",
 			"helpTitle": "言語ヘルプ",
 			"helpDescription": "言語設定を管理します。",
 			"examples": "例",
@@ -870,7 +870,7 @@
 			"usage": "使用法",
 			"usageCommands": "• 言語 - 現在の言語を表示します。\n",
 			"currentLanguageTitle": "言語",
-			"currentLanguageDescription": "現在の言語は **%{言語}** です。",
+			"currentLanguageDescription": "現在の言語は **%{language}** です。",
 			"requestedBy": "%{ユーザー名} によってリクエストされました"
 		},
 		"qrMessages": {

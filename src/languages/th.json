@@ -862,7 +862,7 @@
 		"languageMessages": {
 			"title": "การตั้งค่าภาษา",
 			"languageSetTitle": "ภาษา",
-			"languageSetDescription": "ภาษาของคุณถูกตั้งค่าเป็น **%{ภาษา}**",
+			"languageSetDescription": "ภาษาของคุณถูกตั้งค่าเป็น **%{language}**",
 			"helpTitle": "ความช่วยเหลือด้านภาษา",
 			"helpDescription": "จัดการการตั้งค่าภาษาของคุณ",
 			"examples": "ตัวอย่าง",
@@ -870,7 +870,7 @@
 			"usage": "การใช้งาน",
 			"usageCommands": "• ภาษา - แสดงภาษาปัจจุบันของคุณ\n",
 			"currentLanguageTitle": "ภาษา",
-			"currentLanguageDescription": "ภาษาปัจจุบันของคุณคือ **%{ภาษา}**",
+			"currentLanguageDescription": "ภาษาปัจจุบันของคุณคือ **%{language}**",
 			"requestedBy": "ร้องขอโดย %{ชื่อผู้ใช้}"
 		},
 		"qrMessages": {
