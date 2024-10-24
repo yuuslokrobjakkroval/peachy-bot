@@ -80,7 +80,7 @@ module.exports = class Slots extends Command {
 				} else if (rand <= 75) { // 5% chance for baseCoins * 5
 					win = baseCoins * 5;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 80) { // 5% chance for baseCoins * 10
+				} else if (rand <= 77.5) { // 5% chance for baseCoins * 10
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 				} else { // 20% chance for random non-winning combination
@@ -105,10 +105,10 @@ module.exports = class Slots extends Command {
 				} else if (rand <= 60) { // 10% chance for baseCoins * 4
 					win = baseCoins * 4;
 					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-				} else if (rand <= 65) { // 5% chance for baseCoins * 5
+				} else if (rand <= 63) { // 5% chance for baseCoins * 5
 					win = baseCoins * 5;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 70) { // 5% chance for baseCoins * 10
+				} else if (rand <= 65.5) { // 5% chance for baseCoins * 10
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 				} else { // 30% chance for random non-winning combination
