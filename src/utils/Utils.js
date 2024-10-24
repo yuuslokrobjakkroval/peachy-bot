@@ -3,8 +3,8 @@ const GiveawaySchema = require('../schemas/giveaway');
 const Users = require('../schemas/user');
 
 module.exports = class Utils {
-    static getUser(id) {
-        return Users.findOne({userId: id});
+    static getUser(userId) {
+        return Users.findOne({ userId }).then(user => { return user; }).catch(error => { console.log(`Error fetching user data: ${error}`); return null });
     }
 
     static toSmall(count) {
@@ -469,5 +469,3 @@ module.exports = class Utils {
         }
     }
 };
-
-

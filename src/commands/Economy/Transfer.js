@@ -122,7 +122,7 @@ module.exports = class Transfer extends Command {
                             .setColor(config.color.main)
                             .setTitle(transferMessages.title.replace('{{user}}', ctx.author.displayName))
                             .setDescription(transferMessages.success
-                                .replace('{{amount}}', amount)
+                                .replace('{{amount}}', client.utils.formatNumber(amount))
                                 .replace('{{emoji}}', emoji.coin)
                                 .replace('{{user}}', targetUser.displayName)
                             )
