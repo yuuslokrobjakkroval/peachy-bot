@@ -82,16 +82,21 @@ module.exports = class MessageCreate extends Event {
           }
           user.profile.xp += xpGained;
           user.profile.lastXpGain = now;
-          const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
-          if (user.profile.xp >= nextLevelXp) {
-            user.profile.xp -= nextLevelXp;
-            user.profile.level += 1;
-            user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
-            const celebrationCoin = user.profile.level * 250000;
-            user.balance.coin += celebrationCoin;
 
-            // Create the level up image
-            new canvafy.LevelUp()
+          // Save the user document only once
+          const saveUser = user.save();
+
+          // Handle save operation
+          saveUser.then(() => {
+            const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
+            if (user.profile.xp >= nextLevelXp) {
+              user.profile.xp -= nextLevelXp;
+              user.profile.level += 1;
+              user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
+              const celebrationCoin = user.profile.level * 250000;
+              user.balance.coin += celebrationCoin;
+              // Create the level up image
+              new canvafy.LevelUp()
                 .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
                 .setUsername(`${message.author.username}`, '#000000')
                 .setBorder('#8BD3DD')
@@ -116,15 +121,18 @@ module.exports = class MessageCreate extends Event {
                       .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
                       .setImage('attachment://level-up.png');
 
-                message.channel.send({
-                  embeds: [embed],
-                  files: [levelImage],
+                  message.channel.send({
+                    embeds: [embed],
+                    files: [levelImage],
+                  });
+                })
+                .catch(err => {
+                  console.error("Error sending message:", err);
                 });
-              })
-              .catch(err => {
-                console.error("Error sending message:", err);
-              });
-          }
+            }
+          }).catch(error => {
+            console.error('Error saving user document:', error);
+          });
         }
       }
 
