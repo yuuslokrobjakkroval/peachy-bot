@@ -30,7 +30,7 @@ module.exports = class Bite extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const biteMessages = language.locales.get(language.defaultLocale)?.actionMessages?.biteMessages;
         const errorMessages = biteMessages.errors;
 
@@ -44,7 +44,7 @@ module.exports = class Bite extends Command {
             if (!target) errorMessage += errorMessages.noUser;
             if (target && target.id === ctx.author.id) errorMessage += `\n${errorMessages.selfBite}`;
 
-            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
         try {
@@ -54,15 +54,15 @@ module.exports = class Bite extends Command {
             const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`${emoji.mainLeft} ${biteMessages.title} ${emoji.mainRight}`)
-                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is a valid URL or attachment
                 .setDescription(biteMessages.description
                     .replace('%{displayName}', ctx.author.displayName)
                     .replace('%{target}', target.displayName));
 
-            return ctx.sendMessage({ embeds: [embed] });
+            await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Failed to fetch bite GIF:', error);
-            return client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
         }
     }
 };
