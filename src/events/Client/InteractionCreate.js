@@ -19,7 +19,7 @@ class InteractionCreate extends Event {
   }
 
   async run(interaction) {
-    const { color, emoji, language } = await this.client.check(interaction.user.id);
+    const { color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
     if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
       const command = this.client.commands.get(interaction.commandName);
       if (!command) return;

@@ -31,22 +31,22 @@ class Context {
         }
     }
 
-    sendMessage(content) {
+    async sendMessage(content) {
         if (this.isInteraction) {
-            this.msg = this.interaction.reply(content);
+            this.msg = await this.interaction.reply(content);
             return this.msg;
         } else {
-            this.msg = this.message.channel.send(content);
+            this.msg = await this.message.channel.send(content);
             return this.msg;
         }
     }
 
-    editMessage(content) {
+    async editMessage(content) {
         if (this.isInteraction) {
-            if (this.msg) this.msg = this.interaction.editReply(content);
+            if (this.msg) this.msg = await this.interaction.editReply(content);
             return this.msg;
         } else {
-            if (this.msg) this.msg = this.msg.edit(content);
+            if (this.msg) this.msg = await this.msg.edit(content);
             return this.msg;
         }
     }
