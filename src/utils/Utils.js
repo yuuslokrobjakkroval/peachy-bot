@@ -56,10 +56,6 @@ module.exports = class Utils {
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
-    static getRandomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
     static toNameCase(args) {
         return args
             .split('_')
@@ -335,29 +331,29 @@ module.exports = class Utils {
         }, 10000);
     }
 
-    static oops(client, ctx, args, color, time) {
+    static async oops(client, ctx, args, color, time) {
         const embed = client.embed()
             .setColor(color.red)
             .setDescription(args)
-        ctx.sendMessage({ embeds: embed }).then(async msg => {
+        return await ctx.sendMessage({ embeds: embed }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
 
-    static sendSuccessMessage(client, ctx, args, color, time) {
+    static async sendSuccessMessage(client, ctx, args, color, time) {
         const embed = client.embed()
             .setColor(color.main)
             .setDescription(args)
-        ctx.sendMessage({ embeds: embed }).then(async msg => {
+        return await ctx.sendMessage({ embeds: embed }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
 
-    static sendErrorMessage(client, ctx, args, color, time) {
+    static async sendErrorMessage(client, ctx, args, color, time) {
         const embed = client.embed()
             .setColor(color.red)
             .setDescription(args)
-        ctx.sendMessage({ embeds: [embed] }).then(async msg => {
+        await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }

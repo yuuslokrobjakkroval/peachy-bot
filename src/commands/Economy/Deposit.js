@@ -28,51 +28,57 @@ module.exports = class Deposit extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const depositMessages = language.locales.get(language.defaultLocale)?.economyMessages?.depositMessages;
         try {
-            client.utils.getUser(ctx.author.id).then(user => {
-                if (!user) {
-                    return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
+            const user = await Users.findOne({ userId: ctx.author.id }).exec();
+            if (!user) {
+                return await client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
+            }
+
+            const { coin, bank } = user.balance;
+
+            // Check if the user has coins to deposit
+            if (coin < 1) {
+                return await client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
+            }
+
+            // Determine the amount to deposit
+            let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[0];
+            if (!amount || isNaN(amount) || amount < 1) {
+                const amountMap = {all: coin, half: Math.ceil(coin / 2)};
+                if (amount in amountMap) {
+                    amount = amountMap[amount];
+                } else {
+                    return await ctx.sendMessage({
+                        embeds: [
+                            client.embed().setColor(color.red).setDescription(depositMessages.invalidAmount)
+                        ],
+                    });
                 }
+            }
 
-                const { coin, bank } = user.balance;
-                if (coin < 1) {
-                    return client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
-                }
+            // Ensure the amount does not exceed available coins
+            const baseCoins = Math.min(amount, coin);
+            const newCoin = coin - baseCoins;
+            const newBank = bank + baseCoins;
 
-                let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[0];
-                if (!amount || isNaN(amount) || amount < 1) {
-                    const amountMap = {all: coin, half: Math.ceil(coin / 2)};
-                    if (amount in amountMap) {
-                        amount = amountMap[amount];
-                    } else {
-                        return ctx.sendMessage({
-                            embeds: [
-                                client.embed().setColor(color.red).setDescription(depositMessages.invalidAmount)
-                            ],
-                        });
-                    }
-                }
+            // Update the user's balance in the database
+            await Users.updateOne({ userId: ctx.author.id }, {
+                $set: { 'balance.coin': newCoin, 'balance.bank': newBank }
+            }).exec();
 
-                const baseCoins = Math.min(amount, coin);
-                const newCoin = coin - baseCoins;
-                const newBank = bank + baseCoins;
+            // Prepare and send success embed message
+            const embed = client
+                .embed()
+                .setColor(color.main)
+                .setDescription(
+                    depositMessages.success
+                        .replace('%{coinEmote}', emoji.coin)
+                        .replace('%{amount}', client.utils.formatNumber(baseCoins))
+                );
 
-                user.balance.coin = newCoin;
-                user.balance.bank = newBank;
-                user.save();
-
-                const embed = client.embed()
-                    .setColor(color.main)
-                    .setDescription(
-                        depositMessages.success
-                            .replace('%{coinEmote}', emoji.coin)
-                            .replace('%{amount}', client.utils.formatNumber(baseCoins))
-                    );
-
-                return ctx.sendMessage({embeds: [embed]});
-            })
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('Error in Deposit command:', error);
-            return client.utils.sendErrorMessage(client, ctx, depositMessages.errors.fetchFail, color);
+            return await client.utils.sendErrorMessage(client, ctx, depositMessages.errors.fetchFail, color);
         }
     }
 };

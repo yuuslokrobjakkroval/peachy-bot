@@ -1,4 +1,4 @@
-const { Collection, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ComponentType, ButtonStyle, AttachmentBuilder, InteractionCollector } = require('discord.js');
+const { Client, IntentsBitField, Collection, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ComponentType, ButtonStyle, AttachmentBuilder, InteractionCollector } = require('discord.js');
 const Users = require("../schemas/user.js");
 const { prefix } = require('../config');
 const fs = require('fs');
@@ -7,54 +7,63 @@ const sym3 = '```';
 const one_second = 1000;
 require('dotenv').config();
 
-function checkCooldown(client, userId, command, duration) {
+const bot = new Client({
+    intents: [
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMembers,
+        IntentsBitField.Flags.GuildPresences,
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildMessageReactions,
+    ]
+});
+
+async function checkCooldown(userId, command, duration) {
     const now = Date.now();
+
     try {
-        client.utils.getUser(userId).then(user => {
-            if (user) {
-                const cooldown = user.cooldowns.find(c => c.name === command);
-                if (cooldown) {
-                    // Check if the current time minus the timestamp is greater than or equal to the provided duration
-                    return now - cooldown.timestamp >= duration;
-                }
+        const user = await Users.findOne({ userId: userId }).exec();
+        if (user) {
+            const cooldown = user.cooldowns.find(c => c.name === command);
+            if (cooldown) {
+                // Check if the current time minus the timestamp is greater than or equal to the provided duration
+                return now - cooldown.timestamp >= duration;
             }
-            return true;
-        })
+        }
+        return true;
     } catch (error) {
         console.error('Error checking cooldown:', error);
         return false;
     }
 }
 
-function updateCooldown(client, userId, command, duration) {
+async function updateCooldown(userId, command, duration) {
     const now = Date.now();
     try {
-        client.utils.getUser(userId).then(user => {
-            if (user) {
-                const cooldownIndex = user.cooldowns.findIndex(c => c.name === command);
-                if (cooldownIndex > -1) {
-                    user.cooldowns[cooldownIndex].timestamp = now;
-                    user.cooldowns[cooldownIndex].duration = duration;
-                } else {
-                    user.cooldowns.push({name: command, timestamp: now, duration: duration});
-                }
-                user.save();
+        const user = await Users.findOne({ userId: userId }).exec();
+        if (user) {
+            const cooldownIndex = user.cooldowns.findIndex(c => c.name === command);
+            if (cooldownIndex > -1) {
+                user.cooldowns[cooldownIndex].timestamp = now;
+                user.cooldowns[cooldownIndex].duration = duration;
+            } else {
+                user.cooldowns.push({ name: command, timestamp: now, duration: duration });
             }
-        })
+            await user.save();
+        }
     } catch (error) {
         console.error('Error updating cooldown:', error);
     }
 }
 
-async function getCooldown(client, userId, command) {
+async function getCooldown(userId, command) {
     try {
-        client.utils.getUser(userId).then(user => {
-            if (user) {
-                const cooldown = user.cooldowns.find(c => c.name === command);
-                return cooldown ? cooldown.timestamp : 0;
-            }
-            return 0;
-        })
+        const user = await Users.findOne({ userId: userId }).exec();
+        if (user) {
+            const cooldown = user.cooldowns.find(c => c.name === command);
+            return cooldown ? cooldown.timestamp : 0;
+        }
+        return 0;
     } catch (error) {
         console.error('Error fetching cooldown:', error);
         return 0;
@@ -69,6 +78,15 @@ function getRandomInt(min, max){
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function getFiles(commandFiles, dir){
+    bot.commands = new Collection();
+    for (const file of commandFiles) {
+        const command = require(`${dir}/${file}`);
+        bot.commands.set(command.name, command);
+    }
+    return bot.commands;
 }
 
 async function getUser(id) {
@@ -158,6 +176,82 @@ function getCollectionButton(mgs, timeout){
     });
 }
 
+function cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {
+    if (id == process.env.devId) {
+        return false;
+    }
+
+    if (timeout.includes(id)) {
+        if (cdId.includes(id)) {
+            return true;
+        }
+
+        cdId.push(id);
+
+        if (prem.includes(id)) {
+            const CD = parseInt(cooldowntime / 2);
+
+            const currentTime = new Date();
+            const cooldownEnd = new Date(currentTime.getTime() + CD);
+            if (currentTime < cooldownEnd) {
+                const timeLeft = Math.ceil((cooldownEnd - currentTime) / 1000) - 1;
+                message.channel.send({ embeds: [SimpleEmbed(`<@${id}> cooldown **<t:${Math.floor(cooldownEnd.getTime() / 1000)}:R>**`)] })
+                    .then(cooldownMessage => {
+                        setTimeout(() => {
+                            cooldownMessage.delete().catch(console.error);
+                            cdId.shift();
+                        }, timeLeft * 1000);
+                    })
+                    .catch(console.error);
+                return true;
+            }
+            return true;
+        }
+
+        const cooldownEnd = cooldowns.get(message.guild.id);
+        const currentTime = new Date();
+        if (currentTime < cooldownEnd) {
+            const timeLeft = Math.ceil((cooldownEnd - currentTime) / 1000) - 1;
+            message.channel.send({ embeds: [SimpleEmbed(`<@${id}> cooldown **<t:${Math.floor(cooldownEnd.getTime() / 1000)}:R>**`)] })
+                .then(cooldownMessage => {
+                    setTimeout(() => {
+                        cooldownMessage.delete().catch(console.error);
+                        cdId.shift();
+                    }, timeLeft * 1000);
+                })
+                .catch(console.error);
+            return true;
+        }
+        return true;
+
+    } else {
+        if(prem.includes(id)){
+            const CD = parseInt(cooldowntime / 2);
+
+            const currentTime = new Date();
+            const cooldownEnd = new Date(currentTime.getTime() + CD);
+            cooldowns.set(message.guild.id, cooldownEnd);
+            timeout.push(id);
+            setTimeout(() => {
+                timeout.shift();
+                cdId.shift();
+            }, CD - 1000);
+            return false;
+
+        }else{
+            const currentTime = new Date();
+            const cooldownEnd = new Date(currentTime.getTime() + cooldowntime);
+            cooldowns.set(message.guild.id, cooldownEnd);
+            timeout.push(id);
+            setTimeout(() => {
+                timeout.shift();
+                cdId.shift();
+            }, cooldowntime - 1000);
+            return false;
+        }
+    }
+}
+
 function getZodiacSign(zodiacSign, day, month) {
     const zodiacSigns = [
         { sign: 'capricorn', start: [12, 22], end: [1, 19] },
@@ -218,4 +312,4 @@ function getNumberEmoji(client, color, emoji, rank) {
     }
 }
 
-module.exports = { prefix, getUser, getLetterEmoji, getNumberEmoji, getZodiacSign, checkCooldown, updateCooldown, getCooldown, fs, customEmbed,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, SimpleEmbed, blackjackEmbed, advanceEmbed, labelButton, emojiButton, sym, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };
+module.exports = { getLetterEmoji, getNumberEmoji, getZodiacSign, checkCooldown, updateCooldown, getCooldown, fs, customEmbed, cooldown,  EmbedBuilder, getCollectionButton, oneButton, twoButton, threeButton, fourButton, fiveButton, sleep, getRandomInt, one_second, prefix, getFiles, getUser, SimpleEmbed, blackjackEmbed, advanceEmbed, labelButton, emojiButton, sym, sym3, ButtonStyle, AttachmentBuilder, ComponentType, InteractionCollector };
