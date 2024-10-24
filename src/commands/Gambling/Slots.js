@@ -134,7 +134,7 @@ module.exports = class Slots extends Command {
 				})
 
 			ctx.sendMessage({embeds: [initialEmbed]});
-			user.balanace.coin = newBalance;
+			user.balance.coin = newBalance;
 			user.save();
 			
 			const spinEmbed = client.embed()
