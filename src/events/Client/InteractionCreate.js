@@ -13,13 +13,13 @@ const GiveawaySchema = require('../../schemas/giveaway.js');
 const { endGiveaway } = require('../../utils/Utils.js');
 const Users = require("../../schemas/user");
 
-module.exports = class InteractionCreate extends Event {
+class InteractionCreate extends Event {
   constructor(client, file) {
     super(client, file, { name: 'interactionCreate' });
   }
 
   async run(interaction) {
-    const { color, emoji, language } = this.client.checkThemeUser(interaction.user.id);
+    const { color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
     if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
       const command = this.client.commands.get(interaction.commandName);
       if (!command) return;
@@ -27,6 +27,13 @@ module.exports = class InteractionCreate extends Event {
       let user = await Users.findOne({ userId: interaction.user.id });
 
       if (user?.verification?.isBanned) {
+        // return await message.channel.send({
+        //   embeds: [
+        //     this.client.embed()
+        //         .setColor(color.red)
+        //         .setDescription(`You is already banned for: \`${user.verification.banReason || 'No reason provided'}\`.`)
+        //   ]
+        // });
         return;
       }
 
@@ -68,7 +75,7 @@ module.exports = class InteractionCreate extends Event {
 
         if (!interaction.inGuild()) return;
 
-        const isRestrictedCommand = ['giveaway']
+        const isRestrictedCommand = ['giveaway', 'level-setup', 'level-message', 'level-disable']
         const hasDevRole = interaction.member.roles.cache.some(role => role.name === 'Developer');
         const isOwner = this.client.config.owners.includes(interaction.user.id);
 
@@ -301,3 +308,5 @@ module.exports = class InteractionCreate extends Event {
     }
   }
 }
+
+module.exports = InteractionCreate;
