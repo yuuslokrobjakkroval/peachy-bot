@@ -65,8 +65,7 @@ module.exports = class Slots extends Command {
 		let rand = (await random(1, 1000)) / 10;
 		let win = 0;
 
-		const blacklistId = ['966688007493140591', '1249351082925232157', '1195264158967546010', '1298678037524643923']
-		console.log(blacklistId.includes(ctx.author.id))
+		const blacklistId = ['1249351082925232157', '1195264158967546010', '1298678037524643923']
 		if(blacklistId.includes(ctx.author.id)) {
 			if (rand <= 12) { // 24%
 				win = baseCoins;
