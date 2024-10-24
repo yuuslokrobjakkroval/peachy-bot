@@ -1,6 +1,5 @@
 const { Event } = require('../../structures/index.js');
 const { ChannelType, PermissionFlagsBits } = require("discord.js");
-const config = require('../../config.js'); // Assuming you have a config file with the guild ID
 
 module.exports = class GuildCreate extends Event {
     constructor(client, file) {
