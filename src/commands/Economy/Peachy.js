@@ -38,7 +38,7 @@ module.exports = class Peachy extends Command {
                 return await client.utils.sendErrorMessage(client, ctx, peachyMessages.errors.noUser, color);
             }
 
-            const baseCoins = chance.integer({ min: 1000, max: 5000 });
+            const baseCoins = chance.integer({ min: 400, max: 500 });
             const newBalance = user.balance.coin + baseCoins;
             const newStreak = user.peachy.streak + 1;
 

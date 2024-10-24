@@ -40,7 +40,7 @@ module.exports = class Goma extends Command {
                 return await client.utils.sendErrorMessage(client, ctx, gomaMessages.errors.noUser, color);
             }
 
-            const baseCoins = chance.integer({ min: 1000, max: 5000 });
+            const baseCoins = chance.integer({ min: 400, max: 500 });
             const newBalance = user.balance.coin + baseCoins;
             const newStreak = user.goma.streak + 1;
 

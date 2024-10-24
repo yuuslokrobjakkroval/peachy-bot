@@ -39,7 +39,7 @@ module.exports = class Weekly extends Command {
             }
 
             const { coin, bank } = user.balance;
-            const baseCoins = chance.integer({ min: 500000, max: 1000000 });
+            const baseCoins = chance.integer({ min: 300000, max: 5000000 });
             const newBalance = coin + baseCoins;
 
             const now = moment().tz('Asia/Bangkok');
