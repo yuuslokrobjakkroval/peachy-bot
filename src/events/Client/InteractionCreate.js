@@ -13,13 +13,13 @@ const GiveawaySchema = require('../../schemas/giveaway.js');
 const { endGiveaway } = require('../../utils/Utils.js');
 const Users = require("../../schemas/user");
 
-module.exports = class InteractionCreate extends Event {
+class InteractionCreate extends Event {
   constructor(client, file) {
     super(client, file, { name: 'interactionCreate' });
   }
 
   async run(interaction) {
-    const { color, emoji, language } = await this.client.check(interaction.user.id);
+    const { color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
     if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
       const command = this.client.commands.get(interaction.commandName);
       if (!command) return;
@@ -308,3 +308,5 @@ module.exports = class InteractionCreate extends Event {
     }
   }
 }
+
+module.exports = InteractionCreate;
