@@ -56,6 +56,10 @@ module.exports = class Utils {
         return arr[Math.floor(Math.random() * arr.length)];
     }
 
+    static getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
     static toNameCase(args) {
         return args
             .split('_')
