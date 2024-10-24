@@ -33,7 +33,9 @@ module.exports = class Context {
 
     sendMessage(content) {
         if (this.isInteraction) {
-            this.msg = this.interaction.reply(content);
+            this.msg = this.interaction.reply(content)
+                .then(() => this.interaction.fetchReply())
+                .catch(console.error);
             return this.msg;
         } else {
             this.msg = this.message.channel.send(content);
@@ -43,11 +45,13 @@ module.exports = class Context {
 
     editMessage(content) {
         if (this.isInteraction) {
-            if (this.msg) this.msg = this.interaction.editReply(content);
-            return this.msg;
+            return this.msg.then((message) => {
+                return this.interaction.editReply(content).catch(console.error);
+            }).catch(console.error);
         } else {
-            if (this.msg) this.msg = this.msg.edit(content);
-            return this.msg;
+            if (this.msg) {
+                return this.msg.edit(content).catch(console.error);
+            }
         }
     }
 
