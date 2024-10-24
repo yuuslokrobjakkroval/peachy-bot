@@ -41,8 +41,7 @@ module.exports = class Goma extends Command {
             const newStreak = user.goma.streak + 1;
 
             const cooldownTime = 300000; // 5 minutes cooldown
-
-            checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime).then(isCooldownExpired => {
+            const isCooldownExpired = checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
                 if (!isCooldownExpired) {
                     getCooldown(ctx.author.id, this.name.toLowerCase()).then(lastCooldownTimestamp => {
                         const remainingTime = Math.ceil((lastCooldownTimestamp + cooldownTime - Date.now()) / 1000);
@@ -84,16 +83,12 @@ module.exports = class Goma extends Command {
                         return ctx.sendMessage({ embeds: [successEmbed] });
                     }).catch(error => {
                         console.error('Error updating cooldown:', error);
-                        return client.utils.sendErrorMessage(client, ctx, gomaMessages.errors.fetchFail, color);
-                    });
-                }
-            }).catch(error => {
-                console.error('Error checking cooldown:', error);
-                return client.utils.sendErrorMessage(client, ctx, gomaMessages.errors.fetchFail, color);
-            });
-        }).catch(error => {
-            console.error('Error fetching user:', error);
-            return client.utils.sendErrorMessage(client, ctx, gomaMessages.errors.fetchFail, color);
-        });
+                        return client.utils.sendErrorMessage(client, ctx, peachyMessages.errors.fetchFail, color);
+                }).catch(error => {
+                    console.error('Error fetching user:', error);
+                    return client.utils.sendErrorMessage(client, ctx, peachyMessages.errors.fetchFail, color);
+                });
+            }
+        })
     }
 };

@@ -9,7 +9,6 @@ require('dotenv').config();
 
 function checkCooldown(client, userId, command, duration) {
     const now = Date.now();
-
     try {
         client.utils.getUser(userId).then(user => {
             if (user) {
