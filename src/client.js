@@ -45,6 +45,6 @@ setInterval(() => {
             });
         })
         .catch((err) => console.error('Error finding giveaways:', err));
-}, 5000);
+}, 60000);
 
 client.start(config.token);
