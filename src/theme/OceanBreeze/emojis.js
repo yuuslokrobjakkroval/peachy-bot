@@ -94,6 +94,7 @@ module.exports = {
         fun: '<a:ROAR_1:1283083752896987209>',
         games: '<:NORMALGAME:1282638025402224704>',
         gambling: '<:GAMBLING:1282638278780256357>',
+        giveaways: '<a:GIVEAWAYS:1299315576514023485>',
         profile: '<a:NORMALPROFILE:1282639241989460061>',
         relationships: '<a:RELATIONSHIP:1299209836973785099>',
         social: '<a:SOCIAL:1282639924419366966>',

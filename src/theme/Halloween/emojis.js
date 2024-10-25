@@ -84,6 +84,7 @@ module.exports = {
         fun: '<:HFUN:1290645227866034268>',
         games: '<:HGAME:1290645263542911026>',
         gambling: '<:HGAMBLING:1290645346728542218>',
+        giveaways: '<a:GIVEAWAYS:1299315576514023485>',
         profile: '<:HPROFILE:1290645376344395816>',
         relationships: '<a:RELATIONSHIP:1299209836973785099>',
         social: '<:HSOCIAL:1290645401615077436>',
