@@ -729,46 +729,46 @@
 		},
 		"relationshipMessages": {
 			"success": {
-				"add": "Successfully added",
-				"remove": "Successfully removed"
+				"add": "Successfully added **<user>** to your **<relationship type>**.",
+				"remove": "Successfully removed **<user>** from your **<relationship type>**."
 			},
 			"error": {
 				"userNotMentioned": "Please mention a user to manage your relationship.",
 				"notRegistered": "You are not registered in the database.",
 				"targetNotRegistered": "The user you are trying to modify is not registered.",
-				"invalidType": "Invalid relationship type.",
+				"invalidType": "Invalid relationship type specified.",
 				"partner": {
 					"error": {
 						"alreadyExists": "You already have a partner.",
-						"notFound": "This user is not your partner."
+						"notFound": "This user is not listed as your partner."
 					}
 				},
 				"bro": {
 					"error": {
-						"limitExceeded": "You can only have up to 4 bros.",
-						"alreadyExists": "This user is already your bro.",
-						"notFound": "This user is not your bro."
+						"limitExceeded": "You can have a maximum of 4 brothers.",
+						"alreadyExists": "This user is already listed as your brother.",
+						"notFound": "This user is not listed as your brother."
 					}
 				},
 				"sister": {
 					"error": {
-						"limitExceeded": "You can only have up to 4 sisters.",
-						"alreadyExists": "This user is already your sister.",
-						"notFound": "This user is not your sister."
+						"limitExceeded": "You can have a maximum of 4 sisters.",
+						"alreadyExists": "This user is already listed as your sister.",
+						"notFound": "This user is not listed as your sister."
 					}
 				},
 				"bestie": {
 					"error": {
-						"limitExceeded": "You can only have up to 4 besties.",
-						"alreadyExists": "This user is already your bestie.",
-						"notFound": "This user is not your bestie."
+						"limitExceeded": "You can have a maximum of 4 besties.",
+						"alreadyExists": "This user is already listed as your bestie.",
+						"notFound": "This user is not listed as your bestie."
 					}
 				},
 				"confidant": {
 					"error": {
-						"limitExceeded": "You can only have up to 4 confidants.",
-						"alreadyExists": "This user is already your confidant.",
-						"notFound": "This user is not your confidant."
+						"limitExceeded": "You can have a maximum of 4 confidants.",
+						"alreadyExists": "This user is already listed as your confidant.",
+						"notFound": "This user is not listed as your confidant."
 					}
 				}
 			}
