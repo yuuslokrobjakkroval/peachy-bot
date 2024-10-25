@@ -71,15 +71,15 @@ module.exports = class Confidant extends Command {
 
             if (action === 'add') {
                 if (userData.relationship.confidants.length >= 4) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.confidant.error.limitExceeded, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.limitExceeded, color);
                 }
                 if (userData.relationship.confidants.some(confidant => confidant.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.confidant.error.alreadyExists, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.alreadyExists, color);
                 }
                 userData.relationship.confidants.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
             } else if (action === 'remove') {
                 if (!userData.relationship.confidants.some(confidant => confidant.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.confidant.error.notFound, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.notFound, color);
                 }
                 userData.relationship.confidants = userData.relationship.confidants.filter(confidant => confidant.id !== userToModify);
             }

@@ -71,15 +71,15 @@ module.exports = class Bestie extends Command {
 
             if (action === 'add') {
                 if (userData.relationship.besties.length >= 4) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.limitExceeded, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.limitExceeded, color);
                 }
                 if (userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.alreadyExists, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.alreadyExists, color);
                 }
                 userData.relationship.besties.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
             } else if (action === 'remove') {
                 if (!userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.notFound, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.notFound, color);
                 }
                 userData.relationship.besties = userData.relationship.besties.filter(bestie => bestie.id !== userToModify);
             }

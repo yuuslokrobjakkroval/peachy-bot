@@ -71,15 +71,15 @@ module.exports = class Sister extends Command {
 
             if (action === 'add') {
                 if (userData.relationship.sisters.length >= 4) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.sister.error.limitExceeded, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.sister.error.limitExceeded, color);
                 }
                 if (userData.relationship.sisters.some(sister => sister.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.sister.error.alreadyExists, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.sister.error.alreadyExists, color);
                 }
                 userData.relationship.sisters.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
             } else if (action === 'remove') {
                 if (!userData.relationship.sisters.some(sister => sister.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.sister.error.notFound, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.sister.error.notFound, color);
                 }
                 userData.relationship.sisters = userData.relationship.sisters.filter(sister => sister.id !== userToModify);
             }

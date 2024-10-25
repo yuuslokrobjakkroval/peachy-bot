@@ -73,7 +73,7 @@ module.exports = class Partner extends Command {
 
             if (action === 'add') {
                 if (userData.relationship.partner?.id) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.partner.error.alreadyExists, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.partner.error.alreadyExists, color);
                 }
                 userData.relationship.partner = {
                     id: userToModify,
@@ -83,7 +83,7 @@ module.exports = class Partner extends Command {
                 };
             } else if (action === 'remove') {
                 if (userData.relationship.partner?.id !== userToModify) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.partner.error.notFound, color);
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.partner.error.notFound, color);
                 }
                 userData.relationship.partner = { id: null, name: null, xp: 0, level: 1 };
             }
