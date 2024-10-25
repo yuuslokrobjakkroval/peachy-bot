@@ -50,17 +50,16 @@ client.on('guildMemberAdd', member => {
     }
 });
 
-// Event listener for members leaving the server
 client.on('guildMemberRemove', member => {
+    console.log(`${member.user.tag} has left the server.`); // Log user who left
+
     const goodbyeChannelId = '1271685845165936727';
     const goodbyeChannel = member.guild.channels.cache.get(goodbyeChannelId);
 
     // Ensure the goodbye channel exists
     if (goodbyeChannel) {
-        // Fetch the current member count after someone leaves
         const memberCount = member.guild.memberCount;
 
-        // Custom goodbye message with placeholders
         const goodbyeMessage = `
 **<:PEACH:1281537106342187102> Goodbye from ${member.guild.name} SERVER <:GOMA:1281537120644628480>**
 
@@ -73,10 +72,9 @@ We're sad to see you go, ${member.user.username}!
 **NOW WE HAVE \`${memberCount}\` MEMBERS LEFT**
         `;
 
-        // Send the goodbye message along with an image
         goodbyeChannel.send({
             content: goodbyeMessage,
-            files: ['https://i.imgur.com/AyHSD1E.png'] // Replace with your image URL
+            files: ['https://i.imgur.com/AyHSD1E.png']
         });
     } else {
         console.warn(`Goodbye channel with ID ${goodbyeChannelId} was not found in the guild.`);
