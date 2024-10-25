@@ -51,13 +51,22 @@ setInterval(() => {
 client.on('guildMemberAdd', member => {
     const channelId = '1271685845165936721';
     const welcomeChannel = member.guild.channels.cache.get(channelId);
+    const roleId = '1271685844700233741';
 
-    // Ensure the channel exists
+    // Assign the role to the new member
+    const role = member.guild.roles.cache.get(roleId);
+    if (role) {
+        member.roles.add(role)
+            .then(() => console.log(`Role ${role.name} assigned to ${member.user.tag}.`))
+            .catch(console.error);
+    } else {
+        console.warn(`Role with ID ${roleId} was not found.`);
+    }
+
+    // Ensure the welcome channel exists
     if (welcomeChannel) {
-        // Fetch the current member count
         const memberCount = member.guild.memberCount;
 
-        // Custom welcome message with formatted placeholders
         const welcomeMessage = `
 **<:PEACH:1281537106342187102> WELCOME TO ${member.guild.name} SERVER <:GOMA:1281537120644628480>**
 
@@ -96,7 +105,7 @@ client.on('guildMemberRemove', member => {
 
 <:BORDERTOPLEFT:1283010765519060993>  ═════════════════   <:BORDERTOPRIGHT:1283010784158421047>
 
-We're sad to see you go, ${member.user.displayName}!
+We're sad to see you go, ${member}!
 
 <:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
 
