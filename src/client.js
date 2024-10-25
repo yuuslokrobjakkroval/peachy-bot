@@ -14,6 +14,20 @@ const clientOptions = {
 
 const client = new PeachyClient(clientOptions);
 
+// Event listener for new members joining the server
+client.on('guildMemberAdd', member => {
+    // Define the specific channel ID where the bot will send the welcome message
+    const channelId = '1271685845165936729';
+    const welcomeChannel = member.guild.channels.cache.get(channelId);
+
+    if (welcomeChannel) {
+        welcomeChannel.send(`Hello, ${member.user}! Welcome to the server!`);
+    } else {
+        console.warn(`Channel with ID ${channelId} was not found in the guild.`);
+    }
+});
+
+
 setInterval(() => {
     const now = Date.now();
     GiveawaySchema.find({ endTime: { $lte: now }, ended: false })
