@@ -69,8 +69,17 @@ module.exports = class Start extends Command {
         const isOwner = this.client.config.owners.includes(ctx.author.id);
         const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
 
-        if (!isOwner || !isServerOwner) {
-            return await ctx.reply({ content: 'Only the bot owner and server owner can enable autopay for giveaways.', ephemeral: true });
+        if (!isOwner && !isServerOwner) {
+            return (ctx.isInteraction
+                    ? ctx.interaction.reply({
+                        content: 'Only the bot owner and server owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+                    : ctx.sendMessage({
+                        content: 'Only the bot owner and server owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+            );
         }
 
         // Get command parameters
@@ -80,7 +89,16 @@ module.exports = class Start extends Command {
         const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[3];
 
         if (autoPay && !isOwner) {
-            return await ctx.reply({ content: 'Only the bot owner can enable autopay for giveaways.', ephemeral: true });
+            return (ctx.isInteraction
+                    ? ctx.interaction.reply({
+                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+                    : ctx.sendMessage({
+                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+            );
         }
 
         const image = ctx.isInteraction ? ctx.interaction.options.getAttachment('image') : args[4];
