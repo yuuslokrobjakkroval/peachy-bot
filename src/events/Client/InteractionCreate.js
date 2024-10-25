@@ -167,7 +167,7 @@ class InteractionCreate extends Event {
               .addFields([
                 {
                   name: 'Author',
-                  value: `**Name:** ${interaction.author.username}\n**Id:** ${interaction.author.id}\n**Channel:** ${interaction.channel.name}`,
+                  value: `**Name:** ${interaction.user.username}\n**Id:** ${interaction.user.id}\n**Channel:** ${interaction.channel.name}`,
                   inline: true,
                 },
                 {
@@ -180,8 +180,8 @@ class InteractionCreate extends Event {
                 },
               ])
               .setFooter({
-                text: interaction.author.username,
-                iconURL: interaction.author.displayAvatarURL({extension: 'jpeg'})
+                text: interaction.user.username,
+                iconURL: interaction.user.displayAvatarURL({extension: 'jpeg'})
               })
               .setTimestamp();
           await channel.send({embeds: [embed]}).catch(() => console.error('Error sending log message'));
