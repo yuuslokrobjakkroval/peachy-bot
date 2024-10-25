@@ -246,7 +246,7 @@ module.exports = [
             },
             {
                 id: 't02',
-                name: 'Pjum Ben Festival',
+                name: 'Pjum Ben',
                 description: 'Celebrate the sacred Pjum Ben with this themed set, featuring festive colors and culturally inspired emojis.',
                 type: 'theme',
                 able: {
@@ -262,7 +262,7 @@ module.exports = [
             },
             {
                 id: 't03',
-                name: 'Happy Halloween',
+                name: 'Halloween',
                 description: 'Get into the spooky spirit with this Halloween-themed set, featuring eerie colors and Halloween-inspired emojis.',
                 type: 'theme',
                 able: {
