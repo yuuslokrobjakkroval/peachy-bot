@@ -53,11 +53,23 @@ module.exports = class Bestie extends Command {
 
         Users.findOne({ userId: ctx.author.id })
             .then(userData => {
-                if (!userData) return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+                if (!userData) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+                }
+
+                // Ensure the relationship object exists
+                if (!userData.relationship) {
+                    userData.relationship = { besties: [] };
+                }
+                if (!userData.relationship.besties) {
+                    userData.relationship.besties = [];
+                }
 
                 Users.findOne({ userId: userToModify })
                     .then(targetUserData => {
-                        if (!targetUserData) return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+                        if (!targetUserData) {
+                            return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+                        }
 
                         if (action === 'add') {
                             if (userData.relationship.besties.length >= 4) {

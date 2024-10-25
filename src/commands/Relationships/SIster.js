@@ -53,11 +53,23 @@ module.exports = class Sister extends Command {
 
         Users.findOne({ userId: ctx.author.id })
             .then(userData => {
-                if (!userData) return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+                if (!userData) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+                }
+
+                // Ensure relationship exists and initialize if necessary
+                if (!userData.relationship) {
+                    userData.relationship = { sisters: [] };
+                }
+                if (!userData.relationship.sisters) {
+                    userData.relationship.sisters = [];
+                }
 
                 Users.findOne({ userId: userToModify })
                     .then(targetUserData => {
-                        if (!targetUserData) return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+                        if (!targetUserData) {
+                            return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+                        }
 
                         if (action === 'add') {
                             if (userData.relationship.sisters.length >= 4) {
