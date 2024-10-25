@@ -339,7 +339,7 @@ module.exports = class Utils {
         const embed = client.embed()
             .setColor(color.red)
             .setDescription(args)
-        return await ctx.sendMessage({ embeds: embed }).then(async msg => {
+        return await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
@@ -348,7 +348,7 @@ module.exports = class Utils {
         const embed = client.embed()
             .setColor(color.main)
             .setDescription(args)
-        return await ctx.sendMessage({ embeds: embed }).then(async msg => {
+        return await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
             setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
         });
     }
