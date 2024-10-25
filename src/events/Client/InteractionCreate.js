@@ -12,6 +12,7 @@ const { Context, Event } = require('../../structures/index.js');
 const GiveawaySchema = require('../../schemas/giveaway.js');
 const { endGiveaway } = require('../../utils/Utils.js');
 const Users = require("../../schemas/user");
+const {formatCapitalize} = require("../../utils/Utils");
 
 class InteractionCreate extends Event {
   constructor(client, file) {
@@ -86,7 +87,8 @@ class InteractionCreate extends Event {
         if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.SendMessages)) {
           return await interaction.member.send({
             content: `I don't have **\`SendMessages\`** permission in \`${interaction.guild.name}\`\nchannel: <#${interaction.channelId}>`,
-          }).catch(() => {});
+          }).catch(() => {
+          });
         }
 
         if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.EmbedLinks)) {
@@ -129,6 +131,60 @@ class InteractionCreate extends Event {
               content: `Please wait \`${timeLeft.toFixed(1)}\` more second(s) before reusing the **${interaction.commandName}** command.`,
             });
           }
+        }
+
+        const balanceCommands = ['balance', 'deposit', 'withdraw', 'transfer', 'buy', 'sell'];
+        const gamblingCommands = ['slots', 'blackjack', 'coinflip'];
+        const gameCommands = ['guessnumber'];
+        const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
+        const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'theme', 'verify'];
+        const giveawaysCommands = ['giveaways', 'reroll'];
+
+        let logChannelId;
+        if (giveawaysCommands.includes(command.name)) {
+          logChannelId = this.client.config.logChannelId[5];
+        } else if (utilityCommands.includes(command.name)) {
+          logChannelId = this.client.config.logChannelId[5];
+        } else if (mineCommands.includes(command.name)) {
+          logChannelId = this.client.config.logChannelId[4];
+        } else if (balanceCommands.includes(command.name)) {
+          logChannelId = this.client.config.logChannelId[3];
+        } else if (gamblingCommands.includes(command.name)) {
+          logChannelId = this.client.config.logChannelId[2];
+        } else if (gameCommands.includes(command.name)) {
+          logChannelId = this.client.config.logChannelId[1];
+        } else {
+          logChannelId = this.client.config.logChannelId[0];
+        }
+
+        const channel = this.client.channels.cache.get(logChannelId);
+        if (channel && channel.isTextBased()) {
+          const embed = this.client
+              .embed()
+              .setColor(this.client.config.color.green)
+              .setTitle(`Command - ${formatCapitalize(command.name)}`)
+              .setThumbnail(interaction.guild.iconURL({extension: 'jpeg'}))
+              .addFields([
+                {
+                  name: 'Author',
+                  value: `**Name:** ${interaction.author.username}\n**Id:** ${interaction.author.id}\n**Channel:** ${interaction.channel.name}`,
+                  inline: true,
+                },
+                {
+                  name: 'Extra Guild Info',
+                  value: `\`\`\`arm
+[+] Name: ${interaction.guild.name}
+[+] Id: ${interaction.guild.id}
+[+] Members: ${interaction.guild.memberCount.toString()}
+\`\`\``,
+                },
+              ])
+              .setFooter({
+                text: interaction.author.username,
+                iconURL: interaction.author.displayAvatarURL({extension: 'jpeg'})
+              })
+              .setTimestamp();
+          await channel.send({embeds: [embed]}).catch(() => console.error('Error sending log message'));
         }
 
         await command.run(this.client, ctx, ctx.args, color, emoji, language);
