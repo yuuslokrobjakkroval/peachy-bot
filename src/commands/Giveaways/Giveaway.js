@@ -16,7 +16,7 @@ module.exports = class Start extends Command {
             aliases: [],
             args: true,
             permissions: {
-                dev: true,
+                dev: false,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
@@ -65,15 +65,18 @@ module.exports = class Start extends Command {
     async run(client, ctx, args, color, emoji, language) {
         if (ctx.replied || ctx.deferred) return;
 
-        if (ctx.replied || ctx.deferred) return;
+        // Check if user is an owner for autopay
+        const isOwner = this.client.config.owners.includes(ctx.author.id);
+        const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
 
+        if (!isOwner || !isServerOwner) {
+            return await ctx.reply({ content: 'Only the bot owner and server owner can enable autopay for giveaways.', ephemeral: true });
+        }
 
         // Get command parameters
         const durationStr = ctx.isInteraction ? ctx.interaction.options.getString('duration') : args[0];
         const winnersStr = ctx.isInteraction ? ctx.interaction.options.getInteger('winners') : args[1];
         const prize = ctx.isInteraction ? ctx.interaction.options.getString('prize') : args[2];
-        // Check if user is an owner for autopay
-        const isOwner = ctx.author.id === client.config.owners;
         const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[3];
 
         if (autoPay && !isOwner) {

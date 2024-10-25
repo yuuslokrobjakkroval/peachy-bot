@@ -10,7 +10,7 @@ module.exports = class Reroll extends Command {
             aliases: [],
             args: true,
             permissions: {
-                dev: true,
+                dev: false,
                 client: ['SendMessages', 'EmbedLinks'],
                 user: [],
             },
@@ -19,6 +19,14 @@ module.exports = class Reroll extends Command {
     }
 
     async run(client, ctx, args, color) {
+        const isOwner = this.client.config.owners.includes(ctx.author.id);
+        const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
+
+        // Check if user is an owner
+        if (!isOwner || !isServerOwner) {
+            return await ctx.reply({ content: 'Only the bot owner and server owner can enable autopay for giveaways.', ephemeral: true });
+        }
+
         const messageId = args[0]; // Identify the giveaway by message ID
         const giveaway = await GiveawaySchema.findOne({ messageId });
 
