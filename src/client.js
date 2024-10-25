@@ -16,12 +16,35 @@ const client = new PeachyClient(clientOptions);
 
 // Event listener for new members joining the server
 client.on('guildMemberAdd', member => {
-    // Define the specific channel ID where the bot will send the welcome message
     const channelId = '1271685845165936729';
     const welcomeChannel = member.guild.channels.cache.get(channelId);
 
+    // Ensure the channel exists
     if (welcomeChannel) {
-        welcomeChannel.send(`Hello, ${member.user}! Welcome to the server!`);
+        // Fetch the current member count
+        const memberCount = member.guild.memberCount;
+
+        // Custom welcome message with formatted placeholders
+        const welcomeMessage = `
+**<:PEACH:1281537106342187102> WELCOME TO ${member.guild.name} SERVER <:GOMA:1281537120644628480>**
+
+<:BORDERTOPLEFT:1283010765519060993>  ═════════════════   <:BORDERTOPRIGHT:1283010784158421047>
+
+> **READ RULES** : <#1271685845165936722>
+> **REACT ROLES** : <#1271685845165936723>
+> **ANNOUNCEMENTS** : <#1272595713125126176>
+
+<:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
+
+**USER INFO** : ${member}
+**NOW WE HAVE \`${memberCount}\` MEMBERS**
+        `;
+
+        // Send the welcome message along with an image
+        welcomeChannel.send({
+            content: welcomeMessage,
+            files: ['https://i.imgur.com/WRQ9JgJ.jpg'] // Replace with your image URL
+        });
     } else {
         console.warn(`Channel with ID ${channelId} was not found in the guild.`);
     }
