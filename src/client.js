@@ -19,7 +19,7 @@ setInterval(async () => {
     const giveaways = await GiveawaySchema.find({ endTime: { $lte: now }, ended: false });
 
     for (const giveaway of giveaways) {
-        try {
+        if(giveaway) {
 
             const giveawayMessage = await client.channels.cache.get(giveaway.channelId)?.messages.fetch(giveaway.messageId);
             if (giveawayMessage) {
@@ -28,8 +28,8 @@ setInterval(async () => {
                 giveaway.ended = true;
                 await giveaway.save();
             }
-        } catch (err) {
-            console.error(`Error ending giveaway: ${err.message}`);
+        } else {
+            return;
         }
     }
 }, 60000);
