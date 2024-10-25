@@ -89,10 +89,10 @@ module.exports = class Partner extends Command {
             }
 
             // Save the user data
-            await userData.save();
+            userData.save();
 
             // Send success message
-            await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your partner.`, color);
+            return await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action].replace('<user>', `<@${userToModify}>`).replace('<relationship type>', 'partner')}`, color);
         } catch (err) {
             console.error(err);
         }
