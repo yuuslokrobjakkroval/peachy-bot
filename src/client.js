@@ -32,6 +32,6 @@ setInterval(async () => {
             return;
         }
     }
-}, 60000);
+}, 5000);
 
 client.start(config.token);
