@@ -84,8 +84,6 @@ client.on('guildMemberAdd', member => {
 });
 
 client.on('guildMemberRemove', member => {
-    console.log(`${member.user.tag} has left the server.`); // Log user who left
-
     const goodbyeChannelId = '1271685845165936727';
     const goodbyeChannel = member.guild.channels.cache.get(goodbyeChannelId);
 
@@ -98,7 +96,7 @@ client.on('guildMemberRemove', member => {
 
 <:BORDERTOPLEFT:1283010765519060993>  ═════════════════   <:BORDERTOPRIGHT:1283010784158421047>
 
-We're sad to see you go, ${member.user.username}!
+We're sad to see you go, ${member.user.displayName}!
 
 <:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
 
