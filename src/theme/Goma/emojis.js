@@ -94,6 +94,7 @@ module.exports = {
         games: '<a:GOMAGAME:1282954836006010910>',
         gambling: '<:GAMBLING:1282638278780256357>',
         profile: '<:GOMAMAIN:1281827625169322078>',
+        relationships: '<a:RELATIONSHIP:1299209836973785099>',
         social: '<a:SOCIAL:1282639924419366966>',
         emotes: '<a:GOMAEMOTES:1282954869816295516>',
         utility: '<a:GOMAUTILITY:1282955088888856648>',

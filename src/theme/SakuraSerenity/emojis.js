@@ -95,6 +95,7 @@ module.exports = {
         games: '<:SGAMES:1296027840915050510>',
         gambling: '<:SGAMBLING:1296027849857175612>',
         profile: '<:SPROFILE:1296027865422499901>',
+        relationships: '<a:RELATIONSHIP:1299209836973785099>',
         social: '<:SSOCIAL:1296027882941841468>',
         emotes: '<:SEMOTES:1296027907931635754>',
         utility: '<:SUTILITY:1296027923345834027>',
