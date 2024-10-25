@@ -48,14 +48,14 @@ module.exports = class Confidant extends Command {
         const userToModify = ctx.isInteraction ? ctx.interaction.options.getUser('user')?.id : ctx.message.mentions.users.first()?.id || args[1];
 
         if (!userToModify) {
-            return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
+            return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
         }
 
         try {
             // Find the user data
             const userData = await Users.findOne({ userId: ctx.author.id });
             if (!userData) {
-                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+                return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
             }
 
             // Ensure the relationship object exists and initialize if necessary
@@ -66,20 +66,20 @@ module.exports = class Confidant extends Command {
             // Find the target user
             const targetUserData = await Users.findOne({ userId: userToModify });
             if (!targetUserData) {
-                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+                return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
             }
 
             if (action === 'add') {
                 if (userData.relationship.confidants.length >= 4) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.limitExceeded, color);
+                    return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.limitExceeded, color);
                 }
                 if (userData.relationship.confidants.some(confidant => confidant.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.alreadyExists, color);
+                    return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.alreadyExists, color);
                 }
                 userData.relationship.confidants.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
             } else if (action === 'remove') {
                 if (!userData.relationship.confidants.some(confidant => confidant.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.notFound, color);
+                    return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.confidant.error.notFound, color);
                 }
                 userData.relationship.confidants = userData.relationship.confidants.filter(confidant => confidant.id !== userToModify);
             }

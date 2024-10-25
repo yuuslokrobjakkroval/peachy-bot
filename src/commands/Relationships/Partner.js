@@ -50,14 +50,14 @@ module.exports = class Partner extends Command {
         const userToModify = ctx.isInteraction ? ctx.interaction.options.getUser('user')?.id : ctx.message.mentions.users.first()?.id || args[1];
 
         if (!userToModify) {
-            return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
+            return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
         }
 
         try {
             // Find the user
             const userData = await Users.findOne({ userId: ctx.author.id });
             if (!userData) {
-                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+                return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
             }
 
             // Ensure relationship exists
@@ -68,12 +68,12 @@ module.exports = class Partner extends Command {
             // Find the target user
             const targetUserData = await Users.findOne({ userId: userToModify });
             if (!targetUserData) {
-                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+                return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
             }
 
             if (action === 'add') {
                 if (userData.relationship.partner?.id) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.partner.error.alreadyExists, color);
+                    return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.partner.error.alreadyExists, color);
                 }
                 userData.relationship.partner = {
                     id: userToModify,
@@ -83,7 +83,7 @@ module.exports = class Partner extends Command {
                 };
             } else if (action === 'remove') {
                 if (userData.relationship.partner?.id !== userToModify) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.partner.error.notFound, color);
+                    return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.partner.error.notFound, color);
                 }
                 userData.relationship.partner = { id: null, name: null, xp: 0, level: 1 };
             }

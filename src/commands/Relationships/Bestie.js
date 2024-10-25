@@ -48,14 +48,14 @@ module.exports = class Bestie extends Command {
         const userToModify = ctx.isInteraction ? ctx.interaction.options.getUser('user')?.id : ctx.message.mentions.users.first()?.id || args[1];
 
         if (!userToModify) {
-            return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
+            return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
         }
 
         try {
             // Find user data
             const userData = await Users.findOne({ userId: ctx.author.id });
             if (!userData) {
-                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+                return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
             }
 
             // Ensure the relationship object exists
@@ -66,20 +66,20 @@ module.exports = class Bestie extends Command {
             // Find target user data
             const targetUserData = await Users.findOne({ userId: userToModify });
             if (!targetUserData) {
-                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+                return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
             }
 
             if (action === 'add') {
                 if (userData.relationship.besties.length >= 4) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.limitExceeded, color);
+                    return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.limitExceeded, color);
                 }
                 if (userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.alreadyExists, color);
+                    return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.alreadyExists, color);
                 }
                 userData.relationship.besties.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
             } else if (action === 'remove') {
                 if (!userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.notFound, color);
+                    return await client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.bestie.error.notFound, color);
                 }
                 userData.relationship.besties = userData.relationship.besties.filter(bestie => bestie.id !== userToModify);
             }
