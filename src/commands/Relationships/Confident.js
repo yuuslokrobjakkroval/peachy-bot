@@ -87,7 +87,7 @@ module.exports = class Confidant extends Command {
                         }
 
                         userData.save()
-                            .then(() => client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your confidant.`, color))
+                            .then(async () => await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your confidant.`, color))
                             .catch(err => console.error(err));
                     })
                     .catch(err => console.error(err));

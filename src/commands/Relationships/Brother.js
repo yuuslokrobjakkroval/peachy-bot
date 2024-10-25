@@ -87,7 +87,7 @@ module.exports = class Brother extends Command {
                         }
 
                         userData.save()
-                            .then(() => client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your brother.`, color))
+                            .then(async () => await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your brother.`, color))
                             .catch(err => console.error(err));
                     })
                     .catch(err => console.error(err));

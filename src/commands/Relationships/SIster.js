@@ -87,7 +87,7 @@ module.exports = class Sister extends Command {
                         }
 
                         userData.save()
-                            .then(() => client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your sister.`, color))
+                            .then(async () => await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your sister.`, color))
                             .catch(err => console.error(err));
                     })
                     .catch(err => console.error(err));

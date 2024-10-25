@@ -88,7 +88,7 @@ module.exports = class Partner extends Command {
                         }
 
                         userData.save()
-                            .then(() => client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your partner.`, color))
+                            .then(async () => await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your partner.`, color))
                             .catch(err => console.error(err));
                     })
                     .catch(err => console.error(err));
