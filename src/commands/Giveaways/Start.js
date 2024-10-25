@@ -65,11 +65,21 @@ module.exports = class Start extends Command {
     async run(client, ctx, args, color, emoji, language) {
         if (ctx.replied || ctx.deferred) return;
 
+        if (ctx.replied || ctx.deferred) return;
+
+
         // Get command parameters
         const durationStr = ctx.isInteraction ? ctx.interaction.options.getString('duration') : args[0];
         const winnersStr = ctx.isInteraction ? ctx.interaction.options.getInteger('winners') : args[1];
         const prize = ctx.isInteraction ? ctx.interaction.options.getString('prize') : args[2];
+        // Check if user is an owner for autopay
+        const isOwner = ctx.author.id === client.config.owners;
         const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[3];
+
+        if (autoPay && !isOwner) {
+            return await ctx.reply({ content: 'Only the bot owner can enable autopay for giveaways.', ephemeral: true });
+        }
+
         const image = ctx.isInteraction ? ctx.interaction.options.getAttachment('image') : args[4];
         const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[5];
 

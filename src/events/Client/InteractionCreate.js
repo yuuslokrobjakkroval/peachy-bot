@@ -68,11 +68,11 @@ class InteractionCreate extends Event {
 
         if (!interaction.inGuild()) return;
 
-        const isRestrictedCommand = ['giveaway', 'level-setup', 'level-message', 'level-disable']
-        const hasDevRole = interaction.member.roles.cache.some(role => role.name === 'Developer');
+        const isRestrictedCommand = ['giveaway']
         const isOwner = this.client.config.owners.includes(interaction.user.id);
+        const isServerOwner = this.client.config.serverOwner.includes(interaction.user.id);
 
-        if (isRestrictedCommand.includes(interaction.commandName) && !(isOwner || hasDevRole)) {
+        if (isRestrictedCommand.includes(interaction.commandName) && !(isOwner || isServerOwner)) {
           return await interaction.reply({
             content: "You don't have permission to use this command.",
             ephemeral: true,

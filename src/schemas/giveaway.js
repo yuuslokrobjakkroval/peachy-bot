@@ -14,7 +14,9 @@ const GiveawaySchema = new Schema({
     autopay: { type: Boolean, default: false },
     retryAutopay: { type: Boolean, default: false },
     winnerId: { type: [String], default: [] },
-    rerollOptions: { type: [String], default: [] }
+    rerollOptions: { type: [String], default: [] },
+    rerollCount: { type: Number, default: 0 },
+    rerolledWinners: { type: [String], default: [] },
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
 module.exports = model('giveaway', GiveawaySchema);
