@@ -40,7 +40,7 @@ module.exports = class Daily extends Command {
             }
 
             const { coin, bank } = user.balance;
-            const baseCoins = chance.integer({ min: 100000, max: 300000 });
+            const baseCoins = chance.integer({ min: 50000, max: 100000 });
             const baseExp = chance.integer({ min: 100, max: 150 });
 
             let bonusCoins = 0;
