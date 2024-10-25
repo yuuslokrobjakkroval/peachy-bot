@@ -14,24 +14,37 @@ const clientOptions = {
 
 const client = new PeachyClient(clientOptions);
 
-setInterval(async () => {
+setInterval(() => {
     const now = Date.now();
-    const giveaways = await GiveawaySchema.find({ endTime: { $lte: now }, ended: false });
-
-    for (const giveaway of giveaways) {
-        if(giveaway) {
-
-            const giveawayMessage = await client.channels.cache.get(giveaway.channelId)?.messages.fetch(giveaway.messageId);
-            if (giveawayMessage) {
-                await client.utils.endGiveaway(client, client.color, client.emoji, giveawayMessage, giveaway.autopay);
-
-                giveaway.ended = true;
-                await giveaway.save();
-            }
-        } else {
-            return;
-        }
-    }
+    GiveawaySchema.find({ endTime: { $lte: now }, ended: false })
+        .then((giveaways) => {
+            giveaways.forEach((giveaway) => {
+                if (giveaway) {
+                    client.channels.cache.get(giveaway.channelId)?.messages.fetch(giveaway.messageId)
+                        .then((giveawayMessage) => {
+                            if (giveawayMessage) {
+                                client.utils.endGiveaway(client, client.color, client.emoji, giveawayMessage, giveaway.autopay)
+                                    .then(() => {
+                                        giveaway.ended = true;
+                                        return giveaway.save();
+                                    })
+                                    .catch((err) => console.error('Error ending giveaway:', err));
+                            }
+                        })
+                        .catch((err) => {
+                            if (err.code === 10008) {
+                                // Handle the case where the message is not found (Unknown Message)
+                                console.warn(`Message with ID ${giveaway.messageId} was not found.`);
+                                giveaway.ended = true;
+                                giveaway.save().catch(console.error);
+                            } else {
+                                console.error('Error fetching message:', err);
+                            }
+                        });
+                }
+            });
+        })
+        .catch((err) => console.error('Error finding giveaways:', err));
 }, 5000);
 
 client.start(config.token);
