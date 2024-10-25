@@ -43,8 +43,8 @@ module.exports = class Help extends Command {
     const directoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.directoriesMessages;
     const embed = client.embed();
     const prefix = client.config.prefix;
-    const commands = client.commands.filter(cmd => cmd.category !== 'dev' && cmd.category !== 'giveaway');
-    let categories = ['Actions', 'Economy', 'Inventory', 'Fun', 'Games', 'Gambling', 'Profile', 'Relationships', 'Social', 'Emotes', 'Utility', 'Info'];
+    const commands = client.commands.filter(cmd => cmd.category !== 'dev');
+    let categories = ['Actions', 'Economy', 'Inventory', 'Fun', 'Games', 'Gambling', 'Giveaway', 'Profile', 'Relationships', 'Social', 'Emotes', 'Utility', 'Info'];
 
     if (!args[0]) {
       const sortedCommands = {};
