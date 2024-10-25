@@ -1,7 +1,7 @@
 const emoji = require('../../utils/Emoji');
 module.exports = [
     {
-        id: 'heartMilk',
+        id: 'heartmilk',
         name: 'Heart Milk',
         description: 'Sell Heart Milk to get 1 coin.',
         type: 'milk',
@@ -16,7 +16,7 @@ module.exports = [
         price: { buy: 1e2, sell: 1 },
     },
     {
-        id: 'peachMilk',
+        id: 'peachmilk',
         name: 'Peach Milk',
         description: 'Sell Peach Milk to get 100 coins.',
         type: 'milk',
@@ -31,7 +31,7 @@ module.exports = [
         price: { buy: 1e3, sell: 1e2 },
     },
     {
-        id: 'grapeMilk',
+        id: 'grapemilk',
         name: 'Grape Milk',
         description: 'Sell Grape Milk to get 1k coins.',
         type: 'milk',
@@ -46,7 +46,7 @@ module.exports = [
         price: { buy: 5e3, sell: 1e3 },
     },
     {
-        id: 'bananaMilk',
+        id: 'bananamilk',
         name: 'Banana Milk',
         description: 'Sell Peach Milk to get 5k coins.',
         type: 'milk',
@@ -61,7 +61,7 @@ module.exports = [
         price: { buy: 1e4, sell: 5e3 },
     },
     {
-        id: 'blueBerryMilk',
+        id: 'blueberrymilk',
         name: 'BlueBerry Milk',
         description: 'Sell BlueBerry Milk to get 10k coins.',
         type: 'milk',
@@ -76,7 +76,7 @@ module.exports = [
         price: { buy: 25e4, sell: 1e4 },
     },
     {
-        id: 'strawBerryMilk',
+        id: 'strawberrymilk',
         name: 'StrawBerry Milk',
         description: 'Sell StrawBerry Milk to get 25k coins.',
         type: 'milk',
@@ -91,7 +91,7 @@ module.exports = [
         price: { buy: 5e5, sell: 25e4 },
     },
     {
-        id: 'chocolateMilk',
+        id: 'chocolatemilk',
         name: 'Chocolate Milk',
         description: 'Sell Chocolate Milk to get 50k coins.',
         type: 'milk',
@@ -106,7 +106,7 @@ module.exports = [
         price: { buy: 75e4, sell: 5e5 },
     },
     {
-        id: 'rainBowMilk',
+        id: 'rainbowmilk',
         name: 'RainBow Milk',
         description: 'Sell RainBow Milk to get 75k coins.',
         type: 'milk',
@@ -121,7 +121,7 @@ module.exports = [
         price: { buy: 1e5, sell: 75e4 },
     },
     {
-        id: 'orangeMilk',
+        id: 'orangemilk',
         name: 'Orange Milk',
         description: 'Sell Orange Milk to get 100k coins.',
         type: 'milk',
@@ -136,7 +136,7 @@ module.exports = [
         price: { buy: 2e5, sell: 1e6 },
     },
     {
-        id: 'waterMelonMilk',
+        id: 'watermelonmilk',
         name: 'WaterMelon Milk',
         description: 'Sell WaterMelon Milk to get 200k coins.',
         type: 'milk',
@@ -151,7 +151,7 @@ module.exports = [
         price: { buy: 3e5, sell: 2e5 },
     },
     {
-        id: 'cloudMilk',
+        id: 'cloudmilk',
         name: 'Cloud Milk',
         description: 'Sell Cloud Milk to get 300k coins.',
         type: 'milk',
@@ -166,7 +166,7 @@ module.exports = [
         price: { buy: 4e5, sell: 3e5 },
     },
     {
-        id: 'cherryMilk',
+        id: 'cherrymilk',
         name: 'Cherry Milk',
         description: 'Sell Cherry Milk to get 400k coins.',
         type: 'milk',
@@ -181,7 +181,7 @@ module.exports = [
         price: { buy: 5e5, sell: 4e5 },
     },
     {
-        id: 'burgerMilk',
+        id: 'burgermilk',
         name: 'Burger Milk',
         description: 'Sell Burger Milk to get 500k coins.',
         type: 'milk',
@@ -196,7 +196,7 @@ module.exports = [
         price: { buy: 6e5, sell: 5e5 },
     },
     {
-        id: 'pearMilk',
+        id: 'pearmilk',
         name: 'Pear Milk',
         description: 'Sell Pear Milk to get 600k coins.',
         type: 'milk',
@@ -211,7 +211,7 @@ module.exports = [
         price: { buy: 7e5, sell: 6e5 },
     },
     {
-        id: 'cakeMilk',
+        id: 'cakemilk',
         name: 'Cake Milk',
         description: 'Sell Cake Milk to get 700k coins.',
         type: 'milk',
@@ -226,7 +226,7 @@ module.exports = [
         price: { buy: 8e5, sell: 7e5 },
     },
     {
-        id: 'bluePeachMilk',
+        id: 'bluepeachmilk',
         name: 'Blue Peach Milk',
         description: 'Sell Blue Peach Milk to get 800k coins.',
         type: 'milk',
@@ -241,7 +241,7 @@ module.exports = [
         price: { buy: 9e5, sell: 8e5 },
     },
     {
-        id: 'kokoMilk',
+        id: 'kokomilk',
         name: 'Koko Milk',
         description: 'Sell KOKO Milk to get 900k coins.',
         type: 'milk',
@@ -256,7 +256,7 @@ module.exports = [
         price: { buy: 1e6, sell: 9e5 },
     },
     {
-        id: 'cutieMilk',
+        id: 'cutiemilk',
         name: 'Cutie Milk',
         description: 'Sell Cutie Milk to get 1M coins.',
         type: 'milk',
