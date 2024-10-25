@@ -14,7 +14,7 @@ module.exports = class Partner extends Command {
                 usage: 'partner <add/remove> <user>',
             },
             category: 'friendship',
-            aliases: [],
+            aliases: ['pn'],
             cooldown: 5,
             args: true,
             permissions: {

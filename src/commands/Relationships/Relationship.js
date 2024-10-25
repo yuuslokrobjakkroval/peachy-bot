@@ -10,6 +10,7 @@ module.exports = class RelationshipHelp extends Command {
                 usage: 'relationship <help/all/type> [relationship type]',
             },
             category: 'relationship',
+            aliases: ['rs'],
             cooldown: 5,
             args: true,
             permissions: {

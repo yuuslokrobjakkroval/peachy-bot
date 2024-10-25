@@ -14,6 +14,7 @@ module.exports = class Confidant extends Command {
                 usage: 'confidant <add/remove> <user>',
             },
             category: 'relationship',
+            aliases: ['con'],
             cooldown: 5,
             args: true,
             permissions: {

@@ -14,6 +14,7 @@ module.exports = class Bestie extends Command {
                 usage: 'bestie <add/remove> <user>',
             },
             category: 'relationship',
+            aliases: ['best'],
             cooldown: 5,
             args: true,
             permissions: {

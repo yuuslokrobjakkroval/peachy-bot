@@ -14,6 +14,7 @@ module.exports = class Sister extends Command {
                 usage: 'sister <add/remove> <user>',
             },
             category: 'relationship',
+            aliases: ['sis'],
             cooldown: 5,
             args: true,
             permissions: {

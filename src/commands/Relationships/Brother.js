@@ -14,6 +14,7 @@ module.exports = class Brother extends Command {
                 usage: 'brother <add/remove> <user>',
             },
             category: 'relationship',
+            aliases: ['bros'],
             cooldown: 5,
             args: true,
             permissions: {
