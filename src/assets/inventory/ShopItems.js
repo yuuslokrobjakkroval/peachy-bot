@@ -241,7 +241,7 @@ module.exports = [
                 quantity: 1,
                 emoji: emoji.sea,
                 available: ['use'],
-                price: { buy: 1e6, sell: 5e5 },
+                price: { buy: 3e6, sell: 5e5 },
                 limit: 50,
             },
             {
@@ -257,7 +257,7 @@ module.exports = [
                 quantity: 1,
                 emoji: emoji.pjum,
                 available: ['use'],
-                price: { buy: 1e6, sell: 5e5 },
+                price: { buy: 3e6, sell: 1e6 },
                 limit: 100,
             },
             {
@@ -271,11 +271,27 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.halloween, // Update the emoji to a Halloween-themed one
+                emoji: emoji.halloween,
                 available: ['use'],
-                price: { buy: 1e6, sell: 5e5 },
+                price: { buy: 3e6, sell: 1e6 },
                 limit: 100,
             },
+            {
+                id: 't04',
+                name: 'Infancy',
+                description: 'Rediscover the joy and wonder of childhood with this playful set, filled with bright colors and nostalgic emojis that spark fond memories.',
+                type: 'theme',
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.childhood,
+                available: ['use', 'gift'],
+                price: { buy: 3e6, sell: 1e6 },
+                limit: 80,
+            }
         ],
     },
 ];

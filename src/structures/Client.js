@@ -9,7 +9,6 @@ const { I18n } = require('@hammerhq/localization');
 const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const emojis = require('../emojis.js');
-
 const configPeach = require('../theme/Peach/config.js');
 const emojiPeach = require('../theme/Peach/emojis.js');
 
@@ -22,14 +21,19 @@ const emojiPjum = require('../theme/Pjumben/emojis.js');
 const configOcean = require('../theme/OceanBreeze/config.js');
 const emojiOcean = require('../theme/OceanBreeze/emojis.js');
 
+const configHalloween = require('../theme/Halloween/config.js');
+const emojiHalloween = require('../theme/Halloween/emojis.js');
+
+const configInfancy = require('../theme/Infancy/config.js');
+const emojiInfancy = require('../theme/Infancy/emojis.js');
+
 const configHeaven = require('../theme/CelestialGrace/config.js');
 const emojiHeaven = require('../theme/CelestialGrace/emojis.js');
 
 const configSakura = require('../theme/SakuraSerenity/config.js');
 const emojiSakura = require('../theme/SakuraSerenity/emojis.js');
 
-const configHalloween = require('../theme/Halloween/config.js');
-const emojiHalloween = require('../theme/Halloween/emojis.js');
+
 
 const Logger = require('./Logger.js');
 
@@ -192,6 +196,15 @@ module.exports = class PeachyClient extends Client {
                         color = configPjum.color;
                         emoji = emojiPjum;
                         break;
+                    case 't03':
+                    case 'halloween':
+                        color = configHalloween.color;
+                        emoji = emojiHalloween;
+                        break;
+                    case 't04':
+                        color = configInfancy.color;
+                        emoji = emojiInfancy;
+                        break;
                     case 'st01':
                         color = configHeaven.color;
                         emoji = emojiHeaven;
@@ -200,11 +213,7 @@ module.exports = class PeachyClient extends Client {
                         color = configSakura.color;
                         emoji = emojiSakura;
                         break;
-                    case 't03':
-                    case 'halloween':
-                        color = configHalloween.color;
-                        emoji = emojiHalloween;
-                        break;
+
                     case 'peach':
                         color = configPeach.color;
                         emoji = emojiPeach;
