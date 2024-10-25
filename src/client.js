@@ -16,7 +16,7 @@ const client = new PeachyClient(clientOptions);
 
 // Event listener for new members joining the server
 client.on('guildMemberAdd', member => {
-    const channelId = '1271685845165936729';
+    const channelId = '1271685845165936721';
     const welcomeChannel = member.guild.channels.cache.get(channelId);
 
     // Ensure the channel exists
@@ -43,7 +43,7 @@ client.on('guildMemberAdd', member => {
         // Send the welcome message along with an image
         welcomeChannel.send({
             content: welcomeMessage,
-            files: ['https://i.imgur.com/WRQ9JgJ.jpg'] // Replace with your image URL
+            files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
         });
     } else {
         console.warn(`Channel with ID ${channelId} was not found in the guild.`);
