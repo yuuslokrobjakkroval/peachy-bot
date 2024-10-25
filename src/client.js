@@ -87,8 +87,6 @@ client.on('guildMemberAdd', member => {
             content: welcomeMessage,
             files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
         });
-    } else {
-        console.warn(`Channel with ID ${channelId} was not found in the guild.`);
     }
 });
 
@@ -116,8 +114,6 @@ We're sad to see you go, ${member}!
             content: goodbyeMessage,
             files: ['https://i.imgur.com/AyHSD1E.png']
         });
-    } else {
-        console.warn(`Goodbye channel with ID ${goodbyeChannelId} was not found in the guild.`);
     }
 });
 
