@@ -727,46 +727,46 @@
 		},
 		"relationshipMessages": {
 			"success": {
-				"add": "正常に追加されました",
-				"remove": "正常に削除されました"
+				"add": "** が正常に追加されました<user>** あなたの ** へ<relationship type>**。",
+				"remove": "正常に削除されました **<user>** あなたの **<relationship type>**。"
 			},
 			"error": {
 				"userNotMentioned": "関係を管理するには、ユーザーをメンションしてください。",
 				"notRegistered": "データベースに登録されていません。",
 				"targetNotRegistered": "変更しようとしているユーザーは登録されていません。",
-				"invalidType": "無効な関係タイプです。",
+				"invalidType": "無効な関係タイプが指定されました。",
 				"partner": {
 					"error": {
 						"alreadyExists": "あなたにはすでにパートナーがいます。",
-						"notFound": "このユーザーはあなたのパートナーではありません。"
+						"notFound": "このユーザーはパートナーとしてリストされていません。"
 					}
 				},
 				"bro": {
 					"error": {
-						"limitExceeded": "兄弟は最大 4 人までしか持てません。",
-						"alreadyExists": "このユーザーはすでにあなたの仲間です。",
-						"notFound": "このユーザーはあなたの兄弟ではありません。"
+						"limitExceeded": "兄弟は最大4人まで持つことができます。",
+						"alreadyExists": "このユーザーはすでにあなたの兄弟としてリストされています。",
+						"notFound": "このユーザーはあなたの兄弟としてリストされていません。"
 					}
 				},
 				"sister": {
 					"error": {
-						"limitExceeded": "姉妹は4人までしか持てません。",
-						"alreadyExists": "このユーザーはすでにあなたの妹です。",
-						"notFound": "このユーザーはあなたの妹ではありません。"
+						"limitExceeded": "姉妹は最大4人まで持つことができます。",
+						"alreadyExists": "このユーザーはすでにあなたの姉妹としてリストされています。",
+						"notFound": "このユーザーはあなたの姉妹としてリストされていません。"
 					}
 				},
 				"bestie": {
 					"error": {
-						"limitExceeded": "親友は最大 4 人までしか持てません。",
-						"alreadyExists": "このユーザーはすでにあなたの親友です。",
-						"notFound": "このユーザーはあなたの親友ではありません。"
+						"limitExceeded": "最大4人の親友を持つことができます。",
+						"alreadyExists": "このユーザーはすでにあなたの親友としてリストされています。",
+						"notFound": "このユーザーはあなたの親友としてリストされていません。"
 					}
 				},
 				"confidant": {
 					"error": {
-						"limitExceeded": "親友は最大 4 人までしか持てません。",
-						"alreadyExists": "このユーザーはすでにあなたの親友です。",
-						"notFound": "このユーザーはあなたの親友ではありません。"
+						"limitExceeded": "最大 4 人の親友を持つことができます。",
+						"alreadyExists": "このユーザーはすでにあなたの親友としてリストされています。",
+						"notFound": "このユーザーはあなたの親友としてリストされていません。"
 					}
 				}
 			}

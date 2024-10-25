@@ -727,46 +727,46 @@
 		},
 		"relationshipMessages": {
 			"success": {
-				"add": "Đã thêm thành công",
-				"remove": "Đã xóa thành công"
+				"add": "Đã thêm thành công **<user>** tới ** của bạn<relationship type>**.",
+				"remove": "Đã xóa thành công **<user>** từ ** của bạn<relationship type>**."
 			},
 			"error": {
 				"userNotMentioned": "Vui lòng đề cập đến một người dùng để quản lý mối quan hệ của bạn.",
 				"notRegistered": "Bạn chưa được đăng ký trong cơ sở dữ liệu.",
 				"targetNotRegistered": "Người dùng bạn đang cố gắng sửa đổi chưa được đăng ký.",
-				"invalidType": "Loại mối quan hệ không hợp lệ.",
+				"invalidType": "Loại mối quan hệ được chỉ định không hợp lệ.",
 				"partner": {
 					"error": {
 						"alreadyExists": "Bạn đã có một đối tác.",
-						"notFound": "Người dùng này không phải là đối tác của bạn."
+						"notFound": "Người dùng này không được liệt kê là đối tác của bạn."
 					}
 				},
 				"bro": {
 					"error": {
-						"limitExceeded": "Bạn chỉ có thể có tối đa 4 anh em.",
-						"alreadyExists": "Người dùng này đã là anh trai của bạn.",
-						"notFound": "Người dùng này không phải là anh trai của bạn."
+						"limitExceeded": "Bạn có thể có tối đa 4 anh em.",
+						"alreadyExists": "Người dùng này đã được liệt kê là anh trai của bạn.",
+						"notFound": "Người dùng này không được liệt kê là anh trai của bạn."
 					}
 				},
 				"sister": {
 					"error": {
-						"limitExceeded": "Bạn chỉ có thể có tối đa 4 chị em gái.",
-						"alreadyExists": "Người dùng này đã là em gái của bạn.",
-						"notFound": "Người dùng này không phải là em gái của bạn."
+						"limitExceeded": "Bạn có thể có tối đa 4 chị em gái.",
+						"alreadyExists": "Người dùng này đã được liệt kê là em gái của bạn.",
+						"notFound": "Người dùng này không được liệt kê là em gái của bạn."
 					}
 				},
 				"bestie": {
 					"error": {
-						"limitExceeded": "Bạn chỉ có thể có tối đa 4 người bạn thân.",
-						"alreadyExists": "Người dùng này đã là bạn thân của bạn.",
-						"notFound": "Người dùng này không phải là bạn thân của bạn."
+						"limitExceeded": "Bạn có thể có tối đa 4 người bạn tốt nhất.",
+						"alreadyExists": "Người dùng này đã được liệt kê là bạn thân của bạn.",
+						"notFound": "Người dùng này không được liệt kê là bạn thân của bạn."
 					}
 				},
 				"confidant": {
 					"error": {
-						"limitExceeded": "Bạn chỉ có thể có tối đa 4 người bạn tâm tình.",
-						"alreadyExists": "Người dùng này đã là người bạn tâm tình của bạn.",
-						"notFound": "Người dùng này không phải là người bạn tâm giao của bạn."
+						"limitExceeded": "Bạn có thể có tối đa 4 người bạn tâm tình.",
+						"alreadyExists": "Người dùng này đã được liệt kê là người bạn tâm giao của bạn.",
+						"notFound": "Người dùng này không được liệt kê là người bạn tâm tình của bạn."
 					}
 				}
 			}

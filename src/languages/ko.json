@@ -727,46 +727,46 @@
 		},
 		"relationshipMessages": {
 			"success": {
-				"add": "성공적으로 추가되었습니다",
-				"remove": "성공적으로 제거되었습니다"
+				"add": "** 성공적으로 추가되었습니다<user>** 당신의 **에게<relationship type>**.",
+				"remove": "삭제됨 **<user>** 귀하의 **에서<relationship type>**."
 			},
 			"error": {
 				"userNotMentioned": "관계를 관리할 사용자를 언급해 주세요.",
 				"notRegistered": "귀하는 데이터베이스에 등록되어 있지 않습니다.",
 				"targetNotRegistered": "수정하려는 사용자가 등록되어 있지 않습니다.",
-				"invalidType": "잘못된 관계 유형입니다.",
+				"invalidType": "잘못된 관계 유형이 지정되었습니다.",
 				"partner": {
 					"error": {
-						"alreadyExists": "당신은 이미 파트너가 있습니다.",
-						"notFound": "이 사용자는 귀하의 파트너가 아닙니다."
+						"alreadyExists": "당신에게는 이미 파트너가 있습니다.",
+						"notFound": "이 사용자는 귀하의 파트너로 등록되어 있지 않습니다."
 					}
 				},
 				"bro": {
 					"error": {
-						"limitExceeded": "최대 4명의 형제만 가질 수 있습니다.",
-						"alreadyExists": "이 사용자는 이미 귀하의 형제입니다.",
-						"notFound": "이 사용자는 당신의 형제가 아닙니다."
+						"limitExceeded": "최대 4명의 형제를 가질 수 있습니다.",
+						"alreadyExists": "이 사용자는 이미 귀하의 형제로 등록되어 있습니다.",
+						"notFound": "이 사용자는 귀하의 형제로 등록되어 있지 않습니다."
 					}
 				},
 				"sister": {
 					"error": {
-						"limitExceeded": "자매는 최대 4명까지만 가질 수 있습니다.",
-						"alreadyExists": "이 사용자는 이미 귀하의 자매입니다.",
-						"notFound": "이 사용자는 당신의 여동생이 아닙니다."
+						"limitExceeded": "최대 4명의 자매를 가질 수 있습니다.",
+						"alreadyExists": "이 사용자는 이미 귀하의 자매로 등록되어 있습니다.",
+						"notFound": "이 사용자는 귀하의 자매로 등록되어 있지 않습니다."
 					}
 				},
 				"bestie": {
 					"error": {
-						"limitExceeded": "절친은 최대 4명까지만 가질 수 있습니다.",
-						"alreadyExists": "이 사용자는 이미 당신의 절친입니다.",
-						"notFound": "이 사용자는 당신의 절친이 아닙니다."
+						"limitExceeded": "절친은 최대 4명까지 가질 수 있습니다.",
+						"alreadyExists": "이 사용자는 이미 귀하의 절친으로 등록되어 있습니다.",
+						"notFound": "이 사용자는 귀하의 절친으로 등록되어 있지 않습니다."
 					}
 				},
 				"confidant": {
 					"error": {
-						"limitExceeded": "최대 4명의 동료만 가질 수 있습니다.",
-						"alreadyExists": "이 사용자는 이미 귀하의 친구입니다.",
-						"notFound": "이 사용자는 귀하의 친구가 아닙니다."
+						"limitExceeded": "최대 4명의 동료를 가질 수 있습니다.",
+						"alreadyExists": "이 사용자는 이미 귀하의 친구로 등록되어 있습니다.",
+						"notFound": "이 사용자는 귀하의 친구로 등록되어 있지 않습니다."
 					}
 				}
 			}

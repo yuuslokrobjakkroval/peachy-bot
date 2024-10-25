@@ -727,46 +727,46 @@
 		},
 		"relationshipMessages": {
 			"success": {
-				"add": "Ajouté avec succès",
-				"remove": "Supprimé avec succès"
+				"add": "Ajouté avec succès **<user>** à ton **<relationship type>**.",
+				"remove": "Supprimé avec succès **<user>** de votre **<relationship type>**."
 			},
 			"error": {
 				"userNotMentioned": "Merci de mentionner un utilisateur pour gérer votre relation.",
 				"notRegistered": "Vous n'êtes pas inscrit dans la base de données.",
 				"targetNotRegistered": "L'utilisateur que vous essayez de modifier n'est pas enregistré.",
-				"invalidType": "Type de relation non valide.",
+				"invalidType": "Type de relation spécifié non valide.",
 				"partner": {
 					"error": {
 						"alreadyExists": "Vous avez déjà un partenaire.",
-						"notFound": "Cet utilisateur n'est pas votre partenaire."
+						"notFound": "Cet utilisateur n'est pas répertorié comme votre partenaire."
 					}
 				},
 				"bro": {
 					"error": {
-						"limitExceeded": "Vous ne pouvez avoir que 4 frères maximum.",
-						"alreadyExists": "Cet utilisateur est déjà votre frère.",
-						"notFound": "Cet utilisateur n'est pas votre frère."
+						"limitExceeded": "Vous pouvez avoir au maximum 4 frères.",
+						"alreadyExists": "Cet utilisateur est déjà répertorié comme votre frère.",
+						"notFound": "Cet utilisateur n'est pas répertorié comme votre frère."
 					}
 				},
 				"sister": {
 					"error": {
-						"limitExceeded": "Vous ne pouvez avoir que 4 sœurs maximum.",
-						"alreadyExists": "Cet utilisateur est déjà votre sœur.",
-						"notFound": "Cet utilisateur n'est pas votre sœur."
+						"limitExceeded": "Vous pouvez avoir un maximum de 4 sœurs.",
+						"alreadyExists": "Cet utilisateur est déjà répertorié comme votre sœur.",
+						"notFound": "Cet utilisateur n'est pas répertorié comme votre sœur."
 					}
 				},
 				"bestie": {
 					"error": {
-						"limitExceeded": "Vous ne pouvez avoir que 4 meilleurs amis.",
-						"alreadyExists": "Cet utilisateur est déjà votre meilleur ami.",
-						"notFound": "Cet utilisateur n'est pas votre meilleur ami."
+						"limitExceeded": "Vous pouvez avoir un maximum de 4 meilleurs amis.",
+						"alreadyExists": "Cet utilisateur est déjà répertorié comme votre meilleur ami.",
+						"notFound": "Cet utilisateur n'est pas répertorié comme votre meilleur ami."
 					}
 				},
 				"confidant": {
 					"error": {
-						"limitExceeded": "Vous ne pouvez avoir que 4 confidents maximum.",
-						"alreadyExists": "Cet utilisateur est déjà votre confident.",
-						"notFound": "Cet utilisateur n'est pas votre confident."
+						"limitExceeded": "Vous pouvez avoir un maximum de 4 confidents.",
+						"alreadyExists": "Cet utilisateur est déjà répertorié comme votre confident.",
+						"notFound": "Cet utilisateur n'est pas répertorié comme votre confident."
 					}
 				}
 			}
