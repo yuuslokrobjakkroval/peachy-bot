@@ -48,19 +48,19 @@ module.exports = class RelationshipHelp extends Command {
         });
     }
 
-    run(client, ctx, args, color, language) {
+    async run(client, ctx, args, color, language) {
         const action = ctx.isInteraction ? ctx.interaction.options.getString('action') : args[0];
         const relationshipType = ctx.isInteraction ? ctx.interaction.options.getString('relationship_type') : args[1];
 
         if (action === 'help') {
             this.showHelp(client, ctx, color);
         } else if (action === 'all') {
-            this.showAllRelationships(client, ctx, color, language);
+            await this.showAllRelationships(client, ctx, color, language);
         } else if (action === 'type') {
             if (!relationshipType) {
                 return client.utils.sendErrorMessage(client, ctx, 'Please specify a relationship type.', color);
             }
-            this.showRelationshipsByType(client, ctx, color, relationshipType, language);
+            await this.showRelationshipsByType(client, ctx, color, relationshipType, language);
         }
     }
 
@@ -81,8 +81,9 @@ module.exports = class RelationshipHelp extends Command {
         ctx.sendMessage({ embeds: [embed] });
     }
 
-    showAllRelationships(client, ctx, color, language) {
-        Users.findOne({ userId: ctx.author.id }).then(userData => {
+    async showAllRelationships(client, ctx, color, language) {
+        try {
+            const userData = await Users.findOne({ userId: ctx.author.id });
             if (!userData) return client.utils.sendErrorMessage(client, ctx, 'You are not registered.', color);
 
             const relationshipEmbed = client.embed()
@@ -97,15 +98,18 @@ module.exports = class RelationshipHelp extends Command {
                 ]);
 
             ctx.sendMessage({ embeds: [relationshipEmbed] });
-        }).catch(err => console.error(err));
+        } catch (err) {
+            console.error(err);
+        }
     }
 
-    showRelationshipsByType(client, ctx, color, relationshipType, language) {
-        Users.findOne({ userId: ctx.author.id }).then(userData => {
+    async showRelationshipsByType(client, ctx, color, relationshipType, language) {
+        try {
+            const userData = await Users.findOne({ userId: ctx.author.id });
             if (!userData) return client.utils.sendErrorMessage(client, ctx, 'You are not registered.', color);
 
             let relationshipList = [];
-            let relationshipName = relationshipType.charAt(0).toUpperCase() + relationshipType.slice(1);
+            const relationshipName = relationshipType.charAt(0).toUpperCase() + relationshipType.slice(1);
 
             switch (relationshipType) {
                 case 'partner':
@@ -133,6 +137,8 @@ module.exports = class RelationshipHelp extends Command {
                 .setDescription(relationshipList.length ? relationshipList.join(', ') : `No ${relationshipName.toLowerCase()}s found.`);
 
             ctx.sendMessage({ embeds: [embed] });
-        }).catch(err => console.error(err));
+        } catch (err) {
+            console.error(err);
+        }
     }
 };

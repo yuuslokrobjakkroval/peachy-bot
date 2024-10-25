@@ -13,7 +13,7 @@ module.exports = class Partner extends Command {
                 ],
                 usage: 'partner <add/remove> <user>',
             },
-            category: 'friendship',
+            category: 'relationship',
             aliases: ['pn'],
             cooldown: 5,
             args: true,
@@ -44,7 +44,7 @@ module.exports = class Partner extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const relationshipMessages = language.locales.get(language.defaultLocale)?.profileMessages?.relationshipMessages;
         const action = ctx.isInteraction ? ctx.interaction.options.getString('action') : args[0];
         const userToModify = ctx.isInteraction ? ctx.interaction.options.getUser('user')?.id : ctx.message.mentions.users.first()?.id || args[1];
@@ -53,46 +53,48 @@ module.exports = class Partner extends Command {
             return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
         }
 
-        Users.findOne({ userId: ctx.author.id })
-            .then(userData => {
-                if (!userData) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+        try {
+            // Find the user
+            const userData = await Users.findOne({ userId: ctx.author.id });
+            if (!userData) {
+                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+            }
+
+            // Ensure relationship exists
+            if (!userData.relationship) {
+                userData.relationship = {};  // Initialize the relationship object if it's undefined
+            }
+
+            // Find the target user
+            const targetUserData = await Users.findOne({ userId: userToModify });
+            if (!targetUserData) {
+                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+            }
+
+            if (action === 'add') {
+                if (userData.relationship.partner?.id) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.partner.error.alreadyExists, color);
                 }
-
-                // Ensure relationship exists
-                if (!userData.relationship) {
-                    userData.relationship = {};  // Initialize the relationship object if it's undefined
+                userData.relationship.partner = {
+                    id: userToModify,
+                    name: targetUserData.username,
+                    xp: 0,
+                    level: 1
+                };
+            } else if (action === 'remove') {
+                if (userData.relationship.partner?.id !== userToModify) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.partner.error.notFound, color);
                 }
+                userData.relationship.partner = { id: null, name: null, xp: 0, level: 1 };
+            }
 
-                Users.findOne({ userId: userToModify })
-                    .then(targetUserData => {
-                        if (!targetUserData) {
-                            return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
-                        }
+            // Save the user data
+            await userData.save();
 
-                        if (action === 'add') {
-                            if (userData.relationship.partner?.id) {
-                                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.partner.error.alreadyExists, color);
-                            }
-                            userData.relationship.partner = {
-                                id: userToModify,
-                                name: targetUserData.username,
-                                xp: 0,
-                                level: 1
-                            };
-                        } else if (action === 'remove') {
-                            if (userData.relationship.partner?.id !== userToModify) {
-                                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.partner.error.notFound, color);
-                            }
-                            userData.relationship.partner = { id: null, name: null, xp: 0, level: 1 };
-                        }
-
-                        userData.save()
-                            .then(async () => await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your partner.`, color))
-                            .catch(err => console.error(err));
-                    })
-                    .catch(err => console.error(err));
-            })
-            .catch(err => console.error(err));
+            // Send success message
+            await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your partner.`, color);
+        } catch (err) {
+            console.error(err);
+        }
     }
 };

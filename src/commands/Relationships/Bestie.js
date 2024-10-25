@@ -42,7 +42,7 @@ module.exports = class Bestie extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const relationshipMessages = language.locales.get(language.defaultLocale)?.profileMessages?.relationshipMessages;
         const action = ctx.isInteraction ? ctx.interaction.options.getString('action') : args[0];
         const userToModify = ctx.isInteraction ? ctx.interaction.options.getUser('user')?.id : ctx.message.mentions.users.first()?.id || args[1];
@@ -51,47 +51,44 @@ module.exports = class Bestie extends Command {
             return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
         }
 
-        Users.findOne({ userId: ctx.author.id })
-            .then(userData => {
-                if (!userData) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+        try {
+            // Find user data
+            const userData = await Users.findOne({ userId: ctx.author.id });
+            if (!userData) {
+                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+            }
+
+            // Ensure the relationship object exists
+            if (!userData.relationship) {
+                userData.relationship = { besties: [] };
+            }
+
+            // Find target user data
+            const targetUserData = await Users.findOne({ userId: userToModify });
+            if (!targetUserData) {
+                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+            }
+
+            if (action === 'add') {
+                if (userData.relationship.besties.length >= 4) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.limitExceeded, color);
                 }
-
-                // Ensure the relationship object exists
-                if (!userData.relationship) {
-                    userData.relationship = { besties: [] };
+                if (userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.alreadyExists, color);
                 }
-                if (!userData.relationship.besties) {
-                    userData.relationship.besties = [];
+                userData.relationship.besties.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
+            } else if (action === 'remove') {
+                if (!userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.notFound, color);
                 }
+                userData.relationship.besties = userData.relationship.besties.filter(bestie => bestie.id !== userToModify);
+            }
 
-                Users.findOne({ userId: userToModify })
-                    .then(targetUserData => {
-                        if (!targetUserData) {
-                            return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
-                        }
-
-                        if (action === 'add') {
-                            if (userData.relationship.besties.length >= 4) {
-                                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.limitExceeded, color);
-                            }
-                            if (userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
-                                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.alreadyExists, color);
-                            }
-                            userData.relationship.besties.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
-                        } else if (action === 'remove') {
-                            if (!userData.relationship.besties.some(bestie => bestie.id === userToModify)) {
-                                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bestie.error.notFound, color);
-                            }
-                            userData.relationship.besties = userData.relationship.besties.filter(bestie => bestie.id !== userToModify);
-                        }
-
-                        userData.save()
-                            .then(() => client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your bestie.`, color))
-                            .catch(err => console.error(err));
-                    })
-                    .catch(err => console.error(err));
-            })
-            .catch(err => console.error(err));
+            // Save the updated user data
+            await userData.save();
+            await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your bestie.`, color);
+        } catch (err) {
+            console.error(err);
+        }
     }
 };

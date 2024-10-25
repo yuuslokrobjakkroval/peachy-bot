@@ -42,7 +42,7 @@ module.exports = class Brother extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const relationshipMessages = language.locales.get(language.defaultLocale)?.profileMessages?.relationshipMessages;
         const action = ctx.isInteraction ? ctx.interaction.options.getString('action') : args[0];
         const userToModify = ctx.isInteraction ? ctx.interaction.options.getUser('user')?.id : ctx.message.mentions.users.first()?.id || args[1];
@@ -51,47 +51,46 @@ module.exports = class Brother extends Command {
             return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.userNotMentioned, color);
         }
 
-        Users.findOne({ userId: ctx.author.id })
-            .then(userData => {
-                if (!userData) {
-                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+        try {
+            // Find the user
+            const userData = await Users.findOne({ userId: ctx.author.id });
+            if (!userData) {
+                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
+            }
+
+            // Ensure relationship exists and initialize if necessary
+            if (!userData.relationship) {
+                userData.relationship = { brothers: [] };
+            }
+
+            // Find the target user
+            const targetUserData = await Users.findOne({ userId: userToModify });
+            if (!targetUserData) {
+                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
+            }
+
+            if (action === 'add') {
+                if (userData.relationship.brothers.length >= 4) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.limitExceeded, color);
                 }
-
-                // Ensure relationship exists and initialize if necessary
-                if (!userData.relationship) {
-                    userData.relationship = { brothers: [] };
+                if (userData.relationship.brothers.some(bro => bro.id === userToModify)) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.alreadyExists, color);
                 }
-                if (!userData.relationship.brothers) {
-                    userData.relationship.brothers = [];
+                userData.relationship.brothers.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
+            } else if (action === 'remove') {
+                if (!userData.relationship.brothers.some(bro => bro.id === userToModify)) {
+                    return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.notFound, color);
                 }
+                userData.relationship.brothers = userData.relationship.brothers.filter(bro => bro.id !== userToModify);
+            }
 
-                Users.findOne({ userId: userToModify })
-                    .then(targetUserData => {
-                        if (!targetUserData) {
-                            return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.targetNotRegistered, color);
-                        }
+            // Save the user data
+            await userData.save();
 
-                        if (action === 'add') {
-                            if (userData.relationship.brothers.length >= 4) {
-                                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.limitExceeded, color);
-                            }
-                            if (userData.relationship.brothers.some(bro => bro.id === userToModify)) {
-                                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.alreadyExists, color);
-                            }
-                            userData.relationship.brothers.push({ id: userToModify, name: targetUserData.username, xp: 0, level: 1 });
-                        } else if (action === 'remove') {
-                            if (!userData.relationship.brothers.some(bro => bro.id === userToModify)) {
-                                return client.utils.sendErrorMessage(client, ctx, relationshipMessages.bro.error.notFound, color);
-                            }
-                            userData.relationship.brothers = userData.relationship.brothers.filter(bro => bro.id !== userToModify);
-                        }
-
-                        userData.save()
-                            .then(async () => await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your brother.`, color))
-                            .catch(err => console.error(err));
-                    })
-                    .catch(err => console.error(err));
-            })
-            .catch(err => console.error(err));
+            // Send success message
+            await client.utils.sendSuccessMessage(client, ctx, `${relationshipMessages.success[action]} <@${userToModify}> as your brother.`, color);
+        } catch (err) {
+            console.error(err);
+        }
     }
 };
