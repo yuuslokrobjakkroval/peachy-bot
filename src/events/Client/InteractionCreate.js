@@ -69,17 +69,6 @@ class InteractionCreate extends Event {
 
         if (!interaction.inGuild()) return;
 
-        const isRestrictedCommand = ['giveaway']
-        const isOwner = this.client.config.owners.includes(interaction.user.id);
-        const isServerOwner = this.client.config.serverOwner.includes(interaction.user.id);
-
-        if (isRestrictedCommand.includes(interaction.commandName) && !(isOwner || isServerOwner)) {
-          return await interaction.reply({
-            content: "You don't have permission to use this command.",
-            ephemeral: true,
-          });
-        }
-
         if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ViewChannel)) {
           return;
         }
@@ -138,7 +127,7 @@ class InteractionCreate extends Event {
         const gameCommands = ['guessnumber'];
         const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
         const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'theme', 'verify'];
-        const giveawaysCommands = ['giveaways', 'reroll'];
+        const giveawaysCommands = ['giveaway', 'reroll'];
 
         let logChannelId;
         if (giveawaysCommands.includes(command.name)) {

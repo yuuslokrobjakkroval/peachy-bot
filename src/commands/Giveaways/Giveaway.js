@@ -65,18 +65,20 @@ module.exports = class Start extends Command {
     async run(client, ctx, args, color, emoji, language) {
         if (ctx.replied || ctx.deferred) return;
 
+        const member = await ctx.guild.members.fetch(ctx.author.id);
         // Check if user is an owner for autopay
         const isOwner = this.client.config.owners.includes(ctx.author.id);
         const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
+        const isAdmin = member.permissions.has("ADMINISTRATOR");
 
-        if (!isOwner && !isServerOwner) {
+        if (!isOwner && !isServerOwner && !isAdmin) {
             return (ctx.isInteraction
                     ? ctx.interaction.reply({
-                        content: 'Only the bot owner and server owner can enable autopay for giveaways.',
+                        content: 'Only user have permission administrator can use this giveaways.',
                         ephemeral: true
                     })
                     : ctx.sendMessage({
-                        content: 'Only the bot owner and server owner can enable autopay for giveaways.',
+                        content: 'Only user have permission administrator can use this giveaways.',
                         ephemeral: true
                     })
             );
