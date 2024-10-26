@@ -3,6 +3,7 @@ const GiveawaySchema = require('./schemas/giveaway');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
+let newMemberId = null; // To store the ID of the new member
 
 const clientOptions = {
     intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
@@ -58,7 +59,7 @@ client.on('guildMemberAdd', member => {
 
     if (role) {
         member.roles.add(role)
-            .then(() => console.log(`Role ${role.name} assigned to ${member}.`))
+            .then(() => console.log(`Role ${role.name} assigned to ${member.displayName}.`))
             .catch(console.error);
     }
 
@@ -88,6 +89,16 @@ client.on('guildMemberAdd', member => {
         });
     }
 
+    const chatChannelId = '1271685845165936729';
+    const chatChannel = member.guild.channels.cache.get(chatChannelId);
+    newMemberId = member.id; // Store the new member's ID
+
+    if (chatChannel) {
+        chatChannel.send(`Hi ${member.displayName}!`)
+            .then(() => console.log(`Sent hi message to ${member.displayName} in ${chatChannel.name}.`))
+            .catch(console.error);
+    }
+
     if (member.premiumSince) {
         const boostChannelId = '1271685845165936725'; // Channel ID for boost message
         const boostChannel = member.guild.channels.cache.get(boostChannelId);
@@ -108,6 +119,18 @@ We truly appreciate your boost! Thanks for supporting the server and making it b
                 files: ['https://i.imgur.com/FrTvTpq.gif'] // Replace with your image URL
             });
         }
+    }
+});
+
+client.on('messageCreate', message => {
+    // Check if the message is from the new member and if it says "Hi"
+    const welcomeMessage = ['Hello', 'Hi', 'Sur Sdey', 'Reab Sur']
+    if (welcomeMessage.includes(message.content.toLowerCase())) {
+        message.channel.send(`${message.content}! Nham by nv ${message.member.displayName}! kom plex mk join server yg lg hz invite member join server tor tor pg na 🥰`)
+            .then(() => console.log(`Sent response to ${message.member.displayName}`))
+            .catch(console.error);
+
+        newMemberId = null; // Reset the ID after the response
     }
 });
 
