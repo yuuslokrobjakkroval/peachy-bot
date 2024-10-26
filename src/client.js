@@ -132,12 +132,14 @@ client.on('messageCreate', message => {
     const messageWords = message.content.toLowerCase().split(' ');
     const containsWelcome = messageWords.some(word => welcomeMessages.includes(word));
 
+    // Check if the message content matches any of the greetings
     if (containsWelcome) {
-        const displayName = message.member ? message.member.displayName : message.author.displayName;
-        message.channel.send(`${message.content} ${displayName}!!!`);
+        // Mention the user and respond with an enthusiastic message
+        message.channel.send({
+            content: `${message.content}! Welcome, ${message.member.displayName}! 🎉 Thanks for joining us!`
+        });
     }
 });
-
 
 client.on('guildMemberRemove', member => {
     const goodbyeChannelId = '1299416504575459380';
