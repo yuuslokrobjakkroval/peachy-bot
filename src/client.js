@@ -3,7 +3,6 @@ const GiveawaySchema = require('./schemas/giveaway');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
-let newMemberId = null; // To store the ID of the new member
 
 const clientOptions = {
     intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
@@ -91,12 +90,11 @@ client.on('guildMemberAdd', member => {
 
     const chatChannelId = '1271685845165936729';
     const chatChannel = member.guild.channels.cache.get(chatChannelId);
-    newMemberId = member.id; // Store the new member's ID
 
     if (chatChannel) {
-        chatChannel.send(`សួស្ដី ${member.displayName}!`)
-            .then(() => console.log(`Sent hi message to ${member.displayName} in ${chatChannel.name}.`))
-            .catch(console.error);
+        chatChannel.send({
+            content: `សួស្ដី ${member.displayName}!`,
+        })
     }
 
     if (member.premiumSince) {
