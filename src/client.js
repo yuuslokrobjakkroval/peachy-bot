@@ -127,7 +127,7 @@ client.on('messageCreate', message => {
     if (message.author.bot) return;
 
     // Define possible welcome messages in English and Khmer
-    const welcomeMessages = ['hello', 'hi', 'sur sdey', 'reab sur', 'សួស្ដី', 'សួស្ដីបង', 'សួស្ដីអ្នកទាំងអស់គ្នា'];
+    const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្ដី', 'សួស្ដីបង', 'សួស្ដីអ្នកទាំងអស់គ្នា'];
 
     // Check if the message contains any welcome words in either language
     const messageWords = message.content.toLowerCase().split(' ');
@@ -135,7 +135,7 @@ client.on('messageCreate', message => {
 
     // Check if the message content matches any of the greetings
     if (containsWelcome) {
-        message.channel.send(`${message.content} ${message.author.displayName}! WELCOME TO OUR SERVER!`);
+        message.channel.send(`${message.content} ${message.author.displayName}!!!`);
     }
 });
 
