@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const { PermissionsBitField } = require("discord.js");
 const GiveawaySchema = require('../../schemas/giveaway.js');
 
 module.exports = class Reroll extends Command {
@@ -20,19 +21,18 @@ module.exports = class Reroll extends Command {
 
     async run(client, ctx, args, color) {
         const member = await ctx.guild.members.fetch(ctx.author.id);
-        // Check if user is an owner for autopay
         const isOwner = this.client.config.owners.includes(ctx.author.id);
         const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
-        const isAdmin = member.permissions.has("ADMINISTRATOR");
+        const isAdmin = member.permissions.has(PermissionsBitField.Flags.Administrator); // Use PermissionsBitField.Flags
 
         if (!isOwner && !isServerOwner && !isAdmin) {
             return (ctx.isInteraction
                     ? ctx.interaction.reply({
-                        content: 'Only user have permission administrator can use this giveaways.',
+                        content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
                         ephemeral: true
                     })
                     : ctx.sendMessage({
-                        content: 'Only user have permission administrator can use this giveaways.',
+                        content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
                         ephemeral: true
                     })
             );
