@@ -52,11 +52,14 @@ client.on('guildMemberAdd', async (member) => {
     const channelId = '1299416615275987025';
     const welcomeChannel = member.guild.channels.cache.get(channelId);
 
+    // Fetch the bot's member object to ensure we have access to its roles
+    const botMember = await member.guild.members.fetch(client.user.id);
+    const botRole = botMember.roles.highest;
+
     // Fetch roles to ensure they're up to date
     await member.guild.roles.fetch();
 
-    // Get the bot's highest role
-    const botRole = member.guild.me.roles.highest;
+    // Determine which role to assign
     const roleToAssign = member.user.bot ? '1271685844700233740' : '1271685844700233741';
     const role = member.guild.roles.cache.get(roleToAssign);
 
