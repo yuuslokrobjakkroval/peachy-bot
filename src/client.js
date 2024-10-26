@@ -94,7 +94,7 @@ client.on('guildMemberAdd', member => {
     newMemberId = member.id; // Store the new member's ID
 
     if (chatChannel) {
-        chatChannel.send(`Hi ${member.displayName}!`)
+        chatChannel.send(`សួស្ដី ${member.displayName}!`)
             .then(() => console.log(`Sent hi message to ${member.displayName} in ${chatChannel.name}.`))
             .catch(console.error);
     }
@@ -123,18 +123,19 @@ We truly appreciate your boost! Thanks for supporting the server and making it b
 });
 
 client.on('messageCreate', message => {
-    // Define possible welcome messages
-    const welcomeMessages = ['hello', 'hi', 'sur sdey', 'reab sur'];
+    // Prevent the bot from responding to its own messages
+    if (message.author.bot) return;
 
-    // Check if the message contains any welcome words
+    // Define possible welcome messages in English and Khmer
+    const welcomeMessages = ['hello', 'hi', 'sur sdey', 'reab sur', 'សួស្ដី', 'សួស្ដីបង', 'សួស្ដីអ្នកទាំងអស់គ្នា'];
+
+    // Check if the message contains any welcome words in either language
     const messageWords = message.content.toLowerCase().split(' ');
     const containsWelcome = messageWords.some(word => welcomeMessages.includes(word));
 
-    // If the message contains a welcome word, respond
+    // Check if the message content matches any of the greetings
     if (containsWelcome) {
-        message.channel.send(`${message.content}! Nham by nv ${message.member.displayName}! kom plex mk join server yg lg hz invite member join server tor tor pg na 🥰`)
-            .then(() => console.log(`Sent response to ${message.member.displayName}`))
-            .catch(console.error);
+        message.channel.send(`${message.content} ${message.author.displayName}! WELCOME TO OUR SERVER!`);
     }
 });
 
