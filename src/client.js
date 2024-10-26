@@ -84,7 +84,7 @@ client.on('guildMemberAdd', member => {
         // Send the welcome message along with an image
         welcomeChannel.send({
             content: welcomeMessage,
-            files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
+            // files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
         });
     }
 });
@@ -111,7 +111,7 @@ We're sad to see you go, ${member}!
 
         goodbyeChannel.send({
             content: goodbyeMessage,
-            files: ['https://i.imgur.com/AyHSD1E.png']
+            // files: ['https://i.imgur.com/AyHSD1E.png']
         });
     }
 });
