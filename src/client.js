@@ -105,7 +105,7 @@ We truly appreciate your boost! Thanks for supporting the server and making it b
             `;
             boostChannel.send.send({
                 content: boostMessage,
-                // files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
+                files: ['https://i.imgur.com/FrTvTpq.gif'] // Replace with your image URL
             });
         }
     }
