@@ -91,9 +91,10 @@ client.on('guildMemberAdd', member => {
     const chatChannelId = '1271685845165936729';
     const chatChannel = member.guild.channels.cache.get(chatChannelId);
 
+    const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្ដី', 'សួស្ដីបង'];
     if (chatChannel) {
         chatChannel.send({
-            content: `សួស្ដី ${member.displayName}!`,
+            content: `${client.utils.getRandomElement(welcomeMessages)} ${member}!`,
         })
     }
 
@@ -125,7 +126,7 @@ client.on('messageCreate', message => {
     if (message.author.bot) return;
 
     // Define possible welcome messages in English and Khmer
-    const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្ដី', 'សួស្ដីបង', 'សួស្ដីអ្នកទាំងអស់គ្នា'];
+    const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្ដី', 'សួស្ដីបង'];
 
     // Check if the message contains any welcome words in either language
     const messageWords = message.content.toLowerCase().split(' ');
