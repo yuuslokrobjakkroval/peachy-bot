@@ -53,21 +53,16 @@ client.on('guildMemberAdd', member => {
     const welcomeChannel = member.guild.channels.cache.get(channelId);
 
     // Check if the member is a bot and assign the appropriate role
+    console.log(member.user)
     const roleId = member.user.bot ? '1271685844700233740' : '1271685844700233741';
     const role = member.guild.roles.cache.get(roleId);
 
     if (role) {
-        // Check if the bot has permission to manage roles
-        if (member.guild.me.permissions.has('MANAGE_ROLES')) {
-            member.roles.add(role)
-                .then(() => console.log(`Role ${role.name} assigned to ${member}.`))
-                .catch(err => {
-                    console.error('Error assigning role:', err);
-                    // Additional error handling logic can go here if needed
-                });
-        } else {
-            console.error('Missing Manage Roles permission for the bot.');
-        }
+        member.roles.add(role)
+            .then(() => console.log(`Role ${role.name} assigned to ${member}.`))
+            .catch(err => {
+                console.error('Error assigning role:', err);
+            });
     } else {
         console.error(`Role with ID ${roleId} not found.`);
     }
