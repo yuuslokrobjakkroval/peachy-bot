@@ -77,7 +77,7 @@ client.on('guildMemberAdd', member => {
 
 <:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
 
-**USER INFO** : ${member}
+**USER INFO** : ${member.displayName}
 **NOW WE HAVE \`${memberCount}\` MEMBERS**
         `;
 
@@ -86,6 +86,28 @@ client.on('guildMemberAdd', member => {
             content: welcomeMessage,
             // files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
         });
+    }
+
+    if (member.premiumSince) {
+        const boostChannelId = '1271685845165936725'; // Channel ID for boost message
+        const boostChannel = member.guild.channels.cache.get(boostChannelId);
+
+        if (boostChannel) {
+            const boostMessage = `
+**<:PEACH:1281537106342187102> ${member.guild.name} <:GOMA:1281537120644628480>**
+
+សូមអរគុណ ${member.displayName} ដែលបាន Boost មកកាន់ Server យើង។ 
+
+យើងរីករាយណាស់ចំពោះការ Boost របស់អ្នក! 
+សូមអរគុណសម្រាប់ការគាំទ្រ Server របស់យើង និងធ្វើឱ្យវាល្អបន្តិចសម្រាប់គ្រប់គ្នា। 
+
+We truly appreciate your boost! Thanks for supporting the server and making it better for everyone.
+            `;
+            boostChannel.send.send({
+                content: boostMessage,
+                // files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
+            });
+        }
     }
 });
 
