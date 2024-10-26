@@ -78,7 +78,7 @@ client.on('guildMemberAdd', member => {
 
 <:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
 
-**USER INFO** : ${member.displayName}
+**USER INFO** : ${member}
 **NOW WE HAVE \`${memberCount}\` MEMBERS**
         `;
 
@@ -107,14 +107,14 @@ client.on('guildMemberAdd', member => {
             const boostMessage = `
 **<:PEACH:1281537106342187102> ${member.guild.name} <:GOMA:1281537120644628480>**
 
-សូមអរគុណ ${member.displayName} ដែលបាន Boost មកកាន់ Server យើង។ 
+សូមអរគុណ ${member} ដែលបាន Boost មកកាន់ Server យើង។ 
 
 យើងរីករាយណាស់ចំពោះការ Boost របស់អ្នក! 
 សូមអរគុណសម្រាប់ការគាំទ្រ Server របស់យើង និងធ្វើឱ្យវាល្អបន្តិចសម្រាប់គ្រប់គ្នា। 
 
 We truly appreciate your boost! Thanks for supporting the server and making it better for everyone.
             `;
-            boostChannel.send.send({
+            boostChannel.send({
                 content: boostMessage,
                 files: ['https://i.imgur.com/FrTvTpq.gif'] // Replace with your image URL
             });
