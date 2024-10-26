@@ -92,12 +92,13 @@ client.on('guildMemberAdd', member => {
         `;
 
         // Send the welcome message along with an image
-        welcomeChannel.send({
+        return welcomeChannel.send({
             content: welcomeMessage,
             files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
         });
     }
 });
+
 
 client.on('guildMemberRemove', member => {
     const goodbyeChannelId = '1299416504575459380';
