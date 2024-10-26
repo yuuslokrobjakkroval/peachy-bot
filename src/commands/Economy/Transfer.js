@@ -170,7 +170,7 @@ module.exports = class Transfer extends Command {
             pendingTransfers.delete(ctx.author.id);
             if (collected.size === 0) {
                 const timeoutEmbed = client.embed()
-                    .setColor(color.warning)
+                    .setColor(color.orange)
                     .setTitle(transferMessages.expire)
                     .setDescription(transferMessages.timeout);
 
