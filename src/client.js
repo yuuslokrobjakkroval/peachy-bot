@@ -63,8 +63,6 @@ client.on('guildMemberAdd', member => {
             .catch(err => {
                 console.error('Error assigning role:', err);
             });
-    } else {
-        console.error(`Role with ID ${roleId} not found.`);
     }
 
     // Ensure the welcome channel exists
