@@ -51,10 +51,11 @@ setInterval(() => {
 client.on('guildMemberAdd', member => {
     const channelId = '1299416615275987025';
     const welcomeChannel = member.guild.channels.cache.get(channelId);
-    const roleId = '1271685844700233741';
 
-    // Assign the role to the new member
+    // Check if the member is a bot and assign the appropriate role
+    const roleId = member.user.bot ? '1271685844700233740' : '1271685844700233741';
     const role = member.guild.roles.cache.get(roleId);
+
     if (role) {
         member.roles.add(role)
             .then(() => console.log(`Role ${role.name} assigned to ${member.user.tag}.`))
@@ -81,7 +82,7 @@ client.on('guildMemberAdd', member => {
         `;
 
         // Send the welcome message along with an image
-        return welcomeChannel.send({
+        welcomeChannel.send({
             content: welcomeMessage,
             files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
         });
