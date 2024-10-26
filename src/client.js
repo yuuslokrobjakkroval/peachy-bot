@@ -59,8 +59,6 @@ client.on('guildMemberAdd', member => {
         member.roles.add(role)
             .then(() => console.log(`Role ${role.name} assigned to ${member.user.tag}.`))
             .catch(console.error);
-    } else {
-        console.warn(`Role with ID ${roleId} was not found.`);
     }
 
     // Ensure the welcome channel exists
