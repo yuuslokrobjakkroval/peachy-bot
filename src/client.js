@@ -94,7 +94,7 @@ client.on('guildMemberAdd', member => {
     const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្ដី', 'សួស្ដីបង'];
     if (chatChannel) {
         chatChannel.send({
-            content: `${client.utils.getRandomElement(welcomeMessages)} ${member}!`,
+            content: `${client.utils.getRandomElement(welcomeMessages)} <@${member.id}>!`,
         })
     }
 
