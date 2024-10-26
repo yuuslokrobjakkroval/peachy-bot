@@ -57,9 +57,19 @@ client.on('guildMemberAdd', member => {
     const role = member.guild.roles.cache.get(roleId);
 
     if (role) {
-        member.roles.add(role)
-            .then(() => console.log(`Role ${role.name} assigned to ${member}.`))
-            .catch(console.error);
+        // Check if the bot has permission to manage roles
+        if (member.guild.me.permissions.has('MANAGE_ROLES')) {
+            member.roles.add(role)
+                .then(() => console.log(`Role ${role.name} assigned to ${member}.`))
+                .catch(err => {
+                    console.error('Error assigning role:', err);
+                    // Additional error handling logic can go here if needed
+                });
+        } else {
+            console.error('Missing Manage Roles permission for the bot.');
+        }
+    } else {
+        console.error(`Role with ID ${roleId} not found.`);
     }
 
     // Ensure the welcome channel exists
