@@ -123,14 +123,18 @@ We truly appreciate your boost! Thanks for supporting the server and making it b
 });
 
 client.on('messageCreate', message => {
-    // Check if the message is from the new member and if it says "Hi"
-    const welcomeMessage = ['Hello', 'Hi', 'Sur Sdey', 'Reab Sur']
-    if (welcomeMessage.includes(message.content.toLowerCase())) {
+    // Define possible welcome messages
+    const welcomeMessages = ['hello', 'hi', 'sur sdey', 'reab sur'];
+
+    // Check if the message contains any welcome words
+    const messageWords = message.content.toLowerCase().split(' ');
+    const containsWelcome = messageWords.some(word => welcomeMessages.includes(word));
+
+    // If the message contains a welcome word, respond
+    if (containsWelcome) {
         message.channel.send(`${message.content}! Nham by nv ${message.member.displayName}! kom plex mk join server yg lg hz invite member join server tor tor pg na 🥰`)
             .then(() => console.log(`Sent response to ${message.member.displayName}`))
             .catch(console.error);
-
-        newMemberId = null; // Reset the ID after the response
     }
 });
 
