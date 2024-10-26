@@ -47,72 +47,72 @@ setInterval(() => {
         .catch((err) => console.error('Error finding giveaways:', err));
 }, 60000);
 
-// // Event listener for new members joining the server
-// client.on('guildMemberAdd', member => {
-//     const channelId = '1271685845165936721';
-//     const welcomeChannel = member.guild.channels.cache.get(channelId);
-//     const roleId = '1271685844700233741';
-//
-//     // Assign the role to the new member
-//     const role = member.guild.roles.cache.get(roleId);
-//     if (role) {
-//         member.roles.add(role)
-//             .then(() => console.log(`Role ${role.name} assigned to ${member.user.tag}.`))
-//             .catch(console.error);
-//     }
-//
-//     // Ensure the welcome channel exists
-//     if (welcomeChannel) {
-//         const memberCount = member.guild.memberCount;
-//
-//         const welcomeMessage = `
-// **<:PEACH:1281537106342187102> WELCOME TO ${member.guild.name} SERVER <:GOMA:1281537120644628480>**
-//
-// <:BORDERTOPLEFT:1283010765519060993>  ═════════════════   <:BORDERTOPRIGHT:1283010784158421047>
-//
-// > **READ RULES** : <#1271685845165936722>
-// > **REACT ROLES** : <#1271685845165936723>
-// > **ANNOUNCEMENTS** : <#1272595713125126176>
-//
-// <:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
-//
-// **USER INFO** : ${member}
-// **NOW WE HAVE \`${memberCount}\` MEMBERS**
-//         `;
-//
-//         // Send the welcome message along with an image
-//         welcomeChannel.send({
-//             content: welcomeMessage,
-//             files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
-//         });
-//     }
-// });
-//
-// client.on('guildMemberRemove', member => {
-//     const goodbyeChannelId = '1271685845165936727';
-//     const goodbyeChannel = member.guild.channels.cache.get(goodbyeChannelId);
-//
-//     // Ensure the goodbye channel exists
-//     if (goodbyeChannel) {
-//         const memberCount = member.guild.memberCount;
-//
-//         const goodbyeMessage = `
-// **<:PEACH:1281537106342187102> Goodbye from ${member.guild.name} SERVER <:GOMA:1281537120644628480>**
-//
-// <:BORDERTOPLEFT:1283010765519060993>  ═════════════════   <:BORDERTOPRIGHT:1283010784158421047>
-//
-// We're sad to see you go, ${member}!
-//
-// <:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
-//
-// **NOW WE HAVE \`${memberCount}\` MEMBERS LEFT**
-//         `;
-//
-//         goodbyeChannel.send({
-//             content: goodbyeMessage,
-//             files: ['https://i.imgur.com/AyHSD1E.png']
-//         });
-//     }
-// });
+// Event listener for new members joining the server
+client.on('guildMemberAdd', member => {
+    const channelId = '1271685845165936721';
+    const welcomeChannel = member.guild.channels.cache.get(channelId);
+    const roleId = '1271685844700233741';
+
+    // Assign the role to the new member
+    const role = member.guild.roles.cache.get(roleId);
+    if (role) {
+        member.roles.add(role)
+            .then(() => console.log(`Role ${role.name} assigned to ${member.user.tag}.`))
+            .catch(console.error);
+    }
+
+    // Ensure the welcome channel exists
+    if (welcomeChannel) {
+        const memberCount = member.guild.memberCount;
+
+        const welcomeMessage = `
+**<:PEACH:1281537106342187102> WELCOME TO ${member.guild.name} SERVER <:GOMA:1281537120644628480>**
+
+<:BORDERTOPLEFT:1283010765519060993>  ═════════════════   <:BORDERTOPRIGHT:1283010784158421047>
+
+> **READ RULES** : <#1271685845165936722>
+> **REACT ROLES** : <#1271685845165936723>
+> **ANNOUNCEMENTS** : <#1272595713125126176>
+
+<:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
+
+**USER INFO** : ${member}
+**NOW WE HAVE \`${memberCount}\` MEMBERS**
+        `;
+
+        // Send the welcome message along with an image
+        welcomeChannel.send({
+            content: welcomeMessage,
+            files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
+        });
+    }
+});
+
+client.on('guildMemberRemove', member => {
+    const goodbyeChannelId = '1271685845165936727';
+    const goodbyeChannel = member.guild.channels.cache.get(goodbyeChannelId);
+
+    // Ensure the goodbye channel exists
+    if (goodbyeChannel) {
+        const memberCount = member.guild.memberCount;
+
+        const goodbyeMessage = `
+**<:PEACH:1281537106342187102> Goodbye from ${member.guild.name} SERVER <:GOMA:1281537120644628480>**
+
+<:BORDERTOPLEFT:1283010765519060993>  ═════════════════   <:BORDERTOPRIGHT:1283010784158421047>
+
+We're sad to see you go, ${member}!
+
+<:BORDERBOTTONLEFT:1283010799010578502>  ═════════════════   <:BORDERBOTTONRIGHT:1283010809760452679>
+
+**NOW WE HAVE \`${memberCount}\` MEMBERS LEFT**
+        `;
+
+        goodbyeChannel.send({
+            content: goodbyeMessage,
+            files: ['https://i.imgur.com/AyHSD1E.png']
+        });
+    }
+});
 
 client.start(config.token);
