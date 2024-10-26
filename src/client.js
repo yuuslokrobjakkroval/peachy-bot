@@ -58,7 +58,7 @@ client.on('guildMemberAdd', member => {
 
     if (role) {
         member.roles.add(role)
-            .then(() => console.log(`Role ${role.name} assigned to ${member.displayName}.`))
+            .then(() => console.log(``))
             .catch(console.error);
     }
 
