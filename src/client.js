@@ -48,21 +48,32 @@ setInterval(() => {
 }, 60000);
 
 // Event listener for new members joining the server
-client.on('guildMemberAdd', member => {
+client.on('guildMemberAdd', async (member) => {
     const channelId = '1299416615275987025';
     const welcomeChannel = member.guild.channels.cache.get(channelId);
 
-    // Check if the member is a bot and assign the appropriate role
-    console.log(member.user)
-    const roleId = member.user.bot ? '1271685844700233740' : '1271685844700233741';
-    const role = member.guild.roles.cache.get(roleId);
+    // Fetch roles to ensure they're up to date
+    await member.guild.roles.fetch();
+
+    // Get the bot's highest role
+    const botRole = member.guild.me.roles.highest;
+    const roleToAssign = member.user.bot ? '1271685844700233740' : '1271685844700233741';
+    const role = member.guild.roles.cache.get(roleToAssign);
 
     if (role) {
-        member.roles.add(role)
-            .then(() => console.log(`Role ${role.name} assigned to ${member}.`))
-            .catch(err => {
-                console.error('Error assigning role:', err);
-            });
+        if (botRole.position > role.position) {
+            // Assign the role to the new member
+            try {
+                await member.roles.add(role);
+                console.log(`Role ${role.name} assigned to ${member.user.tag}.`);
+            } catch (error) {
+                console.error('Error assigning role:', error);
+            }
+        } else {
+            console.warn(`Cannot assign role ${role.name} to ${member.user.tag} due to role hierarchy.`);
+        }
+    } else {
+        console.warn(`Role with ID ${roleToAssign} not found in guild.`);
     }
 
     // Ensure the welcome channel exists
@@ -85,13 +96,12 @@ client.on('guildMemberAdd', member => {
         `;
 
         // Send the welcome message along with an image
-        return welcomeChannel.send({
+        await welcomeChannel.send({
             content: welcomeMessage,
             files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
         });
     }
 });
-
 
 client.on('guildMemberRemove', member => {
     const goodbyeChannelId = '1299416504575459380';
