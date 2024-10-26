@@ -134,7 +134,7 @@ client.on('messageCreate', message => {
 
     // Check if the message content matches any of the greetings
     if (containsWelcome) {
-        message.channel.send(`${message.content} ${message.author.displayName}!!!`);
+        message.channel.send({ content: `${message.content} ${message.author.displayName}!!!`});
     }
 });
 
