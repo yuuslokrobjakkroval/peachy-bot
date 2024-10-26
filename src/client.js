@@ -49,7 +49,7 @@ setInterval(() => {
 
 // Event listener for new members joining the server
 client.on('guildMemberAdd', member => {
-    const channelId = '1271685845165936721';
+    const channelId = '1299416615275987025';
     const welcomeChannel = member.guild.channels.cache.get(channelId);
     const roleId = '1271685844700233741';
 
@@ -81,7 +81,7 @@ client.on('guildMemberAdd', member => {
         `;
 
         // Send the welcome message along with an image
-        welcomeChannel.send({
+        return welcomeChannel.send({
             content: welcomeMessage,
             files: ['https://i.imgur.com/HJgHXVW.jpg'] // Replace with your image URL
         });
@@ -89,7 +89,7 @@ client.on('guildMemberAdd', member => {
 });
 
 client.on('guildMemberRemove', member => {
-    const goodbyeChannelId = '1271685845165936727';
+    const goodbyeChannelId = '1299416504575459380';
     const goodbyeChannel = member.guild.channels.cache.get(goodbyeChannelId);
 
     // Ensure the goodbye channel exists
