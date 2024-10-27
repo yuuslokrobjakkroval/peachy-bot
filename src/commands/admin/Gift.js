@@ -51,171 +51,6 @@ module.exports = class Gift extends Command {
         });
     }
 
-    getRandomReward(boxType) {
-        let coins;
-        const rewards = []; // Initialize an array to store rewards
-
-        // Helper function to get a random item from allItems of a specific type
-        const getRandomItem = (type) => {
-            const filteredItems = allItems.filter(item => item.type === type);
-            return filteredItems[Math.floor(Math.random() * filteredItems.length)];
-        };
-
-        switch (boxType) {
-            case "common":
-                coins = Math.floor(Math.random() * (50000 - 30000 + 1)) + 30000; // Random coins between 30,000 and 50,000
-
-                const foodItemCommon = getRandomItem('food');
-                const drinkItemCommon = getRandomItem('drink');
-
-                if (!foodItemCommon || !drinkItemCommon) {
-                    throw new Error("Failed to retrieve some items for common box.");
-                }
-
-                rewards.push({
-                    id: foodItemCommon.id,
-                    name: foodItemCommon.name,
-                    quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random food between 1 and 3
-                });
-                rewards.push({
-                    id: drinkItemCommon.id,
-                    name: drinkItemCommon.name,
-                    quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random drink between 1 and 3
-                });
-
-                return {
-                    coins: coins,
-                    rewards: rewards
-                };
-
-            case "rare":
-                coins = Math.floor(Math.random() * (75000 - 50000 + 1)) + 50000; // Random coins between 50,000 and 75,000
-
-                const foodItemRare = getRandomItem('food');
-                const drinkItemRare = getRandomItem('drink');
-
-                if (!foodItemRare || !drinkItemRare) {
-                    throw new Error("Failed to retrieve some items for rare box.");
-                }
-
-                rewards.push({
-                    id: foodItemRare.id,
-                    name: foodItemRare.name,
-                    quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random food between 3 and 5
-                });
-                rewards.push({
-                    id: drinkItemRare.id,
-                    name: drinkItemRare.name,
-                    quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random drink between 3 and 5
-                });
-
-                return {
-                    coins: coins,
-                    rewards: rewards
-                };
-
-            case "epic":
-                coins = Math.floor(Math.random() * (100000 - 80000 + 1)) + 80000; // Random coins between 80,000 and 100,000
-
-                const foodItemEpic = getRandomItem('food');
-                const drinkItemEpic = getRandomItem('drink');
-                const milkItemEpic = getRandomItem('milk');
-
-                if (!foodItemEpic || !drinkItemEpic || !milkItemEpic) {
-                    throw new Error("Failed to retrieve some items for epic box.");
-                }
-
-                rewards.push({
-                    id: foodItemEpic.id,
-                    name: foodItemEpic.name,
-                    quantity: Math.floor(Math.random() * (8 - 7 + 1)) + 7 // Random food between 7 and 8
-                });
-                rewards.push({
-                    id: drinkItemEpic.id,
-                    name: drinkItemEpic.name,
-                    quantity: Math.floor(Math.random() * (8 - 7 + 1)) + 7 // Random drink between 7 and 8
-                });
-                rewards.push({
-                    id: milkItemEpic.id,
-                    name: milkItemEpic.name,
-                    quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random milk between 1 and 3
-                });
-
-                return {
-                    amount: coins,
-                    rewards: rewards
-                };
-
-            case "legendary":
-                coins = Math.floor(Math.random() * (300000 - 100000 + 1)) + 100000; // Random coins between 100,000 and 300,000
-
-                const foodItemLegendary = getRandomItem('food');
-                const drinkItemLegendary = getRandomItem('drink');
-                const milkItemLegendary = getRandomItem('milk');
-
-                if (!foodItemLegendary || !drinkItemLegendary || !milkItemLegendary) {
-                    throw new Error("Failed to retrieve some items for legendary box.");
-                }
-
-                rewards.push({
-                    id: foodItemLegendary.id,
-                    name: foodItemLegendary.name,
-                    quantity: 10 // Fixed food quantity
-                });
-                rewards.push({
-                    id: drinkItemLegendary.id,
-                    name: drinkItemLegendary.name,
-                    quantity: 10 // Fixed drink quantity
-                });
-                rewards.push({
-                    id: milkItemLegendary.id,
-                    name: milkItemLegendary.name,
-                    quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random milk between 3 and 5
-                });
-
-                return {
-                    amount: coins,
-                    rewards: rewards
-                };
-
-            case "mythic":
-                coins = 1000000; // Fixed coins amount
-
-                const foodItemMythic = getRandomItem('food');
-                const drinkItemMythic = getRandomItem('drink');
-                const milkItemMythic = getRandomItem('milk');
-
-                if (!foodItemMythic || !drinkItemMythic || !milkItemMythic) {
-                    throw new Error("Failed to retrieve some items for mythic box.");
-                }
-
-                rewards.push({
-                    id: foodItemMythic.id,
-                    name: foodItemMythic.name,
-                    quantity: 10 // Fixed food quantity
-                });
-                rewards.push({
-                    id: drinkItemMythic.id,
-                    name: drinkItemMythic.name,
-                    quantity: 10 // Fixed drink quantity
-                });
-                rewards.push({
-                    id: milkItemMythic.id,
-                    name: milkItemMythic.name,
-                    quantity: 5 // Fixed milk quantity
-                });
-
-                return {
-                    amount: coins,
-                    rewards: rewards
-                };
-
-            default:
-                throw new Error("Invalid box type provided");
-        }
-    }
-
-
     async run(client, ctx, args, color, emoji, language) {
         if (ctx.isInteraction) {
             await ctx.interaction.deferReply({ ephemeral: true });
@@ -255,7 +90,7 @@ module.exports = class Gift extends Command {
 
         // Send gifts to each selected channel
         for (const selectedChannel of availableChannels) {
-            gifts.push(this.getRandomReward(boxType));
+            gifts.push(await getRandomReward(boxType));
 
             const button = new ButtonBuilder()
                 .setCustomId('claim_gift')
@@ -347,6 +182,183 @@ module.exports = class Gift extends Command {
     }
 }
 
+async function getRandomReward(boxType) {
+    let coins;
+    const rewards = []; // Initialize an array to store rewards
+
+    // Helper function to get a random item from allItems of a specific type
+    const getRandomItem = (type) => {
+        const filteredItems = allItems.filter(item => item.type === type);
+        return filteredItems[Math.floor(Math.random() * filteredItems.length)];
+    };
+
+    switch (boxType) {
+        case "common":
+            coins = Math.floor(Math.random() * (50000 - 30000 + 1)) + 30000; // Random coins between 30,000 and 50,000
+
+            const foodItemCommon = getRandomItem('food');
+            const drinkItemCommon = getRandomItem('drink');
+
+            if (!foodItemCommon || !drinkItemCommon) {
+                throw new Error("Failed to retrieve some items for common box.");
+            }
+
+            rewards.push({
+                id: foodItemCommon.id,
+                name: foodItemCommon.name,
+                emoji: foodItemCommon.emoji, // Directly using emoji from item
+                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random food between 1 and 3
+            });
+            rewards.push({
+                id: drinkItemCommon.id,
+                name: drinkItemCommon.name,
+                emoji: drinkItemCommon.emoji, // Directly using emoji from item
+                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random drink between 1 and 3
+            });
+
+            return {
+                coins: coins,
+                rewards: rewards
+            };
+
+        case "rare":
+            coins = Math.floor(Math.random() * (75000 - 50000 + 1)) + 50000; // Random coins between 50,000 and 75,000
+
+            const foodItemRare = getRandomItem('food');
+            const drinkItemRare = getRandomItem('drink');
+
+            if (!foodItemRare || !drinkItemRare) {
+                throw new Error("Failed to retrieve some items for rare box.");
+            }
+
+            rewards.push({
+                id: foodItemRare.id,
+                name: foodItemRare.name,
+                emoji: foodItemRare.emoji, // Directly using emoji from item
+                quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random food between 3 and 5
+            });
+            rewards.push({
+                id: drinkItemRare.id,
+                name: drinkItemRare.name,
+                emoji: drinkItemRare.emoji, // Directly using emoji from item
+                quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random drink between 3 and 5
+            });
+
+            return {
+                coins: coins,
+                rewards: rewards
+            };
+
+        case "epic":
+            coins = Math.floor(Math.random() * (100000 - 80000 + 1)) + 80000; // Random coins between 80,000 and 100,000
+
+            const foodItemEpic = getRandomItem('food');
+            const drinkItemEpic = getRandomItem('drink');
+            const milkItemEpic = getRandomItem('milk');
+
+            if (!foodItemEpic || !drinkItemEpic || !milkItemEpic) {
+                throw new Error("Failed to retrieve some items for epic box.");
+            }
+
+            rewards.push({
+                id: foodItemEpic.id,
+                name: foodItemEpic.name,
+                emoji: foodItemEpic.emoji, // Directly using emoji from item
+                quantity: Math.floor(Math.random() * (8 - 7 + 1)) + 7 // Random food between 7 and 8
+            });
+            rewards.push({
+                id: drinkItemEpic.id,
+                name: drinkItemEpic.name,
+                emoji: drinkItemEpic.emoji, // Directly using emoji from item
+                quantity: Math.floor(Math.random() * (8 - 7 + 1)) + 7 // Random drink between 7 and 8
+            });
+            rewards.push({
+                id: milkItemEpic.id,
+                name: milkItemEpic.name,
+                emoji: milkItemEpic.emoji, // Directly using emoji from item
+                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random milk between 1 and 3
+            });
+
+            return {
+                amount: coins,
+                rewards: rewards
+            };
+
+        case "legendary":
+            coins = Math.floor(Math.random() * (300000 - 100000 + 1)) + 100000; // Random coins between 100,000 and 300,000
+
+            const foodItemLegendary = getRandomItem('food');
+            const drinkItemLegendary = getRandomItem('drink');
+            const milkItemLegendary = getRandomItem('milk');
+
+            if (!foodItemLegendary || !drinkItemLegendary || !milkItemLegendary) {
+                throw new Error("Failed to retrieve some items for legendary box.");
+            }
+
+            rewards.push({
+                id: foodItemLegendary.id,
+                name: foodItemLegendary.name,
+                emoji: foodItemLegendary.emoji, // Directly using emoji from item
+                quantity: 10 // Fixed food quantity
+            });
+            rewards.push({
+                id: drinkItemLegendary.id,
+                name: drinkItemLegendary.name,
+                emoji: drinkItemLegendary.emoji, // Directly using emoji from item
+                quantity: 10 // Fixed drink quantity
+            });
+            rewards.push({
+                id: milkItemLegendary.id,
+                name: milkItemLegendary.name,
+                emoji: milkItemLegendary.emoji, // Directly using emoji from item
+                quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random milk between 3 and 5
+            });
+
+            return {
+                amount: coins,
+                rewards: rewards
+            };
+
+        case "mythic":
+            coins = 1000000; // Fixed coins amount
+
+            const foodItemMythic = getRandomItem('food');
+            const drinkItemMythic = getRandomItem('drink');
+            const milkItemMythic = getRandomItem('milk');
+
+            if (!foodItemMythic || !drinkItemMythic || !milkItemMythic) {
+                throw new Error("Failed to retrieve some items for mythic box.");
+            }
+
+            rewards.push({
+                id: foodItemMythic.id,
+                name: foodItemMythic.name,
+                emoji: foodItemMythic.emoji, // Directly using emoji from item
+                quantity: 10 // Fixed food quantity
+            });
+            rewards.push({
+                id: drinkItemMythic.id,
+                name: drinkItemMythic.name,
+                emoji: drinkItemMythic.emoji, // Directly using emoji from item
+                quantity: 10 // Fixed drink quantity
+            });
+            rewards.push({
+                id: milkItemMythic.id,
+                name: milkItemMythic.name,
+                emoji: milkItemMythic.emoji, // Directly using emoji from item
+                quantity: 5 // Fixed milk quantity
+            });
+
+            return {
+                amount: coins,
+                rewards: rewards
+            };
+
+        default:
+            throw new Error("Invalid box type provided");
+    }
+}
+
 async function addRewardToUserInventory(client, interaction, color, emoji, reward) {
     const rewardSummary = []; // Initialize an array to store the summary of rewards
     try {
@@ -373,11 +385,11 @@ async function addRewardToUserInventory(client, interaction, color, emoji, rewar
 
             if (inventoryItem) {
                 inventoryItem.quantity += item.quantity; // Update existing item's quantity
-                rewardSummary.push(`**${item.quantity} ${item.name}** (Total: ${inventoryItem.quantity})`);
+                rewardSummary.push(`**${item.emoji} ${item.name} ${item.quantity}** (Total: ${inventoryItem.quantity})`);
             } else {
                 // If it doesn't exist, add it to the inventory
                 user.inventory.push({ id: item.id, name: item.name, quantity: item.quantity });
-                rewardSummary.push(`**${item.quantity} ${item.name}** (New item added)`);
+                rewardSummary.push(`**${item.emoji} ${item.name} ${item.quantity}** (New item added)`);
             }
         }
 
