@@ -28,7 +28,7 @@ module.exports = {
     birthdayChannelId,
     owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
     serverOwner: process.env.SVOWNER_IDS ? process.env.SVOWNER_IDS.split(',') : [],
-    color: { red: 0xFF0000, green: 0x00FF00, blue: 0xFFB0F2, pink: 0xE3A1AD, orange: 0xFFA500, main: 0xF5F0A2, none: 0x2B2D31 },
+    color: { red: 0xFF0000, green: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, orange: 0xFFA500, main: 0xF5F0A2, none: 0x2B2D31 },
     database: process.env.DATABASE_URL,
     botStatus: 'online',
     botActivityType: 4,

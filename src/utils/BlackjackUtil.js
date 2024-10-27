@@ -79,21 +79,29 @@ function initDeck(deck, player, dealer) {
 exports.generateEmbed = generateEmbed;
 async function generateEmbed(author, client, color, emoji, dealer, player, bet, end, winnings) {
     let description = '';
+    let endColor = '';
     let dealerValue = cardValue(dealer);
     let playerValue = cardValue(player);
 
     if (end == 'w') {
-        description = `**\nYou won \`${client.utils.formatNumber(winnings)}\` ${emoji.coin}**`;
+        endColor = color.green;
+        description = `**\nYou bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You won \`${client.utils.formatNumber(winnings)}\` ${emoji.coin}**`;
     } else if (end == 'l') {
-        description = `**\nYou lost \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**`;
+        endColor = color.red;
+        description = `**\nYou bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You lost \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**`;
     } else if (end == 'tb') {
+        endColor = color.blue;
         description = '**\nYou both bust!**';
     } else if (end == 't') {
+        endColor = color.blue;
         description = '**\nYou tied!**';
-    } else dealerValue.points = dealerValue.shownPoints + '+?';
+    } else {
+        endColor = color.main;
+        dealerValue.points = dealerValue.shownPoints + '+?';
+    }
 
     return {
-        color: color.main,
+        color: endColor,
         description: `# ${emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${emoji.mainRight}\n` +
             `The winner is the one who's closest to 21.\n` +
             `**DEALER ${DEALER} \`[${dealerValue.points}]\`**\n` +
