@@ -241,20 +241,13 @@ module.exports = class Gift extends Command {
             });
 
 
-            collector.on('end', () => {
+            collector.on('end', async () => {
                 // Disable the button when the collector ends
                 giftMessage.edit({
                     components: [new ActionRowBuilder().addComponents(button.setDisabled(true))]
                 });
 
-                // Schedule the gift message to be deleted after 30 seconds
-                setTimeout(async () => {
-                    try {
-                        await giftMessage.delete();
-                    } catch (error) {
-                        console.error('Error deleting the gift message:', error);
-                    }
-                }, 90000); // 30 seconds
+                await giftMessage.delete();
             });
 
         }
