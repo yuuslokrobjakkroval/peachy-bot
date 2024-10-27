@@ -42,7 +42,7 @@ module.exports = class Reroll extends Command {
         const giveaway = await GiveawaySchema.findOne({ messageId });
 
         if (!giveaway) {
-            return ctx.reply({ content: 'No giveaway found with the provided message ID.' });
+            return ctx.sendMessage({ content: 'No giveaway found with the provided message ID.' });
         }
 
         if (giveaway.ended === false) {
@@ -56,7 +56,7 @@ module.exports = class Reroll extends Command {
         // Select new winners
         const newWinners = this.selectNewWinners(giveaway.entered, giveaway.winners, giveaway.winnerId);
         if (newWinners.length === 0) {
-            return ctx.reply({ content: 'No eligible participants left to reroll.' });
+            return ctx.sendMessage({ content: 'No eligible participants left to reroll.' });
         }
 
         // Update giveaway with new winners
