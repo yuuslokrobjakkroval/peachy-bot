@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, CommandInteraction } = require('discord.js');
 const Users = require('../schemas/user');
 const GiveawaySchema = require('../schemas/giveaway');
 
@@ -332,10 +332,9 @@ module.exports = class Utils {
     }
 
     static async buttonReply(int, args, color) {
-        const embed = new EmbedBuilder();
         const msg = int.replied
-            ? await int.editReply({ embeds: [embed.setColor(color).setDescription(args)] }).catch(() => {})
-            : await int.followUp({ embeds: [embed.setColor(color).setDescription(args)] }).catch(() => {});
+            ? await int.editReply({ embeds: [this.client.embed().setColor(color).setDescription(args)] }).catch(() => {})
+            : await int.followUp({ embeds: [this.client.embed().setColor(color).setDescription(args)] }).catch(() => {});
         setTimeout(async () => {
             if (int && !int.ephemeral) {
                 await msg?.delete().catch(() => {});
@@ -435,7 +434,7 @@ module.exports = class Utils {
             ButtonBuilder.from(message.components[0].components[1]).setDisabled(true)
         );
 
-        const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
+        const endGiveawayEmbed = client.embed().from(message.embeds[0])
             .setColor(color.main)
             .setDescription(`Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`);
 
@@ -449,15 +448,16 @@ module.exports = class Utils {
         // Announce the winners
         await message.reply({
             embeds: [
-                new EmbedBuilder()
+                client.embed()
                     .setColor(color.main)
                     .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
                     .setDescription(
                         winnerIdArray.length
-                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}`
+                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
+                            (autopay ? `Hosted by <@${data.hostedBy}>` : `use \`\`\`${client.config.prefix.toLowerCase()}reroll ${message.id}\`\`\` to reroll the giveaway.`)
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
                     )
-                    .setFooter({ text: autopay ? `Hosted by ${ctx.author.displayName}` : `use \`\`\`${client.config.prefix.toLowerCase()}reroll ${message.id}\`\`\` to reroll the giveaway.`, iconURL: client.user.displayAvatarURL() })
+                    .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
             ],
         });
         if (autopay) {
@@ -467,7 +467,7 @@ module.exports = class Utils {
                     await Utils.addCoinsToUser(winner, data.prize);
                     await message.reply({
                         embeds: [
-                            new EmbedBuilder()
+                            client.embed()
                                 .setColor(color.main)
                                 .setDescription(`**${client.user.username}** has awarded **\`${client.utils.formatNumber(data.prize)}\`** ${emoji.coin} to <@${winner}>.`),
                         ],

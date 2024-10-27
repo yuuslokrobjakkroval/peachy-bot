@@ -80,10 +80,10 @@ module.exports = class Reroll extends Command {
         // Embed for reroll results
         const rerollEmbed = client.embed()
             .setColor(color.main)
-            .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
+            .setTitle(`${emoji.mainLeft} Congratulations ${emoji.mainRight}`)
             .setDescription(
                 newWinners.length
-                    ? `${newWinners.map(id => `<@${id}>`).join(', ')}! You have won **${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin}`
+                    ? `${newWinners.map(id => `<@${id}>`).join(', ')}! You have won **${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin} ${emoji.congratulation}`
                     : `No one entered the giveaway for **\`${client.utils.formatNumber(giveaway.prize)}\`**!`
             )
             .setFooter({ text: `Rerolled by ${ctx.author.displayName}`, iconURL: ctx.author.displayAvatarURL() })

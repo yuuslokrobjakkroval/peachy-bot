@@ -102,8 +102,6 @@ module.exports = class Start extends Command {
         const image = ctx.isInteraction ? ctx.interaction.options.getAttachment('image') : args[3];
         const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[4];
         const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[5];
-        const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[6];
-        const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[7];
 
         if (autoPay && !isOwner) {
             return (ctx.isInteraction
@@ -117,6 +115,11 @@ module.exports = class Start extends Command {
                     })
             );
         }
+
+        const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[6];
+        const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[7];
+
+
 
         const duration = ms(durationStr);
         const winners = parseInt(winnersStr, 10);
@@ -169,7 +172,7 @@ module.exports = class Start extends Command {
         let giveawayMessage;
         let targetChannel;
         try {
-            targetChannel = channel || ctx.channel;
+            targetChannel = channel ? channel : ctx.channel;
             giveawayMessage = await targetChannel.send({ embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
         } catch (err) {
             if (!ctx.replied && !ctx.deferred) {
