@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const { ActionRowBuilder, ButtonBuilder, PermissionsBitField  } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, PermissionsBitField } = require('discord.js');
 const ms = require('ms');
 const GiveawaySchema = require('../../schemas/giveaway.js');
 
@@ -41,12 +41,6 @@ module.exports = class Start extends Command {
                     required: true,
                 },
                 {
-                    name: 'autopay',
-                    description: 'Automatically pay the winners after the giveaway ends. (Owner/Staff Only)',
-                    type: 3,
-                    required: false,
-                },
-                {
                     name: 'image',
                     description: 'Attach an image for the giveaway.',
                     type: 11,
@@ -56,6 +50,24 @@ module.exports = class Start extends Command {
                     name: 'thumbnail',
                     description: 'Attach a thumbnail for the giveaway.',
                     type: 11,
+                    required: false,
+                },
+                {
+                    name: 'autopay',
+                    description: 'Automatically pay the winners after the giveaway ends. (Owner/Staff Only)',
+                    type: 3,
+                    required: false,
+                },
+                {
+                    name: 'host',
+                    description: 'Specify the giveaway host (mention or user ID).',
+                    type: 6, // User type
+                    required: false,
+                },
+                {
+                    name: 'channel',
+                    description: 'Specify the channel to post the giveaway.',
+                    type: 7, // Channel type
                     required: false,
                 },
             ],
@@ -68,7 +80,7 @@ module.exports = class Start extends Command {
         const member = await ctx.guild.members.fetch(ctx.author.id);
         const isOwner = this.client.config.owners.includes(ctx.author.id);
         const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
-        const isAdmin = member.permissions.has(PermissionsBitField.Flags.Administrator); // Use PermissionsBitField.Flags
+        const isAdmin = member.permissions.has(PermissionsBitField.Flags.Administrator);
 
         if (!isOwner && !isServerOwner && !isAdmin) {
             return (ctx.isInteraction
@@ -83,11 +95,14 @@ module.exports = class Start extends Command {
             );
         }
 
-        // Get command parameters
         const durationStr = ctx.isInteraction ? ctx.interaction.options.getString('duration') : args[0];
         const winnersStr = ctx.isInteraction ? ctx.interaction.options.getInteger('winners') : args[1];
         const prize = ctx.isInteraction ? ctx.interaction.options.getString('prize') : args[2];
-        const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[3];
+        const image = ctx.isInteraction ? ctx.interaction.options.getAttachment('image') : args[3];
+        const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[4];
+        const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[5];
+        const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[6];
+        const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[7];
 
         if (autoPay && !isOwner) {
             return (ctx.isInteraction
@@ -102,13 +117,9 @@ module.exports = class Start extends Command {
             );
         }
 
-        const image = ctx.isInteraction ? ctx.interaction.options.getAttachment('image') : args[4];
-        const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[5];
+        const duration = ms(durationStr);
+        const winners = parseInt(winnersStr, 10);
 
-        const duration = ms(durationStr); // Converts '1h', '1day', '7week' to milliseconds
-        const winners = parseInt(winnersStr, 10); // Parse winners as an integer
-
-        // Check if inputs are valid
         if (!duration || isNaN(winners) || winners <= 0 || !prize) {
             const replyMessage = {
                 embeds: [
@@ -126,22 +137,19 @@ module.exports = class Start extends Command {
             return;
         }
 
-        // Calculate the end time in Unix timestamp
-        const endTime = Date.now() + duration; // End time in milliseconds
+        const endTime = Date.now() + duration;
         const formattedDuration = parseInt(endTime / 1000, 10);
 
-        // Build the giveaway embed
         const giveawayEmbed = client.embed()
             .setColor(color.main)
             .setTitle(`${client.utils.formatNumber(prize)} ${emoji.coin}`)
             .setDescription(
-                `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
+                `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${host ? host.username : ctx.author.username}\nEnds: <t:${formattedDuration}:R>`
             );
 
         if (image) giveawayEmbed.setImage(image.url);
         if (thumbnail) giveawayEmbed.setThumbnail(thumbnail.url);
 
-        // Giveaway buttons (Join and Participants)
         const joinButton = new ButtonBuilder()
             .setCustomId('giveaway-join')
             .setEmoji(`${emoji.main}`)
@@ -157,10 +165,11 @@ module.exports = class Start extends Command {
 
         const buttonRow = new ActionRowBuilder().addComponents(joinButton, participantsButton);
 
-        // Send giveaway message
         let giveawayMessage;
+        let targetChannel;
         try {
-            giveawayMessage = await ctx.sendMessage({ embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
+            targetChannel = channel || ctx.channel;
+            giveawayMessage = await targetChannel.send({ embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
         } catch (err) {
             if (!ctx.replied && !ctx.deferred) {
                 await ctx.interaction.reply({ content: 'There was an error sending the giveaway message.' });
@@ -169,22 +178,20 @@ module.exports = class Start extends Command {
             return;
         }
 
-        // Handle prize parsing and potential multipliers (k, m, b, etc.)
-        let cleanedPrize = prize.replace(/[^0-9,]/g, ''); // Remove non-numeric chars
-        let prizeAmountStr = cleanedPrize.replace(/,/g, ''); // Remove commas
-        let prizeAmount = parseFloat(prizeAmountStr) || 0; // Default to 0 if parsing fails
+        let cleanedPrize = prize.replace(/[^0-9,]/g, '');
+        let prizeAmountStr = cleanedPrize.replace(/,/g, '');
+        let prizeAmount = parseFloat(prizeAmountStr) || 0;
         if (prize.match(/[kmbtq]/i)) {
             const multipliers = { k: 1000, m: 1000000, b: 1000000000, t: 1000000000000, q: 1000000000000000 };
-            const unit = prize.slice(-1).toLowerCase(); // Get the unit (k, m, etc.)
+            const unit = prize.slice(-1).toLowerCase();
             prizeAmount *= multipliers[unit];
         }
 
-        // Save giveaway to database
         await GiveawaySchema.create({
             guildId: ctx.guild.id,
-            channelId: ctx.channel.id,
+            channelId: targetChannel.id,
             messageId: giveawayMessage.id,
-            hostedBy: ctx.author.id,
+            hostedBy: host ? host.id : ctx.author.id,
             winners: winners,
             prize: prizeAmount,
             endTime: Date.now() + duration,

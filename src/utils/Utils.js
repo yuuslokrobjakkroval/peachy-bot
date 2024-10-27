@@ -454,10 +454,10 @@ module.exports = class Utils {
                     .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
                     .setDescription(
                         winnerIdArray.length
-                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
-                            (autopay ? '' : `\nUse \`${client.config.prefix}reroll ${message.id}\` to reroll the giveaway.`)
+                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}`
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
-                    ),
+                    )
+                    .setFooter({ text: autopay ? `Hosted by ${ctx.author.displayName}` : `use \`\`\`${client.config.prefix.toLowerCase()}reroll ${message.id}\`\`\` to reroll the giveaway.`, iconURL: client.user.displayAvatarURL() })
             ],
         });
         if (autopay) {
