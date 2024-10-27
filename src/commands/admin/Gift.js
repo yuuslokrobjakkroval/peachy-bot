@@ -290,20 +290,16 @@ async function addRewardToUserInventory(client, interaction, color, emoji, rewar
 
         // Check if the reward is coins or an item
         if (reward) {
-            // Add coins to the balance and store the summary
-            if (reward.item === "Coins") {
-                user.balance.coin += reward.amount;
-                rewardSummary.push(`**${client.utils.formatNumber(reward.amount)}** ${emoji.coin}`);
+            user.balance.coin += reward.amount;
+            rewardSummary.push(`**${client.utils.formatNumber(reward.amount)}** ${emoji.coin}`);
+            const inventoryItem = user.inventory.find(item => item.name === reward.item);
+            if (inventoryItem) {
+                inventoryItem.quantity += reward.amount;
+                rewardSummary.push(`**${reward.amount} ${reward.item}** (Total: ${inventoryItem.quantity})`);
             } else {
-                const inventoryItem = user.inventory.find(item => item.name === reward.item);
-                if (inventoryItem) {
-                    inventoryItem.quantity += reward.amount;
-                    rewardSummary.push(`**${reward.amount} ${reward.item}** (Total: ${inventoryItem.quantity})`);
-                } else {
-                    // If it doesn't exist, add it to the inventory
-                    user.inventory.push({ id: reward.item, name: reward.item, quantity: reward.amount });
-                    rewardSummary.push(`**${reward.amount} ${reward.item}** (New item added)`);
-                }
+                // If it doesn't exist, add it to the inventory
+                user.inventory.push({ id: reward.item, name: reward.item, quantity: reward.amount });
+                rewardSummary.push(`**${reward.amount} ${reward.item}** (New item added)`);
             }
         }
 
