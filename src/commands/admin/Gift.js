@@ -185,7 +185,7 @@ module.exports = class Gift extends Command {
             // Store the name of the channel where the gift was sent
             sentChannelNames.push(selectedChannel.name);
             // Handle message collection for the button (similar to your existing logic)
-            const collector = giftMessage.createMessageComponentCollector({ time: 60000 });
+            const collector = giftMessage.createMessageComponentCollector({ time: 90000 });
 
             collector.on('collect', async (interaction) => {
                 // Acknowledge the interaction
@@ -229,7 +229,7 @@ module.exports = class Gift extends Command {
                         } catch (error) {
                             console.error('Error deleting the success message:', error);
                         }
-                    }, 30000); // 30 seconds
+                    }, 90000); // 30 seconds
 
 
                     // Disable the button after claiming
@@ -253,7 +253,7 @@ module.exports = class Gift extends Command {
                     } catch (error) {
                         console.error('Error deleting the gift message:', error);
                     }
-                }, 30000); // 30 seconds
+                }, 90000); // 30 seconds
             });
 
         }
