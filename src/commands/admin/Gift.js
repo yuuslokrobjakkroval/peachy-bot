@@ -325,22 +325,11 @@ module.exports = class Gift extends Command {
                             console.error('Error deleting the success message:', error);
                         }
                     }, 90000); // 30 seconds
-
-
-                    // Disable the button after claiming
-                    await giftMessage.edit({
-                        components: [new ActionRowBuilder().addComponents(button.setDisabled(true))]
-                    });
                 }
             });
 
 
             collector.on('end', async () => {
-                // Disable the button when the collector ends
-                giftMessage.edit({
-                    components: [new ActionRowBuilder().addComponents(button.setDisabled(true))]
-                });
-
                 await giftMessage.delete();
             });
 
