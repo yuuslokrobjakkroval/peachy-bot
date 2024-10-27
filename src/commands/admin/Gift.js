@@ -183,9 +183,9 @@ module.exports = class Gift extends Command {
             });
 
             // Store the name of the channel where the gift was sent
-            sentChannelNames.push(selectedChannel.id);
+            sentChannelNames.push(selectedChannel.name);
             // Handle message collection for the button (similar to your existing logic)
-            const collector = giftMessage.createMessageComponentCollector({ time: 60000 });
+            const collector = giftMessage.createMessageComponentCollector({ time: 120000 });
 
             const claimedUsers = new Set();
 
@@ -219,7 +219,8 @@ module.exports = class Gift extends Command {
                     // Create an embed for the success message
                     const successEmbed = this.client.embed()
                         .setColor(color.main) // Use your preferred color
-                        .setTitle(`${emoji.congratulation} Gift Claimed!`)
+                        .setThumbnail(`${emoji.congratulation} `)
+                        .setTitle(`Gift Claimed!`)
                         .setDescription(`${interaction.displayName ? interaction.displayName : interaction.user.displayName} received:\n${rewardSummary}`) // Include the summary of rewards
                         .setFooter({ text: "Enjoy your rewards!" });
 
@@ -264,7 +265,7 @@ module.exports = class Gift extends Command {
 
         const channelNamesString = sentChannelNames.join(', ');
 
-        const responseMessage = `Gift boxes have been sent to **${amount}** random channels: <#${channelNamesString}>!`;
+        const responseMessage = `Gift boxes have been sent to **${amount}** random channels: ${channelNamesString}!`;
 
         if (ctx.isInteraction) {
             await ctx.interaction.editReply({ content: responseMessage });
