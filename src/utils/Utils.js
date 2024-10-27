@@ -7,6 +7,14 @@ module.exports = class Utils {
         return Users.findOne({ userId }).then(user => { return user; }).catch(error => { console.log(`Error fetching user data: ${error}`); return null });
     }
 
+    static getGiveaway(interaction) {
+        return GiveawaySchema.findOne({
+            guildId: interaction.guild.id,
+            channelId: interaction.channel.id,
+            messageId: interaction.message.id,
+        }).then(giveaway => { return giveaway; }).catch(error => { console.log(`Error fetching giveaway data: ${error}`); return null });
+    }
+
     static toSmall(count) {
         const numbers = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹'];
         let digits = Math.trunc(Math.log10(count) + 1);

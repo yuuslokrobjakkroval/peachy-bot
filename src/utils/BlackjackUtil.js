@@ -83,16 +83,12 @@ async function generateEmbed(author, client, color, emoji, dealer, player, bet, 
     let playerValue = cardValue(player);
 
     if (end == 'w') {
-        color = color.green;
         description = `**\nYou won \`${client.utils.formatNumber(winnings)}\` ${emoji.coin}**`;
     } else if (end == 'l') {
-        color = color.red;
         description = `**\nYou lost \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**`;
     } else if (end == 'tb') {
-        color = color.main;
         description = '**\nYou both bust!**';
     } else if (end == 't') {
-        color = color.main;
         description = '**\nYou tied!**';
     } else dealerValue.points = dealerValue.shownPoints + '+?';
 

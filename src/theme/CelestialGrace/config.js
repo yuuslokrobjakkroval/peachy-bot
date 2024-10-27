@@ -10,8 +10,9 @@ const logChannelGambling = '1280343485731442784';
 const logChannelBalance = '1278728739760640093';
 const logChannelShop = '1287322335724044350';
 const logChannelUtility = '1293964183913758790';
+const logChannelGiveaways = '1299316476083441675';
 
-const logChannelId = [logChannelAll, logChannelGame, logChannelGambling, logChannelBalance, logChannelShop, logChannelUtility]
+const logChannelId = [logChannelAll, logChannelGame, logChannelGambling, logChannelBalance, logChannelShop, logChannelUtility, logChannelGiveaways]
 
 const birthdayPeachyChannelId = '1272074580797952116';
 

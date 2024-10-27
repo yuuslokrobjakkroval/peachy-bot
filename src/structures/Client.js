@@ -6,7 +6,6 @@ const moment = require('moment');
 const loadPlugins = require('../plugin/index.js');
 const Utils = require('../utils/Utils.js');
 const { I18n } = require('@hammerhq/localization');
-const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const emojis = require('../emojis.js');
 const configPeach = require('../theme/Peach/config.js');
@@ -146,12 +145,10 @@ module.exports = class PeachyClient extends Client {
         });
     }
 
-    async setColorBasedOnTheme(userId) {
-        try {
-            const user = await Users.findOne({ userId });
-            let userLanguage;
-
+    setColorBasedOnTheme(userId) {
+        return this.utils.getUser(userId).then(user => {
             // Determine the user's language preference
+            let userLanguage;
             if (user && user.preferences) {
                 const { language = this.config.language.defaultLocale } = user.preferences;
 
@@ -213,7 +210,6 @@ module.exports = class PeachyClient extends Client {
                         color = configSakura.color;
                         emoji = emojiSakura;
                         break;
-
                     case 'peach':
                         color = configPeach.color;
                         emoji = emojiPeach;
@@ -226,10 +222,11 @@ module.exports = class PeachyClient extends Client {
                         break;
                 }
             }
-            return { color, emoji, language };
-        } catch (error) {
+
+            return { user, color, emoji, language };
+        }).catch(error => {
             console.error("Error setting color and theme:", error.message);
             return { color: config.color, emoji: emojis, language: this.config.language };
-        }
+        });
     }
 };

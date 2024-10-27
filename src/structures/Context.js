@@ -31,22 +31,30 @@ module.exports = class Context {
         }
     }
 
-    async sendMessage(content) {
+    sendMessage(content) {
         if (this.isInteraction) {
-            this.msg = await this.interaction.reply(content);
+            this.msg = this.interaction.reply(content)
+                .catch(console.error); // Log any errors
             return this.msg;
         } else {
-            this.msg = await this.message.channel.send(content);
+            this.msg = this.message.channel.send(content)
+                .catch(console.error); // Log any errors
             return this.msg;
         }
     }
 
-    async editMessage(content) {
+    editMessage(content) {
         if (this.isInteraction) {
-            if (this.msg) this.msg = await this.interaction.editReply(content);
+            if (this.msg && typeof this.msg.edit === 'function') {
+                this.msg = this.interaction.editReply(content)
+                    .catch(err => console.error("Error editing interaction reply:", err)); // Log any errors
+            }
             return this.msg;
         } else {
-            if (this.msg) this.msg = await this.msg.edit(content);
+            if (this.msg && typeof this.msg.edit === 'function') {
+                this.msg.edit(content) // No await
+                    .catch(err => console.error("Error editing message:", err)); // Log any errors
+            }
             return this.msg;
         }
     }
