@@ -216,12 +216,11 @@ module.exports = class MessageCreate extends Event {
                     .setStyle(4)
             );
 
-            const msg = ctx.sendMessage({embeds: [embed], components: [row], fetchReply: true});
-            const filter = interaction => interaction.user.id === ctx.author.id;
-            msg.createMessageComponentCollector({filter, time: 150000}).then(collector => {
+            ctx.sendMessage({embeds: [embed], components: [row], fetchReply: true}).then(msg => {
+              const filter = interaction => interaction.user.id === ctx.author.id;
+              const collector = msg.createMessageComponentCollector({filter, time: 150000});
               collector.on('collect', async int => {
                 await int.deferUpdate();
-
                 if (int.customId === 'register') {
                   try {
                     const embed = this.client.embed()
@@ -242,24 +241,22 @@ module.exports = class MessageCreate extends Event {
                             `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
                             `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
                         );
-
-
                     await int.editReply({
                       content: '',
                       embeds: [embed],
                       components: [new ActionRowBuilder().addComponents(
-                          new ButtonBuilder()
-                              .setCustomId('confirm')
-                              .setLabel('Accept for Register')
-                              .setStyle(3),
-                          new ButtonBuilder()
-                              .setCustomId('privacy')
-                              .setLabel('Privacy Policy')
-                              .setStyle(2),
-                          new ButtonBuilder()
-                              .setCustomId('cancel')
-                              .setLabel('Cancel')
-                              .setStyle(4)
+                        new ButtonBuilder()
+                          .setCustomId('confirm')
+                          .setLabel('Accept for Register')
+                          .setStyle(3),
+                        new ButtonBuilder()
+                          .setCustomId('privacy')
+                          .setLabel('Privacy Policy')
+                          .setStyle(2),
+                        new ButtonBuilder()
+                          .setCustomId('cancel')
+                          .setLabel('Cancel')
+                          .setStyle(4)
                       )]
                     });
                   } catch (error) {
@@ -268,51 +265,50 @@ module.exports = class MessageCreate extends Event {
                 } else if (int.customId === 'privacy') {
                   try {
                     const embed = this.client.embed()
-                        .setColor(color.main)
-                        .setTitle(`${emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${emoji.mainRight}`)
-                        .setDescription(
-                            `**Introduction**\n` +
-                            `PEACHY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
-                            `**Information Collection**\n` +
-                            `We gather the following information to enhance your experience:\n` +
-                            `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
-                            `• **Messages**: Used to process your commands, manage game states, and provide customized responses.\n` +
-                            `• **Server Information**: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
-                            `**Data Usage**\n` +
-                            `We utilize your data to:\n` +
-                            `• Execute commands, interactions, and maintain game progression.\n` +
-                            `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
-                            `• Enhance the security and smooth operation of PEACHY, ensuring a seamless user experience.\n\n` +
-                            `**Data Sharing**\n` +
-                            `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
-                            `**Data Security**\n` +
-                            `We implement stringent technical and organizational measures to safeguard your data from unauthorized access, alteration, or misuse.\n\n` +
-                            `**User Rights**\n` +
-                            `You have the right to:\n` +
-                            `• Access the data we hold about you.\n` +
-                            `• Request the correction or deletion of your data if it's inaccurate or no longer needed.\n\n` +
-                            `**Policy Updates**\n` +
-                            `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
-                            `**Contact Information**\n` +
-                            `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
-                        );
-
+                      .setColor(color.main)
+                      .setTitle(`${emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${emoji.mainRight}`)
+                      .setDescription(
+                        `**Introduction**\n` +
+                        `PEACHY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
+                        `**Information Collection**\n` +
+                        `We gather the following information to enhance your experience:\n` +
+                        `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
+                        `• **Messages**: Used to process your commands, manage game states, and provide customized responses.\n` +
+                        `• **Server Information**: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
+                        `**Data Usage**\n` +
+                        `We utilize your data to:\n` +
+                        `• Execute commands, interactions, and maintain game progression.\n` +
+                        `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
+                        `• Enhance the security and smooth operation of PEACHY, ensuring a seamless user experience.\n\n` +
+                        `**Data Sharing**\n` +
+                        `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
+                        `**Data Security**\n` +
+                        `We implement stringent technical and organizational measures to safeguard your data from unauthorized access, alteration, or misuse.\n\n` +
+                        `**User Rights**\n` +
+                        `You have the right to:\n` +
+                        `• Access the data we hold about you.\n` +
+                        `• Request the correction or deletion of your data if it's inaccurate or no longer needed.\n\n` +
+                        `**Policy Updates**\n` +
+                        `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
+                        `**Contact Information**\n` +
+                        `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
+                      );
                     await int.editReply({
                       content: '',
                       embeds: [embed],
                       components: [new ActionRowBuilder().addComponents(
-                          new ButtonBuilder()
-                              .setCustomId('confirm')
-                              .setLabel('Accept for Register')
-                              .setStyle(3),
-                          new ButtonBuilder()
-                              .setCustomId('register')
-                              .setLabel('Rules and Guidelines')
-                              .setStyle(2),
-                          new ButtonBuilder()
-                              .setCustomId('cancel')
-                              .setLabel('Cancel')
-                              .setStyle(4)
+                        new ButtonBuilder()
+                          .setCustomId('confirm')
+                          .setLabel('Accept for Register')
+                          .setStyle(3),
+                        new ButtonBuilder()
+                          .setCustomId('register')
+                          .setLabel('Rules and Guidelines')
+                          .setStyle(2),
+                        new ButtonBuilder()
+                          .setCustomId('cancel')
+                          .setLabel('Cancel')
+                          .setStyle(4)
                       )]
                     });
                   } catch (error) {
@@ -407,7 +403,9 @@ module.exports = class MessageCreate extends Event {
               collector.on('end', async () => {
                 await msg.edit({components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))]});
               });
-            })
+            }).catch(error => {
+                console.error('Error sending message or setting up collector:', error);
+              });
           } else {
             this.client.users.fetch(user.userId)
               .then(userInfo => {
