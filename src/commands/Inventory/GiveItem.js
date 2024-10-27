@@ -70,7 +70,7 @@ module.exports = class GiveItem extends Command {
 
         const itemId = ctx.isInteraction ? ctx.interaction.options.data[1]?.value.toString() : args[1];
         const itemInfo = AllItems.concat(ImportantItems).find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
-        const hasItems = user.inventory.find(item => item.id.toLowerCase() === itemId);
+        const hasItems = user.inventory.find(item => item.id.toLowerCase() === itemId.toLowerCase());
         if (!itemInfo || !hasItems || !itemInfo.able.gift) {
             let errorMessage = '';
             if (!itemInfo) errorMessage += giveItemMessages.itemNotFound.replace('{{itemId}}', itemId);
