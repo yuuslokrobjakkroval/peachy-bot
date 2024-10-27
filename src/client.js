@@ -3,6 +3,15 @@ const GiveawaySchema = require('./schemas/giveaway');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
+const ONE_DAY_MS = 86400000; // 24 hours
+
+function getInitialDelay() {
+    const now = new Date();
+    const nextRun = new Date();
+    nextRun.setUTCHours(0, 0, 0, 0); // Set for midnight UTC or desired time
+    if (nextRun <= now) nextRun.setUTCDate(nextRun.getUTCDate() + 1);
+    return nextRun - now;
+}
 
 const clientOptions = {
     intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
@@ -46,5 +55,17 @@ setInterval(() => {
         })
         .catch((err) => console.error('Error finding giveaways:', err));
 }, 60000);
+
+setTimeout(() => {
+    client.utils.checkBirthdays(client)
+        .then(() => console.log('Birthday check completed.'))
+        .catch((err) => console.error('Error in checkBirthdays function:', err));
+
+    setInterval(() => {
+        client.utils.checkBirthdays(client)
+            .then(() => console.log('Birthday check completed.'))
+            .catch((err) => console.error('Error in checkBirthdays function:', err));
+    }, ONE_DAY_MS);
+}, getInitialDelay());
 
 client.start(config.token);
