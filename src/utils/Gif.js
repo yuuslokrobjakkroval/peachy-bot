@@ -3,6 +3,8 @@ module.exports = {
     thanks: 'https://i.imgur.com/FrTvTpq.gif',
     thankYou: 'https://i.imgur.com/GgrQ9Ap.gif',
     urWelcome: 'https://i.imgur.com/N0653cE.gif',
+    luck: 'https://i.imgur.com/GVL1rM0.gif',
+    gift: 'https://i.imgur.com/K6n0EPx.gif',
 
     // WELCOME
     welcomeToPeachAndGoma: 'https://i.imgur.com/YU19mNL.gif',

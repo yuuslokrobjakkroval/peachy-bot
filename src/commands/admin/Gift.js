@@ -3,6 +3,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const Users = require('../../schemas/user'); // Adjust path
 const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
+const gif = require("../../utils/Gif");
 const moreItems = ShopItems.flatMap(shop => shop.inventory);
 const allItems = moreItems.concat(ImportantItems);
 
@@ -160,9 +161,7 @@ module.exports = class Gift extends Command {
 
         // Send gifts to each selected channel
         for (const selectedChannel of availableChannels) {
-            gifts.push(this.getRandomReward(boxType)); // Ensure you pass boxType for the rewards
-
-            const gif = "https://i.pinimg.com/originals/fd/a1/94/fda19416b5fba0034da0bbdf140bc10f.gif";
+            gifts.push(this.getRandomReward(boxType));
 
             const button = new ButtonBuilder()
                 .setCustomId('claim_gift')
@@ -172,10 +171,11 @@ module.exports = class Gift extends Command {
             const row = new ActionRowBuilder().addComponents(button);
 
             const giftEmbed = client.embed()
+                .setColor(color.main)
+                .setThumbnail(gif.luck)
                 .setTitle(`${boxType.charAt(0).toUpperCase() + boxType.slice(1)} Mystery Box Opened!`)
                 .setDescription(`Click the button below to claim your rewards:`)
-                .setColor(color.main)
-                .setImage(gif)
+                .setImage(gif.gift)
                 .setFooter({ text: "Good luck with your rewards!" });
 
             const giftMessage = await selectedChannel.send({ embeds: [giftEmbed], components: [row] }).catch(err => {
