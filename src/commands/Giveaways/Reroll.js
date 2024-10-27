@@ -16,6 +16,14 @@ module.exports = class Reroll extends Command {
                 user: [],
             },
             slashCommand: true,
+            options: [
+                {
+                    name: 'messageid',
+                    description: 'The message ID of the giveaway to reroll.',
+                    type: 3,
+                    required: false, // Make it optional for flexibility
+                },
+            ],
         });
     }
 
@@ -23,7 +31,7 @@ module.exports = class Reroll extends Command {
         const member = await ctx.guild.members.fetch(ctx.author.id);
         const isOwner = this.client.config.owners.includes(ctx.author.id);
         const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
-        const isAdmin = member.permissions.has(PermissionsBitField.Flags.Administrator); // Use PermissionsBitField.Flags
+        const isAdmin = member.permissions.has(PermissionsBitField.Flags.Administrator);
 
         if (!isOwner && !isServerOwner && !isAdmin) {
             return (ctx.isInteraction
@@ -38,14 +46,18 @@ module.exports = class Reroll extends Command {
             );
         }
 
-        const messageId = args[0]; // Identify the giveaway by message ID
+        const messageId = ctx.isInteraction ? ctx.interaction.options.getString('messageid') : args[0];
+        if (!messageId) {
+            return ctx.sendMessage({ content: 'Please provide a message ID for the giveaway to reroll.' });
+        }
+
         const giveaway = await GiveawaySchema.findOne({ messageId });
 
         if (!giveaway) {
             return ctx.sendMessage({ content: 'No giveaway found with the provided message ID.' });
         }
 
-        if (giveaway.ended === false) {
+        if (!giveaway.ended) {
             return ctx.sendMessage({ content: 'This giveaway has not ended yet, so it cannot be rerolled.' });
         }
 
@@ -83,7 +95,6 @@ module.exports = class Reroll extends Command {
     }
 
     selectNewWinners(entered, winnersCount, previousWinners) {
-        // Select new winners, avoiding previous winners
         const available = entered.filter(id => !previousWinners.includes(id));
         const newWinners = [];
         while (newWinners.length < winnersCount && available.length > 0) {
