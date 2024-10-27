@@ -207,7 +207,11 @@ module.exports = class Gift extends Command {
                 try {
                     await giftMessage.delete();
                 } catch (error) {
-                    console.error('Error deleting the gift message:', error);
+                    if (error.code === 10008) {
+                        console.log('Message already deleted or unknown.');
+                    } else {
+                        console.error('Error deleting the gift message:', error);
+                    }
                 }
             });
         }
