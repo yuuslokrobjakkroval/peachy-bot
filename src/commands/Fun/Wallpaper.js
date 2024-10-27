@@ -124,19 +124,19 @@ async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCate
     };
 
     const displayItemDetails = (selectedItemIndex) => {
-        const wallpaper = selectedWallpapers[selectedItemIndex];
+        const selectedWallpaper = selectedWallpapers[selectedItemIndex];
 
-        if (!wallpaper) {
+        if (!selectedWallpaper) {
             console.error('Wallpaper not found at index:', selectedItemIndex);
             return { embed: client.embed().setDescription(wallpaper.wallpaperNotFound).setColor(color.red) }; // Localized message
         }
 
         const embed = client.embed()
             .setColor(color.main)
-            .setTitle(`${wallpaper.wallpaper.DetailsTitle} \n${emoji.mainLeft} ${wallpaper.name} ${emoji.mainRight}`) // Localized title
+            .setTitle(`${wallpaper.DetailsTitle}\n${emoji.mainLeft} ${selectedWallpaper.name} ${emoji.mainRight}`) // Localized title
             .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setDescription(`**ID : ${wallpaper.id}** \n**${wallpaper.descriptionLabel} : ** ${wallpaper.description}\n**${wallpaper.categoryLabel} : ** ${client.utils.formatCapitalize(wallpaper.type)}`)
-            .setImage(wallpaper.image);
+            .setDescription(`**ID : ${selectedWallpaper.id}** \n**${wallpaper.descriptionLabel} : ** ${selectedWallpaper.description}\n**${wallpaper.categoryLabel} : ** ${client.utils.formatCapitalize(selectedWallpaper.type)}`)
+            .setImage(selectedWallpaper.image);
 
         return { embed };
     };
