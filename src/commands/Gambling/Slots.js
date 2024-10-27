@@ -80,13 +80,13 @@ module.exports = class Slots extends Command {
 				} else if (rand <= 55) { // 10%
 					win = baseCoins * 3;
 					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-				} else if (rand <= 70) { // 15%
+				} else if (rand <= 65) { // 15%
 					win = 0;
 					rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-				} else if (rand <= 75) { // 5%
+				} else if (rand <= 68) { // 5%
 					win = baseCoins * 4;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 77.5) { // 2.5%
+				} else if (rand <= 70) { // 2.5%
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 				} else { // 40%
@@ -98,10 +98,10 @@ module.exports = class Slots extends Command {
 					rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
 				}
 			} else {
-				if (rand <= 25) { // 25%
+				if (rand <= 26) { // 26%
 					win = baseCoins;
 					rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-				} else if (rand <= 36) { // 11%
+				} else if (rand <= 36) { // 10%
 					win = baseCoins * 2;
 					rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
 				} else if (rand <= 44) { // 8%
