@@ -149,7 +149,18 @@ module.exports = class Gift extends Command {
                         .setFooter({ text: "Enjoy your rewards!" });
 
                     // Send the success message as an embed
-                    await giftMessage.delete();
+                    try {
+                        // Attempt to delete the message
+                        await giftMessage.delete();
+                    } catch (error) {
+                        // Handle error if the message no longer exists
+                        if (error.code === 10008) {
+                            console.error('Message already deleted or unknown:', error);
+                        } else {
+                            console.error('Error deleting the gift message:', error);
+                        }
+                    }
+
                     const successMessage = await interaction.followUp({ embeds: [successEmbed] });
 
                     // Schedule the embed message to be deleted after 30 seconds
@@ -165,7 +176,12 @@ module.exports = class Gift extends Command {
 
 
             collector.on('end', async () => {
-                await giftMessage.delete();
+                try {
+                    await giftMessage.delete();
+                } catch (error) {
+                    console.error('Error deleting the gift message:', error);
+                    // Optionally, inform the user about the failure to delete the message
+                }
             });
 
         }
@@ -380,7 +396,6 @@ async function addRewardToUserInventory(client, interaction, color, emoji, rewar
 
         // Process item rewards
         for (const item of reward.rewards) {
-            console.log(item);
             const inventoryItem = user.inventory.find(i => i.id === item.id); // Match by ID
 
             if (inventoryItem) {
