@@ -41,7 +41,7 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.heartMilk,
+        emoji: emoji.grapeMilk,
         available: ['sell'],
         price: { buy: 5e3, sell: 1e3 },
     },
@@ -56,13 +56,13 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.peachMilk,
+        emoji: emoji.bananaMilk,
         available: ['sell'],
         price: { buy: 1e4, sell: 5e3 },
     },
     {
         id: 'blueberrymilk',
-        name: 'BlueBerry Milk',
+        name: 'Blueberry Milk',
         description: 'Sell BlueBerry Milk to get 10k coins.',
         type: 'milk',
         able: {
@@ -71,13 +71,13 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.heartMilk,
+        emoji: emoji.blueBerryMilk,
         available: ['sell'],
         price: { buy: 25e4, sell: 1e4 },
     },
     {
         id: 'strawberrymilk',
-        name: 'StrawBerry Milk',
+        name: 'Strawberry Milk',
         description: 'Sell StrawBerry Milk to get 25k coins.',
         type: 'milk',
         able: {
@@ -107,7 +107,7 @@ module.exports = [
     },
     {
         id: 'rainbowmilk',
-        name: 'RainBow Milk',
+        name: 'Rainbow Milk',
         description: 'Sell RainBow Milk to get 75k coins.',
         type: 'milk',
         able: {
@@ -116,7 +116,7 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.orangeMilk,
+        emoji: emoji.rainBowMilk,
         available: ['sell'],
         price: { buy: 1e5, sell: 75e4 },
     },
@@ -137,8 +137,8 @@ module.exports = [
     },
     {
         id: 'watermelonmilk',
-        name: 'WaterMelon Milk',
-        description: 'Sell WaterMelon Milk to get 200k coins.',
+        name: 'Watermelon Milk',
+        description: 'Sell Watermelon Milk to get 200k coins.',
         type: 'milk',
         able: {
             use: false,
@@ -236,7 +236,7 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.cakeMilk,
+        emoji: emoji.bluePeachMilk,
         available: ['sell'],
         price: { buy: 9e5, sell: 8e5 },
     },

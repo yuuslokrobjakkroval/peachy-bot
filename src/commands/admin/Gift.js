@@ -426,11 +426,11 @@ async function addRewardToUserInventory(client, interaction, color, emoji, rewar
 
             if (inventoryItem) {
                 inventoryItem.quantity += item.quantity; // Update existing item's quantity
-                rewardSummary.push(`**${item.emoji} ${item.name} ${item.quantity}** (Total: ${inventoryItem.quantity})`);
+                rewardSummary.push(`**${item.emoji} ${item.name} ${item.quantity}**`);
             } else {
                 // If it doesn't exist, add it to the inventory
                 user.inventory.push({ id: item.id, name: item.name, quantity: item.quantity });
-                rewardSummary.push(`**${item.emoji} ${item.name} ${item.quantity}** (New item added)`);
+                rewardSummary.push(`**${item.emoji} ${item.name} ${item.quantity}**`);
             }
         }
 
