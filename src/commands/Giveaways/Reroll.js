@@ -46,11 +46,11 @@ module.exports = class Reroll extends Command {
         }
 
         if (giveaway.ended === false) {
-            return ctx.reply({ content: 'This giveaway has not ended yet, so it cannot be rerolled.' });
+            return ctx.sendMessage({ content: 'This giveaway has not ended yet, so it cannot be rerolled.' });
         }
 
         if (giveaway.retryAutopay) {
-            return ctx.reply({ content: 'This giveaway has retry autopay enabled and cannot be rerolled.' });
+            return ctx.sendMessage({ content: 'This giveaway has retry autopay enabled and cannot be rerolled.' });
         }
 
         // Select new winners

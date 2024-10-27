@@ -234,11 +234,7 @@ module.exports = class MessageCreate extends Event {
                             `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
                             `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
                             `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
-                            `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
-                            `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
-                            `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
-                            `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
-                            `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
+                            `5. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
                             `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
                         );
                     await int.editReply({
