@@ -195,9 +195,9 @@ module.exports = class Gift extends Command {
 
                 if (interaction.customId === 'claim_gift') {
                     // Check if the user has already claimed their reward
-                    if (claimedUsers.has(interaction.user.id)) {
+                    if (interaction.message.components[0].components[0].disabled) {
                         return await interaction.followUp({
-                            content: "You've already claimed your gift!",
+                            content: "This gift has already been claimed!",
                             ephemeral: true
                         });
                     }
