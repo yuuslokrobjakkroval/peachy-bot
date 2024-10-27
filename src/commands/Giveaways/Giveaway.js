@@ -69,6 +69,7 @@ module.exports = class Start extends Command {
                     description: 'Specify the channel to post the giveaway.',
                     type: 7, // Channel type
                     required: false,
+                    channel_types: [0],
                 },
             ],
         });
