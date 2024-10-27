@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, CommandInteraction } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder} = require('discord.js');
 const Users = require('../schemas/user');
 const GiveawaySchema = require('../schemas/giveaway');
 
@@ -434,7 +434,7 @@ module.exports = class Utils {
             ButtonBuilder.from(message.components[0].components[1]).setDisabled(true)
         );
 
-        const endGiveawayEmbed = client.embed().from(message.embeds[0])
+        const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
             .setColor(color.main)
             .setDescription(`Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`);
 
