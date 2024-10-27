@@ -58,7 +58,7 @@ module.exports = class Inventory extends Command {
                         itemList[type].push(
                             `${itemInfo.emoji} **\`${item.quantity}\`** ${itemInfo.name ? itemInfo.name : client.utils.toNameCase(itemInfo.id)}`
                         );
-                        if (itemInfo.id !== 'milk') {
+                        if (itemInfo.type === 'milk') {
                             totalWorth += itemInfo.price.sell * item.quantity;
                         }
                     }
