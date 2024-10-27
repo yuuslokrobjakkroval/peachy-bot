@@ -187,8 +187,6 @@ module.exports = class Gift extends Command {
             // Handle message collection for the button (similar to your existing logic)
             const collector = giftMessage.createMessageComponentCollector({ time: 60000 });
 
-            const claimedUsers = new Set();
-
             collector.on('collect', async (interaction) => {
                 // Acknowledge the interaction
                 await interaction.deferUpdate();
@@ -209,9 +207,6 @@ module.exports = class Gift extends Command {
                             ephemeral: true
                         });
                     }
-
-                    // Mark the user as having claimed the reward
-                    claimedUsers.add(interaction.user.id);
 
                     // Update user collection with the reward and get the summary
                     const rewardSummary = await addRewardToUserInventory(client, interaction, color, emoji, reward);
