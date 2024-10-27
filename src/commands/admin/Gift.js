@@ -220,20 +220,20 @@ module.exports = class Gift extends Command {
                     const successEmbed = this.client.embed()
                         .setColor(color.main) // Use your preferred color
                         .setTitle(`${emoji.congratulation} Gift Claimed!`)
-                        .setDescription(`You received:\n${rewardSummary}`) // Include the summary of rewards
+                        .setDescription(`${interaction.displayName} received:\n${rewardSummary}`) // Include the summary of rewards
                         .setFooter({ text: "Enjoy your rewards!" });
 
                     // Send the success message as an embed
                     const successMessage = await interaction.followUp({ embeds: [successEmbed] });
 
-                    // Schedule the embed message to be deleted after 10 seconds
+                    // Schedule the embed message to be deleted after 30 seconds
                     setTimeout(async () => {
                         try {
                             await successMessage.delete();
                         } catch (error) {
                             console.error('Error deleting the success message:', error);
                         }
-                    }, 10000); // 10 seconds
+                    }, 30000); // 10 seconds
 
 
                     // Disable the button after claiming
@@ -250,14 +250,14 @@ module.exports = class Gift extends Command {
                     components: [new ActionRowBuilder().addComponents(button.setDisabled(true))]
                 });
 
-                // Schedule the gift message to be deleted after 10 seconds
+                // Schedule the gift message to be deleted after 30 seconds
                 setTimeout(async () => {
                     try {
                         await giftMessage.delete();
                     } catch (error) {
                         console.error('Error deleting the gift message:', error);
                     }
-                }, 10000); // 10 seconds
+                }, 30000); // 30 seconds
             });
 
         }
