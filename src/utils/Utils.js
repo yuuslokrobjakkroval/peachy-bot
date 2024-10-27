@@ -454,7 +454,7 @@ module.exports = class Utils {
                     .setDescription(
                         winnerIdArray.length
                             ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
-                            (autopay ? `Hosted by <@${data.hostedBy}>` : `\nUse \`${client.config.prefix.toLowerCase()}reroll ${message.id}\` to reroll the giveaway.`)
+                            (autopay ? `Hosted by <@${data.hostedBy}>` : `\n\n if you want to reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``)
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
                     )
                     .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
