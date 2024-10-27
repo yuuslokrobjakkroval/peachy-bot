@@ -220,6 +220,7 @@ module.exports = class Gift extends Command {
                         .setFooter({ text: "Enjoy your rewards!" });
 
                     // Send the success message as an embed
+                    await giftMessage.delete();
                     const successMessage = await interaction.followUp({ embeds: [successEmbed] });
 
                     // Schedule the embed message to be deleted after 30 seconds
