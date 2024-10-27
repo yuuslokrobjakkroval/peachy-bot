@@ -219,7 +219,7 @@ module.exports = class Gift extends Command {
                     // Create an embed for the success message
                     const successEmbed = this.client.embed()
                         .setColor(color.main) // Use your preferred color
-                        .setThumbnail(emoji.congratulation)
+                        .setThumbnail(client.utils.emojiToImage(emoji.congratulation))
                         .setTitle(`Gift Claimed!`)
                         .setDescription(`${interaction.displayName ? interaction.displayName : interaction.user.displayName} received:\n${rewardSummary}`) // Include the summary of rewards
                         .setFooter({ text: "Enjoy your rewards!" });
