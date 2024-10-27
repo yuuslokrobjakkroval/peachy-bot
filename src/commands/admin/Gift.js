@@ -230,6 +230,7 @@ module.exports = class Gift extends Command {
                     // Schedule the embed message to be deleted after 30 seconds
                     setTimeout(async () => {
                         try {
+                            await giftMessage.delete();
                             await successMessage.delete();
                         } catch (error) {
                             console.error('Error deleting the success message:', error);
