@@ -234,7 +234,7 @@ module.exports = class Gift extends Command {
                         } catch (error) {
                             console.error('Error deleting the success message:', error);
                         }
-                    }, 30000); // 10 seconds
+                    }, 60000); // 10 seconds
 
 
                     // Disable the button after claiming
@@ -258,7 +258,7 @@ module.exports = class Gift extends Command {
                     } catch (error) {
                         console.error('Error deleting the gift message:', error);
                     }
-                }, 30000); // 30 seconds
+                }, 60000); // 30 seconds
             });
 
         }
