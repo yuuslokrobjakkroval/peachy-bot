@@ -142,7 +142,7 @@ module.exports = class Slots extends Command {
 				// Update the user's balance immediately
 				Users.updateOne({userId: ctx.author.id}, {
 					$set: {
-						'balance.coin': coin - baseCoins,
+						'balance.coin': newBalance,
 						'balance.bank': bank
 					}
 				}).exec();
