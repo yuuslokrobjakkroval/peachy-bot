@@ -71,22 +71,22 @@ module.exports = class Slots extends Command {
 			let win = 0;
 
 			if (verify) {
-				if (rand <= 24) { // 24%
+				if (rand <= 30) { // 30%
 					win = baseCoins;
 					rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-				} else if (rand <= 38) { // 12%
+				} else if (rand <= 45) { // 15%
 					win = baseCoins * 2;
 					rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-				} else if (rand <= 46) { // 8%
+				} else if (rand <= 55) { // 10%
 					win = baseCoins * 3;
 					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-				} else if (rand <= 55) { // 9%
+				} else if (rand <= 70) { // 15%
 					win = 0;
 					rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-				} else if (rand <= 58) { // 3%
+				} else if (rand <= 75) { // 5%
 					win = baseCoins * 4;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 60) { // 2%
+				} else if (rand <= 77.5) { // 2.5%
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 				} else { // 40%
