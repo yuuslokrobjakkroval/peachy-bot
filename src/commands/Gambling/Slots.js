@@ -158,9 +158,9 @@ module.exports = class Slots extends Command {
 						.setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
 						.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${rslots[1]} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n**\nYou ${win ? `won \`${numeral(win).format()}\` ${emoji.coin} ${verify ? client.utils.emojiToImage(emojiImage.verify) : ''}` : 'lost'}.\nYour balance is now **\`${numeral(newBalance).format()}\` ${emoji.coin}**.`);
 
-					setTimeout(() => ctx.sendMessage({ embeds: [spinEmbed] }), 1000);
-					setTimeout(() => ctx.sendMessage({ embeds: [spinSecondEmbed] }), 700);
-					setTimeout(() => ctx.sendMessage({ embeds: [resultEmbed] }), 1000);
+					setTimeout(() => ctx.editMessage({ embeds: [spinEmbed] }), 1000);
+					setTimeout(() => ctx.editMessage({ embeds: [spinSecondEmbed] }), 700);
+					setTimeout(() => ctx.editMessage({ embeds: [resultEmbed] }), 1000);
 				});
 			});
 		}).catch((error) => {
