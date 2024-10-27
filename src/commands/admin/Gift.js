@@ -238,7 +238,7 @@ module.exports = class Gift extends Command {
 
 
                     // Disable the button after claiming
-                    giftMessage.edit({
+                    await giftMessage.edit({
                         components: [new ActionRowBuilder().addComponents(button.setDisabled(true))]
                     });
                 }
@@ -292,15 +292,15 @@ async function addRewardToUserInventory(client, interaction, color, emoji, rewar
         if (reward) {
             user.balance.coin += reward.amount;
             rewardSummary.push(`**${client.utils.formatNumber(reward.amount)}** ${emoji.coin}`);
-            const inventoryItem = user.inventory.find(item => item.name === reward.item);
-            if (inventoryItem) {
-                inventoryItem.quantity += reward.amount;
-                rewardSummary.push(`**${reward.amount} ${reward.item}** (Total: ${inventoryItem.quantity})`);
-            } else {
-                // If it doesn't exist, add it to the inventory
-                user.inventory.push({ id: reward.item, name: reward.item, quantity: reward.amount });
-                rewardSummary.push(`**${reward.amount} ${reward.item}** (New item added)`);
-            }
+            // const inventoryItem = user.inventory.find(item => item.name === reward.item);
+            // if (inventoryItem) {
+            //     inventoryItem.quantity += reward.amount;
+            //     rewardSummary.push(`**${reward.amount} ${reward.item}** (Total: ${inventoryItem.quantity})`);
+            // } else {
+            //     // If it doesn't exist, add it to the inventory
+            //     user.inventory.push({ id: reward.item, name: reward.item, quantity: reward.amount });
+            //     rewardSummary.push(`**${reward.amount} ${reward.item}** (New item added)`);
+            // }
         }
 
         // Save the updated user
