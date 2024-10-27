@@ -308,7 +308,6 @@ async function addRewardToUserInventory(client, interaction, color, emoji, rewar
 
         // Save the updated user
         await user.save();
-        console.log(`Successfully added ${reward.amount} ${reward.item} to user ${interaction.user.id}'s inventory.`);
 
         return rewardSummary.join('\n'); // Return a formatted string of rewards received
     } catch (error) {
