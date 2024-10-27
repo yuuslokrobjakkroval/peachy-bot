@@ -72,14 +72,14 @@ module.exports = class UserInventory extends Command {
                 if (items && items.length > 0) {
                     let chunk = [];
                     let chunkLength = 0;
-                    const isInline = type !== 'milk';  // Inline true only for 'tool'
+                    // const isInline = type !== 'milk';  // Inline true only for 'tool'
 
                     items.forEach(item => {
                         if (chunkLength + item.length + 1 > 1024) {
                             fields.push({
                                 name: client.utils.toNameCase(type),
                                 value: chunk.join('\n'),
-                                inline: isInline,
+                                inline: false,
                             });
                             chunk = [];
                             chunkLength = 0;
@@ -92,7 +92,7 @@ module.exports = class UserInventory extends Command {
                         fields.push({
                             name: client.utils.toNameCase(type),
                             value: chunk.join('\n'),
-                            inline: isInline,
+                            inline: false,
                         });
                     }
                 }

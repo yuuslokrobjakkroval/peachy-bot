@@ -81,7 +81,7 @@ module.exports = class Inventory extends Command {
                             fields.push({
                                 name: client.utils.toNameCase(type),
                                 value: chunk.join('\n'),
-                                inline: true,
+                                inline: false,
                             });
                             chunk = [];
                             chunkLength = 0;
@@ -94,7 +94,7 @@ module.exports = class Inventory extends Command {
                         fields.push({
                             name: client.utils.toNameCase(type),
                             value: chunk.join('\n'),
-                            inline: true,
+                            inline: false,
                         });
                     }
                 }
