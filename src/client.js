@@ -54,7 +54,7 @@ setInterval(() => {
             });
         })
         .catch((err) => console.error('Error finding giveaways:', err));
-}, 60000);
+}, 30000);
 
 setTimeout(() => {
     client.utils.checkBirthdays(client)

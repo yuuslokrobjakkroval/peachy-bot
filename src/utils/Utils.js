@@ -454,7 +454,8 @@ module.exports = class Utils {
                     .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
                     .setDescription(
                         winnerIdArray.length
-                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}`
+                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
+                            (autopay ? '' : `\nUse \`${client.config.prefix}reroll ${message.id}\` to reroll the giveaway.`)
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
                     ),
             ],

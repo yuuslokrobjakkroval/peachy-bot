@@ -27,7 +27,7 @@ module.exports = class Reroll extends Command {
         });
     }
 
-    async run(client, ctx, args, color) {
+    async run(client, ctx, args, color, emoji, language) {
         const member = await ctx.guild.members.fetch(ctx.author.id);
         const isOwner = this.client.config.owners.includes(ctx.author.id);
         const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
@@ -80,13 +80,12 @@ module.exports = class Reroll extends Command {
         // Embed for reroll results
         const rerollEmbed = client.embed()
             .setColor(color.main)
-            .setTitle('🎉 Giveaway Rerolled! 🎉')
-            .setDescription(`Here are the new winners for the giveaway:`)
-            .addFields([
-                { name: 'New Winners', value: newWinners.map(id => `<@${id}>`).join(', '), inline: true },
-                { name: 'Prize', value: `${giveaway.prize} coins`, inline: true },
-                { name: 'Number of Rerolls', value: `${giveaway.rerollCount}`, inline: true }
-            ])
+            .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
+            .setDescription(
+                newWinners.length
+                    ? `${newWinners.map(id => `<@${id}>`).join(', ')}! You have won **${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin}`
+                    : `No one entered the giveaway for **\`${client.utils.formatNumber(giveaway.prize)}\`**!`
+            )
             .setFooter({ text: `Rerolled by ${ctx.author.displayName}`, iconURL: ctx.author.displayAvatarURL() })
             .setTimestamp();
 
