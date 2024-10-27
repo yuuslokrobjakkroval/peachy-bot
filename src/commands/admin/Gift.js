@@ -185,7 +185,7 @@ module.exports = class Gift extends Command {
             // Store the name of the channel where the gift was sent
             sentChannelNames.push(selectedChannel.name);
             // Handle message collection for the button (similar to your existing logic)
-            const collector = giftMessage.createMessageComponentCollector({ time: 120000 });
+            const collector = giftMessage.createMessageComponentCollector({ time: 60000 });
 
             const claimedUsers = new Set();
 
@@ -230,7 +230,6 @@ module.exports = class Gift extends Command {
                     // Schedule the embed message to be deleted after 30 seconds
                     setTimeout(async () => {
                         try {
-                            await giftMessage.delete();
                             await successMessage.delete();
                         } catch (error) {
                             console.error('Error deleting the success message:', error);
