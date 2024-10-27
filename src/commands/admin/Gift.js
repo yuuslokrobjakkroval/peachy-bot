@@ -238,16 +238,16 @@ module.exports = class Gift extends Command {
 
 
                     // Disable the button after claiming
-                    await giftMessage.edit({
+                    giftMessage.edit({
                         components: [new ActionRowBuilder().addComponents(button.setDisabled(true))]
                     });
                 }
             });
 
 
-            collector.on('end', async () => {
+            collector.on('end', () => {
                 // Disable the button when the collector ends
-                await giftMessage.edit({
+                giftMessage.edit({
                     components: [new ActionRowBuilder().addComponents(button.setDisabled(true))]
                 });
 
