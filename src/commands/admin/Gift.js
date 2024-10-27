@@ -53,231 +53,173 @@ module.exports = class Gift extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         if (ctx.isInteraction) {
-            const {Command} = require("../../structures/index.js");
-            const {ActionRowBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
-            const Users = require('../../schemas/user'); // Adjust path
-            const ImportantItems = require('../../assets/inventory/ImportantItems.js');
-            const ShopItems = require('../../assets/inventory/ShopItems.js');
-            const gif = require("../../utils/Gif");
-            const moreItems = ShopItems.flatMap(shop => shop.inventory);
-            const allItems = moreItems.concat(ImportantItems);
+            await ctx.interaction.deferReply({ephemeral: true});
+        }
 
-            module.exports = class Gift extends Command {
-                constructor(client) {
-                    super(client, {
-                        name: "gift",
-                        description: {
-                            content: "Send a random gift from the Mystery Box.",
-                            examples: ["gift common 3"],
-                            usage: "gift <type> <amount>",
-                        },
-                        category: "utility",
-                        aliases: ["mysterybox"],
-                        cooldown: 3,
-                        permissions: {
-                            dev: false,
-                            client: ["SendMessages"],
-                            user: ["ManageMessages"],
-                        },
-                        slashCommand: true,
-                        args: true,
-                        options: [
-                            {
-                                name: "box_type",
-                                description: "Type of box (common, rare, epic, legendary, mythic)",
-                                type: 3,
-                                required: true,
-                                choices: [
-                                    {name: "Common", value: "common"},
-                                    {name: "Rare", value: "rare"},
-                                    {name: "Epic", value: "epic"},
-                                    {name: "Legendary", value: "legendary"},
-                                    {name: "Mythic", value: "mythic"}
-                                ]
-                            },
-                            {
-                                name: "amount",
-                                description: "Number of random channels to send gifts to",
-                                type: 4,
-                                required: true,
-                                minValue: 1
-                            }
-                        ]
-                    });
-                }
+        const boxType = ctx.isInteraction ? ctx.interaction.options.getString('box_type') : args[0];
+        const amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[1];
 
-                async run(client, ctx, args, color, emoji, language) {
-                    if (ctx.isInteraction) {
-                        await ctx.interaction.deferReply({ephemeral: true});
-                    }
+        if (!boxType || !["common", "rare", "epic", "legendary", "mythic"].includes(boxType) || isNaN(amount) || amount <= 0) {
+            return ctx.isInteraction
+                ? ctx.interaction.editReply({
+                    content: "Usage: `gift <type> <amount>` (type: common/rare/epic/legendary/mythic)",
+                    ephemeral: true
+                })
+                : ctx.sendMessage({
+                    content: "Usage: `gift <type> <amount>` (type: common/rare/epic/legendary/mythic)",
+                    ephemeral: true
+                });
+        }
 
-                    const boxType = ctx.isInteraction ? ctx.interaction.options.getString('box_type') : args[0];
-                    const amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[1];
+        const gifts = [];
+        const sentChannelNames = [];
+        const claimedGifts = {};
 
-                    if (!boxType || !["common", "rare", "epic", "legendary", "mythic"].includes(boxType) || isNaN(amount) || amount <= 0) {
-                        return ctx.isInteraction
-                            ? ctx.interaction.editReply({
-                                content: "Usage: `gift <type> <amount>` (type: common/rare/epic/legendary/mythic)",
-                                ephemeral: true
-                            })
-                            : ctx.sendMessage({
-                                content: "Usage: `gift <type> <amount>` (type: common/rare/epic/legendary/mythic)",
-                                ephemeral: true
-                            });
-                    }
+        const categoryIds = [
+            "1299718158403240048",
+            "1299720660876136499",
+            "1282991864751853569",
+            "1282993254169837621",
+            "1299715576834560092"
+        ];
 
-                    const gifts = [];
-                    const sentChannelNames = [];
-                    const claimedGifts = {};
+        // Collect channels from the specified categories
+        const channels = ctx.guild.channels.cache.filter(channel => categoryIds.includes(channel.parentId));
 
-                    const categoryIds = [
-                        "1299718158403240048",
-                        "1299720660876136499",
-                        "1282991864751853569",
-                        "1282993254169837621",
-                        "1299715576834560092"
-                    ];
+        // Randomly select 'amount' of channels from the available ones
+        const availableChannels = channels.random(amount);
 
-                    // Collect channels from the specified categories
-                    const channels = ctx.guild.channels.cache.filter(channel => categoryIds.includes(channel.parentId));
+        if (!availableChannels || availableChannels.length === 0) {
+            return ctx.isInteraction
+                ? ctx.interaction.editReply({
+                    content: "No available channels found within the specified categories.",
+                    ephemeral: true
+                })
+                : ctx.sendMessage({
+                    content: "No available channels found within the specified categories.",
+                    ephemeral: true
+                });
+        }
 
-                    // Randomly select 'amount' of channels from the available ones
-                    const availableChannels = channels.random(amount);
+        // Send gifts to each selected channel
+        for (const selectedChannel of availableChannels) {
+            gifts.push(await getRandomReward(boxType));
+            claimedGifts[selectedChannel.id] = []; // Initialize array for claimed users
 
-                    if (!availableChannels || availableChannels.length === 0) {
-                        return ctx.isInteraction
-                            ? ctx.interaction.editReply({
-                                content: "No available channels found within the specified categories.",
-                                ephemeral: true
-                            })
-                            : ctx.sendMessage({
-                                content: "No available channels found within the specified categories.",
-                                ephemeral: true
-                            });
-                    }
+            const button = new ButtonBuilder()
+                .setCustomId('claim_gift')
+                .setLabel('Click Me')
+                .setStyle(ButtonStyle.Primary);
 
-                    // Send gifts to each selected channel
-                    for (const selectedChannel of availableChannels) {
-                        gifts.push(await getRandomReward(boxType));
-                        claimedGifts[selectedChannel.id] = []; // Initialize array for claimed users
+            const row = new ActionRowBuilder().addComponents(button);
 
-                        const button = new ButtonBuilder()
-                            .setCustomId('claim_gift')
-                            .setLabel('Click Me')
-                            .setStyle(ButtonStyle.Primary);
+            const giftEmbed = client.embed()
+                .setColor(color.main)
+                .setThumbnail(gif.luck)
+                .setTitle(`${boxType.charAt(0).toUpperCase() + boxType.slice(1)} Mystery Box Opened!`)
+                .setDescription(`Click the button below to claim your rewards:`)
+                .setImage(gif.gift)
+                .setFooter({text: "Good luck with your rewards!"});
 
-                        const row = new ActionRowBuilder().addComponents(button);
+            const giftMessage = await selectedChannel.send({
+                embeds: [giftEmbed],
+                components: [row]
+            }).catch(err => {
+                console.error(`Could not send message to ${selectedChannel.name}:`, err);
+            });
 
-                        const giftEmbed = client.embed()
-                            .setColor(color.main)
-                            .setThumbnail(gif.luck)
-                            .setTitle(`${boxType.charAt(0).toUpperCase() + boxType.slice(1)} Mystery Box Opened!`)
-                            .setDescription(`Click the button below to claim your rewards:`)
-                            .setImage(gif.gift)
-                            .setFooter({text: "Good luck with your rewards!"});
+            // Store the name of the channel where the gift was sent
+            sentChannelNames.push(selectedChannel.name);
+            const collector = giftMessage.createMessageComponentCollector({time: 90000});
 
-                        const giftMessage = await selectedChannel.send({
-                            embeds: [giftEmbed],
-                            components: [row]
-                        }).catch(err => {
-                            console.error(`Could not send message to ${selectedChannel.name}:`, err);
-                        });
+            collector.on('collect', async (interaction) => {
+                await interaction.deferUpdate();
 
-                        // Store the name of the channel where the gift was sent
-                        sentChannelNames.push(selectedChannel.name);
-                        const collector = giftMessage.createMessageComponentCollector({time: 90000});
-
-                        collector.on('collect', async (interaction) => {
-                            await interaction.deferUpdate();
-
-                            if (interaction.customId === 'claim_gift') {
-                                if (claimedGifts[selectedChannel.id].includes(interaction.user.id)) {
-                                    return await interaction.followUp({
-                                        content: "This gift has already been claimed by you!",
-                                        ephemeral: true
-                                    });
-                                }
-
-                                const reward = gifts.pop(); // Get a random gift from gifts array
-                                if (!reward) {
-                                    return await interaction.followUp({
-                                        content: "No rewards left to claim.",
-                                        ephemeral: true
-                                    });
-                                }
-
-                                // Update user collection with the reward and get the summary
-                                const rewardSummary = await addRewardToUserInventory(client, interaction, color, emoji, reward);
-
-                                // Record the user who claimed the gift
-                                claimedGifts[selectedChannel.id].push(interaction.user.id);
-
-                                // Create an embed for the success message
-                                const successEmbed = this.client.embed()
-                                    .setColor(color.main)
-                                    .setThumbnail(client.utils.emojiToImage(emoji.congratulation))
-                                    .setTitle(`Gift Claimed!`)
-                                    .setDescription(`${interaction.displayName || interaction.user.displayName} received:\n${rewardSummary}`)
-                                    .setFooter({text: "Enjoy your rewards!"});
-
-                                // Send the success message as an embed
-                                try {
-                                    await giftMessage.delete();
-                                } catch (error) {
-                                    console.error('Error deleting the gift message:', error);
-                                }
-
-                                const successMessage = await interaction.followUp({embeds: [successEmbed]});
-
-                                const claimedUsers = await Promise.all(claimedGifts[selectedChannel.id].map(userId => {
-                                    return client.users.fetch(userId).then(user => user.displayName).catch(err => {
-                                        console.error(`Error fetching user ${userId}:`, err);
-                                        return null; // Return null for users that could not be fetched
-                                    });
-                                }));
-
-                                const claimedUsersString = claimedUsers.filter(Boolean).join(', ');
-
-                                const responseMessage = `Gift boxes have been sent to **${amount}** random channels: ${sentChannelNames.join(', ')}!\n` +
-                                    `${selectedChannel.name} claimed by: ${claimedUsersString}`;
-
-                                if (ctx.isInteraction) {
-                                    await ctx.interaction.editReply({content: responseMessage});
-                                } else {
-                                    ctx.sendMessage({content: responseMessage, ephemeral: true});
-                                }
-
-                                // Schedule the embed message to be deleted after 30 seconds
-                                setTimeout(async () => {
-                                    try {
-                                        await successMessage.delete();
-                                    } catch (error) {
-                                        console.error('Error deleting the success message:', error);
-                                    }
-                                }, 90000); // 30 seconds
-                            }
-                        });
-
-                        collector.on('end', async () => {
-                            try {
-                                await giftMessage.delete();
-                            } catch (error) {
-                                console.error('Error deleting the gift message:', error);
-                            }
+                if (interaction.customId === 'claim_gift') {
+                    if (claimedGifts[selectedChannel.id].includes(interaction.user.id)) {
+                        return await interaction.followUp({
+                            content: "This gift has already been claimed by you!",
+                            ephemeral: true
                         });
                     }
 
-                    const channelNamesString = sentChannelNames.join(', ');
+                    const reward = gifts.pop(); // Get a random gift from gifts array
+                    if (!reward) {
+                        return await interaction.followUp({
+                            content: "No rewards left to claim.",
+                            ephemeral: true
+                        });
+                    }
 
-                    const initialResponseMessage = `Gift boxes have been sent to **${amount}** random channels: ${channelNamesString}!`;
+                    // Update user collection with the reward and get the summary
+                    const rewardSummary = await addRewardToUserInventory(client, interaction, color, emoji, reward);
+
+                    // Record the user who claimed the gift
+                    claimedGifts[selectedChannel.id].push(interaction.user.id);
+
+                    // Create an embed for the success message
+                    const successEmbed = this.client.embed()
+                        .setColor(color.main)
+                        .setThumbnail(client.utils.emojiToImage(emoji.congratulation))
+                        .setTitle(`Gift Claimed!`)
+                        .setDescription(`${interaction.displayName || interaction.user.displayName} received:\n${rewardSummary}`)
+                        .setFooter({text: "Enjoy your rewards!"});
+
+                    // Send the success message as an embed
+                    try {
+                        await giftMessage.delete();
+                    } catch (error) {
+                        console.error('Error deleting the gift message:', error);
+                    }
+
+                    const successMessage = await interaction.followUp({embeds: [successEmbed]});
+
+                    const claimedUsers = await Promise.all(claimedGifts[selectedChannel.id].map(userId => {
+                        return client.users.fetch(userId).then(user => user.displayName).catch(err => {
+                            console.error(`Error fetching user ${userId}:`, err);
+                            return null; // Return null for users that could not be fetched
+                        });
+                    }));
+
+                    const claimedUsersString = claimedUsers.filter(Boolean).join(', ');
+
+                    const responseMessage = `Gift boxes have been sent to **${amount}** random channels: ${sentChannelNames.join(', ')}!\n` +
+                        `${selectedChannel.name} claimed by: ${claimedUsersString}`;
 
                     if (ctx.isInteraction) {
-                        await ctx.interaction.editReply({content: initialResponseMessage});
+                        await ctx.interaction.editReply({content: responseMessage});
                     } else {
-                        ctx.sendMessage({content: initialResponseMessage, ephemeral: true});
+                        ctx.sendMessage({content: responseMessage, ephemeral: true});
                     }
+
+                    // Schedule the embed message to be deleted after 30 seconds
+                    setTimeout(async () => {
+                        try {
+                            await successMessage.delete();
+                        } catch (error) {
+                            console.error('Error deleting the success message:', error);
+                        }
+                    }, 90000); // 30 seconds
                 }
-            }
+            });
+
+            collector.on('end', async () => {
+                try {
+                    await giftMessage.delete();
+                } catch (error) {
+                    console.error('Error deleting the gift message:', error);
+                }
+            });
+        }
+
+        const channelNamesString = sentChannelNames.join(', ');
+
+        const initialResponseMessage = `Gift boxes have been sent to **${amount}** random channels: ${channelNamesString}!`;
+
+        if (ctx.isInteraction) {
+            await ctx.interaction.editReply({content: initialResponseMessage});
+        } else {
+            ctx.sendMessage({content: initialResponseMessage, ephemeral: true});
         }
     }
 }
