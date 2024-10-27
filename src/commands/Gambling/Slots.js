@@ -67,7 +67,7 @@ module.exports = class Slots extends Command {
 
 			// ===================================== > Decide Results < ===================================== \\
 			let rslots = [];
-			let rand = random(1, 1000) / 10;
+			let rand = client.utils.getRandomNumber(1, 100);
 			let win = 0;
 
 			if (verify) {
