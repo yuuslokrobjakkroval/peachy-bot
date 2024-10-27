@@ -83,7 +83,8 @@ module.exports = class Reroll extends Command {
             .setTitle(`${emoji.mainLeft} Congratulations ${emoji.mainRight}`)
             .setDescription(
                 newWinners.length
-                    ? `${newWinners.map(id => `<@${id}>`).join(', ')}! You have won **${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin} ${emoji.congratulation}`
+                    ? `${newWinners.map(id => `<@${id}>`).join(', ')}! You have won **${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin} ${emoji.congratulation}` +
+                    `\n\nto reroll the giveaway again, please use\n\`${client.config.prefix.toLowerCase()}reroll ${messageId}\``
                     : `No one entered the giveaway for **\`${client.utils.formatNumber(giveaway.prize)}\`**!`
             )
             .setFooter({ text: `Rerolled by ${ctx.author.displayName}`, iconURL: ctx.author.displayAvatarURL() })
