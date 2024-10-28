@@ -206,14 +206,14 @@ module.exports = class Gift extends Command {
                         ctx.sendMessage({content: responseMessage, ephemeral: true});
                     }
 
-                    // Schedule the embed message to be deleted after 30 seconds
+                    // Schedule the embed message to be deleted after 10 seconds
                     setTimeout(async () => {
                         try {
                             await successMessage.delete();
                         } catch (error) {
                             console.error('Error deleting the success message:', error);
                         }
-                    }, 90000); // 30 seconds
+                    }, 10000); // 10 seconds
                 }
             });
 
