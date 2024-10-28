@@ -75,7 +75,7 @@ module.exports = class GiveItem extends Command {
             let errorMessage = '';
             if (!itemInfo) errorMessage += giveItemMessages.itemNotFound.replace('{{itemId}}', itemId);
             if (!hasItems) errorMessage += giveItemMessages.noItemInInventory.replace('{{itemEmote}}', itemInfo?.emoji).replace('{{itemName}}', itemInfo?.name);
-            if (!itemInfo?.able.gift) errorMessage += giveItemMessages.itemNotGiftable.replace('{{itemEmote}}', itemInfo?.emoji).replace('{{itemName}}', itemInfo.name);
+            if (!itemInfo?.able.gift) errorMessage += giveItemMessages.itemNotGiftable.replace('{{itemEmote}}', itemInfo?.emoji).replace('{{itemName}}', itemInfo?.name);
             return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
