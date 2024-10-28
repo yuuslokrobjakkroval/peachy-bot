@@ -211,7 +211,11 @@ module.exports = class Gift extends Command {
                         try {
                             await successMessage.delete();
                         } catch (error) {
-                            console.error('Error deleting the success message:', error);
+                            if (error.code === 10008) {
+                                console.log('Message already deleted or unknown.');
+                            } else {
+                                console.error('Error deleting the success message:', error);
+                            }
                         }
                     }, 10000); // 10 seconds
                 }
