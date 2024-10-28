@@ -1,6 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const Users = require('../../schemas/user'); // Adjust path
+const Users = require('../../schemas/user');
 const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
 const gif = require("../../utils/Gif");
@@ -13,8 +13,8 @@ module.exports = class Gift extends Command {
             name: "gift",
             description: {
                 content: "Send a random gift from the Mystery Box.",
-                examples: ["gift common 3"],
-                usage: "gift <type> <amount>",
+                examples: ["gift common 3", "gift common 3 #channel"],
+                usage: "gift <type> <amount> [channel]",
             },
             category: "utility",
             aliases: ["mysterybox"],
@@ -46,6 +46,12 @@ module.exports = class Gift extends Command {
                     type: 4,
                     required: true,
                     minValue: 1
+                },
+                {
+                    name: "channel",
+                    description: "Channel to send the gift (optional)",
+                    type: 7, // Channel type
+                    required: false
                 }
             ]
         });
@@ -58,15 +64,16 @@ module.exports = class Gift extends Command {
 
         const boxType = ctx.isInteraction ? ctx.interaction.options.getString('box_type') : args[0];
         const amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[1];
+        const specifiedChannel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[2];
 
         if (!boxType || !["common", "rare", "epic", "legendary", "mythic"].includes(boxType) || isNaN(amount) || amount <= 0) {
             return ctx.isInteraction
                 ? ctx.interaction.editReply({
-                    content: "Usage: `gift <type> <amount>` (type: common/rare/epic/legendary/mythic)",
+                    content: "Usage: `gift <type> <amount> [channel]` (type: common/rare/epic/legendary/mythic)",
                     ephemeral: true
                 })
                 : ctx.sendMessage({
-                    content: "Usage: `gift <type> <amount>` (type: common/rare/epic/legendary/mythic)",
+                    content: "Usage: `gift <type> <amount> [channel]` (type: common/rare/epic/legendary/mythic)",
                     ephemeral: true
                 });
         }
@@ -83,26 +90,33 @@ module.exports = class Gift extends Command {
             "1299715576834560092"
         ];
 
-        // Collect channels from the specified categories
-        const channels = ctx.guild.channels.cache.filter(channel => categoryIds.includes(channel.parentId));
+        // If a specific channel is provided, use it
+        let channels;
+        if (specifiedChannel) {
+            channels = [specifiedChannel]; // Wrap in an array to match the processing logic
+        } else {
+            // Collect channels from the specified categories
+            channels = ctx.guild.channels.cache.filter(channel => categoryIds.includes(channel.parentId));
 
-        // Randomly select 'amount' of channels from the available ones
-        const availableChannels = channels.random(amount);
+            // Randomly select 'amount' of channels from the available ones
+            channels = channels.random(amount);
+        }
 
-        if (!availableChannels || availableChannels.length === 0) {
+        // Check if any channels are available
+        if (!channels || channels.length === 0) {
             return ctx.isInteraction
                 ? ctx.interaction.editReply({
-                    content: "No available channels found within the specified categories.",
+                    content: "No available channels found.",
                     ephemeral: true
                 })
                 : ctx.sendMessage({
-                    content: "No available channels found within the specified categories.",
+                    content: "No available channels found.",
                     ephemeral: true
                 });
         }
 
         // Send gifts to each selected channel
-        for (const selectedChannel of availableChannels) {
+        for (const selectedChannel of channels) {
             gifts.push(await getRandomReward(boxType));
             claimedGifts[selectedChannel.id] = []; // Initialize array for claimed users
 
