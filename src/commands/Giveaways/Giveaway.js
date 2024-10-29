@@ -76,7 +76,9 @@ module.exports = class Start extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        if (ctx.replied || ctx.deferred) return;
+        if (ctx.isInteraction) {
+            await ctx.interaction.deferReply({ephemeral: true});
+        }
 
         const member = await ctx.guild.members.fetch(ctx.author.id);
         const isOwner = this.client.config.owners.includes(ctx.author.id);
@@ -118,8 +120,6 @@ module.exports = class Start extends Command {
 
         const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[6];
         const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[7];
-
-
 
         const duration = ms(durationStr);
         const winners = parseInt(winnersStr, 10);
@@ -170,16 +170,24 @@ module.exports = class Start extends Command {
         const buttonRow = new ActionRowBuilder().addComponents(joinButton, participantsButton);
 
         let giveawayMessage;
-        let targetChannel;
         try {
-            targetChannel = channel ? channel : ctx;
-            giveawayMessage = await targetChannel.sendMessage({ embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
+            giveawayMessage = await (channel || ctx.channel).send({
+                embeds: [giveawayEmbed],
+                components: [buttonRow],
+                fetchReply: true,
+            });
         } catch (err) {
-            if (!ctx.replied && !ctx.deferred) {
-                await ctx.interaction.reply({ content: 'There was an error sending the giveaway message.' });
-            }
             console.error(err);
-            return;
+            const response = 'There was an error sending the giveaway message.';
+            return ctx.isInteraction
+                ? ctx.editReply({ content: response })
+                : ctx.sendMessage({ content: response });
+        }
+
+        if (ctx.isInteraction) {
+            await ctx.interaction.editReply({ content: 'Giveaway successfully created!' });
+        } else {
+            ctx.sendMessage({ content: 'Giveaway successfully created!', ephemeral: true });
         }
 
         let cleanedPrize = prize.replace(/[^0-9,]/g, '');
@@ -193,7 +201,7 @@ module.exports = class Start extends Command {
 
         await GiveawaySchema.create({
             guildId: ctx.guild.id,
-            channelId: targetChannel.id,
+            channelId: channel ? channel.id : ctx.channel.id,
             messageId: giveawayMessage.id,
             hostedBy: host ? host.id : ctx.author.id,
             winners: winners,
