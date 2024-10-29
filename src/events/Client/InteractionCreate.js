@@ -491,7 +491,7 @@ module.exports = class InteractionCreate extends Event {
             const embed = this.client.embed()
                 .setTitle('Giveaway Shop Item Participants')
                 .setColor(color.main)
-                .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.prize)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
+                .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.amount)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
 
             await interaction.reply({ embeds: [embed], ephemeral: true });
             break;
