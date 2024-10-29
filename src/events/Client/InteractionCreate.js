@@ -127,17 +127,17 @@ module.exports = class InteractionCreate extends Event {
           const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
 
           let logChannelId;
-          if (giveawaysCommands.includes(command.name)) {
+          if (giveawaysCommands.includes(interaction.commandName)) {
             logChannelId = this.client.config.logChannelId[5];
-          } else if (utilityCommands.includes(command.name)) {
+          } else if (utilityCommands.includes(interaction.commandName)) {
             logChannelId = this.client.config.logChannelId[5];
-          } else if (mineCommands.includes(command.name)) {
+          } else if (mineCommands.includes(interaction.commandName)) {
             logChannelId = this.client.config.logChannelId[4];
-          } else if (balanceCommands.includes(command.name)) {
+          } else if (balanceCommands.includes(interaction.commandName)) {
             logChannelId = this.client.config.logChannelId[3];
-          } else if (gamblingCommands.includes(command.name)) {
+          } else if (gamblingCommands.includes(interaction.commandName)) {
             logChannelId = this.client.config.logChannelId[2];
-          } else if (gameCommands.includes(command.name)) {
+          } else if (gameCommands.includes(interaction.commandName)) {
             logChannelId = this.client.config.logChannelId[1];
           } else {
             logChannelId = this.client.config.logChannelId[0];
@@ -148,7 +148,7 @@ module.exports = class InteractionCreate extends Event {
             const embed = this.client
                 .embed()
                 .setColor(this.client.config.color.green)
-                .setTitle(`Command - ${formatCapitalize(command.name)}`)
+                .setTitle(`Command - ${formatCapitalize(interaction.commandName)}`)
                 .setThumbnail(interaction.guild.iconURL({extension: 'jpeg'}))
                 .addFields([
                   {
