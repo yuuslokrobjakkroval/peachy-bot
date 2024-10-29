@@ -579,10 +579,10 @@
 			"invalidItem": "ធាតុដែលមានលេខសម្គាល់ `{{itemId}}`រកមិនឃើញទេ។ ",
 			"themeAlreadyOwned": "អ្នកជាម្ចាស់ប្រធានបទរួចហើយ {{itemEmote}} **{{itemName}}**។ ",
 			"itemCannotBeBought": "ធាតុ {{itemEmote}} **{{itemName}}** មិនអាចរកបានសម្រាប់ការទិញ។",
-			"notEnoughCoins": "អ្នកត្រូវការ {{coinEmote}}{{neededCoins}} ច្រើនទៀតដើម្បីទិញ {{itemEmote}} **{{itemName}}**។",
-			"success": "បានទិញដោយជោគជ័យ",
-			"partial": "ប៉ុន្តែអ្នកអាចមានលទ្ធភាពតែប៉ុណ្ណោះ",
-			"description": "អ្នកមាន {{afford}} {{itemEmote}} **{{itemName}}** សម្រាប់ {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** ធាតុ។",
+			"notEnoughCoins": "អ្នកត្រូវការ {{coinEmote}} {{neededCoins}} ច្រើនទៀតដើម្បីទិញ {{itemEmote}} **{{itemName}}**។",
+			"success": "អ្នកបានទិញដោយជោគជ័យនូវ",
+			"partial": "អ្នកអាចមានលទ្ធភាពទិញនូវ",
+			"description": "{{afford}} {{itemEmote}} **{{itemName}}** ចំនួន **`{{amountToBuy}}`** អស់ `{{totalPrice}}` {{coinEmote}}។",
 			"buyDisable": "ធាតុនេះ។ {{itemEmote}} **{{itemName}}** មិនអាចទិញបានទេនៅពេលនេះ។",
 			"zeroBalance": "អ្នកមិនមានកាក់ដើម្បីទិញទេ។ "
 		},
@@ -666,10 +666,10 @@
 			"itemListFooter": "ប្រើ`ព័ត៌មានហាង <id>` ដើម្បីទទួលបានព័ត៌មានលម្អិតបន្ថែមអំពីធាតុមួយ។"
 		},
 		"useMessages": {
-			"themeID": "រកមិនឃើញស្បែកដែលមានលេខសម្គាល់ `{itemId}` ទេ។",
-			"notOwned": "អ្នកមិនមែនជាម្ចាស់ប្រធានបទ `{itemName}` ទេ។",
-			"unavailable": "ប្រធានបទ `{itemName}` មិនអាចប្រើបានទេ។",
-			"applied": "អនុវត្តប្រធានបទ `{itemEmote} {itemName}` ដោយជោគជ័យ!"
+			"themeID": "រកមិនឃើញស្បែកដែលមានលេខសម្គាល់ `{{itemId}}` ទេ។",
+			"notOwned": "អ្នកមិនមែនជាម្ចាស់ប្រធានបទ `{{itemName}}` ទេ។",
+			"unavailable": "ប្រធានបទ `{{itemName}}` មិនអាចប្រើបានទេ។",
+			"applied": "អនុវត្តប្រធានបទ `{{itemEmote}} {{itemName}}` ដោយជោគជ័យ!"
 		}
 	},
 	"profileMessages": {

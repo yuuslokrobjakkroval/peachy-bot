@@ -118,7 +118,6 @@ module.exports = class Language extends Command {
                 const user = await Users.findOne({ userId: ctx.author.id });
                 const currentLanguage = user?.preferences?.language || 'Not set';
                 const formatLanguage = languageNames[currentLanguage.split('-')[0]] || 'Unknown Language';
-                console.log(formatLanguage)
                 embed
                     .setColor(color.main)
                     .setTitle(`${emoji.mainLeft} ${languageMessages?.currentLanguageTitle} ${emoji.mainRight}`)
