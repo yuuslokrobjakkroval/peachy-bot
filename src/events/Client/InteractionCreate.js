@@ -444,12 +444,12 @@ module.exports = class InteractionCreate extends Event {
                 components: [
                   new ActionRowBuilder().addComponents(
                       new ButtonBuilder()
-                          .setCustomId('giveaway-join')
+                          .setCustomId('giveawayshopitem-join')
                           .setLabel(`${newLabel}`)
                           .setEmoji(`${emoji.main}`)
                           .setStyle(3),
                       new ButtonBuilder()
-                          .setCustomId('giveaway-participants')
+                          .setCustomId('giveawayshopitem-participants')
                           .setEmoji(emoji.userList)
                           .setLabel('Participants')
                           .setStyle(1)
@@ -489,7 +489,7 @@ module.exports = class InteractionCreate extends Event {
             const validParticipants = participants.filter(participant => participant !== null);
 
             const embed = this.client.embed()
-                .setTitle('Giveaway Participants')
+                .setTitle('Giveaway Shop Item Participants')
                 .setColor(color.main)
                 .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.prize)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
 

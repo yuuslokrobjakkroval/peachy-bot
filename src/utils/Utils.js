@@ -494,6 +494,7 @@ module.exports = class Utils {
     }
 
     static async endGiveawayShopItem(client, color, emoji, message, autoAdd) {
+
         if (!message.guild) return;
         if (!client.guilds.cache.get(message.guild.id)) return;
 
@@ -505,6 +506,19 @@ module.exports = class Utils {
         if (!data) return;
         if (data.ended) return;
         if (data.paused) return;
+
+        // Find the item in the inventory based on the itemId
+        const category = items.concat(importantItems).filter(c => c.type === data.type); // Adjusted to use data.type
+        if (!category) {
+            console.error(`Invalid item type specified for winner <@${winner}>.`);
+            return;
+        }
+
+        const itemInfo = category.find(i => i.id.toLowerCase() === data.itemId.toLowerCase());
+        if (!itemInfo) {
+            console.error(`No item found with ID ${data.itemId} in category ${data.type} for winner <@${winner}>.`);
+            return;
+        }
 
         function getMultipleRandom(arr, number) {
             const shuffled = [...arr].sort(() => 0.5 - Math.random());
@@ -534,19 +548,6 @@ module.exports = class Utils {
                 { ended: true, winnerId: winnerIdArray }
             );
         });
-
-        // Find the item in the inventory based on the itemId
-        const category = items.concat(importantItems).filter(c => c.type === data.type); // Adjusted to use data.type
-        if (!category) {
-            console.error(`Invalid item type specified for winner <@${winner}>.`);
-            return;
-        }
-
-        const itemInfo = category.find(i => i.id.toLowerCase() === data.itemId.toLowerCase());
-        if (!itemInfo) {
-            console.error(`No item found with ID ${data.itemId} in category ${data.type} for winner <@${winner}>.`);
-            return;
-        }
 
         // Announce the winners
         await message.reply({
