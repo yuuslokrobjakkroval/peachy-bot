@@ -148,7 +148,7 @@ module.exports = class Start extends Command {
             .setColor(color.main)
             .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
             .setDescription(
-                `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${host ? host.username : ctx.author.username}\nEnds: <t:${formattedDuration}:R>`
+                `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${host ? host.displayName : ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
             );
 
         if (image) giveawayEmbed.setImage(image.url);

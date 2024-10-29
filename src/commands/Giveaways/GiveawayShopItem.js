@@ -120,7 +120,7 @@ module.exports = class GiveawayShopItem extends Command {
             .setColor(color.main)
             .setTitle(`**ID: \`${item.id}\`\n${item.name} ${client.utils.formatNumber(amount)}** ${item.emoji}`)
             .setDescription(
-                `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${host ? host.username : ctx.author.username}\nEnds: <t:${formattedDuration}:R>`
+                `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${host ? host.displayName : ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
             );
 
         if (image) giveawayEmbed.setImage(image);
