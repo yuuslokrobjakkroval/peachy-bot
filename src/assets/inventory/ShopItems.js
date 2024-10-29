@@ -291,6 +291,22 @@ module.exports = [
                 available: ['use', 'gift'],
                 price: { buy: 3e6, sell: 1e6 },
                 limit: 80,
+            },
+            {
+                id: 't05',
+                name: 'Halloween V2',
+                description: 'Get into the spooky spirit with this Halloween-themed set, featuring eerie colors and Halloween-inspired emojis.',
+                type: 'theme',
+                able: {
+                    use: true,
+                    gift: false,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.halloweenNew,
+                available: ['use'],
+                price: { buy: 3e6, sell: 1e6 },
+                limit: 100,
             }
         ],
     },

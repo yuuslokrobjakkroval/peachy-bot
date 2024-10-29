@@ -23,6 +23,9 @@ const emojiOcean = require('../theme/OceanBreeze/emojis.js');
 const configHalloween = require('../theme/Halloween/config.js');
 const emojiHalloween = require('../theme/Halloween/emojis.js');
 
+const configHalloweenNew = require('../theme/Halloween/configNew.js');
+const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
+
 const configInfancy = require('../theme/Infancy/config.js');
 const emojiInfancy = require('../theme/Infancy/emojis.js');
 
@@ -201,6 +204,10 @@ module.exports = class PeachyClient extends Client {
                     case 't04':
                         color = configInfancy.color;
                         emoji = emojiInfancy;
+                        break;
+                    case 't05':
+                        color = configHalloweenNew.color;
+                        emoji = emojiHalloweenNew;
                         break;
                     case 'st01':
                         color = configHeaven.color;
