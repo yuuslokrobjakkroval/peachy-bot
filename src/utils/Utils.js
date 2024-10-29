@@ -1,6 +1,10 @@
 const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder} = require('discord.js');
 const Users = require('../schemas/user');
 const GiveawaySchema = require('../schemas/giveaway');
+const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
+const importantItems = require('../assets/inventory/ImportantItems.js');
+const shopItems = require('../assets/inventory/ShopItems.js');
+const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Utils {
     static getUser(userId) {
@@ -9,6 +13,14 @@ module.exports = class Utils {
 
     static getGiveaway(interaction) {
         return GiveawaySchema.findOne({
+            guildId: interaction.guild.id,
+            channelId: interaction.channel.id,
+            messageId: interaction.message.id,
+        }).then(giveaway => { return giveaway; }).catch(error => { console.log(`Error fetching giveaway data: ${error}`); return null });
+    }
+
+    static getGiveawayShopItem(interaction) {
+        return GiveawayShopItemSchema.findOne({
             guildId: interaction.guild.id,
             channelId: interaction.channel.id,
             messageId: interaction.message.id,
@@ -476,6 +488,123 @@ module.exports = class Utils {
                     console.error(`Error awarding prize to user <@${winner}>:`, err);
 
                     data.retryAutopay = true;
+                    await data.save();
+                }
+            }
+        }
+    }
+
+    static async endGiveawayShopItem(client, color, emoji, message, autoAdd) {
+        if (!message.guild) return;
+        if (!client.guilds.cache.get(message.guild.id)) return;
+
+        const data = await GiveawayShopItemSchema.findOne({
+            guildId: message.guildId,
+            messageId: message.id,
+        });
+
+        if (!data) return;
+        if (data.ended) return;
+        if (data.paused) return;
+
+        function getMultipleRandom(arr, number) {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, number);
+        }
+
+        let winnerIdArray = [];
+        if (data.entered.length >= data.winners) {
+            winnerIdArray = getMultipleRandom(data.entered, data.winners);
+        } else {
+            winnerIdArray = data.entered;
+        }
+
+        const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
+            ButtonBuilder.from(message.components[0].components[0]).setLabel(`${data.entered.length}`).setDisabled(true),
+            ButtonBuilder.from(message.components[0].components[1]).setDisabled(true)
+        );
+
+        const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
+            .setColor(color.main)
+            .setDescription(`Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`);
+
+        await message.edit({ embeds: [endGiveawayEmbed], components: [disableButton] }).then(async (msg) => {
+            await GiveawayShopItemSchema.findOneAndUpdate(
+                { guildId: data.guildId, channelId: data.channelId, messageId: msg.id },
+                { ended: true, winnerId: winnerIdArray }
+            );
+        });
+
+        // Find the item in the inventory based on the itemId
+        const category = items.concat(importantItems).filter(c => c.type === data.type); // Adjusted to use data.type
+        if (!category) {
+            console.error(`Invalid item type specified for winner <@${winner}>.`);
+            return;
+        }
+
+        const itemInfo = category.find(i => i.id.toLowerCase() === data.itemId.toLowerCase());
+        if (!itemInfo) {
+            console.error(`No item found with ID ${data.itemId} in category ${data.type} for winner <@${winner}>.`);
+            return;
+        }
+
+        // Announce the winners
+        await message.reply({
+            embeds: [
+                client.embed()
+                    .setColor(color.main)
+                    .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
+                    .setDescription(
+                        winnerIdArray.length
+                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won ${itemInfo.id} ${itemInfo.name} ${itemInfo.emoji} **\`${client.utils.formatNumber(data.amount)}\`**` +
+                            (autoAdd ? `Hosted by <@${data.hostedBy}>` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``)
+                            : `No one entered the giveaway for ${itemInfo.id} ${itemInfo.name} ${itemInfo.emoji} **\`${client.utils.formatNumber(data.amount)}\`** !`
+                    )
+                    .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
+            ],
+        });
+
+        if (autoAdd) {
+            for (const winner of winnerIdArray) {
+                try {
+                    // Find the item in the inventory based on the itemId
+                    const category = items.concat(importantItems).find(c => c.type === data.type); // Adjusted to use data.type
+                    if (!category) {
+                        console.error(`Invalid item type specified for winner <@${winner}>.`);
+                        return;
+                    }
+
+                    const itemInfo = category.inventory.find(i => i.id.toLowerCase() === data.itemId.toLowerCase());
+                    if (!itemInfo) {
+                        console.error(`No item found with ID ${data.itemId} in category ${data.type} for winner <@${winner}>.`);
+                        return;
+                    }
+
+                    // Add prize to the winner's inventory
+                    const user = await Users.findOne({ userId: winner });
+                    if (user) {
+                        // Check if the item already exists in the inventory
+                        const itemIndex = user.inventory.findIndex(item => item.id === itemInfo.id);
+                        if (itemIndex > -1) {
+                            // If item exists, update the quantity
+                            user.inventory[itemIndex].quantity += data.amount; // Add the amount won
+                        } else {
+                            // If item doesn't exist, create a new inventory item
+                            user.inventory.push({ id: itemInfo.id, name: itemInfo.name, quantity: data.amount });
+                        }
+                        await user.save();
+
+                        await message.reply({
+                            embeds: [
+                                client.embed()
+                                    .setColor(color.main)
+                                    .setDescription(`**${client.user.displayName}** has added **${itemInfo.name} ${itemInfo.emoji} \`${data.amount}\`** to <@${winner}>'s inventory.`),
+                            ],
+                        });
+                    }
+                } catch (err) {
+                    console.error(`Error adding item to user <@${winner}>:`, err);
+                    data.retryAutopay = true; // Assuming you want to keep the retry logic
                     await data.save();
                 }
             }

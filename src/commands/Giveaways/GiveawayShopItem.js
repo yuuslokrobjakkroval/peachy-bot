@@ -1,19 +1,21 @@
 const { Command } = require('../../structures/index.js');
 const { ActionRowBuilder, ButtonBuilder, PermissionsBitField } = require('discord.js');
+const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem.js');
+const importantItems = require('../../assets/inventory/ImportantItems.js');
+const shopItems = require('../../assets/inventory/ShopItems.js');
+const items = shopItems.flatMap(shop => shop.inventory);
 const ms = require('ms');
-const GiveawaySchema = require('../../schemas/giveaway.js');
 
-module.exports = class Start extends Command {
+module.exports = class GiveawayShopItem extends Command {
     constructor(client) {
         super(client, {
-            name: 'giveaway',
+            name: 'giveawayshopitem',
             description: {
-                content: 'Start a giveaway with a specified duration, number of winners, and prize.',
-                examples: ['giveaway 1h 2 1000 true'],
-                usage: 'giveaway <duration> <winners> <prize> <autopay> <image> <thumbnail>',
+                content: 'Start a themed giveaway for food, drink, or themes in the shop.',
+                examples: ['giveawayshopitem 1h 1 food f01 5 true', 'giveawayshopitem 2h 3 drink d01 false @User #channel'],
+                usage: 'giveawayshopitem <duration> <winners> <type> <itemID> <amount> <image> <thumbnail> <autoadd> [host] [channel]',
             },
             category: 'giveaway',
-            aliases: [],
             args: true,
             permissions: {
                 dev: false,
@@ -22,55 +24,16 @@ module.exports = class Start extends Command {
             },
             slashCommand: true,
             options: [
-                {
-                    name: 'duration',
-                    description: 'The duration of the giveaway.',
-                    type: 3,
-                    required: true,
-                },
-                {
-                    name: 'winners',
-                    description: 'The number of winners for the giveaway.',
-                    type: 4,
-                    required: true,
-                },
-                {
-                    name: 'prize',
-                    description: 'The prize of the giveaway.',
-                    type: 3,
-                    required: true,
-                },
-                {
-                    name: 'image',
-                    description: 'Attach an image for the giveaway.',
-                    type: 11,
-                    required: false,
-                },
-                {
-                    name: 'thumbnail',
-                    description: 'Attach a thumbnail for the giveaway.',
-                    type: 11,
-                    required: false,
-                },
-                {
-                    name: 'autopay',
-                    description: 'Automatically pay the winners after the giveaway ends. (Owner/Staff Only)',
-                    type: 3,
-                    required: false,
-                },
-                {
-                    name: 'host',
-                    description: 'Specify the giveaway host (mention or user ID).',
-                    type: 6, // User type
-                    required: false,
-                },
-                {
-                    name: 'channel',
-                    description: 'Specify the channel to post the giveaway.',
-                    type: 7, // Channel type
-                    required: false,
-                    channel_types: [0],
-                },
+                { name: 'duration', description: 'Duration of the giveaway.', type: 3, required: true },
+                { name: 'winners', description: 'Number of winners.', type: 4, required: true },
+                { name: 'type', description: 'The giveaway type (food, drink, theme, milk).', type: 3, required: true },
+                { name: 'itemid', description: 'The item ID from the shop.', type: 3, required: true },
+                { name: 'amount', description: 'The amount of items to give away.', type: 4, required: true },
+                { name: 'image', description: 'Image URL for the giveaway.', type: 3, required: false },
+                { name: 'thumbnail', description: 'Thumbnail URL for the giveaway.', type: 3, required: false },
+                { name: 'autoadd', description: 'Automatically add item winners (true/false).', type: 3, required: false },
+                { name: 'host', description: 'Specify the giveaway host (mention or user ID).', type: 6, required: false },
+                { name: 'channel', description: 'Specify the channel to post the giveaway.', type: 7, required: false },
             ],
         });
     }
@@ -100,26 +63,46 @@ module.exports = class Start extends Command {
 
         const durationStr = ctx.isInteraction ? ctx.interaction.options.getString('duration') : args[0];
         const winnersStr = ctx.isInteraction ? ctx.interaction.options.getInteger('winners') : args[1];
-        const prize = ctx.isInteraction ? ctx.interaction.options.getString('prize') : args[2];
-        const image = ctx.isInteraction ? ctx.interaction.options.getAttachment('image') : args[3];
-        const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[4];
-        const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[5];
+        const type = ctx.isInteraction ? ctx.interaction.options.getString('type') : args[2];
+        const itemID = ctx.isInteraction ? ctx.interaction.options.getString('itemid') : args[3];
+        const amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[4];
+        const image = ctx.isInteraction ? ctx.interaction.options.getString('image') : args[5];
+        const thumbnail = ctx.isInteraction ? ctx.interaction.options.getString('thumbnail') : args[6];
+        const autoAdd = ctx.isInteraction ? ctx.interaction.options.getString('autoadd') : args[7];
 
+        if (autoAdd && !isOwner) {
+            return (ctx.isInteraction
+                    ? ctx.interaction.reply({
+                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+                    : ctx.sendMessage({
+                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+            );
+        }
 
+        const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[8];
+        const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[9];
 
-        const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[6];
-        const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[7];
+        const category = items.concat(importantItems).filter(c => c.type === type);
+        if (!category) return ctx.sendMessage({ content: 'Invalid item type specified.' });
+
+        const item = category.find(i => i.id.toLowerCase() === itemID.toLowerCase());
+        if (!item) return ctx.sendMessage({ content: `No item found with ID ${itemID} in category ${type}.` });
 
         const duration = ms(durationStr);
         const winners = parseInt(winnersStr, 10);
 
-        if (!duration || isNaN(winners) || winners <= 0 || !prize) {
+        // Validate inputs
+        if (!duration || isNaN(winners) || winners <= 0 || !itemID || amount <= 0) {
             const replyMessage = {
                 embeds: [
                     client.embed()
                         .setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
                         .setColor(color.red)
-                        .setDescription('Invalid input. Please ensure the duration, number of winners, and prize are correctly provided.'),
+                        .setDescription('Invalid input. Please ensure the duration, number of winners, amount, and prize are correctly provided.'),
                 ],
             };
             if (ctx.isInteraction) {
@@ -131,27 +114,27 @@ module.exports = class Start extends Command {
         }
 
         const endTime = Date.now() + duration;
-        const formattedDuration = parseInt(endTime / 1000, 10);
+        const formattedDuration = Math.floor(endTime / 1000);
 
         const giveawayEmbed = client.embed()
             .setColor(color.main)
-            .setTitle(`${client.utils.formatNumber(prize)} ${emoji.coin}`)
+            .setTitle(`${item.id} ${item.name} ${item.emoji} ${client.utils.formatNumber(amount)}`)
             .setDescription(
                 `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${host ? host.username : ctx.author.username}\nEnds: <t:${formattedDuration}:R>`
             );
 
-        if (image) giveawayEmbed.setImage(image.url);
-        if (thumbnail) giveawayEmbed.setThumbnail(thumbnail.url);
+        if (image) giveawayEmbed.setImage(image);
+        if (thumbnail) giveawayEmbed.setThumbnail(thumbnail);
 
         const joinButton = new ButtonBuilder()
-            .setCustomId('giveaway-join')
+            .setCustomId('giveawayshopitem-join')
             .setEmoji(`${emoji.main}`)
             .setLabel('0')
             .setStyle(1)
             .setDisabled(false);
 
         const participantsButton = new ButtonBuilder()
-            .setCustomId('giveaway-participants')
+            .setCustomId('giveawayshopitem-participants')
             .setLabel('Participants')
             .setStyle(2)
             .setDisabled(false);
@@ -173,33 +156,26 @@ module.exports = class Start extends Command {
                 : ctx.sendMessage({ content: response });
         }
 
-        let cleanedPrize = prize.replace(/[^0-9,]/g, '');
-        let prizeAmountStr = cleanedPrize.replace(/,/g, '');
-        let prizeAmount = parseFloat(prizeAmountStr) || 0;
-        if (prize.match(/[kmbtq]/i)) {
-            const multipliers = { k: 1000, m: 1000000, b: 1000000000, t: 1000000000000, q: 1000000000000000 };
-            const unit = prize.slice(-1).toLowerCase();
-            prizeAmount *= multipliers[unit];
-        }
-
         if (ctx.isInteraction) {
             await ctx.interaction.editReply({ content: 'Giveaway successfully created!' });
         } else {
             ctx.sendMessage({ content: 'Giveaway successfully created!', ephemeral: true });
         }
 
-        await GiveawaySchema.create({
+        await GiveawayShopItemSchema.create({
             guildId: ctx.guild.id,
             channelId: channel ? channel.id : ctx.channel.id,
             messageId: giveawayMessage.id,
             hostedBy: host ? host.id : ctx.author.id,
             winners: winners,
-            prize: prizeAmount,
+            itemId: item.id,
+            type: type,
+            amount: amount,
             endTime: Date.now() + duration,
             paused: false,
             ended: false,
             entered: [],
-            autopay: !!autoPay,
+            autoAdd: !!autoAdd,
             retryAutopay: false,
             winnerId: [],
             rerollOptions: [],

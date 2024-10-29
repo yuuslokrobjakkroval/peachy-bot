@@ -493,7 +493,7 @@ module.exports = class MessageCreate extends Event {
             const gameCommands = ['guessnumber'];
             const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
             const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'theme', 'verify'];
-            const giveawaysCommands = ['giveaway', 'reroll'];
+            const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
 
             try {
               let logChannelId;
