@@ -466,7 +466,7 @@ module.exports = class Utils {
                     .setDescription(
                         winnerIdArray.length
                             ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
-                            (autopay ? `Hosted by <@${data.hostedBy}>` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``)
+                            (autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``)
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
                     )
                     .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
@@ -557,7 +557,7 @@ module.exports = class Utils {
                     .setDescription(
                         winnerIdArray.length
                             ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won ${itemInfo.id} ${itemInfo.name} ${itemInfo.emoji} **\`${client.utils.formatNumber(data.amount)}\`**` +
-                            (autoAdd ? `Hosted by <@${data.hostedBy}>` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``)
+                            (autoAdd ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll item ${message.id}\``)
                             : `No one entered the giveaway for ${itemInfo.id} ${itemInfo.name} ${itemInfo.emoji} **\`${client.utils.formatNumber(data.amount)}\`** !`
                     )
                     .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
@@ -567,19 +567,6 @@ module.exports = class Utils {
         if (autoAdd) {
             for (const winner of winnerIdArray) {
                 try {
-                    // Find the item in the inventory based on the itemId
-                    const category = items.concat(importantItems).find(c => c.type === data.type); // Adjusted to use data.type
-                    if (!category) {
-                        console.error(`Invalid item type specified for winner <@${winner}>.`);
-                        return;
-                    }
-
-                    const itemInfo = category.inventory.find(i => i.id.toLowerCase() === data.itemId.toLowerCase());
-                    if (!itemInfo) {
-                        console.error(`No item found with ID ${data.itemId} in category ${data.type} for winner <@${winner}>.`);
-                        return;
-                    }
-
                     // Add prize to the winner's inventory
                     const user = await Users.findOne({ userId: winner });
                     if (user) {
