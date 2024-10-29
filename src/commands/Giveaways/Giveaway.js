@@ -172,8 +172,8 @@ module.exports = class Start extends Command {
         let giveawayMessage;
         let targetChannel;
         try {
-            targetChannel = channel ? channel : ctx.channel;
-            giveawayMessage = await targetChannel.send({ embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
+            targetChannel = channel ? channel : ctx;
+            giveawayMessage = await targetChannel.sendMessage({ embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
         } catch (err) {
             if (!ctx.replied && !ctx.deferred) {
                 await ctx.interaction.reply({ content: 'There was an error sending the giveaway message.' });
