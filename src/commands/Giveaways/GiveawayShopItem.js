@@ -73,11 +73,11 @@ module.exports = class GiveawayShopItem extends Command {
         if (autoAdd && !isOwner) {
             return (ctx.isInteraction
                     ? ctx.interaction.reply({
-                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        content: 'Only the bot owner can enable auto add for giveaways.',
                         ephemeral: true
                     })
                     : ctx.sendMessage({
-                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        content: 'Only the bot owner can enable auto add for giveaways.',
                         ephemeral: true
                     })
             );
@@ -118,7 +118,7 @@ module.exports = class GiveawayShopItem extends Command {
 
         const giveawayEmbed = client.embed()
             .setColor(color.main)
-            .setTitle(`${item.id} ${item.name} ${item.emoji} ${client.utils.formatNumber(amount)}`)
+            .setTitle(`**\`${item.id}\` ${item.name} ${item.emoji} ${client.utils.formatNumber(amount)}**`)
             .setDescription(
                 `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${host ? host.username : ctx.author.username}\nEnds: <t:${formattedDuration}:R>`
             );

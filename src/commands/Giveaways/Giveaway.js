@@ -105,7 +105,18 @@ module.exports = class Start extends Command {
         const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[4];
         const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[5];
 
-
+        if (autoPay && !isOwner) {
+            return (ctx.isInteraction
+                    ? ctx.interaction.reply({
+                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+                    : ctx.sendMessage({
+                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+            );
+        }
 
         const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[6];
         const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[7];
@@ -135,7 +146,7 @@ module.exports = class Start extends Command {
 
         const giveawayEmbed = client.embed()
             .setColor(color.main)
-            .setTitle(`${client.utils.formatNumber(prize)} ${emoji.coin}`)
+            .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
             .setDescription(
                 `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${host ? host.username : ctx.author.username}\nEnds: <t:${formattedDuration}:R>`
             );

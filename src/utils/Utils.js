@@ -462,10 +462,9 @@ module.exports = class Utils {
             embeds: [
                 client.embed()
                     .setColor(color.main)
-                    .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
                     .setDescription(
                         winnerIdArray.length
-                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
+                            ? `# Congratulations ${emoji.congratulation}` + `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
                             (autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``)
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
                     )
@@ -553,10 +552,9 @@ module.exports = class Utils {
             embeds: [
                 client.embed()
                     .setColor(color.main)
-                    .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
                     .setDescription(
                         winnerIdArray.length
-                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won ${itemInfo.id} ${itemInfo.name} ${itemInfo.emoji} **\`${client.utils.formatNumber(data.amount)}\`**` +
+                            ? `# Congratulations ${emoji.congratulation}` + `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${itemInfo.name} ${itemInfo.emoji} \`${client.utils.formatNumber(data.amount)}\`**` +
                             (autoAdd ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll item ${message.id}\``)
                             : `No one entered the giveaway for ${itemInfo.id} ${itemInfo.name} ${itemInfo.emoji} **\`${client.utils.formatNumber(data.amount)}\`** !`
                     )
