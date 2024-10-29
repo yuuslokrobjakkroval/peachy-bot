@@ -122,7 +122,7 @@ module.exports = class Language extends Command {
                 embed
                     .setColor(color.main)
                     .setTitle(`${emoji.mainLeft} ${languageMessages?.currentLanguageTitle} ${emoji.mainRight}`)
-                    .setThumbnail(client.utils.emojiToImage(emojiGlobal.countryFlag[formatLanguage]))
+                    .setThumbnail(client.utils.emojiToImage(emojiGlobal.countryFlag[currentLanguage]))
                     .setDescription(languageMessages?.currentLanguageDescription.replace('%{language}', client.utils.formatCapitalize(formatLanguage)) || `Your current language is **${client.utils.formatCapitalize(formatLanguage)}**.`)
                     .setFooter({
                         text: languageMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
