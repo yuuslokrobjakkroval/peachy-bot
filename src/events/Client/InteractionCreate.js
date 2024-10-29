@@ -124,7 +124,7 @@ module.exports = class InteractionCreate extends Event {
           const gameCommands = ['guessnumber'];
           const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
           const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'theme', 'verify'];
-          const giveawaysCommands = ['giveaway', 'reroll'];
+          const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
 
           let logChannelId;
           if (giveawaysCommands.includes(command.name)) {
