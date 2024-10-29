@@ -580,7 +580,6 @@
 			"success": "성공적으로 구매했습니다",
 			"partial": "하지만 당신은 감당할 수 밖에",
 			"description": "당신은 {{afford}} {{itemEmote}} **{{itemName}}** 을 위한 {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** 품목.",
-			"buyDisable": "이 항목 {{itemEmote}} **{{itemName}}** 현재는 구매하실 수 없습니다.",
 			"zeroBalance": "구매할 수 있는 코인이 없습니다. "
 		},
 		"drinkMessages": {

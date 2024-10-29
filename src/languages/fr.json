@@ -580,7 +580,6 @@
 			"success": "acheté avec succès",
 			"partial": "mais tu ne pouvais que te permettre",
 			"description": "Tu as {{afford}} {{itemEmote}} **{{itemName}}** pour {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** articles.",
-			"buyDisable": "Cet article {{itemEmote}} **{{itemName}}** ne peut pas être acheté pour le moment.",
 			"zeroBalance": "Vous n'avez pas de pièces pour effectuer un achat. "
 		},
 		"drinkMessages": {

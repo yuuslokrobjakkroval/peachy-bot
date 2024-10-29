@@ -580,7 +580,6 @@
 			"success": "無事に購入されました",
 			"partial": "でもあなたには余裕しかありませんでした",
 			"description": "あなたが持っている {{afford}} {{itemEmote}} **{{itemName}}** のために {{coinEmote}}{{totalPrice}}。 {{amountToBuy}}**アイテム。",
-			"buyDisable": "このアイテム {{itemEmote}} **{{itemName}}** は現在購入できません。",
 			"zeroBalance": "購入するためのコインがありません。"
 		},
 		"drinkMessages": {

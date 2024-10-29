@@ -580,7 +580,6 @@
 			"success": "ซื้อสำเร็จแล้ว",
 			"partial": "แต่คุณสามารถจ่ายได้เท่านั้น",
 			"description": "คุณมี {{afford}} {{itemEmote}} -{{itemName}}** สำหรับ {{coinEmote}}{{totalPrice}}- {{amountToBuy}}**รายการ.",
-			"buyDisable": "รายการนี้ {{itemEmote}} -{{itemName}}** ไม่สามารถซื้อได้ในขณะนี้",
 			"zeroBalance": "คุณไม่มีเหรียญที่จะซื้อ "
 		},
 		"drinkMessages": {

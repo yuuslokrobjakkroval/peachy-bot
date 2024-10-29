@@ -580,7 +580,6 @@
 			"success": "đã mua thành công",
 			"partial": "nhưng bạn chỉ có đủ khả năng",
 			"description": "bạn có {{afford}} {{itemEmote}} **{{itemName}}** vì {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** mặt hàng.",
-			"buyDisable": "Mục này {{itemEmote}} **{{itemName}}** không thể mua được vào thời điểm này.",
 			"zeroBalance": "Bạn không có xu để mua hàng. "
 		},
 		"drinkMessages": {

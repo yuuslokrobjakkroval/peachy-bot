@@ -580,7 +580,6 @@
 			"success": "ຊື້ສຳເລັດແລ້ວ",
 			"partial": "ແຕ່ທ່ານພຽງແຕ່ສາມາດຈ່າຍໄດ້",
 			"description": "ທ່ານມີ {{afford}} {{itemEmote}} **{{itemName}}** ສໍາລັບ {{coinEmote}}{{totalPrice}}. {{amountToBuy}}** ລາຍການ.",
-			"buyDisable": "ລາຍການນີ້ {{itemEmote}} **{{itemName}}** ບໍ່ສາມາດຊື້ໄດ້ໃນເວລານີ້.",
 			"zeroBalance": "ທ່ານບໍ່ມີຫຼຽນເພື່ອເຮັດການຊື້. "
 		},
 		"drinkMessages": {

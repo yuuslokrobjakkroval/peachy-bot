@@ -580,7 +580,6 @@
 			"success": "購買成功",
 			"partial": "但你只能負擔得起",
 			"description": "你有 {{afford}} {{itemEmote}} **{{itemName}}** 為了 {{coinEmote}}{{totalPrice}}。{{amountToBuy}}** 專案.",
-			"buyDisable": "此項 {{itemEmote}} **{{itemName}}** 目前無法購買。",
 			"zeroBalance": "您沒有硬幣可供購買。"
 		},
 		"drinkMessages": {

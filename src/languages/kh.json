@@ -579,11 +579,10 @@
 			"invalidItem": "ធាតុដែលមានលេខសម្គាល់ `{{itemId}}`រកមិនឃើញទេ។ ",
 			"themeAlreadyOwned": "អ្នកជាម្ចាស់ប្រធានបទរួចហើយ {{itemEmote}} **{{itemName}}**។ ",
 			"itemCannotBeBought": "ធាតុ {{itemEmote}} **{{itemName}}** មិនអាចរកបានសម្រាប់ការទិញ។",
-			"notEnoughCoins": "អ្នកត្រូវការ {{coinEmote}} {{neededCoins}} ច្រើនទៀតដើម្បីទិញ {{itemEmote}} **{{itemName}}**។",
+			"notEnoughCoins": "អ្នកត្រូវការ {{neededCoins}} {{coinEmote}} ច្រើនទៀតដើម្បីទិញ {{itemEmote}} **{{itemName}}**។",
 			"success": "អ្នកបានទិញដោយជោគជ័យនូវ",
 			"partial": "អ្នកអាចមានលទ្ធភាពទិញនូវ",
-			"description": "{{afford}} {{itemEmote}} **{{itemName}}** ចំនួន **`{{amountToBuy}}`** អស់ `{{totalPrice}}` {{coinEmote}}។",
-			"buyDisable": "ធាតុនេះ។ {{itemEmote}} **{{itemName}}** មិនអាចទិញបានទេនៅពេលនេះ។",
+			"description": "{{afford}} {{itemEmote}} **{{itemName}}** ចំនួន **`{{amountToBuy}}`** អស់ `{{totalPrice}}` {{coinEmote}}",
 			"zeroBalance": "អ្នកមិនមានកាក់ដើម្បីទិញទេ។ "
 		},
 		"drinkMessages": {

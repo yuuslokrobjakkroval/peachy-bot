@@ -585,7 +585,6 @@
 			"success": "successfully purchased",
 			"partial": "but you could only afford",
 			"description": "You have {{afford}} {{itemEmote}} **{{itemName}}** for {{coinEmote}}{{totalPrice}}. You bought **{{amountToBuy}}** items.",
-			"buyDisable": "This item {{itemEmote}} **{{itemName}}** cannot be purchased at this time.",
 			"zeroBalance": "You have no coins to make a purchase. Earn coins first before buying items."
 		},
 		"drinkMessages": {
