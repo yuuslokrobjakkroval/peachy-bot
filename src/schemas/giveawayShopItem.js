@@ -8,8 +8,6 @@ const GiveawayShopItemSchema = new Schema({
     itemId: { type: String, required: true },  // Storing item name or ID
     type: { type: String, enum: ['food', 'drink', 'theme', 'milk'], required: true }, // To specify item type
     amount: { type: Number, required: true, default: 1 }, // Amount of items to give away
-    image: { type: String, default: null }, // URL for giveaway image
-    thumbnail: { type: String, default: null }, // URL for giveaway thumbnail
     endTime: { type: Number, default: null },
     paused: { type: Boolean, default: false },
     ended: { type: Boolean, default: false },
