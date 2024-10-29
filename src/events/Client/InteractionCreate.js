@@ -319,23 +319,25 @@ module.exports = class InteractionCreate extends Event {
             }
 
             const participants = await Promise.all(data.entered.map(async (id, index) => {
-              let member = interaction.guild.members.cache.get(id);
-              if (!member) {
-                try {
-                  member = await interaction.guild.members.fetch(id);
-                } catch (err) {
-                  console.error(`Unable to fetch member with ID: ${id}`, err);
-                }
+              let member;
+              try {
+                member = interaction.guild.members.cache.get(id) || await interaction.guild.members.fetch(id);
+                if (!member) throw new Error("Member not found");
+              } catch (err) {
+                console.error(`Unable to fetch member with ID: ${id}`, err);
+                return null; // Skip this participant if they are not found
               }
               return `${index + 1}. <@${id}> (**1** entry)`;
             }));
 
+            const validParticipants = participants.filter(participant => participant !== null);
+
             const embed = this.client.embed()
                 .setTitle('Giveaway Participants')
                 .setColor(color.main)
-                .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.prize)}**:\n\n${participants.join('\n')}\n\nTotal Participants: **${data.entered.length}**`);
+                .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.prize)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
 
-            await interaction.reply({embeds: [embed], ephemeral: true});
+            await interaction.reply({ embeds: [embed], ephemeral: true });
             break;
           }
 
