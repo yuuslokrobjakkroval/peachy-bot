@@ -554,9 +554,9 @@ module.exports = class Utils {
                     .setColor(color.main)
                     .setDescription(
                         winnerIdArray.length
-                            ? `# Congratulations ${emoji.congratulation}` + `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${itemInfo.name} ${itemInfo.emoji} \`${client.utils.formatNumber(data.amount)}\`**` +
+                            ? `# Congratulations ${emoji.congratulation}` + `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${itemInfo.name} \`${client.utils.formatNumber(data.amount)}\`** ${itemInfo.emoji}` +
                             (autoAdd ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll item ${message.id}\``)
-                            : `No one entered the giveaway for ${itemInfo.id} ${itemInfo.name} ${itemInfo.emoji} **\`${client.utils.formatNumber(data.amount)}\`** !`
+                            : `No one entered the giveaway for ${itemInfo.id} ${itemInfo.name} **\`${client.utils.formatNumber(data.amount)}\`** ${itemInfo.emoji}!`
                     )
                     .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
             ],
