@@ -1,11 +1,9 @@
 const { Command } = require("../../structures/index.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const Users = require('../../schemas/user');
-const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
 const gif = require("../../utils/Gif");
-const moreItems = ShopItems.flatMap(shop => shop.inventory);
-const allItems = moreItems.concat(ImportantItems);
+const allItems = ShopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Gift extends Command {
     constructor(client) {
