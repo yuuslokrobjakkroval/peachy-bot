@@ -271,13 +271,13 @@ async function getRandomReward(boxType) {
                 id: foodItemCommon.id,
                 name: foodItemCommon.name,
                 emoji: foodItemCommon.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random food between 1 and 3
+                quantity: 1
             });
             rewards.push({
                 id: drinkItemCommon.id,
                 name: drinkItemCommon.name,
                 emoji: drinkItemCommon.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random drink between 1 and 3
+                quantity: 1
             });
 
             return {
@@ -299,13 +299,13 @@ async function getRandomReward(boxType) {
                 id: foodItemRare.id,
                 name: foodItemRare.name,
                 emoji: foodItemRare.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random food between 3 and 5
+                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random food between 1 and 3
             });
             rewards.push({
                 id: drinkItemRare.id,
                 name: drinkItemRare.name,
                 emoji: drinkItemRare.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random drink between 3 and 5
+                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random drink between 1 and 3
             });
 
             return {
@@ -328,19 +328,19 @@ async function getRandomReward(boxType) {
                 id: foodItemEpic.id,
                 name: foodItemEpic.name,
                 emoji: foodItemEpic.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (8 - 7 + 1)) + 7 // Random food between 7 and 8
+                quantity: Math.floor(Math.random() * (4 - 3 + 1)) + 3 // Random food between 3 and 4
             });
             rewards.push({
                 id: drinkItemEpic.id,
                 name: drinkItemEpic.name,
                 emoji: drinkItemEpic.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (8 - 7 + 1)) + 7 // Random drink between 7 and 8
+                quantity: Math.floor(Math.random() * (4 - 3 + 1)) + 3 // Random drink between 3 and 4
             });
             rewards.push({
                 id: milkItemEpic.id,
                 name: milkItemEpic.name,
                 emoji: milkItemEpic.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random milk between 1 and 3
+                quantity: Math.floor(Math.random() * (2 - 1 + 1)) + 1 // Random milk between 1 and 2
             });
 
             return {
@@ -363,19 +363,19 @@ async function getRandomReward(boxType) {
                 id: foodItemLegendary.id,
                 name: foodItemLegendary.name,
                 emoji: foodItemLegendary.emoji, // Directly using emoji from item
-                quantity: 10 // Fixed food quantity
+                quantity: 6 // Fixed food quantity
             });
             rewards.push({
                 id: drinkItemLegendary.id,
                 name: drinkItemLegendary.name,
                 emoji: drinkItemLegendary.emoji, // Directly using emoji from item
-                quantity: 10 // Fixed drink quantity
+                quantity: 6 // Fixed drink quantity
             });
             rewards.push({
                 id: milkItemLegendary.id,
                 name: milkItemLegendary.name,
                 emoji: milkItemLegendary.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (5 - 3 + 1)) + 3 // Random milk between 3 and 5
+                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random milk between 1 and 3
             });
 
             return {
