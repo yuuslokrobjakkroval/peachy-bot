@@ -40,7 +40,9 @@ module.exports = class Clear extends Command {
         }
 
         // Defer the interaction to prevent timeout
-        await ctx.interaction.deferReply({ ephemeral: true }).catch(err => console.error(err));
+        if (ctx.isInteraction) {
+            await ctx.interaction.deferReply({ ephemeral: true }).catch(err => console.error(err));
+        }
 
         let messagesDeleted = 0;
 
@@ -62,9 +64,10 @@ module.exports = class Clear extends Command {
         }
 
         // Edit the deferred reply with the final count
-        await ctx.interaction.editReply(`Deleted ${messagesDeleted} messages.`).catch(err => {
-            console.error(err);
-            ctx.interaction.followUp("There was an error trying to delete messages in this channel.");
-        });
+        if (ctx.isInteraction) {
+            await ctx.interaction.editReply({ content: `Deleted ${messagesDeleted} messages.` });
+        } else {
+            ctx.sendMessage({ content: `Deleted ${messagesDeleted} messages.`, ephemeral: true });
+        }
     }
 };
