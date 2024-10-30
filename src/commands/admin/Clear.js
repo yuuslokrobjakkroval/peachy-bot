@@ -31,14 +31,16 @@ module.exports = class Clear extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        let numberMessageDelete = ctx.isInteraction ? ctx.interaction.options.getInteger('number_message_delete') : parseInt(args[0]);
+        let numberMessageDelete = ctx.isInteraction
+            ? ctx.interaction.options.getInteger("number_message_delete")
+            : parseInt(args[0]);
 
         if (isNaN(numberMessageDelete) || numberMessageDelete <= 0 || numberMessageDelete > 1000) {
             return ctx.sendMessage("Please provide a valid number between 1 and 1000.");
         }
 
-        // Send an initial response to avoid timeout
-        await ctx.interaction.reply({ content: "Deleting messages...", ephemeral: true }).catch(err => console.error(err));
+        // Defer the interaction to prevent timeout
+        await ctx.interaction.deferReply({ ephemeral: true }).catch(err => console.error(err));
 
         let messagesDeleted = 0;
 
@@ -59,11 +61,10 @@ module.exports = class Clear extends Command {
             numberMessageDelete -= deleteAmount; // Reduce the number of messages left to delete
         }
 
-        // Edit the initial response with the final count
+        // Edit the deferred reply with the final count
         await ctx.interaction.editReply(`Deleted ${messagesDeleted} messages.`).catch(err => {
             console.error(err);
             ctx.interaction.followUp("There was an error trying to delete messages in this channel.");
         });
     }
-
 };
