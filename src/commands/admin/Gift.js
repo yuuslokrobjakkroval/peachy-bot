@@ -316,9 +316,8 @@ async function getRandomReward(boxType) {
 
             const foodItemEpic = getRandomItem('food');
             const drinkItemEpic = getRandomItem('drink');
-            const milkItemEpic = getRandomItem('milk');
 
-            if (!foodItemEpic || !drinkItemEpic || !milkItemEpic) {
+            if (!foodItemEpic || !drinkItemEpic) {
                 throw new Error("Failed to retrieve some items for epic box.");
             }
 
@@ -334,12 +333,6 @@ async function getRandomReward(boxType) {
                 emoji: drinkItemEpic.emoji, // Directly using emoji from item
                 quantity: Math.floor(Math.random() * (4 - 3 + 1)) + 3 // Random drink between 3 and 4
             });
-            rewards.push({
-                id: milkItemEpic.id,
-                name: milkItemEpic.name,
-                emoji: milkItemEpic.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (2 - 1 + 1)) + 1 // Random milk between 1 and 2
-            });
 
             return {
                 amount: coins,
@@ -351,9 +344,8 @@ async function getRandomReward(boxType) {
 
             const foodItemLegendary = getRandomItem('food');
             const drinkItemLegendary = getRandomItem('drink');
-            const milkItemLegendary = getRandomItem('milk');
 
-            if (!foodItemLegendary || !drinkItemLegendary || !milkItemLegendary) {
+            if (!foodItemLegendary || !drinkItemLegendary) {
                 throw new Error("Failed to retrieve some items for legendary box.");
             }
 
@@ -369,12 +361,6 @@ async function getRandomReward(boxType) {
                 emoji: drinkItemLegendary.emoji, // Directly using emoji from item
                 quantity: 6 // Fixed drink quantity
             });
-            rewards.push({
-                id: milkItemLegendary.id,
-                name: milkItemLegendary.name,
-                emoji: milkItemLegendary.emoji, // Directly using emoji from item
-                quantity: Math.floor(Math.random() * (3 - 1 + 1)) + 1 // Random milk between 1 and 3
-            });
 
             return {
                 amount: coins,
@@ -386,9 +372,8 @@ async function getRandomReward(boxType) {
 
             const foodItemMythic = getRandomItem('food');
             const drinkItemMythic = getRandomItem('drink');
-            const milkItemMythic = getRandomItem('milk');
 
-            if (!foodItemMythic || !drinkItemMythic || !milkItemMythic) {
+            if (!foodItemMythic || !drinkItemMythic) {
                 throw new Error("Failed to retrieve some items for mythic box.");
             }
 
@@ -403,12 +388,6 @@ async function getRandomReward(boxType) {
                 name: drinkItemMythic.name,
                 emoji: drinkItemMythic.emoji, // Directly using emoji from item
                 quantity: 10 // Fixed drink quantity
-            });
-            rewards.push({
-                id: milkItemMythic.id,
-                name: milkItemMythic.name,
-                emoji: milkItemMythic.emoji, // Directly using emoji from item
-                quantity: 5 // Fixed milk quantity
             });
 
             return {
