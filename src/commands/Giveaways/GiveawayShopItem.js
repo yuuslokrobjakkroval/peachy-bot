@@ -44,10 +44,9 @@ module.exports = class GiveawayShopItem extends Command {
 
         const member = await ctx.guild.members.fetch(ctx.author.id);
         const isOwner = this.client.config.owners.includes(ctx.author.id);
-        const isServerOwner = this.client.config.serverOwner.includes(ctx.author.id);
         const isAdmin = member.permissions.has(PermissionsBitField.Flags.Administrator);
 
-        if (!isOwner && !isServerOwner && !isAdmin) {
+        if (!isOwner && !isAdmin) {
             return (ctx.isInteraction
                     ? ctx.interaction.reply({
                         content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
