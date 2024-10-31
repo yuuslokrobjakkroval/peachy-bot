@@ -1,6 +1,5 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user.js');
-const { checkCooldown, getCooldown, updateCooldown } = require('../../functions/function');
 const moment = require("moment-timezone");
 const chance = require('chance').Chance();
 const emojiImage = require("../../utils/Emoji");
@@ -46,16 +45,16 @@ module.exports = class Weekly extends Command {
             const nextWeekly = moment(now).add(1, 'week').toDate(); // Calculate next weekly
 
             const timeUntilNextWeekly = nextWeekly - now.toDate();
-            const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
+            const isCooldownExpired = await client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
 
             if (!isCooldownExpired) {
-                const lastCooldownTimestamp = await getCooldown(ctx.author.id, this.name.toLowerCase());
+                const lastCooldownTimestamp = await client.utils.getCooldown(ctx.author.id, this.name.toLowerCase());
                 const remainingTime = Math.ceil((lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000);
                 const cooldownMessage = this.getCooldownMessage(remainingTime, client, language, weeklyMessages); // Updated call
 
                 const cooldownEmbed = client
                     .embed()
-                    .setColor(color.red)
+                    .setColor(color.danger)
                     .setDescription(cooldownMessage);
 
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
@@ -72,7 +71,7 @@ module.exports = class Weekly extends Command {
                         'profile.xp': newExp,
                     }
                 }).exec(),
-                updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly)
+                client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly)
             ]);
 
             const embed = this.createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages, verify); // Pass weeklyMessages

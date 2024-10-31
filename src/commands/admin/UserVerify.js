@@ -46,7 +46,7 @@ module.exports = class UpdatePaymentStatus extends Command {
         if (!userId || !status || !['paid', 'unpaid', 'reset', 'clear'].includes(status.toLowerCase())) {
             return await this.sendReply(ctx, {
                 embeds: [
-                    client.embed().setColor(color.red)
+                    client.embed().setColor(color.danger)
                         .setDescription('Please provide a valid user ID and payment status ("paid", "unpaid", or "reset").'),
                 ],
             });
@@ -59,7 +59,7 @@ module.exports = class UpdatePaymentStatus extends Command {
             if (!user) {
                 return await this.sendReply(ctx, {
                     embeds: [
-                        client.embed().setColor(color.red)
+                        client.embed().setColor(color.danger)
                             .setDescription(`No user found with ID: ${userId}`),
                     ],
                 });
@@ -77,7 +77,7 @@ module.exports = class UpdatePaymentStatus extends Command {
 
                 return await this.sendReply(ctx, {
                     embeds: [
-                        client.embed().setColor(color.green)
+                        client.embed().setColor(color.success)
                             .setDescription(`Successfully reset verification for user <@${userId}>.`),
                     ],
                 });
@@ -94,7 +94,7 @@ module.exports = class UpdatePaymentStatus extends Command {
 
                 return await this.sendReply(ctx, {
                     embeds: [
-                        client.embed().setColor(color.green)
+                        client.embed().setColor(color.success)
                             .setDescription(`Successfully clear verification for user <@${userId}>.`),
                     ],
                 });
@@ -106,7 +106,7 @@ module.exports = class UpdatePaymentStatus extends Command {
 
             return await this.sendReply(ctx, {
                 embeds: [
-                    client.embed().setColor(color.green)
+                    client.embed().setColor(color.success)
                         .setDescription(`Successfully updated payment status to **${client.utils.formatCapitalize(status)}** for user <@${userId}>.`),
                 ],
             });
@@ -115,7 +115,7 @@ module.exports = class UpdatePaymentStatus extends Command {
             console.error(err);
             await this.sendReply(ctx, {
                 embeds: [
-                    client.embed().setColor(color.red)
+                    client.embed().setColor(color.danger)
                         .setDescription('An error occurred while updating the payment status.'),
                 ],
             });

@@ -63,7 +63,7 @@ module.exports = class MessageCreate extends Event {
         return message.channel.send({
           embeds: [
             this.client.embed()
-                .setColor(color.red)
+                .setColor(color.danger)
                 .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
           ]
         });
@@ -190,7 +190,7 @@ module.exports = class MessageCreate extends Event {
             if (activeGames.has(ctx.author.id)) {
               return ctx.sendMessage({
                 embeds: [
-                  this.client.embed().setColor(color.orange).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
+                  this.client.embed().setColor(color.warning).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
                 ],
               });
             }
@@ -442,7 +442,7 @@ module.exports = class MessageCreate extends Event {
             if (command.args && !args.length) {
               const embed = this.client
                   .embed()
-                  .setColor(color.red)
+                  .setColor(color.danger)
                   .setTitle('Missing Arguments')
                   .setDescription(`Please provide the required arguments for the \`${command.name}\` command.`)
                   .addFields([
@@ -517,7 +517,7 @@ module.exports = class MessageCreate extends Event {
               if (channel && channel.isTextBased()) {
                 const embed = this.client
                     .embed()
-                    .setColor(this.client.config.color.green)
+                    .setColor(this.client.config.color.success)
                     .setTitle(`Command - ${formatCapitalize(command.name)}`)
                     .setThumbnail(message.guild.iconURL({extension: 'jpeg'}))
                     .addFields([

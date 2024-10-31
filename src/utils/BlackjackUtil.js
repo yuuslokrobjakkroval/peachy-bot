@@ -84,10 +84,10 @@ async function generateEmbed(author, client, color, emoji, dealer, player, bet, 
     let playerValue = cardValue(player);
 
     if (end == 'w') {
-        endColor = color.green;
+        endColor = color.success;
         description = `**\nYou bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You won \`${client.utils.formatNumber(winnings)}\` ${emoji.coin}**`;
     } else if (end == 'l') {
-        endColor = color.red;
+        endColor = color.danger;
         description = `**\nYou bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You lost \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**`;
     } else if (end == 'tb') {
         endColor = color.blue;

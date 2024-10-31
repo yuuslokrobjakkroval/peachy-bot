@@ -27,6 +27,7 @@ module.exports = {
   logChannelId,
   birthdayChannelId,
   owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
+  bankAccount: process.env.BANKACCOUNT_ID ? process.env.BANKACCOUNT_ID : "1260261937292247070",
   color: { danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF582AE, none: 0x2B2D31 },
   database: process.env.DATABASE_URL,
   botStatus: 'online',

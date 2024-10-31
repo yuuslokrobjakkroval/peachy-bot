@@ -128,7 +128,7 @@ module.exports = class Start extends Command {
                 embeds: [
                     client.embed()
                         .setAuthor({ name: client.user.displayName, iconURL: client.user.displayAvatarURL() })
-                        .setColor(color.red)
+                        .setColor(color.danger)
                         .setDescription('Invalid input. Please ensure the duration, number of winners, and prize are correctly provided.'),
                 ],
             };

@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const { checkCooldown, updateCooldown, getCooldown } = require('../../functions/function');
 const Users = require('../../schemas/user.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
@@ -45,10 +44,10 @@ module.exports = class Goma extends Command {
             const newStreak = user.goma.streak + 1;
 
             const cooldownTime = 300000; // 5 minutes cooldown
-            const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
+            const isCooldownExpired = await client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
 
             if (!isCooldownExpired) {
-                const lastCooldownTimestamp = await getCooldown(ctx.author.id, this.name.toLowerCase());
+                const lastCooldownTimestamp = await client.utils.getCooldown(ctx.author.id, this.name.toLowerCase());
                 const remainingTime = Math.ceil((lastCooldownTimestamp + cooldownTime - Date.now()) / 1000);
                 const duration = moment.duration(remainingTime, 'seconds');
                 const minutes = Math.floor(duration.asMinutes());
@@ -59,7 +58,7 @@ module.exports = class Goma extends Command {
                     .replace('%{seconds}', seconds);
 
                 const cooldownEmbed = client.embed()
-                    .setColor(color.red)
+                    .setColor(color.danger)
                     .setDescription(cooldownMessage);
 
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
@@ -73,7 +72,7 @@ module.exports = class Goma extends Command {
                         'goma.streak': newStreak
                     }
                 }).exec(),
-                updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime),
+                client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime),
             ]);
 
             // Display success embed

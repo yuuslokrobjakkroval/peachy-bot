@@ -13,54 +13,8 @@
 		"zeroBalance": "Your balance is zero. Please earn some coins before trying again.",
 		"invalidAmount": "Invalid amount. Please enter a positive number.",
 		"notForYou": "This action is not for you.",
-		"databaseUpdate": "There was an error updating the database."
-	},
-	"actionMessages": {
-		"biteMessages": {
-			"title": "Bite Time!",
-			"description": "playfully bites",
-			"errors": {
-				"noUser": "You need to mention a user to bite.",
-				"selfBite": "You cannot bite yourself.",
-				"fetchFail": "Something went wrong while fetching the bite GIF."
-			}
-		},
-		"hugMessages": {
-			"title": "Hug Time!",
-			"description": "gives a warm hug to",
-			"errors": {
-				"noUser": "You need to mention a user to hug.",
-				"selfHug": "You cannot hug yourself.",
-				"fetchFail": "Something went wrong while fetching the hug GIF."
-			}
-		},
-		"kissMessages": {
-			"title": "Kiss Time!",
-			"description": "gives a cute kiss to",
-			"errors": {
-				"noUser": "You need to mention a user to kiss.",
-				"selfKiss": "You cannot kiss yourself.",
-				"fetchFail": "Something went wrong while fetching the kiss GIF."
-			}
-		},
-		"punchMessages": {
-			"title": "Punch Time!",
-			"description": "throws a playful punch at",
-			"errors": {
-				"noUser": "You need to mention a user to punch.",
-				"selfPunch": "You cannot punch yourself.",
-				"fetchFail": "Something went wrong while fetching the punch GIF."
-			}
-		},
-		"slapMessages": {
-			"title": "Slap Time!",
-			"description": "playfully slaps",
-			"errors": {
-				"noUser": "You need to mention a user to slap.",
-				"selfSlap": "You cannot slap yourself.",
-				"fetchFail": "Something went wrong while fetching the slap GIF."
-			}
-		}
+		"databaseUpdate": "There was an error updating the database.",
+		"requestedBy": "Requested By %{username}"
 	},
 	"economyMessages": {
 		"balanceMessages": {
@@ -165,114 +119,7 @@
 			"error": "There was an error processing your withdrawal request."
 		}
 	},
-	"emoteMessages": {
-		"angryMessages": {
-			"title": "Angry Time!",
-			"description": "**{{user}}** shows off their angriest expression!",
-			"error": "There was an error processing your angry emote."
-		},
-		"cryMessages": {
-			"title": "Crying Time!",
-			"description": "**{{user}}** is crying!",
-			"error": "There was an error processing your crying emote."
-		},
-		"cuteMessages": {
-			"title": "Cute Time!",
-			"description": "**{{user}}** shows off their cutest expression!",
-			"error": "There was an error processing your cute emote."
-		},
-		"danceMessages": {
-			"title": "Dancing Time!",
-			"description": "**{{user}}** shows off some impressive dance moves!",
-			"error": "There was an error processing your dance emote."
-		},
-		"exerciseMessages": {
-			"title": "Exercise Time!",
-			"description": "**{{user}}** is getting moving and staying fit!",
-			"error": "There was an error processing your exercise emote."
-		},
-		"happyMessages": {
-			"title": "Happy Vibes!",
-			"description": "**{{user}}** is spreading joy and happiness!",
-			"error": "There was an error processing your happy emote."
-		},
-		"laughMessages": {
-			"title": "Laughing Out Loud!",
-			"description": "**{{user}}** shares a hearty laugh!",
-			"error": "There was an error processing your laugh emote."
-		},
-		"makeupMessages": {
-			"title": "Makeup Time!",
-			"description": "**{{user}}** applies some fabulous makeup and shines bright!",
-			"error": "There was an error processing your makeup emote."
-		},
-		"eatMessages": {
-			"title": "Eating Time!",
-			"description": "**{{user}}** is enjoying some delicious food!",
-			"error": "There was an error processing your eat emote."
-		},
-		"playGameMessages": {
-			"title": "Game Time!",
-			"description": "**{{user}}** is getting ready to play!",
-			"error": "There was an error processing your play game emote."
-		},
-		"roarMessages": {
-			"title": "Roar Time!",
-			"description": "**{{user}}** lets out a mighty roar!",
-			"error": "There was an error processing your roar emote."
-		},
-		"sadMessages": {
-			"title": "Feeling Sad",
-			"description": "**{{user}}** is expressing sadness.",
-			"error": "There was an error processing your sad emote."
-		},
-		"scareMessages": {
-			"title": "Scared!",
-			"description": "**{{user}}** shows their scared side!",
-			"error": "There was an error processing your scare emote."
-		},
-		"showerMessages": {
-			"title": "Shower Time!",
-			"description": "**{{user}}** is enjoying a refreshing shower!",
-			"error": "There was an error processing your shower emote."
-		},
-		"shyMessages": {
-			"title": "Shy!",
-			"description": "**{{user}}** shows off their shy expression!",
-			"error": "There was an error processing your shy emote."
-		}
-	},
 	"funMessage": {
-		"animalOfYear": {
-			"title": "𝐀𝐍𝐈𝐌𝐀𝐋𝐒 𝐎𝐅 𝐓𝐇𝐄 𝐘𝐄𝐀𝐑",
-			"selectAnimal": "Select an animal",
-			"noAnimals": "No animals available",
-			"animalNotFound": "Animal not found.",
-			"detailTitle": "𝐀𝐍𝐈𝐌𝐀𝐋 𝐃𝐄𝐓𝐀𝐈𝐋",
-			"description": "Description",
-			"requestBy": "Request By",
-			"id": "ID"
-		},
-		"province": {
-			"title": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
-			"selectProvince": "Select a province",
-			"noProvinces": "No provinces available",
-			"notFound": "Province not found.",
-			"detailTitle": "𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄 𝐃𝐄𝐓𝐀𝐈𝐋",
-			"description": "Description",
-			"requestBy": "Request By",
-			"id": "ID"
-		},
-		"randomColor": {
-			"title": "Here's a random color for you!",
-			"description": "Color: {color}",
-			"requestedBy": "Requested by"
-		},
-		"reverseText": {
-			"title": "Reversed Text",
-			"description": "**Original Text:** {originalText}\n**Reversed Text:** {reversedText}",
-			"requestedBy": "Requested by"
-		},
 		"wallpaper": {
 			"selectCategory": "Select a category...",
 			"selectWallpaper": "Select a wallpaper...",
@@ -282,14 +129,6 @@
 			"DetailsTitle": "𝐖𝐀𝐋𝐋𝐏𝐀𝐏𝐄𝐑 𝐃𝐄𝐓𝐀𝐈𝐋",
 			"descriptionLabel": "Description",
 			"categoryLabel": "Category"
-		},
-		"weather": {
-			"title": "𝐖𝐄𝐀𝐓𝐇𝐄𝐑 𝐎𝐅 𝐏𝐑𝐎𝐕𝐈𝐍𝐂𝐄𝐒 / 𝐂𝐈𝐓𝐈𝐄𝐒",
-			"selectProvince": "Select a province",
-			"noProvinces": "No provinces available",
-			"notFound": "Province not found.",
-			"provinceNotFound": "Province not found.",
-			"dataFetchFailed": "Failed to retrieve weather data. Please check the API key or try again later."
 		}
 	},
 	"gamblingMessages": {
@@ -390,19 +229,19 @@
 			"botPermissions": "Bot Permissions:",
 			"examples": "Example(s):",
 			"categoriesMessages": {
-				"actions": "𝐀𝐂𝐓𝐈𝐎𝐍𝐒",
-				"economy": "𝐄𝐂𝐎𝐍𝐎𝐌𝐘",
-				"inventory": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
-				"fun": "𝐅𝐔𝐍",
-				"games": "𝐆𝐀𝐌𝐄𝐒",
-				"gambling": "𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆",
-				"giveaways": "𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘𝐒",
-				"profile": "𝐏𝐑𝐎𝐅𝐈𝐋𝐄",
-				"relationships": "𝐑𝐄𝐋𝐀𝐓𝐈𝐎𝐍𝐒𝐇𝐈𝐏𝐒",
-				"social": "𝐒𝐎𝐂𝐈𝐀𝐋",
-				"emotes": "𝐄𝐌𝐎𝐓𝐄𝐒",
-				"utility": "𝐔𝐓𝐈𝐋𝐈𝐓𝐘",
-				"info": "𝐈𝐍𝐅𝐎"
+				"actions": "ACTIONS",
+				"economy": "ECONOMY",
+				"inventory": "INVENTORY",
+				"fun": "FUN",
+				"games": "GAMES",
+				"gambling": "GAMBLING",
+				"giveaways": "GIVEAWAYS",
+				"profile": "PROFILE",
+				"relationships": "RELATIONSHIP",
+				"social": "SOCIALS",
+				"emotes": "EMOTES",
+				"utility": "UTILITY",
+				"info": "INFORMATION"
 			},
 			"directoriesMessages": {
 				"bite": "bite",
@@ -900,10 +739,10 @@
 			"footer": "Requested by %{user}"
 		},
 		"themeMessages": {
-			"title": "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒",
+			"title": "Theme Setting",
 			"setThemeMessage": "Your theme has been set to **%{theme}**.",
 			"currentThemeMessage": "Your current theme is **%{theme}**.",
-			"helpTitle": "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏",
+			"helpTitle": "Theme Help",
 			"helpDescription": "Manage your theme settings.",
 			"examplesLabel": "Examples",
 			"usageLabel": "Usage",

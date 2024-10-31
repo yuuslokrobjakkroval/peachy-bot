@@ -3,40 +3,12 @@ const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const { formatUsername, splitToSpace, formatUpperCase } = require('../../utils/Utils');
 const Users = require('../../schemas/user');
-const { getZodiacSign } = require('../../functions/function');
-const gif = require('../../utils/Gif');
 const moment = require("moment");
-const configOcean = require("../../theme/OceanBreeze/config");
-const emojiOcean = require("../../theme/OceanBreeze/emojis");
 
-GlobalFonts.registerFromPath('./fonts/00357 Regular.ttf', 'Name');
-GlobalFonts.registerFromPath('./fonts/EmOne-SemiBold.ttf', 'EmOne-SemiBold');
-GlobalFonts.registerFromPath('./fonts/EmOne-SemiBoldItalic.ttf', 'EmOne-SemiBoldItalic');
+GlobalFonts.registerFromPath('./fonts/Kelvinch-Roman.otf', 'Name');
+GlobalFonts.registerFromPath('./fonts/Kelvinch-Bold.otf', 'EmOne-SemiBold');
+GlobalFonts.registerFromPath('./fonts/Kelvinch-BoldItalic.otf', 'EmOne-SemiBoldItalic');
 
-async function backgroundImages(userId, gender) {
-    switch (userId) {
-        case '966688007493140591':
-            return gif.ownerBackgroundImage;
-        case '946079190971732041':
-            return gif.babeOwnerBackgroundImage;
-        case '1279092605514285157':
-            return gif.adminBackgroundImage;
-        case '445540206763048961':
-            return gif.worstLessBackgroundImage;
-        case '1221843494973341758':
-            return gif.snaBackgroundImage;
-        case '1109137454591660032':
-            return gif.akitoBackgroundImage;
-        case '1266535973810868307':
-            return gif.pyyyBackgroundImage;
-        case '1147538170162974852':
-            return gif.evilBackgroundImage;
-        case '1248293110388228097':
-            return gif.cucumberBackgroundImage;
-        default:
-            return gender === 'male' ? gif.maleBackgroundImage : gif.femaleBackgroundImage;
-    }
-}
 
 module.exports = class Profile extends Command {
     constructor(client) {
@@ -87,28 +59,7 @@ module.exports = class Profile extends Command {
                     embeds: [embed],
                 });
             } else {
-                let loadingScreen = [gif.peachLoadingScreen, gif.gomaLoadingScreen];
-                switch (userData && userData.preferences && userData.preferences.theme) {
-                    case 't01':
-                        loadingScreen = [gif.sunriseLoadingScreen, gif.seaLoadingScreen];
-                        break;
-                    case 't02':
-                        loadingScreen = [gif.pjumbenFirstLoadingScreen, gif.pjumbenSecondLoadingScreen];
-                        break;
-                    case 'halloween':
-                    case 't03':
-                        loadingScreen = [gif.halloweenLoadingScreen, gif.ghostLoadingScreen];
-                        break;
-                    case 'st01':
-                        loadingScreen = [gif.skyLoadingScreen, gif.birdLoadingScreen];
-                        break;
-                    case 'st02':
-                        loadingScreen = [gif.treeLoadingScreen, gif.leapLoadingScreen];
-                        break;
-                    default:
-                        break;
-                }
-
+                let loadingScreen = '';
                 const randomLoadingScreen = client.utils.getRandomElement(loadingScreen);
                 const embed = client.embed()
                     .setColor(color.main)
@@ -124,7 +75,6 @@ module.exports = class Profile extends Command {
                 const canvas = createCanvas(720, 400);
                 const context = canvas.getContext('2d');
                 const backgroundImage = await loadImage(await backgroundImages(targetUser.id, userData?.profile?.gender));
-                const stickerImage = await loadImage(userData?.profile?.gender === 'male' ? 'https://i.imgur.com/QVC2s9Q.png' : 'https://i.imgur.com/KGVDMub.png');
                 await drawBackground(context, backgroundImage);
                 await drawProfile(context, client, targetUser, userData, '', emoji, stickerImage);
 
@@ -136,72 +86,72 @@ module.exports = class Profile extends Command {
                     files: [attachment],
                 });
 
-                const emojiOptions = [
-                    emoji.social.facebook,
-                    emoji.social.instagram,
-                    emoji.social.tiktok,
-                ];
-
-                const emojiMap = {
-                    'facebook': emojiOptions[0]?.name || emojiOptions[0],
-                    'instagram': emojiOptions[1]?.name || emojiOptions[1],
-                    'tiktok': emojiOptions[2]?.name || emojiOptions[2],
-                };
-
-                for (const emoji of emojiOptions) {
-                    await loadingMessage.react(emoji);
-                }
-
-                const filter = (reaction, user) => {
-                    const reactionEmoji = reaction.emoji.toString();
-                    const validReactions = Object.values(emojiMap);
-                    return validReactions.includes(reactionEmoji) && user.id === ctx.author.id;
-                };
-
-                const collector = loadingMessage.createReactionCollector({ filter });
-
-                collector.on('collect', async (reaction) => {
-                    let responseMessage = '';
-                    const reactionEmoji = reaction.emoji.toString();
-                    const platform = Object.keys(emojiMap).find(key => emojiMap[key] === reactionEmoji);
-
-                    switch (platform) {
-                        case 'facebook':
-                            responseMessage = userData.social.facebook.name && userData.social.facebook.link
-                                ? `Here is the Facebook link for ${targetUser.displayName}: [${userData.social.facebook.name}](${userData.social.facebook.link})`
-                                : `${targetUser.displayName} has not set a Facebook link.`;
-                            break;
-                        case 'instagram':
-                            responseMessage = userData.social.instagram.name && userData.social.instagram.link
-                                ? `Here is the Instagram link for ${targetUser.displayName}: [${userData.social.instagram.name}](${userData.social.instagram.link})`
-                                : `${targetUser.displayName} has not set an Instagram link.`;
-                            break;
-                        case 'tiktok':
-                            responseMessage = userData.social.tiktok.name && userData.social.tiktok.link
-                                ? `Here is the TikTok link for ${targetUser.displayName}: [${userData.social.tiktok.name}](${userData.social.tiktok.link})`
-                                : `${targetUser.displayName} has not set a TikTok link.`;
-                            break;
-                    }
-
-                    if (responseMessage) {
-                        const embeds = client.embed()
-                            .setTitle(`${emoji.mainLeft} ${client.utils.formatCapitalize(platform)} Link for ${targetUser.displayName} ${emoji.mainRight}`)
-                            .setColor(color.main)
-                            .setDescription(responseMessage);
-                        const message = await ctx.sendMessage({ embeds: [embeds] });
-
-                        // Delete the message after 5 seconds
-                        setTimeout(() => {
-                            message.delete().catch(err => console.error('Failed to delete message:', err));
-                        }, 5000); // 5000 milliseconds = 5 seconds
-                    }
-                });
-
-                collector.on('end', (collected, reason) => {
-                    if (reason === 'time') {
-                        ctx.sendMessage('The reaction session has ended. Please use the command again to view the profile.');
-                    }
-                });
+                // const emojiOptions = [
+                //     emoji.social.facebook,
+                //     emoji.social.instagram,
+                //     emoji.social.tiktok,
+                // ];
+                //
+                // const emojiMap = {
+                //     'facebook': emojiOptions[0]?.name || emojiOptions[0],
+                //     'instagram': emojiOptions[1]?.name || emojiOptions[1],
+                //     'tiktok': emojiOptions[2]?.name || emojiOptions[2],
+                // };
+                //
+                // for (const emoji of emojiOptions) {
+                //     await loadingMessage.react(emoji);
+                // }
+                //
+                // const filter = (reaction, user) => {
+                //     const reactionEmoji = reaction.emoji.toString();
+                //     const validReactions = Object.values(emojiMap);
+                //     return validReactions.includes(reactionEmoji) && user.id === ctx.author.id;
+                // };
+                //
+                // const collector = loadingMessage.createReactionCollector({ filter });
+                //
+                // collector.on('collect', async (reaction) => {
+                //     let responseMessage = '';
+                //     const reactionEmoji = reaction.emoji.toString();
+                //     const platform = Object.keys(emojiMap).find(key => emojiMap[key] === reactionEmoji);
+                //
+                //     switch (platform) {
+                //         case 'facebook':
+                //             responseMessage = userData.social.facebook.name && userData.social.facebook.link
+                //                 ? `Here is the Facebook link for ${targetUser.displayName}: [${userData.social.facebook.name}](${userData.social.facebook.link})`
+                //                 : `${targetUser.displayName} has not set a Facebook link.`;
+                //             break;
+                //         case 'instagram':
+                //             responseMessage = userData.social.instagram.name && userData.social.instagram.link
+                //                 ? `Here is the Instagram link for ${targetUser.displayName}: [${userData.social.instagram.name}](${userData.social.instagram.link})`
+                //                 : `${targetUser.displayName} has not set an Instagram link.`;
+                //             break;
+                //         case 'tiktok':
+                //             responseMessage = userData.social.tiktok.name && userData.social.tiktok.link
+                //                 ? `Here is the TikTok link for ${targetUser.displayName}: [${userData.social.tiktok.name}](${userData.social.tiktok.link})`
+                //                 : `${targetUser.displayName} has not set a TikTok link.`;
+                //             break;
+                //     }
+                //
+                //     if (responseMessage) {
+                //         const embeds = client.embed()
+                //             .setTitle(`${emoji.mainLeft} ${client.utils.formatCapitalize(platform)} Link for ${targetUser.displayName} ${emoji.mainRight}`)
+                //             .setColor(color.main)
+                //             .setDescription(responseMessage);
+                //         const message = await ctx.sendMessage({ embeds: [embeds] });
+                //
+                //         // Delete the message after 5 seconds
+                //         setTimeout(() => {
+                //             message.delete().catch(err => console.error('Failed to delete message:', err));
+                //         }, 5000); // 5000 milliseconds = 5 seconds
+                //     }
+                // });
+                //
+                // collector.on('end', (collected, reason) => {
+                //     if (reason === 'time') {
+                //         ctx.sendMessage('The reaction session has ended. Please use the command again to view the profile.');
+                //     }
+                // });
             }
         } catch (error) {
             await loadingMessage?.edit({
@@ -276,8 +226,7 @@ async function drawProfile(context, client, ctx, user, userAvatarFrame, emoji, s
         const birthday = moment(user.profile.birthday, 'DD-MMM');
         const day = birthday.date();
         const month = birthday.month() + 1;
-        const zodiacSign = getZodiacSign(emoji.zodiac, day, month);
-        // Assuming emojiToImage returns a URL
+        const zodiacSign = client.utils.getZodiacSign(emoji.zodiac, day, month);
         const zodiacEmojiURL = client.utils.emojiToImage(zodiacSign.emoji);
 
         try {

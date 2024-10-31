@@ -98,7 +98,7 @@ The coin is flips ${emoji.coinFlip.flip}`)
         setTimeout(async function () {
 
             const resultEmbed = client.embed()
-                .setColor(win ? color.green : color.red)
+                .setColor(win ? color.success : color.danger)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${emoji.coin} choose **${
                     choice === 'p' ? 'peach' : 'goma'

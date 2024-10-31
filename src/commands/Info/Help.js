@@ -44,7 +44,7 @@ module.exports = class Help extends Command {
     const embed = client.embed();
     const prefix = client.config.prefix;
     const commands = client.commands.filter(cmd => cmd.category !== 'dev');
-    let categories = ['Actions', 'Economy', 'Inventory', 'Fun', 'Games', 'Gambling', 'Giveaways', 'Profile', 'Relationships', 'Social', 'Emotes', 'Utility', 'Info'];
+    let categories = ['Bank', 'Economy', 'Inventory', 'Fun', 'Games', 'Gambling', 'Giveaways', 'Profile', 'Relationships', 'Social', 'Utility', 'Info'];
 
     if (!args[0]) {
       const sortedCommands = {};
@@ -69,13 +69,14 @@ module.exports = class Help extends Command {
       for (const category in sortedCommands) {
         if (Object.prototype.hasOwnProperty.call(sortedCommands, category)) {
           const categoryCommands = sortedCommands[category];
-          const commandNames = categoryCommands.map(cmd => `\`${directoriesMessages[cmd.name]}\``).join(', ');
+          const commandNames = categoryCommands.map(cmd => `\`${client.utils.transformText(directoriesMessages[cmd.name] || cmd.name, 'bold')}\``).join(', ');
 
           helpEmbed.addFields([{
-            name: `${emoji.help[category.toLowerCase()]} ${categoriesMessages[category.toLowerCase()]}`,
+            name: `${emoji.help[category.toLowerCase()]} ${client.utils.transformText(categoriesMessages[category.toLowerCase()] || category, 'bold')}`,
             value: commandNames,
             inline: false,
           }]);
+
         }
       }
 
@@ -93,7 +94,7 @@ module.exports = class Help extends Command {
       const command = client.commands.get(args[0].toLowerCase());
       if (!command)
         return await ctx.sendMessage({
-          embeds: [client.embed().setColor(color.red).setDescription(`${helpMessages.commandNotFound} \`${args[0]}\``)],
+          embeds: [client.embed().setColor(color.danger).setDescription(`${helpMessages.commandNotFound} \`${args[0]}\``)],
         });
 
       const helpEmbed = embed

@@ -38,7 +38,7 @@ module.exports = class Balance extends Command {
                     .embed()
                     .setTitle(`${emoji.mainLeft} ${balanceMessages.title.replace('%{displayName}', ctx.author.displayName)} ${emoji.mainRight}`)
                     .setColor(color.main)
-                    .setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
+                    .setThumbnail(client.utils.emojiToImage(emoji.main))
                     .setDescription(
                         balanceMessages.description
                             .replace('%{coinEmote}', emoji.coin)
@@ -47,6 +47,10 @@ module.exports = class Balance extends Command {
                             .replace('%{bank}', client.utils.formatNumber(bank))
                     )
                     .setImage(gif.balanceBanner)
+                    .setFooter({
+                        text: generalMessages.requestedBy.replace('%{user}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                        iconURL: ctx.author.displayAvatarURL(),
+                    })
                 return ctx.sendMessage({embeds: [embed]});
             })
         } catch (error) {

@@ -31,7 +31,7 @@ module.exports = class Timeout extends Command {
 
         if (!mention) {
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription('Please mention a user to timeout.')],
+                embeds: [client.embed().setColor(color.danger).setDescription('Please mention a user to timeout.')],
             });
         }
 
@@ -43,7 +43,7 @@ module.exports = class Timeout extends Command {
         // Prevent applying timeout to a moderator or admin
         if (mention.permissions.has('ManageMessages')) {
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription('You cannot timeout a moderator or admin.')],
+                embeds: [client.embed().setColor(color.danger).setDescription('You cannot timeout a moderator or admin.')],
             });
         }
 
@@ -51,7 +51,7 @@ module.exports = class Timeout extends Command {
         const duration = args[1];
         if (!duration) {
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription('Please provide a duration (e.g., 5min, 10min).')],
+                embeds: [client.embed().setColor(color.danger).setDescription('Please provide a duration (e.g., 5min, 10min).')],
             });
         }
 
@@ -59,7 +59,7 @@ module.exports = class Timeout extends Command {
         const time = ms(duration);
         if (!time) {
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription('Invalid duration format. Example: 5min, 10min')],
+                embeds: [client.embed().setColor(color.danger).setDescription('Invalid duration format. Example: 5min, 10min')],
             });
         }
 
@@ -82,7 +82,7 @@ module.exports = class Timeout extends Command {
         if (user.verification.timeout.expiresAt && user.verification.timeout.expiresAt > now) {
             const remainingTime = Math.ceil((user.verification.timeout.expiresAt - now) / 1000 / 60); // Convert to minutes
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription(`User is already in timeout. Timeout ends in ${remainingTime} minute(s).`)],
+                embeds: [client.embed().setColor(color.danger).setDescription(`User is already in timeout. Timeout ends in ${remainingTime} minute(s).`)],
             });
         }
 
@@ -108,7 +108,7 @@ module.exports = class Timeout extends Command {
                 clearInterval(countdownInterval); // Clear the interval when the time is up
 
                 await initialEmbed.edit({
-                    embeds: [client.embed().setColor(color.green).setDescription(`${mention} is no longer in timeout.`)],
+                    embeds: [client.embed().setColor(color.success).setDescription(`${mention} is no longer in timeout.`)],
                 });
 
                 // Clear the timeout from the database after it expires
@@ -118,7 +118,7 @@ module.exports = class Timeout extends Command {
             } else {
                 // Update the initial message with the new remaining time
                 await initialEmbed.edit({
-                    embeds: [client.embed().setColor(color.red).setDescription(`User is in timeout. Timeout ends in ${newRemainingTime} minute(s).`)],
+                    embeds: [client.embed().setColor(color.danger).setDescription(`User is in timeout. Timeout ends in ${newRemainingTime} minute(s).`)],
                 });
             }
         }, 1000); // Update every minute

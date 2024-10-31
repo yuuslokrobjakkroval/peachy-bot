@@ -1,7 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { formatString, formatCapitalize } = require('../../utils/Utils.js');
-const { emojiButton } = require('../../functions/function');
 const gif = require('../../utils/Gif.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
 const Shops = [...ShopItems];
@@ -112,9 +111,9 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
     };
 
     const getButtonRow = (selectedItemIndex, items) => {
-        const homeButton = emojiButton('home', '🏠', 2);
-        const prevButton = emojiButton('prev_item', '⬅️', 2);
-        const nextButton = emojiButton('next_item', '➡️', 2);
+        const homeButton = client.utils.emojiButton('home', '🏠', 2);
+        const prevButton = client.utils.emojiButton('prev_item', '⬅️', 2);
+        const nextButton = client.utils.emojiButton('next_item', '➡️', 2);
 
         const filterButton = new StringSelectMenuBuilder()
             .setCustomId('category_select')

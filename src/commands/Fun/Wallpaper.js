@@ -1,7 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const Wallpapers = require('../../assets/json/wallpapers.json');  // Your wallpaper JSON data
-const { emojiButton } = require('../../functions/function');
+const Wallpapers = require('../../assets/json/wallpapers.json');
 
 const wallpaperCategories = [...new Set(Wallpapers.map(wallpaper => wallpaper.type))];  // Extract unique categories
 
@@ -82,8 +81,8 @@ async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCate
     };
 
     const getButtonRow = () => {
-        const prevButton = emojiButton('prev_item', '⬅️', 2);
-        const nextButton = emojiButton('next_item', '➡️', 2);
+        const prevButton = client.utils.emojiButton('prev_item', '⬅️', 2);
+        const nextButton = client.utils.emojiButton('next_item', '➡️', 2);
 
         const categoryOptions = wallpaperCategories
             .filter(cat => typeof cat === 'string')
@@ -128,7 +127,7 @@ async function paginateWallpapers(client, ctx, color, emoji, pages, selectedCate
 
         if (!selectedWallpaper) {
             console.error('Wallpaper not found at index:', selectedItemIndex);
-            return { embed: client.embed().setDescription(wallpaper.wallpaperNotFound).setColor(color.red) }; // Localized message
+            return { embed: client.embed().setDescription(wallpaper.wallpaperNotFound).setColor(color.danger) }; // Localized message
         }
 
         const embed = client.embed()

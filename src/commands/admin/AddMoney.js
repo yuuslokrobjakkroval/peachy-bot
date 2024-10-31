@@ -53,7 +53,7 @@ module.exports = class AddMoney extends Command {
             } else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(color.red).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
+                        client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
                     ],
                     // components: [
                     //     new ActionRowBuilder().addComponents(

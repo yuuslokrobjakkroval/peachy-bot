@@ -33,7 +33,7 @@ module.exports = class Register extends Command {
             return await ctx.sendMessage({
                 embeds: [
                     this.client.embed()
-                        .setColor(color.red)
+                        .setColor(color.danger)
                         .setTitle(registerMessages.titleAlreadyRegistered)
                         .setDescription(registerMessages.alreadyRegistered)
                 ],

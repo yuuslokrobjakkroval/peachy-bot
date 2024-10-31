@@ -26,7 +26,7 @@ module.exports = class BanUser extends Command {
     async run(client, ctx, args, color, emoji, language) {
         if (args.length < 2) {
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription('Please specify whether to `ban` or `unban`, and mention a user.')],
+                embeds: [client.embed().setColor(color.danger).setDescription('Please specify whether to `ban` or `unban`, and mention a user.')],
             });
         }
 
@@ -36,7 +36,7 @@ module.exports = class BanUser extends Command {
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[1]) || ctx.author;
 
         if (!mention) return await ctx.sendMessage({
-            embeds: [client.embed().setColor(color.red).setDescription('Please mention a valid user.')],
+            embeds: [client.embed().setColor(color.danger).setDescription('Please mention a valid user.')],
         });
 
         let user = await Users.findOne({ userId: mention.id });
@@ -59,7 +59,7 @@ module.exports = class BanUser extends Command {
         if (action === 'ban') {
             if (isBanned) {
                 return await ctx.sendMessage({
-                    embeds: [client.embed().setColor(color.red).setDescription(`${mention} is already banned.`)],
+                    embeds: [client.embed().setColor(color.danger).setDescription(`${mention} is already banned.`)],
                 });
             }
 
@@ -83,7 +83,7 @@ module.exports = class BanUser extends Command {
         } else if (action === 'unban') {
             if (!isBanned) {
                 return await ctx.sendMessage({
-                    embeds: [client.embed().setColor(color.red).setDescription(`${mention} is not banned.`)],
+                    embeds: [client.embed().setColor(color.danger).setDescription(`${mention} is not banned.`)],
                 });
             }
 
@@ -95,14 +95,14 @@ module.exports = class BanUser extends Command {
 
             const embed = client
                 .embed()
-                .setColor(color.green)
+                .setColor(color.success)
                 .setDescription(`${emoji.tick} Unbanned **${mention}**.`);
 
             return await ctx.sendMessage({ embeds: [embed] });
 
         } else {
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription('Invalid action. Please use `ban` or `unban`.')],
+                embeds: [client.embed().setColor(color.danger).setDescription('Invalid action. Please use `ban` or `unban`.')],
             });
         }
     }

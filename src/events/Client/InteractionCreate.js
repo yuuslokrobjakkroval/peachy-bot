@@ -54,7 +54,7 @@ module.exports = class InteractionCreate extends Event {
           return await interaction.message.send({
             embeds: [
               this.client.embed()
-                  .setColor(color.red)
+                  .setColor(color.danger)
                   .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
             ]
           });
@@ -147,7 +147,7 @@ module.exports = class InteractionCreate extends Event {
           if (channel && channel.isTextBased()) {
             const embed = this.client
                 .embed()
-                .setColor(this.client.config.color.green)
+                .setColor(this.client.config.color.success)
                 .setTitle(`Command - ${formatCapitalize(interaction.commandName)}`)
                 .setThumbnail(interaction.guild.iconURL({extension: 'jpeg'}))
                 .addFields([
@@ -195,7 +195,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('An error occurred: Giveaway data not found.'),
                 ],
                 ephemeral: true,
@@ -207,7 +207,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('This giveaway has already ended.'),
                 ],
                 ephemeral: true,
@@ -217,7 +217,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('This giveaway is currently paused.'),
                 ],
                 ephemeral: true,
@@ -352,7 +352,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('An error occurred: Giveaway data not found.'),
                 ],
                 ephemeral: true,
@@ -364,7 +364,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('This giveaway has already ended.'),
                 ],
                 ephemeral: true,
@@ -374,7 +374,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('This giveaway is currently paused.'),
                 ],
                 ephemeral: true,

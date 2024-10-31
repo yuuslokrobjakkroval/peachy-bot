@@ -1,6 +1,5 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user.js');
-const { checkCooldown, updateCooldown } = require('../../functions/function');
 const chance = require('chance').Chance();
 const moment = require('moment-timezone');
 const emojiImage = require("../../utils/Emoji");
@@ -66,14 +65,14 @@ module.exports = class Daily extends Command {
             const timeUntilNext5PM = moment.duration(next5PM.diff(now));
 
             // Check cooldown
-            const isCooldownExpired = await checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM);
+            const isCooldownExpired = await client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM);
             if (!isCooldownExpired) {
                 const duration = moment.duration(next5PM.diff(now));
                 const cooldownMessage = dailyMessages.cooldown.replace(
                     '%{time}',
                     `${Math.floor(duration.asHours())}hrs, ${Math.floor(duration.asMinutes()) % 60}mins, and ${Math.floor(duration.asSeconds()) % 60}secs`
                 );
-                const cooldownEmbed = client.embed().setColor(color.red).setDescription(cooldownMessage);
+                const cooldownEmbed = client.embed().setColor(color.danger).setDescription(cooldownMessage);
                 return await ctx.sendMessage({ embeds: [cooldownEmbed] });
             }
 
@@ -88,7 +87,7 @@ module.exports = class Daily extends Command {
                         'profile.xp': newExp,
                     }
                 }).exec(),
-                updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM)
+                client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM)
             ]);
 
             let bonusMessage = '';
