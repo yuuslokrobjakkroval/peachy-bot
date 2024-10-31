@@ -2,7 +2,7 @@ const { Command } = require('../../structures/index.js');
 const { formatString } = require('../../utils/Utils.js');
 const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
-const AllItems = ImportantItems.concat(...ShopItems.flatMap(shop => shop.inventory));
+const AllItems = ShopItems.flatMap(shop => shop.inventory).concat(ImportantItems);
 
 module.exports = class ShopInfo extends Command {
     constructor(client) {

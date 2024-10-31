@@ -8,14 +8,11 @@ const Utils = require('../utils/Utils.js');
 const { I18n } = require('@hammerhq/localization');
 const config = require('../config.js');
 const emojis = require('../emojis.js');
+
 const configPeach = require('../theme/Peach/config.js');
 const emojiPeach = require('../theme/Peach/emojis.js');
-
 const configGoma = require('../theme/Goma/config.js');
 const emojiGoma = require('../theme/Goma/emojis.js');
-
-const configPjum = require('../theme/Pjumben/config.js');
-const emojiPjum = require('../theme/Pjumben/emojis.js');
 
 const configOcean = require('../theme/OceanBreeze/config.js');
 const emojiOcean = require('../theme/OceanBreeze/emojis.js');
@@ -25,9 +22,6 @@ const emojiHalloween = require('../theme/Halloween/emojis.js');
 
 const configHalloweenNew = require('../theme/Halloween/configNew.js');
 const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
-
-const configInfancy = require('../theme/Infancy/config.js');
-const emojiInfancy = require('../theme/Infancy/emojis.js');
 
 const configHeaven = require('../theme/CelestialGrace/config.js');
 const emojiHeaven = require('../theme/CelestialGrace/emojis.js');
@@ -193,19 +187,11 @@ module.exports = class PeachyClient extends Client {
                         emoji = emojiOcean;
                         break;
                     case 't02':
-                        color = configPjum.color;
-                        emoji = emojiPjum;
-                        break;
-                    case 't03':
                     case 'halloween':
                         color = configHalloween.color;
                         emoji = emojiHalloween;
                         break;
-                    case 't04':
-                        color = configInfancy.color;
-                        emoji = emojiInfancy;
-                        break;
-                    case 't05':
+                    case 't03':
                         color = configHalloweenNew.color;
                         emoji = emojiHalloweenNew;
                         break;
