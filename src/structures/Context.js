@@ -2,6 +2,7 @@ const { ChatInputCommandInteraction, Message } = require('discord.js');
 
 module.exports = class Context {
     constructor(ctx, args) {
+        this.channel = null;
         this.ctx = ctx;
         this.interaction = this.ctx instanceof ChatInputCommandInteraction ? this.ctx : null;
         this.message = this.ctx instanceof Message ? this.ctx : null;
@@ -10,6 +11,7 @@ module.exports = class Context {
         this.channelId = ctx.channelId;
         this.client = ctx.client;
         this.author = ctx instanceof Message ? ctx.author : ctx.user;
+        this.channel = ctx.channel;
         this.guild = ctx.guild;
         this.createdAt = ctx.createdAt;
         this.createdTimestamp = ctx.createdTimestamp;
@@ -22,68 +24,56 @@ module.exports = class Context {
     }
 
     setArgs(args) {
-        this.args = this.isInteraction ? args.map(arg => arg.value) : args;
+        if (this.isInteraction) {
+            this.args = args.map(arg => arg.value);
+        } else {
+            this.args = args;
+        }
     }
 
-    sendMessage(content) {
+    async sendMessage(content) {
         if (this.isInteraction) {
-            this.msg = this.interaction.reply({ content, fetchReply: true })
-                .then(response => this.msg = response)
-                .catch(err => console.error("Error sending interaction reply:", err));
-        } else if (this.message) {
-            this.msg = this.message.channel.send(content)
-                .then(response => this.msg = response)
-                .catch(err => console.error("Error sending message:", err));
+            this.msg = await this.interaction.reply(content);
+            return this.msg;
+        } else {
+            this.msg = await this.message.channel.send(content);
+            return this.msg;
         }
-        return this.msg;
     }
 
-    editMessage(content) {
+    async editMessage(content) {
         if (this.isInteraction) {
-            if (this.interaction.deferred || this.interaction.replied) {
-                this.msg = this.interaction.editReply(content)
-                    .then(response => this.msg = response)
-                    .catch(err => console.error("Error editing interaction reply:", err));
-            }
-        } else if (this.msg && typeof this.msg.edit === 'function') {
-            this.msg = this.msg.edit(content)
-                .then(response => this.msg = response)
-                .catch(err => console.error("Error editing message:", err));
+            if (this.msg) this.msg = await this.interaction.editReply(content);
+            return this.msg;
+        } else {
+            if (this.msg) this.msg = await this.msg.edit(content);
+            return this.msg;
         }
-        return this.msg;
     }
 
-    sendDeferMessage(content) {
+    async sendDeferMessage(content) {
         if (this.isInteraction) {
-            if (!this.interaction.deferred) {
-                this.interaction.deferReply({ fetchReply: true })
-                    .then(() => this.interaction.editReply(content)
-                        .then(response => this.msg = response)
-                        .catch(err => console.error("Error editing deferred interaction reply:", err)))
-                    .catch(err => console.error("Error deferring interaction reply:", err));
-            }
-        } else if (this.message) {
-            this.msg = this.message.channel.send(content)
-                .then(response => this.msg = response)
-                .catch(err => console.error("Error sending deferred message:", err));
+            this.msg = await this.interaction.deferReply({ fetchReply: true });
+            return this.msg;
+        } else {
+            this.msg = await this.message.channel.send(content);
+            return this.msg;
         }
-        return this.msg;
     }
 
-    sendFollowUp(content) {
+    async sendFollowUp(content) {
         if (this.isInteraction) {
-            this.msg = this.interaction.followUp(content)
-                .then(response => this.msg = response)
-                .catch(err => console.error("Error sending follow-up interaction reply:", err));
-        } else if (this.message) {
-            this.msg = this.message.channel.send(content)
-                .then(response => this.msg = response)
-                .catch(err => console.error("Error sending follow-up message:", err));
+            await this.interaction.followUp(content);
+        } else {
+            this.msg = await this.message.channel.send(content);
         }
-        return this.msg;
     }
 
     get deferred() {
-        return this.isInteraction ? this.interaction.deferred : !!this.msg;
+        if (this.isInteraction) {
+            return this.interaction.deferred;
+        }
+        return !!this.msg;
     }
 }
+

@@ -60,7 +60,6 @@ const cardsf = [
     '<a:qdf:1281795921117708299>',
     '<a:kdf:1281795928159944899>',
 ];
-const config = require('../config');
 const random = require('random-number-csprng');
 const DEALER = '<:DEALERBLACKJACK:1283852034784886885>';
 exports.randCard = randCard;
