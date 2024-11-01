@@ -11,7 +11,6 @@ const emojis = require('../emojis.js');
 
 const configPeach = require('../theme/Peach/config.js');
 const emojiPeach = require('../theme/Peach/emojis.js');
-
 const configGoma = require('../theme/Goma/config.js');
 const emojiGoma = require('../theme/Goma/emojis.js');
 

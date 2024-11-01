@@ -92,9 +92,6 @@ module.exports = {
         seven: '<:SILVERRANK:1282976779547709483>',
         eight: '<:BRONZERANK:1282977459658035210>',
     },
-
-    
-    
     gender: {
         male: '<:MALE:1281840630833741874>',
         female: '<:FEMALE:1281840643634626662>',
