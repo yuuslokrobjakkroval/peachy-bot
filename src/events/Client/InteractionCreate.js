@@ -1,3 +1,4 @@
+const { Context, Event } = require('../../structures/index.js');
 const {
   Collection,
   CommandInteraction,
@@ -8,11 +9,9 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require('discord.js');
-const { Context, Event } = require('../../structures/index.js');
-const GiveawaySchema = require('../../schemas/giveaway.js');
-const { endGiveaway } = require('../../utils/Utils.js');
-const Users = require("../../schemas/user");
-const {formatCapitalize} = require("../../utils/Utils");
+const GiveawaySchema = require('../../schemas/giveaway');
+const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
+const { formatCapitalize, endGiveaway, endGiveawayShopItem } = require('../../utils/Utils.js');
 
 module.exports = class InteractionCreate extends Event {
   constructor(client, file) {
@@ -55,7 +54,7 @@ module.exports = class InteractionCreate extends Event {
           return await interaction.message.send({
             embeds: [
               this.client.embed()
-                  .setColor(color.red)
+                  .setColor(color.danger)
                   .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
             ]
           });
@@ -148,7 +147,7 @@ module.exports = class InteractionCreate extends Event {
           if (channel && channel.isTextBased()) {
             const embed = this.client
                 .embed()
-                .setColor(this.client.config.color.green)
+                .setColor(this.client.config.color.success)
                 .setTitle(`Command - ${formatCapitalize(interaction.commandName)}`)
                 .setThumbnail(interaction.guild.iconURL({extension: 'jpeg'}))
                 .addFields([
@@ -196,7 +195,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('An error occurred: Giveaway data not found.'),
                 ],
                 ephemeral: true,
@@ -208,7 +207,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('This giveaway has already ended.'),
                 ],
                 ephemeral: true,
@@ -218,7 +217,7 @@ module.exports = class InteractionCreate extends Event {
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
-                      .setColor(color.red)
+                      .setColor(color.danger)
                       .setDescription('This giveaway is currently paused.'),
                 ],
                 ephemeral: true,
@@ -236,7 +235,7 @@ module.exports = class InteractionCreate extends Event {
                       new ButtonBuilder()
                           .setCustomId('leave-giveaway')
                           .setLabel('Leave Giveaway')
-                          .setStyle(3)
+                          .setStyle(ButtonStyle.Danger)
                   ),
                 ],
                 ephemeral: true,
@@ -319,23 +318,182 @@ module.exports = class InteractionCreate extends Event {
             }
 
             const participants = await Promise.all(data.entered.map(async (id, index) => {
-              let member = interaction.guild.members.cache.get(id);
-              if (!member) {
-                try {
-                  member = await interaction.guild.members.fetch(id);
-                } catch (err) {
-                  console.error(`Unable to fetch member with ID: ${id}`, err);
-                }
+              let member;
+              try {
+                member = interaction.guild.members.cache.get(id) || await interaction.guild.members.fetch(id);
+                if (!member) throw new Error("Member not found");
+              } catch (err) {
+                console.error(`Unable to fetch member with ID: ${id}`, err);
+                return null; // Skip this participant if they are not found
               }
               return `${index + 1}. <@${id}> (**1** entry)`;
             }));
 
+            const validParticipants = participants.filter(participant => participant !== null);
+
             const embed = this.client.embed()
                 .setTitle('Giveaway Participants')
                 .setColor(color.main)
-                .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.prize)}**:\n\n${participants.join('\n')}\n\nTotal Participants: **${data.entered.length}**`);
+                .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.prize)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
 
-            await interaction.reply({embeds: [embed], ephemeral: true});
+            await interaction.reply({ embeds: [embed], ephemeral: true });
+            break;
+          }
+
+          case 'giveawayshopitem-join': {
+            const data = await GiveawayShopItemSchema.findOne({
+              guildId: interaction.guild.id,
+              channelId: interaction.channel.id,
+              messageId: interaction.message.id,
+            });
+
+            if (!data) {
+              return await interaction.reply({
+                embeds: [
+                  this.client.embed()
+                      .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
+                      .setColor(color.danger)
+                      .setDescription('An error occurred: Giveaway data not found.'),
+                ],
+                ephemeral: true,
+              });
+            } else if (data.endTime * 1000 < Date.now()) {
+              return endGiveawayShopItem(this.client, color, emoji, interaction.message);
+            } else if (data.ended) {
+              return await interaction.reply({
+                embeds: [
+                  this.client.embed()
+                      .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
+                      .setColor(color.danger)
+                      .setDescription('This giveaway has already ended.'),
+                ],
+                ephemeral: true,
+              });
+            } else if (data.paused) {
+              return await interaction.reply({
+                embeds: [
+                  this.client.embed()
+                      .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
+                      .setColor(color.danger)
+                      .setDescription('This giveaway is currently paused.'),
+                ],
+                ephemeral: true,
+              });
+            } else if (data.entered.includes(interaction.user.id)) {
+              return await interaction.reply({
+                embeds: [
+                  this.client.embed()
+                      .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
+                      .setColor(color.pink)
+                      .setDescription('You are already entered in this giveaway. Would you like to leave?'),
+                ],
+                components: [
+                  new ActionRowBuilder().addComponents(
+                      new ButtonBuilder()
+                          .setCustomId('leave-giveaway')
+                          .setLabel('Leave Giveaway')
+                          .setStyle(ButtonStyle.Danger)
+                  ),
+                ],
+                ephemeral: true,
+              });
+
+              const filter = int => int.isButton() && int.user.id === interaction.user.id;
+              await interaction.channel
+                  .awaitMessageComponent({filter, time: 30000})
+                  .then(async int => {
+                    if (int.customId === 'leave-giveaway') {
+                      data.entered = data.entered.filter(id => id !== interaction.user.id);
+                      await data.save();
+
+                      await int.reply({
+                        embeds: [
+                          this.client.embed()
+                              .setAuthor({
+                                name: this.client.user.username,
+                                iconURL: this.client.user.displayAvatarURL()
+                              })
+                              .setColor(color.main)
+                              .setDescription('You have successfully left the giveaway.'),
+                        ],
+                        ephemeral: true,
+                      });
+                    } else {
+                      int.deferUpdate();
+                    }
+                  })
+                  .catch(() => {
+                    console.log('No interaction collected or error occurred.');
+                  });
+            } else {
+              data.entered.push(interaction.user.id);
+              await data.save();
+
+              await interaction.reply({
+                embeds: [
+                  this.client.embed()
+                      .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
+                      .setColor(color.main)
+                      .setDescription('You have successfully joined the giveaway.'),
+                ],
+                ephemeral: true,
+              });
+
+              const newLabel = data.entered.length;
+              await interaction.message.edit({
+                components: [
+                  new ActionRowBuilder().addComponents(
+                      new ButtonBuilder()
+                          .setCustomId('giveawayshopitem-join')
+                          .setLabel(`${newLabel}`)
+                          .setEmoji(`${emoji.main}`)
+                          .setStyle(3),
+                      new ButtonBuilder()
+                          .setCustomId('giveawayshopitem-participants')
+                          .setEmoji(emoji.userList)
+                          .setLabel('Participants')
+                          .setStyle(1)
+                  ),
+                ],
+              });
+            }
+            break;
+          }
+
+          case 'giveawayshopitem-participants': {
+            const data = await GiveawayShopItemSchema.findOne({
+              guildId: interaction.guild.id,
+              channelId: interaction.channel.id,
+              messageId: interaction.message.id,
+            });
+
+            if (!data.entered.length) {
+              return await interaction.reply({
+                content: 'No participants found.',
+                ephemeral: true,
+              });
+            }
+
+            const participants = await Promise.all(data.entered.map(async (id, index) => {
+              let member;
+              try {
+                member = interaction.guild.members.cache.get(id) || await interaction.guild.members.fetch(id);
+                if (!member) throw new Error("Member not found");
+              } catch (err) {
+                console.error(`Unable to fetch member with ID: ${id}`, err);
+                return null; // Skip this participant if they are not found
+              }
+              return `${index + 1}. <@${id}> (**1** entry)`;
+            }));
+
+            const validParticipants = participants.filter(participant => participant !== null);
+
+            const embed = this.client.embed()
+                .setTitle('Giveaway Shop Item Participants')
+                .setColor(color.main)
+                .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.amount)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
+
+            await interaction.reply({ embeds: [embed], ephemeral: true });
             break;
           }
 
