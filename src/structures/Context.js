@@ -1,6 +1,6 @@
 const { ChatInputCommandInteraction, Message } = require('discord.js');
 
-class Context {
+module.exports = class Context {
     constructor(ctx, args) {
         this.channel = null;
         this.ctx = ctx;
@@ -73,10 +73,7 @@ class Context {
         if (this.isInteraction) {
             return this.interaction.deferred;
         }
-        if (this.msg) return true;
-        return false;
+        return !!this.msg;
     }
 }
-
-module.exports = Context;
 

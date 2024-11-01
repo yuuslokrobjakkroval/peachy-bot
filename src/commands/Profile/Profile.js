@@ -3,39 +3,36 @@ const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const { formatUsername, splitToSpace, formatUpperCase } = require('../../utils/Utils');
 const Users = require('../../schemas/user');
-const { getZodiacSign } = require('../../functions/function');
 const gif = require('../../utils/Gif');
 const moment = require("moment");
-const configOcean = require("../../theme/OceanBreeze/config");
-const emojiOcean = require("../../theme/OceanBreeze/emojis");
 
 GlobalFonts.registerFromPath('./fonts/00357 Regular.ttf', 'Name');
 GlobalFonts.registerFromPath('./fonts/EmOne-SemiBold.ttf', 'EmOne-SemiBold');
 GlobalFonts.registerFromPath('./fonts/EmOne-SemiBoldItalic.ttf', 'EmOne-SemiBoldItalic');
 
 async function backgroundImages(userId, gender) {
-    switch (userId) {
-        case '966688007493140591':
-            return gif.ownerBackgroundImage;
-        case '946079190971732041':
-            return gif.babeOwnerBackgroundImage;
-        case '1279092605514285157':
-            return gif.adminBackgroundImage;
-        case '445540206763048961':
-            return gif.worstLessBackgroundImage;
-        case '1221843494973341758':
-            return gif.snaBackgroundImage;
-        case '1109137454591660032':
-            return gif.akitoBackgroundImage;
-        case '1266535973810868307':
-            return gif.pyyyBackgroundImage;
-        case '1147538170162974852':
-            return gif.evilBackgroundImage;
-        case '1248293110388228097':
-            return gif.cucumberBackgroundImage;
-        default:
-            return gender === 'male' ? gif.maleBackgroundImage : gif.femaleBackgroundImage;
-    }
+    // switch (userId) {
+    //     case '966688007493140591':
+    //         return gif.ownerBackgroundImage;
+    //     case '946079190971732041':
+    //         return gif.babeOwnerBackgroundImage;
+    //     case '1279092605514285157':
+    //         return gif.adminBackgroundImage;
+    //     case '445540206763048961':
+    //         return gif.worstLessBackgroundImage;
+    //     case '1221843494973341758':
+    //         return gif.snaBackgroundImage;
+    //     case '1109137454591660032':
+    //         return gif.akitoBackgroundImage;
+    //     case '1266535973810868307':
+    //         return gif.pyyyBackgroundImage;
+    //     case '1147538170162974852':
+    //         return gif.evilBackgroundImage;
+    //     case '1248293110388228097':
+    //         return gif.cucumberBackgroundImage;
+    //     default:
+    //         return gender === 'male' ? gif.maleBackgroundImage : gif.femaleBackgroundImage;
+    // }
 }
 
 module.exports = class Profile extends Command {
@@ -87,34 +84,34 @@ module.exports = class Profile extends Command {
                     embeds: [embed],
                 });
             } else {
-                let loadingScreen = [gif.peachLoadingScreen, gif.gomaLoadingScreen];
-                switch (userData && userData.preferences && userData.preferences.theme) {
-                    case 't01':
-                        loadingScreen = [gif.sunriseLoadingScreen, gif.seaLoadingScreen];
-                        break;
-                    case 't02':
-                        loadingScreen = [gif.pjumbenFirstLoadingScreen, gif.pjumbenSecondLoadingScreen];
-                        break;
-                    case 'halloween':
-                    case 't03':
-                        loadingScreen = [gif.halloweenLoadingScreen, gif.ghostLoadingScreen];
-                        break;
-                    case 'st01':
-                        loadingScreen = [gif.skyLoadingScreen, gif.birdLoadingScreen];
-                        break;
-                    case 'st02':
-                        loadingScreen = [gif.treeLoadingScreen, gif.leapLoadingScreen];
-                        break;
-                    default:
-                        break;
-                }
+                // let loadingScreen = [gif.peachLoadingScreen, gif.gomaLoadingScreen];
+                // switch (userData && userData.preferences && userData.preferences.theme) {
+                //     case 't01':
+                //         loadingScreen = [gif.sunriseLoadingScreen, gif.seaLoadingScreen];
+                //         break;
+                //     case 't02':
+                //         loadingScreen = [gif.pjumbenFirstLoadingScreen, gif.pjumbenSecondLoadingScreen];
+                //         break;
+                //     case 'halloween':
+                //     case 't03':
+                //         loadingScreen = [gif.halloweenLoadingScreen, gif.ghostLoadingScreen];
+                //         break;
+                //     case 'st01':
+                //         loadingScreen = [gif.skyLoadingScreen, gif.birdLoadingScreen];
+                //         break;
+                //     case 'st02':
+                //         loadingScreen = [gif.treeLoadingScreen, gif.leapLoadingScreen];
+                //         break;
+                //     default:
+                //         break;
+                // }
 
-                const randomLoadingScreen = client.utils.getRandomElement(loadingScreen);
+                // const randomLoadingScreen = client.utils.getRandomElement(loadingScreen);
                 const embed = client.embed()
                     .setColor(color.main)
                     .setTitle(`**${emoji.mainLeft} 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 ${emoji.mainRight}**`)
                     .setDescription('**Generating your profile...**')
-                    .setImage(randomLoadingScreen);
+                    .setImage('https://i.imgur.com/kYXE4No.gif');
                 loadingMessage = await ctx.sendDeferMessage({
                     embeds: [embed],
                 });

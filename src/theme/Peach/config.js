@@ -10,8 +10,9 @@ const logChannelGambling = '1280343485731442784';
 const logChannelBalance = '1278728739760640093';
 const logChannelShop = '1287322335724044350';
 const logChannelUtility = '1293964183913758790';
+const logChannelGiveaways = '1299316476083441675';
 
-const logChannelId = [logChannelAll, logChannelGame, logChannelGambling, logChannelBalance, logChannelShop, logChannelUtility]
+const logChannelId = [logChannelAll, logChannelGame, logChannelGambling, logChannelBalance, logChannelShop, logChannelUtility, logChannelGiveaways]
 
 const birthdayPeachyChannelId = '1272074580797952116';
 
@@ -26,7 +27,8 @@ module.exports = {
     logChannelId,
     birthdayChannelId,
     owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
-    color: { red: 0xFF0000, green: 0x00FF00, blue: 0xFFB0F2, pink: 0xE3A1AD, orange: 0xFFA500, main: 0x8BD3DD, none: 0x2B2D31 },
+    
+    color: { danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x8BD3DD, none: 0x2B2D31 },
     database: process.env.DATABASE_URL,
     botStatus: 'online',
     botActivityType: 4,
@@ -38,7 +40,7 @@ module.exports = {
     },
     links: {
         banner: 'https://i.imgur.com/kYXE4No.gif',
-        support: 'https://discord.gg/PPuhSbgF6d',
+        support: 'https://discord.gg/yTfqgN3Znc',
         invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&integration_type=0&scope=bot+applications.commands`,
         vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
         website: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,

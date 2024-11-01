@@ -25,11 +25,11 @@ module.exports = class GuildInfo extends Command {
         });
     }
 
-    async run(client, ctx, args) {
+    async run(client, ctx, args, color, emoji, language) {
         // Fetch the guild from the cache based on the provided guild ID
         const guild = this.client.guilds.cache.get(args[0]);
         if (!guild) {
-            return await ctx.sendMessage('Guild not found.');
+            return client.utils.sendErrorMessage(client, ctx,'Guild not found.', color);
         }
 
         // Fetch the guild owner
@@ -46,17 +46,17 @@ module.exports = class GuildInfo extends Command {
         if (!channel) {
             channel = guild.channels.cache.find(ch => ch.type === ChannelType.GuildVoice);
             if (!channel) {
-                return await ctx.sendMessage('No suitable channels found to create an invite link.');
+                return client.utils.sendErrorMessage(client, ctx, 'No suitable channels found to create an invite link.', color);
             }
         }
 
         // Check if the bot has permission to create an invite link in the channel
         if (!channel?.permissionsFor(channel.guild.members.me).has([PermissionFlagsBits.CreateInstantInvite])) {
-            return await ctx.sendMessage("Sorry, I don't have permission to create an invite link in this channel.");
+            return client.utils.sendErrorMessage(client, ctx, "Sorry, I don't have permission to create an invite link in this channel.", color);
         }
 
         // Create an invite link with no expiration and a maximum of 5 uses
-        let invite = await channel.createInvite({ maxAge: 0, maxUses: 5, reason: `Requested by Miku Dev` });
+        let invite = await channel.createInvite({ maxAge: 0, maxUses: 5, reason: `Requested by KYUU` });
         let inviteLink = invite?.url || `https://discord.gg/${invite?.code}`;
 
         // Create and send an embed with guild information and invite link

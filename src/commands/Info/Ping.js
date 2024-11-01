@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const { connect, connection } = require('mongoose');
 
 module.exports = class Ping extends Command {
   constructor(client) {
@@ -33,6 +34,13 @@ module.exports = class Ping extends Command {
     await ctx.sendDeferMessage("Pinging...");
     let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
 
+    const dbPing = async () => {
+      const currentNano = process.hrtime();
+      await (require('mongoose')).connection.db.command({ ping: 1 });
+      const time = process.hrtime(currentNano);
+      return Math.round((time[0] * 1e9 + time[1]) * 1e-6);
+    };
+
     const embed = client
         .embed()
         .setTitle(`**${emoji.mainLeft} 𝐏𝐎𝐍𝐆 ${emoji.mainRight}**`)
@@ -40,13 +48,18 @@ module.exports = class Ping extends Command {
         .setThumbnail(ctx.author.displayAvatarURL())
         .addFields([
           {
-            name: `𝐁𝐎𝐓 ${emoji.ping}`,
+            name: `${client.utils.transformText('BOT', 'bold') }`,
             value: `\`\`\`ini\n[ ${randomNumber}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `𝐀𝐏𝐈 ${emoji.ping}`,
+            name: `${client.utils.transformText('API', 'bold') }`,
             value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
+            inline: true,
+          },
+          {
+            name: `${client.utils.transformText('DB', 'bold') }`,
+            value: `\`\`\`ini\n[ ${await dbPing()}ms ]\n\`\`\``,
             inline: true,
           },
         ])

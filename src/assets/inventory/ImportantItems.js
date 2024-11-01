@@ -1,7 +1,7 @@
 const emoji = require('../../utils/Emoji');
 module.exports = [
     {
-        id: 'heartMilk',
+        id: 'm01',
         name: 'Heart Milk',
         description: 'Sell Heart Milk to get 1 coin.',
         type: 'milk',
@@ -16,7 +16,7 @@ module.exports = [
         price: { buy: 1e2, sell: 1 },
     },
     {
-        id: 'peachMilk',
+        id: 'm02',
         name: 'Peach Milk',
         description: 'Sell Peach Milk to get 100 coins.',
         type: 'milk',
@@ -31,7 +31,7 @@ module.exports = [
         price: { buy: 1e3, sell: 1e2 },
     },
     {
-        id: 'grapeMilk',
+        id: 'm03',
         name: 'Grape Milk',
         description: 'Sell Grape Milk to get 1k coins.',
         type: 'milk',
@@ -41,12 +41,12 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.heartMilk,
+        emoji: emoji.grapeMilk,
         available: ['sell'],
         price: { buy: 5e3, sell: 1e3 },
     },
     {
-        id: 'bananaMilk',
+        id: 'm04',
         name: 'Banana Milk',
         description: 'Sell Peach Milk to get 5k coins.',
         type: 'milk',
@@ -56,13 +56,13 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.peachMilk,
+        emoji: emoji.bananaMilk,
         available: ['sell'],
         price: { buy: 1e4, sell: 5e3 },
     },
     {
-        id: 'blueBerryMilk',
-        name: 'BlueBerry Milk',
+        id: 'm05',
+        name: 'Blueberry Milk',
         description: 'Sell BlueBerry Milk to get 10k coins.',
         type: 'milk',
         able: {
@@ -71,13 +71,13 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.heartMilk,
+        emoji: emoji.blueBerryMilk,
         available: ['sell'],
         price: { buy: 25e4, sell: 1e4 },
     },
     {
-        id: 'strawBerryMilk',
-        name: 'StrawBerry Milk',
+        id: 'm06',
+        name: 'Strawberry Milk',
         description: 'Sell StrawBerry Milk to get 25k coins.',
         type: 'milk',
         able: {
@@ -91,7 +91,7 @@ module.exports = [
         price: { buy: 5e5, sell: 25e4 },
     },
     {
-        id: 'chocolateMilk',
+        id: 'm07',
         name: 'Chocolate Milk',
         description: 'Sell Chocolate Milk to get 50k coins.',
         type: 'milk',
@@ -106,8 +106,8 @@ module.exports = [
         price: { buy: 75e4, sell: 5e5 },
     },
     {
-        id: 'rainBowMilk',
-        name: 'RainBow Milk',
+        id: 'm08',
+        name: 'Rainbow Milk',
         description: 'Sell RainBow Milk to get 75k coins.',
         type: 'milk',
         able: {
@@ -116,12 +116,12 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.orangeMilk,
+        emoji: emoji.rainBowMilk,
         available: ['sell'],
         price: { buy: 1e5, sell: 75e4 },
     },
     {
-        id: 'orangeMilk',
+        id: 'm09',
         name: 'Orange Milk',
         description: 'Sell Orange Milk to get 100k coins.',
         type: 'milk',
@@ -136,9 +136,9 @@ module.exports = [
         price: { buy: 2e5, sell: 1e6 },
     },
     {
-        id: 'waterMelonMilk',
-        name: 'WaterMelon Milk',
-        description: 'Sell WaterMelon Milk to get 200k coins.',
+        id: 'm10',
+        name: 'Watermelon Milk',
+        description: 'Sell Watermelon Milk to get 200k coins.',
         type: 'milk',
         able: {
             use: false,
@@ -151,7 +151,7 @@ module.exports = [
         price: { buy: 3e5, sell: 2e5 },
     },
     {
-        id: 'cloudMilk',
+        id: 'm11',
         name: 'Cloud Milk',
         description: 'Sell Cloud Milk to get 300k coins.',
         type: 'milk',
@@ -166,7 +166,7 @@ module.exports = [
         price: { buy: 4e5, sell: 3e5 },
     },
     {
-        id: 'cherryMilk',
+        id: 'm12',
         name: 'Cherry Milk',
         description: 'Sell Cherry Milk to get 400k coins.',
         type: 'milk',
@@ -181,7 +181,7 @@ module.exports = [
         price: { buy: 5e5, sell: 4e5 },
     },
     {
-        id: 'burgerMilk',
+        id: 'm13',
         name: 'Burger Milk',
         description: 'Sell Burger Milk to get 500k coins.',
         type: 'milk',
@@ -196,7 +196,7 @@ module.exports = [
         price: { buy: 6e5, sell: 5e5 },
     },
     {
-        id: 'pearMilk',
+        id: 'm14',
         name: 'Pear Milk',
         description: 'Sell Pear Milk to get 600k coins.',
         type: 'milk',
@@ -211,7 +211,7 @@ module.exports = [
         price: { buy: 7e5, sell: 6e5 },
     },
     {
-        id: 'cakeMilk',
+        id: 'm15',
         name: 'Cake Milk',
         description: 'Sell Cake Milk to get 700k coins.',
         type: 'milk',
@@ -226,7 +226,7 @@ module.exports = [
         price: { buy: 8e5, sell: 7e5 },
     },
     {
-        id: 'bluePeachMilk',
+        id: 'm16',
         name: 'Blue Peach Milk',
         description: 'Sell Blue Peach Milk to get 800k coins.',
         type: 'milk',
@@ -236,12 +236,12 @@ module.exports = [
             multiple: false,
         },
         quantity: 1,
-        emoji: emoji.cakeMilk,
+        emoji: emoji.bluePeachMilk,
         available: ['sell'],
         price: { buy: 9e5, sell: 8e5 },
     },
     {
-        id: 'kokoMilk',
+        id: 'm17',
         name: 'Koko Milk',
         description: 'Sell KOKO Milk to get 900k coins.',
         type: 'milk',
@@ -256,7 +256,7 @@ module.exports = [
         price: { buy: 1e6, sell: 9e5 },
     },
     {
-        id: 'cutieMilk',
+        id: 'm18',
         name: 'Cutie Milk',
         description: 'Sell Cutie Milk to get 1M coins.',
         type: 'milk',
@@ -271,7 +271,7 @@ module.exports = [
         price: { buy: 11e5, sell: 1e6 },
     },
     {
-        id: 'banana',
+        id: 'sm01',
         name: 'Banana Milk Tea',
         description: 'Sell Banana Milk Tea to get coin.',
         type: 'milk',
@@ -286,7 +286,7 @@ module.exports = [
         price: { buy: 15e5, sell: 1e6 },
     },
     {
-        id: 'avocado',
+        id: 'sm02',
         name: 'Avocado Milk Tea',
         description: 'Sell Avocado Milk Tea to get coin.',
         type: 'milk',
@@ -301,7 +301,7 @@ module.exports = [
         price: { buy: 25e5, sell: 2e6 },
     },
     {
-        id: 'strawberry',
+        id: 'sm03',
         name: 'Strawberry Milk Tea',
         description: 'Sell Strawberry Milk Tea to get coin.',
         type: 'milk',
@@ -316,7 +316,7 @@ module.exports = [
         price: { buy: 35e6, sell: 3e6 },
     },
     {
-        id: 'peach',
+        id: 'sm04',
         name: 'Peach Milk Tea',
         description: 'Sell Peach Milk Tea to get coin.',
         type: 'milk',
@@ -329,37 +329,5 @@ module.exports = [
         emoji: emoji.peachy,
         available: ['sell'],
         price: { buy: 55e5, sell: 5e6 },
-    },
-    {
-        id: 'st01',
-        name: 'Celestial Grace',
-        description: 'A divine theme that bathes your embed in heavenly whites and golds, with ethereal emojis to match.',
-        type: 'theme',
-        able: {
-            use: true,
-            gift: false,
-            multiple: false,
-        },
-        quantity: 1,
-        emoji: emoji.heaven,
-        available: ['use'],
-        price: { buy: 2e7, sell: 1e7 },
-        limit: 30,
-    },
-    {
-        id: 'st02',
-        name: 'Sakura Serenity',
-        description: 'Immerse your embed in the soft, tranquil beauty of cherry blossoms with delicate pinks and gentle whites. Embrace a peaceful atmosphere with serene sakura emojis to enhance your design.',
-        type: 'theme',
-        able: {
-            use: true,
-            gift: false,
-            multiple: false,
-        },
-        quantity: 1,
-        emoji: emoji.sakura,
-        available: ['use'],
-        price: { buy: 2e7, sell: 1e7 },
-        limit: 30,
     },
 ];

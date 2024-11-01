@@ -36,7 +36,7 @@ module.exports = class ReAutopay extends Command {
         if (!messageId) {
             return await this.sendReply(ctx, {
                 embeds: [
-                    client.embed().setColor(color.red)
+                    client.embed().setColor(color.danger)
                         .setDescription('Please provide a valid giveaway message ID.'),
                 ],
             });
@@ -48,14 +48,14 @@ module.exports = class ReAutopay extends Command {
             if (!giveaway) {
                 return await this.sendReply(ctx, {
                     embeds: [
-                        client.embed().setColor(color.red)
+                        client.embed().setColor(color.danger)
                             .setDescription(`No giveaway found with message ID: ${messageId}`),
                     ],
                 });
             } else if (giveaway.retryAutopay) {
                 const message = await this.sendReply(ctx, {
                     embeds: [
-                        client.embed().setColor(color.red)
+                        client.embed().setColor(color.danger)
                             .setDescription(`the giveaway ${messageId} have paid already.`),
                     ],
                 });
@@ -74,7 +74,7 @@ module.exports = class ReAutopay extends Command {
             if (!winners.length) {
                 return await this.sendReply(ctx, {
                     embeds: [
-                        client.embed().setColor(color.red)
+                        client.embed().setColor(color.danger)
                             .setDescription('No winners found for this giveaway.'),
                     ],
                 });
@@ -103,7 +103,7 @@ module.exports = class ReAutopay extends Command {
             console.error(err);
             await this.sendReply(ctx, {
                 embeds: [
-                    client.embed().setColor(color.red)
+                    client.embed().setColor(color.danger)
                         .setDescription('An error occurred while reprocessing the autopay.'),
                 ],
             });

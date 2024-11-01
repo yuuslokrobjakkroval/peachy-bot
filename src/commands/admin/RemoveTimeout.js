@@ -30,7 +30,7 @@ module.exports = class RemoveTimeout extends Command {
 
         if (!mention) {
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription('Please mention a user to remove the timeout from.')],
+                embeds: [client.embed().setColor(color.danger).setDescription('Please mention a user to remove the timeout from.')],
             });
         }
 
@@ -38,7 +38,7 @@ module.exports = class RemoveTimeout extends Command {
         let user = await Users.findOne({ userId: mention.id });
         if (!user || !user.verification.timeout.expiresAt) {
             return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.red).setDescription(`${mention} is not currently in timeout.`)],
+                embeds: [client.embed().setColor(color.danger).setDescription(`${mention} is not currently in timeout.`)],
             });
         }
 
@@ -49,7 +49,7 @@ module.exports = class RemoveTimeout extends Command {
 
         // Send confirmation message
         await ctx.sendMessage({
-            embeds: [client.embed().setColor(color.green).setDescription(`Successfully removed timeout from **${mention}**.`)],
+            embeds: [client.embed().setColor(color.success).setDescription(`Successfully removed timeout from **${mention}**.`)],
         });
     }
 };

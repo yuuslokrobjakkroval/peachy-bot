@@ -165,139 +165,139 @@ module.exports = class MessageCreate extends Event {
       ctx.setArgs(args);
       const permissionCommand = ['help', 'links', 'info', 'ping', 'rules', 'privacypolicy', 'stats']
       if (match) {
-          if (!user && !permissionCommand.includes(command.name)) {
-            if (activeGames.has(ctx.author.id)) {
-              return await ctx.sendMessage({
-                embeds: [
-                  this.client.embed().setColor(color.orange).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
-                ],
-              });
-            }
-            activeGames.set(ctx.author.id, true);
+        if (!user && !permissionCommand.includes(command.name)) {
+          if (activeGames.has(ctx.author.id)) {
+            return await ctx.sendMessage({
+              embeds: [
+                this.client.embed().setColor(color.orange).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
+              ],
+            });
+          }
+          activeGames.set(ctx.author.id, true);
 
-            const embed = this.client
-                .embed()
-                .setColor(color.main)
-                .setTitle(`${emoji.mainLeft}  𝐏𝐄𝐀𝐂𝐇𝐘  ${emoji.mainRight}`)
-                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setDescription(
-                    `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
-                .setImage(gif.peachy);
+          const embed = this.client
+              .embed()
+              .setColor(color.main)
+              .setTitle(`${emoji.mainLeft}  𝐏𝐄𝐀𝐂𝐇𝐘  ${emoji.mainRight}`)
+              .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+              .setDescription(
+                  `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
+              .setImage(gif.peachy);
 
-            const row = new ActionRowBuilder().addComponents(
-                new ButtonBuilder()
-                    .setCustomId('register')
-                    .setLabel('Register')
-                    .setStyle(3),
-                new ButtonBuilder()
-                    .setCustomId('cancel')
-                    .setLabel('Cancel')
-                    .setStyle(4)
-            );
+          const row = new ActionRowBuilder().addComponents(
+              new ButtonBuilder()
+                  .setCustomId('register')
+                  .setLabel('Register')
+                  .setStyle(3),
+              new ButtonBuilder()
+                  .setCustomId('cancel')
+                  .setLabel('Cancel')
+                  .setStyle(4)
+          );
 
-            const msg = await ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true });
-            const filter = interaction => interaction.user.id === ctx.author.id;
-            const collector = msg.createMessageComponentCollector({ filter, time: 150000 });
+          const msg = await ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true });
+          const filter = interaction => interaction.user.id === ctx.author.id;
+          const collector = msg.createMessageComponentCollector({ filter, time: 150000 });
 
-            collector.on('collect', async int => {
-              await int.deferUpdate();
+          collector.on('collect', async int => {
+            await int.deferUpdate();
 
-              if (int.customId === 'register') {
-                try {
-                  const embed = this.client.embed()
-                      .setColor(color.main)
-                      .setTitle(`${emoji.mainLeft} 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 ${emoji.mainRight}`)
-                      .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                      .setDescription(
-                          `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
-                          `**Rules and Guidelines**\n\n` +
-                          `1. **Respect Everyone**: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
-                          `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
-                          `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
-                          `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
-                          `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
-                          `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
-                          `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
-                          `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
-                          `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
-                          `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
-                      );
+            if (int.customId === 'register') {
+              try {
+                const embed = this.client.embed()
+                    .setColor(color.main)
+                    .setTitle(`${emoji.mainLeft} 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 ${emoji.mainRight}`)
+                    .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+                    .setDescription(
+                        `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
+                        `**Rules and Guidelines**\n\n` +
+                        `1. **Respect Everyone**: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
+                        `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
+                        `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
+                        `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
+                        `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
+                        `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
+                        `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
+                        `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
+                        `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
+                        `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
+                    );
 
 
-                  await int.editReply({
-                    content: '',
-                    embeds: [embed],
-                    components: [new ActionRowBuilder().addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('confirm')
-                            .setLabel('Accept for Register')
-                            .setStyle(3),
-                        new ButtonBuilder()
-                            .setCustomId('privacy')
-                            .setLabel('Privacy Policy')
-                            .setStyle(2),
-                        new ButtonBuilder()
-                            .setCustomId('cancel')
-                            .setLabel('Cancel')
-                            .setStyle(4)
-                    )]
-                  });
-                } catch (error) {
-                  console.error('Error in Register Command:', error);
-                }
-              } else if (int.customId === 'privacy') {
-                try {
-                  const embed = this.client.embed()
-                      .setColor(color.main)
-                      .setTitle(`${emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${emoji.mainRight}`)
-                      .setDescription(
-                          `**Introduction**\n` +
-                          `PEACHY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
-                          `**Information Collection**\n` +
-                          `We gather the following information to enhance your experience:\n` +
-                          `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
-                          `• **Messages**: Used to process your commands, manage game states, and provide customized responses.\n` +
-                          `• **Server Information**: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
-                          `**Data Usage**\n` +
-                          `We utilize your data to:\n` +
-                          `• Execute commands, interactions, and maintain game progression.\n` +
-                          `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
-                          `• Enhance the security and smooth operation of PEACHY, ensuring a seamless user experience.\n\n` +
-                          `**Data Sharing**\n` +
-                          `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
-                          `**Data Security**\n` +
-                          `We implement stringent technical and organizational measures to safeguard your data from unauthorized access, alteration, or misuse.\n\n` +
-                          `**User Rights**\n` +
-                          `You have the right to:\n` +
-                          `• Access the data we hold about you.\n` +
-                          `• Request the correction or deletion of your data if it's inaccurate or no longer needed.\n\n` +
-                          `**Policy Updates**\n` +
-                          `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
-                          `**Contact Information**\n` +
-                          `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
-                      );
+                await int.editReply({
+                  content: '',
+                  embeds: [embed],
+                  components: [new ActionRowBuilder().addComponents(
+                      new ButtonBuilder()
+                          .setCustomId('confirm')
+                          .setLabel('Accept for Register')
+                          .setStyle(3),
+                      new ButtonBuilder()
+                          .setCustomId('privacy')
+                          .setLabel('Privacy Policy')
+                          .setStyle(2),
+                      new ButtonBuilder()
+                          .setCustomId('cancel')
+                          .setLabel('Cancel')
+                          .setStyle(4)
+                  )]
+                });
+              } catch (error) {
+                console.error('Error in Register Command:', error);
+              }
+            } else if (int.customId === 'privacy') {
+              try {
+                const embed = this.client.embed()
+                    .setColor(color.main)
+                    .setTitle(`${emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${emoji.mainRight}`)
+                    .setDescription(
+                        `**Introduction**\n` +
+                        `PEACHY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
+                        `**Information Collection**\n` +
+                        `We gather the following information to enhance your experience:\n` +
+                        `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
+                        `• **Messages**: Used to process your commands, manage game states, and provide customized responses.\n` +
+                        `• **Server Information**: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
+                        `**Data Usage**\n` +
+                        `We utilize your data to:\n` +
+                        `• Execute commands, interactions, and maintain game progression.\n` +
+                        `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
+                        `• Enhance the security and smooth operation of PEACHY, ensuring a seamless user experience.\n\n` +
+                        `**Data Sharing**\n` +
+                        `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
+                        `**Data Security**\n` +
+                        `We implement stringent technical and organizational measures to safeguard your data from unauthorized access, alteration, or misuse.\n\n` +
+                        `**User Rights**\n` +
+                        `You have the right to:\n` +
+                        `• Access the data we hold about you.\n` +
+                        `• Request the correction or deletion of your data if it's inaccurate or no longer needed.\n\n` +
+                        `**Policy Updates**\n` +
+                        `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
+                        `**Contact Information**\n` +
+                        `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
+                    );
 
-                  await int.editReply({
-                    content: '',
-                    embeds: [embed],
-                    components: [new ActionRowBuilder().addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('confirm')
-                            .setLabel('Accept for Register')
-                            .setStyle(3),
-                        new ButtonBuilder()
-                            .setCustomId('register')
-                            .setLabel('Rules and Guidelines')
-                            .setStyle(2),
-                        new ButtonBuilder()
-                            .setCustomId('cancel')
-                            .setLabel('Cancel')
-                            .setStyle(4)
-                    )]
-                  });
-                } catch (error) {
-                  console.error('Error in Privacy Command:', error);
-                }
+                await int.editReply({
+                  content: '',
+                  embeds: [embed],
+                  components: [new ActionRowBuilder().addComponents(
+                      new ButtonBuilder()
+                          .setCustomId('confirm')
+                          .setLabel('Accept for Register')
+                          .setStyle(3),
+                      new ButtonBuilder()
+                          .setCustomId('register')
+                          .setLabel('Rules and Guidelines')
+                          .setStyle(2),
+                      new ButtonBuilder()
+                          .setCustomId('cancel')
+                          .setLabel('Cancel')
+                          .setStyle(4)
+                  )]
+                });
+              } catch (error) {
+                console.error('Error in Privacy Command:', error);
+              }
             } else if (int.customId === 'register') {
               await int.update({
                 content: '',
@@ -319,34 +319,41 @@ module.exports = class MessageCreate extends Event {
               });
             } else if (int.customId === 'confirm') {
               const gift = 500000;
-              const userInfo = await this.client.users.fetch(int.user.id).catch(() => null);
+              const userId = int.user.id;
+
+              if (!userId) {
+                console.error("User ID is null or undefined. Aborting operation.");
+                return; // Exit early if userId is not valid
+              }
+
+              const userInfo = await this.client.users.fetch(userId).catch(() => null);
               if (userInfo) {
                 await Users.updateOne(
-                    { userId: int.user.id },
+                    { userId }, // use shorthand property
                     {
                       $set: {
                         username: userInfo.displayName,
                         'profile.username': userInfo.displayName,
                         balance: {
                           coin: gift,
-                          bank: 0
+                          bank: 0,
                         },
-                      }
+                      },
                     },
                     { upsert: true }
                 );
               } else {
                 await Users.updateOne(
-                    { userId: int.user.id },
+                    { userId },
                     {
                       $set: {
                         username: 'Unknown',
                         'profile.username': 'Unknown',
                         balance: {
                           coin: gift,
-                          bank: 0
+                          bank: 0,
                         },
-                      }
+                      },
                     },
                     { upsert: true }
                 );
@@ -388,12 +395,14 @@ module.exports = class MessageCreate extends Event {
             await msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
           });
         } else {
-          const userInfo = await this.client.users.fetch(user.userId).catch(() => null);
-          if (!user.username || user.username !== userInfo.displayName ) {
-            user.username = userInfo ? userInfo.displayName : 'Unknown';
-            user.profile.username = userInfo ? userInfo.displayName : 'Unknown';
-            user.save();
-          }
+          this.client.users.fetch(user.userId).then(userInfo => {
+            if (!user.username || user.username !== userInfo.displayName) {
+              user.username = userInfo ? userInfo.displayName : 'Unknown';
+              user.profile.username = userInfo ? userInfo.displayName : 'Unknown';
+              user.save();
+            }
+          }).catch(() => null);
+
           if (!command) return;
 
           if (command.permissions) {
@@ -455,11 +464,11 @@ module.exports = class MessageCreate extends Event {
             setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
           }
 
-            if (args.includes('@everyone') || args.includes('@here')) {
-              return await message.reply({
-                content: language.noEveryoneOrHereUsage, // Use language file for message
-              });
-            }
+          if (args.includes('@everyone') || args.includes('@here')) {
+            return await message.reply({
+              content: language.noEveryoneOrHereUsage, // Use language file for message
+            });
+          }
 
           const balanceCommands = ['balance', 'deposit', 'withdraw', 'transfer', 'buy', 'sell'];
           const gamblingCommands = ['slots', 'blackjack', 'coinflip'];

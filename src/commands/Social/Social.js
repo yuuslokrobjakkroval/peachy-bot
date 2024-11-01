@@ -40,7 +40,7 @@ module.exports = class Socials extends Command {
         const targetUsername = mentionedUser ? mentionedUser.displayName : ctx.author.displayName;
 
         if (!user) {
-            const embed = client.embed().setColor(color.red).setDescription(smMessages?.userNotFound || 'User not found.');
+            const embed = client.embed().setColor(color.danger).setDescription(smMessages?.userNotFound || 'User not found.');
             return ctx.sendMessage({ embeds: [embed] });
         }
 

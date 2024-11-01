@@ -1,10 +1,179 @@
-const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder } = require('discord.js');
-const GiveawaySchema = require('../schemas/giveaway');
+const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder} = require('discord.js');
 const Users = require('../schemas/user');
+const GiveawaySchema = require('../schemas/giveaway');
+const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
+const importantItems = require('../assets/inventory/ImportantItems.js');
+const shopItems = require('../assets/inventory/ShopItems.js');
+const items = shopItems.flatMap(shop => shop.inventory);
+const Fonts = require('../assets/json/fontKelvinch.json');
 
 module.exports = class Utils {
-    static getUser(id) {
-        return Users.findOne({userId: id});
+    static getUser(userId) {
+        return Users.findOne({ userId }).then(user => { return user; }).catch(error => { console.log(`Error fetching user data: ${error}`); return null });
+    }
+
+    static getGiveaway(interaction) {
+        return GiveawaySchema.findOne({
+            guildId: interaction.guild.id,
+            channelId: interaction.channel.id,
+            messageId: interaction.message.id,
+        }).then(giveaway => { return giveaway; }).catch(error => { console.log(`Error fetching giveaway data: ${error}`); return null });
+    }
+
+    static getGiveawayShopItem(interaction) {
+        return GiveawayShopItemSchema.findOne({
+            guildId: interaction.guild.id,
+            channelId: interaction.channel.id,
+            messageId: interaction.message.id,
+        }).then(giveaway => { return giveaway; }).catch(error => { console.log(`Error fetching giveaway data: ${error}`); return null });
+    }
+
+    static transformText(text, style) {
+        let transformedText = '';
+        for (let char of text) {
+            if (style.toLowerCase() === 'bold') {
+                transformedText += Fonts.bold[char];
+            } else if (style.toLowerCase() === 'italic') {
+                transformedText += Fonts.italic[char];
+            } else if (style.toLowerCase() === 'number') {
+                transformedText += Fonts.number[char];
+            } else {
+                transformedText += char;
+            }
+        }
+        return transformedText;
+    }
+
+    static cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {
+        if (id === this.client.config.ownerId) {
+            return false;
+        }
+
+        if (timeout.includes(id)) {
+            if (cdId.includes(id)) {
+                return true;
+            }
+
+            cdId.push(id);
+
+            if (prem.includes(id)) {
+                const CD = parseInt(cooldowntime / 2);
+
+                const currentTime = new Date();
+                const cooldownEnd = new Date(currentTime.getTime() + CD);
+                if (currentTime < cooldownEnd) {
+                    const timeLeft = Math.ceil((cooldownEnd - currentTime) / 1000) - 1;
+                    message.channel.send({ embeds: [new EmbedBuilder().setColor('Blue').setDescription(`<@${id}> cooldown **<t:${Math.floor(cooldownEnd.getTime() / 1000)}:R>**`)] })
+                        .then(cooldownMessage => {
+                            setTimeout(() => {
+                                cooldownMessage.delete().catch(console.error);
+                                cdId.shift();
+                            }, timeLeft * 1000);
+                        })
+                        .catch(console.error);
+                    return true;
+                }
+                return true;
+            }
+
+            const cooldownEnd = cooldowns.get(message.guild.id);
+            const currentTime = new Date();
+            if (currentTime < cooldownEnd) {
+                const timeLeft = Math.ceil((cooldownEnd - currentTime) / 1000) - 1;
+                message.channel.send({ embeds: [new EmbedBuilder().setColor('Blue').setDescription(`<@${id}> cooldown **<t:${Math.floor(cooldownEnd.getTime() / 1000)}:R>**`)] })
+                    .then(cooldownMessage => {
+                        setTimeout(() => {
+                            cooldownMessage.delete().catch(console.error);
+                            cdId.shift();
+                        }, timeLeft * 1000);
+                    })
+                    .catch(console.error);
+                return true;
+            }
+            return true;
+
+        } else {
+            if(prem.includes(id)){
+                const CD = parseInt(cooldowntime / 2);
+
+                const currentTime = new Date();
+                const cooldownEnd = new Date(currentTime.getTime() + CD);
+                cooldowns.set(message.guild.id, cooldownEnd);
+                timeout.push(id);
+                setTimeout(() => {
+                    timeout.shift();
+                    cdId.shift();
+                }, CD - 1000);
+                return false;
+
+            }else{
+                const currentTime = new Date();
+                const cooldownEnd = new Date(currentTime.getTime() + cooldowntime);
+                cooldowns.set(message.guild.id, cooldownEnd);
+                timeout.push(id);
+                setTimeout(() => {
+                    timeout.shift();
+                    cdId.shift();
+                }, cooldowntime - 1000);
+                return false;
+            }
+        }
+    }
+
+    static getCooldown(userId, command) {
+        return Users.findOne({ userId: userId }).exec()
+            .then(user => {
+                if (user) {
+                    const cooldown = user.cooldowns.find(c => c.name === command);
+                    return cooldown ? cooldown.timestamp : 0;
+                }
+                return 0;
+            })
+            .catch(error => {
+                console.error('Error fetching cooldown:', error);
+                return 0;
+            });
+    }
+
+    static checkCooldown(userId, command, duration) {
+        const now = Date.now();
+
+        return Users.findOne({ userId: userId }).exec()
+            .then(user => {
+                if (user) {
+                    const cooldown = user.cooldowns.find(c => c.name === command);
+                    if (cooldown) {
+                        // Check if the current time minus the timestamp is greater than or equal to the provided duration
+                        return now - cooldown.timestamp >= duration;
+                    }
+                }
+                return true;
+            })
+            .catch(error => {
+                console.error('Error checking cooldown:', error);
+                return false;
+            });
+    }
+
+    static updateCooldown(userId, command, duration) {
+        const now = Date.now();
+
+        Users.findOne({ userId: userId }).exec()
+            .then(user => {
+                if (user) {
+                    const cooldownIndex = user.cooldowns.findIndex(c => c.name === command);
+                    if (cooldownIndex > -1) {
+                        user.cooldowns[cooldownIndex].timestamp = now;
+                        user.cooldowns[cooldownIndex].duration = duration;
+                    } else {
+                        user.cooldowns.push({ name: command, timestamp: now, duration: duration });
+                    }
+                    return user.save();
+                }
+            })
+            .catch(error => {
+                console.error('Error updating cooldown:', error);
+            });
     }
 
     static toSmall(count) {
@@ -20,12 +189,6 @@ module.exports = class Utils {
         return result;
     }
 
-    static formatCoin(coin) {
-        if(isNaN(coin) || coin <= 0 || coin.toString().includes('.') || coin.toString().includes(',')) {
-            return coin.toLocaleString();
-        }
-    }
-
     static formatUsername(name) {
         if (typeof name !== 'string') {
             return '';
@@ -34,7 +197,6 @@ module.exports = class Utils {
         let formattedName = name.replace(/[^a-zA-Z0-9]+/g, ' ');
         return formattedName.toUpperCase();
     }
-
 
     static splitToSpace(text) {
         return text.replace(/[^a-zA-Z0-9]+/g, ' ');
@@ -50,35 +212,6 @@ module.exports = class Utils {
         const words = val.split('_');
         const UpperWords = words.map((word) => word.toUpperCase());
         return UpperWords.join(' ');
-    }
-
-    static getRandomElement(arr) {
-        return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    static toNameCase(args) {
-        return args
-            .split('_')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-    }
-
-    static toTitleCase(args) {
-        return args.charAt(0).toUpperCase() + args.slice(1);
-    }
-
-    static random(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    static chunk(array, size) {
-        const chunked_arr = [];
-        let index = 0;
-        while (index < array.length) {
-            chunked_arr.push(array.slice(index, size + index));
-            index += size;
-        }
-        return chunked_arr;
     }
 
     static formatTime(string) {
@@ -100,8 +233,30 @@ module.exports = class Utils {
         return parts.join(' ');
     }
 
-    static formatNumber(number) {
-        return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    static formatNumber(num) {
+        if (isNaN(num) || num <= 0 || num.toString().includes('.') || num.toString().includes(',')) {
+            return num.toLocaleString();
+        } else {
+            return num.toLocaleString();
+        }
+    }
+
+    static getRandomElement(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    static getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    static chunk(array, size) {
+        const chunked_arr = [];
+        let index = 0;
+        while (index < array.length) {
+            chunked_arr.push(array.slice(index, size + index));
+            index += size;
+        }
+        return chunked_arr;
     }
 
     static generateVerificationCode() {
@@ -118,80 +273,101 @@ module.exports = class Utils {
         return dm === 0 ? formattedNumber.toFixed(0) : formattedNumber + sizes[i];
     }
 
-    static formatResults(current, total, size) {
-        const empty = { begin: '<:PB1E:1277709213753409587>', middle: '<:PB2E:1277709239942381701>', end: '<:PB3E:1277709259039178835>' };
-        const full = {
-            begin: '<:PB1CB:1277709205377122415>',
-            middle: '<:PB2CB:1277709231704903730>',
-            end: '<:PB3FB:1277709268203737121>',
-        };
-        const change = { begin: '<:PB1FB:1277709222913769562>', middle: '<:PB2FB:1277709250423951480>' };
-
-        const filledBar = Math.ceil((current / total) * size) || 0;
-        let emptyBar = size - filledBar || 0;
-
-        if (filledBar === 0) emptyBar = size;
-
-        const firstBar = filledBar ? (filledBar === 1 ? change.begin : full.begin) : empty.begin;
-        const middleBar = filledBar
-            ? filledBar === size
-                ? full.middle.repeat(filledBar - 1)
-                : full.middle.repeat(filledBar - 1) + empty.middle.repeat(size - filledBar)
-            : empty.middle.repeat(size - 1);
-        const endBar = filledBar === size ? full.end : empty.end;
-
-        return firstBar + middleBar + endBar;
+    static createButtonRow(...buttons) {
+        const actionRow = new ActionRowBuilder();
+        actionRow.addComponents(buttons);
+        return actionRow;
     }
 
-    static parseTime(string) {
-        const time = string.match(/([0-9]+[d,h,m,s])/g);
-        if (!time) return 0;
-        let ms = 0;
-        for (const t of time) {
-            const unit = t[t.length - 1];
-            const amount = Number(t.slice(0, -1));
-            if (unit === 'd') ms += amount * 24 * 60 * 60 * 1000;
-            else if (unit === 'h') ms += amount * 60 * 60 * 1000;
-            else if (unit === 'm') ms += amount * 60 * 1000;
-            else if (unit === 's') ms += amount * 1000;
+    static labelButton(id, label, style){
+        return new ButtonBuilder()
+            .setCustomId(`${id}`)
+            .setLabel(`${label}`)
+            .setStyle(style)
+    }
+
+    static emojiButton(id, emoji, style){
+        return new ButtonBuilder()
+            .setCustomId(`${id}`)
+            .setEmoji(`${emoji}`)
+            .setStyle(style)
+    }
+
+    static oops(client, ctx, args, color, time) {
+        const embed = client.embed()
+            .setColor(color.danger)
+            .setDescription(args);
+        return ctx.sendMessage({ embeds: [embed] })
+            .then(msg => {
+                setTimeout(() => {
+                    msg.delete().catch(() => {});
+                }, time ? time : 10000);
+            })
+            .catch(error => {
+                console.error('Error sending oops message:', error);
+            });
+    }
+
+    static sendSuccessMessage(client, ctx, args, color, time) {
+        const embed = client.embed()
+            .setColor(color.main)
+            .setDescription(args);
+        return ctx.sendMessage({ embeds: [embed] })
+            .then(msg => {
+                setTimeout(() => {
+                    msg.delete().catch(() => {});
+                }, time ? time : 10000);
+            })
+            .catch(error => {
+                console.error('Error sending success message:', error);
+            });
+    }
+
+    static sendErrorMessage(client, ctx, args, color, time) {
+        const embed = client.embed()
+            .setColor(color.danger)
+            .setDescription(args);
+
+        return ctx.sendMessage({ embeds: [embed] })
+            .then(msg => {
+                setTimeout(() => {
+                    msg.delete().catch(() => {});
+                }, time ? time : 10000);
+            })
+            .catch(error => {
+                console.error('Error sending error message:', error);
+            });
+    }
+
+    static getZodiacSign(zodiacSign, day, month) {
+        const zodiacSigns = [
+            { sign: 'capricorn', start: [12, 22], end: [1, 19] },
+            { sign: 'aquarius', start: [1, 20], end: [2, 18] },
+            { sign: 'pisces', start: [2, 19], end: [3, 20] },
+            { sign: 'aries', start: [3, 21], end: [4, 19] },
+            { sign: 'taurus', start: [4, 20], end: [5, 20] },
+            { sign: 'gemini', start: [5, 21], end: [6, 20] },
+            { sign: 'cancer', start: [6, 21], end: [7, 22] },
+            { sign: 'leo', start: [7, 23], end: [8, 22] },
+            { sign: 'virgo', start: [8, 23], end: [9, 22] },
+            { sign: 'libra', start: [9, 23], end: [10, 22] },
+            { sign: 'scorpio', start: [10, 23], end: [11, 21] },
+            { sign: 'sagittarius', start: [11, 22], end: [12, 21] }
+        ];
+
+        for (const zodiac of zodiacSigns) {
+            const [startMonth, startDay] = zodiac.start;
+            const [endMonth, endDay] = zodiac.end;
+
+            if (
+                (month === startMonth && day >= startDay) ||
+                (month === endMonth && day <= endDay) ||
+                (startMonth > endMonth && (month === startMonth || month === endMonth))
+            ) {
+                return { sign: zodiac.sign, emoji: zodiacSign[zodiac.sign] };
+            }
         }
-        return ms;
-    }
-
-    static progressBar(current, total, size = 20) {
-        const percent = Math.round((current / total) * 100);
-        const filledSize = Math.round((size * current) / total);
-        const emptySize = size - filledSize;
-        const filledBar = '▓'.repeat(filledSize);
-        const emptyBar = '░'.repeat(emptySize);
-        return `${filledBar}${emptyBar} ${percent}%`;
-    }
-
-    static percentage(percent, total) {
-        return Math.floor((100 * percent) / total).toFixed(1);
-    }
-
-    static emojiToImage(emoji) {
-        const emojiRegex = /<(a)?:[a-zA-Z0-9_]+:(\d+)>/;
-        const match = emoji.match(emojiRegex);
-        if (match) {
-            const emojiId = match[2];
-            const isAnimated = match[1] === 'a';
-            return `https://cdn.discordapp.com/emojis/${emojiId}.${isAnimated ? 'gif' : 'png'}`;
-        } else {
-            return null;
-        }
-    }
-
-    static shuffle(array) {
-        const arr = array.slice(0);
-        for (let i = arr.length - 1; i >= 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-        }
-        return arr;
+        return null;
     }
 
     static async reactionPaginate(ctx, embed) {
@@ -319,55 +495,65 @@ module.exports = class Utils {
         });
     }
 
-    static async buttonReply(int, args, color) {
-        const embed = new EmbedBuilder();
-        const msg = int.replied
-            ? await int.editReply({ embeds: [embed.setColor(color).setDescription(args)] }).catch(() => {})
-            : await int.followUp({ embeds: [embed.setColor(color).setDescription(args)] }).catch(() => {});
-        setTimeout(async () => {
-            if (int && !int.ephemeral) {
-                await msg?.delete().catch(() => {});
-            }
-        }, 10000);
-    }
-
-    static async oops(client, ctx, args, color, time) {
-        const embed = client.embed()
-            .setColor(color.red)
-            .setDescription(args)
-        return await ctx.sendMessage({ embeds: embed }).then(async msg => {
-            setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
-        });
-    }
-
-    static async sendSuccessMessage(client, ctx, args, color, time) {
-        const embed = client.embed()
-            .setColor(color.main)
-            .setDescription(args)
-        return await ctx.sendMessage({ embeds: embed }).then(async msg => {
-            setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
-        });
-    }
-
-    static async sendErrorMessage(client, ctx, args, color, time) {
-        const embed = client.embed()
-            .setColor(color.red)
-            .setDescription(args)
-        await ctx.sendMessage({ embeds: [embed] }).then(async msg => {
-            setTimeout(async () => await msg.delete().catch(() => {}), time ? time : 10000);
-        });
-    }
-
-    static async selectWinners(participants, numWinners) {
-        let winners = [];
-        while (winners.length < numWinners) {
-            const randomIndex = Math.floor(Math.random() * participants.length);
-            const selected = participants[randomIndex];
-            if (!winners.includes(selected)) {
-                winners.push(selected);
-            }
+    static emojiToImage(emoji) {
+        const emojiRegex = /<(a)?:[a-zA-Z0-9_]+:(\d+)>/;
+        const match = emoji.match(emojiRegex);
+        if (match) {
+            const emojiId = match[2];
+            const isAnimated = match[1] === 'a';
+            return `https://cdn.discordapp.com/emojis/${emojiId}.${isAnimated ? 'gif' : 'png'}`;
+        } else {
+            return null;
         }
-        return winners;
+    }
+
+    static async checkBirthdays(client) {
+        console.log('Check Birthday Start');
+        try {
+            const today = new Date();
+
+            const options = { day: '2-digit', month: 'short' };
+            const todayDate = today.toLocaleDateString('en-GB', options).replace('.', '');
+
+            const usersWithBirthdayToday = await Users.find({
+                'profile.birthday': todayDate,
+                'profile.birthdayAcknowledged': false,
+            });
+
+            const birthdayChannel = client.channels.cache.get('1272074580797952116');
+
+            if (!birthdayChannel) {
+                console.error(`[Birthday] Birthday channel not found.`);
+                return;
+            }
+
+            for (const user of usersWithBirthdayToday) {
+                const giftBalance = Math.floor(Math.random() * (1000000 - 500000 + 1)) + 500000;
+                const [day, month, year] = user.profile.birthday.split('-');
+                const xp = parseInt(day) + (new Date(Date.parse(`${month} 1, 2020`)).getMonth() + 1) + parseInt(year.slice(-2));
+
+                const birthdayEmbed = client.embed()
+                    .setColor('Green')
+                    .setTitle(`🎉 Happy Birthday, ${user.profile.username || user.username}! 🎂`)
+                    .setDescription(`On this special day, we celebrate you and all the joy you bring into our lives! May your year ahead be filled with exciting adventures, unforgettable moments, and everything you've ever wished for. Remember, you are loved and cherished by all of us! 🎈`)
+                    .addFields(
+                        {name: '🎁 Your Birthday Gift:', value: `${giftBalance} coins`, inline: true},
+                        {name: '✨ Your Birthday XP:', value:  `${xp} XP`, inline: true}
+                    )
+                    .setFooter('Have an amazing birthday filled with love and happiness!')
+                    .setTimestamp();
+
+                await birthdayChannel.send({ embeds: [birthdayEmbed] });
+
+                user.profile.birthdayAcknowledged = true;
+                user.balance.coin += giftBalance;
+                user.profile.xp += xp;
+                await user.save();
+            }
+            console.log('Check Birthday Ended');
+        } catch (err) {
+            console.error(`[Birthday] Error fetching birthdays: ${err.message}`);
+        }
     }
 
     static async addCoinsToUser(userId, amount) {
@@ -437,14 +623,16 @@ module.exports = class Utils {
         // Announce the winners
         await message.reply({
             embeds: [
-                new EmbedBuilder()
+                client.embed()
                     .setColor(color.main)
-                    .setTitle(`${emoji.mainLeft} Congratulations ${emoji.congratulation} ${emoji.mainRight}`)
                     .setDescription(
                         winnerIdArray.length
-                            ? `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}`
+                            ? `# Congratulations ${emoji.congratulation}` +
+                            `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
+                            (autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``)
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
-                    ),
+                    )
+                    .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
             ],
         });
         if (autopay) {
@@ -454,7 +642,7 @@ module.exports = class Utils {
                     await Utils.addCoinsToUser(winner, data.prize);
                     await message.reply({
                         embeds: [
-                            new EmbedBuilder()
+                            client.embed()
                                 .setColor(color.main)
                                 .setDescription(`**${client.user.username}** has awarded **\`${client.utils.formatNumber(data.prize)}\`** ${emoji.coin} to <@${winner}>.`),
                         ],
@@ -468,6 +656,107 @@ module.exports = class Utils {
             }
         }
     }
+
+    static async endGiveawayShopItem(client, color, emoji, message, autoAdd) {
+
+        if (!message.guild) return;
+        if (!client.guilds.cache.get(message.guild.id)) return;
+
+        const data = await GiveawayShopItemSchema.findOne({
+            guildId: message.guildId,
+            messageId: message.id,
+        });
+
+        if (!data) return;
+        if (data.ended) return;
+        if (data.paused) return;
+
+        // Find the item in the inventory based on the itemId
+        const category = items.concat(importantItems).filter(c => c.type === data.type); // Adjusted to use data.type
+        if (!category) {
+            console.error(`Invalid item type specified for winner <@${winner}>.`);
+            return;
+        }
+
+        const itemInfo = category.find(i => i.id.toLowerCase() === data.itemId.toLowerCase());
+        if (!itemInfo) {
+            console.error(`No item found with ID ${data.itemId} in category ${data.type} for winner <@${winner}>.`);
+            return;
+        }
+
+        function getMultipleRandom(arr, number) {
+            const shuffled = [...arr].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, number);
+        }
+
+        let winnerIdArray = [];
+        if (data.entered.length >= data.winners) {
+            winnerIdArray = getMultipleRandom(data.entered, data.winners);
+        } else {
+            winnerIdArray = data.entered;
+        }
+
+        const disableButton = ActionRowBuilder.from(message.components[0]).setComponents(
+            ButtonBuilder.from(message.components[0].components[0]).setLabel(`${data.entered.length}`).setDisabled(true),
+            ButtonBuilder.from(message.components[0].components[1]).setDisabled(true)
+        );
+
+        const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
+            .setColor(color.main)
+            .setThumbnail(client.utils.emojiToImage(itemInfo.emoji))
+            .setDescription(`Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`);
+
+        await message.edit({ embeds: [endGiveawayEmbed], components: [disableButton] }).then(async (msg) => {
+            await GiveawayShopItemSchema.findOneAndUpdate(
+                { guildId: data.guildId, channelId: data.channelId, messageId: msg.id },
+                { ended: true, winnerId: winnerIdArray }
+            );
+        });
+
+        await message.reply({
+            embeds: [
+                client.embed()
+                    .setColor(color.main)
+                    .setThumbnail(client.utils.emojiToImage(itemInfo.emoji))
+                    .setDescription(
+                        winnerIdArray.length
+                            ? `# Congratulations ${emoji.congratulation}` +
+                            `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${itemInfo.name} \`${client.utils.formatNumber(data.amount)}\`**` +
+                            (autoAdd ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll item ${message.id}\``)
+                            : `No one entered the giveaway for ${itemInfo.name} **\`${client.utils.formatNumber(data.amount)}\`** ${itemInfo.emoji}!`
+                    )
+                    .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
+            ],
+        });
+
+        if (autoAdd) {
+            for (const winner of winnerIdArray) {
+                try {
+                    const user = await Users.findOne({ userId: winner });
+                    if (user) {
+                        const itemIndex = user.inventory.findIndex(item => item.id === itemInfo.id);
+                        if (itemIndex > -1) {
+                            user.inventory[itemIndex].quantity += data.amount;
+                        } else {
+                            user.inventory.push({ id: itemInfo.id, name: itemInfo.name, quantity: data.amount });
+                        }
+                        await user.save();
+
+                        await message.reply({
+                            embeds: [
+                                client.embed()
+                                    .setColor(color.main)
+                                    .setDescription(`**${client.user.displayName}** has added **${itemInfo.name} ${itemInfo.emoji} \`${data.amount}\`** to <@${winner}>'s inventory.`),
+                            ],
+                        });
+                    }
+                } catch (err) {
+                    console.error(`Error adding item to user <@${winner}>:`, err);
+                    data.retryAutopay = true;
+                    await data.save();
+                }
+            }
+        }
+    }
+
 };
-
-

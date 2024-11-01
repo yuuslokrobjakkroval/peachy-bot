@@ -24,11 +24,10 @@ module.exports = class GuildLeave extends Command {
         });
     }
 
-    async run(client, ctx, args) {
+    run(client, ctx, args, color, emoji, language) {
         const guild = this.client.guilds.cache.get(args[0]);
-        if (!guild) return await ctx.sendMessage('Guild not found');
-
-        await guild.leave();
-        ctx.sendMessage(`Left guild ${guild.name}`);
+        if (!guild) return ctx.sendMessage('Guild not found');
+        guild.leave();
+        return client.utils.sendSuccessMessage(client, ctx,`Left guild ${guild.name}`, color);
     }
 };

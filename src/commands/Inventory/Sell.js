@@ -1,9 +1,7 @@
 const { Command } = require('../../structures/index.js');
-const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const Users = require("../../schemas/user");
 const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
-const {checkRank} = require("../../functions/function");
 const MoreItems = ShopItems.flatMap(shop => shop.inventory);
 const AllItems = [...ImportantItems, ...MoreItems].filter(item => item.price.sell !== 0);
 

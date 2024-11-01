@@ -1,7 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const moment = require('moment');
 const Users = require('../../schemas/user.js');
-const { getZodiacSign } = require('../../functions/function');
 
 module.exports = class Birthday extends Command {
     constructor(client) {
@@ -131,7 +130,7 @@ module.exports = class Birthday extends Command {
                     const day = parsedDate.date();
                     const month = parsedDate.month() + 1;
 
-                    const zodiacSign = getZodiacSign(emoji.zodiac, day, month);
+                    const zodiacSign = client.utils.getZodiacSign(emoji.zodiac, day, month);
                     const zodiacEmojiImage = zodiacSign ? client.utils.emojiToImage(zodiacSign.emoji) : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 });
 
                     embed.setThumbnail(zodiacEmojiImage)

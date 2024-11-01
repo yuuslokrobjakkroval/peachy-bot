@@ -33,7 +33,7 @@ module.exports = class GuessNumber extends Command {
                 embeds: [
                     client.embed()
                         .setTitle(guessNumberMessages.insufficientBalance.title)
-                        .setColor(color.red)
+                        .setColor(color.danger)
                         .setDescription(`${guessNumberMessages.insufficientBalance.description} ${user.balance.coin} coins.`)
                 ]
             });
@@ -76,7 +76,7 @@ module.exports = class GuessNumber extends Command {
                 );
                 const resultEmbed = client.embed()
                     .setTitle(`${emoji.mainLeft} 𝐂𝐎𝐑𝐑𝐄𝐂𝐓 𝐀𝐍𝐒𝐖𝐄𝐑! ${emoji.mainRight}`)
-                    .setColor(color.green)
+                    .setColor(color.success)
                     .setDescription(`${guessNumberMessages.correct.description} ${client.utils.getRandomElement(congratulations)} !!!\nYou guessed the number correctly: **${numberToGuess}**.\nYou've earned ${client.utils.formatNumber(coinEarned)} ${emoji.coin} and ${xpEarned} XP.`)
                     .setFooter({
                         text: `${ctx.author.displayName}, your game is over`,
@@ -103,7 +103,7 @@ module.exports = class GuessNumber extends Command {
 
                     resultEmbed = client.embed()
                         .setTitle(`${emoji.mainLeft} 𝐖𝐑𝐎𝐍𝐆 𝐀𝐍𝐒𝐖𝐄𝐑! ${emoji.mainRight}`)
-                        .setColor(color.red)
+                        .setColor(color.danger)
                         .setDescription(`${guessNumberMessages.incorrect.description} **${hearts}** hearts left. ${hint}`)
                         .setFooter({
                             text: `Reply to ${ctx.author.displayName}`,
@@ -114,7 +114,7 @@ module.exports = class GuessNumber extends Command {
                 } else {
                     resultEmbed = client.embed()
                         .setTitle(`${emoji.mainLeft} 𝐆𝐀𝐌𝐄 𝐎𝐕𝐄𝐑! ${emoji.mainRight}`)
-                        .setColor(color.red)
+                        .setColor(color.danger)
                         .setDescription(`${guessNumberMessages.gameOver.description} **${numberToGuess}**.`)
                         .setFooter({
                             text: `${ctx.author.displayName}, your game is over`,
@@ -131,7 +131,7 @@ module.exports = class GuessNumber extends Command {
             if (collected.size === 0) {
                 const timeoutEmbed = client.embed()
                     .setTitle(`${emoji.mainLeft} 𝐓𝐈𝐌𝐄 𝐈𝐒 𝐔𝐏! ${emoji.mainRight}`)
-                    .setColor(color.orange)
+                    .setColor(color.warning)
                     .setDescription(guessNumberMessages.timeout.description)
                     .setFooter({
                         text: `${ctx.author.displayName}, please start again`,
