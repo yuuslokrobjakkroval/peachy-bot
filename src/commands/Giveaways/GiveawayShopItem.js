@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const { ActionRowBuilder, ButtonBuilder, PermissionsBitField } = require('discord.js');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem.js');
 const importantItems = require('../../assets/inventory/ImportantItems.js');
 const shopItems = require('../../assets/inventory/ShopItems.js');
@@ -32,27 +31,28 @@ module.exports = class GiveawayShopItem extends Command {
                 { name: 'image', description: 'Image URL for the giveaway.', type: 3, required: false },
                 { name: 'autoadd', description: 'Automatically add item winners (true/false).', type: 3, required: false },
                 { name: 'host', description: 'Specify the giveaway host (mention or user ID).', type: 6, required: false },
-                { name: 'channel', description: 'Specify the channel to post the giveaway.', type: 7, required: false },
+                // { name: 'channel', description: 'Specify the channel to post the giveaway.', type: 7, required: false },
             ],
         });
     }
 
     async run(client, ctx, args, color, emoji, language) {
         if (ctx.isInteraction) {
-            await ctx.interaction.deferReply({ephemeral: true});
+            await ctx.interaction.deferReply();
+        } else {
+            await ctx.sendDeferMessage(`${client.user.username} is Thinking...`);
         }
 
-        const member = await ctx.guild.members.fetch(ctx.author.id);
-        const isOwner = this.client.config.owners.includes(ctx.author.id);
-        const isAdmin = member.permissions.has(PermissionsBitField.Flags.Administrator);
+        const isOwner = client.config.owners.includes(ctx.author.id);
+        const isAdmin = await client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
 
-        if (!isOwner && !isAdmin) {
+        if (!isOwner || !isAdmin) {
             return (ctx.isInteraction
                     ? ctx.interaction.editReply({
                         content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
                         ephemeral: true
                     })
-                    : ctx.sendMessage({
+                    : ctx.editMessage({
                         content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
                         ephemeral: true
                     })
@@ -73,7 +73,7 @@ module.exports = class GiveawayShopItem extends Command {
                         content: 'Only the bot owner can enable auto add for giveaways.',
                         ephemeral: true
                     })
-                    : ctx.sendMessage({
+                    : ctx.editMessage({
                         content: 'Only the bot owner can enable auto add for giveaways.',
                         ephemeral: true
                     })
@@ -81,7 +81,7 @@ module.exports = class GiveawayShopItem extends Command {
         }
 
         const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[7];
-        const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[8];
+        // const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[8];
 
         const category = items.concat(importantItems).filter(c => c.type === type);
         if (!category) return ctx.sendMessage({ content: 'Invalid item type specified.' });
@@ -105,7 +105,7 @@ module.exports = class GiveawayShopItem extends Command {
             if (ctx.isInteraction) {
                 await ctx.interaction.reply(replyMessage);
             } else {
-                await ctx.sendMessage(replyMessage);
+                await ctx.editMessage(replyMessage);
             }
             return;
         }
@@ -123,45 +123,30 @@ module.exports = class GiveawayShopItem extends Command {
 
         if (image) giveawayEmbed.setImage(image);
 
-        const joinButton = new ButtonBuilder()
-            .setCustomId('giveawayshopitem-join')
-            .setEmoji(`${emoji.main}`)
-            .setLabel('0')
-            .setStyle(1)
-            .setDisabled(false);
+        const joinButton = client.utils.fullOptionButton('giveaway-join', emoji.main, '0', 1, false);
+        const participantsButton = client.utils.fullOptionButton('giveaway-participants', '', 'Participants', 2, false);
 
-        const participantsButton = new ButtonBuilder()
-            .setCustomId('giveawayshopitem-participants')
-            .setLabel('Participants')
-            .setStyle(2)
-            .setDisabled(false);
+        const buttonRow = client.utils.createButtonRow(joinButton, participantsButton);
 
-        const buttonRow = new ActionRowBuilder().addComponents(joinButton, participantsButton);
-
+        // After sending the giveaway message
         let giveawayMessage;
         try {
-            giveawayMessage = await (channel || ctx.channel).send({
-                embeds: [giveawayEmbed],
-                components: [buttonRow],
-                fetchReply: true,
-            });
+            if (ctx.isInteraction) {
+                giveawayMessage = await ctx.interaction.editReply({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
+            } else {
+                giveawayMessage = await ctx.editMessage({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
+            }
         } catch (err) {
             console.error(err);
             const response = 'There was an error sending the giveaway message.';
             return ctx.isInteraction
-                ? ctx.editReply({ content: response })
-                : ctx.sendMessage({ content: response });
-        }
-
-        if (ctx.isInteraction) {
-            await ctx.interaction.editReply({ content: 'Giveaway successfully created!' });
-        } else {
-            ctx.sendMessage({ content: 'Giveaway successfully created!', ephemeral: true });
+                ? ctx.interaction.editReply({ content: response })
+                : ctx.editMessage({ content: response });
         }
 
         await GiveawayShopItemSchema.create({
             guildId: ctx.guild.id,
-            channelId: channel ? channel.id : ctx.channel.id,
+            channelId: ctx.channel.id,
             messageId: giveawayMessage.id,
             hostedBy: host ? host.id : ctx.author.id,
             winners: winners,

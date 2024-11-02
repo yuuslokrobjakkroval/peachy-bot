@@ -134,7 +134,7 @@ module.exports = class InteractionCreate extends Event {
 
           let logChannelId;
           if (giveawaysCommands.includes(interaction.commandName)) {
-            logChannelId = this.client.config.logChannelId[5];
+            logChannelId = this.client.config.logChannelId[6];
           } else if (utilityCommands.includes(interaction.commandName)) {
             logChannelId = this.client.config.logChannelId[5];
           } else if (mineCommands.includes(interaction.commandName)) {
@@ -151,9 +151,8 @@ module.exports = class InteractionCreate extends Event {
 
           const channel = this.client.channels.cache.get(logChannelId);
           if (channel && channel.isTextBased()) {
-            const embed = this.client
-                .embed()
-                .setColor(this.client.config.color.success)
+            const embed = this.client.embed()
+                .setColor(color.success)
                 .setTitle(`Command - ${formatCapitalize(interaction.commandName)}`)
                 .setThumbnail(interaction.guild.iconURL({extension: 'jpeg'}))
                 .addFields([
@@ -197,7 +196,7 @@ module.exports = class InteractionCreate extends Event {
             });
 
             if (!data) {
-              return await interaction.reply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -209,7 +208,7 @@ module.exports = class InteractionCreate extends Event {
             } else if (data.endTime * 1000 < Date.now()) {
               return endGiveaway(this.client, color, emoji, interaction.message);
             } else if (data.ended) {
-              return await interaction.reply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -219,7 +218,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.paused) {
-              return await interaction.reply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -229,7 +228,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.entered.includes(interaction.user.id)) {
-              return await interaction.reply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -317,7 +316,7 @@ module.exports = class InteractionCreate extends Event {
             });
 
             if (!data.entered.length) {
-              return await interaction.reply({
+              return interaction.reply({
                 content: 'No participants found.',
                 ephemeral: true,
               });
@@ -354,7 +353,7 @@ module.exports = class InteractionCreate extends Event {
             });
 
             if (!data) {
-              return await interaction.reply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -366,7 +365,7 @@ module.exports = class InteractionCreate extends Event {
             } else if (data.endTime * 1000 < Date.now()) {
               return endGiveawayShopItem(this.client, color, emoji, interaction.message);
             } else if (data.ended) {
-              return await interaction.reply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -376,7 +375,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.paused) {
-              return await interaction.reply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -386,7 +385,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.entered.includes(interaction.user.id)) {
-              return await interaction.reply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -474,7 +473,7 @@ module.exports = class InteractionCreate extends Event {
             });
 
             if (!data.entered.length) {
-              return await interaction.reply({
+              return interaction.reply({
                 content: 'No participants found.',
                 ephemeral: true,
               });

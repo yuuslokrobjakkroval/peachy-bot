@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder} = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, PermissionsBitField} = require('discord.js');
 const Users = require('../schemas/user');
 const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
@@ -25,6 +25,16 @@ module.exports = class Utils {
             channelId: interaction.channel.id,
             messageId: interaction.message.id,
         }).then(giveaway => { return giveaway; }).catch(error => { console.log(`Error fetching giveaway data: ${error}`); return null });
+    }
+
+    static async getCheckPermission(ctx, userId, permission) {
+        try {
+            const member = await ctx.guild.members.fetch(userId);
+            return member.permissions.has(PermissionsBitField.Flags[permission]);
+        } catch (error) {
+            console.error('Error fetching member:', error);
+            return false; // Return false or handle error appropriately
+        }
     }
 
     static cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {
@@ -300,7 +310,6 @@ module.exports = class Utils {
 
         return button;
     }
-
 
     static createButtonRow(...buttons) {
         const actionRow = new ActionRowBuilder();

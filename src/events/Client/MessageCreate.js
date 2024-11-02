@@ -429,7 +429,7 @@ module.exports = class MessageCreate extends Event {
             try {
               let logChannelId;
               if (giveawaysCommands.includes(command.name)) {
-                logChannelId = this.client.config.logChannelId[5];
+                logChannelId = this.client.config.logChannelId[6];
               } else if (utilityCommands.includes(command.name)) {
                 logChannelId = this.client.config.logChannelId[5];
               } else if (mineCommands.includes(command.name)) {
@@ -446,9 +446,8 @@ module.exports = class MessageCreate extends Event {
 
               const channel = this.client.channels.cache.get(logChannelId);
               if (channel && channel.isTextBased()) {
-                const embed = this.client
-                    .embed()
-                    .setColor(this.client.config.color.success)
+                const embed = this.client.embed()
+                    .setColor(color.success)
                     .setTitle(`Command - ${formatCapitalize(command.name)}`)
                     .setThumbnail(message.guild.iconURL({extension: 'jpeg'}))
                     .addFields([
