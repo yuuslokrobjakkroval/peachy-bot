@@ -187,7 +187,7 @@ module.exports = class MessageCreate extends Event {
             const cancelButton = this.client.utils.labelButton('cancel', 'Cancel', 4);
             const row = this.client.utils.createButtonRow(registerButton, cancelButton)
 
-            const msg = ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true });
+            ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true }).then(msg => {
             const filter = interaction => interaction.user.id === ctx.author.id;
             const collector = msg.createMessageComponentCollector({ filter, time: 120000 });
 
@@ -324,6 +324,10 @@ module.exports = class MessageCreate extends Event {
             collector.on('end', async () => {
               await msg.edit({ components: [] });
             });
+            })
+                .catch(error => {
+                  console.error('Error in Register Command:', error);
+                });
           } else {
             this.client.users.fetch(user.userId)
                 .then(userInfo => {
