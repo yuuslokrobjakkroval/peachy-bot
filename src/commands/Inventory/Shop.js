@@ -1,7 +1,5 @@
 const { Command } = require('../../structures/index.js');
 const { ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
-const { formatString, formatCapitalize } = require('../../utils/Utils.js');
-const gif = require('../../utils/Gif.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
 const Shops = [...ShopItems];
 
@@ -29,10 +27,18 @@ module.exports = class Shop extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const shopMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.shopMessages; // Access shopMessages
-        const categories = Shops.map(shop => shop.type);
+        const categories = Shops.map(shop => shop.type); // Remove sorting
+        const categorySet = new Set(categories);
+        if (categorySet.size !== categories.length) {
+            console.error('Duplicate category values found:', categories);
+        }
         let selectedCategory = args[0] || categories[0];
         let selectedShop = Shops.find(shop => shop.type === selectedCategory);
+
+        if (!selectedShop) {
+            console.error(`No shop found for category: ${selectedCategory}`);
+            return; // Handle the case where no shop is found
+        }
         let items = selectedShop.inventory;
 
         const pages = [];
@@ -41,97 +47,94 @@ module.exports = class Shop extends Command {
 
         for (let i = 0; i < totalPages; i++) {
             const currentItems = items.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
-            const itemList = currentItems.map(item => {
-                let id = item.id ? item.id : shopMessages?.unknownItemId;
-                let name = item.name ? item.name : shopMessages?.unnamedItem;
-                return `**${id}** ${item.emoji} ${name} - ${formatString(item.price.buy)} \` ${emoji.coin} \``;
-            }).join('\n');
+            const itemList = currentItems.map(item => `**${item.id}** ${item.emoji} ${item.name} - ${client.utils.formatString(item.price.buy)} ${emoji.coin}`).join('\n');
 
             const embed = client
                 .embed()
-                .setColor(color.main)
+                .setColor(client.color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setDescription(`# ${emoji.shop.mainLeft} ${shopMessages?.shopTitle}: ${selectedShop.name} ${emoji.shop.mainRight}\n${selectedShop.description}\n${itemList}`)
-                .setImage(selectedCategory === 'food' ? gif.foodShop : gif.drinkShop)
-                .setFooter({
-                    text: shopMessages?.requestedBy.replace('%{user}', ctx.author.displayName),
-                    iconURL: ctx.author.displayAvatarURL(),
-                });
+                .setAuthor({
+                    name: `𝐒𝐇𝐎𝐏 : ${selectedShop.name}`,
+                    iconURL: ctx.author.displayAvatarURL()
+                })
+                .setDescription(`${selectedShop.description}\n${itemList}`);
 
             pages.push({ embed });
         }
 
-        await paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage, language);
+        await paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage);
     }
 };
 
-async function paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage, language) {
-    const shopMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.shopMessages; // Access shopMessages
+async function paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage) {
     let page = 0;
     let selectedItemIndex = null;
-    let items = Shops.find(shop => shop.type === selectedCategory).inventory;
+    let items = pages[0].embed.fields; // Start with items from the first page
 
     const updatePages = (selectedCategory) => {
         const selectedShop = Shops.find(shop => shop.type === selectedCategory);
         items = selectedShop.inventory;
 
-        pages.length = 0;
+        pages.length = 0; // Clear existing pages
         const totalPages = Math.ceil(items.length / itemsPerPage);
-
-        const maxIdLength = 3;
-        const maxNameLength = 13;
+        const charLen = 13;
 
         for (let i = 0; i < totalPages; i++) {
             const currentItems = items.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
 
             const itemList = currentItems.map(item => {
-                let price = formatString(item.price.buy);
-                let id = item.id ? item.id : shopMessages?.unknownItemId;
-                let name = item.name ? item.name : shopMessages?.unnamedItem;
-
-                let idPadding = ' '.repeat(Math.max(0, maxIdLength - id.length));
-                let namePadding = ' '.repeat(Math.max(0, maxNameLength - name.length));
-
-                return `\`${id}\`${idPadding} ${item.emoji} \`${name}${namePadding}${price}\` ${emoji.coin}`;
+                let price = client.utils.formatString(item.price.buy);
+                // Ensure cLength is never negative
+                let cLength = Math.max(0, charLen - item.name.length + (4 - price.length));
+                return `\`${item.id}\` ${item.emoji} \`${item.name} ${' '.repeat(cLength)} ${price}\` ${emoji.coin}`;
             }).join('\n');
 
             const embed = client
                 .embed()
                 .setColor(color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setDescription(`# ${emoji.shop.mainLeft} ${shopMessages?.shopTitle}: ${selectedShop.name} ${emoji.shop.mainRight}\n${selectedShop.description}\n\n${itemList}`)
-                .setImage(selectedCategory === 'food' ? gif.foodShop : gif.drinkShop)
-                .setFooter({
-                    text: shopMessages?.requestedBy.replace('%{user}', ctx.author.displayName),
-                    iconURL: ctx.author.displayAvatarURL(),
-                });
+                .setAuthor({
+                    name: `𝐒𝐇𝐎𝐏 : ${selectedShop.name}`,
+                    iconURL: client.user.displayAvatarURL()
+                })
+                .setDescription(`${selectedShop.description}\n\n${itemList}`);
 
             pages.push({ embed });
         }
     };
 
-    const getButtonRow = (selectedItemIndex, items) => {
+
+    const getButtonRow = () => {
         const homeButton = client.utils.emojiButton('home', '🏠', 2);
         const prevButton = client.utils.emojiButton('prev_item', '⬅️', 2);
         const nextButton = client.utils.emojiButton('next_item', '➡️', 2);
 
+        // Generate category options
+        const categoryOptions = categories.map(cat => {
+            const shop = Shops.find(shop => shop.type === cat);
+            return {
+                label: shop.name,
+                value: cat,
+                default: cat === selectedCategory,
+            };
+        });
+
+        // Generate item options
+        const itemOptions = items.map(item => ({
+            label: item.name,
+            value: item.id,
+            default: item.id === items[selectedItemIndex]?.id,
+        }));
+
         const filterButton = new StringSelectMenuBuilder()
             .setCustomId('category_select')
-            .setPlaceholder(shopMessages?.selectCategoryPlaceholder)
-            .addOptions(categories.map(cat => ({
-                label: Shops.find(shop => shop.type === cat).name,
-                value: cat,
-                default: cat === selectedCategory
-            })));
+            .setPlaceholder('Select a category')
+            .addOptions(categoryOptions);
 
         const itemSelectButton = new StringSelectMenuBuilder()
             .setCustomId('item_select')
-            .setPlaceholder(shopMessages?.selectItemPlaceholder)
-            .addOptions(items.map(item => ({
-                label: item.name || shopMessages?.unnamedItem,
-                value: item.id || shopMessages?.unknownItemId,
-                default: item.id === items[selectedItemIndex]?.id
-            })).slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage));
+            .setPlaceholder('Select an item')
+            .addOptions(itemOptions);
 
         const row1 = new ActionRowBuilder().addComponents(filterButton);
         const row2 = new ActionRowBuilder().addComponents(itemSelectButton);
@@ -145,20 +148,21 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
 
         const embed = client
             .embed()
-            .setColor(color.main)
+            .setColor(client.color.main)
             .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setDescription(`# ${shopMessages?.itemDetail}\n${emoji.shop.mainLeft}  ${item.name || shopMessages?.unnamedItem} ${emoji.shop.mainRight}\n**ID:** \`${item.id || shopMessages?.unknownItemId}\`\n**Description:** ${item.description || shopMessages?.noDescription}\n**Price:** ${formatString(item.price.buy)} ${emoji.coin}\n**Type:** ${formatCapitalize(item.type || shopMessages?.unknownType)}`)
-            .setImage(client.utils.emojiToImage(item.emoji))
-            .setFooter({
-                text: shopMessages?.requestedBy.replace('%{user}', ctx.author.displayName),
-                iconURL: ctx.author.displayAvatarURL(),
-            });
+            .setAuthor({
+                name: `𝐈𝐓𝐄𝐌 𝐃𝐄𝐓𝐀𝐈𝐋𝐒 : ${item.name}`,
+                iconURL: ctx.author.displayAvatarURL()
+            })
+            .setDescription(`**ID:** \`${item.id}\`\n**Description:** ${item.description}\n**Price:**  ${client.utils.formatString(item.price.buy)} ${emoji.coin}\n**Type:** ${client.utils.formatCapitalize(item.type)}`)
+            .setImage(item.image);
 
         return { embed };
     };
 
+    // Initial page setup
     updatePages(selectedCategory);
-    const messageOptions = getButtonRow(selectedItemIndex, items);
+    const messageOptions = getButtonRow();
     const msg = ctx.isInteraction
         ? await ctx.interaction.reply({ ...messageOptions, fetchReply: true })
         : await ctx.channel.send({ ...messageOptions, fetchReply: true });
@@ -171,44 +175,58 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
     collector.on('collect', async int => {
         if (int.customId === 'home') {
             selectedCategory = categories[0];
-            updatePages(selectedCategory);
-            selectedItemIndex = null;
             page = 0;
-            await int.update({
-                embeds: [pages[page]?.embed],
-                components: getButtonRow(selectedItemIndex, items).components
-            });
+            selectedItemIndex = null; // Reset item selection
+            updatePages(selectedCategory); // Update pages for the default category
+            await int.update(getButtonRow());
         } else if (int.customId === 'prev_item') {
+            // Handle previous item
             if (selectedItemIndex !== null) {
                 selectedItemIndex--;
                 if (selectedItemIndex < 0) selectedItemIndex = items.length - 1;
                 const itemDetails = displayItemDetails(selectedItemIndex);
-                await int.update({ embeds: [itemDetails.embed], components: getButtonRow(selectedItemIndex, items).components });
+                await int.update({ embeds: [itemDetails.embed], components: getButtonRow() });
             } else {
+                // Handle previous page
                 page--;
                 if (page < 0) page = pages.length - 1;
-                await int.update(getButtonRow(selectedItemIndex, items));
+                await int.update(getButtonRow());
             }
         } else if (int.customId === 'next_item') {
+            // Handle next item
             if (selectedItemIndex !== null) {
                 selectedItemIndex++;
                 if (selectedItemIndex >= items.length) selectedItemIndex = 0;
                 const itemDetails = displayItemDetails(selectedItemIndex);
-                await int.update({ embeds: [itemDetails.embed], components: getButtonRow(selectedItemIndex, items).components });
+                await int.update({
+                    embeds: [itemDetails.embed],
+                    components: getButtonRow(selectedItemIndex, items).components
+                });
             } else {
+                // Handle next page
                 page++;
                 if (page >= pages.length) page = 0;
-                await int.update(getButtonRow(selectedItemIndex, items));
+                await int.update({
+                    embeds: [pages[page].embed],
+                    components: getButtonRow(selectedItemIndex, items).components
+                });
             }
-        } else if (int.customId === 'category_select') {
+        }
+        else if (int.customId === 'category_select') {
             selectedCategory = int.values[0];
             updatePages(selectedCategory);
             selectedItemIndex = null;
             page = 0;
-            await int.update(getButtonRow(selectedItemIndex, items));
+            await int.update(getButtonRow());
         } else if (int.customId === 'item_select') {
+            // Handle item selection
             selectedItemIndex = items.findIndex(i => i.id === int.values[0]);
-            await int.update({ embeds: [displayItemDetails(selectedItemIndex).embed], components: getButtonRow(selectedItemIndex, items).components });
+
+            // Update the interaction response with the item details and correct button row
+            await int.update({
+                embeds: [displayItemDetails(selectedItemIndex).embed],
+                components: getButtonRow(selectedItemIndex, items).components
+            });
         }
     });
 
@@ -216,3 +234,4 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
         msg.edit({ components: [] });
     });
 }
+

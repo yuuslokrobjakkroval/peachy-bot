@@ -84,16 +84,16 @@ async function generateEmbed(author, client, color, emoji, dealer, player, bet, 
 
     if (end == 'w') {
         endColor = color.success;
-        description = `**\nYou bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You won \`${client.utils.formatNumber(winnings)}\` ${emoji.coin}**`;
+        description = `**You bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You won \`${client.utils.formatNumber(winnings)}\` ${emoji.coin}**`;
     } else if (end == 'l') {
         endColor = color.danger;
-        description = `**\nYou bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You lost \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**`;
+        description = `**You bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You lost \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**`;
     } else if (end == 'tb') {
         endColor = color.blue;
-        description = '**\nYou both bust!**';
+        description = '**You both bust!**';
     } else if (end == 't') {
         endColor = color.blue;
-        description = '**\nYou tied!**';
+        description = '**You tied!**';
     } else {
         endColor = color.main;
         dealerValue.points = dealerValue.shownPoints + '+?';
@@ -105,7 +105,7 @@ async function generateEmbed(author, client, color, emoji, dealer, player, bet, 
             `The winner is the one who's closest to 21.\n` +
             `## **DEALER ${DEALER} \`[${dealerValue.points}]\`**\n` +
             `# \n${dealerValue.display}\n` +
-            `## **\n${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
+            `## **${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
             `# ${playerValue.display}\n` +
             `${description}`,
         thumbnail: {

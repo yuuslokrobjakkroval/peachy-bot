@@ -10,30 +10,35 @@ module.exports = {
     verify: '<:VERIFY:1294514114856615947>',
 
     // SHOP
+    // WALLPAPER
+    wallpaper: '<a:FRAME:1302195772451979274>',
     // FOOD
-    bun: '<:retrodumplings:1287302759674286193>',
-    rainbowDonut: '<:rainbowdonut:1287302705756508160>',
-    brownDonut: '<:browndonut:1287302715399209032>',
-    rainbowCake: '<:rainbowcake:1287302735875543052>',
-    chocolatecake: '<:chocolatecake:1287302745094750231>',
+    bun: '<:DUMPLING:1302197238252048414>',
+    brownDonut: '<:DONUT:1302197268287328336>',
+    chocolatecake: '<:CHOCOLATECAKE:1302197277334700072>',
 
     // DRINK
-    turtle: '<:turtleMilk:1287298882463731712>',
-    sussy: '<:sussy:1287298864855912529>',
-    rainbow: '<:rainbowMilk:1287299165201891369>',
-    peppermint: '<:peppermint:1287299099741257820>',
-    oreo: '<:oreo:1287299111195774987>',
-    clover: '<:clover:1287299153269096511>',
-    brown: '<:brown:1287299319111880738>',
-    orange: '<:orange:1287299123405389845>',
+    butterflyCan: '<:BUTTERFLYCAN:1302216098590228540>',
+    cloudCan: '<:CLOUDCAN:1302216104537489408>',
+    froggieCan: '<:FROGCAN:1302216117124595712>',
+    sakuraCan: '<:SAKURACAN:1302216132421357659>',
+    sunflowerCan: '<:SUNFLOWERCAN:1302216140147392554>',
+    violetCan: '<:VIOLETCAN:1302216149400027186>',
+    moonCan: '<:MOONCAN:1302216123827359774>',
+
+    // CAKE
+    avocadoCake: '<:AVOCADOCAKE:1302197878550429728>',
+    bearCake: '<:BEARCAKE:1302197949857792002>',
+    starCake: '<:STARCAKE:1302197992492634174>',
+    princeCake: '<:PRINCE:1302198008405954571>',
+    princessCake: '<:PRINCESS:1302198019105493041>',
 
     // THEME
-    pjum: '<:PLUM:1283316419647242282>',
-    sea: '<:MAIN:1281847051860054016>',
+    mysticCharm: '<a:MAINV2:1287988959606997012>',
+    oceanBreeze: '<:MAIN:1281847051860054016>',
     halloween: '<:HECONOMY:1290645165391872020>',
     heaven: '<:MAINHEAVEN:1293603530699046982>',
     sakura: '<:SAKURAMAIN:1295967137482936440>',
-    childhood: '<:CHILDGAMBLING:1299294423410147389>',
     halloweenNew: '<:H2MAIN:1300675214182711357>',
 
     // EXCHANGE

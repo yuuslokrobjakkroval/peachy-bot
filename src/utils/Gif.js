@@ -10,7 +10,12 @@ module.exports = {
     gift: 'https://i.imgur.com/K6n0EPx.gif',
 
     // ECONOMY
+    balanceThumbnail: 'https://i.imgur.com/3KU57Ed.gif',
     balanceBanner: 'https://i.imgur.com/L0S7Zr1.png',
+
+    // SHOP
+    foodShop: 'https://i.imgur.com/rCAfhxi.jpg',
+    drinkShop: 'https://i.imgur.com/cGlVN9t.jpg',
 
     // QR CODE
     qrKH: 'https://i.imgur.com/D1pGSlN.jpg',

@@ -36,7 +36,7 @@ module.exports = class Balance extends Command {
 
                 const embed = client.embed()
                     .setColor(color.main)
-                    .setThumbnail(client.utils.emojiToImage(emoji.main))
+                    .setThumbnail(gif.balanceThumbnail ? gif.balanceThumbnail : client.utils.emojiToImage(emoji.main))
                     .setDescription(
                         balanceMessages.description
                             .replace('%{mainLeft}', emoji.mainLeft)

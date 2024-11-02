@@ -23,22 +23,6 @@ module.exports = [
             },
             {
                 id: 'f02',
-                name: 'Rikko Donut',
-                description: 'Eat to earn XP and upgrade level',
-                type: 'food',
-                able: {
-                    use: true,
-                    gift: false,
-                    multiple: false,
-                },
-                quantity: 1,
-                emoji: emoji.rainbowDonut,
-                available: ['use', 'gift'],
-                xp: 40,
-                price: { buy: 12000, sell: 0 },
-            },
-            {
-                id: 'f03',
                 name: 'Benji Donut',
                 description: 'Eat to earn XP and upgrade level',
                 type: 'food',
@@ -54,23 +38,7 @@ module.exports = [
                 price: { buy: 12000, sell: 0 },
             },
             {
-                id: 'f04',
-                name: 'Rippo Cake',
-                description: 'Eat to earn XP and upgrade level',
-                type: 'food',
-                able: {
-                    use: true,
-                    gift: false,
-                    multiple: false,
-                },
-                quantity: 1,
-                emoji: emoji.rainbowCake,
-                available: ['use', 'gift'],
-                xp: 30,
-                price: { buy: 10000, sell: 0 },
-            },
-            {
-                id: 'f05',
+                id: 'f03',
                 name: 'Chico Cake',
                 description: 'Eat to earn XP and upgrade level',
                 type: 'food',
@@ -94,7 +62,7 @@ module.exports = [
         inventory: [
             {
                 id: 'd01',
-                name: 'Tembo',
+                name: 'Butterfly D.',
                 description: 'Drink to earn XP and upgrade level',
                 type: 'drink',
                 able: {
@@ -103,14 +71,14 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.turtle,
+                emoji: emoji.butterflyCan,
                 available: ['use', 'gift'],
-                xp: 50,
-                price: { buy: 15000, sell: 0 },
+                xp: 40,
+                price: { buy: 7e5, sell: 0 },
             },
             {
                 id: 'd02',
-                name: 'Sussy',
+                name: 'Cloud Fizz',
                 description: 'Drink to earn XP and upgrade level',
                 type: 'drink',
                 able: {
@@ -119,14 +87,14 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.sussy,
+                emoji: emoji.cloudCan,
                 available: ['use', 'gift'],
                 xp: 50,
-                price: { buy: 15000, sell: 0 },
+                price: { buy: 7e5, sell: 0 },
             },
             {
                 id: 'd03',
-                name: 'Rego',
+                name: 'Froggie Dr.',
                 description: 'Drink to earn XP and upgrade level',
                 type: 'drink',
                 able: {
@@ -135,14 +103,14 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.rainbow,
+                emoji: emoji.froggieCan,
                 available: ['use', 'gift'],
                 xp: 40,
-                price: { buy: 12000, sell: 0 },
+                price: { buy: 7e5, sell: 0 },
             },
             {
                 id: 'd04',
-                name: 'Smoothie',
+                name: 'Sakura Sip',
                 description: 'Drink to earn XP and upgrade level',
                 type: 'drink',
                 able: {
@@ -151,14 +119,14 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.peppermint,
+                emoji: emoji.sakuraCan,
                 available: ['use', 'gift'],
                 xp: 40,
-                price: { buy: 12000, sell: 0 },
+                price: { buy: 7e5, sell: 0 },
             },
             {
                 id: 'd05',
-                name: 'Oreo',
+                name: 'Sunny Splash',
                 description: 'Drink to earn XP and upgrade level',
                 type: 'drink',
                 able: {
@@ -167,14 +135,14 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.oreo,
+                emoji: emoji.sunflowerCan,
                 available: ['use', 'gift'],
                 xp: 40,
-                price: { buy: 12000, sell: 0 },
+                price: { buy: 7e5, sell: 0 },
             },
             {
                 id: 'd06',
-                name: 'Clover',
+                name: 'Violet Brew',
                 description: 'Drink to earn XP and upgrade level',
                 type: 'drink',
                 able: {
@@ -183,14 +151,14 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.clover,
+                emoji: emoji.violetCan,
                 available: ['use', 'gift'],
                 xp: 40,
-                price: { buy: 12000, sell: 0 },
+                price: { buy: 7e5, sell: 0 },
             },
             {
                 id: 'd07',
-                name: 'Brown',
+                name: 'Harvest Moon',
                 description: 'Drink to earn XP and upgrade level',
                 type: 'drink',
                 able: {
@@ -199,29 +167,283 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.brown,
+                emoji: emoji.moonCan,
                 available: ['use', 'gift'],
-                xp: 30,
-                price: { buy: 10000, sell: 0 },
-            },
-            {
-                id: 'd08',
-                name: 'Orange',
-                description: 'Drink to earn XP and upgrade level',
-                type: 'drink',
-                able: {
-                    use: true,
-                    gift: true,
-                    multiple: false,
-                },
-                quantity: 1,
-                emoji: emoji.orange,
-                available: ['use', 'gift'],
-                xp: 30,
-                price: { buy: 10000, sell: 0 },
+                xp: 40,
+                price: { buy: 7e5, sell: 0 },
             },
         ],
 
+    },
+    {
+        name: 'Cake',
+        description: `Eat items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
+        type: 'cake',
+        inventory: [
+            {
+                id: 'c01',
+                name: 'Bear Treat',
+                description: 'Eat to earn XP and upgrade level',
+                type: 'cake',
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.bearCake,
+                available: ['use', 'gift'],
+                xp: 40,
+                price: { buy: 8e5, sell: 0 },
+            },
+            {
+                id: 'c02',
+                name: 'Avocado Pie',
+                description: 'Eat to earn XP and upgrade level',
+                type: 'cake',
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.avocadoCake,
+                available: ['use', 'gift'],
+                xp: 55,
+                price: { buy: 1e5, sell: 0 },
+            },
+            {
+                id: 'c03',
+                name: 'Starlit Cake',
+                description: 'Eat to earn XP and upgrade level',
+                type: 'cake',
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.starCake,
+                available: ['use', 'gift'],
+                xp: 55,
+                price: { buy: 1e5, sell: 0 },
+            },
+            {
+                id: 'c04',
+                name: 'Royal Cake',
+                description: 'Eat to earn XP and upgrade level',
+                type: 'cake',
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.princeCake,
+                available: ['use', 'gift'],
+                xp: 75,
+                price: { buy: 15e4, sell: 0 },
+            },
+            {
+                id: 'c05',
+                name: 'Princess P.',
+                description: 'Eat to earn XP and upgrade level',
+                type: 'cake',
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.princessCake,
+                available: ['use', 'gift'],
+                xp: 75,
+                price: { buy: 15e4, sell: 0 },
+            },
+        ],
+    },
+    {
+        name: "Wallpaper",
+        description: "Collect wallpapers to use with your profile!\n**・** `pbuy {id}` to buy an item\n**・** Some items may be used or gifted.",
+        type: "wallpaper",
+        inventory: [
+            {
+                id: "w01",
+                name: "Adorable Luck",
+                description: "Peachy Cat and Goma are Chinese lucky cats in this super adorable wallpaper.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/51ycl94.jpg"
+            },
+            {
+                id: "w02",
+                name: "Bright Joyride",
+                description: "Goma is giving Peachy Cat a piggyback ride with a duck balloon in a bright summer field.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/EIFaNA5.jpg"
+            },
+            {
+                id: "w03",
+                name: "Juicy Bliss",
+                description: "Peachy Cat and Goma sitting under a beautiful cherry blossom tree drinking peach juice.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/Yikhyq9.jpg"
+            },
+            {
+                id: "w04",
+                name: "Sunny Duo",
+                description: "Meet Peach and Goma, the ultimate power couple of cuteness, in their playful poolside adventure.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/vvxRxU1.jpg"
+            },
+            {
+                id: "w05",
+                name: "Refreshing Fun",
+                description: "Goma is helping Peachy Cat stay cool on a hot summer's day.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/2W13m0Y.jpg"
+            },
+            {
+                id: "w06",
+                name: "Bunnies Bake",
+                description: "Peach is making Goma mooncakes for the mid-autumn festival with cute bunnies helping.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/9kJTIbb.jpg"
+            },
+            {
+                id: "w07",
+                name: "Petal Pals",
+                description: "Peachy Cat and Goma are walking through beautiful yellow flowers with matching yellow parasols.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/HJgHXVW.jpg"
+            },
+            {
+                id: "w08",
+                name: "Lake Adventure",
+                description: "Goma is giving Peach a fun ride in a boat at sunset on the lake with a pagoda in the distance.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/WRQ9JgJ.jpg"
+            },
+            {
+                id: "w09",
+                name: "Peachy Haunt",
+                description: "Peachy Cat is helping Goma with ghosts in this cute Halloween-themed wallpaper.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/KfLygeO.jpg"
+            },
+            {
+                id: "w10",
+                name: "Cherry Joy",
+                description: "Peach & Goma are super happy in this adorable May sunset with cherry blossoms falling.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/EwhdldE.jpg"
+            },
+            {
+                id: "w11",
+                name: "Sunlit Serenity",
+                description: "Peach & Goma are out in the sunflower fields catching dragonflies in this cute wallpaper.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.wallpaper,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/7Iot3LV.jpg"
+            },
+        ]
     },
     {
         name: 'Theme',
@@ -239,7 +461,7 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.sea,
+                emoji: emoji.mysticCharm,
                 available: ['use'],
                 price: { buy: 15e6, sell: 13e6 },
             },
@@ -254,13 +476,13 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.sea,
+                emoji: emoji.oceanBreeze,
                 available: ['use'],
                 price: { buy: 15e6, sell: 13e6 },
             },
             {
                 id: 't03',
-                name: 'Halloween',
+                name: 'Fright Fest',
                 description: 'Get into the spooky spirit with this Halloween-themed set, featuring eerie colors and Halloween-inspired emojis.',
                 type: 'theme',
                 able: {
@@ -275,7 +497,7 @@ module.exports = [
             },
             {
                 id: 't04',
-                name: 'Halloween V2',
+                name: 'Boo Bash',
                 description: 'Get into the spooky spirit with this Halloween-themed set, featuring eerie colors and Halloween-inspired emojis.',
                 type: 'theme',
                 able: {
@@ -293,13 +515,13 @@ module.exports = [
     {
         name: 'Special Theme',
         description: `Special Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
-        type: 'theme',
+        type: 'special theme',
         inventory: [
             {
                 id: 'st01',
                 name: 'Celestial Grace',
                 description: 'A divine theme that bathes your embed in heavenly whites and golds, with ethereal emojis to match.',
-                type: 'theme',
+                type: 'special theme',
                 able: {
                     use: true,
                     gift: false,
@@ -314,7 +536,7 @@ module.exports = [
                 id: 'st02',
                 name: 'Sakura Serenity',
                 description: 'Immerse your embed in the soft, tranquil beauty of cherry blossoms with delicate pinks and gentle whites. Embrace a peaceful atmosphere with serene sakura emojis to enhance your design.',
-                type: 'theme',
+                type: 'special theme',
                 able: {
                     use: true,
                     gift: false,
