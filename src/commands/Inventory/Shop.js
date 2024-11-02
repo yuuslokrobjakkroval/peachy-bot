@@ -27,7 +27,8 @@ module.exports = class Shop extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const categories = Shops.map(shop => shop.type); // Remove sorting
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const categories = Shops.map(shop => shop.type);
         const categorySet = new Set(categories);
         if (categorySet.size !== categories.length) {
             console.error('Duplicate category values found:', categories);
@@ -37,7 +38,7 @@ module.exports = class Shop extends Command {
 
         if (!selectedShop) {
             console.error(`No shop found for category: ${selectedCategory}`);
-            return; // Handle the case where no shop is found
+            return;
         }
         let items = selectedShop.inventory;
 
@@ -52,21 +53,22 @@ module.exports = class Shop extends Command {
             const embed = client
                 .embed()
                 .setColor(client.color.main)
+                .setTitle(`𝐒𝐇𝐎𝐏 : ${selectedShop.name}`)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setAuthor({
-                    name: `𝐒𝐇𝐎𝐏 : ${selectedShop.name}`,
-                    iconURL: ctx.author.displayAvatarURL()
+                .setDescription(`${selectedShop.description}\n${itemList}`)
+                .setFooter({
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
                 })
-                .setDescription(`${selectedShop.description}\n${itemList}`);
 
             pages.push({ embed });
         }
 
-        await paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage);
+        await paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage, generalMessages);
     }
 };
 
-async function paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage) {
+async function paginate(client, ctx, color, emoji, pages, categories, selectedCategory, itemsPerPage, generalMessages) {
     let page = 0;
     let selectedItemIndex = null;
     let items = pages[0].embed.fields; // Start with items from the first page
@@ -92,12 +94,13 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
             const embed = client
                 .embed()
                 .setColor(color.main)
+                .setTitle(`𝐒𝐇𝐎𝐏 : ${selectedShop.name}`)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setAuthor({
-                    name: `𝐒𝐇𝐎𝐏 : ${selectedShop.name}`,
-                    iconURL: client.user.displayAvatarURL()
+                .setDescription(`${selectedShop.description}\n\n${itemList}`)
+                .setFooter({
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
                 })
-                .setDescription(`${selectedShop.description}\n\n${itemList}`);
 
             pages.push({ embed });
         }
@@ -149,13 +152,14 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
         const embed = client
             .embed()
             .setColor(client.color.main)
-            .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setAuthor({
-                name: `𝐈𝐓𝐄𝐌 𝐃𝐄𝐓𝐀𝐈𝐋𝐒 : ${item.name}`,
-                iconURL: ctx.author.displayAvatarURL()
-            })
+            .setTitle(`𝐈𝐓𝐄𝐌 𝐃𝐄𝐓𝐀𝐈𝐋𝐒 : ${item.name}`)
+            .setThumbnail(item.emoji ? client.utils.emojiToImage(item.emoji) : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
             .setDescription(`**ID:** \`${item.id}\`\n**Description:** ${item.description}\n**Price:**  ${client.utils.formatString(item.price.buy)} ${emoji.coin}\n**Type:** ${client.utils.formatCapitalize(item.type)}`)
-            .setImage(item.image);
+            .setImage(item.image)
+            .setFooter({
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            })
 
         return { embed };
     };

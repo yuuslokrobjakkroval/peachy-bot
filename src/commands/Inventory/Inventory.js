@@ -66,7 +66,7 @@ module.exports = class Inventory extends Command {
             });
 
             const fields = [];
-            const inventoryTypes = ['milk', 'food', 'drink', 'theme'];
+            const inventoryTypes = ['milk', 'food', 'drink', 'theme', 'special theme', 'wallpaper'];
 
             // Organize items by type and ensure they fit into Discord's embed field length limits
             inventoryTypes.forEach(type => {
@@ -79,7 +79,7 @@ module.exports = class Inventory extends Command {
                     items.forEach(item => {
                         if (chunkLength + item.length + 1 > 1024) {
                             fields.push({
-                                name: client.utils.toNameCase(type),
+                                name: client.utils.formatCapitalize(type),
                                 value: chunk.join('\n'),
                                 inline: false,
                             });
@@ -92,7 +92,7 @@ module.exports = class Inventory extends Command {
 
                     if (chunk.length > 0) {
                         fields.push({
-                            name: client.utils.toNameCase(type),
+                            name: client.utils.formatCapitalize(type),
                             value: chunk.join('\n'),
                             inline: false,
                         });

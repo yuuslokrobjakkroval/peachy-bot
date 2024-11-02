@@ -524,7 +524,7 @@
 			"notEnoughCoins": "You need {{coinEmote}}{{neededCoins}} more to buy {{itemEmote}} **{{itemName}}**.",
 			"success": "successfully purchased",
 			"partial": "but you could only afford",
-			"description": "You have {{afford}} {{itemEmote}} **{{itemName}}** for {{coinEmote}}{{totalPrice}}. You bought **{{amountToBuy}}** items.",
+			"description": "You have {{afford}} {{itemEmote}} **{{itemName}}** for **{{totalPrice}}** {{coinEmote}}.\nYou bought **{{amountToBuy}}** items.",
 			"zeroBalance": "You have no coins to make a purchase. Earn coins first before buying items."
 		},
 		"drinkMessages": {
@@ -607,10 +607,11 @@
 			"itemListFooter": "Use `shopinfo <id>` to get more details about an item."
 		},
 		"useMessages": {
-			"themeID": "Theme with ID {{itemId}} not found.",
-			"notOwned": "You do not own the theme {{itemName}}.",
-			"unavailable": "The theme {itemName} is not available for use.",
-			"applied": "Successfully applied the theme {{itemEmote}} {{itemName}}!"
+			"themeID": "Theme with ID %{itemId} not found.",
+			"notOwned": "You do not own the theme %{itemName}.",
+			"unavailable": "The theme %{itemName} is not available for use.",
+			"applied": "Successfully applied the theme %{itemEmote} %{itemName}!",
+			"alreadyEquipped": "You are already using %{itemEmote} **%{itemName}**."
 		}
 	},
 	"profileMessages": {

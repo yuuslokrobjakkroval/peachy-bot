@@ -35,7 +35,8 @@ module.exports = class ShopInfo extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const shopInfoMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.shopInfoMessages; // Reference shopInfoMessages
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const shopInfoMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.shopInfoMessages;
 
         const itemId = args[0];
 
