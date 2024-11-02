@@ -48,7 +48,7 @@ module.exports = class Hug extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions ? emoji.actions.hugs : globalEmoji.actions.hugs);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.hugs ? emoji.actions.hugs : globalEmoji.actions.hugs);
 
             // Create the embed message for hugging
             const embed = client.embed()

@@ -286,27 +286,6 @@
 
 	},
 	"gameMessages": {
-		"puzzleMessages": {
-			"title": "🧩 Emoji Puzzle",
-			"prompt": "What does this mean?",
-			"correct": {
-				"title": "Correct!",
-				"description": "Well done, you guessed the emoji puzzle correctly!"
-			},
-			"wrong": {
-				"title": "❌ Wrong!",
-				"description": "You have",
-				"guessesLeft": "guesses left."
-			},
-			"timeout": {
-				"title": "⏳ Time is up!",
-				"description": "The correct answer was"
-			},
-			"gameOver": {
-				"title": "❌ Game Over!",
-				"description": "You've used all your guesses! The correct answer was"
-			}
-		},
 		"guessNumberMessages": {
 			"insufficientBalance": {
 				"title": "Insufficient Balance",
@@ -330,12 +309,6 @@
 			"timeout": {
 				"description": "⏳ Time is up! You didn't guess the number in time."
 			}
-		},
-		"rollMessages": {
-			"invalidDice": "Invalid dice type! Use something like d6, d20, etc.",
-			"invalidSides": "Invalid number of sides for a dice.",
-			"win": "You win!",
-			"lose": "You lose!"
 		}
 	},
 	"informationMessages": {
@@ -343,7 +316,7 @@
 			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "Here are the commands available:",
 			"note": "Note: Some commands may display usernames in lists retrieved by the bot.",
-			"footer": "© Copyright By KYUU",
+			"footer": "© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐊𝐘𝐔𝐔",
 			"supportButton": "Click for support",
 			"commandNotFound": "Command not found:",
 			"commandTitle": "Help for command",
@@ -353,20 +326,20 @@
 			"botPermissions": "Bot Permissions:",
 			"examples": "Example(s):",
 			"categoriesMessages": {
-				"actions": "ACTIONS",
-				"bank": "BANK",
-				"economy": "ECONOMY",
-				"inventory": "INVENTORY",
-				"fun": "FUN",
-				"games": "GAMES",
-				"gambling": "GAMBLING",
-				"giveaways": "GIVEAWAYS",
-				"profile": "PROFILE",
-				"relationships": "RELATIONSHIP",
-				"social": "SOCIALS",
-				"emotes": "EMOTES",
-				"utility": "UTILITY",
-				"info": "INFORMATION"
+				"actions": "𝐀𝐂𝐓𝐈𝐎𝐍𝐒",
+				"bank": "𝐁𝐀𝐍𝐊",
+				"economy": "𝐄𝐂𝐎𝐍𝐎𝐌𝐘",
+				"inventory": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
+				"fun": "𝐅𝐔𝐍",
+				"games": "𝐆𝐀𝐌𝐄𝐒",
+				"gambling": "𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆",
+				"giveaways": "𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘𝐒",
+				"profile": "𝐏𝐑𝐎𝐅𝐈𝐋𝐄",
+				"relationships": "𝐑𝐄𝐋𝐀𝐓𝐈𝐎𝐍𝐒𝐇𝐈𝐏",
+				"social": "𝐒𝐎𝐂𝐈𝐀𝐋𝐒",
+				"emotes": "𝐄𝐌𝐎𝐓𝐄𝐒",
+				"utility": "𝐔𝐓𝐈𝐋𝐈𝐓𝐘",
+				"info": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍"
 			},
 			"directoriesMessages": {
 				"bite": "bite",

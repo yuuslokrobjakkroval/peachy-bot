@@ -6,9 +6,11 @@ const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 
-const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight, gif.welcomeNine, gif.welcomeTen];
+// const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight, gif.welcomeNine, gif.welcomeTen];
 
 const activeGames = new Map();
+
+const GUILD_ID = '1300337265259843615';
 
 function getRandomXp(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -29,6 +31,9 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
+
+    if (message.guild.id !== GUILD_ID) return;
+
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
       const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
       const prefix = this.client.config.prefix;

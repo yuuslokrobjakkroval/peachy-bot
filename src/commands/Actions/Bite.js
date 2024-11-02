@@ -49,7 +49,7 @@ module.exports = class Bite extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions ? emoji.actions.bites : globalEmoji.actions.bites);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.bites ? emoji.actions.bites : globalEmoji.actions.bites);
 
             // Create the embed message for biting
             const embed = client.embed()

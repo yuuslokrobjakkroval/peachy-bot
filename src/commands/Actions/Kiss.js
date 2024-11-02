@@ -51,7 +51,7 @@ module.exports = class Kiss extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions ? emoji.actions.kisses : globalEmoji.actions.kisses);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.kisses ? emoji.actions.kisses : globalEmoji.actions.kisses);
 
             // Create the embed for the kiss action
             const embed = client.embed()

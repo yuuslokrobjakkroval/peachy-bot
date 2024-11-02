@@ -51,7 +51,7 @@ module.exports = class Slap extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions ? emoji.actions.slaps : globalEmoji.actions.slaps);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.slaps ? emoji.actions.slaps : globalEmoji.actions.slaps);
 
             // Create the embed for the slap action
             const embed = client.embed()

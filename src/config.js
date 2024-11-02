@@ -39,7 +39,7 @@ module.exports = {
     directory: path.resolve('./src/languages'), // <= location of language
   },
   links: {
-    banner: 'https://i.imgur.com/kYXE4No.gif',
+    banner: 'https://i.imgur.com/fFqwcK2.gif',
     support: 'https://discord.gg/peachgoma',
     invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&integration_type=0&scope=bot+applications.commands`,
     vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,

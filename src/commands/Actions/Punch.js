@@ -51,7 +51,7 @@ module.exports = class Punch extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions ? emoji.actions.punches : globalEmoji.actions.punches);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.punches ? emoji.actions.punches : globalEmoji.actions.punches);
 
             // Create the embed for the punch action
             const embed = client.embed()
