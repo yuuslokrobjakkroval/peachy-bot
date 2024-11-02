@@ -69,7 +69,7 @@ module.exports = class Slots extends Command {
 			let win = 0;
 
 			if (rand <= 26) { // 26%
-				win = baseCoins * 2;
+				win = baseCoins ;
 				rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
 			} else if (rand <= 36) { // 10%
 				win = baseCoins * 3;
@@ -78,7 +78,7 @@ module.exports = class Slots extends Command {
 				win = baseCoins * 4;
 				rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
 			} else if (rand <= 54) { // 10%
-				win = baseCoins;
+				win = baseCoins* 2;
 				rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
 			} else if (rand <= 58) { // 4%
 				win = baseCoins * 5;
@@ -99,12 +99,12 @@ module.exports = class Slots extends Command {
 			const initialEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
-				.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${emoji.slots.spin} ${emoji.slots.spin} ${emoji.slots.spin}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
+				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔══ஓ๑♡๑ஓ══╗\n ## **❀     ${emoji.slots.spin} ${emoji.slots.spin} ${emoji.slots.spin}    ❀**\n ### ╚══ஓ๑♡๑ஓ══╝\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
 				.setFooter({
 					text: `${ctx.author.displayName}, your game is in progress!`,
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
 				})
-
+			
 			ctx.sendMessage({embeds: [initialEmbed]}).then(initialMessage => {
 				ctx.msg = initialMessage; // Store the message object
 
@@ -119,7 +119,7 @@ module.exports = class Slots extends Command {
 			const spinEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
-				.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${emoji.slots.spin} ${emoji.slots.spin}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
+				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔══ஓ๑♡๑ஓ══╗\n ## **❀     ${rslots[0]} ${emoji.slots.spin} ${emoji.slots.spin}    ❀**\n ### ╚══ஓ๑♡๑ஓ══╝\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
 				.setFooter({
 					text: `${ctx.author.displayName}, your game is in progress!`,
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
@@ -128,7 +128,7 @@ module.exports = class Slots extends Command {
 			const spinSecondEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
-				.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${emoji.slots.spin} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
+				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔══ஓ๑♡๑ஓ══╗\n ## **❀     ${rslots[0]} ${emoji.slots.spin} ${rslots[2]}    ❀**\n ### ╚══ஓ๑♡๑ஓ══╝\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
 				.setFooter({
 					text: `${ctx.author.displayName}, your game is in progress!`,
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
@@ -137,7 +137,7 @@ module.exports = class Slots extends Command {
 			const resultEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
-				.setDescription(`# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### \`╭┈ • ┈ ୨୧ ┈ • ┈╮\`\n ## **\`|\`     ${rslots[0]} ${rslots[1]} ${rslots[2]}     \`|\`**\n ### \`╰┈ • ┈ ୨୧ ┈ • ┈╯\`\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n${win === 0 ? `and lost **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}` : `and won **${client.utils.formatNumber(win)}** ${emoji.coin}`}`)
+				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔══ஓ๑♡๑ஓ══╗\n ## **❀     ${rslots[0]} ${rslots[1]} ${rslots[2]}    ❀**\n ### ╚══ஓ๑♡๑ஓ══╝\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n${win === 0 ? `and lost **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}` : `and won **${client.utils.formatNumber(win)}** ${emoji.coin}`}`)
 				.setFooter({
 					text: `${ctx.author.displayName}! your game is over.`,
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),

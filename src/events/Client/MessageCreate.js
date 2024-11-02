@@ -99,7 +99,7 @@ module.exports = class MessageCreate extends Event {
                 .setAvatar(message.author.displayAvatarURL({format: 'png', size: 512}))
                 .setUsername(`${message.author.username}`, '#000000')
                 .setBorder('#8BD3DD')
-                .setBackground("image", gif.levelBackground)
+                // .setBackground("image", gif.levelBackground)
                 .setLevels(user.profile.level - 1, user.profile.level)
                 .build(); // Assuming build() returns a promise
 

@@ -16,6 +16,53 @@
 		"databaseUpdate": "There was an error updating the database.",
 		"requestedBy": "Requested By %{username}"
 	},
+	"actionMessages": {
+		"biteMessages": {
+			"title": "Bite Time!",
+			"description": "playfully bites",
+			"errors": {
+				"noUser": "You need to mention a user to bite.",
+				"selfBite": "You cannot bite yourself.",
+				"fetchFail": "Something went wrong while fetching the bite GIF."
+			}
+		},
+		"hugMessages": {
+			"title": "Hug Time!",
+			"description": "gives a warm hug to",
+			"errors": {
+				"noUser": "You need to mention a user to hug.",
+				"selfHug": "You cannot hug yourself.",
+				"fetchFail": "Something went wrong while fetching the hug GIF."
+			}
+		},
+		"kissMessages": {
+			"title": "Kiss Time!",
+			"description": "gives a cute kiss to",
+			"errors": {
+				"noUser": "You need to mention a user to kiss.",
+				"selfKiss": "You cannot kiss yourself.",
+				"fetchFail": "Something went wrong while fetching the kiss GIF."
+			}
+		},
+		"punchMessages": {
+			"title": "Punch Time!",
+			"description": "throws a playful punch at",
+			"errors": {
+				"noUser": "You need to mention a user to punch.",
+				"selfPunch": "You cannot punch yourself.",
+				"fetchFail": "Something went wrong while fetching the punch GIF."
+			}
+		},
+		"slapMessages": {
+			"title": "Slap Time!",
+			"description": "playfully slaps",
+			"errors": {
+				"noUser": "You need to mention a user to slap.",
+				"selfSlap": "You cannot slap yourself.",
+				"fetchFail": "Something went wrong while fetching the slap GIF."
+			}
+		}
+	},
 	"economyMessages": {
 		"balanceMessages": {
 			"title": "Balance",
@@ -117,6 +164,83 @@
 			"tooHigh": "You cannot withdraw more than what you have in your bank.",
 			"success": "You have withdrawn {{coinEmote}} **{{amount}}** coins from your bank.",
 			"error": "There was an error processing your withdrawal request."
+		}
+	},
+	"emoteMessages": {
+		"angryMessages": {
+			"title": "Angry Time!",
+			"description": "**{{user}}** shows off their angriest expression!",
+			"error": "There was an error processing your angry emote."
+		},
+		"cryMessages": {
+			"title": "Crying Time!",
+			"description": "**{{user}}** is crying!",
+			"error": "There was an error processing your crying emote."
+		},
+		"cuteMessages": {
+			"title": "Cute Time!",
+			"description": "**{{user}}** shows off their cutest expression!",
+			"error": "There was an error processing your cute emote."
+		},
+		"danceMessages": {
+			"title": "Dancing Time!",
+			"description": "**{{user}}** shows off some impressive dance moves!",
+			"error": "There was an error processing your dance emote."
+		},
+		"exerciseMessages": {
+			"title": "Exercise Time!",
+			"description": "**{{user}}** is getting moving and staying fit!",
+			"error": "There was an error processing your exercise emote."
+		},
+		"happyMessages": {
+			"title": "Happy Vibes!",
+			"description": "**{{user}}** is spreading joy and happiness!",
+			"error": "There was an error processing your happy emote."
+		},
+		"laughMessages": {
+			"title": "Laughing Out Loud!",
+			"description": "**{{user}}** shares a hearty laugh!",
+			"error": "There was an error processing your laugh emote."
+		},
+		"makeupMessages": {
+			"title": "Makeup Time!",
+			"description": "**{{user}}** applies some fabulous makeup and shines bright!",
+			"error": "There was an error processing your makeup emote."
+		},
+		"eatMessages": {
+			"title": "Eating Time!",
+			"description": "**{{user}}** is enjoying some delicious food!",
+			"error": "There was an error processing your eat emote."
+		},
+		"playGameMessages": {
+			"title": "Game Time!",
+			"description": "**{{user}}** is getting ready to play!",
+			"error": "There was an error processing your play game emote."
+		},
+		"roarMessages": {
+			"title": "Roar Time!",
+			"description": "**{{user}}** lets out a mighty roar!",
+			"error": "There was an error processing your roar emote."
+		},
+		"sadMessages": {
+			"title": "Feeling Sad",
+			"description": "**{{user}}** is expressing sadness.",
+			"error": "There was an error processing your sad emote."
+		},
+		"scareMessages": {
+			"title": "Scared!",
+			"description": "**{{user}}** shows their scared side!",
+			"error": "There was an error processing your scare emote."
+		},
+		"showerMessages": {
+			"title": "Shower Time!",
+			"description": "**{{user}}** is enjoying a refreshing shower!",
+			"error": "There was an error processing your shower emote."
+		},
+		"shyMessages": {
+			"title": "Shy!",
+			"description": "**{{user}}** shows off their shy expression!",
+			"error": "There was an error processing your shy emote."
 		}
 	},
 	"funMessage": {

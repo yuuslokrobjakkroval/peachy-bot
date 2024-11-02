@@ -108,6 +108,8 @@ module.exports = {
         milk: '<:PEARL:1286264416756699147>',
         peachy: '<:NORMALV2:1286264431264927744>',
         spin: '<a:SLOTS:1286264728397811772>',
+        mainLeft: '<:PEACHKILL:1302096053931081789>',
+        mainRight: '<:GOMAKILL:1302096066279247984>',
     },
     coinFlip: {
         peach: '<:PEACHCOIN:1281820633621074023>',
