@@ -5,7 +5,6 @@ const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
 const importantItems = require('../assets/inventory/ImportantItems.js');
 const shopItems = require('../assets/inventory/ShopItems.js');
 const items = shopItems.flatMap(shop => shop.inventory);
-const Fonts = require('../assets/json/fontKelvinch.json');
 
 module.exports = class Utils {
     static getUser(userId) {
@@ -26,22 +25,6 @@ module.exports = class Utils {
             channelId: interaction.channel.id,
             messageId: interaction.message.id,
         }).then(giveaway => { return giveaway; }).catch(error => { console.log(`Error fetching giveaway data: ${error}`); return null });
-    }
-
-    static transformText(text, style) {
-        let transformedText = '';
-        for (let char of text) {
-            if (style.toLowerCase() === 'bold') {
-                transformedText += Fonts.bold[char];
-            } else if (style.toLowerCase() === 'italic') {
-                transformedText += Fonts.italic[char];
-            } else if (style.toLowerCase() === 'number') {
-                transformedText += Fonts.number[char];
-            } else {
-                transformedText += char;
-            }
-        }
-        return transformedText;
     }
 
     static cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {

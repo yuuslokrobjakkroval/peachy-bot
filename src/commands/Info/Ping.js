@@ -54,21 +54,21 @@ module.exports = class Ping extends Command {
     const embed = client
         .embed()
         .setColor(color.main)
-        .setDescription(`# **${emoji.mainLeft} ${client.utils.transformText('PING', 'bold')} ${emoji.mainRight}**`)
+        .setDescription(`# **${emoji.mainLeft} PING ${emoji.mainRight}**`)
         .setThumbnail(client.utils.emojiToImage(emoji.main))
         .addFields([
           {
-            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)}${client.utils.transformText('BOT', 'bold') }${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
+            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)} BOT ${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${randomNumber}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)}${client.utils.transformText('API', 'bold') }${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
+            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)} API ${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)}${client.utils.transformText('DB', 'bold') }${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
+            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)} DB ${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${await dbPing()}ms ]\n\`\`\``,
             inline: true,
           },

@@ -28,7 +28,7 @@ module.exports = {
     birthdayChannelId,
     owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(',') : [],
     
-    color: { red: 0xFF0000, green: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, orange: 0xFFA500, main: 0xE4A9A5, none: 0x2B2D31 },
+    color: { red: 0xFF0000, green: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, orange: 0xFFA500, main: 0xFFBD73, none: 0x2B2D31 },
     database: process.env.DATABASE_URL,
     botStatus: 'online',
     botActivityType: 4,
@@ -39,8 +39,8 @@ module.exports = {
         directory: path.resolve('./src/languages'), // <= location of language
     },
     links: {
-        banner: 'https://i.imgur.com/kYXE4No.gif',
-        support: 'https://discord.gg/peachgoma',
+        banner: 'https://i.imgur.com/CYTOCR0.gif',
+        support: 'https://discord.gg/yTfqgN3Znc',
         invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&integration_type=0&scope=bot+applications.commands`,
         vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
         website: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,

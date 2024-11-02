@@ -44,10 +44,9 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
-    heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
     help: {
         actions: '<a:NORMALACTIONS:1282637922863939597>',
-        bank: '<a:NORMALACTIONS:1282637922863939597>',
+        bank: '<:NORMALBANK:1290531741270020146>',
         economy: '<:COIN:1281821085209460797>',
         inventory: '<a:NORMALINVENTORY:1282637993156411432>',
         fun: '<a:ROAR_1:1283083752896987209>',

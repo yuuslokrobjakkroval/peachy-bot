@@ -44,7 +44,7 @@ module.exports = class Help extends Command {
     const embed = client.embed();
     const prefix = client.config.prefix;
     const commands = client.commands.filter(cmd => cmd.category !== 'dev');
-    let categories = ['Bank', 'Economy', 'Inventory', 'Fun', 'Games', 'Gambling', 'Giveaways', 'Profile', 'Relationships', 'Social', 'Utility', 'Info'];
+    let categories = ['actions', 'bank', 'economy', 'inventory', 'fun', 'games', 'gambling', 'giveaways', 'profile', 'relationships', 'social', 'utility', 'info'];
 
     if (!args[0]) {
       const sortedCommands = {};
@@ -69,10 +69,10 @@ module.exports = class Help extends Command {
       for (const category in sortedCommands) {
         if (Object.prototype.hasOwnProperty.call(sortedCommands, category)) {
           const categoryCommands = sortedCommands[category];
-          const commandNames = categoryCommands.map(cmd => `\`${client.utils.transformText(directoriesMessages[cmd.name] || cmd.name, 'bold')}\``).join(', ');
+          const commandNames = categoryCommands.map(cmd => `\`${directoriesMessages[cmd.name] || cmd.name}\``).join(', ');
 
           helpEmbed.addFields([{
-            name: `${emoji.help[category.toLowerCase()]} ${client.utils.transformText(categoriesMessages[category.toLowerCase()] || category, 'bold')}`,
+            name: `${emoji.help[category.toLowerCase()]} ${categoriesMessages[category.toLowerCase()] || category}`,
             value: commandNames,
             inline: false,
           }]);
@@ -83,11 +83,11 @@ module.exports = class Help extends Command {
       // const row = new ActionRowBuilder().addComponents(
       //     new ButtonBuilder().setLabel(helpMessages.supportButton).setStyle(5).setURL(client.config.links.support)
       // )
-      const row = new ActionRowBuilder().addComponents(
-          new ButtonBuilder().setLabel(helpMessages.supportButton).setStyle(5).setURL(client.config.links.support), // Link button style 5
-          new ButtonBuilder().setLabel('Invite me!').setStyle(5).setURL(client.config.links.invite),
-          new ButtonBuilder().setLabel('Vote for me').setStyle(5).setURL(client.config.links.vote)
-      );
+
+      const supportButton = client.utils.linkButton(helpMessages.supportButton, client.config.links.support)
+      const inviteButton = client.utils.linkButton('Invite me!', client.config.links.invite)
+      // const voteButton = client.utils.linkButton('Vote for me', client.config.links.vote)
+      const row = client.utils.createButtonRow(supportButton, inviteButton);
 
       await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
     } else {
@@ -99,7 +99,7 @@ module.exports = class Help extends Command {
 
       const helpEmbed = embed
           .setColor(color.main)
-          .setTitle(`${helpMessages.commandTitle} - ${command.name}`)
+          .setTitle(`${commandTitle.title} - ${command.name}`)
           .setDescription(command.description.content)
           .addFields([
             {

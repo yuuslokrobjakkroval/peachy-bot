@@ -6,9 +6,9 @@ const moment = require('moment');
 const loadPlugins = require('../plugin/index.js');
 const Utils = require('../utils/Utils.js');
 const { I18n } = require('@hammerhq/localization');
-const Users = require('../schemas/user.js');
 const config = require('../config.js');
 const emojis = require('../emojis.js');
+
 const configPeach = require('../theme/Peach/config.js');
 const emojiPeach = require('../theme/Peach/emojis.js');
 
@@ -21,13 +21,14 @@ const emojiOcean = require('../theme/OceanBreeze/emojis.js');
 const configHalloween = require('../theme/Halloween/config.js');
 const emojiHalloween = require('../theme/Halloween/emojis.js');
 
+const configHalloweenNew = require('../theme/Halloween/configNew.js');
+const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
+
 const configHeaven = require('../theme/CelestialGrace/config.js');
 const emojiHeaven = require('../theme/CelestialGrace/emojis.js');
 
 const configSakura = require('../theme/SakuraSerenity/config.js');
 const emojiSakura = require('../theme/SakuraSerenity/emojis.js');
-
-
 
 const Logger = require('./Logger.js');
 
@@ -56,7 +57,9 @@ module.exports = class PeachyClient extends Client {
         this.logger.info('Successfully loaded commands!');
         this.loadEvents();
         this.logger.info('Successfully loaded events!');
-        this.connectMongodb();
+        this.connectMongodb().catch(error => {
+            console.error("Failed to connect to MongoDB:", error.message);
+        });
         this.logger.info('Successfully connected to MongoDB.');
         loadPlugins(this);
         await this.login(token);
@@ -67,7 +70,7 @@ module.exports = class PeachyClient extends Client {
         await connect(this.config.database);
     }
 
-    async loadCommands() {
+    loadCommands() {
         const commandsPath = fs.readdirSync(path.join(__dirname, '../commands'));
         commandsPath.forEach(dir => {
             const commandFiles = fs.readdirSync(path.join(__dirname, `../commands/${dir}`)).filter(file => file.endsWith('.js'));
@@ -140,12 +143,10 @@ module.exports = class PeachyClient extends Client {
         });
     }
 
-    async setColorBasedOnTheme(userId) {
-        try {
-            const user = await Users.findOne({ userId });
-            let userLanguage;
-
+    setColorBasedOnTheme(userId) {
+        return this.utils.getUser(userId).then(user => {
             // Determine the user's language preference
+            let userLanguage;
             if (user && user.preferences) {
                 const { language = this.config.language.defaultLocale } = user.preferences;
 
@@ -187,16 +188,13 @@ module.exports = class PeachyClient extends Client {
                         emoji = emojiOcean;
                         break;
                     case 't02':
+                    case 'halloween':
                         color = configHalloween.color;
                         emoji = emojiHalloween;
                         break;
                     case 't03':
-                        color = configHalloween.color;
-                        emoji = emojiHalloween;
-                        break;
-                    case 't04':
-                        color = configHalloween.color;
-                        emoji = emojiHalloween;
+                        color = configHalloweenNew.color;
+                        emoji = emojiHalloweenNew;
                         break;
                     case 'st01':
                         color = configHeaven.color;
@@ -218,10 +216,11 @@ module.exports = class PeachyClient extends Client {
                         break;
                 }
             }
-            return { color, emoji, language };
-        } catch (error) {
+
+            return { user, color, emoji, language };
+        }).catch(error => {
             console.error("Error setting color and theme:", error.message);
             return { color: config.color, emoji: emojis, language: this.config.language };
-        }
+        });
     }
 };

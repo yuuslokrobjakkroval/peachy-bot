@@ -1,4 +1,6 @@
 module.exports = {
+    balance: '../data/images/Global/MITAOSWEET.png',
+
     peachy: 'https://i.imgur.com/kYXE4No.gif',
     thanks: 'https://i.imgur.com/FrTvTpq.gif',
     thankYou: 'https://i.imgur.com/GgrQ9Ap.gif',

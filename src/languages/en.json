@@ -230,6 +230,7 @@
 			"examples": "Example(s):",
 			"categoriesMessages": {
 				"actions": "ACTIONS",
+				"bank": "BANK",
 				"economy": "ECONOMY",
 				"inventory": "INVENTORY",
 				"fun": "FUN",

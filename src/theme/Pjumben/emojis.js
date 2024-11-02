@@ -1,14 +1,14 @@
 module.exports = {
-    coin: '<:COIN:1281821085209460797>',
-    bank: '<:NORMALBANK:1290531741270020146>',
+    coin: '<:PJUMBENCOIN:1283066955967762557>',
+    bank: '<:PEACHBANK:1290531776514494494>',
     main: '<:MAIN:1281847051860054016>',
-    mainLeft: '<:PEACHMAINLEFTV2:1287985191922696215>',
-    mainRight: '<:GOMAMAINRIGHTV2:1287985205663236096>',
+    mainLeft: '<:PJUMBENLEFT:1283280791094169671>',
+    mainRight: '<:PJUMBENRIGHT:1283280797561786418>',
     congratulation: '<a:CONGRATULATIONS:1284383994544394311>',
     gomaCongratulation: '<a:PEACHCONGRATULATIONS:1287987432947712010>',
     peachCongratulation: '<a:GOMACONGRATULATIONS:1287985458109747251>',
     top: '<a:TOP:1287634364095528971>',
-    tick: '<a:GOMAYES:1287428512071815228>',
+    tick: '<a:PEACHYES:1287428480304414862>',
     deny: '<:x_:1230882133891878933>',
     mark: '`❕`',
     plus: '``➕``',
@@ -54,18 +54,6 @@ module.exports = {
         mainRight: '<:INVENTORIGHT:1287624805742542868>',
     },
     heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
-    drink: {
-        guest: '<a:DRINKING:1271717032882077766>',
-    },
-    cake: {
-        birthday: '<a:PIXELCAKE:1272826868776702024>',
-        cupcake: '<:CUPCAKE:1272838036358565912>',
-        lemon: '<:LEMONCAKE:1272826776246026365>',
-        chocolate: '<:CHOCOLATECAKE:1272826811281182764>',
-        orange: '<:ORANGECAKE:1272826817912508456>',
-        white: '<:WHITECAKE:1272826828981010433>',
-        pink: '<:PINKCAKE:1272826839655645236>',
-    },
     time: {
         clock: '`⏰`',
         daily: '<:DAILY:1272008002228060221>',
@@ -89,7 +77,7 @@ module.exports = {
     
     help: {
         actions: '<a:NORMALACTIONS:1282637922863939597>',
-        economy: '<:COIN:1281821085209460797>',
+        economy: '<:PJUMBENCOIN:1283066955967762557>',
         inventory: '<a:NORMALINVENTORY:1282637993156411432>',
         fun: '<a:ROAR_1:1283083752896987209>',
         games: '<:NORMALGAME:1282638025402224704>',
@@ -97,6 +85,7 @@ module.exports = {
         giveaways: '<a:GIVEAWAYS:1299315576514023485>',
         profile: '<a:NORMALPROFILE:1282639241989460061>',
         relationships: '<a:RELATIONSHIP:1299209836973785099>',
+        pjumben: '<:PJUM:1283316419647242282>',
         social: '<a:SOCIAL:1282639924419366966>',
         emotes: '<a:NORMALEMOTES:1282640907832660038>',
         utility: '<a:NORMALUTILITY:1282642190190776390>',
@@ -260,8 +249,8 @@ module.exports = {
         ],
     },
     gender: {
-        male: '<:MALE:1281840630833741874>',
-        female: '<:FEMALE:1281840643634626662>',
+        male: '<:MALEPJUMBEN:1283280012107190304>',
+        female: '<:FEMALEPJUMBEN:1283280021506756629>',
     },
     social: {
         facebook: '<a:FACEBOOK:1281824132136435764>',
@@ -269,13 +258,13 @@ module.exports = {
         tiktok: '<a:TIKTOK:1281824146568773642>',
     },
     slots: {
-        cat: '<:FISH:1287987974130372700>',
-        coffee: '<:OCTOPUS:1287988308349030460>',
-        heart: '<:TURTLE:1287988346387435601>',
-        cake: '<:DOFIN:1287988448816402522>',
-        milk: '<:WHALE:1287988793286197322>',
-        peachy: '<:PEACHCOINV2:1287988856834232382>',
-        spin: '<a:PEACHSLOTV2:1287989478681739336>',
+        cat: '<:PEACHGOMA:1283061018246778963>',
+        coffee: '<:PKACHOUK:1283061224346746920>',
+        heart: '<:NORM:1283111772022112389>',
+        cake: '<:MONK:1283061312964005928>',
+        milk: '<:JONGHAN:1283061371986120734>',
+        peachy: '<:PJUMBEN:1283112546261270549>',
+        spin: '<a:PJUMBENSLOTS:1283111803353829468>',
     },
     coinFlip: {
         peach: '<:PEACHCOIN:1281820633621074023>',
@@ -337,8 +326,8 @@ module.exports = {
         nine: '<:9_:1286621795994042440>'
     },
     button: {
-        tick: '<a:GOMAYES:1287428512071815228>',
-        deny: '<a:GOMANO:1287428526257209345>',
+        tick: '<a:PEACHYES:1287428480304414862>',
+        deny: '<a:PEACHNO:1287428497459118293>',
     },
 };
 
