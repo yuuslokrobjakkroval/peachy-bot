@@ -249,6 +249,16 @@ module.exports = class Utils {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
+    static getLoopElement(item, repeatCount) {
+        let result = "";
+
+        for (let i = 0; i < repeatCount; i++) {
+            result += item;
+        }
+
+        return result;
+    }
+
     static chunk(array, size) {
         const chunked_arr = [];
         let index = 0;
@@ -273,10 +283,11 @@ module.exports = class Utils {
         return dm === 0 ? formattedNumber.toFixed(0) : formattedNumber + sizes[i];
     }
 
-    static createButtonRow(...buttons) {
-        const actionRow = new ActionRowBuilder();
-        actionRow.addComponents(buttons);
-        return actionRow;
+    static linkButton(label, link){
+        return new ButtonBuilder()
+            .setLabel(`${label}`)
+            .setStyle(5)
+            .setURL(`${link}`)
     }
 
     static labelButton(id, label, style){
@@ -291,6 +302,12 @@ module.exports = class Utils {
             .setCustomId(`${id}`)
             .setEmoji(`${emoji}`)
             .setStyle(style)
+    }
+
+    static createButtonRow(...buttons) {
+        const actionRow = new ActionRowBuilder();
+        actionRow.addComponents(buttons);
+        return actionRow;
     }
 
     static oops(client, ctx, args, color, time) {
@@ -554,6 +571,12 @@ module.exports = class Utils {
         } catch (err) {
             console.error(`[Birthday] Error fetching birthdays: ${err.message}`);
         }
+    }
+
+    static calculateNextLevelXpBonus(level) {
+        const base = 1000;
+        const scalingFactor = 1.5;
+        return Math.floor(base * Math.pow(scalingFactor, level - 1));
     }
 
     static async addCoinsToUser(userId, amount) {

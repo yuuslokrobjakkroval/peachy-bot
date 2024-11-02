@@ -34,21 +34,22 @@ module.exports = class Balance extends Command {
                 }
                 const { coin = 0, bank = 0 } = user.balance;
 
-                const embed = client
-                    .embed()
-                    .setTitle(`${emoji.mainLeft} ${balanceMessages.title.replace('%{displayName}', ctx.author.displayName)} ${emoji.mainRight}`)
+                const embed = client.embed()
                     .setColor(color.main)
                     .setThumbnail(client.utils.emojiToImage(emoji.main))
                     .setDescription(
                         balanceMessages.description
+                            .replace('%{title}', client.utils.transformText('BALANCE', 'bold'))
+                            .replace('%{mainLeft}', emoji.mainLeft)
+                            .replace('%{mainRight}', emoji.mainRight)
                             .replace('%{coinEmote}', emoji.coin)
                             .replace('%{coin}', client.utils.formatNumber(coin))
                             .replace('%{bankEmote}', emoji.bank)
                             .replace('%{bank}', client.utils.formatNumber(bank))
                     )
-                    .setImage(gif.balanceBanner)
+                    // .setImage(gif.balanceBanner)
                     .setFooter({
-                        text: generalMessages.requestedBy.replace('%{user}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
                     })
                 return ctx.sendMessage({embeds: [embed]});

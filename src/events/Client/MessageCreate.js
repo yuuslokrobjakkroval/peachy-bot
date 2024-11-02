@@ -1,4 +1,4 @@
-const { Collection, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { Collection } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/user.js");
@@ -6,19 +6,8 @@ const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
 
-const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight, gif.welcomeNine, gif.welcomeTen];
-
-const activeGames = new Map();
-
-function getRandomXp(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function calculateNextLevelXpBonus(level) {
-  const base = 1000;
-  const scalingFactor = 1.5;
-  return Math.floor(base * Math.pow(scalingFactor, level - 1));
-}
+// const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight, gif.welcomeNine, gif.welcomeTen];
+const GUILD_ID = '1300337265259843615';
 
 module.exports = class MessageCreate extends Event {
   constructor(client, file) {
@@ -29,32 +18,28 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
+
+    if (message.guild.id !== GUILD_ID) {
+      return; // Exit if the guild ID doesn't match
+    }
+
     const { color, emoji, language } = await this.client.setColorBasedOnTheme(message.author.id);
-    const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
+    // const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
     let user = await Users.findOne({ userId: message.author.id });
     const prefix = this.client.config.prefix;
 
     if (user?.verification?.isBanned) {
-      // return await message.channel.send({
-      //   embeds: [
-      //     this.client.embed()
-      //         .setColor(color.red)
-      //         .setDescription(`You is already banned for: \`${user.verification.banReason || 'No reason provided'}\`.`)
-      //   ]
-      // });
       return;
     }
 
     const now = new Date();
     if (user?.verification?.timeout?.expiresAt && user.verification.timeout.expiresAt > now) {
-      const remainingTime = user.verification.timeout.expiresAt - now; // Remaining time in milliseconds
+      const remainingTime = user.verification.timeout.expiresAt - now;
 
-      // Calculate hours, minutes, and seconds
       const hours = Math.floor(remainingTime / (1000 * 60 * 60));
       const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
-      // Construct the remaining time string
       let timeString = '';
       if (hours > 0) {
         timeString += `${hours} hr${hours > 1 ? 's' : ''}`;
@@ -68,88 +53,80 @@ module.exports = class MessageCreate extends Event {
         timeString += `${seconds} sec${seconds > 1 ? 's' : ''}`;
       }
 
-      return await message.channel.send({
-        embeds: [
-          this.client.embed()
-              .setColor(color.red)
-              .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
-        ]
-      });
+      const embed = this.client.embed()
+          .setColor(color.red)
+          .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
+
+      return await message.channel.send({ embeds: [embed] });
     }
 
-    if (user) {
-      const now = Date.now();
-      const xpCooldown = 30000;
-      if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
-        let xpGained = 0;
-        if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-          xpGained = getRandomXp(20, 25);
-        } else {
-          xpGained = getRandomXp(10, 15);
-        }
-        user.profile.xp += xpGained;
-        user.profile.lastXpGain = now;
-        const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
-        if (user.profile.xp >= nextLevelXp) {
-          user.profile.xp -= nextLevelXp;
-          user.profile.level += 1;
-          user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
-          const celebrationCoin = user.profile.level * 250000;
-          user.balance.coin += celebrationCoin;
-          const levelUp = await new canvafy.LevelUp()
-              .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-              .setUsername(`${message.author.username}`,'#000000')
-              .setBorder('#8BD3DD')
-              .setBackground("image", gif.levelBackground)
-              .setLevels(user.profile.level - 1, user.profile.level)
-              .build();
-          const levelImage = {
-            attachment: levelUp,
-            name: 'level-up.png',
-          };
-          const embed = this.client.embed()
-              .setColor(color.main)
-              .setTitle(`${message.author.displayName} - 𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
-              .setDescription(`Congratulations ${this.client.utils.getRandomElement(congratulations)} !!!\nYou leveled up to level ${user.profile.level}!\nYou have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${emoji.coin}.`)
-              .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
-              .setImage('attachment://level-up.png');
-          await message.channel.send({
-            embeds: [embed],
-            files: [levelImage],
-          });
-        }
-        await user.save();
-      }
-    }
+    // if (user) {
+    //   const now = Date.now();
+    //   const xpCooldown = 30000;
+    //   if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
+    //     let xpGained = 0;
+    //     if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
+    //       xpGained = getRandomXp(20, 25);
+    //     } else {
+    //       xpGained = getRandomXp(10, 15);
+    //     }
+    //     user.profile.xp += xpGained;
+    //     user.profile.lastXpGain = now;
+    //     const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
+    //     if (user.profile.xp >= nextLevelXp) {
+    //       user.profile.xp -= nextLevelXp;
+    //       user.profile.level += 1;
+    //       user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
+    //       const celebrationCoin = user.profile.level * 250000;
+    //       user.balance.coin += celebrationCoin;
+    //       const levelUp = await new canvafy.LevelUp()
+    //           .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
+    //           .setUsername(`${message.author.username}`,'#000000')
+    //           .setBorder('#8BD3DD')
+    //           .setBackground("image", gif.levelBackground)
+    //           .setLevels(user.profile.level - 1, user.profile.level)
+    //           .build();
+    //       const levelImage = {
+    //         attachment: levelUp,
+    //         name: 'level-up.png',
+    //       };
+    //       const embed = this.client.embed()
+    //           .setColor(color.main)
+    //           .setTitle(`${message.author.displayName} - 𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
+    //           .setDescription(`Congratulations ${this.client.utils.getRandomElement(congratulations)} !!!\nYou leveled up to level ${user.profile.level}!\nYou have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${emoji.coin}.`)
+    //           .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }))
+    //           .setImage('attachment://level-up.png');
+    //       await message.channel.send({
+    //         embeds: [embed],
+    //         files: [levelImage],
+    //       });
+    //     }
+    //     await user.save();
+    //   }
+    // }
 
     const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
     if (mention.test(message.content)) {
-      const row = new ActionRowBuilder().addComponents(
-          new ButtonBuilder()
-              .setLabel('Click for support')
-              .setStyle(5)
-              .setURL(this.client.config.links.support),
-      );
-      await message.reply({
-        embeds: [
-          this.client.embed()
-              .setColor(color.main)
-              .setTitle(`Hello ${message.author.displayName}`)
-              .setDescription(
-                  `My Name is ${this.client.user.displayName}.\n` +
-                  `My prefix for this server is **\`${prefix}\`**.\n\n` +
-                  `Do you need help? please use **\`${prefix}help\`**!!!`
-              )
-              .setFooter({
-                text: `© ${this.client.user.username}`,
-                iconURL: this.client.user.displayAvatarURL(),
-              }),
-        ],
-        components: [row],
-      });
+
+      const embed = this.client.embed()
+          .setColor(color.main)
+          .setTitle(`Heyoo! ${message.author.displayName}`)
+          .setDescription(
+              `My Name is ${this.client.user.displayName}.\n` +
+              `My prefix for this server is **\`${prefix}\`**.\n\n` +
+              `Do you need help? please use **\`${prefix}help\`**!!!`
+          )
+          .setFooter({
+            text: `© ${this.client.user.username}`,
+            iconURL: this.client.user.displayAvatarURL(),
+          })
+
+      const clickSuppButton = this.client.utils.linkButton('Click for support', this.client.config.links.support)
+
+      const row = this.client.utils.createButtonRow(clickSuppButton);
+      await message.reply({ embeds: [embed], components: [row] });
       return;
     }
-
     if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
       const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const prefixRegex = new RegExp(`^(<@!?${this.client.user.id}>|${escapeRegex(prefix)})\\s*`, 'i');
@@ -166,15 +143,6 @@ module.exports = class MessageCreate extends Event {
       const permissionCommand = ['help', 'links', 'info', 'ping', 'rules', 'privacypolicy', 'stats']
       if (match) {
         if (!user && !permissionCommand.includes(command.name)) {
-          if (activeGames.has(ctx.author.id)) {
-            return await ctx.sendMessage({
-              embeds: [
-                this.client.embed().setColor(color.orange).setDescription(`Your registration is not yet complete. Please confirm your registration to start using the bot.`),
-              ],
-            });
-          }
-          activeGames.set(ctx.author.id, true);
-
           const embed = this.client
               .embed()
               .setColor(color.main)
@@ -184,20 +152,13 @@ module.exports = class MessageCreate extends Event {
                   `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
               .setImage(gif.peachy);
 
-          const row = new ActionRowBuilder().addComponents(
-              new ButtonBuilder()
-                  .setCustomId('register')
-                  .setLabel('Register')
-                  .setStyle(3),
-              new ButtonBuilder()
-                  .setCustomId('cancel')
-                  .setLabel('Cancel')
-                  .setStyle(4)
-          );
+          const registerButton = this.client.utils.labelButton('register', 'Register', 3);
+          const cancelButton = this.client.utils.labelButton('cancel', 'Cancel', 4);
+          const row = this.client.utils.createButtonRow(registerButton, cancelButton)
 
           const msg = await ctx.sendMessage({ embeds: [embed], components: [row], fetchReply: true });
           const filter = interaction => interaction.user.id === ctx.author.id;
-          const collector = msg.createMessageComponentCollector({ filter, time: 150000 });
+          const collector = msg.createMessageComponentCollector({ filter, time: 120000 });
 
           collector.on('collect', async int => {
             await int.deferUpdate();
@@ -215,33 +176,16 @@ module.exports = class MessageCreate extends Event {
                         `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
                         `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
                         `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
-                        `5. **Protect Privacy**: Never share personal information or attempt to collect others' personal information. Your privacy and safety are important to us.\n\n` +
-                        `6. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
-                        `7. **Respect the Staff**: Our staff is here to help maintain a positive environment. Please respect their decisions and cooperate with them.\n\n` +
-                        `8. **No Advertising**: Do not promote external servers, products, or services without prior permission. Let's keep the focus on having fun!\n\n` +
-                        `9. **One Account per User**: Creating multiple accounts to exploit PEACHY’s features is not allowed. Enjoy the bot responsibly.\n\n` +
-                        `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/cCNZHVEbcu). We're here to help!`
+                        `5. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
+                        `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/peachgoma). We're here to help!`
                     );
 
+                const confirmButton = this.client.utils.labelButton('confirm', 'Accept for Register', 3);
+                const privacyButton = this.client.utils.labelButton('privacy', 'Privacy Policy', 2);
+                const cancelButton = this.client.utils.labelButton('cancel', 'Cancel', 4);
 
-                await int.editReply({
-                  content: '',
-                  embeds: [embed],
-                  components: [new ActionRowBuilder().addComponents(
-                      new ButtonBuilder()
-                          .setCustomId('confirm')
-                          .setLabel('Accept for Register')
-                          .setStyle(3),
-                      new ButtonBuilder()
-                          .setCustomId('privacy')
-                          .setLabel('Privacy Policy')
-                          .setStyle(2),
-                      new ButtonBuilder()
-                          .setCustomId('cancel')
-                          .setLabel('Cancel')
-                          .setStyle(4)
-                  )]
-                });
+                const row = this.client.utils.createButtonRow(confirmButton, privacyButton, cancelButton)
+                await int.editReply({ content: '', embeds: [embed], components: [row]});
               } catch (error) {
                 console.error('Error in Register Command:', error);
               }
@@ -277,99 +221,55 @@ module.exports = class MessageCreate extends Event {
                         `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
                     );
 
-                await int.editReply({
-                  content: '',
-                  embeds: [embed],
-                  components: [new ActionRowBuilder().addComponents(
-                      new ButtonBuilder()
-                          .setCustomId('confirm')
-                          .setLabel('Accept for Register')
-                          .setStyle(3),
-                      new ButtonBuilder()
-                          .setCustomId('register')
-                          .setLabel('Rules and Guidelines')
-                          .setStyle(2),
-                      new ButtonBuilder()
-                          .setCustomId('cancel')
-                          .setLabel('Cancel')
-                          .setStyle(4)
-                  )]
-                });
+                const confirmButton = this.client.utils.labelButton('confirm', 'Accept for Register', 3);
+                const registerButton = this.client.utils.labelButton('register', 'Rules and Guidelines', 2);
+                const cancelButton = this.client.utils.labelButton('cancel', 'Cancel', 4);
+
+                const row = this.client.utils.createButtonRow(confirmButton, registerButton, cancelButton)
+
+                await int.editReply({ content: '', embeds: [embed], components: [row] });
               } catch (error) {
                 console.error('Error in Privacy Command:', error);
               }
             } else if (int.customId === 'register') {
-              await int.update({
-                content: '',
-                embeds: [embed],
-                components: [new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                        .setCustomId('confirm')
-                        .setLabel('Accept for Register')
-                        .setStyle(3),
-                    new ButtonBuilder()
-                        .setCustomId('privacy')
-                        .setLabel('Privacy Policy')
-                        .setStyle(2),
-                    new ButtonBuilder()
-                        .setCustomId('cancel')
-                        .setLabel('Cancel')
-                        .setStyle(4)
-                )]
-              });
+
+              const confirmButton = this.client.utils.labelButton('confirm', 'Accept for Register', 3);
+              const privacyButton = this.client.utils.labelButton('privacy', 'Privacy Policy', 2);
+              const cancelButton = this.client.utils.labelButton('cancel', 'Cancel', 4);
+
+              const row = this.client.utils.createButtonRow(confirmButton, privacyButton, cancelButton)
+
+              await int.update({ content: '', embeds: [embed], components: [row] });
             } else if (int.customId === 'confirm') {
               const gift = 500000;
-              const userId = int.user.id;
-
-              if (!userId) {
-                console.error("User ID is null or undefined. Aborting operation.");
-                return; // Exit early if userId is not valid
-              }
-
+              const userId = int.user ? int.user.id : message.author.id;
               const userInfo = await this.client.users.fetch(userId).catch(() => null);
-              if (userInfo) {
-                await Users.updateOne(
-                    { userId }, // use shorthand property
-                    {
-                      $set: {
-                        username: userInfo.displayName,
-                        'profile.username': userInfo.displayName,
-                        balance: {
-                          coin: gift,
-                          bank: 0,
-                        },
+              await Users.updateOne(
+                  { userId },
+                  {
+                    $set: {
+                      username: userInfo ? userInfo.displayName : 'Unknown',
+                      'profile.username': userInfo ? userInfo.displayName : 'Unknown',
+                      balance: {
+                        coin: gift,
+                        bank: 0
                       },
-                    },
-                    { upsert: true }
-                );
-              } else {
-                await Users.updateOne(
-                    { userId },
-                    {
-                      $set: {
-                        username: 'Unknown',
-                        'profile.username': 'Unknown',
-                        balance: {
-                          coin: gift,
-                          bank: 0,
-                        },
-                      },
-                    },
-                    { upsert: true }
-                );
-              }
+                    }
+                  },
+                  { upsert: true }
+              );
+
               const embed = this.client.embed()
                   .setColor(color.main)
                   .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                   .setTitle(`${emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${emoji.mainRight}`)
                   .setDescription(`Warming Gift for you ${emoji.congratulation}\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
-                  .setImage(this.client.utils.getRandomElement(welcome))
+                  // .setImage(this.client.utils.getRandomElement(welcome))
               await int.editReply({
                 content: '',
                 embeds: [embed],
                 components: [],
               });
-              activeGames.delete(ctx.author.id);
             } else if (int.customId === 'cancel') {
               const commandList = `
 **Commands You Can Use:**
@@ -388,11 +288,10 @@ module.exports = class MessageCreate extends Event {
                 ],
                 components: [],
               });
-              activeGames.delete(ctx.author.id);
             }
           })
           collector.on('end', async () => {
-            await msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
+            await msg.edit({ components: [] });
           });
         } else {
           this.client.users.fetch(user.userId).then(userInfo => {
@@ -494,9 +393,8 @@ module.exports = class MessageCreate extends Event {
 
             const channel = this.client.channels.cache.get(logChannelId);
             if (channel && channel.isTextBased()) {
-              const embed = this.client
-                  .embed()
-                  .setColor(this.client.config.color.green)
+              const embed = this.client.embed()
+                  .setColor(this.client.color.success)
                   .setTitle(`Command - ${formatCapitalize(command.name)}`)
                   .setThumbnail(message.guild.iconURL({ extension: 'jpeg' }))
                   .addFields([

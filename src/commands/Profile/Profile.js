@@ -73,17 +73,11 @@ module.exports = class Profile extends Command {
                 const embed = client.embed()
                     .setColor(color.main)
                     .setDescription('User Not Found');
-                loadingMessage = await ctx.sendMessage({
+                return await ctx.sendMessage({
                     embeds: [embed],
                 });
-            } else if (userData.profile.visibility.status && targetUser.id !== ctx.author.id) {
-                const embed = client.embed()
-                    .setColor(color.main)
-                    .setDescription(userData.profile.visibility.message ? userData.profile.visibility.message : 'This profile is private and cannot be viewed.');
-                loadingMessage = await ctx.sendMessage({
-                    embeds: [embed],
-                });
-            } else {
+            }
+
                 // let loadingScreen = [gif.peachLoadingScreen, gif.gomaLoadingScreen];
                 // switch (userData && userData.preferences && userData.preferences.theme) {
                 //     case 't01':
@@ -199,7 +193,6 @@ module.exports = class Profile extends Command {
                         ctx.sendMessage('The reaction session has ended. Please use the command again to view the profile.');
                     }
                 });
-            }
         } catch (error) {
             await loadingMessage?.edit({
                 content: 'An error occurred while generating your profile. Please try again later.',

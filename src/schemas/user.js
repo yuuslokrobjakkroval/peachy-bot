@@ -33,7 +33,10 @@ const ProfileSchema = new Schema({
     level: { type: Number, default: 1 },
     levelXp: { type: Number, default: 1000 },
     lastXpGain: { type: Number, default: 0 },
-    visibility: { status: { type: Boolean, default: false }, message: { type: String, default: null }} ,
+    visibility: {
+        status: { type: Boolean, default: false },
+        message: { type: String, default: null }
+    },
     likes: { type: [String], default: [] },
     zodiacSign: { type: String, default: null }
 });
@@ -65,38 +68,38 @@ const VerificationSchema = new Schema({
 // Relationship Schema
 const RelationshipSchema = new Schema({
     partner: {
-        id: { type: String, default: null },  // Change required: true to default: null
+        userId: { type: String, default: null },
         name: { type: String, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     },
     brothers: [{
-        id: { type: String, default: null },  // Also change these to default: null if necessary
+        userId: { type: String, default: null },
         name: { type: String, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     }],
     sisters: [{
-        id: { type: String, default: null },  // Also change these to default: null if necessary
+        userId: { type: String, default: null },
         name: { type: String, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     }],
     besties: [{
-        id: { type: String, default: null },  // Also change these to default: null if necessary
+        userId: { type: String, default: null },
         name: { type: String, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     }],
     confidants: [{
-        id: { type: String, default: null },  // Also change these to default: null if necessary
+        userId: { type: String, default: null },
         name: { type: String, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     }]
 });
 
-const achievementsSchema = new Schema({
+const AchievementsSchema = new Schema({
     name: { type: String, required: true },
     dateEarned: { type: Date, default: Date.now }
 });
@@ -118,7 +121,7 @@ const userSchema = new Schema({
         streak: { type: Number, default: 0 }
     },
     profile: { type: ProfileSchema, default: () => ({}) },
-    relationship: RelationshipSchema,
+    relationship: { type: RelationshipSchema, default: () => ({}) },
     inventory: { type: [InventoryItemSchema], default: [] },
     equip: { type: [EquipItemSchema], default: [] },
     cooldowns: { type: [CooldownSchema], default: [] },
@@ -145,7 +148,7 @@ const userSchema = new Schema({
         lastLogin: { type: Date, default: Date.now },
         totalMessagesSent: { type: Number, default: 0 }
     },
-    achievements: { type: [achievementsSchema], default: [] }
-}, { timestamps: { createdAt: true, updatedAt: false } });
+    achievements: { type: [AchievementsSchema], default: [] }
+}, { timestamps: { createdAt: true, updatedAt: true } });
 
 module.exports = model('user', userSchema);

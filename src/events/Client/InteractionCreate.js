@@ -13,12 +13,20 @@ const GiveawaySchema = require('../../schemas/giveaway');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
 const { formatCapitalize, endGiveaway, endGiveawayShopItem } = require('../../utils/Utils.js');
 
+const GUILD_ID = '1300337265259843615';
+
 module.exports = class InteractionCreate extends Event {
   constructor(client, file) {
     super(client, file, { name: 'interactionCreate' });
   }
 
   async run(interaction) {
+    if (interaction.user.bot || !interaction.guild) return;
+
+    if (interaction.guild.id !== GUILD_ID) {
+      return; // Exit if the guild ID doesn't match
+    }
+
     this.client.setColorBasedOnTheme(interaction.user.id).then(async ({user, color, emoji, language}) => {
       if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
         const command = this.client.commands.get(interaction.commandName);

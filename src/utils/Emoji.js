@@ -3,6 +3,8 @@ module.exports = {
     congratulation: '<a:congratulation:1287438960477474957>',
     thankYou: '<a:PTY:1294514862390644782>',
 
+    ping: '<a:PINGS:1302062424198742036>',
+
     // VERIFY
     normal: '<:NORMAL:1294270096109211658>',
     verify: '<:VERIFY:1294514114856615947>',

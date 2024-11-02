@@ -1,5 +1,5 @@
 const { Command } = require("../../structures/index.js");
-const { connect, connection } = require('mongoose');
+const globalEmoji = require("../../utils/Emoji.js");
 
 module.exports = class Ping extends Command {
   constructor(client) {
@@ -41,28 +41,42 @@ module.exports = class Ping extends Command {
       return Math.round((time[0] * 1e9 + time[1]) * 1e-6);
     };
 
+    // const emojiPing = (ping) => {
+    //   if (ping < 100) {
+    //     return globalEmoji.ping.low;
+    //   } else if (ping < 300) {
+    //     return globalEmoji.ping.middle;
+    //   } else {
+    //     return globalEmoji.ping.high;
+    //   }
+    // }
+
     const embed = client
         .embed()
-        .setTitle(`**${emoji.mainLeft} 𝐏𝐎𝐍𝐆 ${emoji.mainRight}**`)
         .setColor(color.main)
-        .setThumbnail(ctx.author.displayAvatarURL())
+        .setDescription(`# **${emoji.mainLeft} ${client.utils.transformText('PING', 'bold')} ${emoji.mainRight}**`)
+        .setThumbnail(client.utils.emojiToImage(emoji.main))
         .addFields([
           {
-            name: `${client.utils.transformText('BOT', 'bold') }`,
+            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)}${client.utils.transformText('BOT', 'bold') }${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${randomNumber}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `${client.utils.transformText('API', 'bold') }`,
+            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)}${client.utils.transformText('API', 'bold') }${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `${client.utils.transformText('DB', 'bold') }`,
+            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 5)}${client.utils.transformText('DB', 'bold') }${client.utils.getLoopElement(' ', 5)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${await dbPing()}ms ]\n\`\`\``,
             inline: true,
           },
         ])
+        .setFooter({
+          text: `Request By ${ctx.author.displayName}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        })
         .setTimestamp();
     await ctx.editMessage({ content: "", embeds: [embed] });
   }
