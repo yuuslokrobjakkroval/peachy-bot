@@ -278,7 +278,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w01,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/51ycl94.jpg"
@@ -294,7 +294,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w02,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/EIFaNA5.jpg"
@@ -310,7 +310,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w03,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/Yikhyq9.jpg"
@@ -326,7 +326,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w04,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/vvxRxU1.jpg"
@@ -342,7 +342,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w05,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/2W13m0Y.jpg"
@@ -358,7 +358,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w06,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/9kJTIbb.jpg"
@@ -374,7 +374,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w07,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/HJgHXVW.jpg"
@@ -390,7 +390,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w08,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/WRQ9JgJ.jpg"
@@ -406,7 +406,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w09,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/KfLygeO.jpg"
@@ -422,7 +422,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w10,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/EwhdldE.jpg"
@@ -438,7 +438,7 @@ module.exports = [
                     multiple: true
                 },
                 quantity: 1,
-                emoji: emoji.wallpaper,
+                emoji: emoji.frame.w11,
                 available: ["use", "gift"],
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/7Iot3LV.jpg"
