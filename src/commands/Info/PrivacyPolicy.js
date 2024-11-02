@@ -30,6 +30,7 @@ module.exports = class PrivacyPolicy extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const privacyMessages = language.locales.get(language.defaultLocale)?.informationMessages?.privacyMessages;
 
     const embed = this.client.embed()
@@ -43,13 +44,14 @@ module.exports = class PrivacyPolicy extends Command {
     });
 
     embed.setFooter({
-      text: privacyMessages.footer.replace('{botName}', this.client.user.username), // Replace {botName} with actual bot name
-      iconURL: this.client.user.displayAvatarURL(),
+      text: privacyMessages.footer.replace('{botName}', client.user.username),
+      iconURL: client.user.displayAvatarURL(),
     }).setTimestamp();
 
-    const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary)
-    );
+    const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
+    const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
+    const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
+    const row = client.utils.createButtonRow(supportButton, inviteButton, voteButton);
 
     return await ctx.sendMessage({ embeds: [embed], components: [row] });
   }

@@ -31,6 +31,7 @@ module.exports = class Info extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const infoMessages = language.locales.get(language.defaultLocale)?.informationMessages?.infoMessages;
 
     const embed = this.client
@@ -49,9 +50,10 @@ module.exports = class Info extends Command {
         ])
         .setFooter({ text: infoMessages.footer });
 
-    const row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setLabel(infoMessages.supportButton.label).setStyle(5).setURL(client.config.links.support)
-    );
+    const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
+    const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
+    const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
+    const row = client.utils.createButtonRow(supportButton, inviteButton, voteButton);
 
     return await ctx.sendMessage({ embeds: [embed], components: [row] });
   }

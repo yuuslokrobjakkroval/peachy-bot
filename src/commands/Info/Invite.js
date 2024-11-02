@@ -1,7 +1,6 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { Command } = require("../../structures/index.js");
 
-class Invite extends Command {
+module.exports = class Invite extends Command {
   constructor(client) {
     super(client, {
       name: "invite",
@@ -30,7 +29,8 @@ class Invite extends Command {
     });
   }
 
-  async run(client, ctx) {
+  async run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const clientId = process.env.CLIENT_ID;
     if (!clientId) {
       console.error(
@@ -41,31 +41,15 @@ class Invite extends Command {
       );
     }
 
-    const embed = this.client.embed();
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setLabel("Invite")
-        .setStyle(ButtonStyle.Link)
-        .setURL(
-          `https://discord.com/oauth2/authorize?client_id=${clientId}&permissions=8&integration_type=0&scope=bot+applications.commands`
-        ),
-      // new ButtonBuilder()
-      //   .setLabel("My Server")
-      //   .setStyle(ButtonStyle.Link)
-      //   .setURL("https://discord.gg/FwsFRkXCSj")
-    );
-
-    return await ctx.sendMessage({
-      embeds: [
-        embed
-          .setColor(this.client.color.main)
-          .setDescription(
+    const embed = client.embed()
+        .setColor(color.main)
+        .setDescription(
             `You can invite me by clicking the button below. Any bugs or outages? Join the support server!`
-          ),
-      ],
-      components: [row],
-    });
+        );
+
+    const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
+    const row = client.utils.createButtonRow(inviteButton);
+
+    return await ctx.sendMessage({ embeds: [embed], components: [row] });
   }
 }
-
-module.exports = Invite;

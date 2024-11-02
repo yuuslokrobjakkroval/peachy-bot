@@ -26,6 +26,7 @@ module.exports = class Register extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const registerMessages = language.locales.get(language.defaultLocale)?.informationMessages?.registerMessages;
         const user = await Users.findOne({ userId: ctx.author.id }).exec();
 
@@ -47,19 +48,16 @@ module.exports = class Register extends Command {
         });
         await newUser.save();
 
-        const embed = this.client
-            .embed()
+        const embed = client.embed()
             .setColor(color.main)
             .setTitle(registerMessages.titleRegistrationSuccessful)
             .setDescription(registerMessages.registrationSuccessful.replace('{username}', ctx.author.username))
-            .setFooter({ text: registerMessages.footer });
+            .setFooter({ text: generalMessages.footer });
 
-        const row = new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary),
-            // Uncomment below lines if you want to add more buttons
-            // new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
-            // new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
-        );
+        const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
+        const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
+        const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
+        const row = client.utils.createButtonRow(supportButton, inviteButton, voteButton);
 
         return await ctx.sendMessage({ embeds: [embed], components: [row] });
     }

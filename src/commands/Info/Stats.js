@@ -1,5 +1,5 @@
 const Command = require('../../structures/Command.js');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const Users = require('../../schemas/user');
 
 module.exports = class Stats extends Command {
     constructor(client) {
@@ -25,10 +25,12 @@ module.exports = class Stats extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const statsMessages = language.locales.get(language.defaultLocale)?.informationMessages?.statsMessages;
+        const users = await Users.find();
 
         const guildCount = client.guilds.cache.size;
-        const userCount = client.users.cache.size;
+        const userCount = users ? users.length : client.users.cache.size;
         const channelCount = client.channels.cache.size;
         const uptime = Math.floor(client.uptime / 1000 / 60); // Bot uptime in minutes
 
@@ -45,11 +47,10 @@ module.exports = class Stats extends Command {
             ])
             .setFooter({ text: statsMessages.footer });
 
-        const row = new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId('support-link').setLabel('Click for Support').setStyle(ButtonStyle.Primary),
-            // new ButtonBuilder().setLabel('Invite Me!').setStyle(ButtonStyle.Link).setURL(client.config.links.invite),
-            // new ButtonBuilder().setLabel('Vote for Me').setStyle(ButtonStyle.Link).setURL(client.config.links.vote)
-        );
+        const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
+        const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
+        const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
+        const row = client.utils.createButtonRow(supportButton, inviteButton, voteButton);
 
         return await ctx.sendMessage({ embeds: [embed], components: [row] });
     }

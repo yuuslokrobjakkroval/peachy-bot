@@ -1,5 +1,4 @@
 const Command = require('../../structures/Command.js');
-const { ActionRowBuilder, ButtonBuilder } = require('@discordjs/builders');
 
 module.exports = class Help extends Command {
   constructor(client) {
@@ -38,6 +37,7 @@ module.exports = class Help extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const helpMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages;
     const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
     const directoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.directoriesMessages;
@@ -62,8 +62,8 @@ module.exports = class Help extends Command {
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: helpMessages.footer,
-            iconURL: client.user.displayAvatarURL(),
+            text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+            iconURL: ctx.author.displayAvatarURL(),
           });
 
       for (const category in sortedCommands) {
@@ -80,14 +80,10 @@ module.exports = class Help extends Command {
         }
       }
 
-      // const row = new ActionRowBuilder().addComponents(
-      //     new ButtonBuilder().setLabel(helpMessages.supportButton).setStyle(5).setURL(client.config.links.support)
-      // )
-
-      const supportButton = client.utils.linkButton(helpMessages.supportButton, client.config.links.support)
-      const inviteButton = client.utils.linkButton('Invite me!', client.config.links.invite)
-      // const voteButton = client.utils.linkButton('Vote for me', client.config.links.vote)
-      const row = client.utils.createButtonRow(supportButton, inviteButton);
+      const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
+      const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
+      const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
+      const row = client.utils.createButtonRow(supportButton, inviteButton, voteButton);
 
       await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
     } else {

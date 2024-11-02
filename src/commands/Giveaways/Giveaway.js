@@ -86,7 +86,7 @@ module.exports = class Start extends Command {
 
         if (!isOwner && !isAdmin) {
             return (ctx.isInteraction
-                    ? ctx.interaction.reply({
+                    ? ctx.interaction.editReply({
                         content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
                         ephemeral: true
                     })
@@ -106,7 +106,7 @@ module.exports = class Start extends Command {
 
         if (autoPay && !isOwner) {
             return (ctx.isInteraction
-                    ? ctx.interaction.reply({
+                    ? ctx.interaction.editReply({
                         content: 'Only the bot owner can enable autopay for giveaways.',
                         ephemeral: true
                     })

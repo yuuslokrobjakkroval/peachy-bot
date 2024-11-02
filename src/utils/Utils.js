@@ -287,6 +287,21 @@ module.exports = class Utils {
             .setStyle(style)
     }
 
+    static fullOptionButton(id, emoji, label, style, disabled = false) {
+        const button = new ButtonBuilder()
+            .setCustomId(id)
+            .setLabel(label)
+            .setStyle(style)
+            .setDisabled(disabled);
+
+        if (emoji) {
+            button.setEmoji(emoji);
+        }
+
+        return button;
+    }
+
+
     static createButtonRow(...buttons) {
         const actionRow = new ActionRowBuilder();
         actionRow.addComponents(buttons);
@@ -633,9 +648,7 @@ module.exports = class Utils {
                     .setColor(color.main)
                     .setDescription(
                         winnerIdArray.length
-                            ? `# Congratulations ${emoji.congratulation}` +
-                            `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}` +
-                            (autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``)
+                            ? `# Congratulations ${emoji.congratulation}\n${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin} ${autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``}`
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
                     )
                     .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })

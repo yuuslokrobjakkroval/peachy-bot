@@ -48,7 +48,7 @@ module.exports = class GiveawayShopItem extends Command {
 
         if (!isOwner && !isAdmin) {
             return (ctx.isInteraction
-                    ? ctx.interaction.reply({
+                    ? ctx.interaction.editReply({
                         content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
                         ephemeral: true
                     })
@@ -69,7 +69,7 @@ module.exports = class GiveawayShopItem extends Command {
 
         if (autoAdd && !isOwner) {
             return (ctx.isInteraction
-                    ? ctx.interaction.reply({
+                    ? ctx.interaction.editReply({
                         content: 'Only the bot owner can enable auto add for giveaways.',
                         ephemeral: true
                     })

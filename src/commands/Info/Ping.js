@@ -31,7 +31,13 @@ module.exports = class Ping extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    await ctx.sendDeferMessage("Pinging...");
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    if (ctx.isInteraction) {
+      await ctx.interaction.reply("Pinging...");
+    } else {
+      await ctx.sendDeferMessage("Pinging...");
+    }
+
     let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
 
     const dbPing = async () => {
@@ -40,16 +46,6 @@ module.exports = class Ping extends Command {
       const time = process.hrtime(currentNano);
       return Math.round((time[0] * 1e9 + time[1]) * 1e-6);
     };
-
-    // const emojiPing = (ping) => {
-    //   if (ping < 100) {
-    //     return globalEmoji.ping.low;
-    //   } else if (ping < 300) {
-    //     return globalEmoji.ping.middle;
-    //   } else {
-    //     return globalEmoji.ping.high;
-    //   }
-    // }
 
     const embed = client
         .embed()
@@ -74,7 +70,7 @@ module.exports = class Ping extends Command {
           },
         ])
         .setFooter({
-          text: `Request By ${ctx.author.displayName}`,
+          text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
