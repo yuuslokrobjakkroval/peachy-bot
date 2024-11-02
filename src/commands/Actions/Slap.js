@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Slap extends Command {
     constructor(client) {
@@ -50,7 +51,7 @@ module.exports = class Slap extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions.slaps);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions ? emoji.actions.slaps : globalEmoji.actions.slaps);
 
             // Create the embed for the slap action
             const embed = client.embed()

@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Hug extends Command {
     constructor(client) {
@@ -47,7 +48,7 @@ module.exports = class Hug extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions.hugs);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions ? emoji.actions.hugs : globalEmoji.actions.hugs);
 
             // Create the embed message for hugging
             const embed = client.embed()

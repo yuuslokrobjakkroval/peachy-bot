@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Cry extends Command {
     constructor(client) {
@@ -26,7 +27,7 @@ module.exports = class Cry extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const cryMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cryMessages;
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes.cry);
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.cry : globalEmoji.emotes.cry);
             const embed = client
                 .embed()
                 .setColor(color.main)

@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Shower extends Command {
     constructor(client) {
@@ -27,7 +28,7 @@ module.exports = class Shower extends Command {
         const showerMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.showerMessages;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes.shower);
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.shower : globalEmoji.emotes.shower);
             const embed = client
                 .embed()
                 .setColor(color.main)

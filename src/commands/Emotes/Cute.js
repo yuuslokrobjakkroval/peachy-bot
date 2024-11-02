@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Cute extends Command {
     constructor(client) {
@@ -27,7 +28,7 @@ module.exports = class Cute extends Command {
         const cuteMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cuteMessages; // Access localized messages
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes.cute); // Get a random cute emoji
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.cute : globalEmoji.emotes.cute); // Get a random cute emoji
             const embed = client
                 .embed()
                 .setColor(color.main)
