@@ -54,7 +54,7 @@ setInterval(() => {
                 }
             });
         })
-        .catch((err) => console.error('Error finding giveaways:', err));
+        .catch((err) => console.error('Error finding giveaway:', err));
 }, 10000);
 
 setInterval(() => {
@@ -87,7 +87,7 @@ setInterval(() => {
                 }
             });
         })
-        .catch((err) => console.error('Error finding giveaways:', err));
+        .catch((err) => console.error('Error finding giveaway shop item:', err));
 }, 10000);
 
 setTimeout(() => {

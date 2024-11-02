@@ -39,7 +39,6 @@ module.exports = class Balance extends Command {
                     .setThumbnail(client.utils.emojiToImage(emoji.main))
                     .setDescription(
                         balanceMessages.description
-                            .replace('%{title}', 'BALANCE')
                             .replace('%{mainLeft}', emoji.mainLeft)
                             .replace('%{mainRight}', emoji.mainRight)
                             .replace('%{coinEmote}', emoji.coin)

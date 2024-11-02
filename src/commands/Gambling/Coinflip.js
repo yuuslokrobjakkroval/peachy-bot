@@ -1,7 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
-
-const maxAmount = 250000;
+const maxAmount = 200000;
 const random = require('random-number-csprng');
 
 module.exports = class Coinflip extends Command {
