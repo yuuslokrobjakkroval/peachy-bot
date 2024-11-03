@@ -55,14 +55,10 @@ module.exports = class Profile extends Command {
             const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
 
             let bannerImage;
-            if (targetUser.id === '966688007493140591') {
-                bannerImage = 'https://i.imgur.com/Pfmm72D.png';
+            if (equippedWallpaper) {
+                bannerImage = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
             } else {
-                if (equippedWallpaper) {
-                    bannerImage = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
-                } else {
-                    bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
-                }
+                bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
             }
 
 
