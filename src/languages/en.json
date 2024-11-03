@@ -243,6 +243,11 @@
 			"description": "**{{user}}** lets out a mighty roar!",
 			"error": "There was an error processing your roar emote."
 		},
+		"runMessages": {
+			"title": "Run Time!",
+			"description": "**{{user}}** takes off in a mighty run!",
+			"error": "Something went wrong while processing your run emote."
+		},
 		"sadMessages": {
 			"title": "Feeling Sad",
 			"description": "**{{user}}** is expressing sadness.",
