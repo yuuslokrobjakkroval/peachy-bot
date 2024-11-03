@@ -136,8 +136,8 @@ module.exports = class Weekly extends Command {
                 weeklyMessages.success
                     .replace('%{mainLeft}', emoji.mainLeft)
                     .replace('%{mainRight}', emoji.mainRight)
-                    .replace('{{coin}}', client.utils.formatNumber(totalCoins))
-                    .replace('{{coinEmote}}', emoji.coin)
+                    .replace('%{coin}', client.utils.formatNumber(totalCoins))
+                    .replace('%{coinEmote}', emoji.coin)
                     .replace('%{expEmote}', emoji.exp)
                     .replace('%{exp}', client.utils.formatNumber(totalExp))
                     .replace('%{bonusMessage}', bonusMessage)
