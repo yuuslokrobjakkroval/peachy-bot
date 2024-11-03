@@ -1,7 +1,7 @@
 const { Command } = require('../../structures/index.js');
 const globalEmoji = require("../../utils/Emoji");
 
-module.exports = class Bite extends Command {
+module.exports = class Loung extends Command {
     constructor(client) {
         super(client, {
             name: 'loung',

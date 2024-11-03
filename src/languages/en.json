@@ -542,8 +542,8 @@
 	"inventoryMessages": {
 		"buyMessages": {
 			"invalidItem": "The item with ID `{{itemId}}` was not found. Please check the shop for available items.",
-			"themeAlreadyOwned": "You already own the theme {{itemEmote}} **{{itemName}}**. You cannot buy it again.",
-			"itemCannotBeBought": "The item {{itemEmote}} **{{itemName}}** is not available for purchase.",
+			"themeAlreadyOwned": "You already own the theme **{{itemName}}** {{itemEmote}}. You cannot buy it again.",
+			"itemCannotBeBought": "The item **{{itemName}}** {{itemEmote}} is not available for purchase.",
 			"notEnoughCoins": "You need {{coinEmote}}{{neededCoins}} more to buy {{itemEmote}} **{{itemName}}**.",
 			"success": "successfully purchased",
 			"partial": "but you could only afford",

@@ -1,7 +1,7 @@
 const { Command } = require('../../structures/index.js');
 const globalEmoji = require("../../utils/Emoji");
 
-module.exports = class Bite extends Command {
+module.exports = class Kill extends Command {
     constructor(client) {
         super(client, {
             name: 'kill',
@@ -33,7 +33,7 @@ module.exports = class Bite extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const killMessages = language.locales.get(language.defaultLocale)?.actionMessages?.killMessages;
-        const errorMessages = biteMessages.errors;
+        const errorMessages = killMessages.errors;
 
         const target = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
