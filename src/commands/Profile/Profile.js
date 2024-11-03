@@ -53,11 +53,16 @@ module.exports = class Profile extends Command {
             await new Promise(resolve => setTimeout(resolve, 2000));
 
             const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
+
             let bannerImage;
-            if (equippedWallpaper) {
-                bannerImage = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
+            if (targetUser.id === '966688007493140591') {
+                bannerImage = 'https://i.imgur.com/Pfmm72D.png';
             } else {
-                bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
+                if (equippedWallpaper) {
+                    bannerImage = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
+                } else {
+                    bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
+                }
             }
 
 
