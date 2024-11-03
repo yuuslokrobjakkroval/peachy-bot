@@ -234,6 +234,15 @@ module.exports = class Utils {
         }
     }
 
+    static formatColor(hex) {
+        if (typeof hex !== 'number') {
+            throw new Error('Input must be a number');
+        }
+        const hexString = hex.toString(16).toUpperCase();
+        const paddedHexString = hexString.padStart(6, '0');
+        return `#${paddedHexString}`;
+    }
+
     static getRandomElement(arr) {
         return arr[Math.floor(Math.random() * arr.length)];
     }
