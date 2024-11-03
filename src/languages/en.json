@@ -91,7 +91,7 @@
 			"description": "# %{mainLeft} **𝐁𝐀𝐋𝐀𝐍𝐂𝐄** %{mainRight}\n%{coinEmote} : **%{coin}** coins\n %{bankEmote} : **%{bank}** coins"
 		},
 		"dailyMessages": {
-			"success": "# %{mainLeft} **𝐃𝐀𝐈𝐋𝐘 𝐑𝐄𝐖𝐀𝐑𝐃** %{mainRight}\nYou have claimed your daily reward of **+%{coin}** %{coinEmote} and **%{exp}** xp %{bonusMessage}",
+			"success": "# %{mainLeft} **𝐃𝐀𝐈𝐋𝐘 𝐑𝐄𝐖𝐀𝐑𝐃** %{mainRight}\nYou have claimed your daily reward of **+%{coin}** %{coinEmote} and **%{exp}** xp\n%{bonusMessage}",
 			"error": "There was an error processing your daily claim.",
 			"cooldown": "Your daily reward is on cooldown. Please try again after **%{time}**."
 		},
@@ -101,17 +101,11 @@
 			"success": "You have deposited **%{amount}** %{coinEmote} to your bank."
 		},
 		"gomaMessages": {
-			"success": {
-				"title": "have claimed goma!",
-				"description": "You have earned **%{coin}** %{coinEmote}."
-			},
+			"success": "# %{mainLeft} **𝐆𝐎𝐌𝐀 𝐑𝐄𝐖𝐀𝐑𝐃** %{mainRight}\nYou have earned **%{coin}** %{coinEmote}\n%{bonusMessage}",
 			"cooldown": "Goma is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"peachyMessages": {
-			"success": {
-				"title": "have claimed peachy!",
-				"description": "You have earned **%{coin}** %{coinEmote}."
-			},
+			"success": "# %{mainLeft} **𝐏𝐄𝐀𝐂𝐇 𝐑𝐄𝐖𝐀𝐑𝐃** %{mainRight}\nYou have earned **%{coin}** %{coinEmote}\n%{bonusMessage}",
 			"cooldown": "Peachy is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"rankingMessages": {
@@ -153,7 +147,7 @@
 			"expire": "Transaction Expired"
 		},
 		"weeklyMessages": {
-			"success": "# %{mainLeft} **𝐖𝐄𝐄𝐊𝐋𝐘 𝐑𝐄𝐖𝐀𝐑𝐃** %{mainRight}\nYou have claimed your weekly reward of **{{coin}}** {{coinEmote}} and **{{exp}} XP**!",
+			"success": "# %{mainLeft} **𝐖𝐄𝐄𝐊𝐋𝐘 𝐑𝐄𝐖𝐀𝐑𝐃** %{mainRight}\nYou have claimed your weekly reward of **{{coin}}** {{coinEmote}} and **{{exp}}** xp!\n%{bonusMessage}",
 			"error": "There was an error processing your weekly claim.",
 			"cooldown": {
 				"multipleDays": "Weekly is on cooldown!\nTry again after **{{days}} and {{hours}}**, **{{minutes}}**, and **{{seconds}}**.",

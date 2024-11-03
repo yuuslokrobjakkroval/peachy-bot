@@ -82,7 +82,11 @@ module.exports = class Weekly extends Command {
                 return user.save().then(() => {
                     return client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
                 }).then(() => {
-                    const embed = this.createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages);
+                    let bonusMessage = '';
+                    if (bonusCoins > 0 || bonusExp > 0) {
+                        bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} XP`;
+                    }
+                    const embed = this.createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages, bonusMessage);
                     return ctx.sendMessage({ embeds: [embed] });
                 });
             });
@@ -123,7 +127,7 @@ module.exports = class Weekly extends Command {
         }
     }
 
-    createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages) {
+    createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages, bonusMessage) {
         return client
             .embed()
             .setColor(client.config.color.main)
@@ -135,6 +139,7 @@ module.exports = class Weekly extends Command {
                     .replace('{{coin}}', client.utils.formatNumber(totalCoins))
                     .replace('{{coinEmote}}', emoji.coin)
                     .replace('{{exp}}', client.utils.formatNumber(totalExp))
+                    .replace('%{bonusMessage}', bonusMessage)
             )
             .setFooter({
                 text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
