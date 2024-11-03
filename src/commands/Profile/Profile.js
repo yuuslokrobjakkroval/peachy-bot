@@ -48,15 +48,21 @@ module.exports = class Profile extends Command {
                 return await this.sendUserNotFoundEmbed(ctx, color);
             }
 
-            const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
-            const getImageURL = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
-
             loadingMessage = await this.sendLoadingMessage(ctx, color, emoji);
+
+            const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
+            let bannerImage;
+            if (equippedWallpaper) {
+                bannerImage = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
+            } else {
+                bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
+            }
+
 
             const canvas = createCanvas(1180, 600);
             const context = canvas.getContext('2d');
 
-            await this.drawProfile(client, context, targetUser, user, color, emoji, getImageURL);
+            await this.drawProfile(client, context, targetUser, user, color, emoji, bannerImage);
 
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
@@ -181,12 +187,12 @@ module.exports = class Profile extends Command {
         context.stroke();
 
         // Draw the username below the avatar
-        context.font = "bold 24px Kelvinch-Bold, Arial";
+        context.font = "bold 24px Kelvinch-Bold Arial";
         context.fillStyle = client.utils.formatColor(color.dark);
         context.fillText(targetUser.username, userAvatarX + 5, userAvatarY + userAvatarSize + 30);
 
         // Draw "Settings" title
-        context.font = "bold 28px Kelvinch-Bold, Arial";
+        context.font = "bold 28px Kelvinch-Bold Arial";
         context.fillText("User Information", 880, 80);
 
         // Draw each setting item text and switch
@@ -203,6 +209,19 @@ module.exports = class Profile extends Command {
             context.font = "14px Arial";
             context.fillText(info.description, info.x, info.y + 20);
         });
+
+        // Draw Zodiac Sign
+        if (userInfo.profile.gender) {
+            const genderEmoji = userInfo.profile.gender === 'male' ? emoji.gender.male : emoji.gender.female;
+            const genderEmojiURL = client.utils.emojiToImage(genderEmoji);
+
+            try {
+                const genderEmojiImage = await loadImage(genderEmojiURL);
+                context.drawImage(genderEmojiImage, 1050, 120, 64, 64);
+            } catch (error) {
+                console.error('Error loading zodiac emoji image:', error);
+            }
+        }
 
         // Draw Zodiac Sign
         if(userInfo.profile.birthday) {

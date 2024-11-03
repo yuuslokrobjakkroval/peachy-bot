@@ -92,8 +92,8 @@ module.exports = {
         eight: '<:BRONZERANK:1282977459658035210>',
     },
     gender: {
-        male: '<:MALE:1281840630833741874>',
-        female: '<:FEMALE:1281840643634626662>',
+        male: '<:MALE:1302528275251204096>',
+        female: '<:FEMALE:1302528289096601610>',
     },
     social: {
         facebook: '<a:FACEBOOK:1281824132136435764>',

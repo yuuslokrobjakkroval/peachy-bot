@@ -105,8 +105,8 @@ module.exports = {
         dev: '💻',
     },
     gender: {
-        male: '<:SPEACH:1295967154897682543>',
-        female: '<:SGOMA:1295967162841825324>',
+        male: '<:MALE:1302528275251204096>',
+        female: '<:FEMALE:1302528289096601610>',
     },
     social: {
         facebook: '<a:FACEBOOK:1281824132136435764>',
