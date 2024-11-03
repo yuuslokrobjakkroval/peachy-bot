@@ -1,6 +1,4 @@
 const { Command } = require('../../structures');
-const Users = require("../../schemas/user.js");
-const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Withdraw extends Command {
     constructor(client) {
@@ -32,59 +30,69 @@ module.exports = class Withdraw extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const withdrawMessages = language.locales.get(language.defaultLocale)?.economyMessages?.withdrawMessages; // Access messages
-        const user = await Users.findOne({ userId: ctx.author.id });
-        const verify = user.verification.verify.status === 'verified';
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const withdrawMessages = language.locales.get(language.defaultLocale)?.economyMessages?.withdrawMessages;
 
-        if (!user) {
-            return await client.utils.sendErrorMessage(client, ctx, withdrawMessages.noUser, color);
-        }
-
-        const { coin, bank } = user.balance;
-
-        if (bank < 1) {
-            return await client.utils.sendErrorMessage(client, ctx, withdrawMessages.zeroBalance, color);
-        }
-
-        let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || bank : args[0] || bank;
-        if (isNaN(amount) || amount < 1 || amount.toString().includes('.') || amount.toString().includes(',')) {
-            const amountMap = { all: bank, half: Math.ceil(bank / 2) };
-
-            if (amount in amountMap) {
-                amount = amountMap[amount];
-            } else {
-                return await ctx.sendMessage({
-                    embeds: [
-                        client.embed().setColor(color.danger).setDescription(withdrawMessages.invalidAmount),
-                    ],
-                });
+        client.utils.getUser(ctx.author.id).then(user => {
+            if (!user) {
+                return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
-        }
 
-        const baseCoins = parseInt(Math.min(amount, bank));
+            const { coin, bank } = user.balance;
 
-        if (baseCoins > bank) {
-            return await client.utils.sendErrorMessage(client, ctx, withdrawMessages.tooHigh, color);
-        }
+            if (bank < 1) {
+                return client.utils.sendErrorMessage(client, ctx, withdrawMessages.zeroBalance, color);
+            }
 
-        const newCoin = coin + baseCoins;
-        const newBank = bank - baseCoins;
+            let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[0];
+            if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
+                const amountMap = { all: bank, half: Math.ceil(bank / 2) };
 
-        const embed = client
-            .embed()
-            .setColor(color.main)
-            .setDescription(
-                withdrawMessages.success
-                    .replace('{{coinEmote}}', emoji.coin)
-                    .replace('{{amount}}', client.utils.formatNumber(baseCoins)))
-            .setFooter({
-                text: `Request By ${ctx.author.displayName}`,
-                iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
-            });
+                if (amount in amountMap) {
+                    amount = amountMap[amount];
+                } else {
+                    return ctx.sendMessage({
+                        embeds: [
+                            client.embed().setColor(color.danger).setDescription(withdrawMessages.invalidAmount),
+                        ],
+                    });
+                }
+            }
 
-        await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newCoin, 'balance.bank': newBank } }).exec();
+            const baseCoins = Math.min(amount, bank);
 
-        return await ctx.sendMessage({ embeds: [embed] });
+            if (baseCoins > bank) {
+                return client.utils.sendErrorMessage(client, ctx, withdrawMessages.tooHigh, color);
+            }
+
+            // Update user balance
+            user.balance.coin += baseCoins;
+            user.balance.bank = bank - baseCoins;
+
+            user.save()
+                .then(() => {
+                    const embed = client.embed()
+                        .setColor(color.main)
+                        .setDescription(
+                            withdrawMessages.success
+                                .replace('%{amount}', client.utils.formatNumber(baseCoins))
+                                .replace('%{coinEmote}', emoji.coin)
+                        )
+                        .setFooter({
+                            text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                            iconURL: ctx.author.displayAvatarURL(),
+                        });
+
+                    return ctx.sendMessage({ embeds: [embed] });
+                })
+                .catch(error => {
+                    console.error("Error saving user data:", error);
+                    client.utils.sendErrorMessage(client, ctx, generalMessages.saveError, color);
+                });
+        }).catch(error => {
+            console.error("Error retrieving user data:", error);
+            client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+        });
     }
 };

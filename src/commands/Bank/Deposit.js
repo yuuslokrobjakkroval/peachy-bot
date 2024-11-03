@@ -1,5 +1,4 @@
 const { Command } = require('../../structures');
-const Users = require("../../schemas/user.js");
 
 module.exports = class Deposit extends Command {
     constructor(client) {
@@ -20,65 +19,68 @@ module.exports = class Deposit extends Command {
                 user: [],
             },
             slashCommand: true,
-            options: [{ name: 'amount', description: 'The amount you want to deposit.', type: 4, required: true }], // Changed type to INTEGER
+            options: [{ name: 'amount', description: 'The amount you want to deposit.', type: 4, required: true }],
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const depositMessages = language.locales.get(language.defaultLocale)?.economyMessages?.depositMessages;
-        try {
-            const user = await Users.findOne({ userId: ctx.author.id }).exec();
-            if (!user) {
-                return await client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
-            }
 
-            const { coin, bank } = user.balance;
-
-            // Check if the user has coins to deposit
-            if (coin < 1) {
-                return await client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
-            }
-
-            // Determine the amount to deposit
-            let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[0];
-            if (!amount || isNaN(amount) || amount < 1) {
-                const amountMap = {all: coin, half: Math.ceil(coin / 2)};
-                if (amount in amountMap) {
-                    amount = amountMap[amount];
-                } else {
-                    return await ctx.sendMessage({
-                        embeds: [
-                            client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount)
-                        ],
-                    });
+        client.utils.getUser(ctx.author.id)
+            .then(user => {
+                if (!user) {
+                    return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
                 }
-            }
 
-            // Ensure the amount does not exceed available coins
-            const baseCoins = Math.min(amount, coin);
-            const newCoin = coin - baseCoins;
-            const newBank = bank + baseCoins;
+                const { coin, bank } = user.balance;
 
-            // Update the user's balance in the database
-            await Users.updateOne({ userId: ctx.author.id }, {
-                $set: { 'balance.coin': newCoin, 'balance.bank': newBank }
-            }).exec();
+                if (coin < 1) {
+                    return client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
+                }
 
-            // Prepare and send success embed message
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setDescription(
-                    depositMessages.success
-                        .replace('%{coinEmote}', emoji.coin)
-                        .replace('%{amount}', client.utils.formatNumber(baseCoins))
-                );
+                let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[0];
+                if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
+                    const amountMap = { all: coin, half: Math.ceil(coin / 2) };
+                    if (amount in amountMap) {
+                        amount = amountMap[amount];
+                    } else {
+                        return ctx.sendMessage({
+                            embeds: [
+                                client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount)
+                            ],
+                        });
+                    }
+                }
 
-            return await ctx.sendMessage({ embeds: [embed] });
-        } catch (error) {
-            console.error('Error in Deposit command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, depositMessages.errors.fetchFail, color);
-        }
+                const baseCoins = Math.min(amount, coin);
+                user.balance.coin -= baseCoins;
+                user.balance.bank += baseCoins;
+
+                user.save()
+                    .then(() => {
+                        const embed = client
+                            .embed().setColor(color.main)
+                            .setDescription(
+                                depositMessages.success
+                                    .replace('%{amount}', client.utils.formatNumber(baseCoins))
+                                    .replace('%{coinEmote}', emoji.coin)
+                            )
+                            .setFooter({
+                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
+
+                        return ctx.sendMessage({ embeds: [embed] });
+                    })
+                    .catch(error => {
+                        console.error("Error saving user data:", error);
+                        client.utils.sendErrorMessage(client, ctx, generalMessages.saveError, color);
+                    });
+            })
+            .catch(error => {
+                console.error('Error fetching user data:', error);
+                client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+            });
     }
 };

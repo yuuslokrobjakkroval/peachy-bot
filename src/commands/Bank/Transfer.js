@@ -68,14 +68,10 @@ module.exports = class Transfer extends Command {
         let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
             const amountMap = { all: user.balance.coin, half: Math.ceil(user.balance.coin / 2) };
-            const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
+            // const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
 
             if (amount in amountMap) {
                 amount = amountMap[amount]
-            } else if (amount.match(/\d+[kmbtq]/)) {
-                const unit = amount.slice(-1).toLowerCase();
-                const number = parseInt(amount);
-                amount = number * (multiplier[unit] || 1);
             } else {
                 return await ctx.sendMessage({
                     embeds: [

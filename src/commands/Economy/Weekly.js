@@ -27,60 +27,69 @@ module.exports = class Weekly extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        try {
-            const weeklyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.weeklyMessages; // Access messages
-            const user = await Users.findOne({ userId: ctx.author.id }).exec();
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const weeklyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.weeklyMessages;
+
+        client.utils.getUser(ctx.author.id).then(user => {
+            if (!user) {
+                return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
+            }
+
+            const { coin } = user.balance;
+            const { xp } = user.profile;
+
+            const baseCoins = chance.integer({ min: 100000, max: 3000000 });
+            const baseExp = chance.integer({ min: 200, max: 250 });
+
             const verify = user.verification.verify.status === 'verified';
 
-            if (!user) {
-                return client.utils.sendErrorMessage(client, ctx, weeklyMessages.userNotFound, color);
+            let bonusCoins = 0;
+            let bonusExp = 0;
+
+            if (verify) {
+                bonusCoins = Math.floor(baseCoins * 0.20);
+                bonusExp = Math.floor(baseExp * 0.20);
             }
 
-            const { coin, bank } = user.balance;
-            const baseCoins = chance.integer({ min: 100000, max: 3000000 });
-            const newBalance = coin + baseCoins;
+            const totalCoins = baseCoins + bonusCoins;
+            const totalExp = baseExp + bonusExp;
+            const newBalance = coin + totalCoins;
+            const newExp = xp + totalExp;
 
             const now = moment().tz('Asia/Bangkok');
-            const nextWeekly = moment(now).add(1, 'week').toDate(); // Calculate next weekly
+            const nextWeekly = moment(now).add(1, 'week').toDate();
 
             const timeUntilNextWeekly = nextWeekly - now.toDate();
-            const isCooldownExpired = await client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
+            return client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly).then(isCooldownExpired => {
+                if (!isCooldownExpired) {
+                    return client.utils.getCooldown(ctx.author.id, this.name.toLowerCase()).then(lastCooldownTimestamp => {
+                        const remainingTime = Math.ceil((lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000);
+                        const cooldownMessage = this.getCooldownMessage(remainingTime, client, language, weeklyMessages);
 
-            if (!isCooldownExpired) {
-                const lastCooldownTimestamp = await client.utils.getCooldown(ctx.author.id, this.name.toLowerCase());
-                const remainingTime = Math.ceil((lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000);
-                const cooldownMessage = this.getCooldownMessage(remainingTime, client, language, weeklyMessages); // Updated call
+                        const cooldownEmbed = client
+                            .embed()
+                            .setColor(color.danger)
+                            .setDescription(cooldownMessage);
 
-                const cooldownEmbed = client
-                    .embed()
-                    .setColor(color.danger)
-                    .setDescription(cooldownMessage);
+                        return ctx.sendMessage({ embeds: [cooldownEmbed] });
+                    });
+                }
 
-                return await ctx.sendMessage({ embeds: [cooldownEmbed] });
-            }
+                user.balance.coin = newBalance;
+                user.profile.xp = newExp;
 
-            const baseExp = chance.integer({ min: 200, max: 250 });
-            const newExp = user.profile.xp + baseExp;
-
-            await Promise.all([
-                Users.updateOne({ userId: ctx.author.id }, {
-                    $set: {
-                        'balance.coin': newBalance,
-                        'balance.bank': bank,
-                        'profile.xp': newExp,
-                    }
-                }).exec(),
-                client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly)
-            ]);
-
-            const embed = this.createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages, verify); // Pass weeklyMessages
-            return await ctx.sendMessage({ embeds: [embed] });
-
-        } catch (error) {
+                return user.save().then(() => {
+                    return client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
+                }).then(() => {
+                    const embed = this.createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages);
+                    return ctx.sendMessage({ embeds: [embed] });
+                });
+            });
+        }).catch(error => {
             console.error('Error processing weekly command:', error);
             return client.utils.sendErrorMessage(client, ctx, weeklyMessages.error, color);
-        }
+        });
     }
 
     getCooldownMessage(remainingTime, client, language, weeklyMessages) {
@@ -89,7 +98,6 @@ module.exports = class Weekly extends Command {
         const minutes = Math.floor((remainingTime % 3600) / 60);
         const seconds = remainingTime % 60;
 
-        // Pluralization logic for each time unit
         const daysString = days > 1 ? `${days} days` : `${days} day`;
         const hoursString = hours > 1 ? `${hours} hrs` : `${hours} hr`;
         const minutesString = minutes > 1 ? `${minutes} mins` : `${minutes} min`;
@@ -115,21 +123,22 @@ module.exports = class Weekly extends Command {
         }
     }
 
-    createSuccessEmbed(client, ctx, emoji, baseCoins, baseExp, now, weeklyMessages, verify) {
+    createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages) {
         return client
             .embed()
             .setColor(client.config.color.main)
-            .setTitle(`${ctx.author.displayName} claimed their weekly reward!`)
             .setThumbnail(client.utils.emojiToImage(`${now.hour() >= 6 && now.hour() < 18 ? `${emoji.time.day}` : `${emoji.time.night}`}`))
             .setDescription(
                 weeklyMessages.success
-                    .replace('{{coin}}', client.utils.formatNumber(baseCoins))
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{mainRight}', emoji.mainRight)
+                    .replace('{{coin}}', client.utils.formatNumber(totalCoins))
                     .replace('{{coinEmote}}', emoji.coin)
-                    .replace('{{exp}}', client.utils.formatNumber(baseExp))
+                    .replace('{{exp}}', client.utils.formatNumber(totalExp))
             )
             .setFooter({
-                text: `Request By ${ctx.author.displayName}`,
-                iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
-            })
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            });
     }
 };

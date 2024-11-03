@@ -8,16 +8,18 @@
 		"examplesHeader": "Examples",
 		"syntaxInstructions": "Syntax: [] = optional, <> = required",
 		"noEveryoneOrHereError": "You can't use this command with everyone or here.",
-		"userNotFound": "User not found in database.",
-		"alreadyInGame": "You are already in a game. Please finish your current game before starting a new one.",
-		"zeroBalance": "Your balance is zero. Please earn some coins before trying again.",
 		"invalidAmount": "Invalid amount. Please enter a positive number.",
-		"notForYou": "This action is not for you.",
+		"zeroBalance": "Your balance is zero. Please earn some coins before trying again.",
+		"alreadyInGame": "You are already in a game. Please finish your current game before starting a new one.",
+		"userNotFound": "User not found in database.",
+		"saveError": "An error occurred while saving your data. Please try again later.",
 		"databaseUpdate": "There was an error updating the database.",
-		"requestedBy": "Requested By %{username}",
+		"userFetchError": "An error occurred while retrieving your data. Please try again later.",
+		"notForYou": "This action is not for you.",
 		"supportButton": "Click for support",
 		"inviteButton": "Invite me!",
-		"voteButton": "Vote for me"
+		"voteButton": "Vote for me",
+		"requestedBy": "Requested By %{username}"
 	},
 	"actionMessages": {
 		"biteMessages": {
@@ -86,49 +88,31 @@
 	},
 	"economyMessages": {
 		"balanceMessages": {
-			"title": "Balance",
-			"description": "# %{mainLeft} **𝐁𝐀𝐋𝐀𝐍𝐂𝐄** %{mainRight}\n %{coinEmote} : **%{coin}** coins\n %{bankEmote} : **%{bank}** coins",
-			"errors": {
-				"noUser": "User not found.",
-				"fetchFail": "Something went wrong while fetching your balance."
-			}
+			"description": "# %{mainLeft} **𝐁𝐀𝐋𝐀𝐍𝐂𝐄** %{mainRight}\n%{coinEmote} : **%{coin}** coins\n %{bankEmote} : **%{bank}** coins"
 		},
 		"dailyMessages": {
-			"title": "%{displayName}'s Daily Reward",
-			"success": "%{coinEmote} **`+%{coin}`** coins\nXP: **`+%{exp}`** xp%{bonusMessage}",
-			"cooldown": "Your daily reward is on cooldown. Please try again after **%{time}**.",
-			"errors": {
-				"noUser": "User not found.",
-				"fetchFail": "There was an error processing your daily claim."
-			}
+			"success": "# %{mainLeft} **𝐃𝐀𝐈𝐋𝐘 𝐑𝐄𝐖𝐀𝐑𝐃** %{mainRight}\nYou have claimed your daily reward of **+%{coin}** %{coinEmote} and **%{exp}** xp %{bonusMessage}",
+			"error": "There was an error processing your daily claim.",
+			"cooldown": "Your daily reward is on cooldown. Please try again after **%{time}**."
 		},
 		"depositMessages": {
 			"zeroBalance": "You don't have any coins to deposit.",
 			"invalidAmount": "Invalid amount. Please enter a valid number or use `all` or `half`.",
-			"success": "You have deposited %{coinEmote} **`%{amount}`** coins to your bank.",
-			"errors": {
-				"noUser": "User not found."
-			}
+			"success": "You have deposited **%{amount}** %{coinEmote} to your bank."
 		},
 		"gomaMessages": {
 			"success": {
 				"title": "have claimed goma!",
-				"description": "You have earned %{coinEmote} **`%{coin}`** coins."
+				"description": "You have earned **%{coin}** %{coinEmote}."
 			},
-			"cooldown": "Goma is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**.",
-			"errors": {
-				"noUser": "User not found."
-			}
+			"cooldown": "Goma is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"peachyMessages": {
-			"errors": {
-				"noUser": "User not found."
-			},
-			"cooldown": "Peachy is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**.",
 			"success": {
 				"title": "have claimed peachy!",
-				"description": "You have earned %{coinEmote} **`%{coin}`** coins."
-			}
+				"description": "You have earned **%{coin}** %{coinEmote}."
+			},
+			"cooldown": "Peachy is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"rankingMessages": {
 			"bal": {
@@ -169,21 +153,19 @@
 			"expire": "Transaction Expired"
 		},
 		"weeklyMessages": {
-			"userNotFound": "User not found.",
+			"success": "# %{mainLeft} **𝐖𝐄𝐄𝐊𝐋𝐘 𝐑𝐄𝐖𝐀𝐑𝐃** %{mainRight}\nYou have claimed your weekly reward of **{{coin}}** {{coinEmote}} and **{{exp}} XP**!",
+			"error": "There was an error processing your weekly claim.",
 			"cooldown": {
 				"multipleDays": "Weekly is on cooldown!\nTry again after **{{days}} and {{hours}}**, **{{minutes}}**, and **{{seconds}}**.",
 				"singleDay": "Weekly is on cooldown!\nTry again after **{{days}}**, **{{hours}}**, **{{minutes}}**, and **{{seconds}}**.",
 				"noDays": "Weekly is on cooldown!\nTry again after **{{hours}}**, **{{minutes}}**, and **{{seconds}}**."
-			},
-			"success": "You have claimed your weekly reward of **{{coin}} {{coinEmote}}** and **{{exp}} XP**!",
-			"error": "There was an error processing your weekly claim."
+			}
 		},
 		"withdrawMessages": {
-			"noUser": "User not found.",
 			"zeroBalance": "You have no coins in your bank.",
 			"invalidAmount": "Please provide a valid amount to withdraw. You can withdraw 'all', 'half', or a specific number.",
 			"tooHigh": "You cannot withdraw more than what you have in your bank.",
-			"success": "You have withdrawn {{coinEmote}} **{{amount}}** coins from your bank.",
+			"success": "You have withdrawn **%{amount}** %{coinEmote} from your bank.",
 			"error": "There was an error processing your withdrawal request."
 		}
 	},

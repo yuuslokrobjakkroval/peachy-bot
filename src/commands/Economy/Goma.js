@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/user.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
 const emojiImage = require("../../utils/Emoji");
@@ -27,72 +26,92 @@ module.exports = class Goma extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const gomaMessages = language.locales.get(language.defaultLocale)?.economyMessages?.gomaMessages;
 
-        try {
-            // Fetch user data
-            const user = await Users.findOne({ userId: ctx.author.id }).exec();
-            const verify = user.verification.verify.status === 'verified';
-
+        // Fetch user data using client.utils.getUser
+        client.utils.getUser(ctx.author.id).then(user => {
             if (!user) {
-                return await client.utils.sendErrorMessage(client, ctx, gomaMessages.errors.noUser, color);
+                return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
+            const verify = user.verification.verify.status === 'verified';
+            const { coin } = user.balance;
+            const { xp } = user.profile;
             const baseCoins = chance.integer({ min: 400, max: 500 });
-            const newBalance = user.balance.coin + baseCoins;
+            const baseExp = chance.integer({ min: 5, max: 10 });
+
+            let bonusCoins = 0;
+            let bonusExp = 0;
+
+            if (verify) {
+                bonusCoins = Math.floor(baseCoins * 0.20);
+                bonusExp = Math.floor(baseExp * 0.20);
+            }
+
+            const totalCoins = baseCoins + bonusCoins;
+            const totalExp = baseExp + bonusExp;
+            const newBalance = coin + totalCoins;
+            const newExp = xp + totalExp;
             const newStreak = user.goma.streak + 1;
 
             const cooldownTime = 300000; // 5 minutes cooldown
-            const isCooldownExpired = await client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
+            client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime).then(isCooldownExpired => {
+                if (!isCooldownExpired) {
+                    client.utils.getCooldown(ctx.author.id, this.name.toLowerCase()).then(lastCooldownTimestamp => {
+                        const remainingTime = Math.ceil((lastCooldownTimestamp + cooldownTime - Date.now()) / 1000);
+                        const duration = moment.duration(remainingTime, 'seconds');
+                        const minutes = Math.floor(duration.asMinutes());
+                        const seconds = Math.floor(duration.asSeconds()) % 60;
 
-            if (!isCooldownExpired) {
-                const lastCooldownTimestamp = await client.utils.getCooldown(ctx.author.id, this.name.toLowerCase());
-                const remainingTime = Math.ceil((lastCooldownTimestamp + cooldownTime - Date.now()) / 1000);
-                const duration = moment.duration(remainingTime, 'seconds');
-                const minutes = Math.floor(duration.asMinutes());
-                const seconds = Math.floor(duration.asSeconds()) % 60;
+                        const cooldownMessage = gomaMessages.cooldown
+                            .replace('%{minutes}', minutes)
+                            .replace('%{seconds}', seconds);
 
-                const cooldownMessage = gomaMessages.cooldown
-                    .replace('%{minutes}', minutes)
-                    .replace('%{seconds}', seconds);
+                        const cooldownEmbed = client.embed()
+                            .setColor(color.danger)
+                            .setDescription(cooldownMessage);
 
-                const cooldownEmbed = client.embed()
-                    .setColor(color.danger)
-                    .setDescription(cooldownMessage);
+                        return ctx.sendMessage({ embeds: [cooldownEmbed] });
+                    });
+                } else {
+                    // Update balance and streak
+                    user.balance.coin = newBalance;
+                    user.profile.xp = newExp;
+                    user.goma.streak = newStreak;
 
-                return await ctx.sendMessage({ embeds: [cooldownEmbed] });
-            }
+                    // Save the user data
+                    user.save().then(() => {
+                        client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
 
-            // Update balance and streak
-            await Promise.all([
-                Users.updateOne({ userId: ctx.author.id }, {
-                    $set: {
-                        'balance.coin': newBalance,
-                        'goma.streak': newStreak
-                    }
-                }).exec(),
-                client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime),
-            ]);
+                        // Display success embed
+                        const successEmbed = client.embed()
+                            .setColor(color.main)
+                            .setTitle(`${ctx.author.displayName} ${gomaMessages.success.title}`)
+                            .setDescription(
+                                gomaMessages.success.description
+                                    .replace('%{coinEmote}', emoji.coin)
+                                    .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                            )
+                            .setFooter({
+                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
 
-            // Display success embed
-            const successEmbed = client.embed()
-                .setColor(color.main)
-                .setTitle(`${ctx.author.displayName} ${gomaMessages.success.title}`)
-                .setDescription(
-                    gomaMessages.success.description
-                        .replace('%{coinEmote}', emoji.coin)
-                        .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                )
-                .setFooter({
-                    text: `Request By ${ctx.author.displayName}`,
-                    iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
-                })
-
-            return await ctx.sendMessage({ embeds: [successEmbed] });
-        } catch (error) {
-            console.error('Error processing Goma command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, gomaMessages.errors.fetchFail, color);
-        }
+                        return ctx.sendMessage({ embeds: [successEmbed] });
+                    }).catch(error => {
+                        console.error('Error saving user data:', error);
+                        return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+                    });
+                }
+            }).catch(error => {
+                console.error('Error checking cooldown:', error);
+                return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+            });
+        }).catch(error => {
+            console.error('Error fetching user data:', error);
+            return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+        });
     }
 };
