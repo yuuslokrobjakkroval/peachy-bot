@@ -90,8 +90,8 @@ module.exports = class Bio extends Command {
                     return;
                 }
 
-                if (text.length >= 200) {
-                    await client.utils.oops(client, ctx, bioMessages?.tooLong || 'The bio cannot be longer than 200 characters.', color);
+                if (text.length >= 300) {
+                    await client.utils.oops(client, ctx, bioMessages?.tooLong || 'The bio cannot be longer than 300 characters.', color);
                     return;
                 }
 

@@ -26,7 +26,7 @@ const CooldownSchema = new Schema({
 const ProfileSchema = new Schema({
     username: { type: String, default: null },
     gender: { type: String, default: null },
-    bio: { type: String, default: null, maxlength: 200 },
+    bio: { type: String, default: null, maxlength: 300 },
     birthday: { type: String, default: null },
     birthdayAcknowledged: { type: Boolean, default: false },
     xp: { type: Number, default: 0 },

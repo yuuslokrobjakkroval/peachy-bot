@@ -59,7 +59,7 @@ module.exports = class Profile extends Command {
             }
 
 
-            const canvas = createCanvas(1180, 600);
+            const canvas = createCanvas(1280, 720);
             const context = canvas.getContext('2d');
 
             await this.drawProfile(client, context, targetUser, user, color, emoji, bannerImage);
@@ -147,20 +147,20 @@ module.exports = class Profile extends Command {
 
     async drawProfile(client, context, targetUser, userInfo, color, emoji, banner) {
         const userAvatar = await loadImage(targetUser.displayAvatarURL({ format: 'png', size: 256 }));
-        const userAvatarX = 45;
-        const userAvatarY = 290;
-        const userAvatarSize = 128;
+        const userAvatarX = 1200;
+        const userAvatarY = 34;
+        const userAvatarSize = 40;
 
         // Draw the background color
         context.fillStyle = client.utils.formatColor(color.main);
-        context.fillRect(0, 0, 1180, 600);
+        context.fillRect(0, 0, 1280, 720);
 
         if (banner) {
             const bannerImage = await loadImage(banner);
             const x = 15;
-            const y = 25;
-            const width = 820;
-            const height = 312;
+            const y = 100;
+            const width = 850;
+            const height = 460;
             const radius = 32;
 
             // Begin a new path for the rounded rectangle
@@ -187,8 +187,16 @@ module.exports = class Profile extends Command {
             context.restore();
         }
 
-        // Draw the rounded rectangle for the settings box
-        this.drawRoundedRectangle(context, 855, 25, 300, 550, 32, client.utils.formatColor(color.light));
+        // Draw the rounded rectangle for the title box
+        this.drawRoundedRectangle(context, 15, 25, 1250, 60, 12, '#F7D8DF');
+
+        // Draw "Settings" title
+        context.font = "28px Kelvinch-Bold, Arial";
+        context.fillStyle = client.utils.formatColor(color.dark);
+        context.fillText(`Profile`, 30, 65);
+
+        // Draw the rounded rectangle for the information box
+        this.drawRoundedRectangle(context, 880, 100, 385, 570, 32, client.utils.formatColor(color.light));
 
         // Draw the avatar as a circular image
         context.save();
@@ -206,27 +214,19 @@ module.exports = class Profile extends Command {
         context.strokeStyle = client.utils.formatColor(color.light);
         context.stroke();
 
-        // Draw the username below the avatar
-        context.font = "24px Kelvinch-Bold, Arial";
-        context.fillStyle = client.utils.formatColor(color.dark);
-        context.fillText(targetUser.username, userAvatarX + 5, userAvatarY + userAvatarSize + 30);
-
-        // Draw "Settings" title
-        context.font = "28px Kelvinch-Bold, Arial";
-        context.fillText("User Information", 880, 80);
-
         // Draw each setting item text and switch
         const userInfoDetail = [
-            { label: "Gender", description: userInfo.profile && userInfo.profile.gender ? client.utils.formatCapitalize(userInfo.profile.gender) : 'Not Set', x: 880, y: 140 },
-            { label: "Date of birth", description: userInfo.profile && userInfo.profile.birthday ? userInfo.profile.birthday : 'Not Set', x: 880, y: 220 },
-            { label: "Bio", description: userInfo.profile && userInfo.profile.bio ? userInfo.profile.bio : 'Not Set', x: 880, y: 300 }
+            { label: "Name", description: userInfo.profile && userInfo.profile.name ? client.utils.formatCapitalize(userInfo.profile.name) : targetUser.username, x: 895, y: 140 },
+            { label: "Gender", description: userInfo.profile && userInfo.profile.gender ? client.utils.formatCapitalize(userInfo.profile.gender) : 'Not Set', x: 895, y: 220 },
+            { label: "Date of birth", description: userInfo.profile && userInfo.profile.birthday ? userInfo.profile.birthday : 'Not Set', x: 895, y: 300 },
+            { label: "Bio", description: userInfo.profile && userInfo.profile.bio ? userInfo.profile.bio : 'Not Set', x: 895, y: 380 }
         ];
 
         userInfoDetail.forEach(info => {
             context.fillStyle = client.utils.formatColor(color.dark);
             context.font = "24px Kelvinch-Bold, Arial"
             context.fillText(info.label, info.x, info.y);
-            const maxWidth = 380;
+            const maxWidth = 500;
             const lines = this.splitText(context, info.description, maxWidth);
             context.font = "18px Kelvinch-Roman, Arial";
             lines.forEach((line, index) => {
@@ -241,7 +241,7 @@ module.exports = class Profile extends Command {
 
             try {
                 const genderEmojiImage = await loadImage(genderEmojiURL);
-                context.drawImage(genderEmojiImage, 1070, 110, 64, 64);
+                context.drawImage(genderEmojiImage, 1170, 190, 64, 64);
             } catch (error) {
                 console.error('Error loading zodiac emoji image:', error);
             }
@@ -257,18 +257,18 @@ module.exports = class Profile extends Command {
 
             try {
                 const zodiacEmojiImage = await loadImage(zodiacEmojiURL);
-                context.drawImage(zodiacEmojiImage, 1070, 200, 64, 64);
+                context.drawImage(zodiacEmojiImage, 1170, 280, 64, 64);
             } catch (error) {
                 console.error('Error loading zodiac emoji image:', error);
             }
         }
 
         // Draw the logout button
-        context.fillStyle = '#FF5C5C';
-        this.drawRoundedRectangle(context, 915, 520, 180, 45, 20, '#FF5C5C');
+        // context.fillStyle = '#F582AE';
+        this.drawRoundedRectangle(context, 945, 600, 256, 50, 12, '#F7D8DF');
         context.fillStyle = client.utils.formatColor(color.dark);
         context.textAlign = 'center';
         context.font = "28px Kelvinch-SemiBoldItalic, Arial";
-        context.fillText("Single", 1005, 550);
+        context.fillText("Taken", 1070, 632);
     }
 };
