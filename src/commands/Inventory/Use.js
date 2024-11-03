@@ -13,7 +13,7 @@ module.exports = class Use extends Command {
             description: {
                 content: 'Use a theme or wallpaper item to customize your embed color, emoji, or background.',
                 examples: ['use t01', 'use w01'],
-                usage: 'use <item_id>',
+                usage: 'use <itemId>',
             },
             cooldown: 5,
             category: 'inventory',

@@ -7,8 +7,8 @@ module.exports = class Bite extends Command {
             name: 'kill',
             description: {
                 content: 'Sends a cute kill to the mentioned user.',
-                examples: ['bite @User'],
-                usage: 'bite @User',
+                examples: ['kill @User'],
+                usage: 'kill @User',
             },
             category: 'actions',
             aliases: [],
