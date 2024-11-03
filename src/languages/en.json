@@ -147,7 +147,7 @@
 			"expire": "Transaction Expired"
 		},
 		"weeklyMessages": {
-			"success": "# %{mainLeft} **𝐖𝐄𝐄𝐊𝐋𝐘** %{mainRight}\nYou have claimed your weekly reward of **+%{coin}** {{coinEmote}} and **+%{exp}** %{expEmote}\n%{bonusMessage}",
+			"success": "# %{mainLeft} **𝐖𝐄𝐄𝐊𝐋𝐘** %{mainRight}\nYou have claimed your weekly reward of **+%{coin}** %{coinEmote} and **+%{exp}** %{expEmote}\n%{bonusMessage}",
 			"error": "There was an error processing your weekly claim.",
 			"cooldown": {
 				"multipleDays": "Weekly is on cooldown!\nTry again after **{{days}} and {{hours}}**, **{{minutes}}**, and **{{seconds}}**.",
