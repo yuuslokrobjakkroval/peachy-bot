@@ -93,7 +93,7 @@
 		"dailyMessages": {
 			"success": "# %{mainLeft} **𝐃𝐀𝐈𝐋𝐘** %{mainRight}\nYou have claimed your daily reward of **+%{coin}** %{coinEmote} and **+%{exp}** %{expEmote}\n%{bonusMessage}",
 			"error": "There was an error processing your daily claim.",
-			"cooldown": "Your daily reward is on cooldown. Please try again after **%{time}**."
+			"cooldown": "Daily reward is on cooldown!\nTry again after **%{time}**."
 		},
 		"depositMessages": {
 			"zeroBalance": "You don't have any coins to deposit.",
