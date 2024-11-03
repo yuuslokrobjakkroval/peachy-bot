@@ -28,7 +28,7 @@ module.exports = class Shy extends Command {
         const shyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.shyMessages;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.shy : globalEmoji.emotes.shy);
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.shy ? emoji.emotes.shy : globalEmoji.emotes.shy);
             const embed = client
                 .embed()
                 .setColor(color.main)

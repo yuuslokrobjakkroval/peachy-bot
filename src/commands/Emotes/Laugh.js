@@ -28,7 +28,7 @@ module.exports = class Laugh extends Command {
         const laughMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.laughMessages; // Access localized messages
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.laugh : globalEmoji.emotes.laugh); // Get a random laugh emoji
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.laugh ? emoji.emotes.laugh : globalEmoji.emotes.laugh); // Get a random laugh emoji
             const embed = client
                 .embed()
                 .setColor(color.main)

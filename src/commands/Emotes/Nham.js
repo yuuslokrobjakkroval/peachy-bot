@@ -28,7 +28,7 @@ module.exports = class Eat extends Command {
         const eatMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.eatMessages;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.eat : globalEmoji.emotes.eat);
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.eat ? emoji.emotes.eat : globalEmoji.emotes.eat);
             const embed = client
                 .embed()
                 .setColor(color.main)

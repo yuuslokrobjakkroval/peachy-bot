@@ -4,9 +4,9 @@ const globalEmoji = require("../../utils/Emoji");
 module.exports = class Bite extends Command {
     constructor(client) {
         super(client, {
-            name: 'bite',
+            name: 'kill',
             description: {
-                content: 's bites the mentioned user.',
+                content: 'Sends a cute kill to the mentioned user.',
                 examples: ['bite @User'],
                 usage: 'bite @User',
             },
@@ -32,7 +32,7 @@ module.exports = class Bite extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const biteMessages = language.locales.get(language.defaultLocale)?.actionMessages?.biteMessages;
+        const killMessages = language.locales.get(language.defaultLocale)?.actionMessages?.killMessages;
         const errorMessages = biteMessages.errors;
 
         const target = ctx.isInteraction
@@ -49,14 +49,14 @@ module.exports = class Bite extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.bites ? emoji.actions.bites : globalEmoji.actions.bites);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.kill ? emoji.actions.kill : globalEmoji.actions.kill);
 
             // Create the embed message for biting
             const embed = client.embed()
                 .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} ${biteMessages.title} ${emoji.mainRight}`)
+                .setTitle(`${emoji.mainLeft} ${killMessages.title} ${emoji.mainRight}`)
                 .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is a valid URL or attachment
-                .setDescription(biteMessages.description
+                .setDescription(killMessages.description
                     .replace('%{displayName}', ctx.author.displayName)
                     .replace('%{target}', target.displayName));
 

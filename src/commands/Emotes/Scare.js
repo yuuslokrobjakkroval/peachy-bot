@@ -28,7 +28,7 @@ module.exports = class Scare extends Command {
         const scareMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.scareMessages;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.scared : globalEmoji.emotes.scared);
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.scared ? emoji.emotes.scared : globalEmoji.emotes.scared);
             const embed = client
                 .embed()
                 .setColor(color.main)

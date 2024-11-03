@@ -28,7 +28,7 @@ module.exports = class Makeup extends Command {
         const makeupMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.makeupMessages;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.makeUp : globalEmoji.emotes.makeUp);
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.makeUp ? emoji.emotes.makeUp : globalEmoji.emotes.makeUp);
             const embed = client
                 .embed()
                 .setColor(color.main)

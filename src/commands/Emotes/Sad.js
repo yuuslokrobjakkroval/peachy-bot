@@ -28,7 +28,7 @@ module.exports = class Sad extends Command {
         const sadMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.sadMessages;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.sad : globalEmoji.emotes.sad);
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.sad ? emoji.emotes.sad : globalEmoji.emotes.sad);
             const embed = client
                 .embed()
                 .setColor(color.main)

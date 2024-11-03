@@ -28,7 +28,7 @@ module.exports = class Dance extends Command {
         const danceMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.danceMessages; // Access localized messages
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.dances : globalEmoji.emotes.dances); // Get a random dance emoji
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.dances ? emoji.emotes.dances : globalEmoji.emotes.dances); // Get a random dance emoji
             const embed = client
                 .embed()
                 .setColor(color.main)

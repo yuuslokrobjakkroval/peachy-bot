@@ -28,7 +28,7 @@ module.exports = class Happy extends Command {
         const happyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.happyMessages; // Access localized messages
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.happy : globalEmoji.emotes.happy); // Get a random happy emoji
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.happy ? emoji.emotes.happy : globalEmoji.emotes.happy); // Get a random happy emoji
             const embed = client
                 .embed()
                 .setColor(color.main)

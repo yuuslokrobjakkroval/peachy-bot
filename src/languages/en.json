@@ -38,6 +38,15 @@
 				"fetchFail": "Something went wrong while fetching the hug GIF."
 			}
 		},
+		"killMessages": {
+			"title": "Wanna Kill!",
+			"description": "Are you sure you want to perform this action?",
+			"errors": {
+				"noUser": "You need to mention a user to target.",
+				"selfKill": "You cannot target yourself.",
+				"fetchFail": "Something went wrong while fetching the kill GIF."
+			}
+		},
 		"kissMessages": {
 			"title": "Kiss Time!",
 			"description": "gives a cute kiss to",
@@ -45,6 +54,15 @@
 				"noUser": "You need to mention a user to kiss.",
 				"selfKiss": "You cannot kiss yourself.",
 				"fetchFail": "Something went wrong while fetching the kiss GIF."
+			}
+		},
+		"loungMessages": {
+			"title": "Chill Time!",
+			"description": "relaxes with",
+			"errors": {
+				"noUser": "You need to mention a user to relax with.",
+				"selfLounge": "You cannot relax with yourself.",
+				"fetchFail": "Something went wrong while fetching the lounge GIF."
 			}
 		},
 		"punchMessages": {

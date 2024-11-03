@@ -28,7 +28,7 @@ module.exports = class PlayGame extends Command {
         const playGameMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.playGameMessages;
 
         try {
-            const randomEmote = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.playing : globalEmoji.emotes.playing);
+            const randomEmote = client.utils.getRandomElement(emoji.emotes && emoji.emotes.playing ? emoji.emotes.playing : globalEmoji.emotes.playing);
             const emoteImageUrl = client.utils.emojiToImage(randomEmote);
 
             const embed = client

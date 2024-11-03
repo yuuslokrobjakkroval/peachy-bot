@@ -28,7 +28,7 @@ module.exports = class Exercise extends Command {
         const exerciseMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.exerciseMessages; // Access localized messages
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes ? emoji.emotes.exercise : globalEmoji.emotes.exercise); // Get a random exercise emoji
+            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.exercise ? emoji.emotes.exercise : globalEmoji.emotes.exercise); // Get a random exercise emoji
             const embed = client
                 .embed()
                 .setColor(color.main)

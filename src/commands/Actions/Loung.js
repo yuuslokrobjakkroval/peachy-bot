@@ -4,11 +4,11 @@ const globalEmoji = require("../../utils/Emoji");
 module.exports = class Bite extends Command {
     constructor(client) {
         super(client, {
-            name: 'bite',
+            name: 'loung',
             description: {
-                content: 's bites the mentioned user.',
-                examples: ['bite @User'],
-                usage: 'bite @User',
+                content: 'Sends a cute emoji loung to the mentioned user.',
+                examples: ['loung @User'],
+                usage: 'loung @User',
             },
             category: 'actions',
             aliases: [],
@@ -23,7 +23,7 @@ module.exports = class Bite extends Command {
             options: [
                 {
                     name: 'user',
-                    description: 'Mention the user you want to bite.',
+                    description: 'Mention the user you want to loung.',
                     type: 6, // USER type
                     required: true,
                 },
@@ -32,8 +32,8 @@ module.exports = class Bite extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const biteMessages = language.locales.get(language.defaultLocale)?.actionMessages?.biteMessages;
-        const errorMessages = biteMessages.errors;
+        const loungMessages = language.locales.get(language.defaultLocale)?.actionMessages?.loungMessages;
+        const errorMessages = loungMessages.errors;
 
         const target = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
@@ -49,14 +49,14 @@ module.exports = class Bite extends Command {
         }
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.bites ? emoji.actions.bites : globalEmoji.actions.bites);
+            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.loung ? emoji.actions.loung : globalEmoji.actions.loung);
 
             // Create the embed message for biting
             const embed = client.embed()
                 .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} ${biteMessages.title} ${emoji.mainRight}`)
+                .setTitle(`${emoji.mainLeft} ${loungMessages.title} ${emoji.mainRight}`)
                 .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is a valid URL or attachment
-                .setDescription(biteMessages.description
+                .setDescription(loungMessages.description
                     .replace('%{displayName}', ctx.author.displayName)
                     .replace('%{target}', target.displayName));
 
