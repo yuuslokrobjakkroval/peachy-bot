@@ -81,7 +81,7 @@ module.exports = class Daily extends Command {
                 }).then(() => {
                     let bonusMessage = '';
                     if (bonusCoins > 0 || bonusExp > 0) {
-                        bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} XP`;
+                        bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} xp`;
                     }
 
                     const embed = client.embed()
@@ -93,6 +93,7 @@ module.exports = class Daily extends Command {
                                 .replace('%{mainRight}', emoji.mainRight)
                                 .replace('%{coinEmote}', emoji.coin)
                                 .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                                .replace('%{expEmote}', emoji.exp)
                                 .replace('%{exp}', client.utils.formatNumber(baseExp))
                                 .replace('%{bonusMessage}', bonusMessage)
                         )

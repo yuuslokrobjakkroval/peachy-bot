@@ -86,7 +86,7 @@ module.exports = class Goma extends Command {
                         client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
                         let bonusMessage = '';
                         if (bonusCoins > 0 || bonusExp > 0) {
-                            bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} XP`;
+                            bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} xp`;
                         }
 
                         const successEmbed = client.embed()
@@ -97,6 +97,8 @@ module.exports = class Goma extends Command {
                                     .replace('%{mainRight}', emoji.mainRight)
                                     .replace('%{coinEmote}', emoji.coin)
                                     .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                                    .replace('%{expEmote}', emoji.exp)
+                                    .replace('%{exp}', client.utils.formatNumber(baseExp))
                                     .replace('%{bonusMessage}', bonusMessage)
                             )
                             .setFooter({

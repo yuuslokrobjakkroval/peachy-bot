@@ -84,7 +84,7 @@ module.exports = class Weekly extends Command {
                 }).then(() => {
                     let bonusMessage = '';
                     if (bonusCoins > 0 || bonusExp > 0) {
-                        bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} XP`;
+                        bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} xp`;
                     }
                     const embed = this.createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages, bonusMessage);
                     return ctx.sendMessage({ embeds: [embed] });
@@ -138,7 +138,8 @@ module.exports = class Weekly extends Command {
                     .replace('%{mainRight}', emoji.mainRight)
                     .replace('{{coin}}', client.utils.formatNumber(totalCoins))
                     .replace('{{coinEmote}}', emoji.coin)
-                    .replace('{{exp}}', client.utils.formatNumber(totalExp))
+                    .replace('%{expEmote}', emoji.exp)
+                    .replace('%{exp}', client.utils.formatNumber(totalExp))
                     .replace('%{bonusMessage}', bonusMessage)
             )
             .setFooter({
