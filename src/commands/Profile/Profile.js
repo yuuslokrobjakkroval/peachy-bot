@@ -48,7 +48,9 @@ module.exports = class Profile extends Command {
                 return await this.sendUserNotFoundEmbed(ctx, color);
             }
 
-            loadingMessage = await this.sendLoadingMessage(ctx, color, emoji);
+            loadingMessage = await this.sendLoadingMessage(client, ctx, color, emoji);
+
+            await new Promise(resolve => setTimeout(resolve, 2000));
 
             const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
             let bannerImage;
@@ -92,11 +94,12 @@ module.exports = class Profile extends Command {
         });
     }
 
-    async sendLoadingMessage(ctx, color, emoji) {
-        const embed = ctx.client.embed()
+    async sendLoadingMessage(client, ctx, color, emoji) {
+        const embed = client.embed()
             .setColor(color.main)
             .setTitle(`**${emoji.mainLeft} 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 ${emoji.mainRight}**`)
-            .setDescription('**Generating your profile...**');
+            .setDescription('**Generating your profile...**')
+            .setImage('https://i.imgur.com/UCsKa6Z.gif')
         return await ctx.sendDeferMessage({
             embeds: [embed],
         });
@@ -176,13 +179,10 @@ module.exports = class Profile extends Command {
             context.lineTo(x, y + radius);
             context.quadraticCurveTo(x, y, x + radius, y);
             context.closePath();
-
             // Clip to the rounded rectangle path
             context.clip();
-
             // Draw the banner image within the clipped area
             context.drawImage(bannerImage, x, y, width, height);
-
             // Restore the context to remove the clipping path
             context.restore();
         }
@@ -269,6 +269,6 @@ module.exports = class Profile extends Command {
         context.fillStyle = client.utils.formatColor(color.dark);
         context.textAlign = 'center';
         context.font = "28px Kelvinch-SemiBoldItalic, Arial";
-        context.fillText("Taken", 1070, 632);
+        context.fillText("Single", 1070, 632);
     }
 };
