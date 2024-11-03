@@ -643,7 +643,7 @@
 			"resetSuccess": "The bio for you has been reset.",
 			"noBio": "No bio written.",
 			"provideText": "Please provide a bio text or a valid subcommand.",
-			"tooLong": "The bio cannot be longer than 40 characters.",
+			"tooLong": "The bio cannot be longer than 200 characters.",
 			"setSuccess": "The bio for you has been set."
 		},
 		"bdMessages": {

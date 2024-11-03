@@ -16,17 +16,17 @@ module.exports = class GuildCreate extends Event {
         if (!owner) {
             guild.fetchOwner().then(fetchedOwner => {
                 owner = fetchedOwner;
-                sendGuildInfo(guild, owner);
+                sendGuildInfo(this.client, guild, owner);
             }).catch(() => {
                 owner = { user: { tag: 'Unknown#0000' } };
-                sendGuildInfo(guild, owner);
+                sendGuildInfo(this.client, guild, owner);
             });
         } else {
-            sendGuildInfo(guild, owner);
+            sendGuildInfo(this.client, guild, owner);
         }
 
-        function sendGuildInfo(guild, owner) {
-            const channel = this.client.channels.cache.get(channelId);
+        function sendGuildInfo(client, guild, owner) {
+            const channel = client.channels.cache.get(channelId);
             if (!channel) {
                 console.log('Channel not found!');
                 return;
@@ -38,19 +38,19 @@ module.exports = class GuildCreate extends Event {
             if (!inviteChannel) {
                 inviteChannel = guild.channels.cache.find(ch => ch.type === ChannelType.GuildVoice);
                 if (!inviteChannel) {
-                    return channel.sendMessage('No suitable channels found to create an invite link.').catch(console.error);
+                    return channel.send('No suitable channels found to create an invite link.').catch(console.error);
                 }
             }
 
             if (!inviteChannel.permissionsFor(inviteChannel.guild.members.me).has([PermissionFlagsBits.CreateInstantInvite])) {
-                return channel.sendMessage("Sorry, I don't have permission to create an invite link in this channel.").catch(console.error);
+                return channel.send("Sorry, I don't have permission to create an invite link in this channel.").catch(console.error);
             }
 
             inviteChannel.createInvite({ maxAge: 0, maxUses: 5, reason: `Requested by Peachy Dev` })
                 .then(invite => {
                     let inviteLink = invite?.url || `https://discord.gg/${invite?.code}`;
 
-                    const embed = this.client.embed()
+                    const embed = client.embed()
                         .setColor('Green')
                         .setAuthor({ name: guild.name, iconURL: guild.iconURL({ format: 'jpeg' }) })
                         .setDescription(`**${guild.name}** has been invited to the bot!`)
@@ -63,14 +63,14 @@ module.exports = class GuildCreate extends Event {
                             { name: 'Invite Link', value: inviteLink, inline: true },
                         ])
                         .setTimestamp()
-                        .setFooter({ text: 'Thank you for inviting me!', iconURL: this.client.user.displayAvatarURL() });
+                        .setFooter({ text: 'Thank you for inviting me!', iconURL: client.user.displayAvatarURL() });
 
                     // Send the embed to the channel
                     channel.send({ embeds: [embed] }).catch(console.error);
                 })
                 .catch(err => {
                     console.error("Failed to create an invite:", err);
-                    channel.sendMessage("Failed to create an invite link.").catch(console.error);
+                    channel.send("Failed to create an invite link.").catch(console.error);
                 });
         }
     }

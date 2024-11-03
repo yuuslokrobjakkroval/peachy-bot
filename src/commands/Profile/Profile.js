@@ -125,6 +125,26 @@ module.exports = class Profile extends Command {
         ctx.fill();
     }
 
+    // Function to split text into multiple lines
+    splitText(context, text, maxWidth) {
+        const words = text.split(" ");
+        const lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            const word = words[i];
+            const width = context.measureText(currentLine + " " + word).width;
+            if (width < maxWidth) {
+                currentLine += " " + word;
+            } else {
+                lines.push(currentLine);
+                currentLine = word;
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
     async drawProfile(client, context, targetUser, userInfo, color, emoji, banner) {
         const userAvatar = await loadImage(targetUser.displayAvatarURL({ format: 'png', size: 256 }));
         const userAvatarX = 45;
@@ -187,27 +207,31 @@ module.exports = class Profile extends Command {
         context.stroke();
 
         // Draw the username below the avatar
-        context.font = "bold 24px Kelvinch-Bold Arial";
+        context.font = "24px Kelvinch-Bold, Arial";
         context.fillStyle = client.utils.formatColor(color.dark);
         context.fillText(targetUser.username, userAvatarX + 5, userAvatarY + userAvatarSize + 30);
 
         // Draw "Settings" title
-        context.font = "bold 28px Kelvinch-Bold Arial";
+        context.font = "28px Kelvinch-Bold, Arial";
         context.fillText("User Information", 880, 80);
 
         // Draw each setting item text and switch
         const userInfoDetail = [
-            { label: "Gender", description: userInfo.profile && userInfo.profile.gender ? userInfo.profile.gender : 'Not Set', x: 880, y: 140 },
+            { label: "Gender", description: userInfo.profile && userInfo.profile.gender ? client.utils.formatCapitalize(userInfo.profile.gender) : 'Not Set', x: 880, y: 140 },
             { label: "Date of birth", description: userInfo.profile && userInfo.profile.birthday ? userInfo.profile.birthday : 'Not Set', x: 880, y: 220 },
             { label: "Bio", description: userInfo.profile && userInfo.profile.bio ? userInfo.profile.bio : 'Not Set', x: 880, y: 300 }
         ];
 
-        context.font = "18px Arial";
         userInfoDetail.forEach(info => {
             context.fillStyle = client.utils.formatColor(color.dark);
+            context.font = "24px Kelvinch-Bold, Arial"
             context.fillText(info.label, info.x, info.y);
-            context.font = "14px Arial";
-            context.fillText(info.description, info.x, info.y + 20);
+            const maxWidth = 380;
+            const lines = this.splitText(context, info.description, maxWidth);
+            context.font = "18px Kelvinch-Roman, Arial";
+            lines.forEach((line, index) => {
+                context.fillText(line, info.x, info.y + 30 + (index * 24));
+            });
         });
 
         // Draw Zodiac Sign
@@ -217,7 +241,7 @@ module.exports = class Profile extends Command {
 
             try {
                 const genderEmojiImage = await loadImage(genderEmojiURL);
-                context.drawImage(genderEmojiImage, 1050, 120, 64, 64);
+                context.drawImage(genderEmojiImage, 1070, 110, 64, 64);
             } catch (error) {
                 console.error('Error loading zodiac emoji image:', error);
             }
@@ -233,7 +257,7 @@ module.exports = class Profile extends Command {
 
             try {
                 const zodiacEmojiImage = await loadImage(zodiacEmojiURL);
-                context.drawImage(zodiacEmojiImage, 1050, 200, 64, 64);
+                context.drawImage(zodiacEmojiImage, 1070, 200, 64, 64);
             } catch (error) {
                 console.error('Error loading zodiac emoji image:', error);
             }
@@ -244,7 +268,7 @@ module.exports = class Profile extends Command {
         this.drawRoundedRectangle(context, 915, 520, 180, 45, 20, '#FF5C5C');
         context.fillStyle = client.utils.formatColor(color.dark);
         context.textAlign = 'center';
-        context.font = "18px Arial";
+        context.font = "28px Kelvinch-SemiBoldItalic, Arial";
         context.fillText("Single", 1005, 550);
     }
 };

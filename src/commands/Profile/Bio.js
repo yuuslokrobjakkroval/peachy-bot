@@ -27,19 +27,6 @@ module.exports = class Bio extends Command {
             slashCommand: true,
             options: [
                 {
-                    name: 'set',
-                    description: 'Sets the bio in the profile card',
-                    type: 1,
-                    options: [
-                        {
-                            name: 'text',
-                            description: 'The text to set in your bio.',
-                            type: 3,
-                            required: true,
-                        },
-                    ],
-                },
-                {
                     name: 'reset',
                     description: 'Resets the bio to the default one',
                     type: 1,
@@ -103,8 +90,8 @@ module.exports = class Bio extends Command {
                     return;
                 }
 
-                if (text.length > 40) {
-                    await client.utils.oops(client, ctx, bioMessages?.tooLong || 'The bio cannot be longer than 40 characters.', color);
+                if (text.length >= 200) {
+                    await client.utils.oops(client, ctx, bioMessages?.tooLong || 'The bio cannot be longer than 200 characters.', color);
                     return;
                 }
 
