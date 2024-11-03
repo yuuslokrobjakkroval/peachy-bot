@@ -175,7 +175,7 @@
 				"singleDay": "Weekly is on cooldown!\nTry again after **{{days}}**, **{{hours}}**, **{{minutes}}**, and **{{seconds}}**.",
 				"noDays": "Weekly is on cooldown!\nTry again after **{{hours}}**, **{{minutes}}**, and **{{seconds}}**."
 			},
-			"success": "{{coinEmote}} **Congratulations, {{user}}!**\nYou have claimed your weekly reward of **{{coin}} coins** and **{{exp}} XP**!",
+			"success": "You have claimed your weekly reward of **{{coin}} {{coinEmote}}** and **{{exp}} XP**!",
 			"error": "There was an error processing your weekly claim."
 		},
 		"withdrawMessages": {
