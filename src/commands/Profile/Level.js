@@ -36,13 +36,13 @@ module.exports = class Level extends Command {
         const levelMessages = language.locales.get(language.defaultLocale)?.profileMessages?.levelMessages;
 
         try {
-            const loadingScreen = [gif.peachLoadingScreen, gif.gomaLoadingScreen];
-            const randomLoadingScreen = client.utils.getRandomElement(loadingScreen);
+            // const loadingScreen = [gif.peachLoadingScreen, gif.gomaLoadingScreen];
+            // const randomLoadingScreen = client.utils.getRandomElement(loadingScreen);
             const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`**${emoji.mainLeft} 𝐋𝐄𝐕𝐄𝐋 ${emoji.mainRight}**`)
                 .setDescription(levelMessages?.generating || '**Generating your level...**')
-                .setImage(randomLoadingScreen);
+                .setImage('https://i.imgur.com/UCsKa6Z.gif');
             loadingMessage = await ctx.sendDeferMessage({
                 embeds: [embed],
             });
@@ -60,7 +60,7 @@ module.exports = class Level extends Command {
             const ctxCanvas = canvas.getContext('2d');
 
             // Background image
-            const background = await loadImage(gif.levelBackground);
+            const background = await loadImage(gif.backgroundLevel);
             ctxCanvas.drawImage(background, 0, 0, canvas.width, canvas.height);
 
             // Function to draw a rounded rectangle

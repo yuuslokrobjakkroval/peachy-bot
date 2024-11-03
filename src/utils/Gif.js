@@ -1,6 +1,8 @@
 module.exports = {
     // balance: '../data/images/Global/MITAOSWEET.png',
 
+    backgroundLevel: 'https://i.imgur.com/eIiaG96.png',
+
     // INTRODUCTION
     peachy: 'https://i.imgur.com/kYXE4No.gif',
     thanks: 'https://i.imgur.com/FrTvTpq.gif',
