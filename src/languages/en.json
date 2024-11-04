@@ -104,11 +104,11 @@
 			"success": "You have deposited **%{amount}** %{coinEmote} to your bank."
 		},
 		"gomaMessages": {
-			"success": "# %{mainLeft} **𝐆𝐎𝐌𝐀** %{mainRight}\nYou have earned %{coinEmote} **+%{coin}** coins and %{expEmote}: **+%{exp}** %{expEmote} xp\n%{bonusMessage}",
+			"success": "# %{mainLeft} **𝐆𝐎𝐌𝐀** %{mainRight}\nYou have earned %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
 			"cooldown": "Goma is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"peachyMessages": {
-			"success": "# %{mainLeft} **𝐏𝐄𝐀𝐂𝐇** %{mainRight}\nYou have earned %{coinEmote} **+%{coin}** coins and %{expEmote}: **+%{exp}** %{expEmote} xp\n%{bonusMessage}",
+			"success": "# %{mainLeft} **𝐏𝐄𝐀𝐂𝐇** %{mainRight}\nYou have earned %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
 			"cooldown": "Peachy is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"rankingMessages": {
