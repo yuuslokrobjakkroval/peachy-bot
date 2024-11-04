@@ -2,7 +2,6 @@ const { Command } = require('../../structures');
 const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const ShopItems = require('../../assets/inventory/ShopItems');
-const moment = require("moment");
 const inventory = ShopItems.flatMap(shop => shop.inventory);
 const Wallpapers = inventory.filter(value => value.type === 'wallpaper');
 
@@ -33,43 +32,45 @@ module.exports = class Profile extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         let loadingMessage;
         try {
             const targetUser = this.getTargetUser(ctx, args);
-            const user = await client.utils.getUser(targetUser.id);
+            client.utils.getUser(targetUser.id).then(async user => {
+                if (!user) {
+                    return this.sendUserNotFoundEmbed(ctx, color);
+                }
 
-            if (!user) {
-                return await this.sendUserNotFoundEmbed(ctx, color);
-            }
+                try {
+                    loadingMessage = await this.sendLoadingMessage(client, ctx, color, emoji);
+                } catch (error) {
+                    await this.handleError(ctx, loadingMessage);
+                    console.error(error);
+                }
 
-            loadingMessage = await this.sendLoadingMessage(client, ctx, color, emoji);
+                const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
 
-            await new Promise(resolve => setTimeout(resolve, 2000));
+                let bannerImage;
+                if (equippedWallpaper) {
+                    bannerImage = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
+                } else {
+                    bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
+                }
 
-            const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
+                const canvas = createCanvas(1280, 720);
+                const context = canvas.getContext('2d');
 
-            let bannerImage;
-            if (equippedWallpaper) {
-                bannerImage = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
-            } else {
-                bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
-            }
+                await this.drawLevel(client, context, targetUser, user, color, emoji, bannerImage);
 
-            const canvas = createCanvas(1280, 720);
-            const context = canvas.getContext('2d');
+                const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
-            await this.drawLevel(client, context, targetUser, user, color, emoji, bannerImage);
-
-            const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
-
-            await loadingMessage.edit({
-                content: '',
-                embeds: [],
-                files: [attachment],
-            });
+                loadingMessage.edit({
+                    content: '',
+                    embeds: [],
+                    files: [attachment],
+                });
+            })
         } catch (error) {
-            await this.handleError(ctx, loadingMessage);
             console.error(error);
         }
     }
