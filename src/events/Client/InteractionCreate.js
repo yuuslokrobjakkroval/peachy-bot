@@ -14,7 +14,9 @@ const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
 
 module.exports = class InteractionCreate extends Event {
   constructor(client, file) {
-    super(client, file, { name: 'interactionCreate' });
+    super(client, file, {
+      name: 'interactionCreate'
+    });
   }
 
   async run(interaction) {
@@ -23,7 +25,7 @@ module.exports = class InteractionCreate extends Event {
     this.client.setColorBasedOnTheme(interaction.user.id).then(({user, color, emoji, language}) => {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
-      this.client.utils.getCheckingUser(this.client, interaction, user, color, emoji, prefix);
+      this.client.utils.getCheckingUser(this.client, interaction, user, color, emoji, prefix ? prefix : 'P');
       if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
         const command = this.client.commands.get(interaction.commandName);
         if (!command) return;
