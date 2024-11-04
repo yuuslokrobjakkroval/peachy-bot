@@ -57,46 +57,32 @@ module.exports = class Start extends Command {
                     type: 3,
                     required: false,
                 },
-                {
-                    name: 'host',
-                    description: 'Specify the giveaway host (mention or user ID).',
-                    type: 6, // User type
-                    required: false,
-                },
-                // {
-                //     name: 'channel',
-                //     description: 'Specify the channel to post the giveaway.',
-                //     type: 7, // Channel type
-                //     required: false,
-                //     channel_types: [0],
-                // },
             ],
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         if (ctx.isInteraction) {
-            ctx.interaction.deferReply();
+            await ctx.interaction.deferReply();
         } else {
-            ctx.sendDeferMessage(`${client.user.username} is Thinking...`);
+            await ctx.sendDeferMessage(`${client.user.username} is Thinking...`);
         }
 
+        // Owner and Admin checks
         const isOwner = client.config.owners.includes(ctx.author.id);
         const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
 
         if (!isOwner && !isAdmin) {
-            return (ctx.isInteraction
-                    ? ctx.interaction.editReply({
-                        content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
-                        ephemeral: true
-                    })
-                    : ctx.editMessage({
-                        content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
-                        ephemeral: true
-                    })
-            );
+            const response = {
+                content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
+                ephemeral: true,
+            };
+            return ctx.isInteraction
+                ? ctx.interaction.editReply(response)
+                : ctx.editMessage(response);
         }
 
+        // Fetch arguments for giveaway
         const durationStr = ctx.isInteraction ? ctx.interaction.options.getString('duration') : args[0];
         const winnersStr = ctx.isInteraction ? ctx.interaction.options.getInteger('winners') : args[1];
         const prize = ctx.isInteraction ? ctx.interaction.options.getString('prize') : args[2];
@@ -104,25 +90,8 @@ module.exports = class Start extends Command {
         const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[4];
         const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[5];
 
-        if (autoPay && !isOwner) {
-            return (ctx.isInteraction
-                    ? ctx.interaction.editReply({
-                        content: 'Only the bot owner can enable autopay for giveaways.',
-                        ephemeral: true
-                    })
-                    : ctx.editMessage({
-                        content: 'Only the bot owner can enable autopay for giveaways.',
-                        ephemeral: true
-                    })
-            );
-        }
-
-        const host = ctx.isInteraction ? ctx.interaction.options.getUser('host') : args[6];
-        // const channel = ctx.isInteraction ? ctx.interaction.options.getChannel('channel') : args[7];
-
         const duration = ms(durationStr);
         const winners = parseInt(winnersStr, 10);
-
         if (!duration || isNaN(winners) || winners <= 0 || !prize) {
             const replyMessage = {
                 embeds: [
@@ -133,16 +102,15 @@ module.exports = class Start extends Command {
                 ],
             };
             if (ctx.isInteraction) {
-                ctx.interaction.editReply(replyMessage);
+                await ctx.interaction.editReply(replyMessage);
             } else {
-                ctx.editMessage(replyMessage);
+                await ctx.editMessage(replyMessage);
             }
             return;
         }
 
         const endTime = Date.now() + duration;
         const formattedDuration = parseInt(endTime / 1000, 10);
-
         const giveawayEmbed = client.embed()
             .setColor(color.main)
             .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
@@ -153,26 +121,21 @@ module.exports = class Start extends Command {
         if (image) giveawayEmbed.setImage(image.url);
         if (thumbnail) giveawayEmbed.setThumbnail(thumbnail.url);
 
-
         const joinButton = client.utils.fullOptionButton('giveaway-join', emoji.main, '0', 1, false);
         const participantsButton = client.utils.fullOptionButton('giveaway-participants', '', 'Participants', 2, false);
-
         const buttonRow = client.utils.createButtonRow(joinButton, participantsButton);
 
-        // After sending the giveaway message
         let giveawayMessage;
         try {
-            if (ctx.isInteraction) {
-                giveawayMessage = ctx.interaction.editReply({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
-            } else {
-                giveawayMessage = ctx.editMessage({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
-            }
+            giveawayMessage = ctx.isInteraction
+                ? await ctx.interaction.editReply({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true })
+                : await ctx.editMessage({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
         } catch (err) {
             console.error(err);
             const response = 'There was an error sending the giveaway message.';
             return ctx.isInteraction
-                ? ctx.interaction.editReply({ content: response })
-                : ctx.editMessage({ content: response });
+                ? await ctx.interaction.editReply({ content: response })
+                : await ctx.editMessage({ content: response });
         }
 
         let cleanedPrize = prize.replace(/[^0-9,]/g, '');
@@ -184,11 +147,11 @@ module.exports = class Start extends Command {
             prizeAmount *= multipliers[unit];
         }
 
-        GiveawaySchema.create({
+        await GiveawaySchema.create({
             guildId: ctx.guild.id,
             channelId: ctx.channel.id,
             messageId: giveawayMessage.id,
-            hostedBy: host ? host.id : ctx.author.id,
+            hostedBy: ctx.author.id,
             winners: winners,
             prize: prizeAmount,
             endTime: Date.now() + duration,
