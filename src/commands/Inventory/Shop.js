@@ -106,7 +106,6 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
         }
     };
 
-
     const getButtonRow = () => {
         const homeButton = client.utils.emojiButton('home', '🏠', 2);
         const prevButton = client.utils.emojiButton('prev_item', '⬅️', 2);
@@ -180,62 +179,45 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
         if (int.customId === 'home') {
             selectedCategory = categories[0];
             page = 0;
-            selectedItemIndex = null; // Reset item selection
-            updatePages(selectedCategory); // Update pages for the default category
+            selectedItemIndex = null;
+            updatePages(selectedCategory);
             await int.update(getButtonRow());
         } else if (int.customId === 'prev_item') {
-            // Handle previous item
             if (selectedItemIndex !== null) {
                 selectedItemIndex--;
                 if (selectedItemIndex < 0) selectedItemIndex = items.length - 1;
                 const itemDetails = displayItemDetails(selectedItemIndex);
                 await int.update({ embeds: [itemDetails.embed], components: getButtonRow() });
             } else {
-                // Handle previous page
                 page--;
                 if (page < 0) page = pages.length - 1;
                 await int.update(getButtonRow());
             }
         } else if (int.customId === 'next_item') {
-            // Handle next item
             if (selectedItemIndex !== null) {
                 selectedItemIndex++;
                 if (selectedItemIndex >= items.length) selectedItemIndex = 0;
                 const itemDetails = displayItemDetails(selectedItemIndex);
-                await int.update({
-                    embeds: [itemDetails.embed],
-                    components: getButtonRow(selectedItemIndex, items).components
-                });
+                await int.update({ embeds: [itemDetails.embed], components: getButtonRow() });
             } else {
-                // Handle next page
                 page++;
                 if (page >= pages.length) page = 0;
-                await int.update({
-                    embeds: [pages[page].embed],
-                    components: getButtonRow(selectedItemIndex, items).components
-                });
+                await int.update({ embeds: [pages[page].embed], components: getButtonRow() });
             }
-        }
-        else if (int.customId === 'category_select') {
+        } else if (int.customId === 'category_select') {
             selectedCategory = int.values[0];
             updatePages(selectedCategory);
             selectedItemIndex = null;
             page = 0;
             await int.update(getButtonRow());
         } else if (int.customId === 'item_select') {
-            // Handle item selection
-            selectedItemIndex = items.findIndex(i => i.id === int.values[0]);
-
-            // Update the interaction response with the item details and correct button row
-            await int.update({
-                embeds: [displayItemDetails(selectedItemIndex).embed],
-                components: getButtonRow(selectedItemIndex, items).components
-            });
+            selectedItemIndex = items.findIndex(item => item.id === int.values[0]);
+            const itemDetails = displayItemDetails(selectedItemIndex);
+            await int.update({ embeds: [itemDetails.embed], components: getButtonRow() });
         }
     });
 
-    collector.on('end', () => {
-        msg.edit({ components: [] });
+    collector.on('end', async () => {
+        await msg.edit({ components: [] });
     });
 }
-
