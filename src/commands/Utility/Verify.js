@@ -103,7 +103,7 @@ module.exports = class Verify extends Command {
         const paymentCollector = ctx.channel.createMessageComponentCollector({ filter: paymentFilter, time: 300000 });
 
         paymentCollector.on('collect', async i => {
-            await i.deferUpdate();
+            if (i.replied || i.deferred) return;
             const submittedCode = i.customId.split('_')[1]; // Extract the code from custom ID
 
             // Display modal for user input
