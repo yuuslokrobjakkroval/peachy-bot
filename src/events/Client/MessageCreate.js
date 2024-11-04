@@ -1,14 +1,9 @@
-const { Collection, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { Collection } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/user.js");
-const canvafy = require('canvafy');
 const gif = require('../../utils/Gif.js');
 const { formatCapitalize } = require('../../utils/Utils.js');
-
-// const welcome = [gif.welcomeOne, gif.welcomeTwo, gif.welcomeThree, gif.welcomeFour, gif.welcomeSix, gif.welcomeSeven, gif.welcomeEight, gif.welcomeNine, gif.welcomeTen];
-
-const activeGames = new Map();
 
 const GUILD_ID = '1300337265259843615';
 
@@ -35,112 +30,9 @@ module.exports = class MessageCreate extends Event {
     if (message.guild.id !== GUILD_ID) return;
 
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
-      const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
+      const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
-
-      if (user?.verification?.isBanned) {
-        return;
-      }
-
-      const now = new Date();
-      if (user?.verification?.timeout?.expiresAt && user.verification.timeout.expiresAt > now) {
-        const remainingTime = user.verification.timeout.expiresAt - now; // Remaining time in milliseconds
-
-        // Calculate hours, minutes, and seconds
-        const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-        const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
-        // Construct the remaining time string
-        let timeString = '';
-        if (hours > 0) {
-          timeString += `${hours} hr${hours > 1 ? 's' : ''}`;
-        }
-        if (minutes > 0) {
-          if (timeString) timeString += ', ';
-          timeString += `${minutes} min${minutes > 1 ? 's' : ''}`;
-        }
-        if (seconds > 0 || timeString === '') {
-          if (timeString) timeString += ', ';
-          timeString += `${seconds} sec${seconds > 1 ? 's' : ''}`;
-        }
-
-        return message.channel.send({
-          embeds: [
-            this.client.embed()
-                .setColor(color.danger)
-                .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
-          ]
-        });
-      }
-
-      if (user) {
-        const now = Date.now();
-        const xpCooldown = 30000; // 30 seconds cooldown
-
-        // Check if XP can be gained
-        if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
-          let xpGained = message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())
-              ? getRandomXp(20, 25)
-              : getRandomXp(10, 15);
-
-          // Update user profile with gained XP
-          user.profile.xp += xpGained;
-          user.profile.lastXpGain = now;
-
-          const nextLevelXp = calculateNextLevelXpBonus(user.profile.level);
-
-          // Check if the user has leveled up
-          if (user.profile.xp >= nextLevelXp) {
-            user.profile.xp -= nextLevelXp;
-            user.profile.level += 1;
-            user.profile.levelXp = calculateNextLevelXpBonus(user.profile.level);
-            const celebrationCoin = user.profile.level * 250000;
-
-            // Update user's balance
-            user.balance.coin += celebrationCoin;
-
-            const levelUp = new canvafy.LevelUp()
-                .setAvatar(message.author.displayAvatarURL({format: 'png', size: 512}))
-                .setUsername(`${message.author.username}`, '#000000')
-                .setBorder('#8BD3DD')
-                // .setBackground("image", gif.levelBackground)
-                .setLevels(user.profile.level - 1, user.profile.level)
-                .build(); // Assuming build() returns a promise
-
-            levelUp.then(levelUpImage => {
-              const levelImage = {
-                attachment: levelUpImage,
-                name: 'level-up.png',
-              };
-
-              const embed = this.client.embed()
-                  .setColor(color.main)
-                  .setTitle(`${message.author.displayName} - 𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
-                  .setDescription(`Congratulations ${this.client.utils.getRandomElement(congratulations)} !!!\nYou leveled up to level ${user.profile.level}!\nYou have been awarded ${this.client.utils.formatNumber(celebrationCoin)} ${emoji.coin}.`)
-                  .setThumbnail(message.author.displayAvatarURL({format: 'png', size: 512}))
-                  .setImage('attachment://level-up.png');
-
-              message.channel.send({
-                embeds: [embed],
-                files: [levelImage],
-              }).catch(error => {
-                console.error("Error sending level up message:", error);
-              });
-            }).catch(error => {
-              console.error("Error creating level up image:", error);
-              // Optionally send a fallback message to the channel
-              message.channel.send("You leveled up, but there was an error creating the level-up image!");
-            });
-          }
-
-          // Save user data after updating
-          user.save().catch(err => {
-            console.error("Error saving user data:", err);
-          });
-        }
-      }
-
+      this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
       const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
       if (mention.test(message.content)) {
 
@@ -153,7 +45,7 @@ module.exports = class MessageCreate extends Event {
                 `Do you need help? please use **\`${prefix}help\`**!!!`
             )
             .setFooter({
-              text: `© ${this.client.user.username}`,
+              text: generalMessages.copyRight,
               iconURL: this.client.user.displayAvatarURL(),
             })
 
@@ -300,7 +192,7 @@ module.exports = class MessageCreate extends Event {
                     .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                     .setTitle(`${emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${emoji.mainRight}`)
                     .setDescription(`Warming Gift for you ${emoji.congratulation}\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
-                // .setImage(this.client.utils.getRandomElement(welcome))
+                    .setImage(gif.peachy);
                 await int.editReply({
                   content: '',
                   embeds: [embed],

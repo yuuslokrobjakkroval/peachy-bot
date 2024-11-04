@@ -4,11 +4,117 @@ const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
 const importantItems = require('../assets/inventory/ImportantItems.js');
 const shopItems = require('../assets/inventory/ShopItems.js');
+const canvafy = require("canvafy");
+const gif = require("./Gif");
 const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Utils {
+
     static getUser(userId) {
         return Users.findOne({ userId }).then(user => { return user; }).catch(error => { console.log(`Error fetching user data: ${error}`); return null });
+    }
+
+    static getCheckingUser(client, message, user, color, emoji,  prefix) {
+        const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
+
+        if (user?.verification?.isBanned) {
+            return;
+        }
+
+        const now = new Date();
+        if (user?.verification?.timeout?.expiresAt && user.verification.timeout.expiresAt > now) {
+            const remainingTime = user.verification.timeout.expiresAt - now; // Remaining time in milliseconds
+
+            // Calculate hours, minutes, and seconds
+            const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            // Construct the remaining time string
+            let timeString = '';
+            if (hours > 0) {
+                timeString += `${hours} hr${hours > 1 ? 's' : ''}`;
+            }
+            if (minutes > 0) {
+                if (timeString) timeString += ', ';
+                timeString += `${minutes} min${minutes > 1 ? 's' : ''}`;
+            }
+            if (seconds > 0 || timeString === '') {
+                if (timeString) timeString += ', ';
+                timeString += `${seconds} sec${seconds > 1 ? 's' : ''}`;
+            }
+
+            const embed = client.embed()
+                .setColor(color.danger)
+                .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
+
+            return message.channel.send({ embeds: [embed] });
+        }
+
+        if (user) {
+            const now = Date.now();
+            const xpCooldown = 30000; // 30 seconds cooldown
+
+            // Check if XP can be gained
+            if (!user.profile.lastXpGain || now - user.profile.lastXpGain >= xpCooldown) {
+                let xpGained = message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())
+                    ? client.utils.getRandomNumber(20, 25)
+                    : client.utils.getRandomNumber(10, 15);
+
+                // Update user profile with gained XP
+                user.profile.xp += xpGained;
+                user.profile.lastXpGain = now;
+
+                const nextLevelXp = client.utils.calculateNextLevelXpBonus(user.profile.level);
+
+                // Check if the user has leveled up
+                if (user.profile.xp >= nextLevelXp) {
+                    user.profile.xp -= nextLevelXp;
+                    user.profile.level += 1;
+                    user.profile.levelXp = client.utils.calculateNextLevelXpBonus(user.profile.level);
+                    const celebrationCoin = user.profile.level * 250000;
+
+                    // Update user's balance
+                    user.balance.coin += celebrationCoin;
+
+                    const levelUp = new canvafy.LevelUp()
+                        .setAvatar(message.author.displayAvatarURL({format: 'png', size: 512}))
+                        .setUsername(`${message.author.username}`, '#000000')
+                        .setBorder('#8BD3DD')
+                        .setBackground("image", gif.backgroundLevel)
+                        .setLevels(user.profile.level - 1, user.profile.level)
+                        .build();
+
+                    levelUp.then(levelUpImage => {
+                        const levelImage = {
+                            attachment: levelUpImage,
+                            name: 'level-up.png',
+                        };
+
+                        const embed = client.embed()
+                            .setColor(color.main)
+                            .setTitle(`${message.author.displayName} - 𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
+                            .setDescription(`Congratulations ${client.utils.getRandomElement(congratulations)} !!!\nYou leveled up to level ${user.profile.level}!\nYou have been awarded ${client.utils.formatNumber(celebrationCoin)} ${emoji.coin}.`)
+                            .setThumbnail(message.author.displayAvatarURL({format: 'png', size: 512}))
+                            .setImage('attachment://level-up.png');
+
+                        message.channel.send({
+                            embeds: [embed],
+                            files: [levelImage],
+                        }).catch(error => {
+                            console.error("Error sending level up message:", error);
+                        });
+                    }).catch(error => {
+                        console.error("Error creating level up image:", error);
+                        message.channel.send("You leveled up, but there was an error creating the level-up image!");
+                    });
+                }
+
+                user.save().catch(err => {
+                    console.error("Error saving user data:", err);
+                });
+            }
+        }
     }
 
     static getGiveaway(interaction) {
@@ -743,10 +849,10 @@ module.exports = class Utils {
             .setThumbnail(client.utils.emojiToImage(itemInfo.emoji))
             .setDescription(`Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`);
 
-        await message.edit({ embeds: [endGiveawayEmbed], components: [disableButton] }).then(async (msg) => {
+        await message.edit({embeds: [endGiveawayEmbed], components: [disableButton]}).then(async (msg) => {
             await GiveawayShopItemSchema.findOneAndUpdate(
-                { guildId: data.guildId, channelId: data.channelId, messageId: msg.id },
-                { ended: true, winnerId: winnerIdArray }
+                {guildId: data.guildId, channelId: data.channelId, messageId: msg.id},
+                {ended: true, winnerId: winnerIdArray}
             );
         });
 
@@ -762,20 +868,20 @@ module.exports = class Utils {
                             (autoAdd ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll item ${message.id}\``)
                             : `No one entered the giveaway for ${itemInfo.name} **\`${client.utils.formatNumber(data.amount)}\`** ${itemInfo.emoji}!`
                     )
-                    .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
+                    .setFooter({text: 'Better luck next time!', iconURL: client.user.displayAvatarURL()})
             ],
         });
 
         if (autoAdd) {
             for (const winner of winnerIdArray) {
                 try {
-                    const user = await Users.findOne({ userId: winner });
+                    const user = await Users.findOne({userId: winner});
                     if (user) {
                         const itemIndex = user.inventory.findIndex(item => item.id === itemInfo.id);
                         if (itemIndex > -1) {
                             user.inventory[itemIndex].quantity += data.amount;
                         } else {
-                            user.inventory.push({ id: itemInfo.id, name: itemInfo.name, quantity: data.amount });
+                            user.inventory.push({id: itemInfo.id, name: itemInfo.name, quantity: data.amount});
                         }
                         await user.save();
 
@@ -795,5 +901,4 @@ module.exports = class Utils {
             }
         }
     }
-
 };

@@ -21,7 +21,8 @@
 		"supportButton": "Click for support",
 		"inviteButton": "Invite me!",
 		"voteButton": "Vote for me",
-		"requestedBy": "Requested By %{username}"
+		"requestedBy": "Requested By %{username}",
+		"copyRight": "© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐏𝐄𝐀𝐂𝐇𝐘"
 	},
 	"actionMessages": {
 		"biteMessages": {
