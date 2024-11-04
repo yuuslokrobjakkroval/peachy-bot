@@ -9,13 +9,13 @@ module.exports = class Coinflip extends Command {
             name: 'coinflip',
             description: {
                 content: "Flip a coin and let's see who's the lucky one after!",
-                examples: ['coinflip peach 100', 'coinflip goma 100'],
+                examples: ['coinflip 100 peach', 'coinflip 100 goma'],
                 usage: 'coinflip <amount> <choice>',
             },
             category: 'gambling',
             aliases: ['flip', 'cf'],
             cooldown: 3,
-            args: false,
+            args: true,
             permissions: {
                 dev: false,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
@@ -26,7 +26,7 @@ module.exports = class Coinflip extends Command {
                 {
                     name: 'amount',
                     description: 'The amount you want to bet.',
-                    type: 10,
+                    type: 3,
                     required: true,
                 },
                 {
@@ -45,6 +45,7 @@ module.exports = class Coinflip extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const coinflipMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.coinflipMessages;
         const user = await Users.findOne({ userId: ctx.author.id }).exec();
         const { coin, bank } = user.balance;
 
@@ -65,10 +66,13 @@ module.exports = class Coinflip extends Command {
         const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
 
         // ===================================== > Choice < ===================================== \\
-        let choice = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() || 'p' : args[1] || 'p';
-        if (choice !== undefined) choice = choice.toLowerCase();
-        else if (choice === 'peach' || choice === 'p') choice = 'p';
-        else if (choice === 'goma' || choice === 'g') choice = 'g';
+        let choice = ctx.isInteraction ? ctx.interaction.options.getString('choice') : args[1];
+        if (!choice) {
+            return await client.utils.sendErrorMessage(client, ctx, coinflipMessages.invalidChoice, color);
+        }
+        choice = choice.toLowerCase();
+        if (choice.toLowerCase() === 'peach' || choice.toLowerCase() === 'p') choice = 'p';
+        else if (choice.toLowerCase() === 'goma' || choice.toLowerCase() === 'g') choice = 'g';
 
         let rand = await random(0, 1);
         let win = false;
@@ -78,13 +82,17 @@ module.exports = class Coinflip extends Command {
         // ===================================== > Display < ===================================== \\
         const flipEmbed = client.embed()
             .setColor(color.main)
-            .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-            .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\` ${emoji.coin}** choose **${
-                choice === 'p' ? 'peach' : 'goma'
-            }**
-The coin is flips ${emoji.coinFlip.flip}`)
+            .setThumbnail(client.utils.emojiToImage(emoji.coinFlip.flip))
+            .setDescription(
+                coinflipMessages.description
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{mainRight}', emoji.mainRight)
+                    .replace('%{coinEmote}', emoji.coin)
+                    .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                    .replace('%{choice}', choice === 'p' ? 'Peach' : 'Goma')
+            )
             .setFooter({
-                text: `${ctx.author.displayName}, your game is in progress!`,
+                text: generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName),
                 iconURL: ctx.author.displayAvatarURL(),
             })
 
@@ -95,20 +103,23 @@ The coin is flips ${emoji.coinFlip.flip}`)
 
         // ===================================== > Result < ===================================== \\
         setTimeout(async function () {
-
+            const resultCoin = win ? baseCoins * 2 : baseCoins;
             const resultEmbed = client.embed()
                 .setColor(win ? color.success : color.danger)
-                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setDescription(`# **${emoji.mainLeft} 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏 ${emoji.mainRight}**\n**${ctx.author.displayName}** spent **\`${baseCoins.toLocaleString()}\`** ${emoji.coin} choose **${
-                    choice === 'p' ? 'peach' : 'goma'
-                }**
-The coin is flips ${win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma)} and ${
-                    win
-                        ? `**Won \`${(baseCoins + baseCoins).toLocaleString()}\` ${emoji.coin}**`
-                        : `**Lose \`${baseCoins.toLocaleString()}\` ${emoji.coin}**`
-                }`)
+                .setThumbnail(client.utils.emojiToImage(win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma)))
+                .setDescription(
+                    coinflipMessages.resultDescription
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{mainRight}', emoji.mainRight)
+                        .replace('%{coinEmote}', emoji.coin)
+                        .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                        .replace('%{choice}', choice === 'p' ? 'Peach' : 'Goma')
+                        .replace('%{result}', win ? 'won' : 'lost')
+                        .replace('%{resultCoin}', client.utils.formatNumber(resultCoin))
+                        .replace('%{coinEmote}', emoji.coin)
+                )
                 .setFooter({
-                    text: `${ctx.author.displayName}! your game is over.`,
+                    text: generalMessages.gameOver.replace('%{user}', ctx.author.displayName),
                     iconURL: ctx.author.displayAvatarURL(),
                 })
 

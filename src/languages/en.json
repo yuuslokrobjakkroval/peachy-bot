@@ -11,6 +11,8 @@
 		"invalidAmount": "Invalid amount. Please enter a positive number.",
 		"zeroBalance": "Your balance is zero. Please earn some coins before trying again.",
 		"alreadyInGame": "You are already in a game. Please finish your current game before starting a new one.",
+		"gameInProgress": "%{user}, Your game is in progress!",
+		"gameOver": "%{user}, Your game is over.",
 		"userNotFound": "User not found in database.",
 		"saveError": "An error occurred while saving your data. Please try again later.",
 		"databaseUpdate": "There was an error updating the database.",
@@ -277,13 +279,9 @@
 			"gameOver": "Your game is over."
 		},
 		"coinflipMessages": {
-			"title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
-			"description": "**%{author}** spent **`%{coin}`** %{coinEmote} choose **%{choice}**! The coin spins %{spins}",
-			"resultDescription": "**%{author}** spent **`%{coin}`** %{coinEmote} choose **%{choice}**",
-			"youWon": "You won **`%{coin}`** %{coinEmote}",
-			"youLost": "You lost **`%{coin}`** %{coinEmote}",
-			"gameInProgress": "Your game is in progress!",
-			"gameOver": "Your game is over."
+			"description": "# %{mainLeft} **𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏** %{mainRight}\nYou spent **%{coin}** %{coinEmote}\nchoose **%{choice}**",
+			"invalidChoice": "Please provide a valid choice: either peach = 'p' or goma = 'g'.",
+			"resultDescription": "# %{mainLeft} **𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏** %{mainRight}\nYou spent **%{coin}** %{coinEmote}\nfor choose **%{choice}**\nYou %{result} **%{resultCoin}** %{coinEmote}"
 		}
 
 	},
