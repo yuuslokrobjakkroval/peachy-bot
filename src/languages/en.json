@@ -844,8 +844,7 @@
 			"helpTitle": "Theme Help",
 			"helpDescription": "Manage your theme settings.",
 			"examplesLabel": "Examples",
-			"usageLabel": "Usage",
-			"footer": "Requested by %{user}"
+			"usageLabel": "Usage"
 		},
 		"userInfoMessages": {
 			"title": "User Info: %{user}",

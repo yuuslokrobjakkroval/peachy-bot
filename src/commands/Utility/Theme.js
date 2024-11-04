@@ -43,9 +43,10 @@ module.exports = class Theme extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const themeMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.themeMessages;
 
+        const subCommand = ctx.isInteraction ? ctx.interaction.options.getSubcommand() : args[0];
         const embed = client.embed().setTitle(`${emoji.mainLeft} ${themeMessages?.title || '𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆𝐒'} ${emoji.mainRight}`);
 
         const convertSubCommand = subCommand?.toLowerCase();
@@ -60,7 +61,7 @@ module.exports = class Theme extends Command {
                     .setDescription(themeMessages?.setThemeMessage.replace('%{theme}', client.utils.formatCapitalize(theme)) || `Your theme has been set to **${client.utils.formatCapitalize(theme)}**.`)
                     .setImage(images)
                     .setFooter({
-                        text: themeMessages?.footer.replace('%{user}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                        text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
                     });
                 await Users.updateOne({ userId: ctx.author.id }, { $set: { 'preferences.theme': theme } }).exec();
@@ -117,7 +118,7 @@ module.exports = class Theme extends Command {
                     .setDescription(themeMessages?.currentThemeMessage.replace('%{theme}', client.utils.formatCapitalize(currentTheme)) || `Your current theme is **${client.utils.formatCapitalize(currentTheme)}**.`)
                     .setImage(imageTheme)
                     .setFooter({
-                        text: themeMessages?.footer.replace('%{user}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                        text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
                     });
 
