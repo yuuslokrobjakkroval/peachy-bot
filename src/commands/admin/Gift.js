@@ -18,7 +18,7 @@ module.exports = class Gift extends Command {
             aliases: ["mysterybox"],
             cooldown: 3,
             permissions: {
-                dev: false,
+                dev: true,
                 client: ["SendMessages"],
                 user: ["ManageMessages"],
             },
