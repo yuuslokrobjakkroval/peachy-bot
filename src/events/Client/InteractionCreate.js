@@ -11,9 +11,6 @@ const {
 } = require('discord.js');
 const GiveawaySchema = require('../../schemas/giveaway');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
-const { formatCapitalize, endGiveaway, endGiveawayShopItem } = require('../../utils/Utils.js');
-
-const GUILD_ID = '1300337265259843615';
 
 module.exports = class InteractionCreate extends Event {
   constructor(client, file) {
@@ -22,8 +19,6 @@ module.exports = class InteractionCreate extends Event {
 
   async run(interaction) {
     if (interaction.user.bot || !interaction.guild) return;
-
-    if (interaction.guild.id !== GUILD_ID) return;
 
     this.client.setColorBasedOnTheme(interaction.user.id).then(async ({user, color, emoji, language}) => {
       if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
@@ -153,7 +148,7 @@ module.exports = class InteractionCreate extends Event {
           if (channel && channel.isTextBased()) {
             const embed = this.client.embed()
                 .setColor(color.success)
-                .setTitle(`Command - ${formatCapitalize(interaction.commandName)}`)
+                .setTitle(`Command - ${this.client.utils.formatCapitalize(interaction.commandName)}`)
                 .setThumbnail(interaction.guild.iconURL({extension: 'jpeg'}))
                 .addFields([
                   {
@@ -206,7 +201,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.endTime * 1000 < Date.now()) {
-              return endGiveaway(this.client, color, emoji, interaction.message);
+              return this.client.utils.endGiveaway(this.client, color, emoji, interaction.message);
             } else if (data.ended) {
               return interaction.reply({
                 embeds: [
@@ -363,7 +358,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.endTime * 1000 < Date.now()) {
-              return endGiveawayShopItem(this.client, color, emoji, interaction.message);
+              return this.client.utils.endGiveawayShopItem(this.client, color, emoji, interaction.message);
             } else if (data.ended) {
               return interaction.reply({
                 embeds: [

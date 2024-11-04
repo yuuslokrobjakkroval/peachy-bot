@@ -3,19 +3,6 @@ const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/user.js");
 const gif = require('../../utils/Gif.js');
-const { formatCapitalize } = require('../../utils/Utils.js');
-
-const GUILD_ID = '1300337265259843615';
-
-function getRandomXp(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function calculateNextLevelXpBonus(level) {
-  const base = 1000;
-  const scalingFactor = 1.5;
-  return Math.floor(base * Math.pow(scalingFactor, level - 1));
-}
 
 module.exports = class MessageCreate extends Event {
   constructor(client, file) {
@@ -26,8 +13,6 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-
-    if (message.guild.id !== GUILD_ID) return;
 
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
@@ -341,7 +326,7 @@ module.exports = class MessageCreate extends Event {
               if (channel && channel.isTextBased()) {
                 const embed = this.client.embed()
                     .setColor(color.success)
-                    .setTitle(`Command - ${formatCapitalize(command.name)}`)
+                    .setTitle(`Command - ${this.client.utils.formatCapitalize(command.name)}`)
                     .setThumbnail(message.guild.iconURL({extension: 'jpeg'}))
                     .addFields([
                       {
