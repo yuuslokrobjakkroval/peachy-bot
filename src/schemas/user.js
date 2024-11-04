@@ -15,6 +15,14 @@ const EquipItemSchema = new Schema({
     quantity: { type: Number, default: 1 }
 });
 
+// ConsumedItemSchema
+const ConsumedItemSchema = new Schema({
+    id: { type: String, required: true },
+    name: { type: String, required: true },
+    quantity: { type: Number, default: 1 },
+    lastConsumedAt: { type: Date, default: Date.now }
+});
+
 // CooldownSchema
 const CooldownSchema = new Schema({
     name: { type: String, required: true },
@@ -124,6 +132,7 @@ const userSchema = new Schema({
     relationship: { type: RelationshipSchema, default: () => ({}) },
     inventory: { type: [InventoryItemSchema], default: [] },
     equip: { type: [EquipItemSchema], default: [] },
+    consumedItems: { type: [ConsumedItemSchema], default: [] },
     cooldowns: { type: [CooldownSchema], default: [] },
     social: {
         facebook: {

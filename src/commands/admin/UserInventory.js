@@ -65,7 +65,7 @@ module.exports = class UserInventory extends Command {
             });
 
             const fields = [];
-            const inventoryTypes = ['milk', 'food', 'drink', 'theme'];
+            const inventoryTypes = ['milk', 'food', 'drink', 'cake', 'theme', 'special theme', 'wallpaper'];
 
             inventoryTypes.forEach(type => {
                 const items = itemList[type];  // Extract the items of this type
@@ -77,7 +77,7 @@ module.exports = class UserInventory extends Command {
                     items.forEach(item => {
                         if (chunkLength + item.length + 1 > 1024) {
                             fields.push({
-                                name: client.utils.toNameCase(type),
+                                name: client.utils.formatCapitalize(type),
                                 value: chunk.join('\n'),
                                 inline: false,
                             });
@@ -90,7 +90,7 @@ module.exports = class UserInventory extends Command {
 
                     if (chunk.length > 0) {
                         fields.push({
-                            name: client.utils.toNameCase(type),
+                            name: client.utils.formatCapitalize(type),
                             value: chunk.join('\n'),
                             inline: false,
                         });

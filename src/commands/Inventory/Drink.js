@@ -39,70 +39,90 @@ module.exports = class Drink extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const drinkMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.drinkMessages;
         const authorId = ctx.author.id;
-        const user = await Users.findOne({ userId: authorId });
 
-        if (!user || user.inventory.length === 0) {
-            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.emptyInventory, color);
-        }
+        Users.findOne({ userId: authorId }).then(user => {
+            if (!user || user.inventory.length === 0) {
+                return client.utils.sendErrorMessage(client, ctx, drinkMessages.emptyInventory, color);
+            }
 
-        const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() : args[0];
-        const itemInfo = AllItems.find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
+            const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() : args[0];
+            const itemInfo = AllItems.find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
 
-        if (!itemInfo) {
-            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.itemNotFound.replace('{{itemId}}', itemId), color);
-        }
+            if (!itemInfo) {
+                return client.utils.sendErrorMessage(client, ctx, drinkMessages.itemNotFound.replace('%{itemId}', itemId), color);
+            }
 
-        if (itemInfo.type === 'food') {
-            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.cannotDrinkFood
-                .replace('{{itemEmote}}', itemInfo.emoji)
-                .replace('{{itemName}}', itemInfo.name), color);
-        }
-
-        if (itemInfo.type !== 'drink') {
-            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.notDrinkable, color);
-        }
-
-        const hasItems = user.inventory.find(item => item.id === itemId);
-
-        if (!itemInfo || !hasItems) {
-            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.noDrinkItem, color);
-        }
-
-        let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
-        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.')) {
-            return await client.utils.sendErrorMessage(client, ctx, drinkMessages.invalidAmount, color);
-        }
-
-        const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
-        const xpGained = itemInfo.xp * itemAmount;
-
-        // Consume item and gain XP
-        if (hasItems.quantity - itemAmount === 0) {
-            await Users.updateOne({ userId: authorId }, { $pull: { inventory: { id: itemId } } });
-        } else {
-            await Users.updateOne({ userId: authorId, 'inventory.id': itemId }, { $inc: { 'inventory.$.quantity': -itemAmount } });
-        }
-
-        await Users.updateOne({ userId: authorId }, { $inc: { 'profile.xp': xpGained } });
-
-        const embed = client
-            .embed()
-            .setColor(color.main)
-            .setDescription(
-                drinkMessages.success
+            if (itemInfo.type === 'food') {
+                return client.utils.sendErrorMessage(client, ctx, drinkMessages.cannotDrinkFood
                     .replace('%{itemEmote}', itemInfo.emoji)
-                    .replace('%{itemAmount}', itemAmount)
-                    .replace('%{itemName}', itemInfo.name)
-                    .replace('%{xpGained}', xpGained))
-            .setFooter({
-                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                iconURL: ctx.author.displayAvatarURL(),
-            });
+                    .replace('%{itemName}', itemInfo.name), color);
+            }
 
-        await ctx.sendMessage({ embeds: [embed] });
+            if (itemInfo.type !== 'drink') {
+                return client.utils.sendErrorMessage(client, ctx, drinkMessages.notDrinkable, color);
+            }
+
+            const hasItems = user.inventory.find(item => item.id === itemId);
+
+            if (!itemInfo || !hasItems) {
+                return client.utils.sendErrorMessage(client, ctx, drinkMessages.noDrinkItem, color);
+            }
+
+            let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
+            if (isNaN(amount) || amount <= 0 || amount.toString().includes('.')) {
+                return client.utils.sendErrorMessage(client, ctx, drinkMessages.invalidAmount, color);
+            }
+
+            const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
+            const xpGained = itemInfo.xp * itemAmount;
+
+            // Update user inventory and XP
+            hasItems.quantity -= itemAmount;
+            user.profile.xp = (user.profile.xp || 0) + xpGained;
+
+            // Log consumed items in a new field, e.g., user.consumed
+            user.consumed = user.consumed || [];
+            const consumedItem = user.consumed.find(item => item.id === itemId);
+
+            if (consumedItem) {
+                consumedItem.quantity += itemAmount;
+            } else {
+                user.consumed.push({ id: itemId, name: itemInfo.name, quantity: itemAmount });
+            }
+
+            // Remove the item from inventory if quantity is zero
+            if (hasItems.quantity <= 0) {
+                user.inventory = user.inventory.filter(item => item.id !== itemId);
+            }
+
+            user.save().then(() => {
+                const embed = client
+                    .embed()
+                    .setColor(color.main)
+                    .setDescription(
+                        drinkMessages.success
+                            .replace('%{itemEmote}', itemInfo.emoji)
+                            .replace('%{itemAmount}', itemAmount)
+                            .replace('%{itemName}', itemInfo.name)
+                            .replace('%{xpGained}', xpGained)
+                    )
+                    .setFooter({
+                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                        iconURL: ctx.author.displayAvatarURL(),
+                    });
+
+                ctx.sendMessage({ embeds: [embed] });
+            }).catch(err => {
+                console.error('Error saving user data:', err);
+                client.utils.sendErrorMessage(client, ctx, generalMessages.error, color);
+            });
+        }).catch(err => {
+            console.error('Error fetching user data:', err);
+            client.utils.sendErrorMessage(client, ctx, generalMessages.error, color);
+        });
     }
 };
