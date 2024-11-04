@@ -4,8 +4,6 @@ const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/user.js");
 const gif = require('../../utils/Gif.js');
 
-const GUILD_ID = '1300337265259843615';
-
 module.exports = class MessageCreate extends Event {
   constructor(client, file) {
     super(client, file, {
@@ -15,8 +13,6 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-
-    if (message.guild.id !== GUILD_ID) return;
 
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
