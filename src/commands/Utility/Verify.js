@@ -39,8 +39,8 @@ module.exports = class Verify extends Command {
             return await client.utils.sendErrorMessage(client, ctx, verifyMessages?.alreadyVerified || "You are already verified.", color);
         }
 
-        const confirmButton = client.utils.labelButton('confirm', verifyMessages?.confirmButtonLabel || 'Confirm', 2);
-        const cancelButton = client.utils.labelButton('cancel', verifyMessages?.cancelButtonLabel || 'Cancel', 3);
+        const confirmButton = client.utils.labelButton('confirm', verifyMessages?.confirmButtonLabel || 'Confirm', 3);
+        const cancelButton = client.utils.labelButton('cancel', verifyMessages?.cancelButtonLabel || 'Cancel', 4);
 
         const row = client.utils.createButtonRow(confirmButton, cancelButton);
 
@@ -65,6 +65,8 @@ module.exports = class Verify extends Command {
         const collector = ctx.channel.createMessageComponentCollector({ filter, time: 300000 });
 
         collector.on('collect', async i => {
+            if (i.replied || i.deferred) return;
+
             await i.deferUpdate();
             const userPaymentStatus = user.verification.verify.payment;
             if (i.customId === 'confirm') {
@@ -87,7 +89,7 @@ module.exports = class Verify extends Command {
 
                 userPaymentStatus !== 'paid' && verificationEmbed.setImage(qrCodeUrl);
 
-                const submitButton = client.utils.labelButton(`submit_${codeNumber}`, verifyMessages?.submitButtonLabel || 'Submit', 1);
+                const submitButton = client.utils.labelButton(`submit_${codeNumber}`, verifyMessages?.submitButtonLabel || 'Submit', 3);
 
                 const verificationRow = userPaymentStatus === 'paid' && client.utils.createButtonRow(submitButton) ;
                 await i.update({ embeds: [verificationEmbed], components: userPaymentStatus === 'paid' ? [verificationRow] : [], ephemeral: true });

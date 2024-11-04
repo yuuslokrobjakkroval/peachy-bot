@@ -122,9 +122,7 @@ module.exports = class GiveItem extends Command {
         const filter = interaction => interaction.user.id === ctx.author.id;
         const collector = msg.createMessageComponentCollector({ filter, time: 120000, idle: 60000 });
 
-        collector.on('end', async () => {
-            await msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
-        });
+
 
         collector.on('collect', async int => {
             await int.deferUpdate();
@@ -203,6 +201,10 @@ module.exports = class GiveItem extends Command {
 
                 await int.editReply({ embeds: [embed], components: [] });
             }
+        });
+
+        collector.on('end', async () => {
+            await msg.edit({ components: [] });
         });
     }
 };
