@@ -35,7 +35,7 @@ module.exports = class Weekly extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
-            const baseCoins = chance.integer({ min: 100000, max: 3000000 });
+            const baseCoins = chance.integer({ min: 500000, max: 1000000 });
             const baseExp = chance.integer({ min: 200, max: 250 });
 
             const verify = user.verification.verify.status === 'verified';
