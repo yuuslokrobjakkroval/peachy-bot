@@ -73,7 +73,7 @@ module.exports = class Goma extends Command {
 
                         return ctx.sendMessage({ embeds: [cooldownEmbed] });
                     });
-                }
+                } else {
 
                 return Users.updateOne(
                         { userId: user.userId },
@@ -113,6 +113,7 @@ module.exports = class Goma extends Command {
                     console.error('Error saving user data:', error);
                     return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
                 });
+                }
             }).catch(error => {
                 console.error('Error checking cooldown:', error);
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);

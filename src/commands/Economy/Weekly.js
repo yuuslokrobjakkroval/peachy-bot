@@ -70,26 +70,27 @@ module.exports = class Weekly extends Command {
 
                         return ctx.sendMessage({ embeds: [cooldownEmbed] });
                     });
-                }
+                } else {
 
-                return Users.updateOne(
-                    { userId: user.userId },
-                    {
-                        $set: {
-                            "balance.coin": newBalance,
-                            "profile.xp": newExp
+                    return Users.updateOne(
+                        {userId: user.userId},
+                        {
+                            $set: {
+                                "balance.coin": newBalance,
+                                "profile.xp": newExp
+                            }
                         }
-                    }
-                ).then(() => {
-                    return client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
-                }).then(() => {
-                    let bonusMessage = '';
-                    if (bonusCoins > 0 || bonusExp > 0) {
-                        bonusMessage = `\n**+20% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
-                    }
-                    const embed = this.createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages, bonusMessage);
-                    return ctx.sendMessage({ embeds: [embed] });
-                });
+                    ).then(() => {
+                        return client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
+                    }).then(() => {
+                        let bonusMessage = '';
+                        if (bonusCoins > 0 || bonusExp > 0) {
+                            bonusMessage = `\n**+20% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
+                        }
+                        const embed = this.createSuccessEmbed(client, ctx, emoji, totalCoins, totalExp, now, weeklyMessages, generalMessages, bonusMessage);
+                        return ctx.sendMessage({embeds: [embed]});
+                    });
+                }
             });
         }).catch(error => {
             console.error('Error processing weekly command:', error);

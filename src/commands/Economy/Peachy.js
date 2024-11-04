@@ -74,44 +74,44 @@ module.exports = class Peachy extends Command {
 
                                 return ctx.sendMessage({ embeds: [cooldownEmbed] });
                             });
-                    }
-
-                    return Users.updateOne(
-                        { userId: user.userId },
-                        {
-                            $set: {
-                                "balance.coin": newBalance,
-                                "profile.xp": newExp,
-                                "peachy.streak": newStreak
+                    } else {
+                        return Users.updateOne(
+                            {userId: user.userId},
+                            {
+                                $set: {
+                                    "balance.coin": newBalance,
+                                    "profile.xp": newExp,
+                                    "peachy.streak": newStreak
+                                }
                             }
-                        }
-                    ).then(() => {
-                        client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
+                        ).then(() => {
+                            client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
 
-                        let bonusMessage = '';
-                        if (bonusCoins > 0 || bonusExp > 0) {
-                            bonusMessage = `\n**+20% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
-                        }
+                            let bonusMessage = '';
+                            if (bonusCoins > 0 || bonusExp > 0) {
+                                bonusMessage = `\n**+20% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
+                            }
 
-                        const successEmbed = client.embed()
-                            .setColor(color.main)
-                            .setDescription(
-                                peachyMessages.success
-                                    .replace('%{mainLeft}', emoji.mainLeft)
-                                    .replace('%{mainRight}', emoji.mainRight)
-                                    .replace('%{coinEmote}', emoji.coin)
-                                    .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                                    .replace('%{expEmote}', emoji.exp)
-                                    .replace('%{exp}', client.utils.formatNumber(baseExp))
-                                    .replace('%{bonusMessage}', bonusMessage)
-                            )
-                            .setFooter({
-                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                                iconURL: ctx.author.displayAvatarURL(),
-                            });
+                            const successEmbed = client.embed()
+                                .setColor(color.main)
+                                .setDescription(
+                                    peachyMessages.success
+                                        .replace('%{mainLeft}', emoji.mainLeft)
+                                        .replace('%{mainRight}', emoji.mainRight)
+                                        .replace('%{coinEmote}', emoji.coin)
+                                        .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                                        .replace('%{expEmote}', emoji.exp)
+                                        .replace('%{exp}', client.utils.formatNumber(baseExp))
+                                        .replace('%{bonusMessage}', bonusMessage)
+                                )
+                                .setFooter({
+                                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                    iconURL: ctx.author.displayAvatarURL(),
+                                });
 
-                        return ctx.sendMessage({ embeds: [successEmbed] });
-                    });
+                            return ctx.sendMessage({embeds: [successEmbed]});
+                        });
+                    }
                 });
         })
             .catch(error => {

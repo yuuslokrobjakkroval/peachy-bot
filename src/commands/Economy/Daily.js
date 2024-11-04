@@ -70,44 +70,45 @@ module.exports = class Daily extends Command {
                     );
                     const cooldownEmbed = client.embed().setColor(color.danger).setDescription(cooldownMessage);
                     return ctx.sendMessage({ embeds: [cooldownEmbed] });
-                }
+                } else {
 
-                return Users.updateOne(
-                    { userId: user.userId },
-                    {
-                        $set: {
-                            "balance.coin": newBalance,
-                            "profile.xp": newExp
+                    return Users.updateOne(
+                        {userId: user.userId},
+                        {
+                            $set: {
+                                "balance.coin": newBalance,
+                                "profile.xp": newExp
+                            }
                         }
-                    }
-                ).then(() => {
-                    return client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM);
-                }).then(() => {
-                    let bonusMessage = '';
-                    if (bonusCoins > 0 || bonusExp > 0) {
-                        bonusMessage = `\n**+20% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
-                    }
+                    ).then(() => {
+                        return client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM);
+                    }).then(() => {
+                        let bonusMessage = '';
+                        if (bonusCoins > 0 || bonusExp > 0) {
+                            bonusMessage = `\n**+20% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
+                        }
 
-                    const embed = client.embed()
-                        .setColor(color.main)
-                        .setThumbnail(client.utils.emojiToImage(hours >= 6 && hours < 18 ? emoji.time.day : emoji.time.night))
-                        .setDescription(
-                            dailyMessages.success
-                                .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{mainRight}', emoji.mainRight)
-                                .replace('%{coinEmote}', emoji.coin)
-                                .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                                .replace('%{expEmote}', emoji.exp)
-                                .replace('%{exp}', client.utils.formatNumber(baseExp))
-                                .replace('%{bonusMessage}', bonusMessage)
-                        )
-                        .setFooter({
-                            text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                            iconURL: ctx.author.displayAvatarURL(),
-                        });
+                        const embed = client.embed()
+                            .setColor(color.main)
+                            .setThumbnail(client.utils.emojiToImage(hours >= 6 && hours < 18 ? emoji.time.day : emoji.time.night))
+                            .setDescription(
+                                dailyMessages.success
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{mainRight}', emoji.mainRight)
+                                    .replace('%{coinEmote}', emoji.coin)
+                                    .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                                    .replace('%{expEmote}', emoji.exp)
+                                    .replace('%{exp}', client.utils.formatNumber(baseExp))
+                                    .replace('%{bonusMessage}', bonusMessage)
+                            )
+                            .setFooter({
+                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
 
-                    return ctx.sendMessage({ embeds: [embed] });
-                });
+                        return ctx.sendMessage({embeds: [embed]});
+                    });
+                }
             }).catch(error => {
                 console.error('Error checking cooldown:', error);
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
