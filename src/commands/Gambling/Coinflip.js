@@ -105,7 +105,7 @@ module.exports = class Coinflip extends Command {
                 setTimeout(async function () {
                     const resultCoin = win ? baseCoins * 2 : baseCoins;
                     const resultEmbed = client.embed()
-                        .setColor(win ? color.success : color.danger)
+                        .setColor(color.main)
                         .setThumbnail(client.utils.emojiToImage(win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma)))
                         .setDescription(
                             coinflipMessages.resultDescription
