@@ -20,7 +20,7 @@ module.exports = class InteractionCreate extends Event {
   async run(interaction) {
     if (interaction.user.bot || !interaction.guild) return;
 
-    this.client.setColorBasedOnTheme(interaction.user.id).then(async ({user, color, emoji, language}) => {
+    this.client.setColorBasedOnTheme(interaction.user.id).then(({user, color, emoji, language}) => {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
       this.client.utils.getCheckingUser(this.client, interaction, user, color, emoji, prefix);
@@ -55,7 +55,7 @@ module.exports = class InteractionCreate extends Event {
             timeString += `${seconds} sec${seconds > 1 ? 's' : ''}`;
           }
 
-          return await interaction.message.send({
+          return interaction.message.send({
             embeds: [
               this.client.embed()
                   .setColor(color.danger)
@@ -75,14 +75,14 @@ module.exports = class InteractionCreate extends Event {
           }
 
           if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.SendMessages)) {
-            return await interaction.member.send({
+            return interaction.member.send({
               content: `I don't have **\`SendMessages\`** permission in \`${interaction.guild.name}\`\nchannel: <#${interaction.channelId}>`,
             }).catch(() => {
             });
           }
 
           if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.EmbedLinks)) {
-            return await interaction.reply({
+            return interaction.reply({
               content: "I don't have **`EmbedLinks`** permission.",
             });
           }
@@ -90,14 +90,14 @@ module.exports = class InteractionCreate extends Event {
           if (command.permissions) {
             if (command.permissions.client) {
               if (!interaction.guild.members.me.permissions.has(command.permissions.client)) {
-                return await interaction.reply({
+                return interaction.reply({
                   content: "I don't have enough permissions to execute this command.",
                 });
               }
             }
             if (command.permissions.user) {
               if (!interaction.member.permissions.has(command.permissions.user)) {
-                await interaction.reply({
+                interaction.reply({
                   content: "You don't have enough permissions to use this command.",
                   ephemeral: true,
                 });
@@ -117,7 +117,7 @@ module.exports = class InteractionCreate extends Event {
             const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
             const timeLeft = (expirationTime - now) / 1000;
             if (now < expirationTime && timeLeft > 0.9) {
-              return await interaction.reply({
+              return interaction.reply({
                 content: `Please wait \`${timeLeft.toFixed(1)}\` more second(s) before reusing the **${interaction.commandName}** command.`,
               });
             }
@@ -173,13 +173,13 @@ module.exports = class InteractionCreate extends Event {
                   iconURL: interaction.user.displayAvatarURL({extension: 'jpeg'})
                 })
                 .setTimestamp();
-            await channel.send({embeds: [embed]}).catch(() => console.error('Error sending log message'));
+            channel.send({embeds: [embed]}).catch(() => console.error('Error sending log message'));
           }
 
-          await command.run(this.client, ctx, ctx.args, color, emoji, language);
+          command.run(this.client, ctx, ctx.args, color, emoji, language);
         } catch (error) {
           console.error(`Error handling command ${interaction.commandName}:`, error);
-          await interaction.reply({
+          interaction.reply({
             content: 'An error occurred while processing the command.',
             ephemeral: true,
           });
@@ -187,7 +187,7 @@ module.exports = class InteractionCreate extends Event {
       } else if (interaction instanceof ButtonInteraction && interaction.type === InteractionType.MessageComponent) {
         switch (interaction.customId) {
           case 'giveaway-join': {
-            const data = await GiveawaySchema.findOne({
+            const data = GiveawaySchema.findOne({
               guildId: interaction.guild.id,
               channelId: interaction.channel.id,
               messageId: interaction.message.id,
@@ -245,14 +245,14 @@ module.exports = class InteractionCreate extends Event {
               });
 
               const filter = int => int.isButton() && int.user.id === interaction.user.id;
-              await interaction.channel
+              interaction.channel
                   .awaitMessageComponent({filter, time: 30000})
                   .then(async int => {
                     if (int.customId === 'leave-giveaway') {
                       data.entered = data.entered.filter(id => id !== interaction.user.id);
-                      await data.save();
+                      data.save();
 
-                      await int.reply({
+                      int.reply({
                         embeds: [
                           this.client.embed()
                               .setAuthor({
@@ -273,9 +273,9 @@ module.exports = class InteractionCreate extends Event {
                   });
             } else {
               data.entered.push(interaction.user.id);
-              await data.save();
+              data.save();
 
-              await interaction.reply({
+              interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -286,7 +286,7 @@ module.exports = class InteractionCreate extends Event {
               });
 
               const newLabel = data.entered.length;
-              await interaction.message.edit({
+              interaction.message.edit({
                 components: [
                   new ActionRowBuilder().addComponents(
                       new ButtonBuilder()
@@ -307,7 +307,7 @@ module.exports = class InteractionCreate extends Event {
           }
 
           case 'giveaway-participants': {
-            const data = await GiveawaySchema.findOne({
+            const data = GiveawaySchema.findOne({
               guildId: interaction.guild.id,
               channelId: interaction.channel.id,
               messageId: interaction.message.id,
@@ -320,10 +320,10 @@ module.exports = class InteractionCreate extends Event {
               });
             }
 
-            const participants = await Promise.all(data.entered.map(async (id, index) => {
+            const participants = Promise.all(data.entered.map(async (id, index) => {
               let member;
               try {
-                member = interaction.guild.members.cache.get(id) || await interaction.guild.members.fetch(id);
+                member = interaction.guild.members.cache.get(id) || interaction.guild.members.fetch(id);
                 if (!member) throw new Error("Member not found");
               } catch (err) {
                 console.error(`Unable to fetch member with ID: ${id}`, err);
@@ -339,12 +339,12 @@ module.exports = class InteractionCreate extends Event {
                 .setColor(color.main)
                 .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.prize)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
 
-            await interaction.reply({ embeds: [embed], ephemeral: true });
+            interaction.reply({ embeds: [embed], ephemeral: true });
             break;
           }
 
           case 'giveawayshopitem-join': {
-            const data = await GiveawayShopItemSchema.findOne({
+            const data = GiveawayShopItemSchema.findOne({
               guildId: interaction.guild.id,
               channelId: interaction.channel.id,
               messageId: interaction.message.id,
@@ -402,14 +402,14 @@ module.exports = class InteractionCreate extends Event {
               });
 
               const filter = int => int.isButton() && int.user.id === interaction.user.id;
-              await interaction.channel
+              interaction.channel
                   .awaitMessageComponent({filter, time: 30000})
                   .then(async int => {
                     if (int.customId === 'leave-giveaway') {
                       data.entered = data.entered.filter(id => id !== interaction.user.id);
-                      await data.save();
+                      data.save();
 
-                      await int.reply({
+                      int.reply({
                         embeds: [
                           this.client.embed()
                               .setAuthor({
@@ -430,9 +430,9 @@ module.exports = class InteractionCreate extends Event {
                   });
             } else {
               data.entered.push(interaction.user.id);
-              await data.save();
+              data.save();
 
-              await interaction.reply({
+              interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -443,7 +443,7 @@ module.exports = class InteractionCreate extends Event {
               });
 
               const newLabel = data.entered.length;
-              await interaction.message.edit({
+              interaction.message.edit({
                 components: [
                   new ActionRowBuilder().addComponents(
                       new ButtonBuilder()
@@ -464,7 +464,7 @@ module.exports = class InteractionCreate extends Event {
           }
 
           case 'giveawayshopitem-participants': {
-            const data = await GiveawayShopItemSchema.findOne({
+            const data = GiveawayShopItemSchema.findOne({
               guildId: interaction.guild.id,
               channelId: interaction.channel.id,
               messageId: interaction.message.id,
@@ -477,10 +477,10 @@ module.exports = class InteractionCreate extends Event {
               });
             }
 
-            const participants = await Promise.all(data.entered.map(async (id, index) => {
+            const participants = Promise.all(data.entered.map(async (id, index) => {
               let member;
               try {
-                member = interaction.guild.members.cache.get(id) || await interaction.guild.members.fetch(id);
+                member = interaction.guild.members.cache.get(id) || interaction.guild.members.fetch(id);
                 if (!member) throw new Error("Member not found");
               } catch (err) {
                 console.error(`Unable to fetch member with ID: ${id}`, err);
@@ -496,7 +496,7 @@ module.exports = class InteractionCreate extends Event {
                 .setColor(color.main)
                 .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.amount)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
 
-            await interaction.reply({ embeds: [embed], ephemeral: true });
+            interaction.reply({ embeds: [embed], ephemeral: true });
             break;
           }
 
