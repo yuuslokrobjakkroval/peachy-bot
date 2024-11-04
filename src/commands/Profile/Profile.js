@@ -61,7 +61,6 @@ module.exports = class Profile extends Command {
                 bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
             }
 
-
             const canvas = createCanvas(1280, 720);
             const context = canvas.getContext('2d');
 

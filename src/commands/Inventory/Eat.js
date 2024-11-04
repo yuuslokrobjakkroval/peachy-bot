@@ -93,7 +93,7 @@ module.exports = class Eat extends Command {
             if (consumedItem) {
                 consumedItem.quantity += itemAmount;
             } else {
-                user.consumedItems.push({ id: itemId, name: itemInfo.name, quantity: itemAmount });
+                user.consumedItems.push({ id: itemId, name: itemInfo.name, type: itemInfo.type, quantity: itemAmount });
             }
 
             // Remove item from inventory if quantity reaches zero

@@ -44,7 +44,7 @@ module.exports = class Drink extends Command {
         const drinkMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.drinkMessages;
         const authorId = ctx.author.id;
 
-        Users.findOne({ userId: authorId }).then(user => {
+        client.utils.getUser(authorId).then(user => {
             if (!user || user.inventory.length === 0) {
                 return client.utils.sendErrorMessage(client, ctx, drinkMessages.emptyInventory, color);
             }
@@ -84,14 +84,12 @@ module.exports = class Drink extends Command {
             hasItems.quantity -= itemAmount;
             user.profile.xp = (user.profile.xp || 0) + xpGained;
 
-            // Log consumed items in a new field, e.g., user.consumed
-            user.consumed = user.consumed || [];
-            const consumedItem = user.consumed.find(item => item.id === itemId);
-
+            // Track consumed items
+            const consumedItem = user.consumedItems.find(item => item.id === itemId);
             if (consumedItem) {
                 consumedItem.quantity += itemAmount;
             } else {
-                user.consumed.push({ id: itemId, name: itemInfo.name, quantity: itemAmount });
+                user.consumedItems.push({ id: itemId, name: itemInfo.name, type: itemInfo.type, quantity: itemAmount });
             }
 
             // Remove the item from inventory if quantity is zero

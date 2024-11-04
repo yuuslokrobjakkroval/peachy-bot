@@ -19,6 +19,7 @@ const EquipItemSchema = new Schema({
 const ConsumedItemSchema = new Schema({
     id: { type: String, required: true },
     name: { type: String, required: true },
+    type: { type: String, default: null },
     quantity: { type: Number, default: 1 },
     lastConsumedAt: { type: Date, default: Date.now }
 });
