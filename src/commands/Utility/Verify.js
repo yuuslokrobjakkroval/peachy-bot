@@ -39,17 +39,10 @@ module.exports = class Verify extends Command {
             return await client.utils.sendErrorMessage(client, ctx, verifyMessages?.alreadyVerified || "You are already verified.", color);
         }
 
-        const confirmButton = new ButtonBuilder()
-            .setCustomId('confirm')
-            .setLabel(verifyMessages?.confirmButtonLabel || 'Confirm')
-            .setStyle(ButtonStyle.Success);
+        const confirmButton = client.utils.labelButton('confirm', verifyMessages?.confirmButtonLabel || 'Confirm', 2);
+        const cancelButton = client.utils.labelButton('cancel', verifyMessages?.cancelButtonLabel || 'Cancel', 3);
 
-        const cancelButton = new ButtonBuilder()
-            .setCustomId('cancel')
-            .setLabel(verifyMessages?.cancelButtonLabel || 'Cancel')
-            .setStyle(ButtonStyle.Danger);
-
-        const row = new ActionRowBuilder().addComponents(confirmButton, cancelButton);
+        const row = client.utils.createButtonRow(confirmButton, cancelButton);
 
         const confirmEmbed = client.embed()
             .setColor(color.main)
@@ -58,7 +51,7 @@ module.exports = class Verify extends Command {
                 `${verifyMessages?.confirmationMessage || "Are you sure you want to verify with **PEACHY**?"}\n\n` +
                 `${verifyMessages?.paymentInfo || "To verify, you need to pay **$0.99/month**."}\n\n` +
                 `${verifyMessages?.benefitsTitle || "**Benefits**"}\n` +
-                `${verifyMessages?.benefits || "• Role verification in our server\n• Get an emoji while playing the bot\n• Add 20% to all rewards when claiming\n• Better luck with gambling!"}`
+                `${verifyMessages?.benefits || "• Role verification in our server\n• Get an emoji while playing the bot\n• Add 20% to all rewards when claiming"}`
             )
             .setFooter({
                 text: `${verifyMessages?.requestedBy || "Requested By"} ${ctx.author.displayName}`,
@@ -72,6 +65,7 @@ module.exports = class Verify extends Command {
         const collector = ctx.channel.createMessageComponentCollector({ filter, time: 300000 });
 
         collector.on('collect', async i => {
+            await i.deferUpdate();
             const userPaymentStatus = user.verification.verify.payment;
             if (i.customId === 'confirm') {
                 const codeNumber = client.utils.generateVerificationCode();
@@ -93,12 +87,9 @@ module.exports = class Verify extends Command {
 
                 userPaymentStatus !== 'paid' && verificationEmbed.setImage(qrCodeUrl);
 
-                const submitButton = new ButtonBuilder()
-                    .setCustomId(`submit_${codeNumber}`)
-                    .setLabel(verifyMessages?.submitButtonLabel || `Submit`)
-                    .setStyle(ButtonStyle.Primary);
+                const submitButton = client.utils.labelButton(`submit_${codeNumber}`, verifyMessages?.submitButtonLabel || 'Submit', 1);
 
-                const verificationRow = userPaymentStatus === 'paid' && new ActionRowBuilder().addComponents(submitButton);
+                const verificationRow = userPaymentStatus === 'paid' && client.utils.createButtonRow(submitButton) ;
                 await i.update({ embeds: [verificationEmbed], components: userPaymentStatus === 'paid' ? [verificationRow] : [], ephemeral: true });
             } else if (i.customId === 'cancel') {
                 await i.update({ content: verifyMessages?.thankYouMessage || "Thank you!", embeds: [], components: [], ephemeral: true });
@@ -112,6 +103,7 @@ module.exports = class Verify extends Command {
         const paymentCollector = ctx.channel.createMessageComponentCollector({ filter: paymentFilter, time: 300000 });
 
         paymentCollector.on('collect', async i => {
+            await i.deferUpdate();
             const submittedCode = i.customId.split('_')[1]; // Extract the code from custom ID
 
             // Display modal for user input
