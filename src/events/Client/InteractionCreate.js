@@ -12,6 +12,8 @@ const {
 const GiveawaySchema = require('../../schemas/giveaway');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
 
+const GUILD_ID = '1300337265259843615';
+
 module.exports = class InteractionCreate extends Event {
   constructor(client, file) {
     super(client, file, { name: 'interactionCreate' });
@@ -19,6 +21,8 @@ module.exports = class InteractionCreate extends Event {
 
   async run(interaction) {
     if (interaction.user.bot || !interaction.guild) return;
+
+    if (interaction.guild.id !== GUILD_ID) return;
 
     this.client.setColorBasedOnTheme(interaction.user.id).then(async ({user, color, emoji, language}) => {
       if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
