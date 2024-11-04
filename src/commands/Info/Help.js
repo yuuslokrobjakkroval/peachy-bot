@@ -62,8 +62,8 @@ module.exports = class Help extends Command {
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-            iconURL: ctx.author.displayAvatarURL(),
+            text: helpMessages.footer,
+            iconURL: client.user.displayAvatarURL(),
           });
 
       for (const category in sortedCommands) {
