@@ -82,8 +82,8 @@ module.exports = class Help extends Command {
 
       const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
       const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
-      const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
-      const row = client.utils.createButtonRow(supportButton, inviteButton, voteButton);
+      // const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
+      const row = client.utils.createButtonRow(supportButton, inviteButton);
 
       await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
     } else {
