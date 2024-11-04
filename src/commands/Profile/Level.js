@@ -238,7 +238,7 @@ module.exports = class Profile extends Command {
         const userInfoDetail = [
             { label: "Name", description: userInfo.profile && userInfo.profile.name ? client.utils.formatCapitalize(userInfo.profile.name) : targetUser.username, x: 895, y: 140 },
             { label: "Level", description: userInfo.profile && userInfo.profile.level ? userInfo.profile.level : null, x: 895, y: 220 },
-            { label: "Exp", description: userInfo.profile && userInfo.profile.xp ? userInfo.profile.xp : null, x: 895, y: 300 },
+            { label: "Exp", description: userInfo.profile && userInfo.profile.xp ? `${userInfo.profile.xp} / ${userInfo.profile.levelXp}` : null, x: 895, y: 300 },
             { label: "Consumed Items", description: this.getConsumedItems(client, userInfo), x: 895, y: 380 },
         ];
 
