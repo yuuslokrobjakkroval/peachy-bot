@@ -1,6 +1,5 @@
 const { Command } = require('../../structures/index.js');
 const maxAmount = 250000;
-const random = require('random-number-csprng');
 
 module.exports = class Coinflip extends Command {
     constructor(client) {
@@ -42,7 +41,7 @@ module.exports = class Coinflip extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const coinflipMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.coinflipMessages;
         client.utils.getUser(ctx.author.id).then(user => {
@@ -69,11 +68,11 @@ module.exports = class Coinflip extends Command {
             if (!choice) {
                 return client.utils.sendErrorMessage(client, ctx, coinflipMessages.invalidChoice, color);
             }
-            choice = choice.toLowerCase();
+
             if (choice.toLowerCase() === 'peach' || choice.toLowerCase() === 'p') choice = 'p';
             else if (choice.toLowerCase() === 'goma' || choice.toLowerCase() === 'g') choice = 'g';
 
-            let rand = random(0, 1);
+            let rand = client.utils.getRandomNumber(0, 1);
             let win = false;
             if (rand === 0 && choice === 'g') win = true;
             else if (rand === 1 && choice === 'p') win = true;
@@ -102,11 +101,11 @@ module.exports = class Coinflip extends Command {
 
             user.save().then(() => {
                 // ===================================== > Result < ===================================== \\
-                setTimeout(async function () {
+                setTimeout(function () {
                     const resultCoin = win ? baseCoins * 2 : baseCoins;
                     const resultEmbed = client.embed()
                         .setColor(color.main)
-                        .setThumbnail(client.utils.emojiToImage(win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma)))
+                        .setThumbnail(client.utils.emojiToImage(win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.goma : emoji.coinFlip.peach)))
                         .setDescription(
                             coinflipMessages.resultDescription
                                 .replace('%{mainLeft}', emoji.mainLeft)
@@ -123,7 +122,7 @@ module.exports = class Coinflip extends Command {
                             iconURL: ctx.author.displayAvatarURL(),
                         })
 
-                    await ctx.editMessage({embeds: [resultEmbed]});
+                    ctx.editMessage({embeds: [resultEmbed]});
                 }, 2000);
             })
         }).catch(error => {
