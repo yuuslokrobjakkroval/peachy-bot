@@ -2,7 +2,6 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user.js');
 const moment = require("moment-timezone");
 const chance = require('chance').Chance();
-const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Weekly extends Command {
     constructor(client) {
@@ -36,9 +35,6 @@ module.exports = class Weekly extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
-            const { coin } = user.balance;
-            const { xp } = user.profile;
-
             const baseCoins = chance.integer({ min: 100000, max: 3000000 });
             const baseExp = chance.integer({ min: 200, max: 250 });
 
@@ -54,8 +50,8 @@ module.exports = class Weekly extends Command {
 
             const totalCoins = baseCoins + bonusCoins;
             const totalExp = baseExp + bonusExp;
-            const newBalance = coin + totalCoins;
-            const newExp = xp + totalExp;
+            const newBalance = user.balance.coin + totalCoins;
+            const newExp = user.profile.xp + totalExp;
 
             const now = moment().tz('Asia/Bangkok');
             const nextWeekly = moment(now).add(1, 'week').toDate();
@@ -76,10 +72,15 @@ module.exports = class Weekly extends Command {
                     });
                 }
 
-                user.balance.coin = newBalance;
-                user.profile.xp = newExp;
-
-                return user.save().then(() => {
+                return Users.updateOne(
+                    { userId: user.userId },
+                    {
+                        $set: {
+                            "balance.coin": newBalance,
+                            "profile.xp": newExp
+                        }
+                    }
+                ).then(() => {
                     return client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNextWeekly);
                 }).then(() => {
                     let bonusMessage = '';

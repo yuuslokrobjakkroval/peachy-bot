@@ -74,15 +74,15 @@ module.exports = class Start extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         if (ctx.isInteraction) {
-            await ctx.interaction.deferReply();
+            ctx.interaction.deferReply();
         } else {
-            await ctx.sendDeferMessage(`${client.user.username} is Thinking...`);
+            ctx.sendDeferMessage(`${client.user.username} is Thinking...`);
         }
 
         const isOwner = client.config.owners.includes(ctx.author.id);
-        const isAdmin = await client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
+        const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
 
         if (!isOwner && !isAdmin) {
             return (ctx.isInteraction
@@ -133,9 +133,9 @@ module.exports = class Start extends Command {
                 ],
             };
             if (ctx.isInteraction) {
-                await ctx.interaction.editReply(replyMessage);
+                ctx.interaction.editReply(replyMessage);
             } else {
-                await ctx.editMessage(replyMessage);
+                ctx.editMessage(replyMessage);
             }
             return;
         }
@@ -163,9 +163,9 @@ module.exports = class Start extends Command {
         let giveawayMessage;
         try {
             if (ctx.isInteraction) {
-                giveawayMessage = await ctx.interaction.editReply({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
+                giveawayMessage = ctx.interaction.editReply({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
             } else {
-                giveawayMessage = await ctx.editMessage({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
+                giveawayMessage = ctx.editMessage({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
             }
         } catch (err) {
             console.error(err);
@@ -184,7 +184,7 @@ module.exports = class Start extends Command {
             prizeAmount *= multipliers[unit];
         }
 
-        await GiveawaySchema.create({
+        GiveawaySchema.create({
             guildId: ctx.guild.id,
             channelId: ctx.channel.id,
             messageId: giveawayMessage.id,

@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const Users = require('../../schemas/user.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
 
@@ -75,13 +76,16 @@ module.exports = class Peachy extends Command {
                             });
                     }
 
-                    // Update user data
-                    user.balance.coin = newBalance;
-                    user.profile.xp = newExp;
-                    user.peachy.streak = newStreak;
-
-                    // Save the user data
-                    user.save().then(() => {
+                    return Users.updateOne(
+                        { userId: user.userId },
+                        {
+                            $set: {
+                                "balance.coin": newBalance,
+                                "profile.xp": newExp,
+                                "peachy.streak": newStreak
+                            }
+                        }
+                    ).then(() => {
                         client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
 
                         let bonusMessage = '';

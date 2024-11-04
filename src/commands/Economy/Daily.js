@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const Users = require('../../schemas/user.js');
 const chance = require('chance').Chance();
 const moment = require('moment-timezone');
 
@@ -71,10 +72,15 @@ module.exports = class Daily extends Command {
                     return ctx.sendMessage({ embeds: [cooldownEmbed] });
                 }
 
-                user.balance.coin = newBalance;
-                user.profile.xp = newExp;
-
-                return user.save().then(() => {
+                return Users.updateOne(
+                    { userId: user.userId },
+                    {
+                        $set: {
+                            "balance.coin": newBalance,
+                            "profile.xp": newExp
+                        }
+                    }
+                ).then(() => {
                     return client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), timeUntilNext5PM);
                 }).then(() => {
                     let bonusMessage = '';

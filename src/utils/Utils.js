@@ -133,10 +133,11 @@ module.exports = class Utils {
         }).then(giveaway => { return giveaway; }).catch(error => { console.log(`Error fetching giveaway data: ${error}`); return null });
     }
 
-    static async getCheckPermission(ctx, userId, permission) {
+    static getCheckPermission(ctx, userId, permission) {
         try {
-            const member = await ctx.guild.members.fetch(userId);
-            return member.permissions.has(PermissionsBitField.Flags[permission]);
+            ctx.guild.members.fetch(userId).then(member => {
+                return member.permissions.has(PermissionsBitField.Flags[permission]);
+            })
         } catch (error) {
             console.error('Error fetching member:', error);
             return false; // Return false or handle error appropriately

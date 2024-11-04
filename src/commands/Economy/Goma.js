@@ -1,7 +1,7 @@
 const { Command } = require('../../structures/index.js');
+const Users = require('../../schemas/user.js');
 const chance = require('chance').Chance();
 const moment = require('moment');
-const emojiImage = require("../../utils/Emoji");
 
 module.exports = class Goma extends Command {
     constructor(client) {
@@ -73,14 +73,18 @@ module.exports = class Goma extends Command {
 
                         return ctx.sendMessage({ embeds: [cooldownEmbed] });
                     });
-                } else {
-                    // Update balance and streak
-                    user.balance.coin = newBalance;
-                    user.profile.xp = newExp;
-                    user.goma.streak = newStreak;
+                }
 
-                    // Save the user data
-                    user.save().then(() => {
+                return Users.updateOne(
+                        { userId: user.userId },
+                        {
+                            $set: {
+                                "balance.coin": newBalance,
+                                "profile.xp": newExp,
+                                "goma.streak": newStreak
+                            }
+                        }
+                    ).then(() => {
                         client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
                         let bonusMessage = '';
                         if (bonusCoins > 0 || bonusExp > 0) {
@@ -106,10 +110,9 @@ module.exports = class Goma extends Command {
 
                         return ctx.sendMessage({ embeds: [successEmbed] });
                     }).catch(error => {
-                        console.error('Error saving user data:', error);
-                        return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
-                    });
-                }
+                    console.error('Error saving user data:', error);
+                    return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+                });
             }).catch(error => {
                 console.error('Error checking cooldown:', error);
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
