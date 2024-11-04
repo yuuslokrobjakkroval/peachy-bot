@@ -66,8 +66,6 @@ module.exports = class Verify extends Command {
 
         collector.on('collect', async i => {
             if (i.replied || i.deferred) return;
-
-            await i.deferUpdate();
             const userPaymentStatus = user.verification.verify.payment;
             if (i.customId === 'confirm') {
                 const codeNumber = client.utils.generateVerificationCode();
@@ -89,12 +87,12 @@ module.exports = class Verify extends Command {
 
                 userPaymentStatus !== 'paid' && verificationEmbed.setImage(qrCodeUrl);
 
-                const submitButton = client.utils.labelButton(`submit_${codeNumber}`, verifyMessages?.submitButtonLabel || 'Submit', 3);
+                const submitButton = client.utils.labelButton(`submit_${codeNumber}`, verifyMessages?.submitButton || 'Submit', 3);
 
                 const verificationRow = userPaymentStatus === 'paid' && client.utils.createButtonRow(submitButton) ;
                 await i.update({ embeds: [verificationEmbed], components: userPaymentStatus === 'paid' ? [verificationRow] : [], ephemeral: true });
             } else if (i.customId === 'cancel') {
-                await i.update({ content: verifyMessages?.thankYouMessage || "Thank you!", embeds: [], components: [], ephemeral: true });
+                await i.update({ content: verifyMessages?.thankYou || "Thank you!", embeds: [], components: [], ephemeral: true });
             }
 
             collector.stop();
