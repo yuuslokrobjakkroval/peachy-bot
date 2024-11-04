@@ -40,6 +40,7 @@ module.exports = class Eat extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const eatMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.eatMessages;
         const authorId = ctx.author.id;
         const user = await Users.findOne({ userId: authorId });
@@ -52,16 +53,16 @@ module.exports = class Eat extends Command {
         const itemInfo = AllItems.find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
 
         if (!itemInfo) {
-            return await client.utils.sendErrorMessage(client, ctx, eatMessages.itemNotFound.replace('{{itemId}}', itemId), color);
+            return await client.utils.sendErrorMessage(client, ctx, eatMessages.itemNotFound.replace('%{itemId}', itemId), color);
         }
 
         if (itemInfo.type === 'drink') {
             return await client.utils.sendErrorMessage(client, ctx, eatMessages.cannotEatDrink
-                .replace('{{itemEmote}}', itemInfo.emoji)
-                .replace('{{itemName}}', itemInfo.name), color);
+                .replace('%{itemEmote}', itemInfo.emoji)
+                .replace('%{itemName}', itemInfo.name), color);
         }
 
-        if (itemInfo.type !== 'food') {
+        if (itemInfo.type !== 'food' || itemInfo.type !== 'cake') {
             return await client.utils.sendErrorMessage(client, ctx, eatMessages.notEdible, color);
         }
 
@@ -87,14 +88,18 @@ module.exports = class Eat extends Command {
 
         await Users.updateOne({ userId: authorId }, { $inc: { 'profile.xp': xpGained } });
 
-        const embed = client
-            .embed()
+        const embed = client.embed()
             .setColor(color.main)
-            .setDescription(eatMessages.successEat
-                .replace('{{itemEmote}}', itemInfo.emoji)
-                .replace('{{itemAmount}}', itemAmount)
-                .replace('{{itemName}}', itemInfo.name)
-                .replace('{{xpGained}}', xpGained));
+            .setDescription(
+                eatMessages.success
+                    .replace('%{itemEmote}', itemInfo.emoji)
+                    .replace('%{itemAmount}', itemAmount)
+                    .replace('%{itemName}', itemInfo.name)
+                    .replace('%{xpGained}', xpGained))
+            .setFooter({
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            });
 
         await ctx.sendMessage({ embeds: [embed] });
     }

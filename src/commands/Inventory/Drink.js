@@ -40,6 +40,7 @@ module.exports = class Drink extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const drinkMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.drinkMessages;
         const authorId = ctx.author.id;
         const user = await Users.findOne({ userId: authorId });
@@ -91,11 +92,16 @@ module.exports = class Drink extends Command {
         const embed = client
             .embed()
             .setColor(color.main)
-            .setDescription(drinkMessages.successDrink
-                .replace('{{itemEmote}}', itemInfo.emoji)
-                .replace('{{itemAmount}}', itemAmount)
-                .replace('{{itemName}}', itemInfo.name)
-                .replace('{{xpGained}}', xpGained));
+            .setDescription(
+                drinkMessages.success
+                    .replace('%{itemEmote}', itemInfo.emoji)
+                    .replace('%{itemAmount}', itemAmount)
+                    .replace('%{itemName}', itemInfo.name)
+                    .replace('%{xpGained}', xpGained))
+            .setFooter({
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            });
 
         await ctx.sendMessage({ embeds: [embed] });
     }
