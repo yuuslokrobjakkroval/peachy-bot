@@ -44,8 +44,8 @@
 			}
 		},
 		"killMessages": {
-			"title": "Wanna Kill!",
-			"description": "Are you sure you want to perform this action?",
+			"title": "Kill Time!",
+			"description": "wanna kill",
 			"errors": {
 				"noUser": "You need to mention a user to target.",
 				"selfKill": "You cannot target yourself.",
@@ -62,8 +62,8 @@
 			}
 		},
 		"loungMessages": {
-			"title": "Chill Time!",
-			"description": "relaxes with",
+			"title": "Loung Time!",
+			"description": "try to loung",
 			"errors": {
 				"noUser": "You need to mention a user to relax with.",
 				"selfLounge": "You cannot relax with yourself.",
@@ -94,7 +94,7 @@
 			"description": "# %{mainLeft} **𝐁𝐀𝐋𝐀𝐍𝐂𝐄** %{mainRight}\n%{coinEmote} : **%{coin}** coins\n %{bankEmote} : **%{bank}** coins"
 		},
 		"dailyMessages": {
-			"success": "# %{mainLeft} **𝐃𝐀𝐈𝐋𝐘** %{mainRight}\nYou have claimed your daily reward of **+%{coin}** %{coinEmote} and **+%{exp}** %{expEmote}\n%{bonusMessage}",
+			"success": "# %{mainLeft} **𝐃𝐀𝐈𝐋𝐘** %{mainRight}\nYou have claimed your daily reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp} xp**\n%{bonusMessage}",
 			"error": "There was an error processing your daily claim.",
 			"cooldown": "Daily reward is on cooldown!\nTry again after **%{time}**."
 		},
@@ -104,11 +104,11 @@
 			"success": "You have deposited **%{amount}** %{coinEmote} to your bank."
 		},
 		"gomaMessages": {
-			"success": "# %{mainLeft} **𝐆𝐎𝐌𝐀** %{mainRight}\nYou have earned **+%{coin}** %{coinEmote} and **+%{exp}** %{expEmote}\n%{bonusMessage}",
+			"success": "# %{mainLeft} **𝐆𝐎𝐌𝐀** %{mainRight}\nYou have earned %{coinEmote} **+%{coin}** coins and %{expEmote}: **+%{exp}** %{expEmote} xp\n%{bonusMessage}",
 			"cooldown": "Goma is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"peachyMessages": {
-			"success": "# %{mainLeft} **𝐏𝐄𝐀𝐂𝐇** %{mainRight}\nYou have earned **+%{coin}** %{coinEmote} and **+%{exp}** %{expEmote}\n%{bonusMessage}",
+			"success": "# %{mainLeft} **𝐏𝐄𝐀𝐂𝐇** %{mainRight}\nYou have earned %{coinEmote} **+%{coin}** coins and %{expEmote}: **+%{exp}** %{expEmote} xp\n%{bonusMessage}",
 			"cooldown": "Peachy is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"rankingMessages": {
@@ -150,7 +150,7 @@
 			"expire": "Transaction Expired"
 		},
 		"weeklyMessages": {
-			"success": "# %{mainLeft} **𝐖𝐄𝐄𝐊𝐋𝐘** %{mainRight}\nYou have claimed your weekly reward of **+%{coin}** %{coinEmote} and **+%{exp}** %{expEmote}\n%{bonusMessage}",
+			"success": "# %{mainLeft} **𝐖𝐄𝐄𝐊𝐋𝐘** %{mainRight}\nYou have claimed your weekly reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
 			"error": "There was an error processing your weekly claim.",
 			"cooldown": {
 				"multipleDays": "Weekly is on cooldown!\nTry again after **{{days}} and {{hours}}**, **{{minutes}}**, and **{{seconds}}**.",

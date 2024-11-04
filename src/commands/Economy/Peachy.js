@@ -86,7 +86,7 @@ module.exports = class Peachy extends Command {
 
                         let bonusMessage = '';
                         if (bonusCoins > 0 || bonusExp > 0) {
-                            bonusMessage = `\n**+20% Bonus**: ${client.utils.formatNumber(bonusCoins)} coins and ${client.utils.formatNumber(bonusExp)} xp`;
+                            bonusMessage = `\n**+20% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
                         }
 
                         const successEmbed = client.embed()

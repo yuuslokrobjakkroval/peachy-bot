@@ -56,9 +56,7 @@ module.exports = class Kill extends Command {
                 .setColor(color.main)
                 .setTitle(`${emoji.mainLeft} ${killMessages.title} ${emoji.mainRight}`)
                 .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is a valid URL or attachment
-                .setDescription(killMessages.description
-                    .replace('%{displayName}', ctx.author.displayName)
-                    .replace('%{target}', target.displayName));
+                .setDescription(`${ctx.author.displayName} ${killMessages.description} ${target.displayName}!`);
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {

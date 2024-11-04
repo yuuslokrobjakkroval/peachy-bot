@@ -55,10 +55,8 @@ module.exports = class Loung extends Command {
             const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`${emoji.mainLeft} ${loungMessages.title} ${emoji.mainRight}`)
-                .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is a valid URL or attachment
-                .setDescription(loungMessages.description
-                    .replace('%{displayName}', ctx.author.displayName)
-                    .replace('%{target}', target.displayName));
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(`${ctx.author.displayName} ${loungMessages.description} ${target.displayName}!`);
 
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {

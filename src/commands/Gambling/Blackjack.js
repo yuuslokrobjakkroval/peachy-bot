@@ -1,6 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
-const maxAmount = 200000;
+const maxAmount = 250000;
 const deck = Array.from({ length: 52 }, (_, i) => i + 1);
 const bjUtil = require('../../utils/BlackjackUtil.js');
 const Users = require('../../schemas/user');
@@ -17,7 +17,7 @@ module.exports = class Cmd extends Command {
             },
             category: 'gambling',
             aliases: ['bj'],
-            cooldown: 3,
+            cooldown: 5,
             args: false,
             permissions: {
                 dev: false,
