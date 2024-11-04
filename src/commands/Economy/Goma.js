@@ -36,15 +36,13 @@ module.exports = class Goma extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
-            const verify = user.verification.verify.status === 'verified';
-            const { coin } = user.balance;
-            const { xp } = user.profile;
             const baseCoins = chance.integer({ min: 400, max: 500 });
             const baseExp = chance.integer({ min: 5, max: 10 });
 
             let bonusCoins = 0;
             let bonusExp = 0;
 
+            const verify = user.verification.verify.status === 'verified';
             if (verify) {
                 bonusCoins = Math.floor(baseCoins * 0.20);
                 bonusExp = Math.floor(baseExp * 0.20);
@@ -52,8 +50,8 @@ module.exports = class Goma extends Command {
 
             const totalCoins = baseCoins + bonusCoins;
             const totalExp = baseExp + bonusExp;
-            const newBalance = coin + totalCoins;
-            const newExp = xp + totalExp;
+            const newBalance = user.balance.coin + totalCoins;
+            const newExp = user.profile.xp + totalExp;
             const newStreak = user.goma.streak + 1;
 
             const cooldownTime = 300000; // 5 minutes cooldown
