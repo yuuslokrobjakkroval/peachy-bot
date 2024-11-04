@@ -1,5 +1,4 @@
 const { Command } = require('../../structures');
-const Users = require('../../schemas/user');
 
 module.exports = class GuessNumber extends Command {
     constructor(client) {
@@ -27,8 +26,7 @@ module.exports = class GuessNumber extends Command {
         const guessNumberMessages = language.locales.get(language.defaultLocale)?.gameMessages?.guessNumberMessages;
         const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
         client.utils.getUser(ctx.author.id).then(user => {
-            const { coin } = user.balance;
-            if (coin < 1000) {
+            if (user.balance.coin < 1000) {
                 return ctx.sendMessage({
                     embeds: [
                         client.embed()
@@ -71,7 +69,7 @@ module.exports = class GuessNumber extends Command {
                     const coinEarned = Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000;
                     const xpEarned = Math.floor(Math.random() * 51) + 30;
 
-                    user.balance.coin = coin + coinEarned;
+                    user.balance.coin += coinEarned;
                     user.profile.xp = xpEarned;
 
                     user.save().then(() => {
