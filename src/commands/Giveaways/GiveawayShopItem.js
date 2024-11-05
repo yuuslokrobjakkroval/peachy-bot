@@ -44,20 +44,20 @@ module.exports = class GiveawayShopItem extends Command {
         }
 
         const isOwner = client.config.owners.includes(ctx.author.id);
-        const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
-
-        if (!isOwner || !isAdmin) {
-            return (ctx.isInteraction
-                    ? ctx.interaction.editReply({
-                        content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
-                        ephemeral: true
-                    })
-                    : ctx.editMessage({
-                        content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
-                        ephemeral: true
-                    })
-            );
-        }
+        // const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
+        //
+        // if (!isOwner || !isAdmin) {
+        //     return (ctx.isInteraction
+        //             ? ctx.interaction.editReply({
+        //                 content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
+        //                 ephemeral: true
+        //             })
+        //             : ctx.editMessage({
+        //                 content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
+        //                 ephemeral: true
+        //             })
+        //     );
+        // }
 
         const durationStr = ctx.isInteraction ? ctx.interaction.options.getString('duration') : args[0];
         const winnersStr = ctx.isInteraction ? ctx.interaction.options.getInteger('winners') : args[1];

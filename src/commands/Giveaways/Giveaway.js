@@ -70,17 +70,17 @@ module.exports = class Start extends Command {
 
         // Owner and Admin checks
         const isOwner = client.config.owners.includes(ctx.author.id);
-        const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
-
-        if (!isOwner || !isAdmin) {
-            const response = {
-                content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
-                ephemeral: true,
-            };
-            return ctx.isInteraction
-                ? ctx.interaction.editReply(response)
-                : ctx.editMessage(response);
-        }
+        // const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
+        //
+        // if (!isOwner || !isAdmin) {
+        //     const response = {
+        //         content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
+        //         ephemeral: true,
+        //     };
+        //     return ctx.isInteraction
+        //         ? ctx.interaction.editReply(response)
+        //         : ctx.editMessage(response);
+        // }
 
         // Fetch arguments for giveaway
         const durationStr = ctx.isInteraction ? ctx.interaction.options.getString('duration') : args[0];
