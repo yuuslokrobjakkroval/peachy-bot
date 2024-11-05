@@ -33,7 +33,7 @@ module.exports = class BlacklistUser extends Command {
         const action = args[0].toLowerCase(); // 'blacklist' or 'unblacklist'
         const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[1]);
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[1]) || args[1];
 
         if (!mention) {
             return await ctx.sendMessage({
@@ -41,15 +41,17 @@ module.exports = class BlacklistUser extends Command {
             });
         }
 
-        let user = await Users.findOne({ userId: mention.id });
+        const userId = typeof mention === 'string' ? mention : mention.id;
+
+        let user = await Users.findOne({ userId });
         if (!user) {
-            user = new Users({ userId: mention.id, verification: { isBlacklist: false } });
+            user = new Users({ userId: userId, verification: { isBlacklist: false } });
         }
 
         const { isBlacklist } = user.verification;
 
         // Prevent blacklisting or un-blacklisting the bot itself
-        if (mention.bot) {
+        if (typeof mention !== 'string' && mention.bot) {
             return await client.utils.sendErrorMessage(client, ctx, "You cannot blacklist or unblacklist a bot.", color);
         }
 
@@ -57,13 +59,13 @@ module.exports = class BlacklistUser extends Command {
         if (action === 'blacklist') {
             if (isBlacklist) {
                 return await ctx.sendMessage({
-                    embeds: [client.embed().setColor(color.danger).setDescription(`${mention} is already blacklisted.`)],
+                    embeds: [client.embed().setColor(color.danger).setDescription('This user is already blacklisted.')],
                 });
             }
 
             // Update the user's blacklist status
             await Users.updateOne(
-                { userId: mention.id },
+                { userId: userId },
                 { $set: { 'verification.isBlacklist': true } },
                 { upsert: true }
             ).exec();
@@ -71,28 +73,27 @@ module.exports = class BlacklistUser extends Command {
             const embed = client
                 .embed()
                 .setColor(color.main)
-                .setDescription(`${emoji.tick} Blacklisted **${mention}**.`);
+                .setDescription(`${emoji.tick} Blacklisted **Successfully**.`);
 
             return await ctx.sendMessage({ embeds: [embed] });
 
-            // Un-blacklist Action
         } else if (action === 'unblacklist') {
             if (!isBlacklist) {
                 return await ctx.sendMessage({
-                    embeds: [client.embed().setColor(color.danger).setDescription(`${mention} is not blacklisted.`)],
+                    embeds: [client.embed().setColor(color.danger).setDescription('This user is not blacklisted.')],
                 });
             }
 
             // Update the user's blacklist status
             await Users.updateOne(
-                { userId: mention.id },
+                { userId: userId },
                 { $set: { 'verification.isBlacklist': false } }
             ).exec();
 
             const embed = client
                 .embed()
                 .setColor(color.success)
-                .setDescription(`${emoji.tick} Un-blacklisted **${mention}**.`);
+                .setDescription(`${emoji.tick} Un-blacklisted **Successfully**.`);
 
             return await ctx.sendMessage({ embeds: [embed] });
 
