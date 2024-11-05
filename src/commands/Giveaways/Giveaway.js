@@ -90,6 +90,19 @@ module.exports = class Start extends Command {
         const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[4];
         const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[5];
 
+        if (autoPay && !isOwner) {
+            return (ctx.isInteraction
+                    ? ctx.interaction.editReply({
+                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+                    : ctx.editMessage({
+                        content: 'Only the bot owner can enable autopay for giveaways.',
+                        ephemeral: true
+                    })
+            );
+        }
+
         const duration = ms(durationStr);
         const winners = parseInt(winnersStr, 10);
         if (!duration || isNaN(winners) || winners <= 0 || !prize) {

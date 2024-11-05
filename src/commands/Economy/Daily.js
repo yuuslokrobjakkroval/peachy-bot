@@ -43,8 +43,8 @@ module.exports = class Daily extends Command {
 
             const verify = user.verification.verify.status === 'verified';
             if (verify) {
-                bonusCoins = Math.floor(baseCoins * 0.20);
-                bonusExp = Math.floor(baseExp * 0.20);
+                bonusCoins = Math.floor(baseCoins * 0.40);
+                bonusExp = Math.floor(baseExp * 0.40);
             }
 
             const totalCoins = baseCoins + bonusCoins;
@@ -85,7 +85,7 @@ module.exports = class Daily extends Command {
                     }).then(() => {
                         let bonusMessage = '';
                         if (bonusCoins > 0 || bonusExp > 0) {
-                            bonusMessage = `\n**+20% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
+                            bonusMessage = `\n**+40% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
                         }
 
                         const embed = client.embed()

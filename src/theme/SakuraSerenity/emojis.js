@@ -92,6 +92,7 @@ module.exports = {
         actions: '<:SACTIONS:1296027745071009853>',
         economy: '<:SCOIN:1295967985348907031>',
         inventory: '<:SINVENTORY:1296027811093549086>',
+        bank: '<:SAKURABANK:1295967856369860629>',
         fun: '<:SFUN:1296027831830188063>',
         games: '<:SGAMES:1296027840915050510>',
         gambling: '<:SGAMBLING:1296027849857175612>',

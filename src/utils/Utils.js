@@ -227,11 +227,9 @@ module.exports = class Utils {
                     const cooldown = user.cooldowns.find(c => c.name === command);
                     return cooldown ? cooldown.timestamp : 0;
                 }
-                return 0;
             })
             .catch(error => {
                 console.error('Error fetching cooldown:', error);
-                return 0;
             });
     }
 

@@ -44,7 +44,7 @@ module.exports = class GiveawayShopItem extends Command {
         }
 
         const isOwner = client.config.owners.includes(ctx.author.id);
-        const isAdmin = await client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
+        const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
 
         if (!isOwner && !isAdmin) {
             return (ctx.isInteraction

@@ -58,7 +58,7 @@ module.exports = class Verify extends Command {
                 iconURL: ctx.author.displayAvatarURL(),
             });
 
-        await ctx.sendMessage({ embeds: [confirmEmbed], components: [row], ephemeral: true });
+        ctx.sendMessage({ embeds: [confirmEmbed], components: [row], ephemeral: true });
 
         // Step 3: Create collector to handle button interactions
         const filter = i => i.user.id === (ctx.isInteraction ? ctx.interaction.user.id : ctx.author.id);
@@ -175,7 +175,7 @@ module.exports = class Verify extends Command {
 
         paymentCollector.on('end', collected => {
             if (collected.size === 0) {
-                ctx.sendMessage({ content: verifyMessages?.noResponse || "No response received. Please try again.", ephemeral: true });
+                ctx.sendMessage({ content: verifyMessages?.noResponseReceived || "No response received. Please try again.", ephemeral: true });
             }
         });
     }
