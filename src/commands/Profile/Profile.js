@@ -5,6 +5,7 @@ const ShopItems = require('../../assets/inventory/ShopItems');
 const moment = require("moment");
 const inventory = ShopItems.flatMap(shop => shop.inventory);
 const Wallpapers = inventory.filter(value => value.type === 'wallpaper');
+const Colors = inventory.filter(value => value.type === 'color');
 
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Roman.otf', 'Kelvinch-Roman');
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Bold.otf', 'Kelvinch-Bold');
@@ -62,10 +63,15 @@ module.exports = class Profile extends Command {
                 bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
             }
 
+            let backgroundColor;
+            if (equippedColor) {
+                backgroundColor = Colors.find(colorItem => colorItem.id === equippedColor.id)?.code;
+            }
+
             const canvas = createCanvas(1280, 720);
             const context = canvas.getContext('2d');
 
-            await this.drawProfile(client, context, targetUser, user, color, equippedColor, emoji, bannerImage);
+            await this.drawProfile(client, context, targetUser, user, color, backgroundColor, emoji, bannerImage);
 
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
@@ -149,14 +155,14 @@ module.exports = class Profile extends Command {
         return lines;
     }
 
-    async drawProfile(client, context, targetUser, userInfo, color, equippedColor, emoji, banner) {
+    async drawProfile(client, context, targetUser, userInfo, color, backgroundColor, emoji, banner) {
         const userAvatar = await loadImage(targetUser.displayAvatarURL({ format: 'png', size: 256 }));
         const userAvatarX = 1200;
         const userAvatarY = 34;
         const userAvatarSize = 40;
 
         // Draw the background color
-        context.fillStyle = equippedColor ? equippedColor.code : client.utils.formatColor(color.main);
+        context.fillStyle = backgroundColor ? backgroundColor : client.utils.formatColor(color.main);
         context.fillRect(0, 0, 1280, 720);
 
         if (banner) {
