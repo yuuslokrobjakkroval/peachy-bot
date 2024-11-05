@@ -33,7 +33,7 @@ module.exports = class BlacklistUser extends Command {
         const action = args[0].toLowerCase(); // 'blacklist' or 'unblacklist'
         const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[1]) || ctx.author;
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[1]);
 
         if (!mention) {
             return await ctx.sendMessage({
