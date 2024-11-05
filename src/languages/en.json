@@ -519,7 +519,7 @@
 			"invalidItem": "The item with ID `{{itemId}}` was not found. Please check the shop for available items.",
 			"themeAlreadyOwned": "You already own the theme **{{itemName}}** {{itemEmote}}. You cannot buy it again.",
 			"itemCannotBeBought": "The item **{{itemName}}** {{itemEmote}} is not available for purchase.",
-			"notEnoughCoins": "You need {{coinEmote}}{{neededCoins}} more to buy {{itemEmote}} **{{itemName}}**.",
+			"notEnoughCoins": "You need {{neededCoins}} {{coinEmote}} more to buy {{itemEmote}} **{{itemName}}**.",
 			"success": "successfully purchased",
 			"partial": "but you could only afford",
 			"description": "You have {{afford}} {{itemEmote}} **{{itemName}}** for **{{totalPrice}}** {{coinEmote}}.\nYou bought **{{amountToBuy}}** items.",
@@ -608,7 +608,7 @@
 			"themeID": "Theme with ID %{itemId} not found.",
 			"notOwned": "You do not own the theme %{itemName}.",
 			"unavailable": "The theme %{itemName} is not available for use.",
-			"applied": "Successfully applied the theme %{itemEmote} %%{itemName}!",
+			"applied": "Successfully applied the theme %{itemEmote} %{itemName}!",
 			"alreadyEquipped": "You are already using %{itemEmote} **%{itemName}**."
 		}
 	},

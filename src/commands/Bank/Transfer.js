@@ -2,7 +2,6 @@ const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const config = require("../../config.js");
 const gif = require("../../utils/Gif");
-const emojiImage = require("../../utils/Emoji");
 
 const pendingTransfers = new Map();
 
@@ -116,17 +115,8 @@ module.exports = class Transfer extends Command {
                     target.balance.coin += parseInt(amount);
 
                     try {
-                        const updateAuthor = Users.updateOne(
-                            { userId: ctx.author.id },
-                            { $inc: { 'balance.coin': -amount } }
-                        ).exec();
-
-                        const updateTarget = Users.updateOne(
-                            { userId: target.id },
-                            { $inc: { 'balance.coin': amount } }
-                        ).exec();
-
-                        await Promise.all([updateAuthor, updateTarget]);
+                        await Users.findOneAndUpdate({ userId: ctx.author.id }, { balance: user.balance });
+                        await Users.findOneAndUpdate({ userId: targetUser.id }, { balance: target.balance }, {upsert: true});
 
                         const confirmationEmbed = client.embed()
                             .setColor(color.main)
@@ -141,7 +131,7 @@ module.exports = class Transfer extends Command {
                                 iconURL: ctx.author.displayAvatarURL(),
                             });
 
-                        await interaction.editReply({ embeds: [confirmationEmbed] });
+                        await ctx.channel.send({ embeds: [confirmationEmbed] });
 
                         // Optional: Thanks GIF message
                         setTimeout(async () => {
@@ -156,13 +146,13 @@ module.exports = class Transfer extends Command {
                         await messageEmbed.delete();
                     } catch (error) {
                         console.error('Database update error:', error);
-                        await interaction.editReply(generalMessages.databaseUpdate);
+                        await ctx.channel.send(generalMessages.databaseUpdate);
                     }
                     // Remove the pending transfer after confirmation
                     pendingTransfers.delete(ctx.author.id);
                 } else if (interaction.customId === 'cancel_button') {
                     pendingTransfers.delete(ctx.author.id);
-                    await interaction.editReply(transferMessages.cancel);
+                    await ctx.channel.send(transferMessages.cancel);
                     await messageEmbed.delete();
                 }
             }

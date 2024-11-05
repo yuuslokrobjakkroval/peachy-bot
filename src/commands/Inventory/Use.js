@@ -53,7 +53,7 @@ module.exports = class Use extends Command {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.unavailable.replace('%{itemName}', themeItem.name),
+                        useMessages?.unavailable.replace('%{itemEmote}', wallpaperItem.emoji).replace('%{itemName}', themeItem.name),
                         color
                     );
                 }
@@ -101,7 +101,7 @@ module.exports = class Use extends Command {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.alreadyEquipped.replace('%{itemName}', wallpaperItem.name).replace('%{itemEmote}', wallpaperItem.emoji),
+                        useMessages?.alreadyEquipped.replace('%{itemEmote}', wallpaperItem.emoji).replace('%{itemName}', wallpaperItem.name),
                         color
                     );
                 }
