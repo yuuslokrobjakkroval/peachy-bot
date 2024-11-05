@@ -53,8 +53,7 @@ module.exports = class Transfer extends Command {
 
         // Fetch user data for both sender and receiver
         const user = await Users.findOne({ userId: ctx.author.id });
-        const verify = user.verification.verify.status === 'verified';
-        const target = await Users.findOne({ userId: targetUser.id }) || new Users({ userId: targetUser.id, balance: { coin: 0, bank: 0 } });
+        const target = await Users.findOne({ userId: targetUser.id });
 
         if (user.balance.coin < 1) {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
@@ -117,11 +116,20 @@ module.exports = class Transfer extends Command {
                     target.balance.coin += parseInt(amount);
 
                     try {
-                        await Users.findOneAndUpdate({userId: ctx.author.id}, { balance: user.balance });
-                        await Users.findOneAndUpdate({userId: targetUser.id}, { balance: target.balance }, {upsert: true});
+                        const updateAuthor = Users.updateOne(
+                            { userId: ctx.author.id },
+                            { $inc: { 'balance.coin': -amount } }
+                        ).exec();
+
+                        const updateTarget = Users.updateOne(
+                            { userId: target.id },
+                            { $inc: { 'balance.coin': amount } }
+                        ).exec();
+
+                        await Promise.all([updateAuthor, updateTarget]);
 
                         const confirmationEmbed = client.embed()
-                            .setColor(config.color.main)
+                            .setColor(color.main)
                             .setTitle(transferMessages.title.replace('{{user}}', ctx.author.displayName))
                             .setDescription(transferMessages.success
                                 .replace('{{amount}}', client.utils.formatNumber(amount))
@@ -130,10 +138,10 @@ module.exports = class Transfer extends Command {
                             )
                             .setFooter({
                                 text: `Request By ${ctx.author.displayName}`,
-                                iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
+                                iconURL: ctx.author.displayAvatarURL(),
                             });
 
-                        await ctx.channel.send({ embeds: [confirmationEmbed] });
+                        await interaction.editReply({ embeds: [confirmationEmbed] });
 
                         // Optional: Thanks GIF message
                         setTimeout(async () => {
@@ -148,17 +156,16 @@ module.exports = class Transfer extends Command {
                         await messageEmbed.delete();
                     } catch (error) {
                         console.error('Database update error:', error);
-                        await ctx.channel.send(generalMessages.databaseUpdate);
+                        await interaction.editReply(generalMessages.databaseUpdate);
                     }
                     // Remove the pending transfer after confirmation
                     pendingTransfers.delete(ctx.author.id);
                 } else if (interaction.customId === 'cancel_button') {
                     pendingTransfers.delete(ctx.author.id);
-                    await ctx.channel.send(transferMessages.cancel);
+                    await interaction.editReply(transferMessages.cancel);
                     await messageEmbed.delete();
                 }
             }
-            collector.stop();
         });
 
         collector.on('end', collected => {
