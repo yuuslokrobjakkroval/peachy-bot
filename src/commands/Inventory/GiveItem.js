@@ -148,9 +148,9 @@ module.exports = class GiveItem extends Command {
 
                     if (!itemInfo) errorMessage += `The item with id \`${args.join(' ')}\` couldn't be found!`;
                     if (!hasItems)
-                        errorMessage += `You don't have ${itemInfo.emoji} **${client.utils.toNameCase(itemInfo.id)}** in your inventory.`;
+                        errorMessage += `You don't have ${itemInfo.emoji} \`${itemInfo.id}\` **${client.utils.formatCapitalize(itemInfo.name)}** in your inventory.`;
                     if (!itemInfo.able.gift)
-                        errorMessage += `The item ${itemInfo.emoji} **${client.utils.toNameCase(itemInfo.id)}** is not giveable!`;
+                        errorMessage += `The item ${itemInfo.emoji} \`${itemInfo.id}\` **${client.utils.formatCapitalize(itemInfo.name)}** is not giveable!`;
                     return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
                 }
 
