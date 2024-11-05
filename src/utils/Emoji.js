@@ -75,6 +75,18 @@ module.exports = {
     milk: '<:MMILK:1290653597322969142>',
     pinkHeartMilk: '<:MPINKHEART:1290653412710682745>',
 
+    color: {
+      black: '<:CBLACK:1303229834679418881>',
+      blue: '<:CBLUE:1303230055186432000>',
+      green: '<:CGREEN:1303230062480457778>',
+      grey: '<:CGREY:1303230070126542888>',
+      orange: '<:CORANGE:1303230075985989675>',
+      pink: '<:CPINK:1303230084332654612>',
+      purple: '<:CPURPLE:1303230092188585995>',
+      red: '<:CRED:1303230101449740318>',
+      yellow: '<:CYELLOW:1303230111817924720>',
+    },
+
     // IMPORTANT
     peachy: '<:PEACHYMILK:1287593053321695304>',
     strawberry: '<:STRAWBERRY:1287593045516091463>',
@@ -107,6 +119,7 @@ module.exports = {
         lo: '<:LO:1293947831148875837>',
         ms: '<:MS:1293947890179379241>',
     },
+
     actions: {
         bites: [
             '<a:PBITE3:1302429771925295175>',
@@ -168,6 +181,7 @@ module.exports = {
             '<a:GSLAP2:1302431622225985556>',
         ],
     },
+
     emotes: {
         angry: [
             '<a:PANGRY1:1302431805202366497>',

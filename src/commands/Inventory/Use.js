@@ -4,7 +4,8 @@ const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems');
 const inventory = ShopItems.flatMap(shop => shop.inventory);
 const Themes = inventory.filter(value => value.type === 'theme' || value.type === 'special theme').sort((a, b) => a.price.buy - b.price.buy);
-const Wallpapers = inventory.filter(value => value.type === 'wallpaper'); // Assuming wallpapers are defined similarly
+const Wallpapers = inventory.filter(value => value.type === 'wallpaper');
+const Colors = inventory.filter(value => value.type === 'color');
 
 module.exports = class Use extends Command {
     constructor(client) {
@@ -45,6 +46,7 @@ module.exports = class Use extends Command {
             const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString().toLowerCase() : args[0].toLowerCase();
             const themeItem = Themes.concat(ImportantItems).find((item) => item.id === itemId);
             const wallpaperItem = Wallpapers.concat(ImportantItems).find((item) => item.id === itemId);
+            const colorItem = Colors.concat(ImportantItems).find((item) => item.id === itemId);
 
             if (themeItem) {
                 if (!themeItem.able.use) {
@@ -146,6 +148,74 @@ module.exports = class Use extends Command {
                         useMessages?.applied
                             .replace('%{itemEmote}', wallpaperItem.emoji)
                             .replace('%{itemName}', wallpaperItem.name)
+                    );
+
+                return await ctx.sendMessage({ embeds: [embed] });
+            }
+
+            if (colorItem) {
+                if (!colorItem.able.use) {
+                    return await client.utils.sendErrorMessage(
+                        client,
+                        ctx,
+                        useMessages?.unavailable.replace('%{itemName}', colorItem.name),
+                        color
+                    );
+                }
+
+                const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
+
+                if (equippedColor && equippedColor.id === colorItem.id) {
+                    return await client.utils.sendErrorMessage(
+                        client,
+                        ctx,
+                        useMessages?.alreadyEquipped.replace('%{itemName}', colorItem.name).replace('%{itemEmote}', colorItem.emoji),
+                        color
+                    );
+                }
+
+                const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
+
+                if (equippedColor) {
+                    await Users.updateOne(
+                        { userId },
+                        { $pull: { equip: { id: equippedColor.id } } }
+                    );
+
+                    const existingInventoryItem = user.inventory.find(item => item.id === equippedColor.id);
+                    if (existingInventoryItem) {
+                        existingInventoryItem.quantity += equippedColor.quantity;
+                    } else {
+                        user.inventory.push({
+                            id: equippedColor.id,
+                            name: equippedColor.name,
+                            quantity: equippedColor.quantity
+                        });
+                    }
+                }
+
+                if (inventoryItemIndex > -1) {
+                    if (user.inventory[inventoryItemIndex].quantity > 1) {
+                        user.inventory[inventoryItemIndex].quantity -= 1;
+                    } else {
+                        user.inventory.splice(inventoryItemIndex, 1);
+                    }
+                }
+
+                await Users.updateOne(
+                    { userId },
+                    {
+                        $addToSet: { equip: { id: colorItem.id, name: colorItem.name, quantity: 1 } },
+                        $set: { inventory: user.inventory }
+                    }
+                );
+
+                const embed = client.embed()
+                    .setColor(color.main)
+                    .setDescription(
+                        useMessages?.applied
+                            .replace('%{itemEmote}', colorItem.emoji)
+                            .replace('%{itemName}', colorItem.name)
                     );
 
                 return await ctx.sendMessage({ embeds: [embed] });

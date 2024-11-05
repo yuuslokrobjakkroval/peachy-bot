@@ -53,6 +53,7 @@ module.exports = class Profile extends Command {
             await new Promise(resolve => setTimeout(resolve, 2000));
 
             const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
+            const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('p'));
 
             let bannerImage;
             if (equippedWallpaper) {
@@ -64,7 +65,7 @@ module.exports = class Profile extends Command {
             const canvas = createCanvas(1280, 720);
             const context = canvas.getContext('2d');
 
-            await this.drawProfile(client, context, targetUser, user, color, emoji, bannerImage);
+            await this.drawProfile(client, context, targetUser, user, color, equippedColor, emoji, bannerImage);
 
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
@@ -148,14 +149,14 @@ module.exports = class Profile extends Command {
         return lines;
     }
 
-    async drawProfile(client, context, targetUser, userInfo, color, emoji, banner) {
+    async drawProfile(client, context, targetUser, userInfo, color, equippedColor, emoji, banner) {
         const userAvatar = await loadImage(targetUser.displayAvatarURL({ format: 'png', size: 256 }));
         const userAvatarX = 1200;
         const userAvatarY = 34;
         const userAvatarSize = 40;
 
         // Draw the background color
-        context.fillStyle = client.utils.formatColor(color.main);
+        context.fillStyle = equippedColor ? equippedColor.code : client.utils.formatColor(color.main);
         context.fillRect(0, 0, 1280, 720);
 
         if (banner) {
