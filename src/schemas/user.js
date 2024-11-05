@@ -69,6 +69,7 @@ const VerificationSchema = new Schema({
         reason: { type: String, default: null }
     },
     isBanned: { type: Boolean, default: false },
+    isBlacklist: { type: Boolean, default: false },
     banReason: { type: String, default: null },
     spamCount: { type: Number, default: 0 },
     lastSpamCheck: { type: Date, default: Date.now }
