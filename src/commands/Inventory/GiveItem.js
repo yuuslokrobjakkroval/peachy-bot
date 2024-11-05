@@ -48,6 +48,7 @@ module.exports = class GiveItem extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const giveItemMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.giveItemMessages;
         const authorId = ctx.author.id;
         const user = await Users.findOne({ userId: authorId });
@@ -135,10 +136,8 @@ module.exports = class GiveItem extends Command {
                     return await client.utils.sendErrorMessage(client, ctx, 'Your inventory is empty.', color);
                 }
 
-                if(!targetUser) {
-                    await Users.create({
-                        userId: target.id,
-                    });
+                if (!targetUser) {
+                    return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
                 }
 
                 const itemInfo = AllItems.concat(ImportantItems).find(({ id }) => id === itemId.toLowerCase());
