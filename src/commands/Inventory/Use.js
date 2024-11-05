@@ -163,7 +163,7 @@ module.exports = class Use extends Command {
                     );
                 }
 
-                const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
+                const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('p'));
 
                 if (equippedColor && equippedColor.id === colorItem.id) {
                     return await client.utils.sendErrorMessage(
