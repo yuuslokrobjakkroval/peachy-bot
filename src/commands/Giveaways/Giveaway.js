@@ -72,7 +72,7 @@ module.exports = class Start extends Command {
         const isOwner = client.config.owners.includes(ctx.author.id);
         const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
 
-        if (!isOwner && !isAdmin) {
+        if (!isOwner || !isAdmin) {
             const response = {
                 content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
                 ephemeral: true,
