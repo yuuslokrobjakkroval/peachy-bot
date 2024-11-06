@@ -49,9 +49,12 @@ module.exports = class Profile extends Command {
                 return await this.sendUserNotFoundEmbed(ctx, color);
             }
 
-            loadingMessage = await this.sendLoadingMessage(client, ctx, color, emoji);
-
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            try {
+                loadingMessage = await this.sendLoadingMessage(client, ctx, color, emoji);
+            } catch (error) {
+                await this.handleError(ctx, loadingMessage);
+                console.error(error);
+            }
 
             const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
             const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('p'));
