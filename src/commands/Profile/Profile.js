@@ -71,13 +71,15 @@ module.exports = class Profile extends Command {
             if (equippedColor) {
                 backgroundColor = Colors.find(colorItem => colorItem.id === equippedColor.id)?.color;
             } else {
-                backgroundColor = globalColors.default
+                backgroundColor = globalColors.default;
             }
+
+            console.log(backgroundColor)
 
             const canvas = createCanvas(1280, 720);
             const context = canvas.getContext('2d');
 
-            await this.drawProfile(client, context, targetUser, user, color, backgroundColor, emoji, bannerImage);
+            await this.drawProfile(client, context, targetUser, user, backgroundColor, emoji, bannerImage);
 
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
@@ -161,7 +163,7 @@ module.exports = class Profile extends Command {
         return lines;
     }
 
-    async drawProfile(client, context, targetUser, userInfo, color, backgroundColor, emoji, banner) {
+    async drawProfile(client, context, targetUser, userInfo, backgroundColor, emoji, banner) {
         const userAvatar = await loadImage(targetUser.displayAvatarURL({ format: 'png', size: 256 }));
         const userAvatarX = 1200;
         const userAvatarY = 34;
@@ -205,7 +207,7 @@ module.exports = class Profile extends Command {
 
         // Draw "Settings" title
         context.font = "28px Kelvinch-Bold, Arial";
-        context.fillStyle = backgroundColor ? backgroundColor.text : client.utils.formatColor(color.dark);
+        context.fillStyle = backgroundColor.text;
         context.fillText(`Profile`, 30, 65);
 
         // Draw the rounded rectangle for the information box
