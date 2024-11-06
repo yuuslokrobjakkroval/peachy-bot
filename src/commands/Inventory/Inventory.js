@@ -47,7 +47,7 @@ module.exports = class Inventory extends Command {
                             const type = itemInfo.type;
                             itemList[type] = itemList[type] || [];
                             itemList[type].push(
-                                `${itemInfo.emoji} **\`${item.quantity}\`** ${itemInfo.name ? itemInfo.name : client.utils.toNameCase(itemInfo.id)}`
+                                `\`${itemInfo.id}\` ${itemInfo.emoji} **\`${item.quantity}\`** ${itemInfo.name ? itemInfo.name : client.utils.toNameCase(itemInfo.id)}`
                             );
                             if (itemInfo.type === 'milk') {
                                 totalWorth += itemInfo.price.sell * item.quantity;

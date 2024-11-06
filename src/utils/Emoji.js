@@ -27,33 +27,45 @@ module.exports = {
     },
 
     // FOOD
-    bun: '<:DUMPLING:1302197238252048414>',
-    brownDonut: '<:DONUT:1302197268287328336>',
-    chocolatecake: '<:CHOCOLATECAKE:1302197277334700072>',
+    food: {
+        bun: '<:f01:1302197238252048414>',
+        brownDonut: '<:f02:1302197268287328336>',
+        chocolatecake: '<:f03:1302197277334700072>'
+    },
 
     // DRINK
-    butterflyCan: '<:BUTTERFLYCAN:1302216098590228540>',
-    cloudCan: '<:CLOUDCAN:1302216104537489408>',
-    froggieCan: '<:FROGCAN:1302216117124595712>',
-    sakuraCan: '<:SAKURACAN:1302216132421357659>',
-    sunflowerCan: '<:SUNFLOWERCAN:1302216140147392554>',
-    violetCan: '<:VIOLETCAN:1302216149400027186>',
-    moonCan: '<:MOONCAN:1302216123827359774>',
+    drink: {
+        butterflyCan: '<:d01:1302216098590228540>',
+        cloudCan: '<:d02:1302216104537489408>',
+        froggieCan: '<:d03:1302216117124595712>',
+        sakuraCan: '<:d04:1302216132421357659>',
+        sunflowerCan: '<:d05:1302216140147392554>',
+        violetCan: '<:d06:1302216149400027186>',
+        moonCan: '<:d07:1302216123827359774>',
+    },
 
     // CAKE
-    avocadoCake: '<:AVOCADOCAKE:1302197878550429728>',
-    bearCake: '<:BEARCAKE:1302197949857792002>',
-    starCake: '<:STARCAKE:1302197992492634174>',
-    princeCake: '<:PRINCE:1302198008405954571>',
-    princessCake: '<:PRINCESS:1302198019105493041>',
+    cake: {
+        avocadoCake: '<:c01:1302197878550429728>',
+        bearCake: '<:c02:1302197949857792002>',
+        starCake: '<:c03:1302197992492634174>',
+        princeCake: '<:c04:1302198008405954571>',
+        princessCake: '<:c05:1302198019105493041>',
+    },
 
     // THEME
-    mysticCharm: '<a:MAINV2:1287988959606997012>',
-    oceanBreeze: '<:MAIN:1281847051860054016>',
-    halloween: '<:HECONOMY:1290645165391872020>',
-    heaven: '<:MAINHEAVEN:1293603530699046982>',
-    sakura: '<:SAKURAMAIN:1295967137482936440>',
-    halloweenNew: '<:H2MAIN:1300675214182711357>',
+    theme: {
+        mysticCharm: '<a:MAINV2:1287988959606997012>',
+        oceanBreeze: '<:MAIN:1281847051860054016>',
+        halloween: '<:HECONOMY:1290645165391872020>',
+        halloweenNew: '<:H2MAIN:1300675214182711357>',
+    },
+    specialTheme: {
+        heaven: '<:MAINHEAVEN:1293603530699046982>',
+        sakura: '<:SAKURAMAIN:1295967137482936440>',
+    },
+
+
 
     // EXCHANGE
     heartMilk: '<:HEARTMILK:1290653998054903899>',
@@ -76,15 +88,15 @@ module.exports = {
     pinkHeartMilk: '<:MPINKHEART:1290653412710682745>',
 
     color: {
-      black: '<:CBLACK:1303229834679418881>',
-      blue: '<:CBLUE:1303230055186432000>',
-      green: '<:CGREEN:1303230062480457778>',
-      grey: '<:CGREY:1303230070126542888>',
-      orange: '<:CORANGE:1303230075985989675>',
-      pink: '<:CPINK:1303230084332654612>',
-      purple: '<:CPURPLE:1303230092188585995>',
-      red: '<:CRED:1303230101449740318>',
-      yellow: '<:CYELLOW:1303230111817924720>',
+      black: '<:p01:1303229834679418881>',
+      blue: '<:p02:1303230055186432000>',
+      green: '<:p03:1303230062480457778>',
+      grey: '<:p04:1303230070126542888>',
+      orange: '<:p05:1303230075985989675>',
+      pink: '<:p06:1303230084332654612>',
+      purple: '<:p07:1303230092188585995>',
+      red: '<:p08:1303230101449740318>',
+      yellow: '<:p09:1303230111817924720>',
     },
 
     // IMPORTANT

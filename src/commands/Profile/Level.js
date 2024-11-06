@@ -4,6 +4,7 @@ const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const ShopItems = require('../../assets/inventory/ShopItems');
 const inventory = ShopItems.flatMap(shop => shop.inventory);
 const Wallpapers = inventory.filter(value => value.type === 'wallpaper');
+const Colors = inventory.filter(value => value.type === 'color');
 
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Roman.otf', 'Kelvinch-Roman');
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Bold.otf', 'Kelvinch-Bold');
@@ -49,6 +50,7 @@ module.exports = class Profile extends Command {
                 }
 
                 const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
+                const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('p'));
 
                 let bannerImage;
                 if (equippedWallpaper) {
@@ -57,10 +59,15 @@ module.exports = class Profile extends Command {
                     bannerImage = 'https://i.imgur.com/8rZFeWI.jpg';
                 }
 
+                let backgroundColor;
+                if (equippedColor) {
+                    backgroundColor = Colors.find(colorItem => colorItem.id === equippedColor.id)?.color;
+                }
+
                 const canvas = createCanvas(1280, 720);
                 const context = canvas.getContext('2d');
 
-                await this.drawLevel(client, context, targetUser, user, color, emoji, bannerImage);
+                await this.drawLevel(client, context, targetUser, user, color, backgroundColor, emoji, bannerImage);
 
                 const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
@@ -169,14 +176,14 @@ module.exports = class Profile extends Command {
         return output.trim(); // Trim to remove any trailing whitespace
     }
 
-    async drawLevel(client, context, targetUser, userInfo, color, emoji, banner) {
+    async drawLevel(client, context, targetUser, userInfo, color, backgroundColor, emoji, banner) {
         const userAvatar = await loadImage(targetUser.displayAvatarURL({ format: 'png', size: 256 }));
         const userAvatarX = 1200;
         const userAvatarY = 34;
         const userAvatarSize = 40;
 
         // Draw the background color
-        context.fillStyle = client.utils.formatColor(color.main);
+        context.fillStyle = backgroundColor ? backgroundColor.primary : client.utils.formatColor(color.main);
         context.fillRect(0, 0, 1280, 720);
 
         if (banner) {
@@ -209,15 +216,15 @@ module.exports = class Profile extends Command {
         }
 
         // Draw the rounded rectangle for the title box
-        this.drawRoundedRectangle(context, 15, 25, 1250, 60, 12, '#F7D8DF');
+        this.drawRoundedRectangle(context, 15, 25, 1250, 60, 12, backgroundColor ? backgroundColor.secondary : '#F7D8DF');
 
         // Draw "Level" title
         context.font = "28px Kelvinch-Bold, Arial";
-        context.fillStyle = client.utils.formatColor(color.dark);
+        context.fillStyle = backgroundColor ? backgroundColor.text : client.utils.formatColor(color.dark);
         context.fillText(`Level`, 30, 65);
 
         // Draw the rounded rectangle for the information box
-        this.drawRoundedRectangle(context, 880, 100, 385, 570, 32, client.utils.formatColor(color.light));
+        this.drawRoundedRectangle(context, 880, 100, 385, 570, 32, backgroundColor ? backgroundColor.secondary : client.utils.formatColor(color.light));
 
         // Draw the avatar as a circular image
         context.save();
@@ -232,7 +239,7 @@ module.exports = class Profile extends Command {
         context.beginPath();
         context.arc(userAvatarX + userAvatarSize / 2, userAvatarY + userAvatarSize / 2, userAvatarSize / 2 + 2, 0, Math.PI * 2, true);
         context.lineWidth = 4;
-        context.strokeStyle = client.utils.formatColor(color.light);
+        context.strokeStyle = backgroundColor ? backgroundColor.primary : client.utils.formatColor(color.light);
         context.stroke();
 
         // Draw user information details
@@ -244,7 +251,7 @@ module.exports = class Profile extends Command {
         ];
 
         userInfoDetail.forEach(info => {
-            context.fillStyle = client.utils.formatColor(color.dark);
+            context.fillStyle = backgroundColor ? backgroundColor.text : client.utils.formatColor(color.dark);
             context.font = "24px Kelvinch-Bold, Arial";
             context.fillText(info.label, info.x, info.y);
 
