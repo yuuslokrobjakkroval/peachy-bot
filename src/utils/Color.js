@@ -1,4 +1,9 @@
 module.exports = {
+    default: {
+        primary: '#17EAD9',
+        secondary: '#6078EA',  // Slightly lighter for contrast
+        text: '#FFFFFF',       // White text to contrast against dark background
+    },
     black: {
         primary: '#1A1A1D',
         secondary: '#333333',  // Slightly lighter for contrast
