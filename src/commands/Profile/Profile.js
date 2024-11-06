@@ -84,7 +84,7 @@ module.exports = class Profile extends Command {
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
             await loadingMessage.edit({
-                content: '',
+                content: 'Completed',
                 embeds: [],
                 files: [attachment],
             });
