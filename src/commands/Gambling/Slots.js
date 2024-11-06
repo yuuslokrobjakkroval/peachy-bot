@@ -174,12 +174,12 @@ module.exports = class Slots extends Command {
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
 				})
 
-			setTimeout(() => {
-				ctx.editMessage({embeds: [spinEmbed]});
-				setTimeout(() => {
-					ctx.editMessage({embeds: [spinSecondEmbed]});
-					setTimeout(() => {
-						ctx.editMessage({embeds: [resultEmbed]});
+			setTimeout(async () => {
+				await ctx.editMessage({embeds: [spinEmbed]});
+				setTimeout(async () => {
+					await ctx.editMessage({embeds: [spinSecondEmbed]});
+					setTimeout(async () => {
+						await ctx.editMessage({embeds: [resultEmbed]});
 					}, 1000);
 				}, 700);
 			}, 1000);
