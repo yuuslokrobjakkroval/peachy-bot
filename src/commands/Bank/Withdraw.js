@@ -82,7 +82,7 @@ module.exports = class Withdraw extends Command {
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{title}', "𝐖𝐈𝐓𝐇𝐃𝐑𝐀𝐖𝐍")
+                                .replace('%{title}', "𝐖𝐈𝐓𝐇𝐃𝐑𝐀𝐖")
                                 .replace('%{mainRight}', emoji.mainRight) +
                             withdrawMessages.success
                                 .replace('%{amount}', client.utils.formatNumber(baseCoins))
