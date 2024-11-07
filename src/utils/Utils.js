@@ -571,10 +571,7 @@ module.exports = class Utils {
 
         collector.on('end', async () => {
             try {
-                const disabledEmbed = embed[page]
-                    .setFooter({ text: 'Pagination ended. Reacts are now disabled.' });
-                await msg.edit({ embeds: [disabledEmbed] });
-                console.log('Pagination ended and message updated.');
+                await msg.edit({ components: [] });
             } catch (error) {
                 console.error('Failed to edit message after pagination ended:', error);
             }
