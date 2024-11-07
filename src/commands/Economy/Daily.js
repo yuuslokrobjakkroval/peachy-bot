@@ -92,6 +92,10 @@ module.exports = class Daily extends Command {
                             .setColor(color.main)
                             .setThumbnail(client.utils.emojiToImage(hours >= 6 && hours < 18 ? emoji.time.day : emoji.time.night))
                             .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐃𝐀𝐈𝐋𝐘")
+                                    .replace('%{mainRight}', emoji.mainRight) +
                                 dailyMessages.success
                                     .replace('%{mainLeft}', emoji.mainLeft)
                                     .replace('%{mainRight}', emoji.mainRight)

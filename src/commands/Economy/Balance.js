@@ -38,9 +38,11 @@ module.exports = class Balance extends Command {
                     .setColor(color.main)
                     .setThumbnail(gif.balanceThumbnail ? gif.balanceThumbnail : client.utils.emojiToImage(emoji.main))
                     .setDescription(
-                        balanceMessages.description
+                        generalMessages.title
                             .replace('%{mainLeft}', emoji.mainLeft)
-                            .replace('%{mainRight}', emoji.mainRight)
+                            .replace('%{title}', "𝐁𝐀𝐋𝐀𝐍𝐂𝐄")
+                            .replace('%{mainRight}', emoji.mainRight) +
+                        balanceMessages.description
                             .replace('%{coinEmote}', emoji.coin)
                             .replace('%{coin}', client.utils.formatNumber(coin))
                             .replace('%{bankEmote}', emoji.bank)

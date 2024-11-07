@@ -13,6 +13,7 @@
 		"zeroBalance": "Your balance is zero. Please earn some coins before trying again.",
 		"alreadyInGame": "You are already in a game. Please finish your current game before starting a new one.",
 		"gameInProgress": "%{user}, Your game is in progress!",
+		"reply": "Reply to %{user}",
 		"gameOver": "%{user}, Your game is over.",
 		"userNotFound": "User not found in database.",
 		"saveError": "An error occurred while saving your data. Please try again later.",
@@ -83,45 +84,13 @@
 			}
 		}
 	},
-	"economyMessages": {
-		"balanceMessages": {
-			"description": "# %{mainLeft} **𝐁𝐀𝐋𝐀𝐍𝐂𝐄** %{mainRight}\n%{coinEmote} : **%{coin}** coins\n %{bankEmote} : **%{bank}** coins"
-		},
-		"dailyMessages": {
-			"success": "# %{mainLeft} **𝐃𝐀𝐈𝐋𝐘** %{mainRight}\nYou have claimed your daily reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp} xp**\n%{bonusMessage}",
-			"error": "There was an error processing your daily claim.",
-			"cooldown": "Daily reward is on cooldown!\nTry again after **%{time}**."
-		},
+	"bankMessages": {
 		"depositMessages": {
 			"zeroBalance": "You don't have any coins to deposit.",
 			"invalidAmount": "Invalid amount. Please enter a valid number or use `all` or `half`.",
 			"success": "You have deposited **%{amount}** %{coinEmote} to your bank."
 		},
-		"gomaMessages": {
-			"success": "# %{mainLeft} **𝐆𝐎𝐌𝐀** %{mainRight}\nYou have earned %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
-			"cooldown": "Goma is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
-		},
-		"peachyMessages": {
-			"success": "# %{mainLeft} **𝐏𝐄𝐀𝐂𝐇** %{mainRight}\nYou have earned %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
-			"cooldown": "Peachy is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
-		},
-		"rankingMessages": {
-			"bal": {
-				"noUsers": "No one has gained coins yet.",
-				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
-			},
-			"peachy": {
-				"noUsers": "No one has a streak yet.",
-				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
-			},
-			"goma": {
-				"noUsers": "No one has a streak yet.",
-				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
-			},
-			"invalidType": "Invalid leaderboard type."
-		},
 		"transferMessages": {
-			"title": "Transaction - **%{user}**",
 			"selfTransfer": "You cannot transfer coins to yourself.",
 			"botTransfer": "You cannot transfer coins to the bot.",
 			"pendingTransfer": "You already have a pending transfer. Please confirm or cancel it before starting a new one.",
@@ -143,22 +112,56 @@
 			"confirmPrompt": "Confirm the transfer by clicking the button below.",
 			"expire": "Transaction Expired"
 		},
-		"weeklyMessages": {
-			"success": "# %{mainLeft} **𝐖𝐄𝐄𝐊𝐋𝐘** %{mainRight}\nYou have claimed your weekly reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
-			"error": "There was an error processing your weekly claim.",
-			"cooldown": {
-				"multipleDays": "Weekly is on cooldown!\nTry again after **{{days}} and {{hours}}**, **{{minutes}}**, and **{{seconds}}**.",
-				"singleDay": "Weekly is on cooldown!\nTry again after **{{days}}**, **{{hours}}**, **{{minutes}}**, and **{{seconds}}**.",
-				"noDays": "Weekly is on cooldown!\nTry again after **{{hours}}**, **{{minutes}}**, and **{{seconds}}**."
-			}
-		},
 		"withdrawMessages": {
 			"zeroBalance": "You have no coins in your bank.",
 			"invalidAmount": "Please provide a valid amount to withdraw. You can withdraw 'all', 'half', or a specific number.",
-			"tooHigh": "# %{mainLeft} **𝐖𝐈𝐓𝐇𝐃𝐑𝐀𝐖𝐍** %{mainRight}\nYou cannot withdraw more than what you have in your bank.",
-			"success": "# %{mainLeft} **𝐖𝐈𝐓𝐇𝐃𝐑𝐀𝐖𝐍 ** %{mainRight}\nYou have withdrawn **%{amount}** %{coinEmote} from your bank.",
+			"tooHigh": "You cannot withdraw more than what you have in your bank.",
+			"success": "You have withdrawn **%{amount}** %{coinEmote} from your bank.",
 			"error": "There was an error processing your withdrawal request."
 		}
+	},
+	"economyMessages": {
+		"balanceMessages": {
+			"description": "%{coinEmote} : **%{coin}** coins\n %{bankEmote} : **%{bank}** coins"
+		},
+		"dailyMessages": {
+			"success": "You have claimed your daily reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp} xp**\n%{bonusMessage}",
+			"error": "There was an error processing your daily claim.",
+			"cooldown": "Daily reward is on cooldown!\nTry again after **%{time}**."
+		},
+		"gomaMessages": {
+			"success": "You have earned %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
+			"cooldown": "Goma is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
+		},
+		"peachyMessages": {
+			"success": "You have earned %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
+			"cooldown": "Peachy is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
+		},
+		"rankingMessages": {
+			"bal": {
+				"noUsers": "No one has gained coins yet.",
+				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"peachy": {
+				"noUsers": "No one has a streak yet.",
+				"topPeach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"goma": {
+				"noUsers": "No one has a streak yet.",
+				"topGoma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌"
+			},
+			"invalidType": "Invalid leaderboard type."
+		},
+		"weeklyMessages": {
+			"success": "You have claimed your weekly reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
+			"error": "There was an error processing your weekly claim.",
+			"cooldown": {
+				"multipleDays": "Weekly is on cooldown!\nTry again after **%{days} and %{hours}**, **%{minutes}**, and **%{seconds}**.",
+				"singleDay": "Weekly is on cooldown!\nTry again after **%{days}**, **%{hours}**, **%{minutes}**, and **%{seconds}**.",
+				"noDays": "Weekly is on cooldown!\nTry again after **%{hours}**, **%{minutes}**, and **%{seconds}**."
+			}
+		}
+
 	},
 	"emoteMessages": {
 		"angryMessages": {
@@ -268,8 +271,7 @@
 	"gameMessages": {
 		"guessNumberMessages": {
 			"insufficientBalance": {
-				"title": "Insufficient Balance",
-				"description": "You need at least 1000 coins to play the Guess the Number game. Your current balance is"
+				"description": "You need at least 1000 %{coinEmote} to play the Guess the Number game. Your current balance is"
 			},
 			"description": "I have picked a number between 1 and 100. You have 3 hearts. React with the number you guess or type your guess in the chat!",
 			"correct": {

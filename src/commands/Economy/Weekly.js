@@ -111,21 +111,21 @@ module.exports = class Weekly extends Command {
 
         if (days > 1) {
             return weeklyMessages.cooldown.multipleDays
-                .replace('{{days}}', daysString)
-                .replace('{{hours}}', hoursString)
-                .replace('{{minutes}}', minutesString)
-                .replace('{{seconds}}', secondsString);
+                .replace('%{days}', daysString)
+                .replace('%{hours}', hoursString)
+                .replace('%{minutes}', minutesString)
+                .replace('%{seconds}', secondsString);
         } else if (days === 1) {
             return weeklyMessages.cooldown.singleDay
-                .replace('{{days}}', daysString)
-                .replace('{{hours}}', hoursString)
-                .replace('{{minutes}}', minutesString)
-                .replace('{{seconds}}', secondsString);
+                .replace('%{days}', daysString)
+                .replace('%{hours}', hoursString)
+                .replace('%{minutes}', minutesString)
+                .replace('%{seconds}', secondsString);
         } else {
             return weeklyMessages.cooldown.noDays
-                .replace('{{hours}}', hoursString)
-                .replace('{{minutes}}', minutesString)
-                .replace('{{seconds}}', secondsString);
+                .replace('%{hours}', hoursString)
+                .replace('%{minutes}', minutesString)
+                .replace('%{seconds}', secondsString);
         }
     }
 
@@ -135,9 +135,11 @@ module.exports = class Weekly extends Command {
             .setColor(client.config.color.main)
             .setThumbnail(client.utils.emojiToImage(`${now.hour() >= 6 && now.hour() < 18 ? `${emoji.time.day}` : `${emoji.time.night}`}`))
             .setDescription(
-                weeklyMessages.success
+                generalMessages.title
                     .replace('%{mainLeft}', emoji.mainLeft)
-                    .replace('%{mainRight}', emoji.mainRight)
+                    .replace('%{title}', "𝐖𝐄𝐄𝐊𝐋𝐘")
+                    .replace('%{mainRight}', emoji.mainRight) +
+                weeklyMessages.success
                     .replace('%{coin}', client.utils.formatNumber(totalCoins))
                     .replace('%{coinEmote}', emoji.coin)
                     .replace('%{expEmote}', emoji.exp)

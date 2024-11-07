@@ -94,9 +94,11 @@ module.exports = class Goma extends Command {
                         const successEmbed = client.embed()
                             .setColor(color.main)
                             .setDescription(
-                                gomaMessages.success
+                                generalMessages.title
                                     .replace('%{mainLeft}', emoji.mainLeft)
-                                    .replace('%{mainRight}', emoji.mainRight)
+                                    .replace('%{title}', "𝐆𝐎𝐌𝐀")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                gomaMessages.success
                                     .replace('%{coinEmote}', emoji.coin)
                                     .replace('%{coin}', client.utils.formatNumber(baseCoins))
                                     .replace('%{expEmote}', emoji.exp)

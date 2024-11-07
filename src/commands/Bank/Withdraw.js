@@ -32,7 +32,7 @@ module.exports = class Withdraw extends Command {
 
     run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const withdrawMessages = language.locales.get(language.defaultLocale)?.economyMessages?.withdrawMessages;
+        const withdrawMessages = language.locales.get(language.defaultLocale)?.bankMessages?.withdrawMessages;
 
         client.utils.getUser(ctx.author.id).then(user => {
             if (!user) {
@@ -80,9 +80,11 @@ module.exports = class Withdraw extends Command {
                     const embed = client.embed()
                         .setColor(color.main)
                         .setDescription(
-                            withdrawMessages.success
+                            generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{mainRight}', emoji.mainRight)
+                                .replace('%{title}', "𝐖𝐈𝐓𝐇𝐃𝐑𝐀𝐖𝐍")
+                                .replace('%{mainRight}', emoji.mainRight) +
+                            withdrawMessages.success
                                 .replace('%{amount}', client.utils.formatNumber(baseCoins))
                                 .replace('%{coinEmote}', emoji.coin)
                         )

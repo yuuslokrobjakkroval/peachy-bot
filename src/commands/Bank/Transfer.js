@@ -28,7 +28,7 @@ module.exports = class Transfer extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const transferMessages = language.locales.get(language.defaultLocale)?.economyMessages?.transferMessages;
+        const transferMessages = language.locales.get(language.defaultLocale)?.bankMessages?.transferMessages;
 
         // Fetch the target user
         const targetUser = ctx.isInteraction

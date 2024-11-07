@@ -95,9 +95,11 @@ module.exports = class Peachy extends Command {
                             const successEmbed = client.embed()
                                 .setColor(color.main)
                                 .setDescription(
-                                    peachyMessages.success
+                                    generalMessages.title
                                         .replace('%{mainLeft}', emoji.mainLeft)
-                                        .replace('%{mainRight}', emoji.mainRight)
+                                        .replace('%{title}', "𝐏𝐄𝐀𝐂𝐇")
+                                        .replace('%{mainRight}', emoji.mainRight) +
+                                    peachyMessages.success
                                         .replace('%{coinEmote}', emoji.coin)
                                         .replace('%{coin}', client.utils.formatNumber(baseCoins))
                                         .replace('%{expEmote}', emoji.exp)

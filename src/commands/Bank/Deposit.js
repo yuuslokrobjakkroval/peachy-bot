@@ -25,7 +25,7 @@ module.exports = class Deposit extends Command {
 
     run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const depositMessages = language.locales.get(language.defaultLocale)?.economyMessages?.depositMessages;
+        const depositMessages = language.locales.get(language.defaultLocale)?.bankMessages?.depositMessages;
 
         client.utils.getUser(ctx.author.id)
             .then(user => {
@@ -68,6 +68,10 @@ module.exports = class Deposit extends Command {
                         const embed = client
                             .embed().setColor(color.main)
                             .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐃𝐄𝐏𝐎𝐒𝐈𝐓")
+                                    .replace('%{mainRight}', emoji.mainRight) +
                                 depositMessages.success
                                     .replace('%{mainLeft}', emoji.mainLeft)
                                     .replace('%{mainRight}', emoji.mainRight)
