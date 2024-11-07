@@ -39,8 +39,9 @@ module.exports = class UpdatePaymentStatus extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const user = ctx.isInteraction
             ? ctx.interaction.options.getUser('user') || ctx.author
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]);
-        const userId = user.id;
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
+
+        const userId = typeof user === 'string' ? user : user.id;
         const status = ctx.isInteraction ? ctx.interaction.options.getString('status') : args[1];
 
         if (!userId || !status || !['paid', 'unpaid', 'reset', 'clear'].includes(status.toLowerCase())) {

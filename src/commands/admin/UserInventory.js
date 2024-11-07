@@ -32,8 +32,10 @@ module.exports = class UserInventory extends Command {
         const giveItemMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.giveItemMessages;
         const invMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.invMessages;
         try {
-            const target = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
-            const user = await Users.findOne({ userId: ctx.author.id });
+            const target = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
+            const userId = typeof target === 'string' ? target : target.id;
+
+            const user = await Users.findOne({ userId });
             if (!user || !user.inventory) {
                 return await client.utils.sendErrorMessage(
                     client,

@@ -34,9 +34,11 @@ module.exports = class UserBalance extends Command {
         try {
             const target = ctx.isInteraction
                 ? ctx.interaction.options.getUser('user')
-                : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+                : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
 
-            const user = await Users.findOne({ userId: target.id });
+            const userId = typeof target === 'string' ? target : target.id;
+
+            const user = await Users.findOne({ userId });
             if (!user) {
                 return await client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
             }
