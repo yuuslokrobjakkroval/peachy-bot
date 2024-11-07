@@ -75,7 +75,7 @@ module.exports = class Profile extends Command {
             const canvas = createCanvas(1280, 720);
             const context = canvas.getContext('2d');
 
-            await this.drawProfile(client, context, targetUser, user, backgroundColor, emoji, bannerImage);
+            await this.drawProfile(client, context, targetUser, user, color, backgroundColor, emoji, bannerImage);
 
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
