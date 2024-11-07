@@ -63,9 +63,8 @@ module.exports = {
     specialTheme: {
         heaven: '<:MAINHEAVEN:1293603530699046982>',
         sakura: '<:SAKURAMAIN:1295967137482936440>',
+        bee: '<:SAKURAMAIN:1295967137482936440>',
     },
-
-
 
     // EXCHANGE
     heartMilk: '<:HEARTMILK:1290653998054903899>',

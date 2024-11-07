@@ -30,6 +30,9 @@ const emojiHeaven = require('../theme/CelestialGrace/emojis.js');
 const configSakura = require('../theme/SakuraSerenity/config.js');
 const emojiSakura = require('../theme/SakuraSerenity/emojis.js');
 
+const configBee = require('../theme/BuzzingBliss/config.js');
+const emojiBee = require('../theme/BuzzingBliss/emojis.js');
+
 const Logger = require('./Logger.js');
 
 module.exports = class PeachyClient extends Client {
@@ -203,6 +206,10 @@ module.exports = class PeachyClient extends Client {
                     case 'st02':
                         color = configSakura.color;
                         emoji = emojiSakura;
+                        break;
+                    case 'st03':
+                        color = configBee.color;
+                        emoji = emojiBee;
                         break;
                     case 'peach':
                         color = configPeach.color;

@@ -699,6 +699,21 @@ module.exports = [
                 available: ['use'],
                 price: { buy: 4e7, sell: 35e6 },
             },
+            {
+                id: 'st03',
+                name: 'Buzzing Bliss',
+                description: 'Bring the buzz to your embed with the vibrant energy of bees and golden honeycombs. Adorn your design with warm yellows and black accents, featuring cheerful bee emojis to spread positivity and sweetness.',
+                type: 'special theme',
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.specialTheme.bee,
+                available: ['use'],
+                price: { buy: 4e7, sell: 35e6 },
+            },
         ],
     },
 ];
