@@ -70,8 +70,6 @@ module.exports = class Profile extends Command {
             let backgroundColor;
             if (equippedColor) {
                 backgroundColor = Colors.find(colorItem => colorItem.id === equippedColor.id)?.color;
-            } else {
-                backgroundColor = globalColors.default;
             }
 
             const canvas = createCanvas(1280, 720);
@@ -82,7 +80,7 @@ module.exports = class Profile extends Command {
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
             await loadingMessage.edit({
-                content: 'Completed',
+                content: '',
                 embeds: [],
                 files: [attachment],
             });
@@ -161,14 +159,14 @@ module.exports = class Profile extends Command {
         return lines;
     }
 
-    async drawProfile(client, context, targetUser, userInfo, backgroundColor, emoji, banner) {
+    async drawProfile(client, context, targetUser, userInfo, color, backgroundColor, emoji, banner) {
         const userAvatar = await loadImage(targetUser.displayAvatarURL({ format: 'png', size: 256 }));
         const userAvatarX = 1200;
         const userAvatarY = 34;
         const userAvatarSize = 40;
 
         // Draw the background color
-        context.fillStyle = backgroundColor.primary;
+        context.fillStyle = backgroundColor ? backgroundColor.primary : client.utils.formatColor(color.main);
         context.fillRect(0, 0, 1280, 720);
 
         if (banner) {
@@ -201,15 +199,15 @@ module.exports = class Profile extends Command {
         }
 
         // Draw the rounded rectangle for the title box
-        this.drawRoundedRectangle(context, 15, 25, 1250, 60, 12, backgroundColor.secondary);
+        this.drawRoundedRectangle(context, 15, 25, 1250, 60, 12, backgroundColor ? backgroundColor.secondary : '#F7D8DF');
 
         // Draw "Settings" title
         context.font = "28px Kelvinch-Bold, Arial";
-        context.fillStyle = backgroundColor.text;
+        context.fillStyle = backgroundColor ? backgroundColor.text : client.utils.formatColor(color.dark);
         context.fillText(`Profile`, 30, 65);
 
         // Draw the rounded rectangle for the information box
-        this.drawRoundedRectangle(context, 880, 100, 385, 570, 32, backgroundColor.secondary);
+        this.drawRoundedRectangle(context, 880, 100, 385, 570, 32, backgroundColor ? backgroundColor.secondary : client.utils.formatColor(color.light));
 
         // Draw the avatar as a circular image
         context.save();
@@ -224,7 +222,7 @@ module.exports = class Profile extends Command {
         context.beginPath();
         context.arc(userAvatarX + userAvatarSize / 2, userAvatarY + userAvatarSize / 2, userAvatarSize / 2 + 2, 0, Math.PI * 2, true);
         context.lineWidth = 4;
-        context.strokeStyle = backgroundColor.primary;
+        context.strokeStyle = backgroundColor ? backgroundColor.primary : client.utils.formatColor(color.light);
         context.stroke();
 
         // Draw each setting item text and switch
@@ -236,7 +234,7 @@ module.exports = class Profile extends Command {
         ];
 
         userInfoDetail.forEach(info => {
-            context.fillStyle = backgroundColor.text;
+            context.fillStyle = backgroundColor ? backgroundColor.text : client.utils.formatColor(color.dark);
             context.font = "24px Kelvinch-Bold, Arial"
             context.fillText(info.label, info.x, info.y);
             const maxWidth = 500;
@@ -277,9 +275,9 @@ module.exports = class Profile extends Command {
         }
 
         // Draw the logout button
-        context.fillStyle = backgroundColor.primary;
-        this.drawRoundedRectangle(context, 945, 600, 256, 50, 12, backgroundColor.primary);
-        context.fillStyle = backgroundColor.text;
+        // context.fillStyle = '#F582AE';
+        this.drawRoundedRectangle(context, 945, 600, 256, 50, 12, backgroundColor ? backgroundColor.primary : '#F7D8DF');
+        context.fillStyle = backgroundColor ? backgroundColor.text : client.utils.formatColor(color.dark);
         context.textAlign = 'center';
         context.font = "28px Kelvinch-SemiBoldItalic, Arial";
         context.fillText("Single", 1070, 632);
