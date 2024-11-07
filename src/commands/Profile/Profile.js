@@ -27,7 +27,7 @@ module.exports = class Profile extends Command {
             args: false,
             permissions: {
                 dev: false,
-                client: ['SendMessages', 'ViewChannel', 'EmbedLinks', 'AddReactions'],
+                client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
             slashCommand: true,

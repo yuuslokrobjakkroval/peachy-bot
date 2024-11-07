@@ -569,9 +569,21 @@ module.exports = class Utils {
             msg.edit(getPageContent(page));
         });
 
-        collector.on('end', () => {
-            msg.reactions.removeAll();
+        collector.on('end', async () => {
+            const botPermissions = msg.channel.permissionsFor(msg.guild.me);
+
+            if (!botPermissions || !botPermissions.has('ManageMessages')) {
+                console.warn('Bot lacks Manage Messages permission; skipping reaction removal.');
+                return;
+            }
+
+            try {
+                await msg.reactions.removeAll();
+            } catch (error) {
+                console.error('Failed to remove reactions:', error);
+            }
         });
+
     }
 
     static async paginate(ctx, embed) {
