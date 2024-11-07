@@ -70,6 +70,10 @@ module.exports = class InteractionCreate extends Event {
           if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ViewChannel)) {
             return;
           }
+          
+          if (command.permissions.dev && !this.client.config.owners.includes(interaction.user.id)) {
+            return;
+          }
 
           if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.SendMessages)) {
             return await interaction.member.send({
