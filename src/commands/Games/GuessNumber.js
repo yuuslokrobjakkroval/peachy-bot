@@ -23,6 +23,7 @@ module.exports = class GuessNumber extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const guessNumberMessages = language.locales.get(language.defaultLocale)?.gameMessages?.guessNumberMessages;
         const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
         client.utils.getUser(ctx.author.id).then(user => {
@@ -30,9 +31,17 @@ module.exports = class GuessNumber extends Command {
                 return ctx.sendMessage({
                     embeds: [
                         client.embed()
-                            .setTitle(guessNumberMessages.insufficientBalance.title)
                             .setColor(color.danger)
-                            .setDescription(`${guessNumberMessages.insufficientBalance.description} ${user.balance.coin} coins.`)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐆𝐔𝐄𝐒𝐒 𝐓𝐇𝐄 𝐍𝐔𝐌𝐁𝐄𝐑")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                guessNumberMessages.insufficientBalance.description.replace('%{coinEmote}', emoji.coin))
+                            .setFooter({
+                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            })
                     ]
                 });
             }
@@ -48,9 +57,14 @@ module.exports = class GuessNumber extends Command {
             const embed = client.embed()
                 .setColor(color.main)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
-                .setDescription(`# ${emoji.mainLeft} 𝐆𝐔𝐄𝐒𝐒 𝐓𝐇𝐄 𝐍𝐔𝐌𝐁𝐄𝐑! ${emoji.mainRight}\n${guessNumberMessages.description}`)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐆𝐔𝐄𝐒𝐒 𝐓𝐇𝐄 𝐍𝐔𝐌𝐁𝐄𝐑")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    guessNumberMessages.description)
                 .setFooter({
-                    text: `Request By ${ctx.author.displayName}`,
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
@@ -75,9 +89,14 @@ module.exports = class GuessNumber extends Command {
                     user.save().then(() => {
                         const resultEmbed = client.embed()
                             .setColor(color.success)
-                            .setDescription(`# ${emoji.mainLeft} 𝐂𝐎𝐑𝐑𝐄𝐂𝐓 𝐀𝐍𝐒𝐖𝐄𝐑! ${emoji.mainRight}\n${guessNumberMessages.correct.description} ${client.utils.getRandomElement(congratulations)} !!!\nYou guessed the number correctly: **${numberToGuess}**.\nYou've earned ${client.utils.formatNumber(coinEarned)} ${emoji.coin} and ${xpEarned} XP.`)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐂𝐎𝐑𝐑𝐄𝐂𝐓 𝐀𝐍𝐒𝐖𝐄𝐑")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                `${guessNumberMessages.correct.description} ${client.utils.getRandomElement(congratulations)} !!!\nYou guessed the number correctly: **${numberToGuess}**.\nYou've earned ${client.utils.formatNumber(coinEarned)} ${emoji.coin} and ${xpEarned} XP.`)
                             .setFooter({
-                                text: `${ctx.author.displayName}, your game is over`,
+                                text: generalMessages.gameOver.replace('%{user}', ctx.author.displayName),
                                 iconURL: ctx.author.displayAvatarURL(),
                             });
 
@@ -102,20 +121,29 @@ module.exports = class GuessNumber extends Command {
 
                         resultEmbed = client.embed()
                             .setColor(color.danger)
-                            .setDescription(`# ${emoji.mainLeft} 𝐖𝐑𝐎𝐍𝐆 𝐀𝐍𝐒𝐖𝐄𝐑! ${emoji.mainRight}\n${guessNumberMessages.incorrect.description} **${hearts}** hearts left. ${hint}`)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐖𝐑𝐎𝐍𝐆 𝐀𝐍𝐒𝐖𝐄𝐑")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                `${guessNumberMessages.incorrect.description} **${hearts}** hearts left. ${hint}`)
                             .setFooter({
-                                text: `Reply to ${ctx.author.displayName}`,
+                                text: generalMessages.reply.replace('%{user}', ctx.author.displayName),
                                 iconURL: ctx.author.displayAvatarURL(),
                             });
 
                         await ctx.sendMessage({ embeds: [resultEmbed] });
                     } else {
                         resultEmbed = client.embed()
-                            .setTitle(`${emoji.mainLeft} 𝐆𝐀𝐌𝐄 𝐎𝐕𝐄𝐑! ${emoji.mainRight}`)
                             .setColor(color.danger)
-                            .setDescription(`${guessNumberMessages.gameOver.description} **${numberToGuess}**.`)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐆𝐀𝐌𝐄 𝐎𝐕𝐄𝐑")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                `${guessNumberMessages.gameOver.description} **${numberToGuess}**.`)
                             .setFooter({
-                                text: `${ctx.author.displayName}, your game is over`,
+                                text: generalMessages.gameOver.replace('%{user}', ctx.author.displayName),
                                 iconURL: ctx.author.displayAvatarURL(),
                             });
 
@@ -128,9 +156,13 @@ module.exports = class GuessNumber extends Command {
             collector.on('end', collected => {
                 if (collected.size === 0) {
                     const timeoutEmbed = client.embed()
-                        .setTitle(`${emoji.mainLeft} 𝐓𝐈𝐌𝐄 𝐈𝐒 𝐔𝐏! ${emoji.mainRight}`)
                         .setColor(color.warning)
-                        .setDescription(guessNumberMessages.timeout.description)
+                        .setDescription(
+                            generalMessages.title
+                                .replace('%{mainLeft}', emoji.mainLeft)
+                                .replace('%{title}', "𝐓𝐈𝐌𝐄 𝐈𝐒 𝐔𝐏")
+                                .replace('%{mainRight}', emoji.mainRight) +
+                            guessNumberMessages.timeout.description)
                         .setFooter({
                             text: `${ctx.author.displayName}, please start again`,
                             iconURL: ctx.author.displayAvatarURL(),
