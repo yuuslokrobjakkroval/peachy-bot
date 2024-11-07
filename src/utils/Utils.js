@@ -570,17 +570,13 @@ module.exports = class Utils {
         });
 
         collector.on('end', async () => {
-            const botPermissions = msg.channel.permissionsFor(msg.guild.me);
-
-            if (!botPermissions || !botPermissions.has('ManageMessages')) {
-                console.warn('Bot lacks Manage Messages permission; skipping reaction removal.');
-                return;
-            }
-
             try {
-                await msg.reactions.removeAll();
+                const disabledEmbed = embed[page]
+                    .setFooter({ text: 'Pagination ended. Reacts are now disabled.' });
+                await msg.edit({ embeds: [disabledEmbed] });
+                console.log('Pagination ended and message updated.');
             } catch (error) {
-                console.error('Failed to remove reactions:', error);
+                console.error('Failed to edit message after pagination ended:', error);
             }
         });
 
