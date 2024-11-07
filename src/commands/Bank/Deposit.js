@@ -39,7 +39,7 @@ module.exports = class Deposit extends Command {
                     return client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
                 }
 
-                let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[0];
+                let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') || 1 : args[0] || 1;
                 if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
                     const amountMap = { all: coin, half: Math.ceil(coin / 2) };
                     const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
@@ -57,6 +57,12 @@ module.exports = class Deposit extends Command {
                             ],
                         });
                     }
+                } else {
+                    return ctx.sendMessage({
+                        embeds: [
+                            client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount)
+                        ],
+                    });
                 }
 
                 const baseCoins = Math.min(amount, coin);
