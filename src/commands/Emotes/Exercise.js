@@ -24,22 +24,39 @@ module.exports = class Exercise extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const exerciseMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.exerciseMessages; // Access localized messages
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const exerciseMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.exerciseMessages;
+        const errorMessages = exerciseMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.exercise ? emoji.emotes.exercise : globalEmoji.emotes.exercise); // Get a random exercise emoji
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(exerciseMessages.title) // Use localized title
-                .setDescription(exerciseMessages.description.replace('{{user}}', ctx.author.displayName))
-                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random exercise emoji image
+            // Get random exercise emoji
+            const exerciseEmoji = emoji.emotes?.exercise || globalEmoji.emotes.exercise;
+            const randomEmoji = client.utils.getRandomElement(exerciseEmoji);
 
-            await ctx.sendMessage({ embeds: [embed] }); // Send the embed message
+            // Construct the embed
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', '𝐄𝐗𝐄𝐑𝐂𝐈𝐒𝐄')
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    exerciseMessages.description.replace('%{user}', ctx.author.displayName)
+                )
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
-            console.error('Error processing exercise command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, exerciseMessages.error, color); // Use localized error message
+            // Error handling for any unexpected errors
+            console.error('An error occurred in the Exercise command:', error);
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

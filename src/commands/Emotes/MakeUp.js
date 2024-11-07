@@ -25,21 +25,38 @@ module.exports = class Makeup extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const makeupMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.makeupMessages;
+        const errorMessages = makeupMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.makeUp ? emoji.emotes.makeUp : globalEmoji.emotes.makeUp);
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(makeupMessages.title) // Use localized title
-                .setDescription(makeupMessages.description.replace('{{user}}', ctx.author.displayName))
-                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random makeup emoji image
+            // Get random makeup emoji
+            const makeupEmoji = emoji.emotes?.makeUp || globalEmoji.emotes.makeUp;
+            const randomEmoji = client.utils.getRandomElement(makeupEmoji);
 
+            // Construct the embed
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐌𝐀𝐊𝐄𝐔𝐏")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    makeupMessages.description.replace('%{user}', ctx.author.displayName)
+                )
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
-            console.error('Error processing makeup command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, makeupMessages.error, color); // Use localized error message
+            // Error handling for any unexpected errors
+            console.error('An error occurred in the Makeup command:', error);
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

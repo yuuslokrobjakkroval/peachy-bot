@@ -74,8 +74,6 @@ module.exports = class Profile extends Command {
                 backgroundColor = globalColors.default;
             }
 
-            console.log(backgroundColor)
-
             const canvas = createCanvas(1280, 720);
             const context = canvas.getContext('2d');
 

@@ -31,36 +31,46 @@ module.exports = class Hug extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const hugMessages = language.locales.get(language.defaultLocale)?.actionMessages?.hugMessages;
         const errorMessages = hugMessages.errors;
 
         const target = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
+
         if (!target || target.id === ctx.author.id) {
             let errorMessage = '';
             if (!target) errorMessage += errorMessages.noUser;
-            if (target && target.id === ctx.author.id) errorMessage += `\n${errorMessages.selfHug}`;
+            if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfHug;
 
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
-        try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.hugs ? emoji.actions.hugs : globalEmoji.actions.hugs);
+        const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.hugs ? emoji.actions.hugs : globalEmoji.actions.hugs);
 
-            // Create the embed message for hugging
-            const embed = client.embed()
-                .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} ${hugMessages.title} ${emoji.mainRight}`)
-                .setImage(client.utils.emojiToImage(randomEmoji))
-                .setDescription(`${ctx.author.displayName} ${hugMessages.description} ${target.displayName}!`);
+        // Create the embed message for hugging
+        const embed = client.embed()
+            .setColor(color.main)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription(
+                generalMessages.title
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{title}', "𝐇𝐔𝐆")
+                    .replace('%{mainRight}', emoji.mainRight) +
+                hugMessages.description
+                    .replace('%{displayName}', ctx.author.displayName)
+                    .replace('%{target}', target.displayName))
+            .setFooter({
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            });
 
-            await ctx.sendMessage({ embeds: [embed] });
-        } catch (error) {
-            console.error('Failed to fetch hug GIF:', error);
-            return await client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
-        }
+        ctx.sendMessage({ embeds: [embed] })
+            .catch(error => {
+                console.error('Failed to fetch hug GIF:', error);
+                client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
+            });
     }
 };

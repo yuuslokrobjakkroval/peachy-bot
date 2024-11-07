@@ -24,22 +24,38 @@ module.exports = class Dance extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const danceMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.danceMessages; // Access localized messages
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const danceMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.danceMessages;
+        const errorMessages = danceMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.dances ? emoji.emotes.dances : globalEmoji.emotes.dances); // Get a random dance emoji
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(danceMessages.title) // Use localized title
-                .setDescription(danceMessages.description.replace('{{user}}', ctx.author.displayName))
-                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random dance emoji image
+            // Get random dance emoji
+            const danceEmoji = emoji.emotes?.dances || globalEmoji.emotes.dances;
+            const randomEmoji = client.utils.getRandomElement(danceEmoji);
 
-            await ctx.sendMessage({ embeds: [embed] }); // Send the embed message
+            // Constructing the embed
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', '𝐃𝐀𝐍𝐂𝐄')
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    danceMessages.description.replace('%{user}', ctx.author.displayName))
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
-            console.error('Error processing dance command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, danceMessages.error, color); // Use localized error message
+            // Error handling for any unexpected errors
+            console.error('An error occurred in the Dance command:', error);
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

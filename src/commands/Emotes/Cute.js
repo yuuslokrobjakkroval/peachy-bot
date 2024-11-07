@@ -24,22 +24,37 @@ module.exports = class Cute extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const cuteMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cuteMessages; // Access localized messages
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const cuteMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cuteMessages;
+        const errorMessages = cuteMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.cute ? emoji.emotes.cute : globalEmoji.emotes.cute); // Get a random cute emoji
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(cuteMessages.title) // Use localized title
-                .setDescription(cuteMessages.description.replace('{{user}}', ctx.author.displayName))
-                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random cute emoji image
+            // Get random cute emoji
+            const cuteEmoji = emoji.emotes?.cute || globalEmoji.emotes.cute;
+            const randomEmoji = client.utils.getRandomElement(cuteEmoji);
 
-            await ctx.sendMessage({ embeds: [embed] }); // Send the embed message
+            // Constructing the embed
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', '𝐂𝐔𝐓𝐄')
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    cuteMessages.description.replace('%{user}', ctx.author.displayName))
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
-            console.error('Error processing cute command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, cuteMessages.error, color); // Use localized error message
+            console.error('An error occurred in the Cute command:', error);
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

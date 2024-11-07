@@ -31,7 +31,8 @@ module.exports = class Bite extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const biteMessages = language.locales.get(language.defaultLocale)?.actionMessages?.biteMessages;
         const errorMessages = biteMessages.errors;
 
@@ -43,27 +44,34 @@ module.exports = class Bite extends Command {
         if (!target || target.id === ctx.author.id) {
             let errorMessage = '';
             if (!target) errorMessage += errorMessages.noUser;
-            if (target && target.id === ctx.author.id) errorMessage += `\n${errorMessages.selfBite}`;
+            if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfBite;
 
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
-        try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.bites ? emoji.actions.bites : globalEmoji.actions.bites);
+        const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.bites ? emoji.actions.bites : globalEmoji.actions.bites);
 
-            // Create the embed message for biting
-            const embed = client.embed()
-                .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} ${biteMessages.title} ${emoji.mainRight}`)
-                .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is a valid URL or attachment
-                .setDescription(biteMessages.description
+        // Create the embed message for biting
+        const embed = client.embed()
+            .setColor(color.main)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription(
+                generalMessages.title
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{title}', "𝐁𝐈𝐓𝐄")
+                    .replace('%{mainRight}', emoji.mainRight) +
+                biteMessages.description
                     .replace('%{displayName}', ctx.author.displayName)
-                    .replace('%{target}', target.displayName));
+                    .replace('%{target}', target.displayName))
+            .setFooter({
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            });
 
-            await ctx.sendMessage({ embeds: [embed] });
-        } catch (error) {
-            console.error('Failed to fetch bite GIF:', error);
-            return await client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
-        }
+        ctx.sendMessage({ embeds: [embed] })
+            .catch(error => {
+                console.error('Failed to fetch bite GIF:', error);
+                client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
+            });
     }
 };

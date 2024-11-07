@@ -31,7 +31,8 @@ module.exports = class Loung extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const loungMessages = language.locales.get(language.defaultLocale)?.actionMessages?.loungMessages;
         const errorMessages = loungMessages.errors;
 
@@ -39,29 +40,37 @@ module.exports = class Loung extends Command {
             ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
-        // Error handling if no user is mentioned or the user bites themselves
+        // Error handling if no user is mentioned or the user loungs themselves
         if (!target || target.id === ctx.author.id) {
             let errorMessage = '';
             if (!target) errorMessage += errorMessages.noUser;
-            if (target && target.id === ctx.author.id) errorMessage += `\n${errorMessages.selfBite}`;
+            if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfLoung;
 
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
-        try {
-            const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.loung ? emoji.actions.loung : globalEmoji.actions.loung);
+        const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.loung ? emoji.actions.loung : globalEmoji.actions.loung);
 
-            // Create the embed message for biting
-            const embed = client.embed()
-                .setColor(color.main)
-                .setTitle(`${emoji.mainLeft} ${loungMessages.title} ${emoji.mainRight}`)
-                .setImage(client.utils.emojiToImage(randomEmoji))
-                .setDescription(`${ctx.author.displayName} ${loungMessages.description} ${target.displayName}!`);
+        const embed = client.embed()
+            .setColor(color.main)
+            .setImage(client.utils.emojiToImage(randomEmoji))
+            .setDescription(
+                generalMessages.title
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{title}', "𝐊𝐈𝐒𝐒")
+                    .replace('%{mainRight}', emoji.mainRight) +
+                loungMessages.description
+                    .replace('%{displayName}', ctx.author.displayName)
+                    .replace('%{target}', target.displayName))
+            .setFooter({
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            });
 
-            await ctx.sendMessage({ embeds: [embed] });
-        } catch (error) {
-            console.error('Failed to fetch bite GIF:', error);
-            return await client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
-        }
+        ctx.sendMessage({ embeds: [embed] })
+            .catch(error => {
+                console.error('Failed to fetch loung GIF:', error);
+                client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color); // "Something went wrong while fetching the loung GIF."
+            });
     }
 };

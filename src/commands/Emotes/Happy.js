@@ -24,22 +24,39 @@ module.exports = class Happy extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const happyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.happyMessages; // Access localized messages
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const happyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.happyMessages;
+        const errorMessages = happyMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.happy ? emoji.emotes.happy : globalEmoji.emotes.happy); // Get a random happy emoji
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(happyMessages.title) // Use localized title
-                .setDescription(happyMessages.description.replace('{{user}}', ctx.author.displayName))
-                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random happy emoji image
+            // Get random happy emoji
+            const happyEmoji = emoji.emotes?.happy || globalEmoji.emotes.happy;
+            const randomEmoji = client.utils.getRandomElement(happyEmoji);
 
-            await ctx.sendMessage({ embeds: [embed] }); // Send the embed message
+            // Construct the embed
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', '𝐇𝐀𝐏𝐏𝐘')
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    happyMessages.description.replace('%{user}', ctx.author.displayName)
+                )
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
-            console.error('Error processing happy command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, happyMessages.error, color); // Use localized error message
+            // Error handling for any unexpected errors
+            console.error('An error occurred in the Happy command:', error);
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

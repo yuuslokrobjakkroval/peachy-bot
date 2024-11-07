@@ -24,22 +24,36 @@ module.exports = class Cry extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const cryMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cryMessages;
+        const errorMessages = cryMessages.errors;
+
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.cry ? emoji.emotes.cry : globalEmoji.emotes.cry);
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(cryMessages.title) // Use localized title
-                .setDescription(cryMessages.description.replace('{{user}}', ctx.author.displayName))
+            // Ensure we are getting a valid random emoji from the list
+            const cryEmoji = emoji.emotes?.cry || globalEmoji.emotes.cry;
+            const randomEmoji = client.utils.getRandomElement(cryEmoji);
 
-                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random crying emoji image
+            // Constructing the embed with title, description, and image
+            const embed = client.embed()
+                .setColor(color.main).setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', '𝐂𝐑𝐘')
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    cryMessages.description.replace('%{user}', ctx.author.displayName))
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
 
-            await ctx.sendMessage({ embeds: [embed] });
+            // Send the embed to the channel
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
-            console.error('Error processing cry command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, cryMessages.error, color); // Use localized error message
+            console.error('An error occurred in the Cry command:', error);
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

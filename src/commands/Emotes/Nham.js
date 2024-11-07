@@ -25,21 +25,38 @@ module.exports = class Eat extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const eatMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.eatMessages;
+        const errorMessages = eatMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.eat ? emoji.emotes.eat : globalEmoji.emotes.eat);
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(eatMessages.title) // Use localized title
-                .setDescription(eatMessages.description.replace('{{user}}', ctx.author.displayName))
-                .setImage(client.utils.emojiToImage(randomEmoji)); // Set random eat emoji image
+            // Get random eat emoji
+            const eatEmoji = emoji.emotes?.eat || globalEmoji.emotes.eat;
+            const randomEmoji = client.utils.getRandomElement(eatEmoji);
 
+            // Construct the embed with title moved to the description
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐄𝐀𝐓")  // Replace with eating title in the description
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    eatMessages.description.replace('%{user}', ctx.author.displayName) // Replace user in description
+                )
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
             await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
-            console.error('Error processing eat command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, eatMessages.error, color); // Use localized error message
+            // Error handling for any unexpected errors
+            console.error('An error occurred in the Eat command:', error);
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

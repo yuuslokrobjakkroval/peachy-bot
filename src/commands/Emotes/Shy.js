@@ -24,22 +24,40 @@ module.exports = class Shy extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const shyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.shyMessages;
+        const errorMessages = shyMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.shy ? emoji.emotes.shy : globalEmoji.emotes.shy);
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(shyMessages.title) // Use localized title
-                .setImage(client.utils.emojiToImage(randomEmoji)) // Set random shy emoji image
-                .setDescription(shyMessages.description.replace('{{user}}', ctx.author.displayName));
+            // Get random shy emoji
+            const shyEmoji = emoji.emotes?.shy || globalEmoji.emotes.shy;
+            const randomEmote = client.utils.getRandomElement(shyEmoji);
+            const emoteImageUrl = client.utils.emojiToImage(randomEmote);
 
-            await ctx.sendMessage({ embeds: [embed] });
+            // Construct the embed with title moved to the description
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐒𝐇𝐘")  // Use "SHY" as the title in description
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    shyMessages.description.replace('%{user}', ctx.author.displayName) // Replace user in description
+                )
+                .setImage(emoteImageUrl)
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
+            // Error handling for any unexpected errors
             console.error('Error processing shy command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, shyMessages.error, color); // Use localized error message
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
         }
     }
 };

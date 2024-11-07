@@ -42,8 +42,14 @@ module.exports = class Deposit extends Command {
                 let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') : args[0];
                 if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
                     const amountMap = { all: coin, half: Math.ceil(coin / 2) };
+                    const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
+
                     if (amount in amountMap) {
                         amount = amountMap[amount];
+                    } else if (amount.match(/\d+[kmbtq]/i)) {
+                        const unit = amount.slice(-1).toLowerCase();
+                        const number = parseInt(amount);
+                        amount = number * (multiplier[unit] || 1);
                     } else {
                         return ctx.sendMessage({
                             embeds: [
@@ -63,6 +69,8 @@ module.exports = class Deposit extends Command {
                             .embed().setColor(color.main)
                             .setDescription(
                                 depositMessages.success
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{mainRight}', emoji.mainRight)
                                     .replace('%{amount}', client.utils.formatNumber(baseCoins))
                                     .replace('%{coinEmote}', emoji.coin)
                             )

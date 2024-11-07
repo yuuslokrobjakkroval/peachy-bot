@@ -24,22 +24,40 @@ module.exports = class Shower extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const showerMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.showerMessages;
+        const errorMessages = showerMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.shower ? emoji.emotes.shower : globalEmoji.emotes.shower);
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(showerMessages.title) // Use localized title
-                .setImage(client.utils.emojiToImage(randomEmoji)) // Set random shower emoji image
-                .setDescription(showerMessages.description.replace('{{user}}', ctx.author.displayName));
+            // Get random shower emoji
+            const showerEmoji = emoji.emotes?.shower || globalEmoji.emotes.shower;
+            const randomEmote = client.utils.getRandomElement(showerEmoji);
+            const emoteImageUrl = client.utils.emojiToImage(randomEmote);
 
-            await ctx.sendMessage({ embeds: [embed] });
+            // Construct the embed with title moved to the description
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐒𝐇𝐎𝐖𝐄𝐑")  // Use "SHOWER" as the title in description
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    showerMessages.description.replace('%{user}', ctx.author.displayName) // Replace user in description
+                )
+                .setImage(emoteImageUrl)
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
+            // Error handling for any unexpected errors
             console.error('Error processing shower command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, showerMessages.error, color); // Use localized error message
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
         }
     }
 };

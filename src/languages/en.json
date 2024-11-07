@@ -1,5 +1,6 @@
 {
 	"generalMessages": {
+		"title": "# %{mainLeft} **%{title}** %{mainRight}\n",
 		"permissionsClientError": "I don't have enough permissions to execute this command.",
 		"permissionsUserError": "You don't have enough permissions to use this command.",
 		"argumentsMissingTitle": "Missing Arguments",
@@ -127,7 +128,7 @@
 			"invalidType": "Invalid leaderboard type."
 		},
 		"transferMessages": {
-			"title": "**Transaction - {{user}}**",
+			"title": "Transaction - **%{user}**",
 			"selfTransfer": "You cannot transfer coins to yourself.",
 			"botTransfer": "You cannot transfer coins to the bot.",
 			"pendingTransfer": "You already have a pending transfer. Please confirm or cancel it before starting a new one.",
@@ -136,8 +137,8 @@
 			"balanceNotExist": "Your balance record does not exist.",
 			"insufficientBalance": "Invalid amount specified or insufficient balance.",
 			"zeroBalance": "You have no coins to transfer.",
-			"confirm": "You are about to give {{amount}} {{emoji}} to {{user}}. Confirm?",
-			"success": "You have given {{amount}} {{emoji}} to {{user}}.",
+			"confirm": "You are about to give %{amount} %{emoji} to %{user}. Confirm?",
+			"success": "You have given %{amount} %{emoji} to %{user}.",
 			"cancel": "You have canceled the transaction. No coins have been transferred.",
 			"timeout": "The transaction has timed out due to inactivity. Please try again.",
 			"timeoutAction": "If you want to make a transfer, please re-initiate the command.",
@@ -161,90 +162,90 @@
 		"withdrawMessages": {
 			"zeroBalance": "You have no coins in your bank.",
 			"invalidAmount": "Please provide a valid amount to withdraw. You can withdraw 'all', 'half', or a specific number.",
-			"tooHigh": "You cannot withdraw more than what you have in your bank.",
-			"success": "You have withdrawn **%{amount}** %{coinEmote} from your bank.",
+			"tooHigh": "# %{mainLeft} **𝐖𝐈𝐓𝐇𝐃𝐑𝐀𝐖𝐍** %{mainRight}\nYou cannot withdraw more than what you have in your bank.",
+			"success": "# %{mainLeft} **𝐖𝐈𝐓𝐇𝐃𝐑𝐀𝐖𝐍 ** %{mainRight}\nYou have withdrawn **%{amount}** %{coinEmote} from your bank.",
 			"error": "There was an error processing your withdrawal request."
 		}
 	},
 	"emoteMessages": {
 		"angryMessages": {
 			"title": "Angry Time!",
-			"description": "**{{user}}** shows off their angriest expression!",
+			"description": "**%{user}** shows off their angriest expression!",
 			"error": "There was an error processing your angry emote."
 		},
 		"cryMessages": {
 			"title": "Crying Time!",
-			"description": "**{{user}}** is crying!",
+			"description": "**%{user}** is crying!",
 			"error": "There was an error processing your crying emote."
 		},
 		"cuteMessages": {
 			"title": "Cute Time!",
-			"description": "**{{user}}** shows off their cutest expression!",
+			"description": "**%{user}** shows off their cutest expression!",
 			"error": "There was an error processing your cute emote."
 		},
 		"danceMessages": {
 			"title": "Dancing Time!",
-			"description": "**{{user}}** shows off some impressive dance moves!",
+			"description": "**%{user}** shows off some impressive dance moves!",
 			"error": "There was an error processing your dance emote."
 		},
 		"exerciseMessages": {
 			"title": "Exercise Time!",
-			"description": "**{{user}}** is getting moving and staying fit!",
+			"description": "**%{user}** is getting moving and staying fit!",
 			"error": "There was an error processing your exercise emote."
 		},
 		"happyMessages": {
 			"title": "Happy Vibes!",
-			"description": "**{{user}}** is spreading joy and happiness!",
+			"description": "**%{user}** is spreading joy and happiness!",
 			"error": "There was an error processing your happy emote."
 		},
 		"laughMessages": {
 			"title": "Laughing Out Loud!",
-			"description": "**{{user}}** shares a hearty laugh!",
+			"description": "**%{user}** shares a hearty laugh!",
 			"error": "There was an error processing your laugh emote."
 		},
 		"makeupMessages": {
 			"title": "Makeup Time!",
-			"description": "**{{user}}** applies some fabulous makeup and shines bright!",
+			"description": "**%{user}** applies some fabulous makeup and shines bright!",
 			"error": "There was an error processing your makeup emote."
 		},
 		"eatMessages": {
 			"title": "Eating Time!",
-			"description": "**{{user}}** is enjoying some delicious food!",
+			"description": "**%{user}** is enjoying some delicious food!",
 			"error": "There was an error processing your eat emote."
 		},
 		"playGameMessages": {
 			"title": "Game Time!",
-			"description": "**{{user}}** is getting ready to play!",
+			"description": "**%{user}** is getting ready to play!",
 			"error": "There was an error processing your play game emote."
 		},
 		"roarMessages": {
 			"title": "Roar Time!",
-			"description": "**{{user}}** lets out a mighty roar!",
+			"description": "**%{user}** lets out a mighty roar!",
 			"error": "There was an error processing your roar emote."
 		},
 		"runMessages": {
 			"title": "Run Time!",
-			"description": "**{{user}}** takes off in a mighty run!",
+			"description": "**%{user}** takes off in a mighty run!",
 			"error": "Something went wrong while processing your run emote."
 		},
 		"sadMessages": {
 			"title": "Feeling Sad",
-			"description": "**{{user}}** is expressing sadness.",
+			"description": "**%{user}** is expressing sadness.",
 			"error": "There was an error processing your sad emote."
 		},
 		"scareMessages": {
 			"title": "Scared!",
-			"description": "**{{user}}** shows their scared side!",
+			"description": "**%{user}** shows their scared side!",
 			"error": "There was an error processing your scare emote."
 		},
 		"showerMessages": {
 			"title": "Shower Time!",
-			"description": "**{{user}}** is enjoying a refreshing shower!",
+			"description": "**%{user}** is enjoying a refreshing shower!",
 			"error": "There was an error processing your shower emote."
 		},
 		"shyMessages": {
 			"title": "Shy!",
-			"description": "**{{user}}** shows off their shy expression!",
+			"description": "**%{user}** shows off their shy expression!",
 			"error": "There was an error processing your shy emote."
 		}
 	},

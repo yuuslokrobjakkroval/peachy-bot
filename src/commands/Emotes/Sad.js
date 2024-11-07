@@ -24,22 +24,40 @@ module.exports = class Sad extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const sadMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.sadMessages;
+        const errorMessages = sadMessages.errors;
 
         try {
-            const randomEmoji = client.utils.getRandomElement(emoji.emotes && emoji.emotes.sad ? emoji.emotes.sad : globalEmoji.emotes.sad);
-            const embed = client
-                .embed()
-                .setColor(color.main)
-                .setTitle(sadMessages.title) // Use localized title
-                .setImage(client.utils.emojiToImage(randomEmoji)) // Set random sad emoji image
-                .setDescription(sadMessages.description.replace('{{user}}', ctx.author.displayName));
+            // Get random sad emoji
+            const sadEmoji = emoji.emotes?.sad || globalEmoji.emotes.sad;
+            const randomEmote = client.utils.getRandomElement(sadEmoji);
+            const emoteImageUrl = client.utils.emojiToImage(randomEmote);
 
-            await ctx.sendMessage({ embeds: [embed] });
+            // Construct the embed with title moved to the description
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐒𝐀𝐃")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    sadMessages.description.replace('%{user}', ctx.author.displayName)
+                )
+                .setImage(emoteImageUrl)
+                .setFooter({
+                    text: generalMessages.requestedBy
+                        .replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
+            // Error handling for any unexpected errors
             console.error('Error processing sad command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, sadMessages.error, color); // Use localized error message
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
         }
     }
 };

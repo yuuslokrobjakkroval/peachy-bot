@@ -24,24 +24,39 @@ module.exports = class PlayGame extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const playGameMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.playGameMessages;
+        const errorMessages = playGameMessages.errors;
 
         try {
-            const randomEmote = client.utils.getRandomElement(emoji.emotes && emoji.emotes.playing ? emoji.emotes.playing : globalEmoji.emotes.playing);
+            // Get random play game emoji
+            const playGameEmoji = emoji.emotes?.playing || globalEmoji.emotes.playing;
+            const randomEmote = client.utils.getRandomElement(playGameEmoji);
             const emoteImageUrl = client.utils.emojiToImage(randomEmote);
 
-            const embed = client
-                .embed()
+            // Construct the embed with title moved to the description
+            const embed = client.embed()
                 .setColor(color.main)
-                .setTitle(playGameMessages.title) // Use localized title
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐏𝐋𝐀𝐘𝐆𝐀𝐌𝐄")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    playGameMessages.description.replace('%{user}', ctx.author.displayName)
+                )
                 .setImage(emoteImageUrl)
-                .setDescription(playGameMessages.description.replace('{{user}}', ctx.author.displayName));
+                .setFooter({
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
 
-            await ctx.sendMessage({ embeds: [embed] });
+            // Send the embed message
+            ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
+            // Error handling for any unexpected errors
             console.error('Error processing play game command:', error);
-            return await client.utils.sendErrorMessage(client, ctx, playGameMessages.error, color); // Use localized error message
+            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };
