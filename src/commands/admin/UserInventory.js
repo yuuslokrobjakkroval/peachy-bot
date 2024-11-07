@@ -67,7 +67,7 @@ module.exports = class UserInventory extends Command {
             });
 
             const fields = [];
-            const inventoryTypes = ['milk', 'food', 'drink', 'cake', 'theme', 'special theme', 'wallpaper'];
+            const inventoryTypes = ['milk', 'food', 'drink', 'cake', 'color', 'theme', 'special theme', 'wallpaper'];
 
             inventoryTypes.forEach(type => {
                 const items = itemList[type];  // Extract the items of this type
