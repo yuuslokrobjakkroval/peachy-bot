@@ -570,10 +570,16 @@ module.exports = class Utils {
         });
 
         collector.on('end', async () => {
+            const botPermissions = msg.channel.permissionsFor(msg.guild.me);
+
+            if (!botPermissions || !botPermissions.has('ManageMessages')) {
+                return;
+            }
+
             try {
-                await msg.edit({ components: [] });
+                await msg.reactions.removeAll();
             } catch (error) {
-                console.error('Failed to edit message after pagination ended:', error);
+                console.error('Failed to remove reactions:', error);
             }
         });
 
