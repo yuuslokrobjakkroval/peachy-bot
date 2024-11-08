@@ -12,7 +12,7 @@ module.exports = class UserBalance extends Command {
             },
             category: 'developer',
             aliases: ['ubal'],
-            args: false,
+            args: true,
             permissions: {
                 dev: true,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],

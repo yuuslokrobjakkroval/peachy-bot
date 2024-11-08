@@ -17,7 +17,7 @@ module.exports = class UserInventory extends Command {
             cooldown: 5,
             category: 'developer',
             aliases: ['ui'],
-            args: false,
+            args: true,
             permissions: {
                 dev: true,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
