@@ -12,7 +12,7 @@ module.exports = class Use extends Command {
         super(client, {
             name: 'use',
             description: {
-                content: 'Use a theme or wallpaper item to customize your embed color, emoji, or background.',
+                content: 'Use a theme, wallpaper, or color item to customize your profile.',
                 examples: ['use t01', 'use w01'],
                 usage: 'use <itemId>',
             },
@@ -29,7 +29,7 @@ module.exports = class Use extends Command {
             options: [
                 {
                     name: 'items',
-                    description: 'The theme or wallpaper you want to use.',
+                    description: 'The theme, wallpaper, or color you want to use.',
                     type: 3,
                     required: false,
                 }
@@ -44,16 +44,26 @@ module.exports = class Use extends Command {
         try {
             const user = await client.utils.getUser(userId);
             const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString().toLowerCase() : args[0].toLowerCase();
-            const themeItem = Themes.concat(ImportantItems).find((item) => item.id === itemId);
-            const wallpaperItem = Wallpapers.concat(ImportantItems).find((item) => item.id === itemId);
-            const colorItem = Colors.concat(ImportantItems).find((item) => item.id === itemId);
+            const themeItem = Themes.concat(ImportantItems).find(item => item.id === itemId);
+            const wallpaperItem = Wallpapers.concat(ImportantItems).find(item => item.id === itemId);
+            const colorItem = Colors.concat(ImportantItems).find(item => item.id === itemId);
+            const inventoryItem = user.inventory.find(item => item.id === itemId);
+
+            if (!inventoryItem) {
+                return await client.utils.sendErrorMessage(
+                    client,
+                    ctx,
+                    useMessages?.notInInventory.replace('%{itemId}', itemId),
+                    color
+                );
+            }
 
             if (themeItem) {
                 if (!themeItem.able.use) {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.unavailable.replace('%{itemEmote}', wallpaperItem.emoji).replace('%{itemName}', themeItem.name),
+                        useMessages?.unavailable.replace('%{itemEmote}', themeItem.emoji).replace('%{itemName}', themeItem.name),
                         color
                     );
                 }
@@ -79,7 +89,7 @@ module.exports = class Use extends Command {
 
                     const existingInventoryItem = user.inventory.find(item => item.id === currentTheme);
                     if (existingInventoryItem) {
-                        existingInventoryItem.quantity += themeItem.quantity;
+                        existingInventoryItem.quantity += 1;
                     } else {
                         user.inventory.push({
                             id: currentTheme,
@@ -150,12 +160,12 @@ module.exports = class Use extends Command {
 
                     const existingInventoryItem = user.inventory.find(item => item.id === equippedWallpaper.id);
                     if (existingInventoryItem) {
-                        existingInventoryItem.quantity += equippedWallpaper.quantity;
+                        existingInventoryItem.quantity += 1;
                     } else {
                         user.inventory.push({
                             id: equippedWallpaper.id,
                             name: equippedWallpaper.name,
-                            quantity: equippedWallpaper.quantity
+                            quantity: 1
                         });
                     }
                 }
@@ -219,12 +229,12 @@ module.exports = class Use extends Command {
 
                     const existingInventoryItem = user.inventory.find(item => item.id === equippedColor.id);
                     if (existingInventoryItem) {
-                        existingInventoryItem.quantity += equippedColor.quantity;
+                        existingInventoryItem.quantity += 1;
                     } else {
                         user.inventory.push({
                             id: equippedColor.id,
                             name: equippedColor.name,
-                            quantity: equippedColor.quantity
+                            quantity: 1
                         });
                     }
                 }
