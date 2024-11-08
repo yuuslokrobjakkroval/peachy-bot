@@ -654,45 +654,47 @@ module.exports = class Utils {
         console.log('Check Birthday Start');
         try {
             const today = new Date();
-
-            const options = { day: '2-digit', month: 'short' };
-            const todayDate = today.toLocaleDateString('en-GB', options).replace('.', '');
+            const todayDate = `${today.getDate().toString().padStart(2, '0')} ${today.toLocaleString('en-US', { month: 'short' })}`;
 
             const usersWithBirthdayToday = await Users.find({
                 'profile.birthday': todayDate,
                 'profile.birthdayAcknowledged': false,
             });
 
-            const birthdayChannel = client.channels.cache.get('1272074580797952116');
-
+            const birthdayChannel = await client.channels.fetch('1272074580797952116').catch(err => console.error(err));
             if (!birthdayChannel) {
-                console.error(`[Birthday] Birthday channel not found.`);
+                console.error(`[Birthday] Birthday channel not found or inaccessible.`);
                 return;
             }
 
             for (const user of usersWithBirthdayToday) {
-                const giftBalance = Math.floor(Math.random() * (1000000 - 500000 + 1)) + 500000;
-                const [day, month, year] = user.profile.birthday.split('-');
-                const xp = parseInt(day) + (new Date(Date.parse(`${month} 1, 2020`)).getMonth() + 1) + parseInt(year.slice(-2));
+                try {
+                    const giftBalance = Math.floor(Math.random() * (1000000 - 500000 + 1)) + 500000;
+                    const [day, month, year] = user.profile.birthday.split('-');
+                    const xp = parseInt(day) + (new Date(Date.parse(`${month} 1, 2020`)).getMonth() + 1) + parseInt(year.slice(-2));
 
-                const birthdayEmbed = client.embed()
-                    .setColor('Green')
-                    .setTitle(`🎉 Happy Birthday, ${user.profile.username || user.username}! 🎂`)
-                    .setDescription(`On this special day, we celebrate you and all the joy you bring into our lives! May your year ahead be filled with exciting adventures, unforgettable moments, and everything you've ever wished for. Remember, you are loved and cherished by all of us! 🎈`)
-                    .addFields(
-                        {name: '🎁 Your Birthday Gift:', value: `${giftBalance} coins`, inline: true},
-                        {name: '✨ Your Birthday XP:', value:  `${xp} XP`, inline: true}
-                    )
-                    .setFooter('Have an amazing birthday filled with love and happiness!')
-                    .setTimestamp();
+                    const birthdayEmbed = client.embed()
+                        .setColor(client.color.main)
+                        .setTitle(`🎉 Happy Birthday, ${user.profile.username || user.username}! 🎂`)
+                        .setDescription(`On this special day, we celebrate you and all the joy you bring into our lives!`)
+                        .addFields([
+                            { name: '🎁 Your Birthday Gift:', value: `${giftBalance} coins`, inline: true },
+                            { name: '✨ Your Birthday XP:', value: `${xp} XP`, inline: true }
+                        ])
+                        .setFooter({ text: 'Have an amazing birthday filled with love and happiness!' })
+                        .setTimestamp();
 
-                await birthdayChannel.send({ embeds: [birthdayEmbed] });
+                    user.profile.birthdayAcknowledged = true;
+                    user.balance.coin += giftBalance;
+                    user.profile.xp += xp;
+                    await user.save();
 
-                user.profile.birthdayAcknowledged = true;
-                user.balance.coin += giftBalance;
-                user.profile.xp += xp;
-                await user.save();
+                    await birthdayChannel.send({ embeds: [birthdayEmbed] });
+                } catch (userError) {
+                    console.error(`[Birthday] Error processing user ${user._id}: ${userError.message}`);
+                }
             }
+
             console.log('Check Birthday Ended');
         } catch (err) {
             console.error(`[Birthday] Error fetching birthdays: ${err.message}`);

@@ -4,7 +4,7 @@ const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
-const ONE_DAY_MS = 86400000; // 24 hours
+const ONE_DAY_MS = 10000; // 24 hours
 
 function getInitialDelay() {
     const now = new Date();
