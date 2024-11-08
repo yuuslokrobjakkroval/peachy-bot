@@ -64,14 +64,47 @@ module.exports = class Use extends Command {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.alreadyEquipped.replace('%{itemName}', themeItem.name),
+                        useMessages?.alreadyEquipped.replace('%{itemEmote}', themeItem.emoji).replace('%{itemName}', themeItem.name),
                         color
                     );
                 }
 
+                const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
+
+                if (currentTheme) {
+                    await Users.updateOne(
+                        { userId },
+                        { $set: { 'preferences.theme': null } }
+                    );
+
+                    const existingInventoryItem = user.inventory.find(item => item.id === currentTheme);
+                    if (existingInventoryItem) {
+                        existingInventoryItem.quantity += themeItem.quantity;
+                    } else {
+                        user.inventory.push({
+                            id: currentTheme,
+                            name: themeItem.name,
+                            quantity: 1
+                        });
+                    }
+                }
+
+                if (inventoryItemIndex > -1) {
+                    if (user.inventory[inventoryItemIndex].quantity > 1) {
+                        user.inventory[inventoryItemIndex].quantity -= 1;
+                    } else {
+                        user.inventory.splice(inventoryItemIndex, 1);
+                    }
+                }
+
                 await Users.updateOne(
                     { userId },
-                    { $set: { 'preferences.theme': themeItem.id } }
+                    {
+                        $set: {
+                            'preferences.theme': themeItem.id,
+                            inventory: user.inventory
+                        }
+                    }
                 );
 
                 const embed = client.embed()
@@ -171,7 +204,7 @@ module.exports = class Use extends Command {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.alreadyEquipped.replace('%{itemName}', colorItem.name).replace('%{itemEmote}', colorItem.emoji),
+                        useMessages?.alreadyEquipped.replace('%{itemEmote}', colorItem.emoji).replace('%{itemName}', colorItem.name),
                         color
                     );
                 }
