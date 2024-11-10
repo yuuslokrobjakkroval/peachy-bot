@@ -27,34 +27,14 @@ module.exports = class Context {
 
     sendMessage(content) {
         if (this.isInteraction) {
-            const replyOptions = {
-                content: content || "",
-                embeds: Array.isArray(content) ? content : [content],
-                fetchReply: true,
-            };
-
-            if (this.interaction.deferred || this.interaction.replied) {
-                this.msg = this.interaction.reply(replyOptions)
-                    .then(response => this.msg = response)
-                    .catch(err => console.error("Error sending interaction reply:", err));
-            } else {
-                this.msg = this.interaction.reply(replyOptions)
-                    .then(response => this.msg = response)
-                    .catch(err => console.error("Error sending interaction reply:", err));
-            }
-
+            this.msg = this.interaction.reply({ content, fetchReply: true })
+                .then(response => this.msg = response)
+                .catch(err => console.error("Error sending interaction reply:", err));
         } else if (this.message) {
-            if (this.msg && typeof this.msg.edit === 'function') {
-                this.msg = this.msg.edit(content)
-                    .then(response => this.msg = response)
-                    .catch(err => console.error("Error editing message:", err));
-            } else {
-                this.msg = this.message.channel.send(content)
-                    .then(response => this.msg = response)
-                    .catch(err => console.error("Error sending message:", err));
-            }
+            this.msg = this.message.channel.send(content)
+                .then(response => this.msg = response)
+                .catch(err => console.error("Error sending message:", err));
         }
-
         return this.msg;
     }
 
