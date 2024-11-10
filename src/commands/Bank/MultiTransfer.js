@@ -69,10 +69,19 @@ module.exports = class MultiTransfer extends Command {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.insufficientFunds, color);
         }
 
-        // The users to send the coins to will be all the arguments except the last one
-        const targetUsers = args.map(userId => ctx.message.mentions.members.first() || ctx.guild.members.cache.get(userId) || ctx.guild.members.cache.find(m => m.user.tag === userId));
+        const targetUsers = [];
 
-        if (targetUsers.length < 1) {
+for (let i = 0; i < args.length - 1; i++) {
+    const user = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[i]) || ctx.guild.members.cache.find(m => m.user.tag === args[i]);
+
+    if (user) {
+        targetUsers.push(user);
+    } else {
+        return await client.utils.sendErrorMessage(client, ctx, transferMessages.noTargets, color);
+    }
+}
+
+    if (targetUsers.length < 1) {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.noTargets, color);
         }
 
