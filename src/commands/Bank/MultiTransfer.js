@@ -168,25 +168,29 @@ module.exports = class MultiTransfer extends Command {
                                                     .replace('%{mainLeft}', emoji.mainLeft)
                                                     .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
                                                     .replace('%{mainRight}', emoji.mainRight) +
+                                                // New message format: "You have given X :SCOIN: to user1, user2, ..."
                                                 transferMessages.success
-                                                    .replace('%{amount}', client.utils.formatNumber(totalAmount))
-                                                    .replace('%{emoji}', emoji.coin)
-                                                    .replace('%{userList}', targetUsers.map(u => u.displayName).join(', '))
-                                                    .replace('%{share}', client.utils.formatNumber(sharePerUser))
+                                                    .replace('%{amount}', client.utils.formatNumber(totalAmount)) // Total amount transferred
+                                                    .replace('%{emoji}', emoji.coin) // Coin emoji
+                                                    .replace('%{userList}', targetUsers.map(u => u.displayName).join(', ')) // List of users
+                                                    .replace('%{share}', client.utils.formatNumber(sharePerUser)) // Amount per user
                                             )
                                             .setFooter({
                                                 text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                                                 iconURL: ctx.author.displayAvatarURL(),
                                             });
 
+                                        // Send confirmation embed
                                         ctx.channel.send({ embeds: [confirmationEmbed] });
 
+                                        // Delete the confirmation message embed
                                         messageEmbed.delete();
                                     });
                                 });
                             });
                         });
                     } else {
+                        // If the cancel button is pressed
                         ctx.channel.send(transferMessages.cancel);
                         messageEmbed.delete();
                     }
