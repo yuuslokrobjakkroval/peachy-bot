@@ -39,6 +39,8 @@ module.exports = class MultiTransfer extends Command {
         // The amount to transfer will be the last argument
         let amount = args.pop();
         let totalAmount;
+        console.log(amount);
+        
 
         // Formatting the amount (support for 'all', 'half', 'k', 'm', etc.)
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
