@@ -40,10 +40,8 @@ module.exports = class Avatar extends Command {
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
 
     const user = ctx.isInteraction
-        ? ctx.interaction.options.getUser("user")
-        : ctx.message.mentions.users.first() ||
-        ctx.guild.members.cache.get(args[0]) ||
-        ctx.author;
+        ? ctx.interaction.options.getUser("user") || ctx.author
+        : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
 
     if (!user) {
       const errorMessage = avatarMessages?.noUserMentioned || "No user mentioned";
