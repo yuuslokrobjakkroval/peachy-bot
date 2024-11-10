@@ -100,23 +100,40 @@ module.exports = class MultiTransfer extends Command {
         const filter = (interaction) => interaction.user.id === ctx.author.id;
         const collector = confirmMessage.createMessageComponentCollector({ filter, time: 8000 });
 
-        collector.on("collect", async (interaction) => {
-            interaction.deferUpdate().then(async () => {  // Mark the function as 'async'
+        collector.on("collect", (interaction) => {
+            interaction.deferUpdate().then(() => {
                 if (interaction.customId === "confirm_button") {
+                    // Disable the button after the user clicks it to prevent further clicks
+                    const confirmButton = client.utils.labelButton("confirm_button", "Confirmed", 3, true);  // Disabled
+                    const cancelButton = client.utils.labelButton("cancel_button", "Cancel", 4, false);  // Keep cancel enabled
+                    const buttonRow = client.utils.createButtonRow(confirmButton, cancelButton);
+        
+                    // Send confirmation that action is processing
+                    confirmMessage.edit({ components: [buttonRow] });
+        
+                    // Proceed with the transfer logic
                     sender.balance.coin -= totalAmount;
-            
-                    // Update balances for all users
-                    await Promise.all(
-                        users.map(async (user) => {
-                            const recipient = await Users.findOne({ userId: user.id }) || new Users({ userId: user.id, balance: { coin: 0 } });
-                            recipient.balance.coin += transferAmount;
-                            await recipient.save();
-                        })
-                    );
-            
+        
+                    // Update balances for all users (using Promise.all)
+                    users.forEach((user) => {
+                        Users.findOne({ userId: user.id })
+                            .then((recipient) => {
+                                if (!recipient) {
+                                    recipient = new Users({ userId: user.id, balance: { coin: 0 } });
+                                }
+                                recipient.balance.coin += transferAmount;
+                                return recipient.save();
+                            })
+                            .catch((error) => {
+                                console.error('Error updating recipient balance:', error);
+                            });
+                    });
+        
                     // Save the sender's updated balance
-                    await sender.save();
-            
+                    sender.save().catch((error) => {
+                        console.error('Error updating sender balance:', error);
+                    });
+        
                     // Send success message
                     const successEmbed = client.embed()
                         .setColor(color.main)
@@ -128,23 +145,24 @@ module.exports = class MultiTransfer extends Command {
                                 .replace("%{individualAmount}", client.utils.formatNumber(transferAmount))
                                 .replace("%{emoji}", emoji.coin)
                         );
-            
-                    await ctx.channel.send({ embeds: [successEmbed] });
+        
+                    ctx.channel.send({ embeds: [successEmbed] });
                     confirmMessage.delete();
                 } else {
                     // Canceled action
                     const cancelEmbed = client.embed()
                         .setColor(color.warning)
                         .setDescription(multiTransferMessages.cancel);
-            
-                    await ctx.channel.send({ embeds: [cancelEmbed] });
+        
+                    ctx.channel.send({ embeds: [cancelEmbed] });
                     confirmMessage.delete();
                 }
-            }).catch(error => {
+            }).catch((error) => {
                 console.error('Database update error:', error);
                 ctx.channel.send(generalMessages.databaseUpdate);
             });
         });
+
 
         collector.on("end", (collected) => {
             if (collected.size === 0) {
