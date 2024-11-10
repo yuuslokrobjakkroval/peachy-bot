@@ -9,11 +9,11 @@ module.exports = class MultiTransfer extends Command {
             name: "multitransfer",
             description: {
                 content: "Transfer coins to multiple users with an equal split.",
-                examples: ["multitransfer @user1 @user2 @user3 1000000", "multitransfer @user1 @user2 all"],
-                usage: "multitransfer <user1> <user2> ... <amount>",
+                examples: ["mpay @user1 @user2 @user3 1000000", "mpay @user1 @user2 1m"],
+                usage: "mpay <user1> <user2> ... <amount>",
             },
             category: "economy",
-            aliases: ["mpay", "mgive", "mtransfer", "paymultiple"],
+            aliases: ["mpay", "mgive"],
             cooldown: 5,
             args: true,
             permissions: {
@@ -28,12 +28,12 @@ module.exports = class MultiTransfer extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const transferMessages = language.locales.get(language.defaultLocale)?.bankMessages?.multiTransferMessages;
+        const multiTransferMessages = language.locales.get(language.defaultLocale)?.bankMessages?.multiTransferMessages;
 
         // Fetch the sender's data
         const user = await Users.findOne({ userId: ctx.author.id });
         if (!user || user.balance.coin < 1) {
-            return await client.utils.sendErrorMessage(client, ctx, transferMessages.zeroBalance, color);
+            return await client.utils.sendErrorMessage(client, ctx, multiTransferMessages.zeroBalance, color);
         }
 
         // The amount to transfer will be the last argument
@@ -50,7 +50,7 @@ module.exports = class MultiTransfer extends Command {
             } else {
                 return await ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(color.danger).setDescription(transferMessages.invalidAmount),
+                        client.embed().setColor(color.danger).setDescription(multiTransferMessages.invalidAmount),
                     ],
                 });
             }
@@ -59,52 +59,23 @@ module.exports = class MultiTransfer extends Command {
         }
 
         if (user.balance.coin < totalAmount) {
-            return await client.utils.sendErrorMessage(client, ctx, transferMessages.insufficientFunds, color);
+            return await client.utils.sendErrorMessage(client, ctx, multiTransferMessages.insufficientFunds, color);
         }
 
         const targetUsers = [];
 
         for (let i = 0; i < args.length; i++) {
-            const mentionedUser = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[i]) || ctx.guild.members.cache.find(m => m.user.tag === args[i]);
+            const mentionedUser = ctx.guild.members.cache.get(args[i]) || ctx.guild.members.cache.find(m => m.user.tag === args[i]);
 
             if (mentionedUser) {
                 targetUsers.push(mentionedUser);
             } else {
-                return await client.utils.sendErrorMessage(client, ctx, transferMessages.invalidUser, color);
+                return await client.utils.sendErrorMessage(client, ctx, multiTransferMessages.invalidUser, color);
             }
         }
 
         if (targetUsers.length < 1) {
-            return await client.utils.sendErrorMessage(client, ctx, transferMessages.noUser, color);
-        }
-
-        // Calculate the share for each user
-        const sharePerUser = Math.floor(totalAmount / targetUsers.length);
-        console.log(sharePerUser)
-
-        // Check if the total amount is enough to give each user their share
-        const totalShareRequired = sharePerUser * targetUsers.length;
-        console.log(totalShareRequired)
-
-        // If the total share required exceeds the user's balance, inform them about insufficient funds
-        if (totalShareRequired > user.balance.coin) {
-            // Find out how many users can be paid
-            let ableToPay = Math.floor(user.balance.coin / sharePerUser);
-
-            // If ableToPay is less than targetUsers.length, we inform the sender
-            const usersCannotPay = targetUsers.slice(ableToPay).map(u => u.displayName).join(', ');
-
-            return await ctx.sendMessage({
-                embeds: [
-                    client.embed()
-                        .setColor(color.danger)
-                        .setDescription(
-                            transferMessages.insufficientBalanceForAll
-                                .replace('%{userList}', usersCannotPay)
-                                .replace('%{amount}', client.utils.formatNumber(sharePerUser))
-                        ),
-                ],
-            });
+            return await client.utils.sendErrorMessage(client, ctx, multiTransferMessages.noUser, color);
         }
 
         // Create confirm and cancel buttons
@@ -120,11 +91,10 @@ module.exports = class MultiTransfer extends Command {
                     .replace('%{mainLeft}', emoji.mainLeft)
                     .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
                     .replace('%{mainRight}', emoji.mainRight) +
-                transferMessages.confirm
+                multiTransferMessages.confirm
                     .replace('%{amount}', client.utils.formatNumber(totalAmount))
                     .replace('%{emoji}', emoji.coin)
                     .replace('%{userList}', targetUsers.map(u => u.displayName).join(', '))
-                    .replace('%{share}', client.utils.formatNumber(sharePerUser))
             )
             .setFooter({
                 text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
@@ -143,7 +113,7 @@ module.exports = class MultiTransfer extends Command {
                 interaction.deferUpdate().then(() => {
                     if (interaction.customId === 'confirm_button') {
                         // Perform the transfers to each user
-                        user.balance.coin -= totalShareRequired;
+                        user.balance.coin -= totalAmount * targetUsers.length;
                         Users.findOneAndUpdate(
                             { userId: ctx.author.id },
                             { 'balance.coin': user.balance.coin }
@@ -160,38 +130,38 @@ module.exports = class MultiTransfer extends Command {
                                         { 'balance.coin': targetUser.balance.coin },
                                         { upsert: true, new: true }
                                     ).then(() => {
-                                        // If all transfers are successful, confirm with a message
-                                        const confirmationEmbed = client.embed()
-                                            .setColor(color.main)
-                                            .setDescription(
-                                                generalMessages.title
-                                                    .replace('%{mainLeft}', emoji.mainLeft)
-                                                    .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
-                                                    .replace('%{mainRight}', emoji.mainRight) +
-                                                // New message format: "You have given X :SCOIN: to user1, user2, ..."
-                                                transferMessages.success
-                                                    .replace('%{amount}', client.utils.formatNumber(totalAmount)) // Total amount transferred
-                                                    .replace('%{emoji}', emoji.coin) // Coin emoji
-                                                    .replace('%{userList}', targetUsers.map(u => u.displayName).join(', ')) // List of users
-                                                    .replace('%{share}', client.utils.formatNumber(sharePerUser)) // Amount per user
-                                            )
-                                            .setFooter({
-                                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                                                iconURL: ctx.author.displayAvatarURL(),
-                                            });
 
-                                        // Send confirmation embed
-                                        ctx.channel.send({ embeds: [confirmationEmbed] });
-
-                                        // Delete the confirmation message embed
-                                        messageEmbed.delete();
                                     });
                                 });
                             });
+                            // If all transfers are successful, confirm with a message
+                            const confirmationEmbed = client.embed()
+                                .setColor(color.main)
+                                .setDescription(
+                                    generalMessages.title
+                                        .replace('%{mainLeft}', emoji.mainLeft)
+                                        .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
+                                        .replace('%{mainRight}', emoji.mainRight) +
+                                    // New message format: "You have given X :SCOIN: to user1, user2, ..."
+                                    multiTransferMessages.success
+                                        .replace('%{amount}', client.utils.formatNumber(totalAmount)) // Total amount transferred
+                                        .replace('%{emoji}', emoji.coin) // Coin emoji
+                                        .replace('%{userList}', targetUsers.map(u => u.displayName).join(', '))
+                                )
+                                .setFooter({
+                                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                    iconURL: ctx.author.displayAvatarURL(),
+                                });
+
+                            // Send confirmation embed
+                            ctx.channel.send({ embeds: [confirmationEmbed] });
+
+                            // Delete the confirmation message embed
+                            messageEmbed.delete();
                         });
                     } else {
                         // If the cancel button is pressed
-                        ctx.channel.send(transferMessages.cancel);
+                        ctx.channel.send(multiTransferMessages.cancel);
                         messageEmbed.delete();
                     }
                 });
@@ -202,8 +172,8 @@ module.exports = class MultiTransfer extends Command {
             if (collected.size === 0) {
                 const timeoutEmbed = client.embed()
                     .setColor(color.warning)
-                    .setTitle(transferMessages.expire)
-                    .setDescription(transferMessages.timeout);
+                    .setTitle(multiTransferMessages.expire)
+                    .setDescription(multiTransferMessages.timeout);
 
                 messageEmbed.edit({ embeds: [timeoutEmbed], components: [] });
             }

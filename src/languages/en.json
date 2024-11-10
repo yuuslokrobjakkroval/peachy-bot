@@ -101,7 +101,7 @@
 			"insufficientBalance": "Invalid amount specified or insufficient balance for one or more transfers.",
 			"zeroBalance": "You have no coins to transfer.",
 			"confirm": "You are about to transfer %{amount} %{emoji} to the following users: %{userList}. Confirm?",
-			"success": "You have given %{amount} %{emoji} to %{userList}. Each user received %{share} %{emoji}.",
+			"success": "You have given %{amount} %{emoji} to %{userList}.",
 			"cancel": "You have canceled the transaction. No coins have been transferred.",
 			"timeout": "The transaction has timed out due to inactivity. Please try again.",
 			"timeoutAction": "If you want to make a transfer, please re-initiate the command.",

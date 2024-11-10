@@ -297,7 +297,7 @@ module.exports = class MessageCreate extends Event {
               });
             }
 
-            const balanceCommands = ['balance', 'deposit', 'withdraw', 'transfer', 'buy', 'sell'];
+            const balanceCommands = ['balance', 'deposit', 'withdraw', 'multitransfer', 'transfer', 'buy', 'sell'];
             const gamblingCommands = ['slots', 'blackjack', 'coinflip'];
             const gameCommands = ['guessnumber'];
             const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
