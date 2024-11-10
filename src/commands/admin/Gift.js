@@ -173,7 +173,7 @@ module.exports = class Gift extends Command {
                         .setColor(color.main)
                         .setThumbnail(gif.giftClaimed)
                         .setTitle(`**${interaction.displayName || interaction.user.displayName}** Claimed!`)
-                        .setDescription(`**Received**\n${rewardSummary}`)
+                        .setDescription(`**Received**\n\n${rewardSummary}`)
                         .setFooter({text: "Enjoy your rewards!"});
 
                     // Send the success message as an embed
@@ -195,7 +195,7 @@ module.exports = class Gift extends Command {
                     const claimedUsersString = claimedUsers.filter(Boolean).join(', ');
 
                     const responseMessage = `Gift boxes have been sent to **${amount}** random channels: ${sentChannelNames.join(', ')}!\n` +
-                        `${selectedChannel.name} claimed by: ${claimedUsersString}`;
+                        `${selectedChannel.name} claimed by: ${claimedUsersString} & claimed: ${claimedUsers.length} / ${amount}`;
 
                     if (ctx.isInteraction) {
                         await ctx.interaction.editReply({content: responseMessage});
