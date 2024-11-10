@@ -185,17 +185,24 @@ module.exports = class Gift extends Command {
 
                     const successMessage = await interaction.followUp({embeds: [successEmbed]});
 
+                    // Track unique user IDs using a Set
+                    const uniqueUserIds = new Set();
+
+                    // Fetch user names for claimed users
                     const claimedUsers = await Promise.all(claimedGifts[selectedChannel.id].map(userId => {
-                        return client.users.fetch(userId).then(user => user.displayName).catch(err => {
+                        return client.users.fetch(userId).then(user => {
+                            uniqueUserIds.add(userId); // Add userId to the Set to track unique users
+                            return user.displayName; // Return the user's display name
+                        }).catch(err => {
                             console.error(`Error fetching user ${userId}:`, err);
-                            return null; // Return null for users that could not be fetched
+                            return null; // Return null if user fetch fails
                         });
                     }));
 
                     const claimedUsersString = claimedUsers.filter(Boolean).join(', ');
 
                     const responseMessage = `Gift boxes have been sent to **${amount}** random channels: ${sentChannelNames.join(', ')}!\n` +
-                        `${selectedChannel.name} claimed by: ${claimedUsersString} & claimed: ${claimedUsers.length} / ${amount}`;
+                        `${selectedChannel.name} claimed by: ${claimedUsersString} & claimed: ${uniqueUserIds.size} / ${amount}`;
 
                     if (ctx.isInteraction) {
                         await ctx.interaction.editReply({content: responseMessage});
