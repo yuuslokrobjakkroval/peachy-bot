@@ -101,10 +101,11 @@ module.exports = class MultiTransfer extends Command {
         const collector = confirmMessage.createMessageComponentCollector({ filter, time: 8000 });
 
         collector.on("collect", async (interaction) => {
-            await interaction.deferUpdate().then(() => {
+            interaction.deferUpdate().then(async () => {  // Mark the function as 'async'
                 if (interaction.customId === "confirm_button") {
                     sender.balance.coin -= totalAmount;
-
+            
+                    // Update balances for all users
                     await Promise.all(
                         users.map(async (user) => {
                             const recipient = await Users.findOne({ userId: user.id }) || new Users({ userId: user.id, balance: { coin: 0 } });
@@ -112,9 +113,10 @@ module.exports = class MultiTransfer extends Command {
                             await recipient.save();
                         })
                     );
-
+            
+                    // Save the sender's updated balance
                     await sender.save();
-
+            
                     // Send success message
                     const successEmbed = client.embed()
                         .setColor(color.main)
@@ -126,15 +128,15 @@ module.exports = class MultiTransfer extends Command {
                                 .replace("%{individualAmount}", client.utils.formatNumber(transferAmount))
                                 .replace("%{emoji}", emoji.coin)
                         );
-    
+            
                     await ctx.channel.send({ embeds: [successEmbed] });
                     confirmMessage.delete();
                 } else {
-                    // Canceled
+                    // Canceled action
                     const cancelEmbed = client.embed()
                         .setColor(color.warning)
                         .setDescription(multiTransferMessages.cancel);
-    
+            
                     await ctx.channel.send({ embeds: [cancelEmbed] });
                     confirmMessage.delete();
                 }
