@@ -48,17 +48,17 @@ module.exports = class Avatar extends Command {
       return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
     }
 
-    const embed = client
-        .embed()
+    const embed = client.embed()
         .setColor(color.main)
-        .setTitle(avatarMessages?.avatarTitle.replace("%{username}", user.username) || `Avatar of ${user.username}`)
+        .setTitle(avatarMessages?.title.replace("%{username}", user.displayName) || `Avatar of ${user.displayName}`)
         .setImage(user.displayAvatarURL({ dynamic: true, size: 1024 }))
         .setFooter({
-          text: avatarMessages?.requestedBy.replace("%{username}", ctx.author.username) || `Requested by ${ctx.author.username}`,
+          text: avatarMessages?.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
 
-    await ctx.sendMessage({ embeds: [embed] });
+    await ctx.sendMessage({ content: "", embeds: [embed] });
   }
+
 };

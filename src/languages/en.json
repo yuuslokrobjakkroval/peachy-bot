@@ -794,7 +794,7 @@
 	},
 	"utilityMessages": {
 		"avatarMessages": {
-			"avatarTitle": "Avatar of %{username}",
+			"title": "Avatar of %{username}",
 			"requestedBy": "Requested by %{username}",
 			"noUserMentioned": "No user mentioned, please mention someone to view their avatar."
 		},
