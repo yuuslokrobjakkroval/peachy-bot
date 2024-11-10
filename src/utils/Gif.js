@@ -8,8 +8,9 @@ module.exports = {
     thanks: 'https://i.imgur.com/FrTvTpq.gif',
     thankYou: 'https://i.imgur.com/GgrQ9Ap.gif',
     urWelcome: 'https://i.imgur.com/N0653cE.gif',
-    luck: 'https://i.imgur.com/GVL1rM0.gif',
-    gift: 'https://i.imgur.com/K6n0EPx.gif',
+
+    gift: 'https://i.imgur.com/fnVRQB7.jpg',
+    giftClaimed: 'https://i.imgur.com/yS6CGBh.jpg',
 
     // ECONOMY
     balanceThumbnail: 'https://i.imgur.com/3KU57Ed.gif',
