@@ -101,44 +101,47 @@ module.exports = class MultiTransfer extends Command {
         const collector = confirmMessage.createMessageComponentCollector({ filter, time: 8000 });
 
         collector.on("collect", async (interaction) => {
-            await interaction.deferUpdate();
+            await interaction.deferUpdate().then(() => {
+                if (interaction.customId === "confirm_button") {
+                    sender.balance.coin -= totalAmount;
 
-            if (interaction.customId === "confirm_button") {
-                sender.balance.coin -= totalAmount;
-
-                await Promise.all(
-                    users.map(async (user) => {
-                        const recipient = await Users.findOne({ userId: user.id }) || new Users({ userId: user.id, balance: { coin: 0 } });
-                        recipient.balance.coin += transferAmount;
-                        await recipient.save();
-                    })
-                );
-
-                await sender.save();
-
-                // Send success message
-                const successEmbed = client.embed()
-                    .setColor(color.main)
-                    .setDescription(
-                        multiTransferMessages.success
-                            .replace("%{amount}", client.utils.formatNumber(totalAmount))
-                            .replace("%{emoji}", emoji.coin)
-                            .replace("%{userCount}", users.length)
-                            .replace("%{individualAmount}", client.utils.formatNumber(transferAmount))
-                            .replace("%{emoji}", emoji.coin)
+                    await Promise.all(
+                        users.map(async (user) => {
+                            const recipient = await Users.findOne({ userId: user.id }) || new Users({ userId: user.id, balance: { coin: 0 } });
+                            recipient.balance.coin += transferAmount;
+                            await recipient.save();
+                        })
                     );
 
-                await ctx.channel.send({ embeds: [successEmbed] });
-                confirmMessage.delete();
-            } else {
-                // Canceled
-                const cancelEmbed = client.embed()
-                    .setColor(color.warning)
-                    .setDescription(multiTransferMessages.cancel);
+                    await sender.save();
 
-                await ctx.channel.send({ embeds: [cancelEmbed] });
-                confirmMessage.delete();
-            }
+                    // Send success message
+                    const successEmbed = client.embed()
+                        .setColor(color.main)
+                        .setDescription(
+                            multiTransferMessages.success
+                                .replace("%{amount}", client.utils.formatNumber(totalAmount))
+                                .replace("%{emoji}", emoji.coin)
+                                .replace("%{userCount}", users.length)
+                                .replace("%{individualAmount}", client.utils.formatNumber(transferAmount))
+                                .replace("%{emoji}", emoji.coin)
+                        );
+    
+                    await ctx.channel.send({ embeds: [successEmbed] });
+                    confirmMessage.delete();
+                } else {
+                    // Canceled
+                    const cancelEmbed = client.embed()
+                        .setColor(color.warning)
+                        .setDescription(multiTransferMessages.cancel);
+    
+                    await ctx.channel.send({ embeds: [cancelEmbed] });
+                    confirmMessage.delete();
+                }
+            }).catch(error => {
+                console.error('Database update error:', error);
+                ctx.channel.send(generalMessages.databaseUpdate);
+            });
         });
 
         collector.on("end", (collected) => {
