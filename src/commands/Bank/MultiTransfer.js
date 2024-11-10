@@ -147,7 +147,17 @@ module.exports = class MultiTransfer extends Command {
                         );
         
                     ctx.channel.send({ embeds: [successEmbed] });
-                    confirmMessage.delete();
+                    setTimeout(async () => {
+                        try {
+                            await confirmMessage.delete();
+                        } catch (error) {
+                            if (error.code === 10008) {
+                                console.log('Message already deleted or unknown.');
+                            } else {
+                                console.error('Error deleting the success message:', error);
+                            }
+                        }
+                    }, 10000);
                 } else {
                     // Canceled action
                     const cancelEmbed = client.embed()
@@ -155,7 +165,18 @@ module.exports = class MultiTransfer extends Command {
                         .setDescription(multiTransferMessages.cancel);
         
                     ctx.channel.send({ embeds: [cancelEmbed] });
-                    confirmMessage.delete();
+                    // Schedule the embed message to be deleted after 10 seconds
+                    setTimeout(async () => {
+                        try {
+                            await confirmMessage.delete();
+                        } catch (error) {
+                            if (error.code === 10008) {
+                                console.log('Message already deleted or unknown.');
+                            } else {
+                                console.error('Error deleting the success message:', error);
+                            }
+                        }
+                    }, 10000);
                 }
             }).catch((error) => {
                 console.error('Database update error:', error);
