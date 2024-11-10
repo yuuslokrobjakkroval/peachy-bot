@@ -58,7 +58,7 @@ module.exports = class Avatar extends Command {
         })
         .setTimestamp();
 
-    await ctx.sendMessage({ content: "", embeds: [embed] });
+    return ctx.sendMessage({ embeds: [embed] });
   }
 
 };
