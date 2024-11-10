@@ -127,9 +127,9 @@ module.exports = class Gift extends Command {
 
             const giftEmbed = client.embed()
                 .setColor(color.main)
+                .setThumbnail(gif.gift)
                 .setTitle(`${boxType.charAt(0).toUpperCase() + boxType.slice(1)} Mystery Box Opened!`)
                 .setDescription(`Click the button below to claim your rewards:`)
-                .setImage(gif.gift)
                 .setFooter({text: "Good luck with your rewards!"});
 
             const giftMessage = await selectedChannel.send({
@@ -169,11 +169,11 @@ module.exports = class Gift extends Command {
                     claimedGifts[selectedChannel.id].push(interaction.user.id);
 
                     // Create an embed for the success message
-                    const successEmbed = client.embed()
+                    const successEmbed = this.client.embed()
                         .setColor(color.main)
+                        .setThumbnail(gif.giftClaimed)
                         .setTitle(`Gift Claimed!`)
                         .setDescription(`${interaction.displayName || interaction.user.displayName} received:\n${rewardSummary}`)
-                        .setImage(gif.giftClaimed)
                         .setFooter({text: "Enjoy your rewards!"});
 
                     // Send the success message as an embed
