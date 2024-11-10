@@ -28,31 +28,22 @@ module.exports = class MultiTransfer extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const transferMessages = language.locales.get(language.defaultLocale)?.bankMessages?.transferMessages;
+        const transferMessages = language.locales.get(language.defaultLocale)?.bankMessages?.multiTransferMessages;
 
         // Fetch the sender's data
         const user = await Users.findOne({ userId: ctx.author.id });
         if (!user || user.balance.coin < 1) {
-            return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
+            return await client.utils.sendErrorMessage(client, ctx, transferMessages.zeroBalance, color);
         }
 
         // The amount to transfer will be the last argument
         let amount = args.pop();
         let totalAmount;
-        console.log(amount);
-        
 
         // Formatting the amount (support for 'all', 'half', 'k', 'm', etc.)
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
-            const amountMap = { all: user.balance.coin, half: Math.ceil(user.balance.coin / 2) };
             const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
-
-            // Check for predefined amountMap values (all, half)
-            if (amount in amountMap) {
-                totalAmount = amountMap[amount];
-            }
-            // Check for custom numeric values with suffix (e.g. 100k, 1m, 5b)
-            else if (amount.match(/\d+[kmbtq]/i)) {
+            if (amount.match(/\d+[kmbtq]/i)) {
                 const unit = amount.slice(-1).toLowerCase();
                 const number = parseInt(amount.slice(0, -1)); // Remove the suffix
                 totalAmount = number * (multiplier[unit] || 1);
@@ -73,22 +64,46 @@ module.exports = class MultiTransfer extends Command {
 
         const targetUsers = [];
 
-for (let i = 0; i < args.length - 1; i++) {
-    const user = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[i]) || ctx.guild.members.cache.find(m => m.user.tag === args[i]);
+        for (let i = 0; i < args.length; i++) {
+            const mentionedUser = ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[i]) || ctx.guild.members.cache.find(m => m.user.tag === args[i]);
 
-    if (user) {
-        targetUsers.push(user);
-    } else {
-        return await client.utils.sendErrorMessage(client, ctx, transferMessages.noTargets, color);
-    }
-}
+            if (mentionedUser) {
+                targetUsers.push(mentionedUser);
+            } else {
+                return await client.utils.sendErrorMessage(client, ctx, transferMessages.invalidUser, color);
+            }
+        }
 
-    if (targetUsers.length < 1) {
-            return await client.utils.sendErrorMessage(client, ctx, transferMessages.noTargets, color);
+        if (targetUsers.length < 1) {
+            return await client.utils.sendErrorMessage(client, ctx, transferMessages.noUser, color);
         }
 
         // Calculate the share for each user
         const sharePerUser = Math.floor(totalAmount / targetUsers.length);
+
+        // Check if the total amount is enough to give each user their share
+        const totalShareRequired = sharePerUser * targetUsers.length;
+
+        // If the total share required exceeds the user's balance, inform them about insufficient funds
+        if (totalShareRequired > user.balance.coin) {
+            // Find out how many users can be paid
+            let ableToPay = Math.floor(user.balance.coin / sharePerUser);
+
+            // If ableToPay is less than targetUsers.length, we inform the sender
+            const usersCannotPay = targetUsers.slice(ableToPay).map(u => u.displayName).join(', ');
+
+            return await ctx.sendMessage({
+                embeds: [
+                    client.embed()
+                        .setColor(color.danger)
+                        .setDescription(
+                            transferMessages.insufficientBalanceForAll
+                                .replace('%{userList}', usersCannotPay)
+                                .replace('%{amount}', client.utils.formatNumber(sharePerUser))
+                        ),
+                ],
+            });
+        }
 
         // Create confirm and cancel buttons
         const confirmButton = client.utils.labelButton('confirm_button', 'Confirm', 3);
@@ -103,7 +118,7 @@ for (let i = 0; i < args.length - 1; i++) {
                     .replace('%{mainLeft}', emoji.mainLeft)
                     .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
                     .replace('%{mainRight}', emoji.mainRight) +
-                transferMessages.confirmMultiple
+                transferMessages.confirm
                     .replace('%{amount}', client.utils.formatNumber(totalAmount))
                     .replace('%{emoji}', emoji.coin)
                     .replace('%{userList}', targetUsers.map(u => u.displayName).join(', '))
@@ -151,7 +166,7 @@ for (let i = 0; i < args.length - 1; i++) {
                                                     .replace('%{mainLeft}', emoji.mainLeft)
                                                     .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
                                                     .replace('%{mainRight}', emoji.mainRight) +
-                                                transferMessages.successMultiple
+                                                transferMessages.success
                                                     .replace('%{amount}', client.utils.formatNumber(totalAmount))
                                                     .replace('%{emoji}', emoji.coin)
                                                     .replace('%{userList}', targetUsers.map(u => u.displayName).join(', '))
