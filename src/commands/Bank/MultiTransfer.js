@@ -80,9 +80,11 @@ module.exports = class MultiTransfer extends Command {
 
         // Calculate the share for each user
         const sharePerUser = Math.floor(totalAmount / targetUsers.length);
+        console.log(sharePerUser)
 
         // Check if the total amount is enough to give each user their share
         const totalShareRequired = sharePerUser * targetUsers.length;
+        console.log(totalShareRequired)
 
         // If the total share required exceeds the user's balance, inform them about insufficient funds
         if (totalShareRequired > user.balance.coin) {
@@ -141,7 +143,7 @@ module.exports = class MultiTransfer extends Command {
                 interaction.deferUpdate().then(() => {
                     if (interaction.customId === 'confirm_button') {
                         // Perform the transfers to each user
-                        user.balance.coin -= totalAmount;
+                        user.balance.coin -= totalShareRequired;
                         Users.findOneAndUpdate(
                             { userId: ctx.author.id },
                             { 'balance.coin': user.balance.coin }
