@@ -36,7 +36,7 @@ module.exports = class Avatar extends Command {
     });
   }
 
-  async run(client, ctx, args, color, emoji, language) {
+  run(client, ctx, args, color, emoji, language) {
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
 
     const user = ctx.isInteraction
@@ -45,7 +45,7 @@ module.exports = class Avatar extends Command {
 
     if (!user) {
       const errorMessage = avatarMessages?.noUserMentioned || "No user mentioned";
-      return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+      return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
     }
 
     const embed = client.embed()
