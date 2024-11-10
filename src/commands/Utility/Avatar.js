@@ -62,7 +62,7 @@ module.exports = class Avatar extends Command {
         })
         .setTimestamp();
 
-    return ctx.sendMessage({ embeds: [embed] });
+    return ctx.isInteraction ? ctx.interaction.editReply({ content: '', embeds: [embed] }) : ctx.sendMessage({ content: '', embeds: [embed], });
   }
 
 };
