@@ -71,8 +71,8 @@ module.exports = class Deposit extends Command {
 
                 user.save()
                     .then(() => {
-                        const embed = client
-                            .embed().setColor(color.main)
+                        const embed = client.embed()
+                            .setColor(color.main)
                             .setDescription(
                                 generalMessages.title
                                     .replace('%{mainLeft}', emoji.mainLeft)

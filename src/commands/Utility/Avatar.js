@@ -39,6 +39,10 @@ module.exports = class Avatar extends Command {
   run(client, ctx, args, color, emoji, language) {
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
 
+    if (ctx.isInteraction) {
+      ctx.interaction.deferReply();
+    }
+
     const user = ctx.isInteraction
         ? ctx.interaction.options.getUser("user") || ctx.author
         : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;

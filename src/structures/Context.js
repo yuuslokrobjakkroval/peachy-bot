@@ -27,9 +27,15 @@ module.exports = class Context {
 
     sendMessage(content) {
         if (this.isInteraction) {
-            this.msg = this.interaction.reply({ content, fetchReply: true })
-                .then(response => this.msg = response)
-                .catch(err => console.error("Error sending interaction reply:", err));
+            if (this.interaction.deferred || this.interaction.replied) {
+                this.msg = this.interaction.editReply(content)
+                    .then(response => this.msg = response)
+                    .catch(err => console.error("Error sending interaction reply:", err));
+            } else {
+                this.msg = this.interaction.reply({content, fetchReply: true})
+                    .then(response => this.msg = response)
+                    .catch(err => console.error("Error sending interaction reply:", err));
+            }
         } else if (this.message) {
             this.msg = this.message.channel.send(content)
                 .then(response => this.msg = response)
