@@ -4,7 +4,7 @@ const Users = require("../../schemas/user");
 module.exports = class MultiTransfer extends Command {
     constructor(client) {
         super(client, {
-            name: "multiTransfer",
+            name: "multitransfer",
             description: {
                 content: "Transfer coins to multiple users at once.",
                 examples: ["mpay @user1 @user2 100000", "mpay @user1 @user2 100k"],
