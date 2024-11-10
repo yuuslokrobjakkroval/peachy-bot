@@ -13,7 +13,7 @@ module.exports = class Transfer extends Command {
                 usage: "transfer <user> [amount]",
             },
             category: "economy",
-            aliases: ["pay", "give", "oy"],
+            aliases: ["pay", "give", "oy", "t"],
             cooldown: 5,
             args: true,
             permissions: {
@@ -30,17 +30,18 @@ module.exports = class Transfer extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const transferMessages = language.locales.get(language.defaultLocale)?.bankMessages?.transferMessages;
 
-        // Fetch the target user
         const targetUser = ctx.isInteraction
             ? ctx.interaction.options.getUser('user') || ctx.author
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
 
-        // Prevent transferring to self or bot
+        // Prevent transferring to self
         if (ctx.author.id === targetUser.id) {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.selfTransfer, color);
         }
-        if (targetUser.id === client.user.id) {
-            return await client.utils.sendErrorMessage(client, ctx, transferMessages.botTransfer, color);
+
+        // Prevent transferring to bots
+        if (targetUser && targetUser.user.bot) {
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
         }
 
         // Fetch user data for both sender and receiver
