@@ -51,7 +51,7 @@ module.exports = class Socials extends Command {
         const ttName = user.social.tiktok.name || smMessages?.notSet || 'Not set';
         const ttLink = user.social.tiktok.link || '';
 
-        const socialDescription = `**${emoji.social.facebook} : ${fbName && fbLink ? `[${fbName}](${fbLink})` : fbName}**\n**${emoji.social.instagram} : ${igName && igLink ? `[${igName}](${igLink})` : igName}**\n**${emoji.social.tiktok} : ${ttName && ttLink ? `[${ttName}](${ttLink})` : ttName}**\n`;
+        const socialDescription = `**${emoji.social.facebook} : ${fbName && fbLink ? `[${fbName}](${fbLink})` : fbName}**\n\n**${emoji.social.instagram} : ${igName && igLink ? `[${igName}](${igLink})` : igName}**\n\n**${emoji.social.tiktok} : ${ttName && ttLink ? `[${ttName}](${ttLink})` : ttName}**\n`;
 
         const embed = client.embed()
             .setTitle(`${smMessages?.title || '📱 Social Media Profiles'} for ${targetUsername} 📱`)
