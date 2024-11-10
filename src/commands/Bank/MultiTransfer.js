@@ -123,7 +123,7 @@ module.exports = class MultiTransfer extends Command {
                                     if (!targetUser) {
                                         targetUser = new Users({ userId: target.id, balance: { coin: 0, bank: 0 } });
                                     }
-                                    targetUser.balance.coin += sharePerUser;
+                                    targetUser.balance.coin += totalAmount;
 
                                     Users.findOneAndUpdate(
                                         { userId: target.id },
