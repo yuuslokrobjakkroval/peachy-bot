@@ -13,12 +13,6 @@ module.exports = class Avatar extends Command {
       aliases: ["av", "pfp"],
       cooldown: 3,
       args: false,
-      player: {
-        voice: false,
-        dj: false,
-        active: false,
-        djPerm: null,
-      },
       permissions: {
         dev: false,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
@@ -36,11 +30,11 @@ module.exports = class Avatar extends Command {
     });
   }
 
-  run(client, ctx, args, color, emoji, language) {
+  async run(client, ctx, args, color, emoji, language) {
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
 
     if (ctx.isInteraction) {
-      ctx.interaction.deferReply();
+      await ctx.interaction.deferReply();
     }
 
     const user = ctx.isInteraction
@@ -62,7 +56,7 @@ module.exports = class Avatar extends Command {
         })
         .setTimestamp();
 
-    return ctx.isInteraction ? ctx.interaction.editReply({ content: '', embeds: [embed] }) : ctx.sendMessage({ content: '', embeds: [embed], });
+    return ctx.isInteraction ? await ctx.interaction.editReply({ content: '', embeds: [embed] }) : await ctx.sendMessage({ content: '', embeds: [embed], });
   }
 
 };
