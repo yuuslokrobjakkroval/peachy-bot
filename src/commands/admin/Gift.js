@@ -185,17 +185,34 @@ module.exports = class Gift extends Command {
 
                     const successMessage = await interaction.followUp({embeds: [successEmbed]});
 
+                    // Initialize a map to track the number of claims per user
+                    const userClaimCounts = {};
+
+                    // Fetch usernames for claimed users and count the claims for each user
                     const claimedUsers = await Promise.all(claimedGifts[selectedChannel.id].map(userId => {
-                        return client.users.fetch(userId).then(user => user.displayName).catch(err => {
+                        return client.users.fetch(userId).then(user => {
+                            // Increment the claim count for the user
+                            if (userClaimCounts[userId]) {
+                                userClaimCounts[userId] += 1;  // If user has already claimed, increment the count
+                            } else {
+                                userClaimCounts[userId] = 1;   // If user is claiming for the first time, initialize count
+                            }
+
+                            return user.displayName; // Return the user's display name
+                        }).catch(err => {
                             console.error(`Error fetching user ${userId}:`, err);
-                            return null; // Return null for users that could not be fetched
+                            return null; // Return null if user fetch fails
                         });
                     }));
 
+                    // Filter out null values (failed user fetches)
                     const claimedUsersString = claimedUsers.filter(Boolean).join(', ');
 
+                    // Calculate total claims and total unique users who have claimed
+                    const totalClaims = Object.values(userClaimCounts).reduce((total, count) => total + count, 0); // Total claims made by all users
+                      // Total number of boxes
                     const responseMessage = `Gift boxes have been sent to **${amount}** random channels: ${sentChannelNames.join(', ')}!\n` +
-                        `${selectedChannel.name} claimed by: ${claimedUsersString} & claimed: ${Object.values(claimedUsers).length} / ${amount}`;
+                        `${selectedChannel.name} claimed by: ${claimedUsersString} & claimed: ${totalClaims} / ${amount}`;
 
                     if (ctx.isInteraction) {
                         await ctx.interaction.editReply({content: responseMessage});
