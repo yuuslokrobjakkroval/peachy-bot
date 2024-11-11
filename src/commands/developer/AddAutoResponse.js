@@ -68,16 +68,6 @@ module.exports = class AddAutoResponse extends Command {
             });
         }
 
-        // Check if the trigger already exists in the autoresponse array
-        const existingResponse = responseDoc.autoresponse.find(r => r.trigger === trigger);
-        if (existingResponse) {
-            return await ctx.sendMessage({
-                embeds: [
-                    client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'trigger_exists')),
-                ],
-            });
-        }
-
         // Add the new trigger and response to the autoresponse array
         responseDoc.autoresponse.push({ trigger, response });
 
