@@ -58,7 +58,7 @@ module.exports = class RemoveAutoResponse extends Command {
         }
 
         // Find the index of the trigger to remove
-        const triggerIndex = responseDoc.autoresponse.findIndex(r => r.trigger === trigger);
+        const triggerIndex = responseDoc.autoresponse.findIndex(r => r.trigger.toLowerCase() === trigger.toLowerCase());
 
         if (triggerIndex === -1) {
             return await ctx.sendMessage({
