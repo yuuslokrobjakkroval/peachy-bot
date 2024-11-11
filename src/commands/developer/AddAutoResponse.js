@@ -63,10 +63,14 @@ module.exports = class AddAutoResponse extends Command {
             });
         }
 
-        // Calculate the next id based on the highest existing id in the autoresponse array
-        const nextId = responseDoc.autoresponse.length > 0
-            ? Math.max(...responseDoc.autoresponse.map(ar => ar.id)) + 1
-            : 1;
+        // Calculate the next id by finding the highest existing numeric part in the autoresponse array
+        const lastId = responseDoc.autoresponse.reduce((max, ar) => {
+            const num = parseInt(ar.id.slice(1), 10); // Extract the numeric part from id
+            return isNaN(num) ? max : Math.max(max, num);
+        }, 0);
+
+        // Format the next id as "r" followed by a zero-padded number
+        const nextId = `r${String(lastId + 1).padStart(2, '0')}`;
 
         // Add the new trigger and response with the calculated id
         responseDoc.autoresponse.push({ id: nextId, trigger, response });
