@@ -30,58 +30,68 @@ module.exports = class RemoveAutoResponse extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        // Get the ID from the options (for slash commands)
+    run(client, ctx, args, color, emoji, language) {
         const id = ctx.isInteraction
             ? ctx.interaction.options.getString('id')
-            : args[0]; // Fallback if not a slash command
+            : args[0];
 
-        if (!id || !/^r\d{2}$/.test(id)) {  // Validate that id is in the correct format
-            return await ctx.sendMessage({
+        if (!id || !/^r\d{2}$/.test(id)) {
+            return ctx.sendMessage({
                 embeds: [
                     client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_args')),
                 ],
             });
         }
 
-        const guildId = ctx.guild.id; // Get the guild ID from the context
+        const guildId = ctx.guild.id;
 
-        // Find the response document for this guild
-        let responseDoc = await Response.findOne({ guildId });
+        Response.findOne({ guildId }).then(responseDoc => {
+            if (!responseDoc) {
+                return ctx.sendMessage({
+                    embeds: [
+                        client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'no_response_found')),
+                    ],
+                });
+            }
 
-        if (!responseDoc) {
-            return await ctx.sendMessage({
+            const entryIndex = responseDoc.autoresponse.findIndex(r => r.id === id);
+
+            if (entryIndex === -1) {
+                return ctx.sendMessage({
+                    embeds: [
+                        client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'id_not_found')),
+                    ],
+                });
+            }
+
+            responseDoc.autoresponse.splice(entryIndex, 1);
+
+            responseDoc.save()
+                .then(() => {
+                    const embed = client
+                        .embed()
+                        .setColor(color.main)
+                        .setDescription(
+                            `${emoji.tick} Successfully removed the autoresponse with ID **\`${id}\`** from this guild.`
+                        );
+
+                    ctx.sendMessage({ embeds: [embed] });
+                })
+                .catch(err => {
+                    console.error(err);
+                    ctx.sendMessage({
+                        embeds: [
+                            client.embed().setColor(color.danger).setDescription("Failed to remove the autoresponse. Please try again."),
+                        ],
+                    });
+                });
+        }).catch(err => {
+            console.error(err);
+            ctx.sendMessage({
                 embeds: [
-                    client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'no_response_found')),
+                    client.embed().setColor(color.danger).setDescription("An error occurred while accessing autoresponses. Please try again."),
                 ],
             });
-        }
-
-        // Find the index of the entry to remove by ID
-        const entryIndex = responseDoc.autoresponse.findIndex(r => r.id === id);
-
-        if (entryIndex === -1) {
-            return await ctx.sendMessage({
-                embeds: [
-                    client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'id_not_found')),
-                ],
-            });
-        }
-
-        // Remove the entry from the autoresponse array
-        responseDoc.autoresponse.splice(entryIndex, 1);
-
-        // Save the updated document
-        await responseDoc.save();
-
-        // Send a success message
-        const embed = client
-            .embed()
-            .setColor(color.main)
-            .setDescription(
-                `${emoji.tick} Successfully removed the autoresponse with ID **\`${id}\`** from this guild.`
-            );
-
-        return await ctx.sendMessage({ embeds: [embed] });
+        });
     }
 };
