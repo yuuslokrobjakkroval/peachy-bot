@@ -59,15 +59,15 @@ module.exports = class MultiTransfer extends Command {
                 const unit = amount.slice(-1).toLowerCase();
                 const number = parseInt(amount);
                 transferAmount = number * (multiplier[unit] || 1);
-            } else if (amount) {
-                transferAmount = parseInt(amount);
             } else {
-                return await ctx.sendMessage({
-                    embeds: [
-                        client.embed().setColor(color.danger).setDescription(multiTransferMessages.invalidAmount),
-                    ],
-                });
+                transferAmount = parseInt(amount);
             }
+        } else {
+            return await ctx.sendMessage({
+                embeds: [
+                    client.embed().setColor(color.danger).setDescription(multiTransferMessages.invalidAmount),
+                ],
+            });
         }
 
         if (transferAmount <= 0) {
