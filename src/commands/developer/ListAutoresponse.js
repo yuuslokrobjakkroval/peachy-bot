@@ -4,7 +4,7 @@ const Response = require('../../schemas/response');
 module.exports = class ListAutoResponse extends Command {
     constructor(client) {
         super(client, {
-            name: 'listAutoResponse',
+            name: 'listautoresponse',
             description: {
                 content: 'List all autoresponse triggers for this guild.',
                 examples: ['listAutoResponse'],

@@ -4,7 +4,7 @@ const Response = require('../../schemas/response');
 module.exports = class RemoveAutoResponse extends Command {
     constructor(client) {
         super(client, {
-            name: 'removeAutoResponse',
+            name: 'removeautoresponse',
             description: {
                 content: "Remove an autoresponse trigger from a specific guild.",
                 examples: ['removeAutoResponse "hello"'],

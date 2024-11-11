@@ -4,7 +4,7 @@ const Response = require('../../schemas/response');
 module.exports = class AddAutoResponse extends Command {
     constructor(client) {
         super(client, {
-            name: 'addAutoResponse',
+            name: 'addautoresponse',
             description: {
                 content: "Add an autoresponse trigger and response for a specific guild.",
                 examples: ['addAutoResponse "hello" "Hi, how can I assist you?"'],
