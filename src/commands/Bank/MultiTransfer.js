@@ -104,47 +104,51 @@ module.exports = class MultiTransfer extends Command {
             interaction.deferUpdate().then(() => {
                 if (interaction.customId === "confirm_button") {
                     sender.balance.coin -= totalAmount;
-                    users.forEach((user) => {
-                        Users.findOne({ userId: user.id })
-                            .then((recipient) => {
-                                if (!recipient) {
-                                    recipient = new Users({ userId: user.id, balance: { coin: 0 } });
+
+                    confirmMessage.edit({ content: '' });
+
+                    Users.findOneAndUpdate(
+                        { userId: ctx.author.id },
+                        { 'balance.coin': sender.balance.coin }
+                    ).then(() => {
+                        users.forEach((user) => {
+                            Users.findOne({ userId: user.id })
+                                .then((recipient) => {
+                                    if (!recipient) {
+                                        recipient = new Users({userId: user.id, balance: { coin: 0 }});
+                                    }
+                                    recipient.balance.coin += transferAmount;
+                                    return recipient.save();
+                                })
+                                .catch((error) => {
+                                    console.error('Error updating recipient balance:', error);
+                                });
+                        });
+
+                        const successEmbed = client.embed()
+                            .setColor(color.main)
+                            .setDescription(
+                                multiTransferMessages.success
+                                    .replace("%{amount}", client.utils.formatNumber(totalAmount))
+                                    .replace("%{emoji}", emoji.coin)
+                                    .replace("%{userCount}", users.length)
+                                    .replace("%{individualAmount}", client.utils.formatNumber(transferAmount))
+                                    .replace("%{emoji}", emoji.coin)
+                            );
+
+                        ctx.channel.send({embeds: [successEmbed]});
+                        setTimeout(async () => {
+                            try {
+                                await confirmMessage.delete();
+                            } catch (error) {
+                                if (error.code === 10008) {
+                                    console.log('Message already deleted or unknown.');
+                                } else {
+                                    console.error('Error deleting the success message:', error);
                                 }
-                                recipient.balance.coin += transferAmount;
-                                return recipient.save();
-                            })
-                            .catch((error) => {
-                                console.error('Error updating recipient balance:', error);
-                            });
-                    });
-
-                    sender.save().catch((error) => {
-                        console.error('Error updating sender balance:', error);
-                    });
-
-                    const successEmbed = client.embed()
-                        .setColor(color.main)
-                        .setDescription(
-                            multiTransferMessages.success
-                                .replace("%{amount}", client.utils.formatNumber(totalAmount))
-                                .replace("%{emoji}", emoji.coin)
-                                .replace("%{userCount}", users.length)
-                                .replace("%{individualAmount}", client.utils.formatNumber(transferAmount))
-                                .replace("%{emoji}", emoji.coin)
-                        );
-        
-                    ctx.channel.send({ embeds: [successEmbed] });
-                    setTimeout(async () => {
-                        try {
-                            await confirmMessage.delete();
-                        } catch (error) {
-                            if (error.code === 10008) {
-                                console.log('Message already deleted or unknown.');
-                            } else {
-                                console.error('Error deleting the success message:', error);
                             }
-                        }
-                    }, 10000);
+                        }, 10000);
+                    })
                 } else {
                     const cancelEmbed = client.embed()
                         .setColor(color.warning)
