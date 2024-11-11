@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/user.js');
 
 module.exports = class Theme extends Command {
     constructor(client) {
@@ -51,103 +50,98 @@ module.exports = class Theme extends Command {
         const convertSubCommand = subCommand?.toLowerCase();
 
         client.utils.getUser(ctx.author.id).then(async (user) => {
-                if (!user) {
-                    return ctx.sendMessage('User not found.');
-                }
+            if (!user) {
+                return ctx.sendMessage('User not found.');
+            }
 
-                // Save the user document and then update the theme
-                return user.save().then(() => {
-                    switch (convertSubCommand) {
-                        case 'normal':
-                        case 'peach':
-                        case 'goma': {
-                            const equippedItem = user.equip.find(item => item.name?.startsWith('t') || item.name?.startsWith('st'));
-                            if (equippedItem) {
-                                const inventoryItem = user.inventory.find(item => item.id === equippedItem.id);
+            user.save().then(() => {
+                switch (convertSubCommand) {
+                    case 'normal':
+                    case 'peach':
+                    case 'goma': {
+                        const equippedItem = user.equip.find(item => item.name?.startsWith('t') || item.name?.startsWith('st'));
+                        if (equippedItem) {
+                            const inventoryItem = user.inventory.find(item => item.id === equippedItem.id);
 
-                                if (inventoryItem) {
-                                    // Increment quantity in inventory
-                                    inventoryItem.quantity += equippedItem.quantity;
-                                } else {
-                                    // Push equipped item back to inventory
-                                    user.inventory.push({
-                                        id: equippedItem.id,
-                                        name: equippedItem.name,
-                                        quantity: equippedItem.quantity,
-                                    });
-                                }
-
-                                // Remove item from equip
-                                user.equip = user.equip.filter(item => item.id !== equippedItem.id);
+                            if (inventoryItem) {
+                                // Increment quantity in inventory
+                                inventoryItem.quantity += equippedItem.quantity;
+                            } else {
+                                // Push equipped item back to inventory
+                                user.inventory.push({
+                                    id: equippedItem.id,
+                                    name: equippedItem.name,
+                                    quantity: equippedItem.quantity,
+                                });
                             }
-                            const theme = convertSubCommand;
 
-                            embed
-                                .setColor(color.main)
-                                .setDescription(
-                                    generalMessages.title
-                                        .replace('%{mainLeft}', emoji.mainLeft)
-                                        .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆")
-                                        .replace('%{mainRight}', emoji.mainRight) +
-                                    themeMessages?.setThemeMessage.replace('%{theme}', client.utils.formatCapitalize(theme))
-                                )
-                                .setFooter({
-                                    text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
-                                    iconURL: ctx.author.displayAvatarURL(),
-                                });
-
-                            // Update theme preference
-                            user.preferences.theme = theme;
-                            return user.save().then(() => {
-                                ctx.sendMessage({ embeds: [embed] });
+                            // Remove item from equip
+                            user.equip = user.equip.filter(item => item.id !== equippedItem.id);
+                        }
+                        user.preferences.theme = convertSubCommand;
+                        embed
+                            .setColor(color.main)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                themeMessages?.setThemeMessage.replace('%{theme}', client.utils.formatCapitalize(convertSubCommand))
+                            )
+                            .setFooter({
+                                text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
                             });
-                        }
 
-                        case 'help': {
-                            const { examples, usage } = this.description;
-                            embed
-                                .setColor(color.main)
-                                .setDescription(
-                                    generalMessages.title
-                                        .replace('%{mainLeft}', emoji.mainLeft)
-                                        .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏")
-                                        .replace('%{mainRight}', emoji.mainRight) +
-                                    themeMessages?.helpDescription
-                                )
-                                .addFields([
-                                    { name: themeMessages?.examplesLabel || 'Examples', value: examples.join('\n') },
-                                    { name: themeMessages?.usageLabel || 'Usage', value: usage }
-                                ])
-                                .setFooter({
-                                    text: themeMessages?.footer.replace('%{user}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
-                                    iconURL: ctx.author.displayAvatarURL(),
-                                });
-                            ctx.sendMessage({ embeds: [embed] });
-                            break;
-                        }
-
-                        default: {
-                            const currentTheme = user.preferences.theme || 'Not set';
-                            embed
-                                .setColor(color.main)
-                                .setDescription(
-                                    generalMessages.title
-                                        .replace('%{mainLeft}', emoji.mainLeft)
-                                        .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆")
-                                        .replace('%{mainRight}', emoji.mainRight) +
-                                    themeMessages?.currentThemeMessage.replace('%{theme}', client.utils.formatCapitalize(currentTheme))
-                                )
-                                .setFooter({
-                                    text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
-                                    iconURL: ctx.author.displayAvatarURL(),
-                                });
-
-                            ctx.sendMessage({ embeds: [embed] });
-                            break;
-                        }
+                        ctx.sendMessage({embeds: [embed]});
+                        break;
                     }
-                });
-            })
+
+                    case 'help': {
+                        const {examples, usage} = this.description;
+                        embed
+                            .setColor(color.main)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                themeMessages?.helpDescription
+                            )
+                            .addFields([
+                                {name: themeMessages?.examplesLabel || 'Examples', value: examples.join('\n')},
+                                {name: themeMessages?.usageLabel || 'Usage', value: usage}
+                            ])
+                            .setFooter({
+                                text: themeMessages?.footer.replace('%{user}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
+                        ctx.sendMessage({embeds: [embed]});
+                        break;
+                    }
+
+                    default: {
+                        const currentTheme = user.preferences.theme || 'Not set';
+                        embed
+                            .setColor(color.main)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                themeMessages?.currentThemeMessage.replace('%{theme}', client.utils.formatCapitalize(currentTheme))
+                            )
+                            .setFooter({
+                                text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
+
+                        ctx.sendMessage({embeds: [embed]});
+                        break;
+                    }
+                }
+            });
+        })
             .catch((err) => {
                 console.error(`Error fetching or updating user data: ${err}`);
                 ctx.sendMessage({
