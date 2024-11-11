@@ -37,16 +37,13 @@ module.exports = class AddAutoResponse extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        // Get the trigger and response from the options (for slash commands)
         const trigger = ctx.isInteraction
             ? ctx.interaction.options.getString('trigger')
-            : args[0]; // Fallback if not a slash command
-
+            : args[0];
         const response = ctx.isInteraction
             ? ctx.interaction.options.getString('response')
-            : args.slice(1).join(' '); // Fallback if not a slash command
+            : args.slice(1).join(' ');
 
-        // Validate that both trigger and response are provided
         if (!trigger || !response) {
             return await ctx.sendMessage({
                 embeds: [
@@ -55,12 +52,10 @@ module.exports = class AddAutoResponse extends Command {
             });
         }
 
-        const guildId = ctx.guild.id; // Get the guild ID from the context
+        const guildId = ctx.guild.id;
 
-        // Find the response document for this guild
         let responseDoc = await Response.findOne({ guildId });
 
-        // If the document doesn't exist, create a new one
         if (!responseDoc) {
             responseDoc = new Response({
                 guildId,
@@ -68,13 +63,16 @@ module.exports = class AddAutoResponse extends Command {
             });
         }
 
-        // Add the new trigger and response to the autoresponse array
-        responseDoc.autoresponse.push({ trigger, response });
+        // Calculate the next id based on the highest existing id in the autoresponse array
+        const nextId = responseDoc.autoresponse.length > 0
+            ? Math.max(...responseDoc.autoresponse.map(ar => ar.id)) + 1
+            : 1;
 
-        // Save the updated document
+        // Add the new trigger and response with the calculated id
+        responseDoc.autoresponse.push({ id: nextId, trigger, response });
+
         await responseDoc.save();
 
-        // Send a success message
         const embed = client
             .embed()
             .setColor(color.main)
