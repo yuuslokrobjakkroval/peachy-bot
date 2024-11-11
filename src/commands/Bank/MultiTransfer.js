@@ -103,18 +103,7 @@ module.exports = class MultiTransfer extends Command {
         collector.on("collect", (interaction) => {
             interaction.deferUpdate().then(() => {
                 if (interaction.customId === "confirm_button") {
-                    // Disable the button after the user clicks it to prevent further clicks
-                    const confirmButton = client.utils.labelButton("confirm_button", "Confirmed", 3, true);  // Disabled
-                    const cancelButton = client.utils.labelButton("cancel_button", "Cancel", 4, false);  // Keep cancel enabled
-                    const buttonRow = client.utils.createButtonRow(confirmButton, cancelButton);
-        
-                    // Send confirmation that action is processing
-                    confirmMessage.edit({ components: [buttonRow] });
-        
-                    // Proceed with the transfer logic
                     sender.balance.coin -= totalAmount;
-        
-                    // Update balances for all users (using Promise.all)
                     users.forEach((user) => {
                         Users.findOne({ userId: user.id })
                             .then((recipient) => {
@@ -128,13 +117,11 @@ module.exports = class MultiTransfer extends Command {
                                 console.error('Error updating recipient balance:', error);
                             });
                     });
-        
-                    // Save the sender's updated balance
+
                     sender.save().catch((error) => {
                         console.error('Error updating sender balance:', error);
                     });
-        
-                    // Send success message
+
                     const successEmbed = client.embed()
                         .setColor(color.main)
                         .setDescription(
@@ -159,13 +146,11 @@ module.exports = class MultiTransfer extends Command {
                         }
                     }, 10000);
                 } else {
-                    // Canceled action
                     const cancelEmbed = client.embed()
                         .setColor(color.warning)
                         .setDescription(multiTransferMessages.cancel);
         
                     ctx.channel.send({ embeds: [cancelEmbed] });
-                    // Schedule the embed message to be deleted after 10 seconds
                     setTimeout(async () => {
                         try {
                             await confirmMessage.delete();
