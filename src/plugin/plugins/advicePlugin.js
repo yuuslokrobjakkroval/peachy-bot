@@ -1,7 +1,7 @@
 const advicePlugin = {
   name: "Advice Plugin",
   version: "1.0.0",
-  author: "Blacky",
+  author: "KYUU",
   initialize: (client) => {
     const adviceList = [
       "Take a break and relax for a bit.",

@@ -1,12 +1,12 @@
-const WaveClient = require("../../structures/Client");
+const PeachyClient = require("../../structures/Client");
 
 const KeepAlive = {
   name: "keep-alive",
   version: "1.0.0",
-  author: "Blacky",
+  author: "KYUU",
   /**
    *
-   * @param {WaveClient} client
+   * @param {PeachyClient} client
    */
   initialize: (client) => {
     if (client.config.keepAlive) {

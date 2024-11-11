@@ -33,9 +33,9 @@ module.exports = class Ping extends Command {
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.reply("Pinging...");
+      ctx.interaction.reply("Pinging...");
     } else {
-      await ctx.sendDeferMessage("Pinging...");
+      ctx.sendDeferMessage("Pinging...");
     }
 
     let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
@@ -47,8 +47,7 @@ module.exports = class Ping extends Command {
       return Math.round((time[0] * 1e9 + time[1]) * 1e-6);
     };
 
-    const embed = client
-        .embed()
+    const embed = client.embed()
         .setColor(color.main)
         .setDescription(`# **${emoji.mainLeft} PING ${emoji.mainRight}**`)
         .setThumbnail(client.utils.emojiToImage(emoji.main))
@@ -74,6 +73,6 @@ module.exports = class Ping extends Command {
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
-    await ctx.editMessage({ content: "", embeds: [embed] });
+    ctx.editMessage({ content: "", embeds: [embed] });
   }
 }
