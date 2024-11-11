@@ -89,7 +89,7 @@ module.exports = class Help extends Command {
     } else {
       const command = client.commands.get(args[0].toLowerCase());
       if (!command)
-        return await ctx.sendMessage({
+        return ctx.sendMessage({
           embeds: [client.embed().setColor(color.danger).setDescription(`${helpMessages.commandNotFound} \`${args[0]}\``)],
         });
 

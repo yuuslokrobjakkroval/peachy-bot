@@ -828,7 +828,6 @@
 			"createdLabel": "Created On"
 		},
 		"themeMessages": {
-			"title": "Theme Setting",
 			"setThemeMessage": "Your theme has been set to **%{theme}**.",
 			"currentThemeMessage": "Your current theme is **%{theme}**.",
 			"helpTitle": "Theme Help",
