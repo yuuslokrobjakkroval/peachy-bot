@@ -1,6 +1,7 @@
 const { GatewayIntentBits } = require('discord.js');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
+const ResponseSchema = require('./schemas/response');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
@@ -23,6 +24,31 @@ const clientOptions = {
 };
 
 const client = new PeachyClient(clientOptions);
+
+client.on('messageCreate', async (message) => {
+    if (message.guild.id !== config.guildId || message.author.bot) return;
+
+    try {
+        // Fetch the response document from the database
+        const responseDoc = await ResponseSchema.findOne({ guildId: message.guild.id });
+
+        // If no autoresponses are found, return early
+        if (!responseDoc || !responseDoc.autoresponse || responseDoc.autoresponse.length === 0) return;
+
+        // Find matching responses based on the message content
+        const matchingResponses = responseDoc.autoresponse.filter(response =>
+            message.content.toLowerCase() === response.trigger.toLowerCase()
+        );
+
+        // If matching responses exist, send a random one
+        if (matchingResponses.length > 0) {
+            const randomResponse = matchingResponses[Math.floor(Math.random() * matchingResponses.length)];
+            message.channel.send(randomResponse.response);
+        }
+    } catch (error) {
+        console.error('Error processing auto-responses:', error);
+    }
+});
 
 setInterval(() => {
     const now = Date.now();
