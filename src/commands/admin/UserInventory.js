@@ -23,7 +23,7 @@ module.exports = class UserInventory extends Command {
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: true,
+            slashCommand: false,
             options: [],
         });
     }

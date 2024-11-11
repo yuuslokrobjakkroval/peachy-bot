@@ -12,7 +12,7 @@ module.exports = class UserInfo extends Command {
       category: "utility",
       aliases: ["user", "whois"],
       cooldown: 3,
-      args: false,
+      args: true,
       permissions: {
         dev: false,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
@@ -24,7 +24,7 @@ module.exports = class UserInfo extends Command {
           name: "user",
           description: "The user to get info about",
           type: 6, // USER type
-          required: false,
+          required: true,
         },
       ],
     });
@@ -34,32 +34,62 @@ module.exports = class UserInfo extends Command {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const userInfoMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.userInfoMessages;
 
-    const targetMember = ctx.isInteraction
-        ? ctx.interaction.options.getUser('user') || ctx.author // Default to the author if no user is provided
-        : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
+    // Fetch the user or member based on the context
+    const target =
+        ctx.isInteraction
+            ? ctx.interaction.options.getUser("user") || ctx.interaction.options.getMember("user")
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.message.mentions.users.first();
 
-    if (!targetMember) {
-      return ctx.sendMessage(userInfoMessages?.userNotFound);
+    if (!target) {
+      return ctx.sendErrorMessage(
+          client,
+          ctx,
+          generalMessages?.userNotFound || "User not found! Please mention a valid user or provide a valid user ID.",
+          color
+      );
     }
+
+    const guildMember = ctx.guild.members.cache.get(target.id); // Fetch GuildMember if available
+    const user = guildMember?.user || target; // Use GuildMember user or fallback to the User object
 
     const embed = client.embed()
         .setColor(color.main)
-        .setThumbnail(targetMember.displayAvatarURL({ dynamic: true }))
+        .setThumbnail(user.displayAvatarURL({ dynamic: true }))
         .setDescription(
             generalMessages.title
-                .replace('%{mainLeft}', emoji.mainLeft)
-                .replace('%{title}', `𝐔𝐒𝐄𝐑 𝐈𝐍𝐅𝐎 ${targetMember.user.username}`)
-                .replace('%{mainRight}', emoji.mainRight)
+                .replace("%{mainLeft}", emoji.mainLeft)
+                .replace("%{title}", `𝐔𝐒𝐄𝐑 𝐈𝐍𝐅𝐎 ${guildMember?.displayName || user.username}`)
+                .replace("%{mainRight}", emoji.mainRight)
         )
         .addFields(
-            { name: userInfoMessages?.username, value: targetMember.user.tag, inline: true },
-            { name: userInfoMessages?.userId, value: targetMember.user.id, inline: true },
-            { name: userInfoMessages?.joinedServer, value: new Date(targetMember.joinedTimestamp).toLocaleDateString(), inline: true },
-            { name: userInfoMessages?.accountCreated, value: new Date(targetMember.user.createdTimestamp).toLocaleDateString(), inline: true },
-            { name: userInfoMessages?.roles, value: targetMember.roles.cache.map(role => role.name).join(', ') || userInfoMessages?.noRoles, inline: false }
+            {
+              name: userInfoMessages?.username || "Username",
+              value: `${user.username}#${user.discriminator}`,
+              inline: true,
+            },
+            {
+              name: userInfoMessages?.userId || "User ID",
+              value: user.id,
+              inline: true,
+            },
+            {
+              name: userInfoMessages?.joinedServer || "Joined Server",
+              value: guildMember?.joinedTimestamp ? new Date(guildMember.joinedTimestamp).toLocaleDateString() : "N/A",
+              inline: true,
+            },
+            {
+              name: userInfoMessages?.accountCreated || "Account Created",
+              value: new Date(user.createdTimestamp).toLocaleDateString(),
+              inline: true,
+            },
+            {
+              name: userInfoMessages?.roles || "Roles",
+              value: guildMember?.roles.cache.map((role) => role.name).join(", ") || userInfoMessages?.noRoles || "None",
+              inline: false,
+            }
         )
         .setFooter({
-          text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+          text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
