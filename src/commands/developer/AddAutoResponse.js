@@ -36,7 +36,7 @@ module.exports = class AddAutoResponse extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         const trigger = ctx.isInteraction
             ? ctx.interaction.options.getString('trigger')
             : args[0];
@@ -45,7 +45,7 @@ module.exports = class AddAutoResponse extends Command {
             : args.slice(1).join(' ');
 
         if (!trigger || !response) {
-            return await ctx.sendMessage({
+            return ctx.sendMessage({
                 embeds: [
                     client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_args')),
                 ],
@@ -54,36 +54,49 @@ module.exports = class AddAutoResponse extends Command {
 
         const guildId = ctx.guild.id;
 
-        let responseDoc = await Response.findOne({ guildId });
+        Response.findOne({ guildId }).then(responseDoc => {
+            if (!responseDoc) {
+                responseDoc = new Response({
+                    guildId,
+                    autoresponse: [],
+                });
+            }
 
-        if (!responseDoc) {
-            responseDoc = new Response({
-                guildId,
-                autoresponse: [],
+            const lastId = responseDoc.autoresponse.reduce((max, ar) => {
+                const num = parseInt(ar.id.slice(1), 10);
+                return isNaN(num) ? max : Math.max(max, num);
+            }, 0);
+
+            const nextId = `r${String(lastId + 1).padStart(2, '0')}`;
+
+            responseDoc.autoresponse.push({ id: nextId, trigger, response });
+
+            responseDoc.save()
+                .then(() => {
+                    const embed = client
+                        .embed()
+                        .setColor(color.main)
+                        .setDescription(
+                            `${emoji.tick} Successfully added a new autoresponse trigger **\`${trigger}\`** with response **\`${response}\`** to this guild.`
+                        );
+
+                    ctx.sendMessage({ embeds: [embed] });
+                })
+                .catch(err => {
+                    console.error(err);
+                    ctx.sendMessage({
+                        embeds: [
+                            client.embed().setColor(color.danger).setDescription("Failed to save the autoresponse. Please try again."),
+                        ],
+                    });
+                });
+        }).catch(err => {
+            console.error(err);
+            ctx.sendMessage({
+                embeds: [
+                    client.embed().setColor(color.danger).setDescription("An error occurred while fetching autoresponses. Please try again."),
+                ],
             });
-        }
-
-        // Calculate the next id by finding the highest existing numeric part in the autoresponse array
-        const lastId = responseDoc.autoresponse.reduce((max, ar) => {
-            const num = parseInt(ar.id.slice(1), 10); // Extract the numeric part from id
-            return isNaN(num) ? max : Math.max(max, num);
-        }, 0);
-
-        // Format the next id as "r" followed by a zero-padded number
-        const nextId = `r${String(lastId + 1).padStart(2, '0')}`;
-
-        // Add the new trigger and response with the calculated id
-        responseDoc.autoresponse.push({ id: nextId, trigger, response });
-
-        await responseDoc.save();
-
-        const embed = client
-            .embed()
-            .setColor(color.main)
-            .setDescription(
-                `${emoji.tick} Successfully added a new autoresponse trigger **\`${trigger}\`** with response **\`${response}\`** to this guild.`
-            );
-
-        return await ctx.sendMessage({ embeds: [embed] });
+        });
     }
 };
