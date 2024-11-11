@@ -6,9 +6,9 @@ module.exports = class RemoveAutoResponse extends Command {
         super(client, {
             name: 'removeautoresponse',
             description: {
-                content: "Remove an autoresponse trigger from a specific guild.",
-                examples: ['removeAutoResponse "hello"'],
-                usage: 'removeAutoResponse <trigger>',
+                content: "Remove an autoresponse by its ID for a specific guild.",
+                examples: ['removeAutoResponse r01'],
+                usage: 'removeAutoResponse <id>',
             },
             category: 'developer',
             aliases: ['removear'],
@@ -21,9 +21,9 @@ module.exports = class RemoveAutoResponse extends Command {
             slashCommand: true,
             options: [
                 {
-                    name: 'trigger',
-                    type: 3,
-                    description: 'The trigger to remove from autoresponse.',
+                    name: 'id',
+                    type: 3, // String type for the ID (since it's in the format "r01")
+                    description: 'The ID of the autoresponse to remove.',
                     required: true,
                 },
             ],
@@ -31,12 +31,12 @@ module.exports = class RemoveAutoResponse extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        // Get the trigger from the options (for slash commands)
-        const trigger = ctx.isInteraction
-            ? ctx.interaction.options.getString('trigger')
+        // Get the ID from the options (for slash commands)
+        const id = ctx.isInteraction
+            ? ctx.interaction.options.getString('id')
             : args[0]; // Fallback if not a slash command
 
-        if (!trigger) {
+        if (!id || !/^r\d{2}$/.test(id)) {  // Validate that id is in the correct format
             return await ctx.sendMessage({
                 embeds: [
                     client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_args')),
@@ -57,19 +57,19 @@ module.exports = class RemoveAutoResponse extends Command {
             });
         }
 
-        // Find the index of the trigger to remove
-        const triggerIndex = responseDoc.autoresponse.findIndex(r => r.trigger.toLowerCase() === trigger.toLowerCase());
+        // Find the index of the entry to remove by ID
+        const entryIndex = responseDoc.autoresponse.findIndex(r => r.id === id);
 
-        if (triggerIndex === -1) {
+        if (entryIndex === -1) {
             return await ctx.sendMessage({
                 embeds: [
-                    client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'trigger_not_found')),
+                    client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'id_not_found')),
                 ],
             });
         }
 
-        // Remove the trigger from the autoresponse array
-        responseDoc.autoresponse.splice(triggerIndex, 1);
+        // Remove the entry from the autoresponse array
+        responseDoc.autoresponse.splice(entryIndex, 1);
 
         // Save the updated document
         await responseDoc.save();
@@ -79,7 +79,7 @@ module.exports = class RemoveAutoResponse extends Command {
             .embed()
             .setColor(color.main)
             .setDescription(
-                `${emoji.tick} Successfully removed the autoresponse trigger **\`${trigger}\`** from this guild.`
+                `${emoji.tick} Successfully removed the autoresponse with ID **\`${id}\`** from this guild.`
             );
 
         return await ctx.sendMessage({ embeds: [embed] });
