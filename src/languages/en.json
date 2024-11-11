@@ -820,12 +820,12 @@
 			"invalidOption": "Invalid option! Please use 'kh' or 'usd'."
 		},
 		"serverInfoMessages": {
-			"nameLabel": "Name",
-			"idLabel": "Server ID",
-			"ownerLabel": "Owner",
-			"membersLabel": "Members",
-			"rolesLabel": "Roles",
-			"createdLabel": "Created On"
+			"name": "Name",
+			"id": "Server ID",
+			"owner": "Owner",
+			"members": "Members",
+			"roles": "Roles",
+			"created": "Created On"
 		},
 		"themeMessages": {
 			"setThemeMessage": "Your theme has been set to **%{theme}**.",
@@ -841,8 +841,7 @@
 			"joinedServer": "Joined Server",
 			"accountCreated": "Account Created",
 			"roles": "Roles",
-			"noRoles": "None",
-			"userNotFound": "User not found! Please mention a valid user or provide a valid user ID."
+			"noRoles": "None"
 		},
 		"verifyMessages": {
 			"noAccount": "You do not have an account. Please register first.",

@@ -39,12 +39,12 @@ module.exports = class UserInfo extends Command {
         : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
 
     if (!targetMember) {
-      return ctx.sendMessage(userInfoMessages?.userNotFound || "User not found! Please mention a valid user or provide a valid user ID.");
+      return ctx.sendMessage(userInfoMessages?.userNotFound);
     }
 
     const embed = client.embed()
         .setColor(color.main)
-        .setThumbnail(targetMember.user.displayAvatarURL({ dynamic: true }))
+        .setThumbnail(targetMember.displayAvatarURL({ dynamic: true }))
         .setDescription(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
@@ -52,11 +52,11 @@ module.exports = class UserInfo extends Command {
                 .replace('%{mainRight}', emoji.mainRight)
         )
         .addFields(
-            { name: userInfoMessages?.username || "Username", value: targetMember.user.tag, inline: true },
-            { name: userInfoMessages?.userId || "User ID", value: targetMember.user.id, inline: true },
-            { name: userInfoMessages?.joinedServer || "Joined Server", value: new Date(targetMember.joinedTimestamp).toLocaleDateString(), inline: true },
-            { name: userInfoMessages?.accountCreated || "Account Created", value: new Date(targetMember.user.createdTimestamp).toLocaleDateString(), inline: true },
-            { name: userInfoMessages?.roles || "Roles", value: targetMember.roles.cache.map(role => role.name).join(', ') || userInfoMessages?.noRoles || 'None', inline: false }
+            { name: userInfoMessages?.username, value: targetMember.user.tag, inline: true },
+            { name: userInfoMessages?.userId, value: targetMember.user.id, inline: true },
+            { name: userInfoMessages?.joinedServer, value: new Date(targetMember.joinedTimestamp).toLocaleDateString(), inline: true },
+            { name: userInfoMessages?.accountCreated, value: new Date(targetMember.user.createdTimestamp).toLocaleDateString(), inline: true },
+            { name: userInfoMessages?.roles, value: targetMember.roles.cache.map(role => role.name).join(', ') || userInfoMessages?.noRoles, inline: false }
         )
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,

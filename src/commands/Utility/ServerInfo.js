@@ -38,12 +38,12 @@ module.exports = class ServerInfo extends Command {
                 .replace('%{mainRight}', emoji.mainRight)
         )
         .addFields(
-            { name: serverInfoMessages?.nameLabel || "Name", value: guild.name, inline: true },
-            { name: serverInfoMessages?.idLabel || "ID", value: guild.id, inline: true },
-            { name: serverInfoMessages?.ownerLabel || "Owner", value: `<@${guild.ownerId}>`, inline: true },
-            { name: serverInfoMessages?.membersLabel || "Members", value: `${guild.memberCount}`, inline: true },
-            { name: serverInfoMessages?.rolesLabel || "Roles", value: `${guild.roles.cache.size}`, inline: true },
-            { name: serverInfoMessages?.createdLabel || "Created On", value: guild.createdAt.toDateString(), inline: false }
+            { name: serverInfoMessages?.name, value: guild.name, inline: true },
+            { name: serverInfoMessages?.id, value: guild.id, inline: true },
+            { name: serverInfoMessages?.owner, value: `<@${guild.ownerId}>`, inline: true },
+            { name: serverInfoMessages?.members, value: `${guild.memberCount}`, inline: true },
+            { name: serverInfoMessages?.roles, value: `${guild.roles.cache.size}`, inline: true },
+            { name: serverInfoMessages?.created, value: guild.createdAt.toDateString(), inline: false }
         )
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
