@@ -54,20 +54,18 @@ module.exports = class MultiTransfer extends Command {
         // Calculate transfer amounts
         let transferAmount;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
-            const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
+            const multiplier = {k: 1000, m: 1000000, b: 1000000000};
             if (amount.match(/\d+[kmbtq]/i)) {
                 const unit = amount.slice(-1).toLowerCase();
                 const number = parseInt(amount);
                 transferAmount = number * (multiplier[unit] || 1);
             } else {
-                transferAmount = parseInt(amount);
+                return await ctx.sendMessage({
+                    embeds: [
+                        client.embed().setColor(color.danger).setDescription(multiTransferMessages.invalidAmount),
+                    ],
+                });
             }
-        } else {
-            return await ctx.sendMessage({
-                embeds: [
-                    client.embed().setColor(color.danger).setDescription(multiTransferMessages.invalidAmount),
-                ],
-            });
         }
 
         if (transferAmount <= 0) {
