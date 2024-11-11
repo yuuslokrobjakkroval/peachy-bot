@@ -20,7 +20,7 @@ module.exports = class ListAutoResponse extends Command {
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: false,
+            slashCommand: true,
             options: [],
         });
     }
