@@ -13,12 +13,6 @@ module.exports = class ServerInfo extends Command {
       aliases: ["guildinfo", "server", 'sv'],
       cooldown: 3,
       args: false,
-      player: {
-        voice: false,
-        dj: false,
-        active: false,
-        djPerm: null,
-      },
       permissions: {
         dev: false,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
@@ -28,14 +22,21 @@ module.exports = class ServerInfo extends Command {
     });
   }
 
-  async run(client, ctx, args, color, emoji, language) {
-    const { guild } = ctx;
+  run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const serverInfoMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.serverInfoMessages;
+    const { guild } = ctx;
+
 
     const embed = client.embed()
         .setColor(color.main)
-        .setTitle(serverInfoMessages?.title.replace('%{server}', guild.name) || `Server Info: ${guild.name}`)
         .setThumbnail(guild.iconURL({ dynamic: true }))
+        .setDescription(
+            generalMessages.title
+                .replace('%{mainLeft}', emoji.mainLeft)
+                .replace('%{title}', `𝐒𝐄𝐑𝐕𝐄𝐑 𝐈𝐍𝐅𝐎 ${guild.name}`)
+                .replace('%{mainRight}', emoji.mainRight)
+        )
         .addFields(
             { name: serverInfoMessages?.nameLabel || "Name", value: guild.name, inline: true },
             { name: serverInfoMessages?.idLabel || "ID", value: guild.id, inline: true },
@@ -45,11 +46,11 @@ module.exports = class ServerInfo extends Command {
             { name: serverInfoMessages?.createdLabel || "Created On", value: guild.createdAt.toDateString(), inline: false }
         )
         .setFooter({
-          text: serverInfoMessages?.footer.replace('%{user}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+          text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
 
-    await ctx.sendMessage({ embeds: [embed] });
+    ctx.sendMessage({ embeds: [embed] });
   }
 };

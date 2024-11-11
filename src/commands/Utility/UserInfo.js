@@ -13,12 +13,6 @@ module.exports = class UserInfo extends Command {
       aliases: ["user", "whois"],
       cooldown: 3,
       args: false,
-      player: {
-        voice: false,
-        dj: false,
-        active: false,
-        djPerm: null,
-      },
       permissions: {
         dev: false,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
@@ -36,7 +30,8 @@ module.exports = class UserInfo extends Command {
     });
   }
 
-  async run(client, ctx, args, color, emoji, language) {
+  run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const userInfoMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.userInfoMessages;
 
     const targetMember = ctx.isInteraction
@@ -50,7 +45,12 @@ module.exports = class UserInfo extends Command {
     const embed = client.embed()
         .setColor(color.main)
         .setThumbnail(targetMember.user.displayAvatarURL({ dynamic: true }))
-        .setTitle(`${userInfoMessages?.title.replace('%{user}', targetMember.user.username) || `User Info: ${targetMember.user.username}`}`)
+        .setDescription(
+            generalMessages.title
+                .replace('%{mainLeft}', emoji.mainLeft)
+                .replace('%{title}', `𝐔𝐒𝐄𝐑 𝐈𝐍𝐅𝐎 ${targetMember.user.username}`)
+                .replace('%{mainRight}', emoji.mainRight)
+        )
         .addFields(
             { name: userInfoMessages?.username || "Username", value: targetMember.user.tag, inline: true },
             { name: userInfoMessages?.userId || "User ID", value: targetMember.user.id, inline: true },
@@ -59,11 +59,11 @@ module.exports = class UserInfo extends Command {
             { name: userInfoMessages?.roles || "Roles", value: targetMember.roles.cache.map(role => role.name).join(', ') || userInfoMessages?.noRoles || 'None', inline: false }
         )
         .setFooter({
-          text: userInfoMessages?.footer.replace('%{user}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+          text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
 
-    await ctx.sendMessage({ embeds: [embed] });
+    ctx.sendMessage({ embeds: [embed] });
   }
 };

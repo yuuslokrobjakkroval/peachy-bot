@@ -794,14 +794,10 @@
 	},
 	"utilityMessages": {
 		"avatarMessages": {
-			"title": "Avatar of %{username}",
-			"requestedBy": "Requested by %{username}",
 			"noUserMentioned": "No user mentioned, please mention someone to view their avatar."
 		},
 		"emojiMessages": {
-			"emojiTitle": "Emoji Image",
 			"emojiDescription": "Here is the image of the emoji:",
-			"requestedBy": "Requested by %{username}",
 			"invalidEmoji": "Invalid emoji provided. Please provide a valid custom emoji."
 		},
 		"languageMessages": {
@@ -824,14 +820,12 @@
 			"invalidOption": "Invalid option! Please use 'kh' or 'usd'."
 		},
 		"serverInfoMessages": {
-			"title": "Server Info: %{server}",
 			"nameLabel": "Name",
 			"idLabel": "Server ID",
 			"ownerLabel": "Owner",
 			"membersLabel": "Members",
 			"rolesLabel": "Roles",
-			"createdLabel": "Created On",
-			"footer": "Requested by %{user}"
+			"createdLabel": "Created On"
 		},
 		"themeMessages": {
 			"title": "Theme Setting",
@@ -843,15 +837,13 @@
 			"usageLabel": "Usage"
 		},
 		"userInfoMessages": {
-			"title": "User Info: %{user}",
 			"username": "Username",
 			"userId": "User ID",
 			"joinedServer": "Joined Server",
 			"accountCreated": "Account Created",
 			"roles": "Roles",
 			"noRoles": "None",
-			"userNotFound": "User not found! Please mention a valid user or provide a valid user ID.",
-			"footer": "Requested by %{user}"
+			"userNotFound": "User not found! Please mention a valid user or provide a valid user ID."
 		},
 		"verifyMessages": {
 			"noAccount": "You do not have an account. Please register first.",

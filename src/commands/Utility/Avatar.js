@@ -13,6 +13,12 @@ module.exports = class Avatar extends Command {
       aliases: ["av", "pfp"],
       cooldown: 3,
       args: false,
+      player: {
+        voice: false,
+        dj: false,
+        active: false,
+        djPerm: null,
+      },
       permissions: {
         dev: false,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
@@ -30,33 +36,35 @@ module.exports = class Avatar extends Command {
     });
   }
 
-  async run(client, ctx, args, color, emoji, language) {
+  run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
 
-    if (ctx.isInteraction) {
-      await ctx.interaction.deferReply();
-    }
-
-    const user = ctx.isInteraction
+    const mention = ctx.isInteraction
         ? ctx.interaction.options.getUser("user") || ctx.author
         : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
 
-    if (!user) {
+    if (!mention) {
       const errorMessage = avatarMessages?.noUserMentioned || "No user mentioned";
       return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
     }
 
     const embed = client.embed()
         .setColor(color.main)
-        .setTitle(avatarMessages?.title.replace("%{username}", user.displayName) || `Avatar of ${user.displayName}`)
-        .setImage(user.displayAvatarURL({ dynamic: true, size: 1024 }))
+        .setDescription(
+            generalMessages.title
+                .replace('%{mainLeft}', emoji.mainLeft)
+                .replace('%{title}', `𝐀𝐕𝐀𝐓𝐀𝐑 𝐎𝐅 ${mention.displayName}`)
+                .replace('%{mainRight}', emoji.mainRight)
+        )
+        .setImage(mention.displayAvatarURL({ dynamic: true, size: 1024 }))
         .setFooter({
-          text: avatarMessages?.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+          text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
 
-    return ctx.isInteraction ? await ctx.interaction.editReply({ content: '', embeds: [embed] }) : await ctx.sendMessage({ content: '', embeds: [embed], });
+    return ctx.sendMessage({ embeds: [embed] });
   }
 
 };
