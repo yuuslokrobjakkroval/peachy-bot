@@ -301,7 +301,7 @@ module.exports = class MessageCreate extends Event {
             const gamblingCommands = ['slots', 'blackjack', 'coinflip'];
             const gameCommands = ['guessnumber'];
             const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
-            const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'theme', 'verify'];
+            const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'serverinfo', 'theme', 'userinfo', 'verify'];
             const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
 
             try {
