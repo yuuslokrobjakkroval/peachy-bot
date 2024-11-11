@@ -30,11 +30,15 @@ module.exports = class ListAutoResponse extends Command {
         const responseDoc = await Response.findOne({ guildId });
 
         if (!responseDoc || !responseDoc.autoresponse || responseDoc.autoresponse.length === 0) {
-            return ctx.sendErrorMessage(client, ctx, 'No autoresponses found for this guild.', color)
+            return ctx.sendErrorMessage(client, ctx, 'No autoresponses found for this guild.', color);
         }
 
-        const triggers = responseDoc.autoresponse.map(r => `Trigger: **${r.trigger}**\nResponse: **${r.response}**`);
+        // Map autoresponse entries to include ID, Trigger, and Response
+        const triggers = responseDoc.autoresponse.map(
+            r => `ID: **${r.id}**\nTrigger: **${r.trigger}**\nResponse: **${r.response}**`
+        );
 
+        // Chunk the response list into pages of 10 entries each
         let chunks = client.utils.chunk(triggers, 10);
         if (chunks.length === 0) chunks = 1;
 
