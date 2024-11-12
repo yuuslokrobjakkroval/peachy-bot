@@ -61,17 +61,16 @@ module.exports = class Theme extends Command {
                 case 'goma': {
                     const equippedItem = user.equip.find(item => item.id?.startsWith('t') || item.id?.startsWith('st'));
                     if (equippedItem) {
+                        console.log(equippedItem)
                         const inventoryItem = user.inventory.find(item => item.id === equippedItem.id);
 
                         if (inventoryItem) {
-                            // Increment quantity in inventory
-                            inventoryItem.quantity += equippedItem.quantity;
+                            inventoryItem.quantity += 1;
                         } else {
-                            // Push equipped item back to inventory
                             user.inventory.push({
                                 id: equippedItem.id,
                                 name: equippedItem.name,
-                                quantity: equippedItem.quantity,
+                                quantity: 1,
                             });
                         }
 
