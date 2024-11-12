@@ -43,7 +43,7 @@ client.on('messageCreate', async (message) => {
         // If matching responses exist, send a random one
         if (matchingResponses.length > 0) {
             const randomResponse = matchingResponses[Math.floor(Math.random() * matchingResponses.length)];
-            message.channel.send(randomResponse.response);
+            message.reply(randomResponse.response);
         }
     } catch (error) {
         console.error('Error processing auto-responses:', error);
