@@ -59,7 +59,8 @@ module.exports = class Theme extends Command {
                     case 'normal':
                     case 'peach':
                     case 'goma': {
-                        const equippedItem = user.equip.find(item => item.name?.startsWith('t') || item.name?.startsWith('st'));
+
+                        const equippedItem = user.equip.find(item => item.id?.startsWith('t') || item.id?.startsWith('st'));
                         if (equippedItem) {
                             const inventoryItem = user.inventory.find(item => item.id === equippedItem.id);
 
@@ -78,6 +79,7 @@ module.exports = class Theme extends Command {
                             // Remove item from equip
                             user.equip = user.equip.filter(item => item.id !== equippedItem.id);
                         }
+
                         user.preferences.theme = convertSubCommand;
                         embed
                             .setColor(color.main)
