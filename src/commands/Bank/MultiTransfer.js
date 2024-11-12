@@ -103,17 +103,19 @@ module.exports = class MultiTransfer extends Command {
         const collector = confirmMessage.createMessageComponentCollector({ filter, time: 8000 });
 
         collector.on("collect", (interaction) => {
-            interaction.deferUpdate().then(() => {
+            interaction.deferUpdate().then(async () => {
                 if (interaction.customId === "confirm_button") {
                     sender.balance.coin -= totalAmount;
 
-                    // Log to confirm if this line is reached
-                    console.log("Editing confirmMessage to clear content, embeds, and components.");
-
-                    confirmMessage.edit({ content: "", embeds: [], components: [] })
-                        .catch((error) => {
-                            console.error('Error editing confirmMessage:', error);
-                        });
+                    try {
+                        await confirmMessage.delete();
+                    } catch (error) {
+                        if (error.code === 10008) {
+                            console.log('Message already deleted or unknown.');
+                        } else {
+                            console.error('Error deleting the success message:', error);
+                        }
+                    }
 
                     Users.findOneAndUpdate(
                         { userId: ctx.author.id },
@@ -123,7 +125,7 @@ module.exports = class MultiTransfer extends Command {
                             Users.findOne({ userId: user.id })
                                 .then((recipient) => {
                                     if (!recipient) {
-                                        recipient = new Users({ userId: user.id, balance: { coin: 0 } });
+                                        recipient = new Users({userId: user.id, balance: { coin: 0 }});
                                     }
                                     recipient.balance.coin += transferAmount;
                                     return recipient.save();
@@ -144,50 +146,31 @@ module.exports = class MultiTransfer extends Command {
                                     .replace("%{emoji}", emoji.coin)
                             );
 
-                        ctx.channel.send({ embeds: [successEmbed] });
-                        setTimeout(async () => {
-                            try {
-                                await confirmMessage.delete();
-                            } catch (error) {
-                                if (error.code === 10008) {
-                                    console.log('Message already deleted or unknown.');
-                                } else {
-                                    console.error('Error deleting the success message:', error);
-                                }
-                            }
-                        }, 10000);
-                    });
+                        ctx.channel.send({embeds: [successEmbed]});
+                    })
                 } else {
-                    // Log to confirm if cancel path is executed
-                    console.log("Editing confirmMessage after cancel interaction.");
-
-                    confirmMessage.edit({ content: "", embeds: [], components: [] })
-                        .catch((error) => {
-                            console.error('Error editing confirmMessage after cancel:', error);
-                        });
-
+                    try {
+                        await confirmMessage.delete();
+                    } catch (error) {
+                        if (error.code === 10008) {
+                            console.log('Message already deleted or unknown.');
+                        } else {
+                            console.error('Error deleting the success message:', error);
+                        }
+                    }
                     const cancelEmbed = client.embed()
                         .setColor(color.warning)
                         .setDescription(multiTransferMessages.cancel);
 
                     ctx.channel.send({ embeds: [cancelEmbed] });
-                    setTimeout(async () => {
-                        try {
-                            await confirmMessage.delete();
-                        } catch (error) {
-                            if (error.code === 10008) {
-                                console.log('Message already deleted or unknown.');
-                            } else {
-                                console.error('Error deleting the success message:', error);
-                            }
-                        }
-                    }, 10000);
+
                 }
             }).catch((error) => {
                 console.error('Database update error:', error);
                 ctx.channel.send(generalMessages.databaseUpdate);
             });
         });
+
 
         collector.on("end", (collected) => {
             if (collected.size === 0) {
