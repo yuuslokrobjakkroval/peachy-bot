@@ -110,6 +110,7 @@ module.exports = class Use extends Command {
                 await Users.updateOne(
                     { userId },
                     {
+                        $addToSet: { equip: { id: themeItem.id, name: themeItem.name, quantity: 1 } },
                         $set: {
                             'preferences.theme': themeItem.id,
                             inventory: user.inventory

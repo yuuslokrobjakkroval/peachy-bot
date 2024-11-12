@@ -59,11 +59,9 @@ module.exports = class Theme extends Command {
                 case 'normal':
                 case 'peach':
                 case 'goma': {
-                    const equippedItem = user.equip.find(item => item.id?.startsWith('t') || item.id?.startsWith('st'));
+                    const equippedItem = user.equip.find(item => item.id.startsWith('t') || item.id.startsWith('st'));
                     if (equippedItem) {
-                        console.log(equippedItem)
                         const inventoryItem = user.inventory.find(item => item.id === equippedItem.id);
-
                         if (inventoryItem) {
                             inventoryItem.quantity += 1;
                         } else {
