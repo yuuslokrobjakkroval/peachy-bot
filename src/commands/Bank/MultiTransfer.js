@@ -107,7 +107,13 @@ module.exports = class MultiTransfer extends Command {
                 if (interaction.customId === "confirm_button") {
                     sender.balance.coin -= totalAmount;
 
-                    confirmMessage.edit({ content: "", embeds: [], components: [] });
+                    // Log to confirm if this line is reached
+                    console.log("Editing confirmMessage to clear content, embeds, and components.");
+
+                    confirmMessage.edit({ content: "", embeds: [], components: [] })
+                        .catch((error) => {
+                            console.error('Error editing confirmMessage:', error);
+                        });
 
                     Users.findOneAndUpdate(
                         { userId: ctx.author.id },
@@ -117,7 +123,7 @@ module.exports = class MultiTransfer extends Command {
                             Users.findOne({ userId: user.id })
                                 .then((recipient) => {
                                     if (!recipient) {
-                                        recipient = new Users({userId: user.id, balance: { coin: 0 }});
+                                        recipient = new Users({ userId: user.id, balance: { coin: 0 } });
                                     }
                                     recipient.balance.coin += transferAmount;
                                     return recipient.save();
@@ -138,7 +144,7 @@ module.exports = class MultiTransfer extends Command {
                                     .replace("%{emoji}", emoji.coin)
                             );
 
-                        ctx.channel.send({embeds: [successEmbed]});
+                        ctx.channel.send({ embeds: [successEmbed] });
                         setTimeout(async () => {
                             try {
                                 await confirmMessage.delete();
@@ -150,13 +156,20 @@ module.exports = class MultiTransfer extends Command {
                                 }
                             }
                         }, 10000);
-                    })
+                    });
                 } else {
-                    confirmMessage.edit({ content: "", embeds: [], components: [] });
+                    // Log to confirm if cancel path is executed
+                    console.log("Editing confirmMessage after cancel interaction.");
+
+                    confirmMessage.edit({ content: "", embeds: [], components: [] })
+                        .catch((error) => {
+                            console.error('Error editing confirmMessage after cancel:', error);
+                        });
+
                     const cancelEmbed = client.embed()
                         .setColor(color.warning)
                         .setDescription(multiTransferMessages.cancel);
-        
+
                     ctx.channel.send({ embeds: [cancelEmbed] });
                     setTimeout(async () => {
                         try {
