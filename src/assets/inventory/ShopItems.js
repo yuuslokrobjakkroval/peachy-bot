@@ -602,23 +602,23 @@ module.exports = [
         description: `Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
         type: 'theme',
         inventory: [
+            // {
+            //     id: 't01',
+            //     name: 'Mystic Charm',
+            //     description: 'An enchanting theme that transforms your embed color to soft purples and pinks, with magical icons like hourglasses, crystals, and cute charms.',
+            //     type: 'theme',
+            //     able: {
+            //         use: true,
+            //         gift: false,
+            //         multiple: false,
+            //     },
+            //     quantity: 1,
+            //     emoji: emoji.theme.mysticCharm,
+            //     available: ['use'],
+            //     price: { buy: 15e6, sell: 13e6 },
+            // },
             {
                 id: 't01',
-                name: 'Mystic Charm',
-                description: 'An enchanting theme that transforms your embed color to soft purples and pinks, with magical icons like hourglasses, crystals, and cute charms.',
-                type: 'theme',
-                able: {
-                    use: true,
-                    gift: false,
-                    multiple: false,
-                },
-                quantity: 1,
-                emoji: emoji.theme.mysticCharm,
-                available: ['use'],
-                price: { buy: 15e6, sell: 13e6 },
-            },
-            {
-                id: 't02',
                 name: 'Ocean Breeze',
                 description: 'A calming theme that transforms your embed color to deep blues and your emoji to serene sea icons.',
                 type: 'theme',
@@ -633,7 +633,7 @@ module.exports = [
                 price: { buy: 15e6, sell: 13e6 },
             },
             {
-                id: 't03',
+                id: 't02',
                 name: 'Fright Fest',
                 description: 'Get into the spooky spirit with this Halloween-themed set, featuring eerie colors and Halloween-inspired emojis.',
                 type: 'theme',
@@ -648,7 +648,7 @@ module.exports = [
                 price: { buy: 15e6, sell: 13e6 },
             },
             {
-                id: 't04',
+                id: 't03',
                 name: 'Boo Bash',
                 description: 'Get into the spooky spirit with this Halloween-themed set, featuring eerie colors and Halloween-inspired emojis.',
                 type: 'theme',
