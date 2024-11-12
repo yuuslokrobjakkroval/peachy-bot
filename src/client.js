@@ -5,15 +5,19 @@ const ResponseSchema = require('./schemas/response');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
-const ONE_DAY_MS = 86400000; // 24 hours
 
-function getInitialDelay() {
+function getDelayUntil7PM() {
     const now = new Date();
-    const nextRun = new Date();
-    nextRun.setUTCHours(0, 0, 0, 0); // Set for midnight UTC or desired time
-    if (nextRun <= now) nextRun.setUTCDate(nextRun.getUTCDate() + 1);
-    return nextRun - now;
+    const sevenPM = new Date();
+    sevenPM.setHours(19, 0, 0, 0); // 7:00 PM today
+    if (now > sevenPM) {
+        sevenPM.setDate(sevenPM.getDate() + 1);
+    }
+
+    return sevenPM - now;
 }
+
+const initialDelay = getDelayUntil7PM();
 
 const clientOptions = {
     intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
@@ -54,6 +58,10 @@ setInterval(() => {
     const now = Date.now();
     GiveawaySchema.find({ endTime: { $lte: now }, ended: false })
         .then((giveaways) => {
+            if (!giveaways || giveaways.length === 0) {
+                return;
+            }
+
             giveaways.forEach((giveaway) => {
                 if (giveaway) {
                     client.channels.cache.get(giveaway.channelId)?.messages.fetch(giveaway.messageId)
@@ -69,7 +77,6 @@ setInterval(() => {
                         })
                         .catch((err) => {
                             if (err.code === 10008) {
-                                // Handle the case where the message is not found (Unknown Message)
                                 console.warn(`Message with ID ${giveaway.messageId} was not found.`);
                                 giveaway.ended = true;
                                 giveaway.save().catch(console.error);
@@ -80,13 +87,19 @@ setInterval(() => {
                 }
             });
         })
-        .catch((err) => console.error('Error finding giveaway:', err));
+        .catch((err) => {
+            console.error('Error finding giveaways:', err);
+        });
 }, 10000);
 
 setInterval(() => {
     const now = Date.now();
     GiveawayShopItemSchema.find({ endTime: { $lte: now }, ended: false })
         .then((giveaways) => {
+            if (!giveaways || giveaways.length === 0) {
+                return;
+            }
+
             giveaways.forEach((giveaway) => {
                 if (giveaway) {
                     client.channels.cache.get(giveaway.channelId)?.messages.fetch(giveaway.messageId)
@@ -97,12 +110,11 @@ setInterval(() => {
                                         giveaway.ended = true;
                                         return giveaway.save();
                                     })
-                                    .catch((err) => console.error('Error ending giveaway:', err));
+                                    .catch((err) => console.error('Error ending giveaway shop item:', err));
                             }
                         })
                         .catch((err) => {
                             if (err.code === 10008) {
-                                // Handle the case where the message is not found (Unknown Message)
                                 console.warn(`Message with ID ${giveaway.messageId} was not found.`);
                                 giveaway.ended = true;
                                 giveaway.save().catch(console.error);
@@ -113,19 +125,24 @@ setInterval(() => {
                 }
             });
         })
-        .catch((err) => console.error('Error finding giveaway shop item:', err));
+        .catch((err) => {
+            console.error('Error finding giveaway shop items:', err);
+        });
 }, 10000);
 
+
+// Schedule the first execution
 setTimeout(() => {
     client.utils.checkBirthdays(client)
         .then(() => console.log('Birthday check completed.'))
-        .catch((err) => console.error('Error in checkBirthdays function:', err));
+        .catch(err => console.error('Error in checkBirthdays function:', err));
 
+    // Repeat every 24 hours after the initial execution
     setInterval(() => {
         client.utils.checkBirthdays(client)
             .then(() => console.log('Birthday check completed.'))
-            .catch((err) => console.error('Error in checkBirthdays function:', err));
-    }, ONE_DAY_MS);
-}, getInitialDelay());
+            .catch(err => console.error('Error in checkBirthdays function:', err));
+    }, 24 * 60 * 60 * 1000); // 24 hours
+}, initialDelay);
 
 client.start(config.token);

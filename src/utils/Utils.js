@@ -508,6 +508,19 @@ module.exports = class Utils {
         return null;
     }
 
+    static getAvatarDecoration(useId) {
+        switch (useId) {
+            case '966688007493140591': // KYUU
+                return 'https://i.imgur.com/b0fG2wu.png'
+            case '946079190971732041': // KEO
+                return 'https://i.imgur.com/Hggcevl.png'
+            case '1259714830483329065': // KOL
+                return 'https://i.imgur.com/11JtCud.png'
+            default:
+                return;
+        }
+    }
+
     static async reactionPaginate(ctx, embed) {
         const author = ctx instanceof CommandInteraction ? ctx.user : ctx.author;
         const isInteraction = ctx.isInteraction;
@@ -659,26 +672,37 @@ module.exports = class Utils {
     static async checkBirthdays(client) {
         console.log('Check Birthday Start');
         try {
+            // Get today's date in the format DD MMM
             const today = new Date();
             const todayDate = `${today.getDate().toString().padStart(2, '0')} ${today.toLocaleString('en-US', { month: 'short' })}`;
 
+            // Find users whose birthdays match today's date and are not yet acknowledged
             const usersWithBirthdayToday = await Users.find({
                 'profile.birthday': todayDate,
                 'profile.birthdayAcknowledged': false,
             });
 
-            const birthdayChannel = await client.channels.fetch('1272074580797952116').catch(err => console.error(err));
+            console.log('Users with birthdays today:', usersWithBirthdayToday);
+
+            // Fetch the birthday channel
+            const birthdayChannel = await client.channels.fetch('1272074580797952116').catch(err => {
+                console.error('[Birthday] Error fetching birthday channel:', err.message);
+            });
+
             if (!birthdayChannel) {
                 console.error(`[Birthday] Birthday channel not found or inaccessible.`);
                 return;
             }
 
+            // Process each user with a birthday today
             for (const user of usersWithBirthdayToday) {
                 try {
+                    // Calculate random gift balance and XP
                     const giftBalance = Math.floor(Math.random() * (1000000 - 500000 + 1)) + 500000;
                     const [day, month, year] = user.profile.birthday.split('-');
                     const xp = parseInt(day) + (new Date(Date.parse(`${month} 1, 2020`)).getMonth() + 1) + parseInt(year.slice(-2));
 
+                    // Create the birthday embed
                     const birthdayEmbed = client.embed()
                         .setColor(client.color.main)
                         .setTitle(`🎉 Happy Birthday, ${user.profile.username || user.username}! 🎂`)
@@ -690,12 +714,19 @@ module.exports = class Utils {
                         .setFooter({ text: 'Have an amazing birthday filled with love and happiness!' })
                         .setTimestamp();
 
+                    console.log('Constructed Birthday Embed:', birthdayEmbed);
+
+                    // Update user profile: mark birthday acknowledged and add rewards
                     user.profile.birthdayAcknowledged = true;
                     user.balance.coin += giftBalance;
                     user.profile.xp += xp;
-                    await user.save();
 
+                    await user.save();
+                    console.log(`User ${user.profile.username || user.username} updated successfully.`);
+
+                    // Send the birthday message to the channel
                     await birthdayChannel.send({ embeds: [birthdayEmbed] });
+                    console.log('Birthday message sent successfully.');
                 } catch (userError) {
                     console.error(`[Birthday] Error processing user ${user._id}: ${userError.message}`);
                 }
