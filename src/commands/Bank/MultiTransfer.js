@@ -30,7 +30,7 @@ module.exports = class MultiTransfer extends Command {
 
         // Extract users and amounts from arguments
         const userArgs = args.filter((arg) => ctx.message.mentions.users.has(arg.replace(/[<@!>]/g, "")));
-        const amount = args.pop();
+        const amount = args.pop() || 1;
 
         if (!userArgs.length) {
             return await client.utils.sendErrorMessage(client, ctx, multiTransferMessages.noValidUsers, color);
@@ -51,21 +51,23 @@ module.exports = class MultiTransfer extends Command {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
         }
 
-        // Calculate transfer amounts
         let transferAmount;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
             const multiplier = {k: 1000, m: 1000000, b: 1000000000};
             if (amount.match(/\d+[kmbtq]/i)) {
+                // Handling amounts with unit suffix (e.g., 1k, 5m)
                 const unit = amount.slice(-1).toLowerCase();
                 const number = parseInt(amount);
                 transferAmount = number * (multiplier[unit] || 1);
             } else {
-                return await ctx.sendMessage({
+                return ctx.sendMessage({
                     embeds: [
                         client.embed().setColor(color.danger).setDescription(multiTransferMessages.invalidAmount),
                     ],
                 });
             }
+        } else {
+            transferAmount = parseInt(amount);
         }
 
         if (transferAmount <= 0) {
@@ -105,7 +107,7 @@ module.exports = class MultiTransfer extends Command {
                 if (interaction.customId === "confirm_button") {
                     sender.balance.coin -= totalAmount;
 
-                    confirmMessage.edit({ content: '' });
+                    confirmMessage.edit({ content: "", embeds: [], components: [] });
 
                     Users.findOneAndUpdate(
                         { userId: ctx.author.id },
@@ -150,6 +152,7 @@ module.exports = class MultiTransfer extends Command {
                         }, 10000);
                     })
                 } else {
+                    confirmMessage.edit({ content: "", embeds: [], components: [] });
                     const cancelEmbed = client.embed()
                         .setColor(color.warning)
                         .setDescription(multiTransferMessages.cancel);
@@ -172,7 +175,6 @@ module.exports = class MultiTransfer extends Command {
                 ctx.channel.send(generalMessages.databaseUpdate);
             });
         });
-
 
         collector.on("end", (collected) => {
             if (collected.size === 0) {

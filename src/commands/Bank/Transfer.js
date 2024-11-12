@@ -69,7 +69,7 @@ module.exports = class Transfer extends Command {
                 const number = parseInt(amount);
                 amount = number * (multiplier[unit] || 1);
             } else {
-                return await ctx.sendMessage({
+                return ctx.sendMessage({
                     embeds: [
                         client.embed().setColor(color.danger).setDescription(transferMessages.invalidAmount),
                     ],
