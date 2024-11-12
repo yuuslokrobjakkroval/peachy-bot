@@ -69,6 +69,7 @@ module.exports = class Use extends Command {
                 }
 
                 const currentTheme = user.preferences?.theme;
+                const equippedTheme = user.equip.find(equippedItem => equippedItem.id.startsWith('t') || equippedItem.id.startsWith('st'));
 
                 if (currentTheme === themeItem.id) {
                     return await client.utils.sendErrorMessage(
@@ -84,7 +85,7 @@ module.exports = class Use extends Command {
                 if (currentTheme) {
                     await Users.updateOne(
                         { userId },
-                        { $set: { 'preferences.theme': null } }
+                        { $pull: { equip: { id: equippedTheme.id } }, $set: { 'preferences.theme': null } }
                     );
 
                     const existingInventoryItem = user.inventory.find(item => item.id === currentTheme);
