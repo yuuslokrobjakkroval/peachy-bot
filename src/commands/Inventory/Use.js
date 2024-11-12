@@ -69,8 +69,6 @@ module.exports = class Use extends Command {
                 }
 
                 const currentTheme = user.preferences?.theme;
-                const equippedTheme = user.equip.find(equippedItem => equippedItem.id.startsWith('t') || equippedItem.id.startsWith('st'));
-
                 if (currentTheme === themeItem.id) {
                     return await client.utils.sendErrorMessage(
                         client,
@@ -80,12 +78,10 @@ module.exports = class Use extends Command {
                     );
                 }
 
-                const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
-
                 if (currentTheme) {
                     await Users.updateOne(
                         { userId },
-                        { $pull: { equip: { id: equippedTheme.id } }, $set: { 'preferences.theme': null } }
+                        { $set: { 'preferences.theme': null } }
                     );
 
                     const existingInventoryItem = user.inventory.find(item => item.id === currentTheme);
@@ -100,12 +96,23 @@ module.exports = class Use extends Command {
                     }
                 }
 
+                const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
+
                 if (inventoryItemIndex > -1) {
                     if (user.inventory[inventoryItemIndex].quantity > 1) {
                         user.inventory[inventoryItemIndex].quantity -= 1;
                     } else {
                         user.inventory.splice(inventoryItemIndex, 1);
                     }
+                }
+
+                const equippedTheme = user.equip.find(equippedItem => equippedItem.id.startsWith('t') || equippedItem.id.startsWith('st'));
+
+                if (equippedTheme) {
+                    await Users.updateOne(
+                        { userId },
+                        { $pull: { equip: { id: equippedTheme.id } } }
+                    );
                 }
 
                 await Users.updateOne(
