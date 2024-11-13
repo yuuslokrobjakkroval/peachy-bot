@@ -7,6 +7,7 @@ const shopItems = require('../assets/inventory/ShopItems.js');
 const canvafy = require("canvafy");
 const gif = require("./Gif");
 const emoji = require("./Emoji");
+const moment = require("moment");
 const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Utils {
@@ -974,19 +975,24 @@ module.exports = class Utils {
             return;
         }
 
+        const memberCount = member.guild.memberCount;
+        const accountCreationDate = moment(member.user.createdAt).fromNow();
+
         return client.embed()
             .setColor(client.color.main)
             .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
-            .setDescription(`# **Heyoo** ${emoji.main.signature}\n**<@${member.user.id}>** has joined the server using an invite ${emoji.congratulation}
+            .setDescription(`# **Heyoo <@${member.user.id}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}
             
-            > ${emoji.inviteTracker.inviteBy} : <@${inviter.inviterId}>
-            > ${emoji.inviteTracker.inviteCode} : **https://discord.gg/${inviter.inviteCode}**
-            > ${emoji.inviteTracker.inviteStats} : ${inviter.uses} times
+            > ${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚 : <@${inviter.inviterId}>
+            > ${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆 : **https://discord.gg/${inviter.inviteCode}**
+            > ${emoji.inviteTracker.inviteStats} 𝑰𝒏𝒗𝒊𝒕𝒆𝒅 𝑴𝒆𝒎𝒃𝒆𝒓 : ${inviter.uses} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔
+            > ${emoji.inviteTracker.memberCreated} 𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑫𝒂𝒕𝒆 : ${accountCreationDate}
+            > ${emoji.inviteTracker.inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔 : ${memberCount} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔
             
             `)
             .setImage('https://i.imgur.com/XiZrSty.gif')
             .setFooter({
-                text: `Invite Tracker | Powered by ${client.user.tag}`,
+                text: `Invite Tracker | Powered by ${client.user.displayName}`,
                 iconURL: client.user.displayAvatarURL()
             })
             .setTimestamp();
