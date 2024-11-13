@@ -954,7 +954,7 @@ module.exports = class Utils {
 
         return client.embed()
             .setColor(client.color.main)
-            .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}\n\n
+            .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}\n
             > **${emoji.channel.announce}** : <#1272595713125126176>
             > **${emoji.channel.rule}** : <#1271685845165936722>
             > **${emoji.channel.role}** : <#1271685845165936723>
