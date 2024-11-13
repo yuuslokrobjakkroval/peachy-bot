@@ -63,7 +63,7 @@ client.on('guildMemberAdd', async (member) => {
                             inviter.uses += 1;
                             inviter.userId.push(member.id);
                             inviter.save().catch(console.error);
-                            }
+                        }
     
                             // Send the tracking message only if it's a unique invite use
                             const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
@@ -71,7 +71,8 @@ client.on('guildMemberAdd', async (member) => {
                                 const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
                                 trackingChannel.send({embeds: [inviteMessage]});
                             }
-            }
+                        }
+            
         }).catch(console.error);
     } catch (error) {
         console.error('Error fetching or saving invite data:', error);
