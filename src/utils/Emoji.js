@@ -1,7 +1,7 @@
 module.exports = {
     // GLOBAL
     main: {
-        signature: '<:MAIN:1301020872144060436>',
+        signature: '<:MAIN:1281847051860054016>',
         left: '<:PEACH:1301021708962234400>',
         right: '<:GOMA:1301021668025700454>',
     },

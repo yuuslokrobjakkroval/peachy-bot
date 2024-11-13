@@ -951,15 +951,16 @@ module.exports = class Utils {
         const memberCount = member.guild.memberCount;
         const guildName = member.guild.name;
 
-        // Create the embed
         return client.embed()
             .setColor(client.color.main)
             .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}
+            
             > **${emoji.channel.announce}** : <#1272595713125126176>
             > **${emoji.channel.rule}** : <#1271685845165936722>
             > **${emoji.channel.role}** : <#1271685845165936723>
             > **${emoji.channel.booster}** : <#1271685845165936725>
             > **${emoji.channel.giveaway}** : <#1283713873878450239>
+            
             ${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
         `)
             .setImage('https://i.imgur.com/MTOqT51.jpg')
@@ -970,7 +971,7 @@ module.exports = class Utils {
     static getInviteMessage(client, member, invite) {
         return client.embed()
             .setColor(client.color.main)
-            .setDescription(`${member.user.tag} joined through ${invite.inviter.tag}'s invite!`)
+            .setDescription(`<@${member.author.id}> joined through <${invite.inviter.id}>'s invite!`)
             .setTimestamp();
     }
 
