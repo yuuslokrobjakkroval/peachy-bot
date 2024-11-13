@@ -35,6 +35,7 @@ module.exports = class FetchInvites extends Command {
                             guildId: guild.id,
                             inviteCode: invite.code,
                             uses: invite.uses,
+                            userId: [],
                             inviterId: invite.inviter.id,
                             inviterTag: invite.inviter.tag,
                         });
