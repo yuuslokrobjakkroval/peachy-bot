@@ -58,16 +58,13 @@ client.on('guildMemberAdd', async (member) => {
             for (const invite of invites.values()) {
                 InviteSchema.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(inviter => {
                     if (inviter) {
+                        // Check if this is a unique member use of the invite
                         if (!inviter.userId.includes(member.id)) {
                             inviter.uses += 1;
                             inviter.userId.push(member.id);
                             inviter.save().catch(console.error);
-                            const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
-                            if (trackingChannel) {
-                                const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
-                                trackingChannel.send({embeds: [inviteMessage]});
-                            }
-                        } else {
+    
+                            // Send the tracking message only if it's a unique invite use
                             const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
                             if (trackingChannel) {
                                 const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
@@ -75,12 +72,13 @@ client.on('guildMemberAdd', async (member) => {
                             }
                         }
                     }
-                })
+                }).catch(console.error);
             }
-        })
+        }).catch(console.error);
     } catch (error) {
         console.error('Error fetching or saving invite data:', error);
     }
+
 
     const chatChannel = member.guild.channels.cache.get(chatChannelId);
     const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្តី', 'សួស្តីបង'];
