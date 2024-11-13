@@ -968,7 +968,7 @@ module.exports = class Utils {
             .setTimestamp();
     }
 
-    static getInviteMessage(client, member, invite) {
+    static getInviteMessage(client, member, invite, inviter) {
         if (!invite || !invite.inviter) {
             console.error('Invalid invite or inviter data:', { invite, member });
             return;
@@ -979,9 +979,9 @@ module.exports = class Utils {
             .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
             .setDescription(`# **Heyoo** ${emoji.main.signature}\n**<@${member.user.id}>** has joined the server using an invite ${emoji.congratulation}
             
-            > ${emoji.inviteTracker.inviteBy} : <@${invite.inviter.id}>
-            > ${emoji.inviteTracker.inviteCode} : **https://discord.gg/${invite.code}**
-            > ${emoji.inviteTracker.inviteStats} : ${invite.uses} times
+            > ${emoji.inviteTracker.inviteBy} : <@${inviter.inviterId}>
+            > ${emoji.inviteTracker.inviteCode} : **https://discord.gg/${inviter.inviteCode}**
+            > ${emoji.inviteTracker.inviteStats} : ${inviter.uses} times
             
             `)
             .setImage('https://i.imgur.com/XiZrSty.gif')

@@ -55,21 +55,21 @@ client.on('guildMemberAdd', async (member) => {
     try {
         member.guild.invites.fetch().then(invites => {
             for (const invite of invites.values()) {
-                Invites.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(storedInvite => {
-                    if (storedInvite) {
-                        if (!storedInvite.userId.includes(member.id)) {
-                            storedInvite.uses += 1;
-                            storedInvite.userId.push(member.id);
-                            storedInvite.save().catch(console.error);
+                Invites.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(inviter => {
+                    if (inviter) {
+                        if (!inviter.userId.includes(member.id)) {
+                            inviter.uses += 1;
+                            inviter.userId.push(member.id);
+                            inviter.save().catch(console.error);
                             const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
                             if (trackingChannel) {
-                                const inviteMessage = client.utils.getInviteMessage(client, member, invite);
+                                const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
                                 trackingChannel.send({embeds: [inviteMessage]});
                             }
                         } else {
                             const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
                             if (trackingChannel) {
-                                const inviteMessage = client.utils.getInviteMessage(client, member, invite);
+                                const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
                                 trackingChannel.send({embeds: [inviteMessage]});
                             }
                         }
