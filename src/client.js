@@ -1,7 +1,7 @@
 const { GatewayIntentBits } = require('discord.js');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
-const Invites = require('./schemas/InviteTracker');
+const Invites = require('./schemas/inviteTracker');
 const ResponseSchema = require('./schemas/response');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
