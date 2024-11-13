@@ -1,10 +1,11 @@
 const { GatewayIntentBits } = require('discord.js');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
-const Invites = require('./schemas/inviteTracker');
+const InviteSchema = require('./schemas/inviteTracker');
 const ResponseSchema = require('./schemas/response');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
+const Invite = require("./schemas/inviteTracker");
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 
 const welcomeChannelId = '1299416615275987025';
@@ -55,7 +56,7 @@ client.on('guildMemberAdd', async (member) => {
     try {
         member.guild.invites.fetch().then(invites => {
             for (const invite of invites.values()) {
-                Invites.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(inviter => {
+                InviteSchema.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(inviter => {
                     if (inviter) {
                         if (!inviter.userId.includes(member.id)) {
                             inviter.uses += 1;
@@ -120,6 +121,56 @@ client.on('guildMemberRemove', member => {
     }
 });
 
+setInterval(() => {
+    const guild = client.guilds.cache.get(config.guildId);
+    if (!guild) {
+        console.error('Guild not found');
+        return;
+    }
+
+    guild.invites.fetch()
+        .then((invites) => {
+            if (!invites || invites.length === 0) {
+                return;
+            }
+            const inviteCodes = invites.map(invite => invite.code);
+
+            Invite.find({ guildId: guild.id })
+                .then((dbInvites) => {
+                    dbInvites.forEach((dbInvite) => {
+                        if (!inviteCodes.includes(dbInvite.inviteCode)) {
+                            dbInvite.deleteOne()
+                                .catch((error) => console.error('Error deleting invite from DB:', error));
+                        }
+                    });
+
+                    // Iterate over current invites and update the database
+                    const invitePromises = invites.map((invite) => {
+                        return Invite.findOne({ inviteCode: invite.code })
+                            .then((existingInvite) => {
+                                if (!existingInvite) {
+                                    // Save a new invite record if it doesn't exist
+                                    const newInvite = new Invite({
+                                        guildId: guild.id,
+                                        inviteCode: invite.code,
+                                        uses: invite.uses,
+                                        userId: [],
+                                        inviterId: invite.inviter.id,
+                                        inviterTag: invite.inviter.tag,
+                                    });
+                                    return newInvite.save().catch((error) => console.error('Error saving new invite:', error));
+                                } else {
+                                    existingInvite.uses = invite.uses;
+                                    return existingInvite.save().catch((error) => console.error('Error updating existing invite:', error));
+                                }
+                            })
+                            .catch((error) => console.error('Error finding invite in DB:', error));
+                    });
+
+                    return Promise.all(invitePromises);
+                }).catch((error) => console.error('Error processing invites from DB:', error));
+        }).catch((error) => console.error('Error fetching invites:', error));
+}, 60000);
 
 setInterval(() => {
     const now = Date.now();
@@ -157,7 +208,7 @@ setInterval(() => {
         .catch((err) => {
             console.error('Error finding giveaways:', err);
         });
-}, 10000);
+}, 60000);
 
 setInterval(() => {
     const now = Date.now();
@@ -195,7 +246,7 @@ setInterval(() => {
         .catch((err) => {
             console.error('Error finding giveaway shop items:', err);
         });
-}, 10000);
+}, 60000);
 
 
 // Schedule the first execution
