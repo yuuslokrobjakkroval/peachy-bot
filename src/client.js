@@ -56,7 +56,9 @@ client.on('guildMemberAdd', async (member) => {
     try {
         
         const invite = await member.guild.invites.fetch();
+        console.log(invite)
                 InviteSchema.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(inviter => {
+                    console.log('hello')
                     if (inviter) {
                         // Check if this is a unique member use of the invite
                         if (!inviter.userId.includes(member.id)) {
