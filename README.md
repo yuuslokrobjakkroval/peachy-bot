@@ -103,7 +103,7 @@ If you liked this repository, feel free to leave a star ⭐ to help promote !
 
 [//]: # ([![DiscordBanner]&#40;https://invidget.switchblade.xyz/mRt2FkwxYu&#41;]&#40;https://discord.gg/sE7VuPx54a&#41;)
 
-[Support Server](https://discord.gg/peachgoma) - Peachy's Support Server Invite
+[Support Server](https://discord.gg/asprTKff9j) - Peachy's Support Server Invite
 
 [//]: # (# Donate)
 

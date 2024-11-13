@@ -7,6 +7,11 @@ const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 
+const welcomeChannelId = '1299416615275987025';
+const chatChannelId = '1271685845165936729';
+const trackingChannelId = '1299416717293781124';
+const goodbyeChannelId = '1299416504575459380';
+
 function getDelayUntil7PM() {
     const now = new Date();
     const sevenPM = new Date();
@@ -41,8 +46,7 @@ client.on('guildMemberAdd', async (member) => {
         member.roles.add(role).catch(console.error);
     }
 
-    const channelId = '1299416615275987025';
-    const welcomeChannel = member.guild.channels.cache.get(channelId);
+    const welcomeChannel = member.guild.channels.cache.get(welcomeChannelId);
     if (welcomeChannel) {
         const welcomeMessage = client.utils.getWelcomeMessage(client, member);
         welcomeChannel.send({ embeds: [welcomeMessage] });
@@ -53,7 +57,7 @@ client.on('guildMemberAdd', async (member) => {
         for (const invite of invites.values()) {
             let storedInvite = await Invites.findOne({ guildId: member.guild.id, inviteCode: invite.code });
             if (storedInvite && invite.uses > storedInvite.uses) {
-                const trackingChannelId = '1299416717293781124';
+
                 const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
                 if (trackingChannel) {
                     const inviteMessage = client.utils.getInviteMessage(client, member, invite);
@@ -70,7 +74,6 @@ client.on('guildMemberAdd', async (member) => {
         console.error('Error fetching or saving invite data:', error);
     }
 
-    const chatChannelId = '1271685845165936729';
     const chatChannel = member.guild.channels.cache.get(chatChannelId);
     const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្តី', 'សួស្តីបង'];
 
@@ -102,7 +105,6 @@ client.on('messageCreate', async (message) => {
 client.on('guildMemberRemove', member => {
     if (member.guild.id !== config.guildId) return;
 
-    const goodbyeChannelId = '1299416504575459380';
     const goodbyeChannel = member.guild.channels.cache.get(goodbyeChannelId);
 
     if (goodbyeChannel) {

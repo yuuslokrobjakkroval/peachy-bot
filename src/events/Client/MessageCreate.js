@@ -90,7 +90,7 @@ module.exports = class MessageCreate extends Event {
                           `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
                           `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
                           `5. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
-                          `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/peachgoma). We're here to help!`
+                          `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/asprTKff9j). We're here to help!`
                       );
 
                   const confirmButton = this.client.utils.labelButton('confirm', 'Accept for Register', 3);
