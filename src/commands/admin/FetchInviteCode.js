@@ -48,10 +48,10 @@ module.exports = class FetchInvites extends Command {
                 }
             });
             await Promise.all(invitePromises);
-            return ctx.sendSuccessMessage(client, ctx, `${emoji.tick} Successfully fetched and saved all invites for the guild.`, color);
+            return client.utils.sendSuccessMessage(client, ctx, `${emoji.tick} Successfully fetched and saved all invites for the guild.`, color);
         } catch (error) {
             console.error('Error fetching invites:', error);
-            return ctx.sendErrorMessage(client,ctx, `${emoji.deny} Failed to fetch invites for the guild.`, color);
+            return client.utils.sendErrorMessage(client,ctx, `${emoji.deny} Failed to fetch invites for the guild.`, color);
         }
     }
 };

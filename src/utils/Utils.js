@@ -451,6 +451,7 @@ module.exports = class Utils {
         const embed = client.embed()
             .setColor(color.main)
             .setDescription(args);
+
         return ctx.sendMessage({ embeds: [embed] })
             .then(msg => {
                 setTimeout(() => {
