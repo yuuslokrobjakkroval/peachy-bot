@@ -76,7 +76,7 @@ client.on('guildMemberAdd', async (member) => {
 
     if (chatChannel) {
         chatChannel.send({
-            content: `${this.client.utils.getRandomElement(welcomeMessages)} <@${member.id}>!`,
+            content: `${client.utils.getRandomElement(welcomeMessages)} <@${member.id}>!`,
         });
     }
 });
