@@ -969,11 +969,17 @@ module.exports = class Utils {
     }
 
     static getInviteMessage(client, member, invite) {
+        if (!member || !invite || !invite.inviter) {
+            console.error('Invalid member or invite data:', { member, invite });
+            return;
+        }
+
         return client.embed()
             .setColor(client.color.main)
-            .setDescription(`<@${member.author.id}> joined through <${invite.inviter.id}>'s invite!`)
+            .setDescription(`<@${member.id}> joined through <@${invite.inviter.id}>'s invite!`)
             .setTimestamp();
     }
+
 
     static getGoodbyeMessage(client, member) {
         const memberCount = member.guild.memberCount;
@@ -981,7 +987,7 @@ module.exports = class Utils {
 
         return client.embed()
             .setColor(client.color.danger)
-            .setDescription(`# **Goodbye from ${guildName}** ${emoji.main.signature}\n\nWe're sad to see you go, <@${member.id}> ${emoji.channel.poof}!\n\n**NOW WE HAVE ${memberCount} MEMBERS LEFT**`)
+            .setDescription(`# **Goodbye from ${guildName}** ${emoji.main.signature}\n\nWe're sad to see you go, <@${member.id}> ${emoji.channel.poof}\n\n**NOW WE HAVE ${memberCount} MEMBERS LEFT**`)
             .setImage('https://i.imgur.com/t2s3fNF.jpg')
             .setFooter({text: 'Goodbye! We hope to see you again soon.'})
             .setTimestamp();
