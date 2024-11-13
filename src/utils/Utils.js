@@ -954,15 +954,13 @@ module.exports = class Utils {
 
         return client.embed()
             .setColor(client.color.main)
-            .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}
-            
+            .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}\n\n
             > **${emoji.channel.announce}** : <#1272595713125126176>
             > **${emoji.channel.rule}** : <#1271685845165936722>
             > **${emoji.channel.role}** : <#1271685845165936723>
             > **${emoji.channel.booster}** : <#1271685845165936725>
             > **${emoji.channel.giveaway}** : <#1283713873878450239>
-            
-            ${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
+            \n${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
         `)
             .setImage('https://i.imgur.com/MTOqT51.jpg')
             .setFooter({text: 'We hope you enjoy your stay!'})
@@ -981,7 +979,7 @@ module.exports = class Utils {
         return client.embed()
             .setColor(client.color.main)
             .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
-            .setDescription(`# **Heyoo <@${member.user.id}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}
+            .setDescription(`## **Heyoo <@${member.user.id}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}
             
             > ${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚 : <@${inviter.inviterId}>
             > ${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆 : **https://discord.gg/${inviter.inviteCode}**
