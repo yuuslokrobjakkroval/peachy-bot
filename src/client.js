@@ -54,8 +54,8 @@ client.on('guildMemberAdd', async (member) => {
     }
 
     try {
-        member.guild.invites.fetch().then(invites => {
-            for (const invite of invites.values()) {
+        
+        const invite = await member.guild.invites.fetch();
                 InviteSchema.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(inviter => {
                     if (inviter) {
                         // Check if this is a unique member use of the invite
@@ -71,8 +71,6 @@ client.on('guildMemberAdd', async (member) => {
                                 trackingChannel.send({embeds: [inviteMessage]});
                             }
                         }
-                    }
-                }).catch(console.error);
             }
         }).catch(console.error);
     } catch (error) {
