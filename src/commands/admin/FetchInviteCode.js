@@ -48,14 +48,10 @@ module.exports = class FetchInvites extends Command {
                 }
             });
             await Promise.all(invitePromises);
-            return await ctx.sendSuccessMessage(client, ctx, `${emoji.tick} Successfully fetched and saved all invites for the guild.`, color);
+            return ctx.sendSuccessMessage(client, ctx, `${emoji.tick} Successfully fetched and saved all invites for the guild.`, color);
         } catch (error) {
             console.error('Error fetching invites:', error);
-            const embed = client.embed()
-                .setColor(color.danger)
-                .setDescription(`${emoji.deny} Failed to fetch invites for the guild.`);
-
-            return await ctx.sendMessage({ embeds: [embed] });
+            return ctx.sendErrorMessage(client,ctx, `${emoji.deny} Failed to fetch invites for the guild.`, color);
         }
     }
 };
