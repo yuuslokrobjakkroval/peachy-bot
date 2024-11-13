@@ -27,6 +27,15 @@ module.exports = class FetchInvites extends Command {
         const guild = ctx.guild;
         try {
             const invites = await guild.invites.fetch();
+            const inviteCodes = invites.map(invite => invite.code);
+
+            const dbInvites = await Invite.find({ guildId: guild.id });
+            for (const dbInvite of dbInvites) {
+                if (!inviteCodes.includes(dbInvite.inviteCode)) {
+                    await dbInvite.deleteOne();
+                }
+            }
+
             const invitePromises = invites.map(async invite => {
                 try {
                     const existingInvite = await Invite.findOne({ inviteCode: invite.code });
@@ -48,11 +57,12 @@ module.exports = class FetchInvites extends Command {
                     console.error('Error handling invite:', error);
                 }
             });
+
             await Promise.all(invitePromises);
             return client.utils.sendSuccessMessage(client, ctx, `${emoji.tick} Successfully fetched and saved all invites for the guild.`, color);
         } catch (error) {
             console.error('Error fetching invites:', error);
-            return client.utils.sendErrorMessage(client,ctx, `${emoji.deny} Failed to fetch invites for the guild.`, color);
+            return client.utils.sendErrorMessage(client, ctx, `${emoji.deny} Failed to fetch invites for the guild.`, color);
         }
     }
 };
