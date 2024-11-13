@@ -68,7 +68,7 @@ client.on('guildMemberAdd', async (member) => {
                             const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
                             if (trackingChannel) {
                                 const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
-                                trackingChannel.send({embeds: [inviteMessage]});
+                                return trackingChannel.send({embeds: [inviteMessage]});
                             }
                         }
                     }
@@ -107,7 +107,7 @@ client.on('messageCreate', async (message) => {
         console.error('Error processing auto-responses:', error);
     }
 });
-// Member leaves
+
 client.on('guildMemberRemove', member => {
     if (member.guild.id !== config.guildId) return;
 
@@ -246,8 +246,6 @@ setInterval(() => {
         });
 }, 60000);
 
-
-// Schedule the first execution
 setTimeout(() => {
     client.utils.checkBirthdays(client)
         .then(() => console.log('Birthday check completed.'))
