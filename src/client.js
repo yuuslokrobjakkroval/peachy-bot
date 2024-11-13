@@ -1,6 +1,7 @@
 const { GatewayIntentBits } = require('discord.js');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
+const Invites = require('./schemas/InviteTracker');
 const ResponseSchema = require('./schemas/response');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
@@ -29,22 +30,66 @@ const clientOptions = {
 
 const client = new PeachyClient(clientOptions);
 
+// Track when a new member joins
+client.on('guildMemberAdd', async (member) => {
+    if (member.guild.id !== config.guildId) return;
+
+    const roleId = member.user.bot ? '1271685844700233740' : '1271685844700233741';
+    const role = member.guild.roles.cache.get(roleId);
+
+    if (role) {
+        member.roles.add(role).catch(console.error);
+    }
+
+    const channelId = '1299416615275987025';
+    const welcomeChannel = member.guild.channels.cache.get(channelId);
+    if (welcomeChannel) {
+        const welcomeMessage = client.utils.getWelcomeMessage(client, member);
+        welcomeChannel.send({ embeds: [welcomeMessage] });
+    }
+
+    try {
+        const invites = await member.guild.invites.fetch();
+        for (const invite of invites.values()) {
+            let storedInvite = await Invites.findOne({ guildId: member.guild.id, inviteCode: invite.code });
+            if (storedInvite && invite.uses > storedInvite.uses) {
+                const trackingChannelId = '1299416717293781124';
+                const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
+                if (trackingChannel) {
+                    const inviteMessage = client.utils.getInviteMessage(client, member, invite);
+                    trackingChannel.send({ embeds: [inviteMessage] });
+                }
+                storedInvite.uses = invite.uses;
+                await storedInvite.save();
+                break;
+            }
+        }
+
+
+    } catch (error) {
+        console.error('Error fetching or saving invite data:', error);
+    }
+
+    const chatChannelId = '1271685845165936729';
+    const chatChannel = member.guild.channels.cache.get(chatChannelId);
+    const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្តី', 'សួស្តីបង'];
+
+    if (chatChannel) {
+        chatChannel.send({
+            content: `${this.client.utils.getRandomElement(welcomeMessages)} <@${member.id}>!`,
+        });
+    }
+});
+
 client.on('messageCreate', async (message) => {
     if (message.guild.id !== config.guildId || message.author.bot) return;
 
     try {
-        // Fetch the response document from the database
         const responseDoc = await ResponseSchema.findOne({ guildId: message.guild.id });
-
-        // If no autoresponses are found, return early
         if (!responseDoc || !responseDoc.autoresponse || responseDoc.autoresponse.length === 0) return;
-
-        // Find matching responses based on the message content
         const matchingResponses = responseDoc.autoresponse.filter(response =>
             message.content.toLowerCase() === response.trigger.toLowerCase()
         );
-
-        // If matching responses exist, send a random one
         if (matchingResponses.length > 0) {
             const randomResponse = matchingResponses[Math.floor(Math.random() * matchingResponses.length)];
             message.reply(randomResponse.response);
@@ -53,6 +98,19 @@ client.on('messageCreate', async (message) => {
         console.error('Error processing auto-responses:', error);
     }
 });
+// Member leaves
+client.on('guildMemberRemove', member => {
+    if (member.guild.id !== config.guildId) return;
+
+    const goodbyeChannelId = '1299416504575459380';
+    const goodbyeChannel = member.guild.channels.cache.get(goodbyeChannelId);
+
+    if (goodbyeChannel) {
+        const goodbyeMessage = client.utils.getGoodbyeMessage(client, member);
+        goodbyeChannel.send({ embeds: [goodbyeMessage] });
+    }
+});
+
 
 setInterval(() => {
     const now = Date.now();

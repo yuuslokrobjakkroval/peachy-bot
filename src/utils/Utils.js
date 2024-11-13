@@ -6,6 +6,7 @@ const importantItems = require('../assets/inventory/ImportantItems.js');
 const shopItems = require('../assets/inventory/ShopItems.js');
 const canvafy = require("canvafy");
 const gif = require("./Gif");
+const emoji = require("./Emoji");
 const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Utils {
@@ -943,5 +944,44 @@ module.exports = class Utils {
                 }
             }
         }
+    }
+
+    static getWelcomeMessage(client, member) {
+        const memberCount = member.guild.memberCount;
+        const guildName = member.guild.name;
+
+        // Create the embed
+        return client.embed()
+            .setColor(client.color.main)
+            .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}
+            > **${emoji.channel.announce}** : <#1272595713125126176>
+            > **${emoji.channel.rule}** : <#1271685845165936722>
+            > **${emoji.channel.role}** : <#1271685845165936723>
+            > **${emoji.channel.booster}** : <#1271685845165936725>
+            > **${emoji.channel.giveaway}** : <#1283713873878450239>
+            ${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
+        `)
+            .setImage('https://i.imgur.com/MTOqT51.jpg')
+            .setFooter({text: 'We hope you enjoy your stay!'})
+            .setTimestamp();
+    }
+
+    static getInviteMessage(client, member, invite) {
+        return client.embed()
+            .setColor(client.color.main)
+            .setDescription(`${member.user.tag} joined through ${invite.inviter.tag}'s invite!`)
+            .setTimestamp();
+    }
+
+    static getGoodbyeMessage(client, member) {
+        const memberCount = member.guild.memberCount;
+        const guildName = member.guild.name;
+
+        return client.embed()
+            .setColor(client.color.danger)
+            .setDescription(`# **Goodbye from ${guildName}** ${emoji.main.signature}\n\nWe're sad to see you go, <@${member.id}> ${emoji.channel.poof}!\n\n**NOW WE HAVE ${memberCount} MEMBERS LEFT**`)
+            .setImage('https://i.imgur.com/t2s3fNF.jpg')
+            .setFooter({text: 'Goodbye! We hope to see you again soon.'})
+            .setTimestamp();
     }
 };

@@ -1,5 +1,10 @@
 module.exports = {
     // GLOBAL
+    main: {
+        signature: '<:MAIN:1301020872144060436>',
+        left: '<:PEACH:1301021708962234400>',
+        right: '<:GOMA:1301021668025700454>',
+    },
     congratulation: '<a:congratulation:1287438960477474957>',
     thankYou: '<a:PTY:1294514862390644782>',
 
@@ -104,13 +109,6 @@ module.exports = {
     avocado: '<:AVOCADO:1287593039380090931>',
     banana: '<:BANANA:1287593031461240852>',
 
-    // INVENTORY
-
-    // RANK
-    common: '<:common:1287104569431560273>',
-    uncommon: '<:uncommon:1287104503593697351>',
-    epic: '<:epic:1287104511332323472>',
-    legendary: '<:legendary:1287104518856773724>',
 
     // COUNTRY FLAG
     countryFlag: {
@@ -130,6 +128,29 @@ module.exports = {
         lo: '<:LO:1293947831148875837>',
         ms: '<:MS:1293947890179379241>',
     },
+
+    channel: {
+        discordIcon: '<a:DISCORDICON:1306174620562493440>',
+        announce: '<:ANNOUNCE:1306174540052697160>',
+        rule: '<a:RULES:1306174685779853354>',
+        role: '<a:REACTROLES:1306174694457868308>',
+        booster: '<a:BOOSTERBADGE:1306174891954802730>',
+        giveaway: '<:CHANNELGIVEAWAYS:1306174754767634462>',
+        warning: '<:WARNING:1306174937182244904>',
+        poof: '<a:POOF:1306175098398572624>',
+        buyMeCafe: '<:BUYMEACOFFEE:1306174972489764894>',
+    },
+    border: {
+        topLeft: '<a:TOPLEFT:1306174270493425665>',
+        topMiddle: '<a:TOPMIDDLE:1306174280513359892>',
+        topRight: '<a:TOPRIGHT:1306174290420301844>',
+        left: '<:ARROWLEFT:1306174348159225906>',
+        right: '<:ARROWRIGHT:1306174337304363020>',
+        bottomLeft: '<a:BOTTOMLEFT:1306174300046491689>',
+        bottomMiddle: '<a:BOTTOMMIDDLE:1306174309223497738>',
+        bottomRight: '<a:BOTTOMRIGHT:1306174318736183406>',
+    },
+
 
     actions: {
         bites: [
