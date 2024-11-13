@@ -68,7 +68,7 @@ client.on('guildMemberAdd', async (member) => {
                             const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
                             if (trackingChannel) {
                                 const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
-                                return trackingChannel.send({embeds: [inviteMessage]});
+                                trackingChannel.send({embeds: [inviteMessage]});
                             }
                         }
                     }
