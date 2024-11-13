@@ -969,17 +969,28 @@ module.exports = class Utils {
     }
 
     static getInviteMessage(client, member, invite) {
-        if (!member || !invite || !invite.inviter) {
-            console.error('Invalid member or invite data:', { member, invite });
+        if (!invite || !invite.inviter) {
+            console.error('Invalid invite or inviter data:', { invite, member });
             return;
         }
 
         return client.embed()
             .setColor(client.color.main)
-            .setDescription(`<@${member.id}> joined through <@${invite.inviter.id}>'s invite!`)
+            .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
+            .setDescription(`# **Heyoo** ${emoji.main.signature}\n**<@${member.user.id}>** has joined the server using an invite ${emoji.congratulation}
+            
+            > ${emoji.inviteTracker.inviteBy} : <@${invite.inviter.id}>
+            > ${emoji.inviteTracker.inviteCode} : **https://discord.gg/${invite.code}**
+            > ${emoji.inviteTracker.inviteStats} : ${invite.uses} times
+            
+            `)
+            .setImage('https://i.imgur.com/XiZrSty.gif')
+            .setFooter({
+                text: `Invite Tracker | Powered by ${client.user.tag}`,
+                iconURL: client.user.displayAvatarURL()
+            })
             .setTimestamp();
     }
-
 
     static getGoodbyeMessage(client, member) {
         const memberCount = member.guild.memberCount;

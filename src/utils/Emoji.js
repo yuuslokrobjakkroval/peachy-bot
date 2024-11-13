@@ -7,7 +7,7 @@ module.exports = {
     },
     congratulation: '<a:congratulation:1287438960477474957>',
     thankYou: '<a:PTY:1294514862390644782>',
-
+    buyMeCafe: '<:BUYMEACOFFEE:1306174972489764894>',
     ping: '<a:PINGS:1302062424198742036>',
 
     // VERIFY
@@ -129,8 +129,15 @@ module.exports = {
         ms: '<:MS:1293947890179379241>',
     },
 
+    inviteTracker: {
+      inviteBy: '<a:RAINBOW:1306195614404448276>',
+      inviteCode: '<:PIN:1306195918898593813>',
+      inviteStats: '<:MESSAGE:1306195915807264808>',
+      inviteMember: '<:PEACHMEMBER:1306196189498048512>',
+      memberCreated: '<a:DISCORDICON:1306174620562493440>',
+    },
+
     channel: {
-        discordIcon: '<a:DISCORDICON:1306174620562493440>',
         announce: '<:ANNOUNCE:1306174540052697160>',
         rule: '<a:RULES:1306174685779853354>',
         role: '<a:REACTROLES:1306174694457868308>',
@@ -138,7 +145,7 @@ module.exports = {
         giveaway: '<:CHANNELGIVEAWAYS:1306174754767634462>',
         warning: '<:WARNING:1306174937182244904>',
         poof: '<a:POOF:1306175098398572624>',
-        buyMeCafe: '<:BUYMEACOFFEE:1306174972489764894>',
+
     },
     border: {
         topLeft: '<a:TOPLEFT:1306174270493425665>',
@@ -150,7 +157,6 @@ module.exports = {
         bottomMiddle: '<a:BOTTOMMIDDLE:1306174309223497738>',
         bottomRight: '<a:BOTTOMRIGHT:1306174318736183406>',
     },
-
 
     actions: {
         bites: [

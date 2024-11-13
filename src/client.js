@@ -53,28 +53,30 @@ client.on('guildMemberAdd', async (member) => {
     }
 
     try {
-        const invites = await member.guild.invites.fetch();
-        for (const invite of invites.values()) {
-            let storedInvite = await Invites.findOne({ guildId: member.guild.id, inviteCode: invite.code });
-            if (storedInvite) {
-                if (!storedInvite.userId.includes(member.id)) {
-                    storedInvite.uses += 1;
-                    storedInvite.userId.push(member.id);
-                    storedInvite.save().catch(console.error);
-                    const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
-                    if (trackingChannel) {
-                        const inviteMessage = client.utils.getInviteMessage(client, member, invite);
-                        trackingChannel.send({ embeds: [inviteMessage] });
+        member.guild.invites.fetch().then(invites => {
+            for (const invite of invites.values()) {
+                Invites.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(storedInvite => {
+                    if (storedInvite) {
+                        if (!storedInvite.userId.includes(member.id)) {
+                            storedInvite.uses += 1;
+                            storedInvite.userId.push(member.id);
+                            storedInvite.save().catch(console.error);
+                            const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
+                            if (trackingChannel) {
+                                const inviteMessage = client.utils.getInviteMessage(client, member, invite);
+                                trackingChannel.send({embeds: [inviteMessage]});
+                            }
+                        } else {
+                            const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
+                            if (trackingChannel) {
+                                const inviteMessage = client.utils.getInviteMessage(client, member, invite);
+                                trackingChannel.send({embeds: [inviteMessage]});
+                            }
+                        }
                     }
-                } else {
-                    const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
-                    if (trackingChannel) {
-                        const inviteMessage = client.utils.getInviteMessage(client, member, invite);
-                        trackingChannel.send({ embeds: [inviteMessage] });
-                    }
-                }
+                })
             }
-        }
+        })
     } catch (error) {
         console.error('Error fetching or saving invite data:', error);
     }

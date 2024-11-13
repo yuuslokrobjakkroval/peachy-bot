@@ -3,6 +3,7 @@ const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/user.js");
 const gif = require('../../utils/Gif.js');
+const globalEmoji = require('../../utils/Emoji.js');
 
 module.exports = class MessageCreate extends Event {
   constructor(client, file) {
@@ -15,7 +16,6 @@ module.exports = class MessageCreate extends Event {
     if (message.author.bot || !message.guild) return;
 
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
-      const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
       this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
       const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
@@ -30,8 +30,8 @@ module.exports = class MessageCreate extends Event {
                 `Do you need help? please use **\`${prefix}help\`**!!!`
             )
             .setFooter({
-              text: generalMessages.copyRight,
-              iconURL: this.client.user.displayAvatarURL(),
+              text: 'Buy Me A Coffee | ABA: 500 057 310',
+              iconURL: this.client.utils.emojiToImage(globalEmoji.buyMeCafe),
             })
 
         const clickSuppButton = this.client.utils.linkButton('Click for support', this.client.config.links.support)
