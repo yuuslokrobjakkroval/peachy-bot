@@ -38,18 +38,21 @@ const clientOptions = {
 const client = new PeachyClient(clientOptions);
 
 client.once('ready', async () => {
-    for (const guild of client.guilds.cache.values()) {
+    const guild = client.guilds.cache.get(config.guildId);
+    if (guild) {
         try {
             const invites = await guild.invites.fetch();
             inviteData[guild.id] = new Map(invites.map(invite => [invite.code, invite.uses]));
+            console.log("Initial invite data loaded for specified guild.");
         } catch (error) {
             console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
             if (error.code === 50013) {
                 console.error('Missing Permissions: Ensure the bot has the Manage Server permission.');
             }
         }
+    } else {
+        console.error("Bot is not in the specified guild or the guild ID is incorrect.");
     }
-    console.log("Initial invite data loaded.");
 });
 
 // Track when a new member joins
@@ -82,13 +85,13 @@ client.on('guildMemberAdd', async (member) => {
                         const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
                         trackingChannel.send({embeds: [inviteMessage]});
                     }
-                    console.log(`${member.user.tag} joined using ${invite.code}, invited by ${inviter.tag}`);
                     break;
                 }
             }
         }
+        inviteData[guild.id] = new Map(currentInvites.map(invite => [invite.code, invite.uses]));
     } catch (error) {
-        console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
+        console.error(`Failed to fetch or update invites for guild ${guild.name}:`, error);
         if (error.code === 50013) {
             console.error('Missing Permissions: Ensure the bot has the Manage Server permission.');
         }
