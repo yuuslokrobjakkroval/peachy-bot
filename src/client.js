@@ -6,7 +6,7 @@ const ResponseSchema = require('./schemas/response');
 const config = require('./config.js');
 const PeachyClient = require('./structures/Client.js');
 const Invite = require("./schemas/inviteTracker");
-const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
+const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildInvites, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 
 let inviteData = {};
 const welcomeChannelId = '1299416615275987025';
@@ -28,7 +28,7 @@ function getDelayUntil7PM() {
 const initialDelay = getDelayUntil7PM();
 
 const clientOptions = {
-    intents: [Guilds, GuildMessages, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
+    intents: [Guilds, GuildMessages, GuildInvites, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
     allowedMentions: {
         parse: ['users', 'roles'],
         repliedUser: false,
