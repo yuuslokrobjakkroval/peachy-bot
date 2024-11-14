@@ -58,7 +58,6 @@ client.on('guildMemberAdd', async (member) => {
         const invite = await member.guild.invites.fetch();
         console.log(invite)
                 InviteSchema.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(inviter => {
-                    console.log('hello')
                     if (inviter) {
                         // Check if this is a unique member use of the invite
                         if (!inviter.userId.includes(member.id)) {
@@ -70,7 +69,7 @@ client.on('guildMemberAdd', async (member) => {
                             // Send the tracking message only if it's a unique invite use
                             const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
                             if (trackingChannel) {
-                                const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
+                                const inviteMessage = client.utils.getInviteMessage(client, member, inviter);
                                 trackingChannel.send({embeds: [inviteMessage]});
                             }
                         }

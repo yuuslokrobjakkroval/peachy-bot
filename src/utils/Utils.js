@@ -967,12 +967,7 @@ module.exports = class Utils {
             .setTimestamp();
     }
 
-    static getInviteMessage(client, member, invite, inviter) {
-        if (!invite || !invite.inviter) {
-            console.error('Invalid invite or inviter data:', { invite, member });
-            return;
-        }
-
+    static getInviteMessage(client, member, inviter) {
         const memberCount = member.guild.memberCount;
         const accountCreationDate = moment(member.user.createdAt).fromNow();
 
