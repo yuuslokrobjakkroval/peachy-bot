@@ -43,7 +43,6 @@ client.once('ready', async () => {
         try {
             const invites = await guild.invites.fetch();
             inviteData[guild.id] = new Map(invites.map(invite => [invite.code, invite.uses]));
-            console.log("Initial invite data loaded for specified guild.");
         } catch (error) {
             console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
             if (error.code === 50013) {
