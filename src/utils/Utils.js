@@ -976,8 +976,8 @@ module.exports = class Utils {
             .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
             .setDescription(`## **Heyoo <@${member.user.id}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}`)
             .addFields([
-                { name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`, value: `<@${inviter.inviterId}>`, inline: false },
-                { name: `${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆`, value: `**https://discord.gg/${inviter.inviteCode}**`, inline: false },
+                { name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`, value: `<@${inviter.id ? inviter.id : 'Unknown'}>`, inline: false },
+                { name: `${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆`, value: `**https://discord.gg/${inviter.code ? inviter.code : 'asprTKff9j'}**`, inline: false },
                 { name: `${emoji.inviteTracker.inviteStats} 𝑰𝒏𝒗𝒊𝒕𝒆𝒅 𝑴𝒆𝒎𝒃𝒆𝒓`, value: `${inviter.uses} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false },
                 { name: `${emoji.inviteTracker.memberCreated} 𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑫𝒂𝒕𝒆`, value: `${accountCreationDate}`, inline: false },
                 { name: `${emoji.inviteTracker.inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, value: `${memberCount} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false }
