@@ -79,7 +79,7 @@ client.on('guildMemberAdd', async (member) => {
                     inviteData[guild.id].set(invite.code, invite.uses);
                     const trackingChannel = guild.channels.cache.get(trackingChannelId);
                     if (trackingChannel) {
-                        const inviteMessage = client.utils.getInviteMessage(client, member, inviter);
+                        const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
                         trackingChannel.send({embeds: [inviteMessage]});
                     }
                     console.log(`${member.user.tag} joined using ${invite.code}, invited by ${inviter.tag}`);
