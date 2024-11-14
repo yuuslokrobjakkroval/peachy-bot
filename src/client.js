@@ -8,6 +8,7 @@ const PeachyClient = require('./structures/Client.js');
 const Invite = require("./schemas/inviteTracker");
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 
+let inviteData = {};
 const welcomeChannelId = '1299416615275987025';
 const chatChannelId = '1271685845165936729';
 const trackingChannelId = '1299416717293781124';
@@ -36,6 +37,14 @@ const clientOptions = {
 
 const client = new PeachyClient(clientOptions);
 
+client.once('ready', async () => {
+    for (const guild of client.guilds.cache.values()) {
+        const invites = await guild.invites.fetch();
+        inviteData[guild.id] = new Map(invites.map(invite => [invite.code, invite.uses]));
+    }
+    console.log("Initial invite data loaded.");
+});
+
 // Track when a new member joins
 client.on('guildMemberAdd', async (member) => {
     if (member.guild.id !== config.guildId) return;
@@ -54,27 +63,23 @@ client.on('guildMemberAdd', async (member) => {
     }
 
     try {
-        
-        const invite = await member.guild.invites.fetch();
-        console.log(invite)
-                InviteSchema.findOne({ guildId: member.guild.id, inviteCode: invite.code }).then(inviter => {
-                    if (inviter) {
-                        // Check if this is a unique member use of the invite
-                        if (!inviter.userId.includes(member.id)) {
-                            inviter.uses += 1;
-                            inviter.userId.push(member.id);
-                            inviter.save().catch(console.error);
-                        }
-    
-                            // Send the tracking message only if it's a unique invite use
-                            const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
-                            if (trackingChannel) {
-                                const inviteMessage = client.utils.getInviteMessage(client, member, inviter);
-                                trackingChannel.send({embeds: [inviteMessage]});
-                            }
-                        }
-            
-        }).catch(console.error);
+        const guild = member.guild;
+        const currentInvites = await guild.invites.fetch();
+        for (const invite of currentInvites.values()) {
+            if (inviteData[guild.id] && inviteData[guild.id].has(invite.code)) {
+                if (invite.uses > inviteData[guild.id].get(invite.code)) {
+                    const inviter = invite.inviter;
+                    inviteData[guild.id].set(invite.code, invite.uses);
+                    const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
+                    if (trackingChannel) {
+                        const inviteMessage = client.utils.getInviteMessage(client, member, inviter);
+                        trackingChannel.send({embeds: [inviteMessage]});
+                    }
+                    console.log(`${member.user.tag} joined using ${invite.code}, invited by ${inviter.tag}`);
+                    break;
+                }
+            }
+        }
     } catch (error) {
         console.error('Error fetching or saving invite data:', error);
     }
