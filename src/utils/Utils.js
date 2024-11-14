@@ -672,6 +672,18 @@ module.exports = class Utils {
         }
     }
 
+    static stickerToImage(sticker) {
+        const stickerRegex = /<:[a-zA-Z0-9_]+:(\d+)>|<a:[a-zA-Z0-9_]+:(\d+)>/;
+        const match = sticker.match(stickerRegex);
+        if (match) {
+            const stickerId = match[1] || match[2];
+            return `https://cdn.discordapp.com/stickers/${stickerId}.png`;
+        } else {
+            // Fallback to null if no valid sticker ID is found
+            return null;
+        }
+    }
+
     static async checkBirthdays(client) {
         console.log('Check Birthday Start');
         try {

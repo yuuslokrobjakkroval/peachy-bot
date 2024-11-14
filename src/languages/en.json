@@ -827,6 +827,10 @@
 			"roles": "Roles",
 			"created": "Created On"
 		},
+		"stickerMessages": {
+			"invalidSticker": "The provided sticker is not valid. Please try again with a valid sticker from the server.",
+			"stickerDescription": "Here is the image of the selected sticker:"
+		},
 		"themeMessages": {
 			"setThemeMessage": "Your theme has been set to **%{theme}**.",
 			"currentThemeMessage": "Your current theme is **%{theme}**.",
