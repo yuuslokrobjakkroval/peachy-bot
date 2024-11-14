@@ -44,6 +44,9 @@ client.once('ready', async () => {
             inviteData[guild.id] = new Map(invites.map(invite => [invite.code, invite.uses]));
         } catch (error) {
             console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
+            if (error.code === 50013) {
+                console.error('Missing Permissions: Ensure the bot has the Manage Server permission.');
+            }
         }
     }
     console.log("Initial invite data loaded.");
@@ -86,6 +89,9 @@ client.on('guildMemberAdd', async (member) => {
         }
     } catch (error) {
         console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
+        if (error.code === 50013) {
+            console.error('Missing Permissions: Ensure the bot has the Manage Server permission.');
+        }
     }
 
     const chatChannel = guild.channels.cache.get(chatChannelId);
