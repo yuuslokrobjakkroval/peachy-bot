@@ -39,38 +39,42 @@ const client = new PeachyClient(clientOptions);
 
 client.once('ready', async () => {
     for (const guild of client.guilds.cache.values()) {
-        const invites = await guild.invites.fetch();
-        inviteData[guild.id] = new Map(invites.map(invite => [invite.code, invite.uses]));
+        try {
+            const invites = await guild.invites.fetch();
+            inviteData[guild.id] = new Map(invites.map(invite => [invite.code, invite.uses]));
+        } catch (error) {
+            console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
+        }
     }
     console.log("Initial invite data loaded.");
 });
 
 // Track when a new member joins
 client.on('guildMemberAdd', async (member) => {
-    if (member.guild.id !== config.guildId) return;
+    const guild = member.guild;
+    if (guild.id !== config.guildId) return;
 
     const roleId = member.user.bot ? '1271685844700233740' : '1271685844700233741';
-    const role = member.guild.roles.cache.get(roleId);
+    const role = guild.roles.cache.get(roleId);
 
     if (role) {
         member.roles.add(role).catch(console.error);
     }
 
-    const welcomeChannel = member.guild.channels.cache.get(welcomeChannelId);
+    const welcomeChannel = guild.channels.cache.get(welcomeChannelId);
     if (welcomeChannel) {
         const welcomeMessage = client.utils.getWelcomeMessage(client, member);
         welcomeChannel.send({ embeds: [welcomeMessage] });
     }
 
     try {
-        const guild = member.guild;
         const currentInvites = await guild.invites.fetch();
         for (const invite of currentInvites.values()) {
             if (inviteData[guild.id] && inviteData[guild.id].has(invite.code)) {
                 if (invite.uses > inviteData[guild.id].get(invite.code)) {
                     const inviter = invite.inviter;
                     inviteData[guild.id].set(invite.code, invite.uses);
-                    const trackingChannel = member.guild.channels.cache.get(trackingChannelId);
+                    const trackingChannel = guild.channels.cache.get(trackingChannelId);
                     if (trackingChannel) {
                         const inviteMessage = client.utils.getInviteMessage(client, member, inviter);
                         trackingChannel.send({embeds: [inviteMessage]});
@@ -81,11 +85,10 @@ client.on('guildMemberAdd', async (member) => {
             }
         }
     } catch (error) {
-        console.error('Error fetching or saving invite data:', error);
+        console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
     }
 
-
-    const chatChannel = member.guild.channels.cache.get(chatChannelId);
+    const chatChannel = guild.channels.cache.get(chatChannelId);
     const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្តី', 'សួស្តីបង'];
 
     if (chatChannel) {
