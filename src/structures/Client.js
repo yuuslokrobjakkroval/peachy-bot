@@ -1,4 +1,4 @@
-const { ApplicationCommandType, Client, Collection, EmbedBuilder, PermissionsBitField, REST, Routes } = require('discord');
+const { ApplicationCommandType, Client, Collection, EmbedBuilder, PermissionsBitField, REST, Routes } = require('discord.js');
 const { connect, connection } = require('mongoose');
 const fs = require('fs');
 const path = require('path');
@@ -7,31 +7,17 @@ const loadPlugins = require('../plugin/index');
 const Utils = require('../utils/Utils');
 const globalConfig = require('../utils/Config');
 const { I18n } = require('@hammerhq/localization');
-const config = require('../config');
+
+const themeConfig = require('../config');
+
 const emojis = require('../emojis');
-
-const configPeach = require('../theme/Peach/config');
 const emojiPeach = require('../theme/Peach/emojis');
-
-const configGoma = require('../theme/Goma/config');
 const emojiGoma = require('../theme/Goma/emojis');
-
-const configOcean = require('../theme/OceanBreeze/config');
 const emojiOcean = require('../theme/OceanBreeze/emojis');
-
-const configHalloween = require('../theme/Halloween/config');
 const emojiHalloween = require('../theme/Halloween/emojis');
-
-const configHalloweenNew = require('../theme/Halloween/configNew');
 const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
-
-const configHeaven = require('../theme/CelestialGrace/config');
 const emojiHeaven = require('../theme/CelestialGrace/emojis');
-
-const configSakura = require('../theme/SakuraSerenity/config');
 const emojiSakura = require('../theme/SakuraSerenity/emojis');
-
-const configBee = require('../theme/BuzzingBliss/config');
 const emojiBee = require('../theme/BuzzingBliss/emojis');
 
 const Logger = require('./Logger');
@@ -42,14 +28,14 @@ module.exports = class PeachyClient extends Client {
         this.commands = new Collection();
         this.aliases = new Collection();
         this.cooldown = new Collection();
-        this.config = config;
+        this.config = globalConfig;
         this.logger = new Logger();
         this.body = [];
         this.utils = Utils;
-        this.color = config.color;
+        this.color = themeConfig.normal.color;
         this.emoji = emojis;
         this.moment = moment;
-        this.i18n = new I18n(this.config.language);
+        this.i18n = new I18n(globalConfig.language);
     }
 
     embed() {
@@ -116,10 +102,10 @@ module.exports = class PeachyClient extends Client {
         this.once('ready', async () => {
             const applicationCommands =
                 globalConfig.production === true
-                    ? Routes.applicationCommands(globalConfig.clientId ?? '')
-                    : Routes.applicationGuildCommands(globalConfig.clientId ?? '', globalConfig.guildId ?? '');
+                    ? Routes.applicationCommands(this.config.clientId ?? '')
+                    : Routes.applicationGuildCommands(this.config.clientId ?? '', this.config.guildId ?? '');
             try {
-                const rest = new REST({ version: '9' }).setToken(globalConfig.token ?? '');
+                const rest = new REST({ version: '9' }).setToken(this.config.token ?? '');
                 await rest.put(applicationCommands, { body: this.body });
                 this.logger.info(`Successfully loaded slash commands!`);
             } catch (error) {
@@ -182,45 +168,47 @@ module.exports = class PeachyClient extends Client {
                 console.error("No locales loaded for language:", userLanguage.defaultLocale);
             }
 
-            let color = config.color;
+            let color = themeConfig.normal.color;
             let emoji = emojis;
 
             if (user && user.preferences && user.preferences.theme) {
                 switch (user.preferences.theme) {
                     case 't01':
-                        color = configOcean.color;
+                        color = themeConfig.oceanBreeze.color;
                         emoji = emojiOcean;
                         break;
                     case 't02':
                     case 'halloween':
-                        color = configHalloween.color;
+                        color = themeConfig.frightFest.color;
                         emoji = emojiHalloween;
                         break;
                     case 't03':
-                        color = configHalloweenNew.color;
+                        color = themeConfig.booBash.color;
                         emoji = emojiHalloweenNew;
                         break;
                     case 'st01':
-                        color = configHeaven.color;
+                        color = themeConfig.celestialGrace.color;
                         emoji = emojiHeaven;
                         break;
                     case 'st02':
-                        color = configSakura.color;
+                        color = themeConfig.sakuraSerenity.color;
                         emoji = emojiSakura;
                         break;
                     case 'st03':
-                        color = configBee.color;
+                        color = themeConfig.buzzingBliss.color;
                         emoji = emojiBee;
                         break;
                     case 'peach':
-                        color = configPeach.color;
+                        color = themeConfig.peach.color;
                         emoji = emojiPeach;
                         break;
                     case 'goma':
-                        color = configGoma.color;
+                        color = themeConfig.goma.color;
                         emoji = emojiGoma;
                         break;
                     default:
+                        color = themeConfig.normal.color;
+                        emoji = emojis;
                         break;
                 }
             }
@@ -228,7 +216,7 @@ module.exports = class PeachyClient extends Client {
             return { user, color, emoji, language };
         }).catch(error => {
             console.error("Error setting color and theme:", error.message);
-            return { color: config.color, emoji: emojis, language: this.config.language };
+            return { color: globalConfig.color, emoji: emojis, language: globalConfig.language };
         });
     }
 };

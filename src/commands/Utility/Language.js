@@ -1,6 +1,6 @@
 const { Command } = require("../../structures/index.js");
-const Users = require('../../schemas/user.js');
-const emojiGlobal = require('../../utils/Emoji.js');
+const Users = require('../../schemas/user');
+const emojiGlobal = require('../../utils/Emoji');
 
 const languageNames = {
     en: 'English',

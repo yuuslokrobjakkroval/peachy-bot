@@ -1,6 +1,5 @@
 const Command = require('../../structures/Command.js');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const Users = require('../../schemas/user.js');
+const Users = require('../../schemas/user');
 
 module.exports = class Register extends Command {
     constructor(client) {

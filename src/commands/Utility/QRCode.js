@@ -1,5 +1,5 @@
 const { Command } = require("../../structures/index.js");
-const gif = require("../../utils/Gif.js");
+const globalGif = require("../../utils/Gif");
 
 module.exports = class QRCode extends Command {
     constructor(client) {
@@ -44,9 +44,9 @@ module.exports = class QRCode extends Command {
 
         let qrCodeUrl;
         if (currency === 'kh') {
-            qrCodeUrl = gif.qrKH;
+            qrCodeUrl = globalGif.qrKH;
         } else if (currency === 'usd') {
-            qrCodeUrl = gif.qrUSD;
+            qrCodeUrl = globalGif.qrUSD;
         } else {
             return ctx.sendMessage({
                 content: qrMessages?.invalidOption || "Invalid option! Please use 'kh' or 'usd'.",

@@ -1,7 +1,6 @@
 const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
-const config = require("../../config.js");
-const gif = require("../../utils/Gif");
+const globalGif = require("../../utils/Gif");
 
 module.exports = class Transfer extends Command {
     constructor(client) {
@@ -154,9 +153,9 @@ module.exports = class Transfer extends Command {
                                 // Optional: Thanks GIF message
                                 setTimeout(() => {
                                     const imageEmbed = client.embed()
-                                        .setColor(config.color.main)
+                                        .setColor(color.main)
                                         .setDescription(`${targetUser} wants to say thanks to ${ctx.author}.`)
-                                        .setImage(gif.thanks);
+                                        .setImage(globalGif.thanks);
 
                                     ctx.channel.send({ embeds: [imageEmbed] });
                                 }, 2000);

@@ -913,7 +913,7 @@ module.exports = class Utils {
                         embeds: [
                             client.embed()
                                 .setColor(color.main)
-                                .setDescription(`**${client.user.username}** has awarded **\`${client.utils.formatNumber(data.prize)}\`** ${emoji.coin} to <@${winner}>.`),
+                                .setDescription(`**${client.user.username}** has awarded **${client.utils.formatNumber(data.prize)}** ${emoji.coin} to <@${winner}>.`),
                         ],
                     });
                 } catch (err) {

@@ -39,7 +39,7 @@ client.once('ready', async () => {
 // Track when a new member joins
 client.on('guildMemberAdd', async (member) => {
     const guild = member.guild;
-    if (guild.id !== globalConfig.guildId) return;
+    if (guild.id !== client.config.guildId) return;
 
     const roleId = member.user.bot ? '1271685844700233740' : '1271685844700233741';
     const role = guild.roles.cache.get(roleId);
@@ -48,7 +48,7 @@ client.on('guildMemberAdd', async (member) => {
         member.roles.add(role).catch(console.error);
     }
 
-    const welcomeChannel = guild.channels.cache.get(globalConfig.channel.welcome);
+    const welcomeChannel = guild.channels.cache.get(client.config.channel.welcome);
     if (welcomeChannel) {
         const welcomeMessage = client.utils.getWelcomeMessage(client, member);
         welcomeChannel.send({ embeds: [welcomeMessage] });
@@ -107,9 +107,9 @@ client.on('messageCreate', async (message) => {
 });
 
 client.on('guildMemberRemove', member => {
-    if (member.guild.id !== globalConfig.guildId) return;
+    if (member.guild.id !== client.config.guildId) return;
 
-    const goodbyeChannel = member.guild.channels.cache.get(globalConfig.channel.goodbye);
+    const goodbyeChannel = member.guild.channels.cache.get(client.config.channel.goodbye);
 
     if (goodbyeChannel) {
         const goodbyeMessage = client.utils.getGoodbyeMessage(client, member);
@@ -118,7 +118,7 @@ client.on('guildMemberRemove', member => {
 });
 
 setInterval(() => {
-    const guild = client.guilds.cache.get(globalConfig.guildId);
+    const guild = client.guilds.cache.get(client.config.guildId);
     if (!guild) {
         console.error('Guild not found');
         return;

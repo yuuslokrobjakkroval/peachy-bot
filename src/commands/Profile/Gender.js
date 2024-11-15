@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const Users = require("../../schemas/user.js");
+const Users = require("../../schemas/user");
 
 module.exports = class Gender extends Command {
     constructor(client) {

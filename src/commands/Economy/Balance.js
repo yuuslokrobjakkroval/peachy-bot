@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const gif = require('../../utils/Gif.js');
+const globalGif = require('../../utils/Gif');
 
 module.exports = class Balance extends Command {
     constructor(client) {
@@ -36,7 +36,7 @@ module.exports = class Balance extends Command {
 
                 const embed = client.embed()
                     .setColor(color.main)
-                    .setThumbnail(gif.balanceThumbnail ? gif.balanceThumbnail : client.utils.emojiToImage(emoji.main))
+                    .setThumbnail(globalGif.balanceThumbnail ? globalGif.balanceThumbnail : client.utils.emojiToImage(emoji.main))
                     .setDescription(
                         generalMessages.title
                             .replace('%{mainLeft}', emoji.mainLeft)
@@ -48,7 +48,7 @@ module.exports = class Balance extends Command {
                             .replace('%{bankEmote}', emoji.bank)
                             .replace('%{bank}', client.utils.formatNumber(bank))
                     )
-                    .setImage(gif.balanceBanner)
+                    .setImage(globalGif.balanceBanner)
                     .setFooter({
                         text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),

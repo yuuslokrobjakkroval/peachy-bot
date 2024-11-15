@@ -1,7 +1,5 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
-const config = require("../../config");
-const gif = require("../../utils/Gif");
 
 module.exports = class AddUsername extends Command {
     constructor(client) {
@@ -26,26 +24,48 @@ module.exports = class AddUsername extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const users = await Users.aggregate([
-            { $sort: { 'balance.coin': -1 }},
-        ]).exec();
+        try {
+            const users = await Users.aggregate([
+                { $sort: { 'balance.coin': -1 } }
+            ]).exec();
 
-        await Promise.all(users.map(async user => {
-            try {
-                const userInfo = await client.users.fetch(user.userId);
-                const username = userInfo ? userInfo.displayName : 'Unknown';
-                await Users.updateOne({ userId: user.userId }, { $set: { username: username } });
-            } catch (error) {
-                console.error(`Failed to fetch user ${user.userId}:`, error);
+            if (!users.length) {
+                console.log('No users found to process.');
+                return;
             }
-        }));
-        setTimeout(async () => {
+
+            await Promise.all(users.map(async user => {
+                if (!user.userId) {
+                    console.warn('User document missing userId:', user);
+                    return;
+                }
+                try {
+                    const userInfo = await client.users.fetch(user.userId);
+                    const username = userInfo ? userInfo.username : 'Unknown';
+                    await Users.updateOne(
+                        { userId: user.userId },
+                        { $set: { username: username } }
+                    );
+                } catch (error) {
+                    console.error(`Failed to fetch user ${user.userId}:`, error);
+                }
+            }));
+
             const embed = client
                 .embed()
                 .setColor(color.main)
                 .setDescription('Add Username Successfully');
-            const messageEmbed= await ctx.sendMessage({ embeds: [embed] });
-            await messageEmbed.delete();
-        }, 5000);
+            const messageEmbed = await ctx.sendMessage({ embeds: [embed] });
+
+            setTimeout(async () => {
+                try {
+                    await messageEmbed.delete();
+                } catch (deleteError) {
+                    console.error('Failed to delete the message:', deleteError);
+                }
+            }, 5000);
+        } catch (mainError) {
+            console.error('An error occurred while running the command:', mainError);
+        }
     }
 };

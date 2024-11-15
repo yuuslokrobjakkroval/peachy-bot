@@ -1,5 +1,5 @@
 const { Command } = require("../../structures/index.js");
-const globalEmoji = require("../../utils/Emoji.js");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Ping extends Command {
   constructor(client) {

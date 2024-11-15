@@ -37,7 +37,7 @@ module.exports = class Text extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         const messageContent = ctx.isInteraction
             ? ctx.interaction.options.getString('message')
             : args.join(' ');
@@ -54,7 +54,7 @@ module.exports = class Text extends Command {
             return ctx.sendMessage({ content: `Please provide a valid message to announce.`, ephemeral: true});
         }
 
-        await targetChannel.send(messageContent)
+        targetChannel.send(messageContent)
             .then(() => {
                 ctx.sendMessage({ content: `Message sent in ${messageContent}.`, ephemeral: true });
             })

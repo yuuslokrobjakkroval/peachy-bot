@@ -1,8 +1,8 @@
 const { Command } = require("../../structures/index.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
-const Users = require("../../schemas/user.js");
-const gif = require("../../utils/Gif.js");
-const emojiImage = require("../../utils/Emoji.js");
+const Users = require("../../schemas/user");
+const globalGif = require("../../utils/Gif");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Verify extends Command {
     constructor(client) {
@@ -69,7 +69,7 @@ module.exports = class Verify extends Command {
             const userPaymentStatus = user.verification.verify.payment;
             if (i.customId === 'confirm') {
                 const codeNumber = client.utils.generateVerificationCode();
-                const qrCodeUrl = gif.qrUSD;
+                const qrCodeUrl = globalGif.qrUSD;
 
                 const verificationEmbed = client.embed()
                     .setColor(color.main)
@@ -149,8 +149,8 @@ module.exports = class Verify extends Command {
                         const successEmbed = client.embed()
                             .setColor(color.main)
                             .setTitle(`${emoji.mainLeft} ${verifyMessages?.verificationSuccessful || 'Verification Successful'} ${emoji.mainRight}`)
-                            .setDescription(`${verifyMessages?.thankYouForVerifying || "Thank you for supporting and verifying!"} ${emojiImage.verify}\n `)
-                            .setImage(gif.thanks)
+                            .setDescription(`${verifyMessages?.thankYouForVerifying || "Thank you for supporting and verifying!"} ${globalEmoji.verify}\n `)
+                            .setImage(globalGif.thanks)
                             .setFooter({
                                 text: `${verifyMessages?.requestedBy || "Requested By"} ${ctx.author.displayName}`,
                                 iconURL: ctx.author.displayAvatarURL(),

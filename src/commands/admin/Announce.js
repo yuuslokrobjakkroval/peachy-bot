@@ -43,7 +43,7 @@ module.exports = class Announce extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         const messageContent = ctx.isInteraction
             ? ctx.interaction.options.getString('message')
             : args.join(' ');
@@ -77,7 +77,7 @@ module.exports = class Announce extends Command {
         }
 
         if (roleToMention || targetChannel.permissionsFor(ctx.client.user).has('MENTION_EVERYONE')) {
-            await targetChannel.send(fullMessage)
+            targetChannel.send(fullMessage)
                 .then(() => {
                     ctx.sendMessage({ content: `Announcement sent in ${targetChannel.name} ${roleToMention ? `mentioning ${roleToMention.name}` : 'mentioning @everyone'}.`, ephemeral: true });
                 })
@@ -86,7 +86,7 @@ module.exports = class Announce extends Command {
                     ctx.sendMessage("There was an error trying to send the announcement.");
                 });
         } else {
-            await ctx.sendMessage("I do not have permission to mention @everyone in this channel.");
+            ctx.sendMessage("I do not have permission to mention @everyone in this channel.");
         }
     }
 };

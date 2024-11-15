@@ -151,7 +151,7 @@ const userSchema = new Schema({
         }
     },
     preferences: {
-        language: { type: String, default: config.language.defaultLocale },
+        language: { type: String, default: globalConfig.language.defaultLocale },
         notifications: { type: Boolean, default: true },
         theme: { type: String, default: 'normal' },
     },

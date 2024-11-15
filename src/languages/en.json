@@ -96,7 +96,7 @@
 		"multiTransferMessages": {
 			"noValidUsers": "No valid users to transfer coins.",
 			"invalidAmount": "Please mention valid users and amounts for each transfer.",
-			"insufficientBalanceForAll": "You do not have enough coins to pay %{userList} with %{amount} each. Please adjust your transfer amount.",
+			"insufficientBalanceForAll": "You do not have enough coins to pay. Please adjust your transfer amount.",
 			"confirm": "You are about to transfer %{amount} %{emoji} to the following users: %{userList}. Confirm?",
 			"cancel": "You have canceled the transaction. No coins have been transferred.",
 			"timeout": "The transaction has timed out due to inactivity. Please try again.",

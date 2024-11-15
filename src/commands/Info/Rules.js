@@ -1,5 +1,4 @@
 const { Command } = require("../../structures/index.js");
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = class Rules extends Command {
   constructor(client) {
