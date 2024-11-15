@@ -204,7 +204,7 @@ setInterval(() => {
         .catch((err) => {
             console.error('Error finding giveaways:', err);
         });
-}, 60000);
+}, 10000);
 
 setInterval(() => {
     const now = Date.now();
@@ -242,7 +242,7 @@ setInterval(() => {
         .catch((err) => {
             console.error('Error finding giveaway shop items:', err);
         });
-}, 60000);
+}, 10000);
 
 setTimeout(() => {
     client.utils.checkBirthdays(client)
