@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const globalConfig = require('../../utils/Config');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem.js');
 const importantItems = require('../../assets/inventory/ImportantItems.js');
 const shopItems = require('../../assets/inventory/ShopItems.js');
@@ -43,7 +44,7 @@ module.exports = class GiveawayShopItem extends Command {
             await ctx.sendDeferMessage(`${client.user.username} is Thinking...`);
         }
 
-        const isOwner = client.config.owners.includes(ctx.author.id);
+        const isOwner = globalConfig.owners.includes(ctx.author.id);
         // const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
         //
         // if (!isOwner || !isAdmin) {

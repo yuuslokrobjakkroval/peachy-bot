@@ -1,9 +1,10 @@
 const { Command } = require('../../structures/index.js');
 const { PermissionsBitField } = require("discord.js");
+const globalConfig = require("../../utils/Config");
 const GiveawaySchema = require('../../schemas/giveaway');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
-const importantItems = require('../../assets/inventory/ImportantItems.js');
-const shopItems = require('../../assets/inventory/ShopItems.js');
+const importantItems = require('../../assets/inventory/ImportantItems');
+const shopItems = require('../../assets/inventory/ShopItems');
 const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Reroll extends Command {
@@ -33,7 +34,7 @@ module.exports = class Reroll extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const member = await ctx.guild.members.fetch(ctx.author.id);
-        const isOwner = this.client.config.owners.includes(ctx.author.id);
+        const isOwner = globalConfig.owners.includes(ctx.author.id);
         const isAdmin = member.permissions.has(PermissionsBitField.Flags.Administrator);
 
         if (!isOwner && !isAdmin) {
@@ -89,7 +90,7 @@ module.exports = class Reroll extends Command {
                 .setDescription(
                     newWinners.length
                         ? `${newWinners.map(id => `<@${id}>`).join(', ')}! You have won **${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin} ${emoji.congratulation}` +
-                        `\n\nto reroll the giveaway again, please use\n\`${client.config.prefix.toLowerCase()}reroll ${messageId}\``
+                        `\n\nto reroll the giveaway again, please use\n\`${globalConfig.prefix.toLowerCase()}reroll ${messageId}\``
                         : `No one entered the giveaway for **\`${client.utils.formatNumber(giveaway.prize)}\`**!`
                 )
                 .setFooter({ text: `Rerolled by ${ctx.author.displayName}`, iconURL: ctx.author.displayAvatarURL() })
@@ -117,7 +118,7 @@ module.exports = class Reroll extends Command {
                     newWinners.length
                         ? `# Congratulations ${emoji.congratulation}` +
                         `${newWinners.map(user => `<@${user}>`).join(', ')}! You have won **${itemInfo.name} \`${client.utils.formatNumber(giveaway.amount)}\`**` +
-                        `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll item ${messageId}\``
+                        `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll item ${messageId}\``
                         : `No one entered the giveaway for ${itemInfo.name} **\`${client.utils.formatNumber(giveaway.amount)}\`** ${itemInfo.emoji}!`
                 )
                 .setFooter({ text: `Rerolled by ${ctx.author.displayName}`, iconURL: ctx.author.displayAvatarURL() })

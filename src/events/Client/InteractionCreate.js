@@ -9,6 +9,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
 } = require('discord.js');
+const globalConfig = require('../../utils/Config');
 const GiveawaySchema = require('../../schemas/giveaway');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
 
@@ -71,7 +72,7 @@ module.exports = class InteractionCreate extends Event {
             return;
           }
           
-          if (command.permissions.dev && !this.client.config.owners.includes(interaction.user.id)) {
+          if (command.permissions.dev && !globalConfig.owners.includes(interaction.user.id)) {
             return;
           }
 

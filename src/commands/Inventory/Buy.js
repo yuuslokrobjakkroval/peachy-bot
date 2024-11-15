@@ -10,8 +10,8 @@ module.exports = class Buy extends Command {
             name: 'buy',
             description: {
                 content: 'Buy an item from the shop.',
-                examples: ['buy TCM1'],
-                usage: 'buy <item_id>',
+                examples: ['buy f01'],
+                usage: 'buy <itemId>',
             },
             cooldown: 5,
             category: 'inventory',

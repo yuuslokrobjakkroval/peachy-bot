@@ -5,6 +5,7 @@ const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
 const importantItems = require('../assets/inventory/ImportantItems.js');
 const shopItems = require('../assets/inventory/ShopItems.js');
 const canvafy = require("canvafy");
+const globalConfig = require("./Config");
 const gif = require("./Gif");
 const emoji = require("./Emoji");
 const moment = require("moment");
@@ -14,6 +15,68 @@ module.exports = class Utils {
 
     static getUser(userId) {
         return Users.findOne({ userId }).then(user => { return user; }).catch(error => { console.log(`Error fetching user data: ${error}`); return null });
+    }
+
+    static getWelcomeMessage(client, member) {
+        const memberCount = member.guild.memberCount;
+        const guildName = member.guild.name;
+
+        return client.embed()
+            .setColor(client.color.main)
+            .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}
+            
+            > **${emoji.channel.announce}** : <#${globalConfig.channel.announcement}>
+            > **${emoji.channel.rule}** : <#${globalConfig.channel.rule}>
+            > **${emoji.channel.role}** : <#${globalConfig.channel.role}>
+            > **${emoji.channel.booster}** : <#${globalConfig.channel.booster}>
+            > **${emoji.channel.giveaway}** : <#${globalConfig.channel.giveaways}>
+            
+            ${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
+        `)
+            .setImage('https://i.imgur.com/MTOqT51.jpg')
+            .setFooter({text: 'We hope you enjoy your stay!'})
+            .setTimestamp();
+    }
+
+    static getInviteMessage(client, member, invite, inviter) {
+        const memberCount = member.guild.memberCount;
+        const accountCreationDate = moment(member.user.createdAt).fromNow();
+
+        return client.embed()
+            .setColor(client.color.main)
+            .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
+            .setDescription(`## **Heyoo <@${member.user.id}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}`)
+            .addFields([
+                { name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`, value: `<@${inviter.id}>`, inline: false },
+                { name: `${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆`, value: `**https://discord.gg/${invite.code}**`, inline: false },
+                { name: `${emoji.inviteTracker.inviteStats} 𝑰𝒏𝒗𝒊𝒕𝒆𝒅 𝑴𝒆𝒎𝒃𝒆𝒓`, value: `${invite.uses} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false },
+                { name: `${emoji.inviteTracker.memberCreated} 𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑫𝒂𝒕𝒆`, value: `${accountCreationDate}`, inline: false },
+                { name: `${emoji.inviteTracker.inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, value: `${memberCount} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false }
+            ])
+            .setImage('https://i.imgur.com/XiZrSty.gif')
+            .setFooter({
+                text: `Invite Tracker | Powered by ${client.user.displayName}`,
+                iconURL: client.user.displayAvatarURL()
+            })
+            .setTimestamp();
+    }
+
+    static getGoodbyeMessage(client, member) {
+        const memberCount = member.guild.memberCount;
+        const guildName = member.guild.name;
+
+        return client.embed()
+            .setColor(client.color.danger)
+            .setDescription(`# **Goodbye from ${guildName}** ${emoji.main.signature}\n\nWe're sad to see you go, <@${member.id}> ${emoji.channel.poof}\n\n**NOW WE HAVE ${memberCount} MEMBERS LEFT**`)
+            .setImage('https://i.imgur.com/t2s3fNF.jpg')
+            .setFooter({text: 'Goodbye! We hope to see you again soon.'})
+            .setTimestamp();
+    }
+
+    static calculateNextLevelXpBonus(level) {
+        const base = 1000;
+        const scalingFactor = 1.5;
+        return Math.floor(base * Math.pow(scalingFactor, level - 1));
     }
 
     static getCheckingUser(client, message, user, color, emoji,  prefix) {
@@ -448,22 +511,6 @@ module.exports = class Utils {
             });
     }
 
-    static sendSuccessMessage(client, ctx, args, color, time) {
-        const embed = client.embed()
-            .setColor(color.main)
-            .setDescription(args);
-
-        return ctx.sendMessage({ embeds: [embed] })
-            .then(msg => {
-                setTimeout(() => {
-                    msg.delete().catch(() => {});
-                }, time ? time : 10000);
-            })
-            .catch(error => {
-                console.error('Error sending success message:', error);
-            });
-    }
-
     static sendErrorMessage(client, ctx, args, color, time) {
         const embed = client.embed()
             .setColor(color.danger)
@@ -477,6 +524,22 @@ module.exports = class Utils {
             })
             .catch(error => {
                 console.error('Error sending error message:', error);
+            });
+    }
+
+    static sendSuccessMessage(client, ctx, args, color, time) {
+        const embed = client.embed()
+            .setColor(color.main)
+            .setDescription(args);
+
+        return ctx.sendMessage({ embeds: [embed] })
+            .then(msg => {
+                setTimeout(() => {
+                    msg.delete().catch(() => {});
+                }, time ? time : 10000);
+            })
+            .catch(error => {
+                console.error('Error sending success message:', error);
             });
     }
 
@@ -684,6 +747,17 @@ module.exports = class Utils {
         }
     }
 
+    static getDelayUntil7PM() {
+        const now = new Date();
+        const sevenPM = new Date();
+        sevenPM.setHours(19, 0, 0, 0); // 7:00 PM today
+        if (now > sevenPM) {
+            sevenPM.setDate(sevenPM.getDate() + 1);
+        }
+
+        return sevenPM - now;
+    }
+
     static async checkBirthdays(client) {
         console.log('Check Birthday Start');
         try {
@@ -751,12 +825,6 @@ module.exports = class Utils {
         } catch (err) {
             console.error(`[Birthday] Error fetching birthdays: ${err.message}`);
         }
-    }
-
-    static calculateNextLevelXpBonus(level) {
-        const base = 1000;
-        const scalingFactor = 1.5;
-        return Math.floor(base * Math.pow(scalingFactor, level - 1));
     }
 
     static async addCoinsToUser(userId, amount) {
@@ -830,7 +898,7 @@ module.exports = class Utils {
                     .setColor(color.main)
                     .setDescription(
                         winnerIdArray.length
-                            ? `# Congratulations ${emoji.congratulation}\n${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin} ${autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll ${message.id}\``}`
+                            ? `# Congratulations ${emoji.congratulation}\n${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin} ${autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll ${message.id}\``}`
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
                     )
                     .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
@@ -923,7 +991,7 @@ module.exports = class Utils {
                         winnerIdArray.length
                             ? `# Congratulations ${emoji.congratulation}` +
                             `${winnerIdArray.map(user => `<@${user}>`).join(', ')}! You have won **${itemInfo.name} \`${client.utils.formatNumber(data.amount)}\`**` +
-                            (autoAdd ? `` : `\n\nto reroll the giveaway, please use\n\`${client.config.prefix.toLowerCase()}reroll item ${message.id}\``)
+                            (autoAdd ? `` : `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll item ${message.id}\``)
                             : `No one entered the giveaway for ${itemInfo.name} **\`${client.utils.formatNumber(data.amount)}\`** ${itemInfo.emoji}!`
                     )
                     .setFooter({text: 'Better luck next time!', iconURL: client.user.displayAvatarURL()})
@@ -958,61 +1026,5 @@ module.exports = class Utils {
                 }
             }
         }
-    }
-
-    static getWelcomeMessage(client, member) {
-        const memberCount = member.guild.memberCount;
-        const guildName = member.guild.name;
-
-        return client.embed()
-            .setColor(client.color.main)
-            .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}
-            
-            > **${emoji.channel.announce}** : <#1272595713125126176>
-            > **${emoji.channel.rule}** : <#1271685845165936722>
-            > **${emoji.channel.role}** : <#1271685845165936723>
-            > **${emoji.channel.booster}** : <#1306787159088562238>
-            > **${emoji.channel.giveaway}** : <#1283713873878450239>
-            
-            ${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
-        `)
-            .setImage('https://i.imgur.com/MTOqT51.jpg')
-            .setFooter({text: 'We hope you enjoy your stay!'})
-            .setTimestamp();
-    }
-
-    static getInviteMessage(client, member, invite, inviter) {
-        const memberCount = member.guild.memberCount;
-        const accountCreationDate = moment(member.user.createdAt).fromNow();
-
-        return client.embed()
-            .setColor(client.color.main)
-            .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
-            .setDescription(`## **Heyoo <@${member.user.id}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}`)
-            .addFields([
-                { name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`, value: `<@${inviter.id}>`, inline: false },
-                { name: `${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆`, value: `**https://discord.gg/${invite.code}**`, inline: false },
-                { name: `${emoji.inviteTracker.inviteStats} 𝑰𝒏𝒗𝒊𝒕𝒆𝒅 𝑴𝒆𝒎𝒃𝒆𝒓`, value: `${invite.uses} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false },
-                { name: `${emoji.inviteTracker.memberCreated} 𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑫𝒂𝒕𝒆`, value: `${accountCreationDate}`, inline: false },
-                { name: `${emoji.inviteTracker.inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, value: `${memberCount} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false }
-            ])
-            .setImage('https://i.imgur.com/XiZrSty.gif')
-            .setFooter({
-                text: `Invite Tracker | Powered by ${client.user.displayName}`,
-                iconURL: client.user.displayAvatarURL()
-            })
-            .setTimestamp();
-    }
-
-    static getGoodbyeMessage(client, member) {
-        const memberCount = member.guild.memberCount;
-        const guildName = member.guild.name;
-
-        return client.embed()
-            .setColor(client.color.danger)
-            .setDescription(`# **Goodbye from ${guildName}** ${emoji.main.signature}\n\nWe're sad to see you go, <@${member.id}> ${emoji.channel.poof}\n\n**NOW WE HAVE ${memberCount} MEMBERS LEFT**`)
-            .setImage('https://i.imgur.com/t2s3fNF.jpg')
-            .setFooter({text: 'Goodbye! We hope to see you again soon.'})
-            .setTimestamp();
     }
 };

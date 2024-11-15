@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const globalConfig = require('../../utils/Config');
 const GiveawaySchema = require('../../schemas/giveaway.js');
 const ms = require('ms');
 
@@ -69,7 +70,7 @@ module.exports = class Start extends Command {
         }
 
         // Owner and Admin checks
-        const isOwner = client.config.owners.includes(ctx.author.id);
+        const isOwner = globalConfig.owners.includes(ctx.author.id);
         // const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
         //
         // if (!isOwner || !isAdmin) {

@@ -1,5 +1,5 @@
 const PeachyClient = require("../../structures/Client");
-
+const globalConfig = require("../../utils/Config");
 const KeepAlive = {
   name: "keep-alive",
   version: "1.0.0",
@@ -9,7 +9,7 @@ const KeepAlive = {
    * @param {PeachyClient} client
    */
   initialize: (client) => {
-    if (client.config.keepAlive) {
+    if (globalConfig.keepAlive) {
       const http = require("node:http");
       const server = http.createServer((req, res) => {
         res.writeHead(200, { "Content-Type": "text/plain" });

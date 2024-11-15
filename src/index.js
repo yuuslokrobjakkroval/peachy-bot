@@ -1,6 +1,6 @@
 const { ShardingManager } = require('discord.js');
 const fs = require('fs');
-const config = require('./config.js');
+const globalConfig = require('./utils/Config');
 const Logger = require('./structures/Logger.js');
 const dotenv = require('dotenv');
 
@@ -22,7 +22,7 @@ try {
 
 const manager = new ShardingManager('./src/client.js', {
   respawn: true,
-  token: config.token,
+  token: globalConfig.token,
   totalShards: 'auto',
   shardList: 'auto',
 });

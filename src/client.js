@@ -1,31 +1,13 @@
 const { GatewayIntentBits } = require('discord.js');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
-const InviteSchema = require('./schemas/inviteTracker');
+const InviteSchema = require("./schemas/inviteTracker");
 const ResponseSchema = require('./schemas/response');
-const config = require('./config.js');
+const globalConfig = require('./utils/Config');
 const PeachyClient = require('./structures/Client.js');
-const Invite = require("./schemas/inviteTracker");
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildInvites, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 
 let inviteData = {};
-const welcomeChannelId = '1299416615275987025';
-const chatChannelId = '1271685845165936729';
-const trackingChannelId = '1299416717293781124';
-const goodbyeChannelId = '1299416504575459380';
-
-function getDelayUntil7PM() {
-    const now = new Date();
-    const sevenPM = new Date();
-    sevenPM.setHours(19, 0, 0, 0); // 7:00 PM today
-    if (now > sevenPM) {
-        sevenPM.setDate(sevenPM.getDate() + 1);
-    }
-
-    return sevenPM - now;
-}
-
-const initialDelay = getDelayUntil7PM();
 
 const clientOptions = {
     intents: [Guilds, GuildMessages, GuildInvites, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
@@ -38,7 +20,7 @@ const clientOptions = {
 const client = new PeachyClient(clientOptions);
 
 client.once('ready', async () => {
-    const guild = client.guilds.cache.get(config.guildId);
+    const guild = client.guilds.cache.get(globalConfig.guildId);
     if (guild) {
         try {
             const invites = await guild.invites.fetch();
@@ -57,7 +39,7 @@ client.once('ready', async () => {
 // Track when a new member joins
 client.on('guildMemberAdd', async (member) => {
     const guild = member.guild;
-    if (guild.id !== config.guildId) return;
+    if (guild.id !== globalConfig.guildId) return;
 
     const roleId = member.user.bot ? '1271685844700233740' : '1271685844700233741';
     const role = guild.roles.cache.get(roleId);
@@ -66,7 +48,7 @@ client.on('guildMemberAdd', async (member) => {
         member.roles.add(role).catch(console.error);
     }
 
-    const welcomeChannel = guild.channels.cache.get(welcomeChannelId);
+    const welcomeChannel = guild.channels.cache.get(globalConfig.channel.welcome);
     if (welcomeChannel) {
         const welcomeMessage = client.utils.getWelcomeMessage(client, member);
         welcomeChannel.send({ embeds: [welcomeMessage] });
@@ -79,7 +61,7 @@ client.on('guildMemberAdd', async (member) => {
                 if (invite.uses > inviteData[guild.id].get(invite.code)) {
                     const inviter = invite.inviter;
                     inviteData[guild.id].set(invite.code, invite.uses);
-                    const trackingChannel = guild.channels.cache.get(trackingChannelId);
+                    const trackingChannel = guild.channels.cache.get(globalConfig.channel.inviteTracker);
                     if (trackingChannel) {
                         const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
                         trackingChannel.send({embeds: [inviteMessage]});
@@ -96,7 +78,7 @@ client.on('guildMemberAdd', async (member) => {
         }
     }
 
-    const chatChannel = guild.channels.cache.get(chatChannelId);
+    const chatChannel = guild.channels.cache.get(globalConfig.channel.chat);
     const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្តី', 'សួស្តីបង'];
 
     if (chatChannel) {
@@ -107,7 +89,7 @@ client.on('guildMemberAdd', async (member) => {
 });
 
 client.on('messageCreate', async (message) => {
-    if (message.guild.id !== config.guildId || message.author.bot) return;
+    if (message.guild.id !== globalConfig.guildId || message.author.bot) return;
 
     try {
         const responseDoc = await ResponseSchema.findOne({ guildId: message.guild.id });
@@ -125,9 +107,9 @@ client.on('messageCreate', async (message) => {
 });
 
 client.on('guildMemberRemove', member => {
-    if (member.guild.id !== config.guildId) return;
+    if (member.guild.id !== globalConfig.guildId) return;
 
-    const goodbyeChannel = member.guild.channels.cache.get(goodbyeChannelId);
+    const goodbyeChannel = member.guild.channels.cache.get(globalConfig.channel.goodbye);
 
     if (goodbyeChannel) {
         const goodbyeMessage = client.utils.getGoodbyeMessage(client, member);
@@ -136,7 +118,7 @@ client.on('guildMemberRemove', member => {
 });
 
 setInterval(() => {
-    const guild = client.guilds.cache.get(config.guildId);
+    const guild = client.guilds.cache.get(globalConfig.guildId);
     if (!guild) {
         console.error('Guild not found');
         return;
@@ -149,7 +131,7 @@ setInterval(() => {
             }
             const inviteCodes = invites.map(invite => invite.code);
 
-            Invite.find({ guildId: guild.id })
+            InviteSchema.find({ guildId: guild.id })
                 .then((dbInvites) => {
                     dbInvites.forEach((dbInvite) => {
                         if (!inviteCodes.includes(dbInvite.inviteCode)) {
@@ -160,11 +142,11 @@ setInterval(() => {
 
                     // Iterate over current invites and update the database
                     const invitePromises = invites.map((invite) => {
-                        return Invite.findOne({ inviteCode: invite.code })
+                        return InviteSchema.findOne({ inviteCode: invite.code })
                             .then((existingInvite) => {
                                 if (!existingInvite) {
                                     // Save a new invite record if it doesn't exist
-                                    const newInvite = new Invite({
+                                    const newInvite = new InviteSchema({
                                         guildId: guild.id,
                                         inviteCode: invite.code,
                                         uses: invite.uses,
@@ -273,6 +255,6 @@ setTimeout(() => {
             .then(() => console.log('Birthday check completed.'))
             .catch(err => console.error('Error in checkBirthdays function:', err));
     }, 24 * 60 * 60 * 1000); // 24 hours
-}, initialDelay);
+}, client.utils.getDelayUntil7PM());
 
-client.start(config.token);
+client.start(globalConfig.token);

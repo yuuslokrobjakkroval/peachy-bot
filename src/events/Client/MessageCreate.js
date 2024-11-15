@@ -2,8 +2,9 @@ const { Collection } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require("../../schemas/user.js");
-const gif = require('../../utils/Gif.js');
-const globalEmoji = require('../../utils/Emoji.js');
+const globalConfig = require('../../utils/Config');
+const globalGif = require('../../utils/Gif');
+const globalEmoji = require('../../utils/Emoji');
 
 module.exports = class MessageCreate extends Event {
   constructor(client, file) {
@@ -16,7 +17,7 @@ module.exports = class MessageCreate extends Event {
     if (message.author.bot || !message.guild) return;
 
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
-      const prefix = this.client.config.prefix;
+      const prefix = globalConfig.prefix;
       this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
       const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
       if (mention.test(message.content)) {
@@ -34,7 +35,7 @@ module.exports = class MessageCreate extends Event {
               iconURL: this.client.utils.emojiToImage(globalEmoji.buyMeCafe),
             })
 
-        const clickSuppButton = this.client.utils.linkButton('Click for support', this.client.config.links.support)
+        const clickSuppButton = this.client.utils.linkButton('Click for support', globalConfig.links.support)
 
         const row = this.client.utils.createButtonRow(clickSuppButton);
         return message.reply({ embeds: [embed], components: [row] });
@@ -63,7 +64,7 @@ module.exports = class MessageCreate extends Event {
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(
                     `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`)
-                .setImage(gif.peachy);
+                .setImage(globalGif.peachy);
 
             const registerButton = this.client.utils.labelButton('register', 'Register', 3);
             const cancelButton = this.client.utils.labelButton('cancel', 'Cancel', 4);
@@ -177,7 +178,7 @@ module.exports = class MessageCreate extends Event {
                       .setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
                       .setTitle(`${emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${emoji.mainRight}`)
                       .setDescription(`Warming Gift for you ${emoji.congratulation}\nDear ${ctx.author.displayName}!!\nYou got ${this.client.utils.formatNumber(gift)} ${emoji.coin} from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`)
-                      .setImage(gif.peachy);
+                      .setImage(globalGif.peachy);
                   await int.editReply({
                     content: '',
                     embeds: [embed],
@@ -186,10 +187,10 @@ module.exports = class MessageCreate extends Event {
                 } else if (int.customId === 'cancel') {
                   const commandList = `
 **Commands You Can Use:**
-- \`${this.client.config.prefix}register\` - Register for a feature or service.
-- \`${this.client.config.prefix}info\` - Get information about the bot.
-- \`${this.client.config.prefix}help\` - List all available commands.
-- \`${this.client.config.prefix}stats\` - View server or user statistics.
+- \`${globalConfig.prefix}register\` - Register for a feature or service.
+- \`${globalConfig.prefix}info\` - Get information about the bot.
+- \`${globalConfig.prefix}help\` - List all available commands.
+- \`${globalConfig.prefix}stats\` - View server or user statistics.
 `;
                   await int.editReply({
                     embeds: [
@@ -197,7 +198,7 @@ module.exports = class MessageCreate extends Event {
                           .setColor(color.main)
                           .setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
                           .setTitle(`${emoji.mainLeft} 𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 ${ctx.author.displayName} ${emoji.mainRight}`)
-                          .setDescription(`Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`)
+                          .setDescription(`Registration has been canceled.\n\nYou can register again by using the command \`${globalConfig.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`)
                     ],
                     components: [],
                   });
@@ -244,7 +245,7 @@ module.exports = class MessageCreate extends Event {
                   content: "You don't have enough permissions to use this command.",
                 });
               }
-              if (command.permissions.dev && !this.client.config.owners.includes(message.author.id)) {
+              if (command.permissions.dev && !globalConfig.owners.includes(message.author.id)) {
                 return;
               }
             }
@@ -308,19 +309,19 @@ module.exports = class MessageCreate extends Event {
             try {
               let logChannelId;
               if (giveawaysCommands.includes(command.name)) {
-                logChannelId = this.client.config.logChannelId[6];
+                logChannelId = globalConfig.logChannelId[6];
               } else if (utilityCommands.includes(command.name)) {
-                logChannelId = this.client.config.logChannelId[5];
+                logChannelId = globalConfig.logChannelId[5];
               } else if (mineCommands.includes(command.name)) {
-                logChannelId = this.client.config.logChannelId[4];
+                logChannelId = globalConfig.logChannelId[4];
               } else if (balanceCommands.includes(command.name)) {
-                logChannelId = this.client.config.logChannelId[3];
+                logChannelId = globalConfig.logChannelId[3];
               } else if (gamblingCommands.includes(command.name)) {
-                logChannelId = this.client.config.logChannelId[2];
+                logChannelId = globalConfig.logChannelId[2];
               } else if (gameCommands.includes(command.name)) {
-                logChannelId = this.client.config.logChannelId[1];
+                logChannelId = globalConfig.logChannelId[1];
               } else {
-                logChannelId = this.client.config.logChannelId[0];
+                logChannelId = globalConfig.logChannelId[0];
               }
 
               const channel = this.client.channels.cache.get(logChannelId);

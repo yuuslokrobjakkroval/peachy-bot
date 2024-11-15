@@ -1,39 +1,40 @@
-const { ApplicationCommandType, Client, Collection, EmbedBuilder, PermissionsBitField, REST, Routes } = require('discord.js');
+const { ApplicationCommandType, Client, Collection, EmbedBuilder, PermissionsBitField, REST, Routes } = require('discord');
 const { connect, connection } = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
-const loadPlugins = require('../plugin/index.js');
-const Utils = require('../utils/Utils.js');
+const loadPlugins = require('../plugin/index');
+const Utils = require('../utils/Utils');
+const globalConfig = require('../utils/Config');
 const { I18n } = require('@hammerhq/localization');
-const config = require('../config.js');
-const emojis = require('../emojis.js');
+const config = require('../config');
+const emojis = require('../emojis');
 
-const configPeach = require('../theme/Peach/config.js');
-const emojiPeach = require('../theme/Peach/emojis.js');
+const configPeach = require('../theme/Peach/config');
+const emojiPeach = require('../theme/Peach/emojis');
 
-const configGoma = require('../theme/Goma/config.js');
-const emojiGoma = require('../theme/Goma/emojis.js');
+const configGoma = require('../theme/Goma/config');
+const emojiGoma = require('../theme/Goma/emojis');
 
-const configOcean = require('../theme/OceanBreeze/config.js');
-const emojiOcean = require('../theme/OceanBreeze/emojis.js');
+const configOcean = require('../theme/OceanBreeze/config');
+const emojiOcean = require('../theme/OceanBreeze/emojis');
 
-const configHalloween = require('../theme/Halloween/config.js');
-const emojiHalloween = require('../theme/Halloween/emojis.js');
+const configHalloween = require('../theme/Halloween/config');
+const emojiHalloween = require('../theme/Halloween/emojis');
 
-const configHalloweenNew = require('../theme/Halloween/configNew.js');
+const configHalloweenNew = require('../theme/Halloween/configNew');
 const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
 
-const configHeaven = require('../theme/CelestialGrace/config.js');
-const emojiHeaven = require('../theme/CelestialGrace/emojis.js');
+const configHeaven = require('../theme/CelestialGrace/config');
+const emojiHeaven = require('../theme/CelestialGrace/emojis');
 
-const configSakura = require('../theme/SakuraSerenity/config.js');
-const emojiSakura = require('../theme/SakuraSerenity/emojis.js');
+const configSakura = require('../theme/SakuraSerenity/config');
+const emojiSakura = require('../theme/SakuraSerenity/emojis');
 
-const configBee = require('../theme/BuzzingBliss/config.js');
-const emojiBee = require('../theme/BuzzingBliss/emojis.js');
+const configBee = require('../theme/BuzzingBliss/config');
+const emojiBee = require('../theme/BuzzingBliss/emojis');
 
-const Logger = require('./Logger.js');
+const Logger = require('./Logger');
 
 module.exports = class PeachyClient extends Client {
     constructor(options) {
@@ -70,13 +71,13 @@ module.exports = class PeachyClient extends Client {
 
     async connectMongodb() {
         if ([1, 2, 99].includes(connection.readyState)) return;
-        await connect(this.config.database);
+        await connect(globalConfig.database);
     }
 
     loadCommands() {
         const commandsPath = fs.readdirSync(path.join(__dirname, '../commands'));
         commandsPath.forEach(dir => {
-            const commandFiles = fs.readdirSync(path.join(__dirname, `../commands/${dir}`)).filter(file => file.endsWith('.js'));
+            const commandFiles = fs.readdirSync(path.join(__dirname, `../commands/${dir}`)).filter(file => file.endsWith(''));
             commandFiles.forEach(async file => {
                 const cmd = require(`../commands/${dir}/${file}`);
                 const command = new cmd(this, file);
@@ -114,11 +115,11 @@ module.exports = class PeachyClient extends Client {
 
         this.once('ready', async () => {
             const applicationCommands =
-                this.config.production === true
-                    ? Routes.applicationCommands(this.config.clientId ?? '')
-                    : Routes.applicationGuildCommands(this.config.clientId ?? '', this.config.guildId ?? '');
+                globalConfig.production === true
+                    ? Routes.applicationCommands(globalConfig.clientId ?? '')
+                    : Routes.applicationGuildCommands(globalConfig.clientId ?? '', globalConfig.guildId ?? '');
             try {
-                const rest = new REST({ version: '9' }).setToken(this.config.token ?? '');
+                const rest = new REST({ version: '9' }).setToken(globalConfig.token ?? '');
                 await rest.put(applicationCommands, { body: this.body });
                 this.logger.info(`Successfully loaded slash commands!`);
             } catch (error) {
@@ -130,7 +131,7 @@ module.exports = class PeachyClient extends Client {
     loadEvents() {
         const eventsPath = fs.readdirSync(path.join(__dirname, '../events'));
         eventsPath.forEach(dir => {
-            const events = fs.readdirSync(path.join(__dirname, `../events/${dir}`)).filter(file => file.endsWith('.js'));
+            const events = fs.readdirSync(path.join(__dirname, `../events/${dir}`)).filter(file => file.endsWith(''));
             events.forEach(async file => {
                 const event = require(`../events/${dir}/${file}`);
                 const evt = new event(this, file);

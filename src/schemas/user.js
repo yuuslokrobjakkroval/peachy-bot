@@ -1,5 +1,5 @@
 const { model, Schema } = require("mongoose");
-const config = require('../config.js');
+const globalConfig = require('../utils/Config');
 
 // InventoryItemSchema
 const InventoryItemSchema = new Schema({
@@ -118,7 +118,7 @@ const AchievementsSchema = new Schema({
 const userSchema = new Schema({
     userId: { type: String, required: true, unique: true, index: true },
     username: { type: String, default: null },
-    prefix: { type: String, default: config.prefix },
+    prefix: { type: String, default: globalConfig.prefix },
     verification: { type: VerificationSchema, default: () => ({}) },
     balance: {
         coin: { type: Number, default: 500000 },

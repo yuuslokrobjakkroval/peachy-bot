@@ -1,5 +1,5 @@
 const { Event } = require('../../structures/index.js');
-const config = require('../../config.js');
+const globalConfig = require('../../utils/Config');
 const BotLog = require('../../utils/BotLog.js');
 
 module.exports = class Ready extends Event {
@@ -15,10 +15,10 @@ module.exports = class Ready extends Event {
       activities: [
         {
           name: `PEACHY IN UR AREA !!!`,
-          type: config.botActivityType,
+          type: globalConfig.botActivityType,
         },
       ],
-      status: config.botStatus,
+      status: globalConfig.botStatus,
     });
     return await BotLog.send(this.client, `${this.client.user?.tag} is ready!`, 'success');
   }

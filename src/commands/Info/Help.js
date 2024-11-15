@@ -1,4 +1,5 @@
 const Command = require('../../structures/Command.js');
+const globalConfig = require("../../utils/Config");
 
 module.exports = class Help extends Command {
   constructor(client) {
@@ -42,7 +43,7 @@ module.exports = class Help extends Command {
     const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
     const directoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.directoriesMessages;
     const embed = client.embed();
-    const prefix = client.config.prefix;
+    const prefix = globalConfig.prefix;
     const commands = client.commands.filter(cmd => cmd.category !== 'dev');
     let categories = ['actions', 'bank', 'economy', 'inventory', 'fun', 'games', 'gambling', 'giveaways', 'profile', 'social', 'utility', 'info'];
 
@@ -120,7 +121,7 @@ module.exports = class Help extends Command {
             },
             {
               name: `${helpMessages.examples}`,
-              value: `\`\`\`arm\n${command.description.examples.map(example => `${prefix.prefix}${example}`).join('\n')}\n\`\`\``,
+              value: `\`\`\`arm\n${command.description.examples.map(example => `${prefix}${example}`).join('\n')}\n\`\`\``,
               inline: false,
             },
           ]);
