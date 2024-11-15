@@ -4,7 +4,7 @@ dotenv.config();
 // THEME CONFIGURATION
 // Normal
 const normal = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF8D1D7, none: 0x2B2D31 },
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF582AE, none: 0x2B2D31 },
 };
 
 // PEACH
@@ -34,17 +34,17 @@ const booBash = {
 
 // Celestial Grace ( ST01 )
 const celestialGrace = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xEECAD5, none: 0x2B2D31 },
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFEEE91, none: 0x2B2D31 },
 };
 
 // SakuraSerenity ( ST02 )
 const sakuraSerenity = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xE4A9A5, none: 0x2B2D31 },
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFFE3E3, none: 0x2B2D31 },
 };
 
 // Buzzing Bliss ( ST03 )
 const buzzingBliss = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF8DA80, none: 0x2B2D31 },
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFCF596, none: 0x2B2D31 },
 };
 
 module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, celestialGrace, sakuraSerenity, buzzingBliss }
