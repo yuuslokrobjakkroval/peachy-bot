@@ -967,12 +967,14 @@ module.exports = class Utils {
         return client.embed()
             .setColor(client.color.main)
             .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}
+            
             > **${emoji.channel.announce}** : <#1272595713125126176>
             > **${emoji.channel.rule}** : <#1271685845165936722>
             > **${emoji.channel.role}** : <#1271685845165936723>
             > **${emoji.channel.booster}** : <#1306787159088562238>
             > **${emoji.channel.giveaway}** : <#1283713873878450239>
-            \n${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
+            
+            ${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
         `)
             .setImage('https://i.imgur.com/MTOqT51.jpg')
             .setFooter({text: 'We hope you enjoy your stay!'})
