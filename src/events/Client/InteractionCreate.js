@@ -195,7 +195,7 @@ module.exports = class InteractionCreate extends Event {
             });
 
             if (!data) {
-              return interaction.editReply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -207,7 +207,7 @@ module.exports = class InteractionCreate extends Event {
             } else if (data.endTime * 1000 < Date.now()) {
               return this.client.utils.endGiveaway(this.client, color, emoji, interaction.message);
             } else if (data.ended) {
-              return interaction.editReply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -217,7 +217,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.paused) {
-              return interaction.editReply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -253,7 +253,7 @@ module.exports = class InteractionCreate extends Event {
                       data.entered = data.entered.filter(id => id !== interaction.user.id);
                       await data.save();
 
-                      await int.editReply({
+                      await int.reply({
                         embeds: [
                           this.client.embed()
                               .setAuthor({
@@ -276,7 +276,7 @@ module.exports = class InteractionCreate extends Event {
               data.entered.push(interaction.user.id);
               await data.save();
 
-              await interaction.followUp({
+              await interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -340,7 +340,7 @@ module.exports = class InteractionCreate extends Event {
                 .setColor(color.main)
                 .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.prize)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
 
-            await interaction.editReply({ embeds: [embed], ephemeral: true });
+            await interaction.reply({ embeds: [embed], ephemeral: true });
             break;
           }
 
@@ -352,7 +352,7 @@ module.exports = class InteractionCreate extends Event {
             });
 
             if (!data) {
-              return interaction.editReply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -366,7 +366,7 @@ module.exports = class InteractionCreate extends Event {
             } else if (data.ended) {
               return interaction.reply({
                 embeds: [
-                  this.client.editReply()
+                  this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
                       .setColor(color.danger)
                       .setDescription('This giveaway has already ended.'),
@@ -374,7 +374,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.paused) {
-              return interaction.editReply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -384,7 +384,7 @@ module.exports = class InteractionCreate extends Event {
                 ephemeral: true,
               });
             } else if (data.entered.includes(interaction.user.id)) {
-              return interaction.editReply({
+              return interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -410,7 +410,7 @@ module.exports = class InteractionCreate extends Event {
                       data.entered = data.entered.filter(id => id !== interaction.user.id);
                       await data.save();
 
-                      await int.editReply({
+                      await int.reply({
                         embeds: [
                           this.client.embed()
                               .setAuthor({
@@ -433,7 +433,7 @@ module.exports = class InteractionCreate extends Event {
               data.entered.push(interaction.user.id);
               await data.save();
 
-              await interaction.editReply({
+              await interaction.reply({
                 embeds: [
                   this.client.embed()
                       .setAuthor({name: this.client.user.username, iconURL: this.client.user.displayAvatarURL()})
@@ -472,7 +472,7 @@ module.exports = class InteractionCreate extends Event {
             });
 
             if (!data.entered.length) {
-              return interaction.editReply({
+              return interaction.reply({
                 content: 'No participants found.',
                 ephemeral: true,
               });
@@ -497,7 +497,7 @@ module.exports = class InteractionCreate extends Event {
                 .setColor(color.main)
                 .setDescription(`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(data.amount)}**:\n\n${validParticipants.join('\n')}\n\nTotal Participants: **${validParticipants.length}**`);
 
-            await interaction.editReply({ embeds: [embed], ephemeral: true });
+            await interaction.reply({ embeds: [embed], ephemeral: true });
             break;
           }
 
