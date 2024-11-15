@@ -153,7 +153,7 @@ module.exports = class GuessNumber extends Command {
                 }
             });
 
-            collector.on('end', collected => {
+            collector.on('end', async collected => {
                 if (collected.size === 0) {
                     const timeoutEmbed = client.embed()
                         .setColor(color.warning)
@@ -168,7 +168,7 @@ module.exports = class GuessNumber extends Command {
                             iconURL: ctx.author.displayAvatarURL(),
                         });
 
-                    ctx.sendMessage({ embeds: [timeoutEmbed] });
+                    await ctx.sendMessage({ embeds: [timeoutEmbed] });
                 }
             });
         })
