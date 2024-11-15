@@ -46,7 +46,7 @@ module.exports = class AddMoney extends Command {
         let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
             const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
-            if (amount.match(/\d+[kmbtq]/)) {
+            if (amount.match(/\d+[kmbtq]/i)) {
                 const unit = amount.slice(-1).toLowerCase();
                 const number = parseInt(amount);
                 amount = number * multiplier[unit];

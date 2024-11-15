@@ -38,7 +38,7 @@ module.exports = class RemoveBank extends Command {
             const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
 
             if (amount in amountMap) amount = amountMap[amount];
-            else if (amount.match(/\d+[kmbtq]/)) {
+            else if (amount.match(/\d+[kmbtq]/i)) {
                 const unit = amount.slice(-1).toLowerCase();
                 const number = parseInt(amount);
                 amount = number * (multiplier[unit] || 1);
