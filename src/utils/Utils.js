@@ -30,8 +30,7 @@ module.exports = class Utils {
             > **${emoji.channel.role}** : <#${globalConfig.channel.role}>
             > **${emoji.channel.booster}** : <#${globalConfig.channel.booster}>
             > **${emoji.channel.giveaway}** : <#${globalConfig.channel.giveaways}>
-            
-            ${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
+            \n${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
         `)
             .setImage('https://i.imgur.com/MTOqT51.jpg')
             .setFooter({text: 'We hope you enjoy your stay!'})
