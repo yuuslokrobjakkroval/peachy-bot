@@ -17,6 +17,18 @@ const clientOptions = {
     },
 };
 
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    process.exit(1);  // Exit the process to trigger a restart
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception thrown:', error);
+    process.exit(1);  // Exit to trigger a restart
+});
+
 const client = new PeachyClient(clientOptions);
 
 client.once('ready', async () => {
@@ -36,7 +48,6 @@ client.once('ready', async () => {
     }
 });
 
-// Track when a new member joins
 client.on('guildMemberAdd', async (member) => {
     const guild = member.guild;
     if (guild.id !== client.config.guildId) return;
