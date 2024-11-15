@@ -14,7 +14,7 @@ const peach = {
 
 // GOMA
 const goma = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x8BD3DD, none: 0x2B2D31 },
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x94716B, none: 0x2B2D31 },
 };
 
 // Ocean Breeze ( T01 )
@@ -39,7 +39,7 @@ const celestialGrace = {
 
 // SakuraSerenity ( ST02 )
 const sakuraSerenity = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xEECAD5, none: 0x2B2D31 },
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xE4A9A5, none: 0x2B2D31 },
 };
 
 // Buzzing Bliss ( ST03 )
