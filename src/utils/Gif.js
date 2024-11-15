@@ -3,6 +3,11 @@ module.exports = {
 
     backgroundLevel: 'https://i.imgur.com/eIiaG96.png',
 
+    // WELCOME
+    welcomeToPeachAndGoma: 'https://i.imgur.com/jd1ksEo.gif',
+    welcomeToPeach: 'https://i.imgur.com/NoUsygl.gif',
+    welcomeToGoma: 'https://i.imgur.com/2rGNOSz.gif',
+
     // INTRODUCTION
     peachy: 'https://i.imgur.com/kYXE4No.gif',
     thanks: 'https://i.imgur.com/FrTvTpq.gif',

@@ -1,4 +1,5 @@
 const { Command } = require('../../structures/index.js');
+const globalGif = require('../../utils/Gif');
 
 module.exports = class Theme extends Command {
     constructor(client) {
@@ -80,8 +81,10 @@ module.exports = class Theme extends Command {
                     user.preferences.theme = convertSubCommand;
                     await user.save();
 
+                    const themeColor = convertSubCommand === 'peach' ? '#8BD3DD' : convertSubCommand === 'goma' ? '#94716B' : '#F582AE';
+                    const themeImage = convertSubCommand === 'peach' ? globalGif.welcomeToPeach : convertSubCommand === 'goma' ? globalGif.welcomeToGoma : globalGif.welcomeToPeachAndGoma;
                     embed
-                        .setColor(color.main)
+                        .setColor(themeColor)
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
@@ -89,6 +92,7 @@ module.exports = class Theme extends Command {
                                 .replace('%{mainRight}', emoji.mainRight) +
                             themeMessages?.setThemeMessage.replace('%{theme}', client.utils.formatCapitalize(convertSubCommand))
                         )
+                        .setImage(themeImage)
                         .setFooter({
                             text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
                             iconURL: ctx.author.displayAvatarURL(),
@@ -123,8 +127,10 @@ module.exports = class Theme extends Command {
 
                 default: {
                     const currentTheme = user.preferences.theme || 'Not set';
+                    const themeColor = currentTheme === 'peach' ? '#8BD3DD' : currentTheme === 'goma' ? '#94716B' : '#F582AE';
+                    const themeImage = currentTheme === 'peach' ? globalGif.welcomeToPeach : currentTheme === 'goma' ? globalGif.welcomeToGoma : globalGif.welcomeToPeachAndGoma;
                     embed
-                        .setColor(color.main)
+                        .setColor(themeColor)
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
@@ -132,6 +138,7 @@ module.exports = class Theme extends Command {
                                 .replace('%{mainRight}', emoji.mainRight) +
                             themeMessages?.currentThemeMessage.replace('%{theme}', client.utils.formatCapitalize(currentTheme))
                         )
+                        .setImage(themeImage)
                         .setFooter({
                             text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
                             iconURL: ctx.author.displayAvatarURL(),
