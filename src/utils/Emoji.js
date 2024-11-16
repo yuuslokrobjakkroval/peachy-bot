@@ -69,6 +69,8 @@ module.exports = {
         heaven: '<:MAINHEAVEN:1293603530699046982>',
         sakura: '<:SAKURAMAIN:1295967137482936440>',
         bee: '<:SAKURAMAIN:1295967137482936440>',
+
+        spiderMan: '<:SPMAIN:1307343653848485921>',
     },
 
     // EXCHANGE

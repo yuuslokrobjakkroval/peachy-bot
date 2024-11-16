@@ -47,4 +47,9 @@ const buzzingBliss = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFCF596, none: 0x2B2D31 },
 };
 
-module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, celestialGrace, sakuraSerenity, buzzingBliss }
+// SPIDER MAN FOR ANGKOR PARIS ( ST11 )
+const spiderMan = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFF2929, none: 0x2B2D31 },
+};
+
+module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, celestialGrace, sakuraSerenity, buzzingBliss, spiderMan }
