@@ -73,7 +73,7 @@ module.exports = class Utils {
             .addFields([
                 {
                     name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`,
-                    value: `**${inviter.globalName}**`,
+                    value: `**${inviter.globalName ? inviter.globalName : inviter}**`,
                     inline: false
                 },
                 {
