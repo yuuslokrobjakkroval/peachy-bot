@@ -9,6 +9,7 @@ const globalConfig = require("./Config");
 const gif = require("./Gif");
 const emoji = require("./Emoji");
 const moment = require("moment");
+const InviteTrackerSchema = require("../schemas/inviteTracker");
 const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Utils {
@@ -37,20 +38,64 @@ module.exports = class Utils {
             .setTimestamp();
     }
 
-    static getInviteMessage(client, member, invite, inviter) {
+    static async getInviteMessage(client, member, invite, inviter) {
         const memberCount = member.guild.memberCount;
         const accountCreationDate = moment(member.user.createdAt).fromNow();
+
+        let inviteMember = 0;
+        try {
+            const result = await InviteTrackerSchema.aggregate([
+                {
+                    $group: {
+                        _id: '$inviterId',
+                        totalUses: { $sum: '$uses' },
+                    }
+                },
+                {
+                    $project: {
+                        inviterId: '$_id',
+                        totalUses: 1,
+                    }
+                },
+                { $sort: { totalUses: -1 } }
+            ]).exec();
+
+            inviteMember = result.find(({ inviterId }) => inviterId === inviter.id)?.totalUses || 0;
+
+        } catch (err) {
+            console.error(err);
+        }
 
         return client.embed()
             .setColor(client.color.main)
             .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
-            .setDescription(`## **Heyoo ${member}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}`)
+            .setDescription(`## **Heyoo ${member}** ${emoji.main.signature}\nYou have joined the server ${emoji.congratulation}`)
             .addFields([
-                { name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`, value: `<@${inviter.id}>`, inline: false },
-                { name: `${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆`, value: `**https://discord.gg/${invite.code}**`, inline: false },
-                { name: `${emoji.inviteTracker.inviteStats} 𝑰𝒏𝒗𝒊𝒕𝒆𝒅 𝑴𝒆𝒎𝒃𝒆𝒓`, value: `${invite.uses} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false },
-                { name: `${emoji.inviteTracker.memberCreated} 𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑫𝒂𝒕𝒆`, value: `${accountCreationDate}`, inline: false },
-                { name: `${emoji.inviteTracker.inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, value: `${memberCount} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false }
+                {
+                    name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`,
+                    value: `**${inviter.globalName}**`,
+                    inline: false
+                },
+                {
+                    name: `${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆`,
+                    value: `**https://discord.gg/${invite.code}**`,
+                    inline: false
+                },
+                {
+                    name: `${emoji.inviteTracker.inviteStats} 𝑰𝒏𝒗𝒊𝒕𝒆𝒅 𝑴𝒆𝒎𝒃𝒆𝒓`,
+                    value: `${inviteMember > 1 ? `${inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔` : `${inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓`}`,
+                    inline: false
+                },
+                {
+                    name: `${emoji.inviteTracker.memberCreated} 𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑫𝒂𝒕𝒆`,
+                    value: `${accountCreationDate}`,
+                    inline: false
+                },
+                {
+                    name: `${emoji.inviteTracker.inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`,
+                    value: `${memberCount} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`,
+                    inline: false
+                }
             ])
             .setImage('https://i.imgur.com/XiZrSty.gif')
             .setFooter({

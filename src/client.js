@@ -68,15 +68,18 @@ client.on('guildMemberAdd', async (member) => {
     try {
         const currentInvites = await guild.invites.fetch();
         for (const invite of currentInvites.values()) {
+
             if (inviteData[guild.id] && inviteData[guild.id].has(invite.code)) {
+                if (invite.uses > inviteData[guild.id].get(invite.code)) {
                     const inviter = invite.inviter;
                     inviteData[guild.id].set(invite.code, invite.uses);
                     const trackingChannel = guild.channels.cache.get(globalConfig.channel.inviteTracker);
                     if (trackingChannel) {
-                        const inviteMessage = client.utils.getInviteMessage(client, member, invite, inviter);
+                        const inviteMessage = await client.utils.getInviteMessage(client, member, invite, inviter);
                         trackingChannel.send({embeds: [inviteMessage]});
                     }
                     break;
+                    }
             }
         }
         inviteData[guild.id] = new Map(currentInvites.map(invite => [invite.code, invite.uses]));
