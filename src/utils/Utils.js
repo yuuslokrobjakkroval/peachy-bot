@@ -60,7 +60,7 @@ module.exports = class Utils {
                 { $sort: { totalUses: -1 } }
             ]).exec();
 
-            inviteMember = result.find(({ inviterId }) => inviterId === inviter.id)?.totalUses || 0;
+            inviteMember = result.find(({ inviterId }) => inviterId === inviter.id)?.totalUses + 1 || 0;
 
         } catch (err) {
             console.error(err);
