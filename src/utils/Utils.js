@@ -30,7 +30,7 @@ module.exports = class Utils {
             > **${emoji.channel.role}** : <#${globalConfig.channel.role}>
             > **${emoji.channel.booster}** : <#${globalConfig.channel.booster}>
             > **${emoji.channel.giveaway}** : <#${globalConfig.channel.giveaways}>
-            \n${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** <@${member.id}>\n\n**NOW WE HAVE ${memberCount} MEMBERS**
+            \n${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** ${member}\n\n**NOW WE HAVE ${memberCount} MEMBERS**
         `)
             .setImage('https://i.imgur.com/MTOqT51.jpg')
             .setFooter({text: 'We hope you enjoy your stay!'})
@@ -44,7 +44,7 @@ module.exports = class Utils {
         return client.embed()
             .setColor(client.color.main)
             .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
-            .setDescription(`## **Heyoo <@${member.user.id}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}`)
+            .setDescription(`## **Heyoo ${member}>** ${emoji.main.signature}\nYou has joined the server ${emoji.congratulation}`)
             .addFields([
                 { name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`, value: `<@${inviter.id}>`, inline: false },
                 { name: `${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆`, value: `**https://discord.gg/${invite.code}**`, inline: false },
