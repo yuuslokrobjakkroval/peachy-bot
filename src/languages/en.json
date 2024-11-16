@@ -711,27 +711,14 @@
 			}
 		},
 		"userNameMessages": {
-			"help": {
-				"usage": "Usage: `username <text || reset || show || help>`",
-				"examples": [
-					"username peachy",
-					"username reset",
-					"username show",
-					"username help"
-				]
-			},
-			"reset": "Your username has been reset to the default.",
-			"show": {
-				"usernameSet": "Your current username is: `{{username}}`",
-				"noUsername": "No username set."
-			},
-			"set": {
-				"success": "Your username has been set to: `{{username}}`",
-				"error": {
+			"name": "Your current username is: **%{username}**",
+			"noUsername": "No Username.",
+			"success": "Your username has been set to: **%{username}**",
+			"error": {
 					"long": "The username cannot be longer than 40 characters.",
 					"empty": "Please provide a username."
-				}
-			}
+				},
+			"reset": "Your username has been reset to the default."
 		}
 	},
 	"socialMessages": {

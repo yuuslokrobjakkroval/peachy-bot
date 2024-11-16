@@ -6,19 +6,18 @@ module.exports = class Username extends Command {
         super(client, {
             name: 'username',
             description: {
-                content: 'Sets, resets, or shows your username.',
+                content: 'set, reset, help, or shows your username.',
                 examples: [
                     'username peachy',
                     'username reset',
-                    'username show',
                     'username help'
                 ],
-                usage: 'username <text || reset || show || help>',
+                usage: 'username <text || reset || help>',
             },
             category: 'profile',
             aliases: [],
             cooldown: 5,
-            args: true,
+            args: false,
             permissions: {
                 dev: false,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
@@ -27,26 +26,8 @@ module.exports = class Username extends Command {
             slashCommand: true,
             options: [
                 {
-                    name: 'set',
-                    description: 'Sets the username in profile card',
-                    type: 1,
-                    options: [
-                        {
-                            name: 'text',
-                            description: 'The text to set as your username.',
-                            type: 3,
-                            required: true,
-                        },
-                    ],
-                },
-                {
                     name: 'reset',
                     description: 'Resets the username to the default one',
-                    type: 1,
-                },
-                {
-                    name: 'show',
-                    description: 'Show the current username for you.',
                     type: 1,
                 },
                 {
@@ -59,63 +40,102 @@ module.exports = class Username extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const user = await Users.findOne({ userId: ctx.author.id });
-        const embed = client.embed().setAuthor({ name: client.user.username, iconURL: client.user.displayAvatarURL() });
-
-        // Get messages from localization
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const userNameMessages = language.locales.get(language.defaultLocale)?.profileMessages?.userNameMessages;
 
-        const subCommand = ctx.isInteraction ? ctx.interaction.options.data[0].name : args[0];
+        client.utils.getUser(ctx.author.id).then(user => {
+            const embed = client.embed();
 
-        switch (subCommand) {
-            case 'help': {
-                embed
-                    .setColor(color.main)
-                    .setDescription(userNameMessages.help.usage + '\n\n**Examples:**\n' + userNameMessages.help.examples.map(example => `\`${example}\``).join('\n'));
+            const subCommand = ctx.isInteraction ? ctx.interaction.options.data[0].name : args[0];
 
-                await ctx.sendMessage({ embeds: [embed] });
-                break;
-            }
+            switch (subCommand) {
+                case 'help': {
+                    embed
+                        .setColor(color.main)
+                        .setDescription(generalMessages.title
+                                .replace('%{mainLeft}', emoji.mainLeft)
+                                .replace('%{title}', "𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄")
+                                .replace('%{mainRight}', emoji.mainRight) +
+                            userNameMessages.help.usage + '\n\n**Examples:**\n' + userNameMessages.help.examples.map(example => `\`${example}\``).join('\n')
+                        )
+                        .setFooter({
+                            text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                            iconURL: ctx.author.displayAvatarURL(),
+                        });
 
-            case 'reset': {
-                embed
-                    .setColor(color.main)
-                    .setDescription(userNameMessages.reset);
-
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.username': 'No username set.' } }).exec();
-                await ctx.sendMessage({ embeds: [embed] });
-                break;
-            }
-
-            case 'show': {
-                embed
-                    .setColor(color.main)
-                    .setDescription(user.profile.username ? userNameMessages.show.usernameSet.replace('{{username}}', user.profile.username) : userNameMessages.show.noUsername);
-
-                await ctx.sendMessage({ embeds: [embed] });
-                break;
-            }
-
-            default: {
-                const text = ctx.isInteraction ? ctx.interaction.options.data[0]?.options[0]?.value?.toString() : args.join(' ');
-
-                if (!text) {
-                    await client.utils.oops(client, ctx, userNameMessages.set.error.empty, color);
-                    return;
+                    ctx.sendMessage({embeds: [embed]});
+                    break;
                 }
 
-                if (text.length > 40) {
-                    await client.utils.oops(client, ctx, userNameMessages.set.error.long, color);
-                    return;
+                case 'reset': {
+                    embed
+                        .setColor(color.main)
+                        .setDescription(generalMessages.title
+                                .replace('%{mainLeft}', emoji.mainLeft)
+                                .replace('%{title}', "𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄")
+                                .replace('%{mainRight}', emoji.mainRight) +
+                            userNameMessages.reset
+                        )
+                        .setFooter({
+                            text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                            iconURL: ctx.author.displayAvatarURL(),
+                        });
+
+                    user.profile.username = 'No username set.'
+                    user.save();
+
+                    ctx.sendMessage({embeds: [embed]});
+                    break;
                 }
 
-                embed
-                    .setDescription(userNameMessages.set.success.replace('{{username}}', text));
+                default: {
+                    const text = ctx.isInteraction ? ctx.interaction.options.data[0]?.options[0]?.value?.toString() : args.join(' ');
 
-                await Users.updateOne({ userId: ctx.author.id }, { $set: { 'profile.username': text } }).exec();
-                await ctx.sendMessage({ embeds: [embed] });
-                break;
+                    if (text) {
+                        if (text.length > 20) {
+                            client.utils.oops(client, ctx, userNameMessages.error.long, color);
+                            return;
+                        }
+
+                        embed
+                            .setColor(color.main)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                userNameMessages.success.replace('%{username}', text)
+                            )
+                            .setFooter({
+                                text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
+
+                        user.profile.username = text;
+                        user.save();
+
+                        ctx.sendMessage({embeds: [embed]});
+                    } else {
+                        embed
+                            .setColor(color.main)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                userNameMessages.name.replace('%{username}', user.profile.username || userNameMessages.noUsername)
+                            )
+                            .setFooter({
+                                text: generalMessages?.requestedBy.replace('%{username}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
+
+                        ctx.sendMessage({embeds: [embed]});
+                        break;
+                    }
+                    break;
+                }
             }
-        }
+        })
     }
 };

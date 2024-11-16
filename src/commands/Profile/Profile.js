@@ -81,11 +81,10 @@ module.exports = class Profile extends Command {
 
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
-            await loadingMessage.edit({
-                content: '',
-                embeds: [],
-                files: [attachment],
-            });
+            ctx.isInteraction
+                ? await ctx.interaction.editReply({ content: '', embeds: [], files: [attachment] })
+                : await loadingMessage.edit({ content: '', embeds: [], files: [attachment] });
+
         } catch (error) {
             await this.handleError(ctx, loadingMessage);
             console.error(error);
@@ -94,7 +93,7 @@ module.exports = class Profile extends Command {
 
     getTargetUser(ctx, args) {
         return ctx.isInteraction
-            ? ctx.options.getUser('user')
+            ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
     }
 
@@ -233,7 +232,7 @@ module.exports = class Profile extends Command {
 
         // Draw each setting item text and switch
         const userInfoDetail = [
-            { label: "Name", description: userInfo.profile && userInfo.profile.name ? client.utils.formatCapitalize(userInfo.profile.name) : targetUser.username, x: 895, y: 140 },
+            { label: "Name", description: userInfo.profile && userInfo.profile.username ? client.utils.formatCapitalize(userInfo.profile.username) : targetUser.username, x: 895, y: 140 },
             { label: "Gender", description: userInfo.profile && userInfo.profile.gender ? client.utils.formatCapitalize(userInfo.profile.gender) : 'Not Set', x: 895, y: 220 },
             { label: "Date of birth", description: userInfo.profile && userInfo.profile.birthday ? userInfo.profile.birthday : 'Not Set', x: 895, y: 300 },
             { label: "Bio", description: userInfo.profile && userInfo.profile.bio ? userInfo.profile.bio : 'Not Set', x: 895, y: 380 }
