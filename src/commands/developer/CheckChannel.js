@@ -3,14 +3,14 @@ const { Command } = require('../../structures/index.js');
 module.exports = class CheckChannelInAllServers extends Command {
     constructor(client) {
         super(client, {
-            name: 'checkchannelall',
+            name: 'checkchannel',
             description: {
                 content: 'Check a channel by ID in all servers where the bot is present.',
-                examples: ['checkChannelAll <channelId>'],
-                usage: 'checkChannelAll <channelId>',
+                examples: ['checkchannel <channelId>'],
+                usage: 'checkchannel <channelId>',
             },
             category: 'developer',
-            aliases: ['checkchall'],
+            aliases: ['checkchannel'],
             cooldown: 5,
             args: true,
             permissions: {
