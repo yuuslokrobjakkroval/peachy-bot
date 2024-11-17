@@ -51,11 +51,10 @@ module.exports = class AddUsername extends Command {
                 }
             }));
 
-            const embed = client
-                .embed()
+            const embed = client.embed()
                 .setColor(color.main)
                 .setDescription('Add Username Successfully');
-            const messageEmbed = await ctx.sendMessage({ embeds: [embed] });
+            const messageEmbed = await ctx.channel.send({ embeds: [embed] });
 
             setTimeout(async () => {
                 try {
