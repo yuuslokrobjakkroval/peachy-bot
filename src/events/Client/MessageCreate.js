@@ -205,12 +205,11 @@ module.exports = class MessageCreate extends Event {
               })
 
               collector.on('end', async () => {
-                await ctx.editMessage({ conent: '', embeds: [], components: []});
+                await ctx.editMessage({ content: '', embeds: [], components: []});
               });
-            })
-                .catch(error => {
+            }).catch(error => {
                   console.error('Error in Register Command:', error);
-                });
+            });
           } else {
             if(!!user) {
               this.client.users.fetch(user?.userId)
