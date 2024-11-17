@@ -205,7 +205,7 @@ module.exports = class MessageCreate extends Event {
               })
 
               collector.on('end', async () => {
-                await ctx.editMessage({components: []});
+                await ctx.editMessage({ conent: '', embeds: [], components: []});
               });
             })
                 .catch(error => {
