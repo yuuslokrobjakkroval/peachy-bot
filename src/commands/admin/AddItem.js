@@ -35,14 +35,20 @@ module.exports = class AddItem extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const user = ctx.isInteraction
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user') || ctx.author // Default to the author if no user is provided
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
-        if (user.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'), color);
-        let userData = await Users.findOne({ userId: user.id });
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
+
+        if (mention && mention.user.bot) {
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
+        }
+
+        const userId = typeof mention === 'string' ? mention : mention.id;
+        let userData = await Users.findOne({ userId });
         if (!userData) {
             userData = new Users({
-                userId: user.id,
+                userId,
                 balance: {
                     coin: 0,
                     bank: 0,
@@ -56,12 +62,12 @@ module.exports = class AddItem extends Command {
         const itemInfo = allItems.find((item) => item.id?.toLowerCase() === itemId);
 
         if (!itemInfo) {
-            return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'invalid_item'), color);
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.invalidItem, color);
         }
 
         let quantity = args[2] || 1;
         if (isNaN(quantity) || quantity <= 0 || quantity.toString().includes('.') || quantity.toString().includes(',')) {
-            return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'invalid_quantity'), color);
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.invalidQuantity, color);
         }
 
         const baseQuantity = parseInt(quantity);
@@ -70,12 +76,12 @@ module.exports = class AddItem extends Command {
 
         if (itemIndex !== -1) {
             await Users.updateOne(
-                { userId: user.id, "inventory.id": itemId },
+                { userId: userId, "inventory.id": itemId },
                 { $inc: { "inventory.$.quantity": baseQuantity } }
             ).exec();
         } else {
             await Users.updateOne(
-                { userId: user.id },
+                { userId: userId },
                 { $push: { inventory: { id: itemId, name: itemInfo.name, quantity: baseQuantity } } }
             ).exec();
         }

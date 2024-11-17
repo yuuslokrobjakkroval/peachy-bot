@@ -33,13 +33,15 @@ module.exports = class BanUser extends Command {
         const action = args[0].toLowerCase(); // 'ban' or 'unban'
         const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[1]) || ctx.author;
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[1]) || args[1];
 
         if (!mention) return await ctx.sendMessage({
             embeds: [client.embed().setColor(color.danger).setDescription('Please mention a valid user.')],
         });
 
-        let user = await Users.findOne({ userId: mention.id });
+        const userId = typeof mention === 'string' ? mention : mention.id;
+
+        let user = await Users.findOne({ userId });
         if (!user) {
             user = new Users({
                 userId: mention.id,

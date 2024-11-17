@@ -24,13 +24,16 @@ module.exports = class AddBank extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
-        let user = await Users.findOne({ userId: mention.id });
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
+
+        const userId = typeof mention === 'string' ? mention : mention.id;
+        let user = await Users.findOne({ userId });
         if (!user) {
             user = new Users({
-                userId: mention.id,
+                userId,
                 balance: {
                     coin: 0,
                     bank: 0,
@@ -40,7 +43,9 @@ module.exports = class AddBank extends Command {
 
         const { coin, bank } = user.balance;
 
-        if (mention.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'));
+        if (mention && mention.user.bot) {
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
+        }
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
@@ -50,19 +55,9 @@ module.exports = class AddBank extends Command {
                 const number = parseInt(amount);
                 amount = number * multiplier[unit];
             } else {
-                return await ctx.sendMessage({
+                return ctx.sendMessage({
                     embeds: [
-                        client.embed().setColor(color.danger).setDescription(client.i18n.get(language, 'commands', 'invalid_amount')),
-                    ],
-                    components: [
-                        new ActionRowBuilder().addComponents(
-                            new ButtonBuilder()
-                                .setCustomId('amount_instructions')
-                                .setStyle(2)
-                                .setLabel(client.i18n.get(language, 'commands', 'invalid_amount_button'))
-                                .setDisabled(false)
-                                .setEmoji('📕')
-                        ),
+                        client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount),
                     ],
                 });
             }

@@ -10,6 +10,8 @@
 		"syntaxInstructions": "Syntax: [] = optional, <> = required",
 		"noEveryoneOrHereError": "You can't use this command with everyone or here.",
 		"invalidAmount": "Invalid amount. Please enter a positive number.",
+		"invalidItem": "The item with ID `{{itemId}}` was not found. Please check the shop for available items.",
+		"invalidQuantity": "Invalid quantity specified.",
 		"zeroBalance": "Your balance is zero. Please earn some coins before trying again.",
 		"alreadyInGame": "You are already in a game. Please finish your current game before starting a new one.",
 		"gameInProgress": "%{user}, Your game is in progress!",
