@@ -25,6 +25,12 @@ module.exports = class AddUsername extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         try {
+            let messageEmbed;
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription('Adding Username');
+            messageEmbed = await ctx.sendMessage({ embeds: [embed] });
+
             const users = await Users.aggregate([
                 { $sort: { 'balance.coin': -1 } }
             ]).exec();
@@ -43,20 +49,15 @@ module.exports = class AddUsername extends Command {
                     const userInfo = await client.users.fetch(user.userId);
                     const username = userInfo ? userInfo.username : 'Unknown';
                     await Users.updateOne(
-                        { userId: user.userId },
-                        { $set: { username: username } }
+                        {userId: user.userId},
+                        {$set: {username: username}}
                     );
-                    const embed = client.embed().setColor(color.main).setDescription('Add Username Successfully');
+                    const embed = client.embed().setColor(color.main).setDescription(`Add Username for ${userInfo.displayName} Successfully`);
                     messageEmbed = await ctx.editMessage({ embeds: [embed] });
                 } catch (error) {
                     console.error(`Failed to fetch user ${user.userId}:`, error);
                 }
             }));
-
-            const embed = client.embed()
-                .setColor(color.main)
-                .setDescription('Add Username Successfully');
-            const messageEmbed = await ctx.channel.send({ embeds: [embed] });
 
             setTimeout(async () => {
                 try {
