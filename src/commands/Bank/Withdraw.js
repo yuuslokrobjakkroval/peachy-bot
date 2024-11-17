@@ -9,7 +9,7 @@ module.exports = class Withdraw extends Command {
                 examples: ['withdraw 100'],
                 usage: 'withdraw <amount>',
             },
-            category: 'economy',
+            category: 'bank',
             aliases: ['with', 'dokluy', 'berkluy'],
             cooldown: 5,
             args: true,

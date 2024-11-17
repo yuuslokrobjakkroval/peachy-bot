@@ -10,7 +10,7 @@ module.exports = class MultiTransfer extends Command {
                 examples: ["mpay @user1 @user2 100000", "mpay @user1 @user2 100k"],
                 usage: "mpay <user(s)> <amount>",
             },
-            category: "economy",
+            category: "bank",
             aliases: ["mpay", "mgive", "moy", "mt"],
             cooldown: 5,
             args: true,

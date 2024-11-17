@@ -6,14 +6,14 @@ const moment = require('moment');
 module.exports = class Peachy extends Command {
     constructor(client) {
         super(client, {
-            name: 'peachy',
+            name: 'peach',
             description: {
                 content: 'Earn some coins by being peachy.',
-                examples: ['peachy'],
-                usage: 'peachy',
+                examples: ['peach'],
+                usage: 'peach',
             },
             category: 'economy',
-            aliases: ['eachy', 'each', 'p'],
+            aliases: ['each', 'each', 'p'],
             cooldown: 5,
             args: false,
             permissions: {
@@ -28,7 +28,7 @@ module.exports = class Peachy extends Command {
 
     run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const peachyMessages = language.locales.get(language.defaultLocale)?.economyMessages?.peachyMessages;
+        const peachMessages = language.locales.get(language.defaultLocale)?.economyMessages?.peachMessages;
 
         // Get user using client.utils
         client.utils.getUser(ctx.author.id).then(user => {
@@ -53,7 +53,7 @@ module.exports = class Peachy extends Command {
             const newExp = user.profile.xp + totalExp;
             const newStreak = user.peachy.streak + 1;
 
-            const cooldownTime = 300000; // 5 minutes cooldown
+            const cooldownTime = 300000;
             return client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime)
                 .then(isCooldownExpired => {
                     if (!isCooldownExpired) {
@@ -64,7 +64,7 @@ module.exports = class Peachy extends Command {
                                 const minutes = Math.floor(duration.asMinutes());
                                 const seconds = Math.floor(duration.asSeconds()) % 60;
 
-                                const cooldownMessage = peachyMessages.cooldown
+                                const cooldownMessage = peachMessages.cooldown
                                     .replace('%{minutes}', minutes)
                                     .replace('%{seconds}', seconds);
 
@@ -99,7 +99,7 @@ module.exports = class Peachy extends Command {
                                         .replace('%{mainLeft}', emoji.mainLeft)
                                         .replace('%{title}', "𝐏𝐄𝐀𝐂𝐇")
                                         .replace('%{mainRight}', emoji.mainRight) +
-                                    peachyMessages.success
+                                    peachMessages.success
                                         .replace('%{coinEmote}', emoji.coin)
                                         .replace('%{coin}', client.utils.formatNumber(baseCoins))
                                         .replace('%{expEmote}', emoji.exp)

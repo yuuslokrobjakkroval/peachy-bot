@@ -11,7 +11,7 @@ module.exports = class Transfer extends Command {
                 examples: ["transfer @user 100", "transfer all"],
                 usage: "transfer <user> [amount]",
             },
-            category: "economy",
+            category: "bank",
             aliases: ["pay", "give", "oy", "t"],
             cooldown: 5,
             args: true,

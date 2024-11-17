@@ -2,14 +2,15 @@ const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, Permi
 const Users = require('../schemas/user');
 const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
-const importantItems = require('../assets/inventory/ImportantItems.js');
-const shopItems = require('../assets/inventory/ShopItems.js');
+const InviteTrackerSchema = require("../schemas/inviteTracker");
+const importantItems = require('../assets/inventory/ImportantItems');
+const shopItems = require('../assets/inventory/ShopItems');
+const tasks = require('../assets/inventory/Tasks');
 const canvafy = require("canvafy");
 const globalConfig = require("./Config");
 const gif = require("./Gif");
 const emoji = require("./Emoji");
 const moment = require("moment");
-const InviteTrackerSchema = require("../schemas/inviteTracker");
 const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Utils {
@@ -628,6 +629,33 @@ module.exports = class Utils {
                 return 'https://i.imgur.com/11JtCud.png'
             default:
                 return;
+        }
+    }
+
+
+
+    static getTasksForPosition(position) {
+        return tasks[position]?.tasks || [];
+    }
+
+    static getPosition(userId) {
+
+    }
+
+    static getSalary(position) {
+        switch (position) {
+            case 'Police':
+                return 60000;
+            case 'IT':
+                return 80000;
+            case 'Doctor':
+                return 120000;
+            case 'Engineer':
+                return 90000;
+            case 'Teacher':
+                return 50000;
+            default:
+                return 50000;
         }
     }
 

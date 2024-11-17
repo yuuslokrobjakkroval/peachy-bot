@@ -9,7 +9,7 @@ module.exports = class Deposit extends Command {
                 examples: ['deposit 100'],
                 usage: 'deposit <amount>',
             },
-            category: 'economy',
+            category: 'bank',
             aliases: ['dep'],
             cooldown: 5,
             args: false,

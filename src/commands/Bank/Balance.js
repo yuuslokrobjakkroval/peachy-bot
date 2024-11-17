@@ -1,4 +1,4 @@
-const { Command } = require('../../structures/index.js');
+const { Command } = require('../../structures');
 const globalGif = require('../../utils/Gif');
 
 module.exports = class Balance extends Command {
@@ -10,7 +10,7 @@ module.exports = class Balance extends Command {
                 examples: ['balance'],
                 usage: 'balance',
             },
-            category: 'economy',
+            category: 'bank',
             aliases: ['bal', 'money', 'cash'],
             cooldown: 3,
             args: false,

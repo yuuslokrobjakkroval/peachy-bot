@@ -75,6 +75,41 @@ const VerificationSchema = new Schema({
     lastSpamCheck: { type: Date, default: Date.now }
 });
 
+// Work Schema
+const WorkSchema = new Schema({
+    position: { type: String, default: 'Not yet applied' },
+    status: { type: String, default: 'pending' },  // 'pending', 'approved', 'rejected'
+    applyDate: { type: Date, default: Date.now },
+    approvedDate: { type: Date, default: null },
+    salary: { type: Number, default: 0 },
+    lastWorkedAt: { type: Date, default: null },
+    workCooldown: { type: Number, default: 0 }, // stores timestamp
+    jobHistory: [{
+        position: String,
+        appliedAt: Date,
+        approvedAt: Date,
+        completedTasks: Number,
+    }],
+    currentTask: { type: String, default: null },
+    performanceRating: { type: Number, default: 0 },
+    workStreak: { type: Number, default: 0 },
+    tasksCompleted: { type: Number, default: 0 },
+    rejections: { type: Number, default: 0 },
+    rejectionReason: { type: String, default: null },
+    lastPromotion: { type: Date, default: null },
+    promotionHistory: [{
+        position: String,
+        promotedAt: Date,
+    }],
+    isWorking: { type: Boolean, default: false },
+    workDuration: { type: Number, default: 0 },  // duration in minutes or hours
+    specialBonuses: [{
+        type: String,
+        value: Number,
+        appliedAt: Date
+    }]
+});
+
 // Relationship Schema
 const RelationshipSchema = new Schema({
     partner: {
@@ -119,6 +154,7 @@ const userSchema = new Schema({
     userId: { type: String, required: true, unique: true, index: true },
     username: { type: String, default: null },
     prefix: { type: String, default: globalConfig.prefix },
+    work: { type: WorkSchema, default: () => ({}) },
     verification: { type: VerificationSchema, default: () => ({}) },
     balance: {
         coin: { type: Number, default: 500000 },
