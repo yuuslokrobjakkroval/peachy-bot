@@ -62,7 +62,7 @@ module.exports = class AddUsername extends Command {
                 } catch (deleteError) {
                     console.error('Failed to delete the message:', deleteError);
                 }
-            }, 60000);
+            }, 300000);
         } catch (mainError) {
             console.error('An error occurred while running the command:', mainError);
         }
