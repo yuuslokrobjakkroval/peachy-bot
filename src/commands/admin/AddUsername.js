@@ -46,6 +46,8 @@ module.exports = class AddUsername extends Command {
                         { userId: user.userId },
                         { $set: { username: username } }
                     );
+                    const embed = client.embed().setColor(color.main).setDescription('Add Username Successfully');
+                    messageEmbed = await ctx.editMessage({ embeds: [embed] });
                 } catch (error) {
                     console.error(`Failed to fetch user ${user.userId}:`, error);
                 }
