@@ -16,6 +16,7 @@ module.exports = class MessageCreate extends Event {
     if (message.author.bot || !message.guild) return;
 
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
+      const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
       this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
       const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
@@ -81,7 +82,7 @@ module.exports = class MessageCreate extends Event {
                     const embed = this.client.embed()
                         .setColor(color.main)
                         .setTitle(`${emoji.mainLeft} 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 ${emoji.mainRight}`)
-                        .setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
+                        .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                         .setDescription(
                             `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
                             `**Rules and Guidelines**\n\n` +
@@ -205,7 +206,19 @@ module.exports = class MessageCreate extends Event {
               })
 
               collector.on('end', async () => {
-                await ctx.editMessage({ content: '', embeds: [], components: []});
+                const timeoutEmbed = this.client.embed()
+                    .setColor(color.warning)
+                    .setDescription(
+                        generalMessages.title
+                            .replace('%{mainLeft}', emoji.mainLeft)
+                            .replace('%{title}', "𝐓𝐈𝐌𝐄 𝐈𝐒 𝐔𝐏")
+                            .replace('%{mainRight}', emoji.mainRight) +
+                        "⏳ Time is up! You didn't register.")
+                    .setFooter({
+                      text: `${ctx.author.displayName}, please try again`,
+                      iconURL: ctx.author.displayAvatarURL(),
+                    });
+                await ctx.editMessage({ content: '', embeds: [timeoutEmbed], components: []});
               });
             }).catch(error => {
                   console.error('Error in Register Command:', error);
