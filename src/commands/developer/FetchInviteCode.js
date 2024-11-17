@@ -1,4 +1,4 @@
-const { Command } = require('../../structures/index.js');
+const { Command } = require('../../structures');
 const Invite = require('../../schemas/inviteTracker');
 
 module.exports = class FetchInvites extends Command {

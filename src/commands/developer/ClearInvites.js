@@ -1,4 +1,4 @@
-const { Command } = require('../../structures/index.js');
+const { Command } = require('../../structures');
 const InviteTrackerSchema = require('../../schemas/inviteTracker');  // Correct schema import
 
 module.exports = class ClearInvite extends Command {

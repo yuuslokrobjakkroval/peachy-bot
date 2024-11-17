@@ -25,28 +25,30 @@ module.exports = class ClearAutoResponse extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const guildId = ctx.guild.id;
-        
-        // Find the response document for this guild
-        const responseDoc = await Response.findOne({ guildId });
+    run(client, ctx, args, color, emoji, language) {
+        try {
+            const guildId = ctx.guild.id;
+            Response.findOne({ guildId }).then(responseDoc => {
+                if (!responseDoc || !responseDoc.autoresponse || responseDoc.autoresponse.length === 0) {
+                    return client.utils.sendErrorMessage(client, ctx, 'No autoresponses found to clear for this guild.', color);
+                }
 
-        if (!responseDoc || !responseDoc.autoresponse || responseDoc.autoresponse.length === 0) {
-            return ctx.sendErrorMessage(client, ctx, 'No autoresponses found to clear for this guild.', color);
+                // Clear all autoresponse entries
+                responseDoc.autoresponse = [];
+                responseDoc.save();
+
+                // Send a success message
+                const embed = client.embed()
+                    .setColor(color.main)
+                    .setDescription(`${emoji.tick} Successfully cleared all autoresponses for this guild.`);
+
+                return client.utils.sendMessage({embeds: [embed]});
+            })
+        } catch (error) {
+            console.error('Error in Clear Respond Command:', error);
+            // const balanceMessages = language.locales.get(language.defaultLocale)?.economyMessages?.balanceMessages;
+            // return client.utils.sendErrorMessage(client, ctx, balanceMessages.errors.fetchFail, color);
+            return client.utils.sendErrorMessage(client, ctx, 'Clear Response is Error', color);
         }
-
-        // Clear all autoresponse entries
-        responseDoc.autoresponse = [];
-        
-        // Save the updated document
-        await responseDoc.save();
-
-        // Send a success message
-        const embed = client
-            .embed()
-            .setColor(color.main)
-            .setDescription(`${emoji.tick} Successfully cleared all autoresponses for this guild.`);
-
-        return await ctx.sendMessage({ embeds: [embed] });
     }
 };
