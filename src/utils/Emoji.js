@@ -159,6 +159,16 @@ module.exports = {
         bottomMiddle: '<a:BOTTOMMIDDLE:1306174309223497738>',
         bottomRight: '<a:BOTTOMRIGHT:1306174318736183406>',
     },
+    
+    position: {
+      police: '<a:POLICE:1307671695120797828>',
+      it: '<a:IT:1307671681531248642>',
+      doctor: '<a:DOCTOR:1307673065248919652>',
+      teacher: '<a:TEACHER:1307673128700219473>',
+      engineer: '<a:ENGINEER:1307671673335713822>',
+      // delivery: '',
+      student: '<a:STUDENT:1307674085966352394>',
+    },
 
     actions: {
         bites: [

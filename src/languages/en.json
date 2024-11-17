@@ -868,7 +868,7 @@
 		"applyJobMessages": {
 			"success": "You have successfully applied for the **%{position}** job! Your application date is %{applyDate}.",
 			"invalidPosition": "This position is invalid. Please choose a valid job position.",
-			"alreadyApplied": "You already have an active application or job. You can't apply for another job right now.",
+			"alreadyApplied": "You already have an active application or job.\nYou can't apply for another job right now.",
 			"jobUnavailable": "This job is currently unavailable. Please choose another position or try again later.",
 			"jobNotFound": "Job not found. Please apply for a job first."
 		},
@@ -878,7 +878,7 @@
 			"cooldown": "You need to wait **%{hours} hours, %{minutes} minutes, and %{seconds} seconds** before you can work again."
 		},
 		"positionMessages": {
-			"applyingJob": "You have applied to position: **%{position}** but not yet approved.",
+			"applyingJob": "You have applied to position: **%{position}** but not yet approved.\nplease wait.",
 			"noJob": "You don't have a job yet. Apply for one first using the `applyjob` command."
 		}
 	}

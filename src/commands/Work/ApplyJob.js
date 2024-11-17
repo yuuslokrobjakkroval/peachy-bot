@@ -27,11 +27,12 @@ module.exports = class ApplyJob extends Command {
                     type: 3, // STRING type
                     required: true,
                     choices: [
-                        { name: 'Police', value: 'police' },
-                        { name: 'IT', value: 'it' },
-                        { name: 'Doctor', value: 'doctor' },
-                        { name: 'Teacher', value: 'teacher' },
-                        { name: 'Engineer', value: 'engineer' },
+                        { name: 'police', value: 'police' },
+                        { name: 'it', value: 'it' },
+                        { name: 'doctor', value: 'doctor' },
+                        { name: 'teacher', value: 'teacher' },
+                        { name: 'engineer', value: 'engineer' },
+                        { name: 'student', value: 'student' },
                     ],
                 },
             ],
@@ -42,15 +43,15 @@ module.exports = class ApplyJob extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const applyJobMessages = language.locales.get(language.defaultLocale)?.workMessages?.applyJobMessages;
 
-        const validPositions = ['Police', 'Doctor', 'IT', 'Engineer', 'Teacher'];
+        const validPositions = ['police', 'doctor', 'it', 'engineer', 'teacher', 'student'];
 
         // Get the job position selected by the user
         const position = ctx.isInteraction
-            ? ctx.interaction.options.getString('position')
-            : args[0];
+            ? ctx.interaction.options.getString('position')?.toLowerCase()
+            : args[0]?.toLowerCase();
 
         // Check if the provided position is valid
-        if (!validPositions.includes(client.utils.formatCapitalize(position))) {
+        if (!validPositions.includes(position)) {
             return client.utils.sendErrorMessage(client, ctx, applyJobMessages.invalidPosition, color);
         }
 
@@ -73,13 +74,14 @@ module.exports = class ApplyJob extends Command {
         // Return success message
         const successEmbed = client.embed()
             .setColor(color.main)
+            .setThumbnail(client.utils.emojiToImage(client.utils.emojiPosition(position)))
             .setDescription(
                 generalMessages.title
                     .replace('%{mainLeft}', emoji.mainLeft)
                     .replace('%{title}', "𝐀𝐏𝐏𝐋𝐘 𝐉𝐎𝐁")
                     .replace('%{mainRight}', emoji.mainRight) +
                 applyJobMessages.success
-                    .replace('%{position}', client.utils.formatCapitalize(position))
+                    .replace('%{position}', client.utils.formatCapitalize(position === 'it' ? 'IT' : position))
                     .replace('%{applyDate}', new Date(user.work.applyDate).toLocaleDateString())
             )
             .setFooter({

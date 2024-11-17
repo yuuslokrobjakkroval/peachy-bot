@@ -23,7 +23,14 @@ module.exports = class Work extends Command {
                 user: [],
             },
             slashCommand: true,
-            options: [],
+            options: [
+                {
+                    name: "user",
+                    description: "The user to check the tasks",
+                    type: 6, // USER type
+                    required: false,
+                },
+            ],
         });
     }
 
@@ -31,8 +38,11 @@ module.exports = class Work extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const taskMessages = language.locales.get(language.defaultLocale)?.workMessages?.taskMessages;
 
-        // Get user from the database
-        const user = await Users.findOne({userId: ctx.author.id});
+        const mention = ctx.isInteraction
+            ? ctx.interaction.options.getUser("user") || ctx.author
+            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+
+        const user = await Users.findOne({ userId: mention.id });
         if (!user) {
             return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
         }
@@ -63,6 +73,7 @@ module.exports = class Work extends Command {
 
                             const taskEmbed = client.embed()
                                 .setColor(color.main)
+                                .setThumbnail(client.utils.emojiToImage(client.utils.emojiPosition(position)))
                                 .setDescription(
                                     generalMessages.title
                                         .replace('%{mainLeft}', emoji.mainLeft)
@@ -90,6 +101,7 @@ module.exports = class Work extends Command {
                     const reward = randomTask.reward;
                     const taskEmbed = client.embed()
                         .setColor(color.main)
+                        .setThumbnail(client.utils.emojiToImage(client.utils.emojiPosition(position)))
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)

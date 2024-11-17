@@ -9,6 +9,7 @@ const tasks = require('../assets/inventory/Tasks');
 const canvafy = require("canvafy");
 const globalConfig = require("./Config");
 const gif = require("./Gif");
+const globalEmoji = require("./Emoji");
 const emoji = require("./Emoji");
 const moment = require("moment");
 const items = shopItems.flatMap(shop => shop.inventory);
@@ -638,21 +639,34 @@ module.exports = class Utils {
         return tasks[position]?.tasks || [];
     }
 
-    static getPosition(userId) {
-
+    static emojiPosition(position) {
+        switch (position) {
+            case 'police':
+                return globalEmoji.position.police;
+            case 'it':
+                return globalEmoji.position.it;
+            case 'doctor':
+                return globalEmoji.position.doctor;
+            case 'engineer':
+                return globalEmoji.position.engineer;
+            case 'teacher':
+                return globalEmoji.position.teacher;
+            default:
+                return globalEmoji.position.student;
+        }
     }
 
     static getSalary(position) {
         switch (position) {
-            case 'Police':
+            case 'police':
                 return 60000;
-            case 'IT':
+            case 'it':
                 return 80000;
-            case 'Doctor':
+            case 'doctor':
                 return 120000;
-            case 'Engineer':
+            case 'engineer':
                 return 90000;
-            case 'Teacher':
+            case 'teacher':
                 return 50000;
             default:
                 return 50000;
