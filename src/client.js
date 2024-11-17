@@ -101,7 +101,7 @@ client.on('guildMemberAdd', async (member) => {
 });
 
 client.on('messageCreate', async (message) => {
-    if (message.guild.id !== globalConfig.guildId || message.author.bot) return;
+    if (message.author.bot) return;
 
     try {
         const responseDoc = await ResponseSchema.findOne({ guildId: message.guild.id });

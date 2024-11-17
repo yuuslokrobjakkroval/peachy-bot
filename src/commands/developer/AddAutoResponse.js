@@ -62,19 +62,11 @@ module.exports = class AddAutoResponse extends Command {
                 });
             }
 
-            const lastId = responseDoc.autoresponse.reduce((max, ar) => {
-                const num = parseInt(ar.id.slice(1), 10);
-                return isNaN(num) ? max : Math.max(max, num);
-            }, 0);
-
-            const nextId = `r${String(lastId + 1).padStart(2, '0')}`;
-
-            responseDoc.autoresponse.push({ id: nextId, trigger, response });
+            responseDoc.autoresponse.push({ trigger, response });
 
             responseDoc.save()
                 .then(() => {
-                    const embed = client
-                        .embed()
+                    const embed = client.embed()
                         .setColor(color.main)
                         .setDescription(
                             `${emoji.tick} Successfully added a new autoresponse trigger **\`${trigger}\`** with response **\`${response}\`** to this guild.`
