@@ -310,6 +310,18 @@
 		}
 	},
 	"informationMessages": {
+		"feedbackMessages": {
+			"title": "𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊",
+			"thankYou": "Thank you for your feedback, %{userName}!\nWe appreciate your input. Your feedback helps us improve the bot.",
+			"fields": {
+				"rating": "Your Rating:",
+				"feedback": "Your Feedback:"
+			},
+			"footer": "We value your feedback! If you'd like to submit more suggestions,\nfeel free to send them our way.",
+			"noFeedbackProvided": "Please provide feedback, feel free to send them our way.",
+			"ratingOutOfBounds": "Please provide a rating between **1** and **10**.",
+			"invalidRatingFormat": "The rating must be in the format **x/10** (e.g., `7/10`)."
+		},
 		"helpMessages": {
 			"title": "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒",
 			"description": "Here are the commands available:",
