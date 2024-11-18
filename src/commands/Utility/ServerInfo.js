@@ -41,7 +41,7 @@ module.exports = class ServerInfo extends Command {
     **Member Count**: ${guild.memberCount}
     **Created At**: ${guild.createdAt.toDateString()} (${Math.floor((Date.now() - guild.createdAt) / (1000 * 60 * 60 * 24 * 365))} years ago)
     **Total Roles**: ${guild.roles.cache.size}
-    **Verification**: ${guild.verificationLevel.toLowerCase()}
+    **Verification**: ${guild.verificationLevel}
     **Boosts**: ${guild.premiumSubscriptionCount || 0}
     **Boost level**: ${guild.premiumTier}
 
