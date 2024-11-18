@@ -86,11 +86,10 @@ module.exports = class AddItem extends Command {
             ).exec();
         }
 
-        const embed = client
-            .embed()
+        const embed = client.embed()
             .setColor(color.main)
-            .setDescription(`${emoji.tick} Added ${itemInfo.emoji} **\`x${baseQuantity}\`** ${itemInfo.id} to ${user}.`);
-
-        return await ctx.sendMessage({ embeds: [embed] });
+            .setDescription(`${emoji.tick} Added ${itemInfo.emoji} **\`x${baseQuantity}\`** ${itemInfo.id} to ${mention}.`);
+ 
+        return ctx.sendMessage({ embeds: [embed] });
     }
 };
