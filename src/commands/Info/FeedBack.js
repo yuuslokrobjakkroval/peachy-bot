@@ -1,5 +1,5 @@
 const Command = require('../../structures/Command.js');
-const Feedbacks = require('../../schemas/feedback');  // Import the Feedback schema
+const Feedbacks = require('../../schemas/feedBack');  // Import the Feedback schema
 
 module.exports = class Feedback extends Command {
     constructor(client) {
