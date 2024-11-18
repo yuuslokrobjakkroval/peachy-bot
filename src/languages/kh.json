@@ -1,5 +1,7 @@
 {
 	"generalMessages": {
+		"title": "# %{mainLeft} **%{title}** %{mainRight}\n",
+		"search": "កំពុងស្វែងរក...",
 		"permissionsClientError": "ខ្ញុំមិនមានសិទ្ធិគ្រប់គ្រាន់ដើម្បីប្រតិបត្តិពាក្យបញ្ជានេះទេ។",
 		"permissionsUserError": "អ្នកមិនមានសិទ្ធិគ្រប់គ្រាន់ដើម្បីប្រើពាក្យបញ្ជានេះទេ។",
 		"argumentsMissingTitle": "បាត់អាគុយម៉ង់",

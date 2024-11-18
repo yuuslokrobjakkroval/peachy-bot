@@ -36,9 +36,15 @@ module.exports = class Avatar extends Command {
     });
   }
 
-  run(client, ctx, args, color, emoji, language) {
+  async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
+    if (ctx.isInteraction) {
+      await ctx.interaction.reply(generalMessages.search);
+    } else {
+      await ctx.sendDeferMessage(generalMessages.search);
+    }
+
 
     const mention = ctx.isInteraction
         ? ctx.interaction.options.getUser("user") || ctx.author
@@ -64,7 +70,6 @@ module.exports = class Avatar extends Command {
         })
         .setTimestamp();
 
-    return ctx.sendMessage({ embeds: [embed] });
+    return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed] }) : await ctx.editMessage({ embeds: [embed] });
   }
-
 };

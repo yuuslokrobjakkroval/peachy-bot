@@ -22,35 +22,45 @@ module.exports = class ServerInfo extends Command {
     });
   }
 
-  run(client, ctx, args, color, emoji, language) {
+  async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const serverInfoMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.serverInfoMessages;
+
+    if (ctx.isInteraction) {
+      await ctx.interaction.reply(generalMessages.search);
+    } else {
+      await ctx.sendDeferMessage(generalMessages.search);
+    }
+
+    // const serverInfoMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.serverInfoMessages;
     const { guild } = ctx;
 
+    const description = `
+    **Server name**: ${guild.name}
+    **Server ID**: ${guild.id}
+    **Owner**: <@${guild.ownerId}>
+    **Member Count**: ${guild.memberCount}
+    **Created At**: ${guild.createdAt.toDateString()} (${Math.floor((Date.now() - guild.createdAt) / (1000 * 60 * 60 * 24 * 365))} years ago)
+    **Total Roles**: ${guild.roles.cache.size}
+    **Verification**: ${guild.verificationLevel.toLowerCase()}
+    **Boosts**: ${guild.premiumSubscriptionCount || 0}
+    **Boost level**: ${guild.premiumTier}
+
+    **Channels**
+    - **Text channels**: ${guild.channels.cache.filter(ch => ch.type === 0).size}
+    - **Voice channels**: ${guild.channels.cache.filter(ch => ch.type === 2).size}
+    - **Categories**: ${guild.channels.cache.filter(ch => ch.type === 4).size}
+    `;
 
     const embed = client.embed()
         .setColor(color.main)
         .setThumbnail(guild.iconURL({ dynamic: true }))
-        .setDescription(
-            generalMessages.title
-                .replace('%{mainLeft}', emoji.mainLeft)
-                .replace('%{title}', `𝐒𝐄𝐑𝐕𝐄𝐑 𝐈𝐍𝐅𝐎 ${guild.name}`)
-                .replace('%{mainRight}', emoji.mainRight)
-        )
-        .addFields(
-            { name: serverInfoMessages?.name, value: guild.name, inline: true },
-            { name: serverInfoMessages?.id, value: guild.id, inline: true },
-            { name: serverInfoMessages?.owner, value: `<@${guild.ownerId}>`, inline: true },
-            { name: serverInfoMessages?.members, value: `${guild.memberCount}`, inline: true },
-            { name: serverInfoMessages?.roles, value: `${guild.roles.cache.size}`, inline: true },
-            { name: serverInfoMessages?.created, value: guild.createdAt.toDateString(), inline: false }
-        )
+        .setDescription(description)
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
 
-    ctx.sendMessage({ embeds: [embed] });
+    return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed] }) : await ctx.editMessage({ embeds: [embed] });
   }
 };

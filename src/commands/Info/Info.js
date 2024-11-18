@@ -34,8 +34,13 @@ module.exports = class Info extends Command {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const infoMessages = language.locales.get(language.defaultLocale)?.informationMessages?.infoMessages;
 
-    const embed = this.client
-        .embed()
+    if (ctx.isInteraction) {
+      await ctx.interaction.reply(generalMessages.search);
+    } else {
+      await ctx.sendDeferMessage(generalMessages.search);
+    }
+
+    const embed = client.embed()
         .setColor(color.main)
         .setTitle(`${emoji.mainLeft} ${infoMessages.title} ${emoji.mainRight}`)
         .setDescription(
@@ -55,6 +60,6 @@ module.exports = class Info extends Command {
     // const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
     const row = client.utils.createButtonRow(supportButton, inviteButton);
 
-    return await ctx.sendMessage({ embeds: [embed], components: [row] });
+    return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed], components: [row] }) : await ctx.editMessage({ embeds: [embed], components: [row] });
   }
 }

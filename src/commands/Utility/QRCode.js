@@ -36,7 +36,15 @@ module.exports = class QRCode extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const qrMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.qrMessages; // Access qrMessages
+
+        if (ctx.isInteraction) {
+            await ctx.interaction.reply(generalMessages.search);
+        } else {
+            await ctx.sendDeferMessage(generalMessages.search);
+        }
+
 
         const currency = ctx.isInteraction
             ? ctx.interaction.options.getString('currency')
@@ -60,7 +68,6 @@ module.exports = class QRCode extends Command {
             .setDescription(qrMessages?.description.replace('%{currency}', currency.toUpperCase()) || `Here is the QR code for ${currency.toUpperCase()}:`)
             .setImage(qrCodeUrl);
 
-        // Send the embed containing the QR code
-        await ctx.sendMessage({ embeds: [embed] });
+        return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed] }) : await ctx.editMessage({ embeds: [embed] });
     }
 };

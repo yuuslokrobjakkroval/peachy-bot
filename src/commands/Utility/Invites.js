@@ -29,8 +29,14 @@ module.exports = class CheckInvites extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+
+        if (ctx.isInteraction) {
+            await ctx.interaction.reply(generalMessages.search);
+        } else {
+            await ctx.sendDeferMessage(generalMessages.search);
+        }
 
         const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
@@ -53,7 +59,7 @@ module.exports = class CheckInvites extends Command {
                 },
             },
         ])
-            .then(getInvites => {
+            .then(async getInvites => {
                 const userInvite = getInvites.find(invite => invite.inviterId === mention.id);
                 const inviteMessage = userInvite
                     ? `You currently have **${userInvite.totalUses}** invites`
@@ -74,7 +80,7 @@ module.exports = class CheckInvites extends Command {
                     })
                     .setTimestamp();
 
-                ctx.sendMessage({ embeds: [embed] });
+                return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed] }) : await ctx.editMessage({ embeds: [embed] });
             })
             .catch(err => {
                 console.error(err);

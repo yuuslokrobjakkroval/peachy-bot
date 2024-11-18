@@ -74,8 +74,6 @@ module.exports = class Ping extends Command {
         })
         .setTimestamp();
 
-    ctx.isInteraction
-        ? await ctx.interaction.editReply({ content: "", embeds: [embed] })
-        : await ctx.editMessage({ content: "", embeds: [embed] });
+    return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
   }
 }

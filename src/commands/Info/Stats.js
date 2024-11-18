@@ -27,15 +27,20 @@ module.exports = class Stats extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const statsMessages = language.locales.get(language.defaultLocale)?.informationMessages?.statsMessages;
-        const users = await Users.find();
 
+        if (ctx.isInteraction) {
+            await ctx.interaction.reply(generalMessages.search);
+        } else {
+            await ctx.sendDeferMessage(generalMessages.search);
+        }
+
+        const users = await Users.find();
         const guildCount = client.guilds.cache.size;
         const userCount = users ? users.length : client.users.cache.size;
         const channelCount = client.channels.cache.size;
         const uptime = Math.floor(client.uptime / 1000 / 60); // Bot uptime in minutes
 
-        const embed = this.client
-            .embed()
+        const embed = client.embed()
             .setColor(color.main)
             .setTitle(statsMessages.title.replace('{botName}', client.user.username)) // Replace {botName} with actual bot name
             .setDescription(statsMessages.description.replace('{botName}', client.user.username)) // Replace {botName}
@@ -52,6 +57,7 @@ module.exports = class Stats extends Command {
         // const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
         const row = client.utils.createButtonRow(supportButton, inviteButton);
 
-        return await ctx.sendMessage({ embeds: [embed], components: [row] });
+        return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed], components: [row] }) : await ctx.editMessage({ embeds: [embed], components: [row] });
+
     }
 };
