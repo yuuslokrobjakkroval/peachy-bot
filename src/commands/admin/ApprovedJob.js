@@ -44,6 +44,7 @@ module.exports = class ApprovedJob extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const user = ctx.isInteraction
             ? ctx.interaction.options.getUser('user') || ctx.author
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
@@ -78,7 +79,23 @@ module.exports = class ApprovedJob extends Command {
                 user.work.status = 'approved';
                 user.work.approvedDate = new Date();
                 await user.save();
-                return ctx.sendMessage(client, ctx, `Successfully approved the job application for user <@${userId}>.`, color);
+
+                const embed = client.embed()
+                    .setColor(color.main)
+                    .setDescription(
+                        generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐓𝐀𝐒𝐊𝐒")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                        `Successfully approved the job application for user <@${userId}>.`
+                    )
+                    .setFooter({
+                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName),
+                        iconURL: ctx.author.displayAvatarURL(),
+                    });
+
+                return ctx.sendMessage({ embed: [embed]
+            });
             }
 
             if (status.toLowerCase() === 'rejected') {

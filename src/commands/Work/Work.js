@@ -13,7 +13,7 @@ module.exports = class Work extends Command {
                 examples: ['work'],
                 usage: 'work',
             },
-            category: 'economy',
+            category: 'work',
             aliases: ['job', 'workjob', 'w'],
             cooldown: 10,
             args: false,

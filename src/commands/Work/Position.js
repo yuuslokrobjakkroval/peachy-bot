@@ -10,8 +10,8 @@ module.exports = class Position extends Command {
                 examples: ['position'],
                 usage: 'position',
             },
-            category: 'economy',
-            aliases: ['p', 'jobinfo', 'checkposition'],
+            category: 'work',
+            aliases: ['jobinfo', 'checkposition'],
             cooldown: 5,
             args: false,
             permissions: {
