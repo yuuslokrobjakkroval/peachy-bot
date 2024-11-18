@@ -352,12 +352,27 @@ module.exports = [
         type: 'special theme',
         able: {
             use: true,
-            gift: true,
+            gift: false,
             multiple: false,
         },
         quantity: 1,
         emoji: emoji.specialTheme.spiderMan,
         available: ['use'],
-        price: { buy: 4e7, sell: 35e6 },
+        price: { buy: 1e8, sell: 35e6 },
+    },
+    {
+        id: 'st12',
+        name: 'Cucumber Cool',
+        description: 'Refresh your day with a theme inspired by the crisp and cool vibes of cucumbers! Enjoy soothing greens with subtle white accents and a playful cucumber slice emoji for that fresh, garden-fresh touch.',
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: false,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.cucumber,
+        available: ['use'],
+        price: { buy: 1e8, sell: 15e6 },
     }
 ];

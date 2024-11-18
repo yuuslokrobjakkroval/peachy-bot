@@ -18,8 +18,11 @@ const emojiHalloween = require('../theme/Halloween/emojis');
 const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
 const emojiHeaven = require('../theme/CelestialGrace/emojis');
 const emojiSakura = require('../theme/SakuraSerenity/emojis');
-const emojiSpiderMan = require('../theme/SpiderMan/emojis');
 const emojiBee = require('../theme/BuzzingBliss/emojis');
+
+const emojiSpiderMan = require('../theme/SpiderMan/emojis');
+const emojiCucumber = require('../theme/Cucumber/emojis');
+
 
 const Logger = require('./Logger');
 
@@ -202,6 +205,10 @@ module.exports = class PeachyClient extends Client {
                     case 'st11':
                         color = themeConfig.spiderMan.color;
                         emoji = emojiSpiderMan;
+                        break;
+                    case 'st12':
+                        color = themeConfig.cucumberCool.color;
+                        emoji = emojiCucumber;
                         break;
                     case 'peach':
                         color = themeConfig.peach.color;
