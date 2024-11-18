@@ -33,9 +33,9 @@ module.exports = class Ping extends Command {
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     if (ctx.isInteraction) {
-      ctx.interaction.reply("Pinging...");
+      await ctx.interaction.reply("Pinging...");
     } else {
-      ctx.sendDeferMessage("Pinging...");
+      await ctx.sendDeferMessage("Pinging...");
     }
 
     let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;
@@ -73,6 +73,9 @@ module.exports = class Ping extends Command {
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
-    ctx.editMessage({ content: "", embeds: [embed] });
+
+    ctx.isInteraction
+        ? await ctx.interaction.editReply({ content: "", embeds: [embed] })
+        : await ctx.editMessage({ content: "", embeds: [embed] });
   }
 }
