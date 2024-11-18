@@ -60,6 +60,6 @@ module.exports = class Info extends Command {
     // const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
     const row = client.utils.createButtonRow(supportButton, inviteButton);
 
-    return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed], components: [row] }) : await ctx.editMessage({ embeds: [embed], components: [row] });
+    return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed], components: [row] }) : await ctx.editMessage({ content: "", embeds: [embed], components: [row] });
   }
 }

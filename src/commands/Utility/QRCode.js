@@ -68,6 +68,6 @@ module.exports = class QRCode extends Command {
             .setDescription(qrMessages?.description.replace('%{currency}', currency.toUpperCase()) || `Here is the QR code for ${currency.toUpperCase()}:`)
             .setImage(qrCodeUrl);
 
-        return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed] }) : await ctx.editMessage({ embeds: [embed] });
+        return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
     }
 };

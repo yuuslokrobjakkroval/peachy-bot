@@ -85,6 +85,6 @@ module.exports = class UserInfo extends Command {
         })
         .setTimestamp();
 
-    return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed] }) : await ctx.editMessage({ embeds: [embed] });
+    return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
   }
 };
