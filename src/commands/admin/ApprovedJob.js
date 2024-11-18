@@ -93,9 +93,7 @@ module.exports = class ApprovedJob extends Command {
                         text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName),
                         iconURL: ctx.author.displayAvatarURL(),
                     });
-
-                return ctx.sendMessage({ embed: [embed]
-            });
+                return ctx.sendMessage({ embed: [embed] });
             }
 
             if (status.toLowerCase() === 'rejected') {
@@ -103,9 +101,22 @@ module.exports = class ApprovedJob extends Command {
                 user.work.rejectionReason = reason;
                 user.work.rejections += 1;
                 await user.save();
-                return ctx.sendMessage(client, ctx, `Successfully approved the job application for user <@${userId}>.`, color);
-            }
 
+                const embed = client.embed()
+                    .setColor(color.main)
+                    .setDescription(
+                        generalMessages.title
+                            .replace('%{mainLeft}', emoji.mainLeft)
+                            .replace('%{title}', "𝐓𝐀𝐒𝐊𝐒")
+                            .replace('%{mainRight}', emoji.mainRight) +
+                        `Successfully approved the job application for user <@${userId}>.`
+                    )
+                    .setFooter({
+                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName),
+                        iconURL: ctx.author.displayAvatarURL(),
+                    });
+                return ctx.sendMessage({ embed: [embed] });
+            }
         } catch (err) {
             console.error(err);
             return client.utils.sendErrorMessage(client, ctx,`An error occurred while processing the job application status.`, color);
