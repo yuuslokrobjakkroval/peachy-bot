@@ -54,7 +54,13 @@ module.exports = class ServerInfo extends Command {
     const embed = client.embed()
         .setColor(color.main)
         .setThumbnail(guild.iconURL({ dynamic: true }))
-        .setDescription(description)
+        .setDescription(
+            generalMessages.title
+                .replace('%{mainLeft}', emoji.mainLeft)
+                .replace('%{title}', "𝐒𝐄𝐑𝐕𝐄𝐑 𝐈𝐍𝐅𝐎")
+                .replace('%{mainRight}', emoji.mainRight) +
+            description
+        )
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
