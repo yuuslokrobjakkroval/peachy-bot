@@ -67,8 +67,8 @@ module.exports = class UserInfo extends Command {
                 .replace("%{mainLeft}", emoji.mainLeft)
                 .replace("%{title}", "𝐔𝐒𝐄𝐑 𝐈𝐍𝐅𝐎")
                 .replace("%{mainRight}", emoji.mainRight) +
-            `**User ID**: ${user.id}\n` +
-            `**User Name**: ${user.username}#${user.discriminator}\n` +
+            `**User ID**: \`\`\`ini\n${user.id}\n\`\`\`` +
+            `**User Name**: ${user.username}\n` +
             `**Joined ${guild.name} at**: ${guildMember?.joinedTimestamp ?
                 `${Math.floor((Date.now() - guildMember.joinedTimestamp) / (1000 * 60 * 60 * 24))} days ago (${new Date(guildMember.joinedTimestamp).toLocaleString()})`
                 : "N/A"}\n` +
