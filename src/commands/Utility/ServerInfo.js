@@ -1,5 +1,13 @@
 const { Command } = require("../../structures/index.js");
 
+const verificationLevels = {
+  0: "None",
+  1: "Low",
+  2: "Medium",
+  3: "High",
+  4: "Very High"
+};
+
 module.exports = class ServerInfo extends Command {
   constructor(client) {
     super(client, {
@@ -41,15 +49,12 @@ module.exports = class ServerInfo extends Command {
     **Member Count**: ${guild.memberCount}
     **Created At**: ${guild.createdAt.toDateString()} (${Math.floor((Date.now() - guild.createdAt) / (1000 * 60 * 60 * 24 * 365))} years ago)
     **Total Roles**: ${guild.roles.cache.size}
-    **Verification**: ${guild.verificationLevel}
+    **Verification**: ${verificationLevels[guild.verificationLevel]}
     **Boosts**: ${guild.premiumSubscriptionCount || 0}
     **Boost level**: ${guild.premiumTier}
 
     **Channels**
-    - **Text channels**: ${guild.channels.cache.filter(ch => ch.type === 0).size}
-    - **Voice channels**: ${guild.channels.cache.filter(ch => ch.type === 2).size}
-    - **Categories**: ${guild.channels.cache.filter(ch => ch.type === 4).size}
-    `;
+    - **Categories**: ${guild.channels.cache.filter(ch => ch.type === 4).size}\n- **Text channels**: ${guild.channels.cache.filter(ch => ch.type === 0).size}\n- **Voice channels**: ${guild.channels.cache.filter(ch => ch.type === 2).size}`;
 
     const embed = client.embed()
         .setColor(color.main)
