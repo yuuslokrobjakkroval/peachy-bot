@@ -30,15 +30,21 @@ module.exports = class UserInfo extends Command {
     });
   }
 
-  run(client, ctx, args, color, emoji, language) {
+  async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const userInfoMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.userInfoMessages;
+
+    if (ctx.isInteraction) {
+      await ctx.interaction.reply(generalMessages.search);
+    } else {
+      await ctx.sendDeferMessage(generalMessages.search);
+    }
 
     // Fetch the user or member based on the context
     const target =
         ctx.isInteraction
-            ? ctx.interaction.options.getUser("user") || ctx.interaction.options.getMember("user")
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.message.mentions.users.first();
+            ? ctx.interaction.options.getUser("user") || ctx.interaction.options.getMember("user") || ctx.author
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.message.mentions.users.first() || args[0];
 
     if (!target) {
       return ctx.sendErrorMessage(
@@ -49,44 +55,29 @@ module.exports = class UserInfo extends Command {
       );
     }
 
-    const guildMember = ctx.guild.members.cache.get(target.id); // Fetch GuildMember if available
-    const user = guildMember?.user || target; // Use GuildMember user or fallback to the User object
+    const userId = typeof target === 'string' ? target : target.id;
+    const { guild } = ctx;
+    const guildMember = guild.members.cache.get(userId);
+    const user = guildMember?.user || target;
 
     const embed = client.embed()
         .setColor(color.main)
-        .setThumbnail(user.displayAvatarURL({ dynamic: true }))
         .setDescription(
             generalMessages.title
                 .replace("%{mainLeft}", emoji.mainLeft)
-                .replace("%{title}", `𝐔𝐒𝐄𝐑 𝐈𝐍𝐅𝐎 ${guildMember?.displayName || user.username}`)
-                .replace("%{mainRight}", emoji.mainRight)
-        )
-        .addFields(
-            {
-              name: userInfoMessages?.username || "Username",
-              value: `${user.username}#${user.discriminator}`,
-              inline: true,
-            },
-            {
-              name: userInfoMessages?.userId || "User ID",
-              value: user.id,
-              inline: true,
-            },
-            {
-              name: userInfoMessages?.joinedServer || "Joined Server",
-              value: guildMember?.joinedTimestamp ? new Date(guildMember.joinedTimestamp).toLocaleDateString() : "N/A",
-              inline: true,
-            },
-            {
-              name: userInfoMessages?.accountCreated || "Account Created",
-              value: new Date(user.createdTimestamp).toLocaleDateString(),
-              inline: true,
-            },
-            {
-              name: userInfoMessages?.roles || "Roles",
-              value: guildMember?.roles.cache.map((role) => role.name).join(", ") || userInfoMessages?.noRoles || "None",
-              inline: false,
-            }
+                .replace("%{title}", "𝐔𝐒𝐄𝐑 𝐈𝐍𝐅𝐎")
+                .replace("%{mainRight}", emoji.mainRight) +
+            `**User ID**: ${user.id}\n` +
+            `**User Name**: ${user.username}#${user.discriminator}\n` +
+            `**Joined ${guild.name} at**: ${guildMember?.joinedTimestamp ?
+                `${Math.floor((Date.now() - guildMember.joinedTimestamp) / (1000 * 60 * 60 * 24))} days ago (${new Date(guildMember.joinedTimestamp).toLocaleString()})`
+                : "N/A"}\n` +
+            `**Created at**: ${Math.floor((Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365))} years ago (${new Date(user.createdTimestamp).toLocaleString()})\n` +
+            `**Bot**: ${user.bot ? "True" : "False"}\n` +
+            `**Boosted this server**: ${guildMember?.premiumSince ? "True" : "False"}\n` +
+            `**Roles [${guildMember?.roles.cache.size - 1 || 0}]**\n` +
+            `Total roles: ${guildMember?.roles.cache.filter(role => role.id !== ctx.guild.id).map(role => role).join(", ") || userInfoMessages?.noRoles || "None"}\n` +
+            `**Top role**: ${guildMember?.roles.highest.name || "None"}`
         )
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
@@ -94,6 +85,6 @@ module.exports = class UserInfo extends Command {
         })
         .setTimestamp();
 
-    ctx.sendMessage({ embeds: [embed] });
+    return ctx.isInteraction ? await ctx.interaction.editReply({ embeds: [embed] }) : await ctx.editMessage({ embeds: [embed] });
   }
 };
