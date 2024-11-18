@@ -90,6 +90,7 @@ module.exports = {
     help: {
         actions: '<a:GOMAACTIONS:1282954698046963725>',
         economy: '<:GOMACOIN:1281820649416953878>',
+        rank: '<:OWNER:1282976626560335883>',
         inventory: '<a:GOMAINVENTORY:1282954822437310516>',
         fun: '<a:ROAR_1:1283083752896987209>',
         games: '<a:GOMAGAME:1282954836006010910>',

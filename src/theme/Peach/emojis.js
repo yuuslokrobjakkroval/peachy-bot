@@ -93,6 +93,7 @@ module.exports = {
     help: {
         actions: '<a:PEACHACTION:1282953188349182016>',
         economy: '<:PEACHCOIN:1281820633621074023>',
+        rank: '<:OWNER:1282976626560335883>',
         inventory: '<a:PEACHINVENTORY:1282953361250975795>',
         fun: '<a:ROAR_1:1283083752896987209>',
         games: '<:PEACHGAME:1282953378158346250>',

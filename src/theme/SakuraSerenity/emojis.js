@@ -89,6 +89,7 @@ module.exports = {
     },
     help: {
         actions: '<:SACTIONS:1296027745071009853>',
+        rank: '<:SRANKTITLE:1296021976304848927>',
         economy: '<:SCOIN:1295967985348907031>',
         inventory: '<:SINVENTORY:1296027811093549086>',
         bank: '<:SAKURABANK:1295967856369860629>',

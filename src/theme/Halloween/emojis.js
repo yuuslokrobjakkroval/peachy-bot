@@ -79,6 +79,7 @@ module.exports = {
     },
     help: {
         actions: '<:HACTION:1290645149294264432>',
+        rank: '<:OWNER:1282976626560335883>',
         economy: '<:HECONOMY:1290645165391872020>',
         inventory: '<:HINVENTORY:1290645187877666898>',
         fun: '<:HFUN:1290645227866034268>',
