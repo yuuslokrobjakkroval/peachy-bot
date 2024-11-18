@@ -158,7 +158,8 @@ const userSchema = new Schema({
     verification: { type: VerificationSchema, default: () => ({}) },
     balance: {
         coin: { type: Number, default: 500000 },
-        bank: { type: Number, default: 0 }
+        bank: { type: Number, default: 0 },
+        sponsor: { type: Number, default: 0 },
     },
     peachy: {
         streak: { type: Number, default: 0 }
