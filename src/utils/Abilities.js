@@ -7,17 +7,14 @@ const JoinRolesSchema = require("../schemas/joinRoles");
 const GoodByeMessagesSchema = require("../schemas/goodByeMessages");
 
 let inviteData = {};
-console.log(Object.keys(inviteData).length)
 
 module.exports = class Ability {
     static async catchInvites(client) {
         for (const [guildId, guild] of client.guilds.cache) {
             try {
-                // Check if the bot has 'ADMINISTRATOR' permission (permission number 8)
-                const hasAdminPermission = guild.me.permissions.has('ADMINISTRATOR');
-                // Check if the bot has 'MANAGE_GUILD' permission or 'ADMINISTRATOR'
-                if (!guild.me || (!hasAdminPermission && !guild.me.permissions.has('MANAGE_GUILD'))) {
-                    console.log(`Skipping guild: ${guild.name} - Missing 'MANAGE_GUILD' or 'ADMINISTRATOR' permissions.`);
+                // Ensure guild.me exists before checking permissions
+                if (!guild.me || !guild.me.permissions.has('ADMINISTRATOR')) {
+                    console.warn(`Bot is not initialized or lacks 'ADMINISTRATOR' permission in guild: ${guild.name}. Skipping invite fetch.`);
                     continue; // Skip this guild and move to the next
                 }
 
@@ -34,7 +31,6 @@ module.exports = class Ability {
             }
         }
     }
-
 
     static async resultEmbed(client, member, guild, result, invite, inviter) {
         const data = client.abilities.getReplacementData(member, guild, invite, inviter);
