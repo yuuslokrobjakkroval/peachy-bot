@@ -29,6 +29,7 @@ const GoodByeMessagesSchema = new Schema({
     content: { type: String, default: '' },
     message: { type: MessageSchema, default: () => ({})},
     isActive: { type: Boolean, default: true },
+    isEmbed: { type: Boolean, default: false },
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
 module.exports = model('goodbyemessages', GoodByeMessagesSchema);

@@ -33,7 +33,7 @@ module.exports = class Ability {
 
 
             if (welcomeMessage) {
-                const { channel, content, message } = welcomeMessage;
+                const { channel, content, message, isEmbed } = welcomeMessage;
                 const welcomeChannel = member.guild.channels.cache.get(channel);
 
                 if (!welcomeChannel) {
@@ -42,10 +42,10 @@ module.exports = class Ability {
                 }
 
                 if (welcomeChannel) {
-                    if (message) {
+                    if (isEmbed) {
                         const welcomeEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
                         welcomeChannel.send({
-                            content: client.abilities.replacePlaceholders(client.abilities.getReplacementData(member, member.guild,)) || '',
+                            content: content ? await client.abilities.replacePlaceholders(client.abilities.getReplacementData(member, member.guild,)) : '',
                             embeds: welcomeEmbed ? [welcomeEmbed] : []
                         });
                     } else {
@@ -72,7 +72,7 @@ module.exports = class Ability {
 
             if (inviteTracker) {
                 try {
-                    const { channel, content, message } = inviteTracker;
+                    const { channel, content, message, isEmbed } = inviteTracker;
                     const currentInvites = await member.guild.invites.fetch();
                     const previousInvites = inviteData[member.guild.id] || new Map();
 
@@ -84,7 +84,7 @@ module.exports = class Ability {
 
                             const trackingChannel = member.guild.channels.cache.get(channel);
                             if (trackingChannel) {
-                                if(message) {
+                                if(isEmbed) {
                                     const trackerEmbed = await client.abilities.resultMessage(client, member, member.guild, message, invite, inviter);
                                     trackingChannel.send({
                                         content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '',
@@ -141,11 +141,11 @@ module.exports = class Ability {
             const goodByeMessage = await GoodByeMessagesSchema.findOne({ id: member.guild.id, isActive: true });
 
             if (goodByeMessage) {
-                const { channel, content, message } = goodByeMessage;
+                const { channel, content, message, isEmbed } = goodByeMessage;
                 const goodbyeChannel = member.guild.channels.cache.get(channel);
 
                 if (goodbyeChannel){
-                    if(message) {
+                    if(isEmbed) {
                         const goodByeEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
                         goodbyeChannel.send({
                             content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '',
