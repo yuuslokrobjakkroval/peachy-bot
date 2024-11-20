@@ -34,27 +34,27 @@ module.exports = class Ability {
         const embed = client.embed().setColor(result.message?.color || '#FFFFFF'); // default color if undefined
 
         // Set title if not null or undefined
-        if (result.message.title) {
+        if (result.message?.title) {
             embed.setTitle(client.abilities.replacePlaceholders(result.message?.title, data));
         }
 
         // Set thumbnail if not null or undefined
-        if (result.message.thumbnail) {
+        if (result.message?.thumbnail) {
             embed.setThumbnail(client.abilities.replacePlaceholders(result.message?.thumbnail, data));
         }
 
         // Set description if not null or undefined
-        if (result.message.description) {
+        if (result.message?.description) {
             embed.setDescription(client.abilities.replacePlaceholders(result.message?.description, data));
         }
 
         // Set image if not null or undefined
-        if (result.message.image) {
+        if (result.message?.image) {
             embed.setImage(client.abilities.replacePlaceholders(result.message?.image, data));
         }
 
         // Set footer if not null or undefined
-        if (result.message.footer) {
+        if (result.message?.footer) {
             const footerText = client.abilities.replacePlaceholders(result.message?.footer?.text, data);
             const footerIconURL = client.abilities.replacePlaceholders(result.message?.footer?.iconURL, data);
 
