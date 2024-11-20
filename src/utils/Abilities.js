@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, PermissionsBitField} = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, Permissions, PermissionsBitField} = require('discord.js');
 const Users = require('../schemas/user');
 const WelcomeSchema = require("../schemas/welcomeMessages");
 const AutoResponseSchema = require("../schemas/response");
@@ -12,13 +12,13 @@ module.exports = class Ability {
     static async catchInvites(client) {
         for (const [guildId, guild] of client.guilds.cache) {
             try {
-                // Ensure guild.me exists before checking permissions
-                if (!guild.me || !guild.me.permissions.has('ADMINISTRATOR')) {
+                // Ensure the bot is fully initialized and has the necessary permissions
+                if (!guild.me || !guild.me.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
                     console.warn(`Bot is not initialized or lacks 'ADMINISTRATOR' permission in guild: ${guild.name}. Skipping invite fetch.`);
                     continue; // Skip this guild and move to the next
                 }
 
-                // Fetch invites only if the bot has the necessary permission
+                // Fetch invites only if the bot has the necessary permissions
                 const invites = await guild.invites.fetch();
                 inviteData[guildId] = new Map(invites.map(invite => [invite.code, invite.uses]));
                 console.log(`Fetched invites for guild: ${guild.name}`);
