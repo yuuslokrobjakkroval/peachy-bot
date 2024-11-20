@@ -21,7 +21,7 @@ module.exports = class Ability {
             } catch (error) {
                 console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
                 if (error.code === 50013) {
-                    console.error(`Missing Permissions for guild ${guild.name}: Ensure the bot has the Manage Server permission.`);
+                    return;
                 }
             }
         }
