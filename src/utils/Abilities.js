@@ -134,12 +134,8 @@ module.exports = class Ability {
         if (message.author.bot) return;
         try {
             const responseMessage = await AutoResponseSchema.findOne({ guildId: message.guild.id, isActive: true });
-
-            const { autoresponse } = responseMessage;
-
-            if (!responseMessage || !autoresponse || autoresponse.length === 0) return;
-
-            const matchingResponses = autoresponse.filter(response =>
+            if (!responseMessage || !responseMessage.autoresponse || responseMessage.autoresponse.length === 0) return;
+            const matchingResponses = responseMessage.autoresponse.filter(response =>
                 message.content.toLowerCase() === response.trigger.toLowerCase()
             );
             if (matchingResponses.length > 0) {
