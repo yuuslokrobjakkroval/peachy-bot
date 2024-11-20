@@ -15,7 +15,6 @@ module.exports = class Ability {
                 const invites = await guild.invites.fetch();
                 if (!invites) return;
                 inviteData[guildId] = new Map(invites.map(invite => [invite.code, invite.uses]));
-                console.log(`Fetched invites for guild: ${guild.name}`);
 
             } catch (error) {
                 if (error.code === 50013) {
@@ -24,66 +23,6 @@ module.exports = class Ability {
                 continue;
             }
         }
-    }
-
-
-    static async resultEmbed(client, member, guild, result, invite, inviter) {
-        const data = client.abilities.getReplacementData(member, guild, invite, inviter);
-
-        // Start building the embed
-        const embed = client.embed().setColor(result.message?.color || '#FFFFFF'); // default color if undefined
-
-        // Set title if not null or undefined
-        if (result.message?.title) {
-            embed.setTitle(client.abilities.replacePlaceholders(result.message?.title, data));
-        }
-
-        // Set thumbnail if not null or undefined
-        if (result.message?.thumbnail) {
-            embed.setThumbnail(client.abilities.replacePlaceholders(result.message?.thumbnail, data));
-        }
-
-        // Set description if not null or undefined
-        if (result.message?.description) {
-            embed.setDescription(client.abilities.replacePlaceholders(result.message?.description, data));
-        }
-
-        // Set image if not null or undefined
-        if (result.message?.image) {
-            embed.setImage(client.abilities.replacePlaceholders(result.message?.image, data));
-        }
-
-        // Set footer if not null or undefined
-        if (result.message?.footer) {
-            const footerText = client.abilities.replacePlaceholders(result.message?.footer?.text, data);
-            const footerIconURL = client.abilities.replacePlaceholders(result.message?.footer?.iconURL, data);
-
-            // Only set footer if there's footer text or iconURL
-            if (footerText || footerIconURL) {
-                embed.setFooter({
-                    text: footerText,
-                    iconURL: footerIconURL
-                });
-            }
-        }
-
-        // Add fields if they exist and are not null/undefined
-        if (result.message?.fields) {
-            result.message?.fields.forEach(field => {
-                if (field.name && field.value) { // Ensure both name and value are not null or undefined
-                    embed.addFields({
-                        name: client.abilities.replacePlaceholders(field.name, data),
-                        value: client.abilities.replacePlaceholders(field.value, data),
-                        inline: field.inline || false // Default to false if not defined
-                    });
-                }
-            });
-        }
-
-        // Set timestamp
-        embed.setTimestamp();
-
-        return embed;
     }
 
     static async getWelcomeMessage(client, member) {
@@ -104,13 +43,13 @@ module.exports = class Ability {
 
                 if (welcomeChannel) {
                     if (message) {
-                        const welcomeEmbed = await client.abilities.resultEmbed(client, member, member.guild, message);
+                        const welcomeEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
                         welcomeChannel.send({
-                            content: content || '',
+                            content: client.abilities.replacePlaceholders(client.abilities.getReplacementData(member, member.guild,)) || '',
                             embeds: welcomeEmbed ? [welcomeEmbed] : []
                         });
                     } else {
-                        welcomeChannel.send({ content: content || '' });
+                        welcomeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '' });
                     }
                 }
             }
@@ -146,13 +85,13 @@ module.exports = class Ability {
                             const trackingChannel = member.guild.channels.cache.get(channel);
                             if (trackingChannel) {
                                 if(message) {
-                                    const trackerEmbed = await client.abilities.resultEmbed(client, member, member.guild, message, invite, inviter);
+                                    const trackerEmbed = await client.abilities.resultMessage(client, member, member.guild, message, invite, inviter);
                                     trackingChannel.send({
-                                        content: content || '',
+                                        content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '',
                                         embeds: trackerEmbed ? [trackerEmbed] : []
                                     });
                                 }  else {
-                                    trackingChannel.send({ content: content || '' });
+                                    trackingChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '' });
                                 }
                             }
                             break;
@@ -207,13 +146,13 @@ module.exports = class Ability {
 
                 if (goodbyeChannel){
                     if(message) {
-                        const goodByeEmbed = await client.abilities.resultEmbed(client, member, member.guild, message);
+                        const goodByeEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
                         goodbyeChannel.send({
-                            content: content || 'Goodbye!',
+                            content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '',
                             embeds: goodByeEmbed ? [goodByeEmbed] : []
                         });
                     } else {
-                        goodbyeChannel.send({ content: content || '' });
+                        goodbyeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '' });
                     }
                 }
             }
@@ -270,6 +209,70 @@ module.exports = class Ability {
             inviterjoinedinvites: inviter?.joinedInvites || 0,
             inviterbonusinvites: inviter?.bonusInvites || 0,
         };
+    }
+
+    static async resultMessage(client, member, guild, result, invite, inviter) {
+        const data = client.abilities.getReplacementData(member, guild, invite, inviter);
+
+        if (typeof result !== "object") {
+            return client.abilities.replacePlaceholders(result, data);
+        } else {
+
+            // Start building the embed
+            const embed = client.embed().setColor(result.message?.color || '#FFFFFF'); // default color if undefined
+
+            // Set title if not null or undefined
+            if (result.message?.title) {
+                embed.setTitle(client.abilities.replacePlaceholders(result.message?.title, data));
+            }
+
+            // Set thumbnail if not null or undefined
+            if (result.message?.thumbnail) {
+                embed.setThumbnail(client.abilities.replacePlaceholders(result.message?.thumbnail, data));
+            }
+
+            // Set description if not null or undefined
+            if (result.message?.description) {
+                embed.setDescription(client.abilities.replacePlaceholders(result.message?.description, data));
+            }
+
+            // Set image if not null or undefined
+            if (result.message?.image) {
+                embed.setImage(client.abilities.replacePlaceholders(result.message?.image, data));
+            }
+
+            // Set footer if not null or undefined
+            if (result.message?.footer) {
+                const footerText = client.abilities.replacePlaceholders(result.message?.footer?.text, data);
+                const footerIconURL = client.abilities.replacePlaceholders(result.message?.footer?.iconURL, data);
+
+                // Only set footer if there's footer text or iconURL
+                if (footerText || footerIconURL) {
+                    embed.setFooter({
+                        text: footerText,
+                        iconURL: footerIconURL
+                    });
+                }
+            }
+
+            // Add fields if they exist and are not null/undefined
+            if (result.message?.fields) {
+                result.message?.fields.forEach(field => {
+                    if (field.name && field.value) { // Ensure both name and value are not null or undefined
+                        embed.addFields({
+                            name: client.abilities.replacePlaceholders(field.name, data),
+                            value: client.abilities.replacePlaceholders(field.value, data),
+                            inline: field.inline || false // Default to false if not defined
+                        });
+                    }
+                });
+            }
+
+            // Set timestamp
+            embed.setTimestamp();
+
+            return embed;
+        }
     }
 
     // static getWelcomeMessage(client, member) {
