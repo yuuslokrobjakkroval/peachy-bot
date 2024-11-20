@@ -134,16 +134,24 @@ module.exports = class Ability {
         if (message.author.bot) return;
         try {
             const responseMessage = await AutoResponseSchema.findOne({ guildId: message.guild.id, isActive: true });
-            if (!responseMessage || !responseMessage.autoresponse || responseMessage.autoresponse.length === 0) return;
-            const matchingResponses = responseMessage.autoresponse.filter(response =>
+            if (!responseMessage) return;
+            const { autoresponse } = responseMessage;
+            if (!autoresponse || autoresponse.length === 0) return;
+
+            const matchingResponses = autoresponse.filter(response =>
                 message.content.toLowerCase() === response.trigger.toLowerCase()
             );
+
             if (matchingResponses.length > 0) {
                 const randomResponse = matchingResponses[Math.floor(Math.random() * matchingResponses.length)];
-                message.reply(randomResponse.response);
+                if (randomResponse?.response) {
+                    await message.reply(randomResponse.response);
+                } else {
+                    console.warn(`No valid response found for trigger: ${message.content}`);
+                }
             }
         } catch (error) {
-            console.error('Error processing auto-responses:', error);
+            console.error(`Error processing auto-responses for guild ${message.guild.id}:`, error);
         }
     }
 
