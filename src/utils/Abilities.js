@@ -13,19 +13,19 @@ module.exports = class Ability {
         for (const [guildId, guild] of client.guilds.cache) {
             try {
                 const invites = await guild.invites.fetch();
-                if(!invites) return;
-
+                if (!invites) return;
                 inviteData[guildId] = new Map(invites.map(invite => [invite.code, invite.uses]));
                 console.log(`Fetched invites for guild: ${guild.name}`);
 
             } catch (error) {
-                console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
                 if (error.code === 50013) {
-                    console.error(`Missing Permissions for guild ${guild.name}: Ensure the bot has the Manage Server permission.`);
+                    continue;
                 }
+                continue;
             }
         }
     }
+
 
     static async resultEmbed(client, member, guild, result, invite, inviter) {
         const data = client.abilities.getReplacementData(member, guild, invite, inviter);
@@ -94,7 +94,7 @@ module.exports = class Ability {
 
 
             if (welcomeMessage) {
-                const { channel, message } = welcomeMessage;
+                const { channel, content, message } = welcomeMessage;
                 const welcomeChannel = member.guild.channels.cache.get(channel);
 
                 if (!welcomeChannel) {
@@ -103,11 +103,15 @@ module.exports = class Ability {
                 }
 
                 if (welcomeChannel) {
-                    const welcomeEmbed = await client.abilities.resultEmbed(client, member, member.guild, message);
-                    welcomeChannel.send({
-                        content: message?.content || '',
-                        embeds: welcomeEmbed ? [welcomeEmbed] : []
-                    });
+                    if (message) {
+                        const welcomeEmbed = await client.abilities.resultEmbed(client, member, member.guild, message);
+                        welcomeChannel.send({
+                            content: content || '',
+                            embeds: welcomeEmbed ? [welcomeEmbed] : []
+                        });
+                    } else {
+                        welcomeChannel.send({ content: content || '' });
+                    }
                 }
             }
 
@@ -129,7 +133,7 @@ module.exports = class Ability {
 
             if (inviteTracker) {
                 try {
-                    const { channel, message } = inviteTracker;
+                    const { channel, content, message } = inviteTracker;
                     const currentInvites = await member.guild.invites.fetch();
                     const previousInvites = inviteData[member.guild.id] || new Map();
 
@@ -141,11 +145,15 @@ module.exports = class Ability {
 
                             const trackingChannel = member.guild.channels.cache.get(channel);
                             if (trackingChannel) {
-                                const trackerEmbed = await client.abilities.resultEmbed(client, member, member.guild, message, invite, inviter);
-                                trackingChannel.send({
-                                    content: message?.content || '',
-                                    embeds: trackerEmbed ? [trackerEmbed] : []
-                                });
+                                if(message) {
+                                    const trackerEmbed = await client.abilities.resultEmbed(client, member, member.guild, message, invite, inviter);
+                                    trackingChannel.send({
+                                        content: content || '',
+                                        embeds: trackerEmbed ? [trackerEmbed] : []
+                                    });
+                                }  else {
+                                    trackingChannel.send({ content: content || '' });
+                                }
                             }
                             break;
                         }
@@ -194,36 +202,25 @@ module.exports = class Ability {
             const goodByeMessage = await GoodByeMessagesSchema.findOne({ id: member.guild.id, isActive: true });
 
             if (goodByeMessage) {
-                const { channel, message } = goodByeMessage;
-
+                const { channel, content, message } = goodByeMessage;
                 const goodbyeChannel = member.guild.channels.cache.get(channel);
-                if (!goodbyeChannel) {
-                    console.warn(`Goodbye channel ${channel} not found in guild ${member.guild.name}.`);
-                    return;
-                }
 
-                if (!goodbyeChannel.permissionsFor(member.guild.me).has(['SEND_MESSAGES', 'EMBED_LINKS'])) {
-                    console.warn(`Bot lacks permissions to send messages in goodbye channel ${channel} for guild ${member.guild.name}.`);
-                    return;
+                if (goodbyeChannel){
+                    if(message) {
+                        const goodByeEmbed = await client.abilities.resultEmbed(client, member, member.guild, message);
+                        goodbyeChannel.send({
+                            content: content || 'Goodbye!',
+                            embeds: goodByeEmbed ? [goodByeEmbed] : []
+                        });
+                    } else {
+                        goodbyeChannel.send({ content: content || '' });
+                    }
                 }
-
-                let goodByeEmbed = null;
-                try {
-                    goodByeEmbed = await client.abilities.resultEmbed(client, member, member.guild, message);
-                } catch (embedError) {
-                    console.error(`Failed to create embed for goodbye message in guild ${member.guild.name}:`, embedError);
-                }
-
-                goodbyeChannel.send({
-                    content: message?.content || 'Goodbye!',
-                    embeds: goodByeEmbed ? [goodByeEmbed] : []
-                });
             }
         } catch (error) {
             console.error('Error processing goodbye message:', error);
         }
     }
-
 
     static replacePlaceholders(str, data) {
         if (!str || typeof str !== "string") return str; // Return the input if it's not a string

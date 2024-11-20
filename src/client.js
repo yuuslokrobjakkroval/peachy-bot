@@ -3,12 +3,9 @@ const Users = require('./schemas/user');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
 const InviteSchema = require("./schemas/inviteTracker");
-const ResponseSchema = require('./schemas/response');
 const globalConfig = require('./utils/Config');
 const PeachyClient = require('./structures/Client.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildInvites, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
-
-let inviteData = {};
 
 const clientOptions = {
     intents: [Guilds, GuildMessages, GuildInvites, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
@@ -17,18 +14,6 @@ const clientOptions = {
         repliedUser: false,
     },
 };
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-    process.exit(1);  // Exit the process to trigger a restart
-});
-
-// Handle uncaught exceptions
-process.on('uncaughtException', (error) => {
-    console.error('Uncaught Exception thrown:', error);
-    process.exit(1);  // Exit to trigger a restart
-});
 
 const client = new PeachyClient(clientOptions);
 

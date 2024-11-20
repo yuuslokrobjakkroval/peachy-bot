@@ -1,7 +1,6 @@
 const { model, Schema } = require('mongoose');
 
 const MessageSchema = new Schema({
-    content: { type: String, default: '' },
     author: {
         name: { type: String, default: '' },
         iconURL: { type: String, default: '' },
@@ -27,6 +26,7 @@ const MessageSchema = new Schema({
 const InviteTrackerMessageSchema = new Schema({
     id: { type: String, default: null, index: true },
     channel: { type: String, default: null },
+    content: { type: String, default: '' },
     message: { type: MessageSchema, default: () => ({})},
     isActive: { type: Boolean, default: true },
 }, { timestamps: { createdAt: true, updatedAt: true } });
