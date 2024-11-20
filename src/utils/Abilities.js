@@ -40,27 +40,58 @@ module.exports = class Ability {
     static async resultEmbed(client, member, guild, result, invite, inviter) {
         const data = client.abilities.getReplacementData(member, guild, invite, inviter);
 
-        const embed = client.embed()
-            .setColor(result.message.color)
-            .setTitle(client.abilities.replacePlaceholders(result.message.title, data))
-            .setThumbnail(client.abilities.replacePlaceholders(result.message.thumbnail, data))
-            .setDescription(client.abilities.replacePlaceholders(result.message.description, data))
-            .setImage(client.abilities.replacePlaceholders(result.message.image, data))
-            .setFooter({
-                text: client.abilities.replacePlaceholders(result.message.footer?.text, data),
-                iconURL: client.abilities.replacePlaceholders(result.message.footer?.iconURL, data)
-            })
-            .setTimestamp();
+        // Start building the embed
+        const embed = client.embed().setColor(result.message.color || '#FFFFFF'); // default color if undefined
 
+        // Set title if not null or undefined
+        if (result.message.title) {
+            embed.setTitle(client.abilities.replacePlaceholders(result.message.title, data));
+        }
+
+        // Set thumbnail if not null or undefined
+        if (result.message.thumbnail) {
+            embed.setThumbnail(client.abilities.replacePlaceholders(result.message.thumbnail, data));
+        }
+
+        // Set description if not null or undefined
+        if (result.message.description) {
+            embed.setDescription(client.abilities.replacePlaceholders(result.message.description, data));
+        }
+
+        // Set image if not null or undefined
+        if (result.message.image) {
+            embed.setImage(client.abilities.replacePlaceholders(result.message.image, data));
+        }
+
+        // Set footer if not null or undefined
+        if (result.message.footer) {
+            const footerText = client.abilities.replacePlaceholders(result.message.footer?.text, data);
+            const footerIconURL = client.abilities.replacePlaceholders(result.message.footer?.iconURL, data);
+
+            // Only set footer if there's footer text or iconURL
+            if (footerText || footerIconURL) {
+                embed.setFooter({
+                    text: footerText,
+                    iconURL: footerIconURL
+                });
+            }
+        }
+
+        // Add fields if they exist and are not null/undefined
         if (result.message.fields) {
             result.message.fields.forEach(field => {
-                embed.addFields({
-                    name: client.abilities.replacePlaceholders(field.name, data),
-                    value: client.abilities.replacePlaceholders(field.value, data),
-                    inline: field.inline
-                });
+                if (field.name && field.value) { // Ensure both name and value are not null or undefined
+                    embed.addFields({
+                        name: client.abilities.replacePlaceholders(field.name, data),
+                        value: client.abilities.replacePlaceholders(field.value, data),
+                        inline: field.inline || false // Default to false if not defined
+                    });
+                }
             });
         }
+
+        // Set timestamp
+        embed.setTimestamp();
 
         return embed;
     }
