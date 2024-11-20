@@ -13,6 +13,8 @@ module.exports = class Ability {
         for (const [guildId, guild] of client.guilds.cache) {
             try {
                 const invites = await guild.invites.fetch();
+                if(!invites) return;
+
                 inviteData[guildId] = new Map(invites.map(invite => [invite.code, invite.uses]));
                 console.log(`Fetched invites for guild: ${guild.name}`);
 
