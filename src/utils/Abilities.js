@@ -218,51 +218,46 @@ module.exports = class Ability {
             return client.abilities.replacePlaceholders(result, data);
         } else {
 
-            // Start building the embed
-            const embed = client.embed().setColor(result.message?.color || '#FFFFFF'); // default color if undefined
+            const embed = client.embed().setColor(result.message?.color || '#F582AE'); // Set default color
 
-            // Set title if not null or undefined
+            // Only set title if it's not null or empty
             if (result.message?.title) {
-                embed.setTitle(client.abilities.replacePlaceholders(result.message?.title, data));
+                embed.setTitle(client.abilities.replacePlaceholders(result.message.title, data));
             }
 
-            // Set thumbnail if not null or undefined
-            if (result.message?.thumbnail) {
-                embed.setThumbnail(client.abilities.replacePlaceholders(result.message?.thumbnail, data));
-            }
-
-            // Set description if not null or undefined
+            // Only set description if it's not null or empty
             if (result.message?.description) {
-                embed.setDescription(client.abilities.replacePlaceholders(result.message?.description, data));
+                embed.setDescription(client.abilities.replacePlaceholders(result.message.description, data));
             }
 
-            // Set image if not null or undefined
+            // Only set thumbnail if it's not null or empty
+            if (result.message?.thumbnail) {
+                embed.setThumbnail(client.abilities.replacePlaceholders(result.message.thumbnail, data));
+            }
+
+            // Only set image if it's not null or empty
             if (result.message?.image) {
-                embed.setImage(client.abilities.replacePlaceholders(result.message?.image, data));
+                embed.setImage(client.abilities.replacePlaceholders(result.message.image, data));
             }
 
-            // Set footer if not null or undefined
+            // Only set footer if there's footer text or iconURL
             if (result.message?.footer) {
-                const footerText = client.abilities.replacePlaceholders(result.message?.footer?.text, data);
-                const footerIconURL = client.abilities.replacePlaceholders(result.message?.footer?.iconURL, data);
+                const footerText = client.abilities.replacePlaceholders(result.message.footer.text, data);
+                const footerIconURL = client.abilities.replacePlaceholders(result.message.footer.iconURL, data);
 
-                // Only set footer if there's footer text or iconURL
-                if (footerText || footerIconURL) {
-                    embed.setFooter({
-                        text: footerText,
-                        iconURL: footerIconURL
-                    });
+                if (footerText || footerIconURL) { // Only set if there is valid content
+                    embed.setFooter(footerText, footerIconURL);
                 }
             }
 
-            // Add fields if they exist and are not null/undefined
-            if (result.message?.fields) {
-                result.message?.fields.forEach(field => {
-                    if (field.name && field.value) { // Ensure both name and value are not null or undefined
+            // Add fields if they exist and are not empty
+            if (result.message?.fields && result.message.fields.length > 0) {
+                result.message.fields.forEach(field => {
+                    if (field.name && field.value) { // Ensure both name and value are not null, undefined or empty
                         embed.addFields({
                             name: client.abilities.replacePlaceholders(field.name, data),
                             value: client.abilities.replacePlaceholders(field.value, data),
-                            inline: field.inline || false // Default to false if not defined
+                            inline: field.inline ?? false // Default to false if inline is not defined
                         });
                     }
                 });
