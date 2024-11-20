@@ -45,7 +45,7 @@ module.exports = class Ability {
                     if (isEmbed) {
                         const welcomeEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
                         welcomeChannel.send({
-                            content: content ? await client.abilities.replacePlaceholders(client.abilities.getReplacementData(member, member.guild,)) : '',
+                            content: content ? await client.abilities.replacePlaceholders(client.abilities.getReplacementData(member, member.guild, content)) : '',
                             embeds: welcomeEmbed ? [welcomeEmbed] : []
                         });
                     } else {
