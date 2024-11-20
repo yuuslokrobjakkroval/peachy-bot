@@ -1,4 +1,5 @@
 const { GatewayIntentBits } = require('discord.js');
+const Users = require('./schemas/user');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
 const InviteSchema = require("./schemas/inviteTracker");
@@ -32,101 +33,19 @@ process.on('uncaughtException', (error) => {
 const client = new PeachyClient(clientOptions);
 
 client.once('ready', async () => {
-    const guild = client.guilds.cache.get(globalConfig.guildId);
-    if (guild) {
-        try {
-            const invites = await guild.invites.fetch();
-            inviteData[guild.id] = new Map(invites.map(invite => [invite.code, invite.uses]));
-        } catch (error) {
-            console.error(`Failed to fetch invites for guild ${guild.name}:`, error);
-            if (error.code === 50013) {
-                console.error('Missing Permissions: Ensure the bot has the Manage Server permission.');
-            }
-        }
-    } else {
-        console.error("Bot is not in the specified guild or the guild ID is incorrect.");
-    }
+    return await client.abilities.catchInvites(client)
 });
 
 client.on('guildMemberAdd', async (member) => {
-    const guild = member.guild;
-    if (guild.id !== client.config.guildId) return;
-
-    const roleId = member.user.bot ? '1271685844700233740' : '1271685844700233741';
-    const role = guild.roles.cache.get(roleId);
-
-    if (role) {
-        member.roles.add(role).catch(console.error);
-    }
-
-    const welcomeChannel = guild.channels.cache.get(client.config.channel.welcome);
-    if (welcomeChannel) {
-        const welcomeMessage = client.utils.getWelcomeMessage(client, member);
-        welcomeChannel.send({ embeds: [welcomeMessage] });
-    }
-
-    try {
-        const currentInvites = await guild.invites.fetch();
-        for (const invite of currentInvites.values()) {
-
-            if (inviteData[guild.id] && inviteData[guild.id].has(invite.code)) {
-                if (invite.uses > inviteData[guild.id].get(invite.code)) {
-                    const inviter = invite.inviter;
-                    inviteData[guild.id].set(invite.code, invite.uses);
-                    const trackingChannel = guild.channels.cache.get(globalConfig.channel.inviteTracker);
-                    if (trackingChannel) {
-                        const inviteMessage = await client.utils.getInviteMessage(client, member, invite, inviter);
-                        trackingChannel.send({embeds: [inviteMessage]});
-                    }
-                    break;
-                    }
-            }
-        }
-        inviteData[guild.id] = new Map(currentInvites.map(invite => [invite.code, invite.uses]));
-    } catch (error) {
-        console.error(`Failed to fetch or update invites for guild ${guild.name}:`, error);
-        if (error.code === 50013) {
-            console.error('Missing Permissions: Ensure the bot has the Manage Server permission.');
-        }
-    }
-
-    const chatChannel = guild.channels.cache.get(globalConfig.channel.chat);
-    const welcomeMessages = ['sur sdey', 'reab sur', 'សួស្តី', 'សួស្តីបង'];
-
-    if (chatChannel) {
-        chatChannel.send({
-            content: `${client.utils.getRandomElement(welcomeMessages)} <@${member.id}>!`,
-        });
-    }
+    return await client.abilities.getWelcomeMessage(client, member);
 });
 
 client.on('messageCreate', async (message) => {
-    if (message.author.bot) return;
-
-    try {
-        const responseDoc = await ResponseSchema.findOne({ guildId: message.guild.id });
-        if (!responseDoc || !responseDoc.autoresponse || responseDoc.autoresponse.length === 0) return;
-        const matchingResponses = responseDoc.autoresponse.filter(response =>
-            message.content.toLowerCase() === response.trigger.toLowerCase()
-        );
-        if (matchingResponses.length > 0) {
-            const randomResponse = matchingResponses[Math.floor(Math.random() * matchingResponses.length)];
-            message.reply(randomResponse.response);
-        }
-    } catch (error) {
-        console.error('Error processing auto-responses:', error);
-    }
+    return await client.abilities.getAutoResponse(client, message);
 });
 
-client.on('guildMemberRemove', member => {
-    if (member.guild.id !== client.config.guildId) return;
-
-    const goodbyeChannel = member.guild.channels.cache.get(client.config.channel.goodbye);
-
-    if (goodbyeChannel) {
-        const goodbyeMessage = client.utils.getGoodbyeMessage(client, member);
-        goodbyeChannel.send({ embeds: [goodbyeMessage] });
-    }
+client.on('guildMemberRemove', async (member) => {
+    return await client.abilities.getGoodByeMessage(client, member);
 });
 
 setInterval(() => {

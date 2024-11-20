@@ -5,11 +5,11 @@ const path = require('path');
 const moment = require('moment');
 const loadPlugins = require('../plugin/index');
 const Utils = require('../utils/Utils');
+const Abilities = require('../utils/Abilities');
 const globalConfig = require('../utils/Config');
 const { I18n } = require('@hammerhq/localization');
 
 const themeConfig = require('../config');
-
 const emojis = require('../emojis');
 const emojiPeach = require('../theme/Peach/emojis');
 const emojiGoma = require('../theme/Goma/emojis');
@@ -19,10 +19,8 @@ const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
 const emojiHeaven = require('../theme/CelestialGrace/emojis');
 const emojiSakura = require('../theme/SakuraSerenity/emojis');
 const emojiBee = require('../theme/BuzzingBliss/emojis');
-
 const emojiSpiderMan = require('../theme/SpiderMan/emojis');
 const emojiCucumber = require('../theme/Cucumber/emojis');
-
 
 const Logger = require('./Logger');
 
@@ -36,6 +34,7 @@ module.exports = class PeachyClient extends Client {
         this.logger = new Logger();
         this.body = [];
         this.utils = Utils;
+        this.abilities = Abilities;
         this.color = themeConfig.normal.color;
         this.emoji = emojis;
         this.moment = moment;
