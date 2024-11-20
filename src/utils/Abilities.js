@@ -12,18 +12,6 @@ module.exports = class Ability {
     static async catchInvites(client) {
         for (const [guildId, guild] of client.guilds.cache) {
             try {
-                if (!guild.me) {
-                    console.warn(`Bot is not initialized in guild: ${guild.name}. Skipping invite fetch.`);
-                    continue;
-                }
-
-                console.log(guild.me.permissions.toArray());  // Logs all permissions the bot has in that guild
-                if (!guild.me.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-                    console.warn(`Bot lacks 'ADMINISTRATOR' permission in guild: ${guild.name}. Skipping invite fetch.`);
-                    continue;
-                }
-
-                // Fetch invites only if the bot has the necessary permissions
                 const invites = await guild.invites.fetch();
                 inviteData[guildId] = new Map(invites.map(invite => [invite.code, invite.uses]));
                 console.log(`Fetched invites for guild: ${guild.name}`);
@@ -41,32 +29,32 @@ module.exports = class Ability {
         const data = client.abilities.getReplacementData(member, guild, invite, inviter);
 
         // Start building the embed
-        const embed = client.embed().setColor(result.message.color || '#FFFFFF'); // default color if undefined
+        const embed = client.embed().setColor(result.message?.color || '#FFFFFF'); // default color if undefined
 
         // Set title if not null or undefined
         if (result.message.title) {
-            embed.setTitle(client.abilities.replacePlaceholders(result.message.title, data));
+            embed.setTitle(client.abilities.replacePlaceholders(result.message?.title, data));
         }
 
         // Set thumbnail if not null or undefined
         if (result.message.thumbnail) {
-            embed.setThumbnail(client.abilities.replacePlaceholders(result.message.thumbnail, data));
+            embed.setThumbnail(client.abilities.replacePlaceholders(result.message?.thumbnail, data));
         }
 
         // Set description if not null or undefined
         if (result.message.description) {
-            embed.setDescription(client.abilities.replacePlaceholders(result.message.description, data));
+            embed.setDescription(client.abilities.replacePlaceholders(result.message?.description, data));
         }
 
         // Set image if not null or undefined
         if (result.message.image) {
-            embed.setImage(client.abilities.replacePlaceholders(result.message.image, data));
+            embed.setImage(client.abilities.replacePlaceholders(result.message?.image, data));
         }
 
         // Set footer if not null or undefined
         if (result.message.footer) {
-            const footerText = client.abilities.replacePlaceholders(result.message.footer?.text, data);
-            const footerIconURL = client.abilities.replacePlaceholders(result.message.footer?.iconURL, data);
+            const footerText = client.abilities.replacePlaceholders(result.message?.footer?.text, data);
+            const footerIconURL = client.abilities.replacePlaceholders(result.message?.footer?.iconURL, data);
 
             // Only set footer if there's footer text or iconURL
             if (footerText || footerIconURL) {
@@ -78,8 +66,8 @@ module.exports = class Ability {
         }
 
         // Add fields if they exist and are not null/undefined
-        if (result.message.fields) {
-            result.message.fields.forEach(field => {
+        if (result.message?.fields) {
+            result.message?.fields.forEach(field => {
                 if (field.name && field.value) { // Ensure both name and value are not null or undefined
                     embed.addFields({
                         name: client.abilities.replacePlaceholders(field.name, data),
