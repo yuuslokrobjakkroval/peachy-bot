@@ -13,16 +13,17 @@ module.exports = class Ability {
     static async catchInvites(client) {
         for (const [guildId, guild] of client.guilds.cache) {
             try {
-                // Ensure guild.me exists before checking permissions
-                if (!guild.me || !guild.me.permissions.has('MANAGE_GUILD')) {
-                    // console.warn(`Bot is not initialized or lacks 'MANAGE_GUILD' permission in guild: ${guild.name}. Skipping invite fetch.`);
+                // Check if the bot has 'ADMINISTRATOR' permission (permission number 8)
+                const hasAdminPermission = guild.me.permissions.has('ADMINISTRATOR');
+                // Check if the bot has 'MANAGE_GUILD' permission or 'ADMINISTRATOR'
+                if (!guild.me || (!hasAdminPermission && !guild.me.permissions.has('MANAGE_GUILD'))) {
+                    console.log(`Skipping guild: ${guild.name} - Missing 'MANAGE_GUILD' or 'ADMINISTRATOR' permissions.`);
                     continue; // Skip this guild and move to the next
                 }
 
                 // Fetch invites only if the bot has the necessary permission
                 const invites = await guild.invites.fetch();
                 inviteData[guildId] = new Map(invites.map(invite => [invite.code, invite.uses]));
-
                 console.log(`Fetched invites for guild: ${guild.name}`);
 
             } catch (error) {
@@ -33,6 +34,7 @@ module.exports = class Ability {
             }
         }
     }
+
 
     static async resultEmbed(client, member, guild, result, invite, inviter) {
         const data = client.abilities.getReplacementData(member, guild, invite, inviter);
