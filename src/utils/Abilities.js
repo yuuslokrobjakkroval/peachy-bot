@@ -12,10 +12,13 @@ module.exports = class Ability {
     static async catchInvites(client) {
         for (const [guildId, guild] of client.guilds.cache) {
             try {
-                if (!guild.me.permissions.has('MANAGE_GUILD')) {
-                    console.warn(`Bot lacks 'MANAGE_GUILD' permission in guild: ${guild.name}. Skipping invite fetch.`);
-                    continue;
+                // Ensure guild.me exists before checking permissions
+                if (!guild.me || !guild.me.permissions.has('MANAGE_GUILD')) {
+                    console.warn(`Bot is not initialized or lacks 'MANAGE_GUILD' permission in guild: ${guild.name}. Skipping invite fetch.`);
+                    continue; // Skip this guild and move to the next
                 }
+
+                // Fetch invites only if the bot has the necessary permission
                 const invites = await guild.invites.fetch();
                 inviteData[guildId] = new Map(invites.map(invite => [invite.code, invite.uses]));
                 console.log(`Fetched invites for guild: ${guild.name}`);
