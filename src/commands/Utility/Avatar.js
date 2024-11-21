@@ -63,7 +63,7 @@ module.exports = class Avatar extends Command {
                 .replace('%{title}', `𝐀𝐕𝐀𝐓𝐀𝐑 𝐎𝐅 ${mention.displayName}`)
                 .replace('%{mainRight}', emoji.mainRight)
         )
-        .setImage(mention.displayAvatarURL({ dynamic: true, size: 1024 }))
+        .setImage(mention.displayAvatarURL({ format: 'png', size: 1024 }))
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
