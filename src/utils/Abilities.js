@@ -123,6 +123,8 @@ module.exports = class Ability {
                 message.content.toLowerCase() === response.trigger.toLowerCase()
             );
 
+            if (!matchingResponses) return;
+
             if (matchingResponses.length > 0) {
                 const randomResponse = matchingResponses[Math.floor(Math.random() * matchingResponses.length)];
                 if (randomResponse?.response) {
