@@ -62,7 +62,10 @@ module.exports = class Ability {
                     rolesToAssign.map(async (roleId) => {
                         const role = member.guild.roles.cache.get(roleId);
 
-                        if(!role) return;
+                        if(!role) {
+                            console.warn(`Role with ID ${roleId} not found in guild ${member.guild.name}`);
+                            return;
+                        }
 
                         if (role)  {
                             try {
