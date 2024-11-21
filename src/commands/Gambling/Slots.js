@@ -96,33 +96,32 @@ module.exports = class Slots extends Command {
 					rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
 				}
 			} else {
-				if (rand <= 20) { // 15%
+				if (rand <= 12) { // 12% for baseCoins
 					win = baseCoins;
 					rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-				} else if (rand <= 27) { // 7%
-					win = baseCoins * 3;
-					rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-				} else if (rand <= 32.5) { // 5%
-					win = baseCoins * 4;
-					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-				} else if (rand <= 36.5) { // 4%
-					win = baseCoins * 5;
-					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 46.5) { // 10%
+				} else if (rand <= 18) { // 6% for baseCoins * 2
 					win = baseCoins * 2;
 					rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-				} else if (rand <= 48.5) { // 2
+				} else if (rand <= 23) { // 5% for baseCoins * 3
+					win = baseCoins * 3;
+					rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
+				} else if (rand <= 27) { // 4% for baseCoins * 4
+					win = baseCoins * 4;
+					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
+				} else if (rand <= 30) { // 3% for baseCoins * 5
+					win = baseCoins * 5;
+					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
+				} else if (rand <= 32) { // 2% for baseCoins * 10
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-				} else { // 51.5% chance to lose
-					// Generate a non-matching slot combination
+				} else { // 60% chance to lose
 					let slot1 = Math.floor(Math.random() * SLOTS.length);
 					let slot2 = Math.floor(Math.random() * SLOTS.length);
 					let slot3 = Math.floor(Math.random() * SLOTS.length);
 					if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
 					if (slot3 === slot1 || slot3 === slot2) slot3 = (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
 					rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
-					win = 0; // No winnings in this case
+					win = 0;
 				}
 			}
 
