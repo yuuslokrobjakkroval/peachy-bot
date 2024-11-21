@@ -100,7 +100,7 @@ module.exports = class MultiTransfer extends Command {
 
         // Collector for buttons
         const filter = (interaction) => interaction.user.id === ctx.author.id;
-        const collector = confirmMessage.createMessageComponentCollector({ filter, time: 8000 });
+        const collector = confirmMessage.createMessageComponentCollector({ filter, time: 60000 });
 
         collector.on("collect", (interaction) => {
             interaction.deferUpdate().then(async () => {

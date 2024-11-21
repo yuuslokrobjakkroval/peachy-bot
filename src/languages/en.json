@@ -103,7 +103,7 @@
 			"confirm": "You are about to transfer %{amount} %{emoji} to the following users: %{userList}. Confirm?",
 			"cancel": "You have canceled the transaction. No coins have been transferred.",
 			"timeout": "The transaction has timed out due to inactivity. Please try again.",
-			"success": "Successfully transferred %{amount} %{emoji} to %{userCount} users. Each user received %{individualAmount} %{emoji}.",
+			"success": "Successfully transferred %{amount} %{emoji} to %{userCount} users.\nEach user received %{individualAmount} %{emoji}.",
 			"tooSmallAmount": "The transfer amount is too small to split among the recipients."
 		},
 		"transferMessages": {

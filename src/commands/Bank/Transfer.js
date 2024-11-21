@@ -106,7 +106,7 @@ module.exports = class Transfer extends Command {
         const messageEmbed = await ctx.channel.send({ embeds: [embed], components: [allButtons] });
 
         const filter = (interaction) => interaction.user.id === ctx.author.id;
-        const collector = messageEmbed.createMessageComponentCollector({ filter, time: 8000 });
+        const collector = messageEmbed.createMessageComponentCollector({ filter, time: 60000 });
 
         collector.on('collect', (interaction) => {
             if (interaction.user.id !== ctx.author.id) {
