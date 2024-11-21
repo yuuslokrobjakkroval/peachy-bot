@@ -1,28 +1,60 @@
-[//]: # (<center><img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=KaijuKingz&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" /></center>)
-<center><img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=header&text=PEACHY&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=gradient" /></center>
-<!-- PROJECT LOGO -->
-<br />
+<h1 align="center">
+  <br>
+  <a href="https://github.com/yuuslokrobjakkroval"><img src="./public/images/banner/main.gif" height="380" alt="Profile"></a>
+  <br>
+    <div style="color:#F582AE">
+        PEACHY
+    </div>
+</h1>
+<p align="center">Actions, Bank, Rank, Economy, Inventory, Fun, Games, Gambling, Giveaways, Profile, Social, Utility, Information, and More...</p>
+
 <p align="center">
-  <h3 align="center">Peachy</h3>
-  <p align="center">
-    Peachy is a powerful discord Bot
-    <br />
-    <br />
+  <a href="#-resource-links">Resource Links</a>
+  •
+  <a href="#-prerequisites">Prerequisites</a>
+  •
+  <a href="#-getting-started">Getting Started</a>
+  •
+  <a href="#-unique-features">Unique Features</a>
 
-[//]: # (    <a href="https://github.com/Kuraiiii/Kaiju-King-Bot-Template/issues">Report Bug</a>)
+  <a href="#-features">Features</a>
+  •
+  <a href="#-contributing">Contributing</a>
+</p>
 
-[//]: # (    ·)
+<br>
 
-[//]: # (    <a href="https://github.com/Kuraiiii/Kaiju-King-Bot-Template/issues">Request Feature</a>)
-[//]: # (  </p>)
+## 🔗 Resource Links
 
-[//]: # (</p>)
+- 📂 Peachy Dashboard: [Visit Here](https://peachy-dashboard.vercel.app)
+- 🚀 Invite Website: [Visit Here](https://peachy-website.vercel.app/)
+- 🤖 Demo Bot: [Invite Here](https://discord.com/api/oauth2/authorize?client_id=1271693788548436008&permissions=8&integration_type=0&scope=bot+applications.commands)
+- 🤝 Support Server: [Join Here](https://discord.gg/BJT4h55hbg)
 
-[//]: # (<!-- ABOUT THE PROJECT -->)
+## 📦 Prerequisites
 
-[//]: # (## 🌀 About)
+- [Git](https://git-scm.com/downloads)
+- ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) [v18.17.1 or higher](https://nodejs.org/en/download/)
+- ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white) [v4.4.0 or higher](https://www.mongodb.com/try/download/community)
 
-[//]: # ([![Readme Card]&#40;https://github-readme-stats.vercel.app/api/pin/?username=Kuraiiii&repo=Kaiju-King-Bot-Template&theme=tokyonight&#41;]&#40;https://github.com/Kuraiiii/Kaiju-King-Bot-Template&#41;)
+## 🚀 Getting Started
+
+- Open the terminal and run the following commands
+
+```
+git clone https://github.com/yuuslokrobjakkroval/peachy-bot.git
+cd peachy-bot
+npm install
+```
+
+- Wait for all the dependencies to be installed
+- Rename `.env.example` to `.env` and fill the values
+- Optionally edit `util/Config.js for Global Config` and `config.js for config color base on theme`
+- Type `npm run start` to start the bot
+
+If you need any additional help, make sure to join our support server [here](https://discord.gg/BJT4h55hbg)
+
+<br>
 
 ## 🔥 Unique Features
 
@@ -31,70 +63,114 @@
 - Highly Configurable
 - User-friendly and Easy to Use
 
-## 📚 Commands
+<h1 align="center"> ✨ Features ✨ </h1>
 
-<details><summary>Click to View Commands</summary>
+### 📡 **Advanced Dashboard**
 
-| Name      | Description                     | Options                                        |
-| --------- | ------------------------------- | ---------------------------------------------- |
-| `balance` | Shows the coin balance          |                                                |
-| `help`    | Shows the help menu             | `command`: The command you want to get info on |
-| `info`    | Shows information about the bot |                                                |
-| `invite`  | Sends the bot's invite link     |                                                |
-| `ping`    | Shows the bot's ping            |                                                |
+- Manage your servers and make your server-specific settings!
+- Make custom adjustments easy!
 
-</details>
+### 🛑 **Powerful Moderation:**
 
-## 🔧 Requirements
+- **Moderation Commands.** <br /> _Commands:_ `announce`, `ban`, `unban`, `timeout`, `blacklist`, ...
+- **Multi-Function Commands.** <br /> _Commands:_ `addmoney`, `removemoney`, `additem`, `removeitem`, ...
 
-Before starting with the installation, you need to have the following:
+[//]: # (### 🤖 **Auto Moderation:**)
 
-- ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) [v18.17.1 or higher](https://nodejs.org/en/download/)
-- ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white) [v4.4.0 or higher](https://www.mongodb.com/try/download/community)
+[//]: # ()
+[//]: # (- **Anti system** <br /> _Commands:_ `anti ghostping`, `anti spam`, `anti massmention`, ...)
 
-## 🚀 Installation from source
+[//]: # (- **Auto Delete system** <br /> _Commands:_ `autodelete attachments`, `autodelete invites`, `autodelete links`, `autodelete maxlines`, ...)
 
-1. Clone the peachy-bot repository:
+[//]: # (- **AutoMod system** <br /> _Commands:_ `automod status`, `automod strikes`, `automod action`, `automod debug`, `automod whitelist`, ...)
 
-```bash
-git clone https://github.com/yuuslokrobjakkroval/peachy-bot.git
-```
+[//]: # (### ⚙️ **Admin Configuration:**)
 
-2. change the directory to skyrealm-bot
+[//]: # ()
+[//]: # (- **Let a bot be the server's assistant!** <br /> _Commands:_ `autorole`, `farewell`, `welcome`, `counters`, `flag translation`, `reaction roles`, ...)
 
-```bash
-cd peachy-bot
-```
+[//]: # (- **Make custom settings for your own server.** <br /> _Commands:_ `setprefix`, `maxwarns`, `modlog`...)
 
-3. Install the required packages:
+### 💁 **Information Gathering:**
 
-```bash
-npm i
-```
+- **User Context Interactions**
+- **Advanced Information** Get deep information about a user, channel, role, etc.
 
-4. Set up your environment variables:
+[//]: # (### 🎵 **Music:**)
 
-Create a `.env` file in the root directory of your project with the following variables:
+[//]: # ()
+[//]: # (- **LossLess Music!** Enjoy high quality lossless music)
 
-```bash
-TOKEN="." # Your bot token
-PREFIX= "!" # Your prefix
-OWNER_IDS= "859640640640640640, 859640640640640640" # Your id
-CLIENT_ID= "960072976412340254" # Your bot client id
-CLIENT_SECRET= "" # Your bot client secret
-GUILD_ID= "859640640640640640" # Your server Id if you want to use the for single server
-PRODUCTION="true" # true for production
-DATABASE_URL="mongodb+srv://skyrealm:xxxxxxxxxxxx" # Your mongodb url
+[//]: # (- **Multi-Platform** Play music from YouTube, SoundCloud, Spotify, and more)
 
-```
+[//]: # (- **Filters** Apply filters to your music and spice it up)
 
-5. Run the bot:
+### 🎉 **Giveaways:**
 
-```bash
-npm run start or npm start
-```
+- **Easy to use** Create giveaways with ease
+- **Role Specific** giveaways
+- **Customizable** Customize the giveaway to your liking
+- **Limitless** Create unlimited giveaways
 
-###
+### 🫂 **Social Content:**
+
+- **You Have A CV In Each Server-Specific Bot!** <br /> _Commands:_ `facebook`, `instagram`, `tik tok`,...
+- **Do You Love Someone?** <br /> _Commands:_ `fb name`, `fb link`, `ig name`, `ig link`, ...
+
+[//]: # (### 🎟 **Ticket System:**)
+
+[//]: # ()
+[//]: # (- **Make Supporting Members A Breeze With Tickets!** <br/> Highly customizable ticket system with staff roles)
+
+[//]: # (- **Multiple Categories** <br/> Don't Want The Tickets To Be Everywhere? Categorize them using select menus)
+
+### 📉 **Stats Tracking:**
+
+- **Levelling** Track your server's activity with a level system
+- **Leaderboards** See who is the most active user in your server
+- **Customizable System** Configure the levelup message, rank cards to your liking
+
+[//]: # (### 🙋‍♂️ **Suggestions:**)
+
+[//]: # ()
+[//]: # (- **Get Suggestions From Server Members To Help Your Server Become The Best!** <br /> _Commands:_ `suggest`, `suggestion`...)
+
+[//]: # (- **Accept Or Decline The Suggestions And Customize Them To The Max!** <br /> _Commands:_ `suggestion status`, `suggestion channel`, `suggestion appch`, `suggestion rejch`, `suggestion approve`, `suggestion staffadd`, `suggestion staffremove`...)
+
+### ⚒️ **Utility Commands:**
+
+- **Need Some Help With Something? Use The Utility Commands To Find Out The Answer To It** <br /> _Commands:_ `avatar`, `steal emoji`, `steal stickr`, `serverinfo`, `userinfo`, `language`...
+- **Need Help With Some More Stuff?** <br /> _Commands:_ `help`, `invite`, `rules`, `privacypolicy`,  `ping`...
+
+### ⭐ **Anime Content:**
+
+- **Love Anime? Express You Love To Someone Using The React Commands** <br /> _Commands:_ `bite`, `hug`, `kiss`, `kill`, `slap`, `punch`...
+
+### 🪙 **Economy System:**
+
+- **Want To Become Richest? Use The Economy Commands!** <br /> _Commands:_ `peach`, `goma`, `daily`, `weekly`...
+- **Give People Money, Check Your Balance, Or Just Flex!** <br /> _Commands:_ `balance`, `deposit`, `withdraw`, `transfer`...
+
+### 😁 **Emotes Commands:**
+
+- **Have Some Feeling to show In Your Server!** <br /> _Commands:_ `angry`, `cry`, `cute`, `happy`, `roar`, `shy`, `scare`...
+
+[//]: # (- **Play Games And Enjoy Yourself** <br /> _Commands:_ `snake`, `together`, `flip coin`, `flip text`, ...)
+
+### 📨 **Invite Tracking:**
+
+- **Track who has been inviting people to your server!**
+- **Invite Ranks!** Inviter can get awesome rewards and be recognised
+- **Configure these settings and customize them to your liking!** <br /> _Commands:_ `inviters`...
+
+[//]: # (### 📷 **Image Manipulation:**)
+
+[//]: # ()
+[//]: # (- **Customize other peoples avatars** <br /> _Commands:_ `blur`, `greyscale`, `invert`, `pixelate`, `blur`, `sepia`, `sharpen`, `ad`, `affect`, `beautiful`, `color`...)
+
+[//]: # (- **Make some images by yourself or make some art** <br /> _Commands:_ `bobross`, `confusedstonk`, `delete`, `facepalm`, ` hitler`, `jail`, `jokeoverhead`, `karaba`, `mms`, `notstonk`, `poutine`, `rainbow`, `rip`, ` shit`, `stonk`, `tatoo`, `thomas`, `trash`, `wanted`, `wasted`, ...)
+
+<br>
 
 Peachy is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
 If you liked this repository, feel free to leave a star ⭐ to help promote !
@@ -105,9 +181,8 @@ If you liked this repository, feel free to leave a star ⭐ to help promote !
 
 [Support Server](https://discord.gg/BJT4h55hbg) - Peachy's Support Server Invite
 
-[//]: # (# Donate)
+<h1 align="center"> 🤝 Contributing 🤝 </h1>
 
-[//]: # ()
-[//]: # (By Donating, You Will Help Me To Maintain This Project)
-
-[//]: # (<a href='https://ko-fi.com/O5O5P303E' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' />)
+- Thanks to everyone have enjoy with our bot.
+- Feel free to [Fork](https://github.com/yuuslokrobjakkroval/peachy-bot/fork) this repository, create a feature branch and submit a pull request
+- You can keep track of all the planned features [here](https://github.com/yuuslokrobjakkroval/peachy-bot/projects) or make a request for one at our discord
