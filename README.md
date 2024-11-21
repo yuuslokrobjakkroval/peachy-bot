@@ -20,6 +20,8 @@
   <a href="#--features--">Features</a>
   •
   <a href="#--contributing--">Contributing</a>
+  •
+  <a href="#--support-server--">Support</a>
 </p>
 
 <br>
@@ -29,7 +31,6 @@
 - 📂 Peachy Dashboard: [Visit Here](https://peachy-dashboard.vercel.app)
 - 🚀 Invite Website: [Visit Here](https://peachy-website.vercel.app/)
 - 🤖 Demo Bot: [Invite Here](https://discord.com/api/oauth2/authorize?client_id=1271693788548436008&permissions=8&integration_type=0&scope=bot+applications.commands)
-- 🤝 Support Server: [Join Here](https://discord.gg/BJT4h55hbg)
 
 ## 📦 Prerequisites
 
@@ -170,19 +171,18 @@ If you need any additional help, make sure to join our support server [here](htt
 
 [//]: # (- **Make some images by yourself or make some art** <br /> _Commands:_ `bobross`, `confusedstonk`, `delete`, `facepalm`, ` hitler`, `jail`, `jokeoverhead`, `karaba`, `mms`, `notstonk`, `poutine`, `rainbow`, `rip`, ` shit`, `stonk`, `tatoo`, `thomas`, `trash`, `wanted`, `wasted`, ...)
 
-<br>
-
-Peachy is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
-If you liked this repository, feel free to leave a star ⭐ to help promote !
-
-## 💌 Support Server
-
-[//]: # ([![DiscordBanner]&#40;https://invidget.switchblade.xyz/mRt2FkwxYu&#41;]&#40;https://discord.gg/sE7VuPx54a&#41;)
-
-[Support Server](https://discord.gg/BJT4h55hbg) - Peachy's Support Server Invite
-
 <h1 align="center"> 🤝 Contributing 🤝 </h1>
 
 - Thanks to everyone have enjoy with our bot.
 - Feel free to [Fork](https://github.com/yuuslokrobjakkroval/peachy-bot/fork) this repository, create a feature branch and submit a pull request
 - You can keep track of all the planned features [here](https://github.com/yuuslokrobjakkroval/peachy-bot/projects) or make a request for one at our discord
+
+## 💌 Support Server
+
+[//]: # ([![DiscordBanner]&#40;https://invidget.switchblade.xyz/mRt2FkwxYu&#41;]&#40;https://discord.gg/sE7VuPx54a&#41;)
+
+- [PEACHY](https://discord.gg/BJT4h55hbg) - Join us now
+
+<br>
+Peachy is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
+If you liked this repository, feel free to leave a star ⭐ to help promote !
