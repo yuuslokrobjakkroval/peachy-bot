@@ -193,5 +193,5 @@ If you need any additional help, make sure to join our support server [here](htt
 
 <br>
 
-Peachy is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
+Peachy is a discord bot mode by [𝐊𝐘𝐔𝐔 🐣💞](https://discord.gg/CmsxPWNEjf)
 If you liked this repository, feel free to leave a star ⭐ to help promote !
