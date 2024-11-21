@@ -18,7 +18,12 @@ module.exports = class MessageCreate extends Event {
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
-      this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
+      const userCheck = this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
+
+      if (userCheck) {
+        return;
+      }
+
       const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
       if (mention.test(message.content)) {
 
