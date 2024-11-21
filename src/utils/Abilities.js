@@ -58,16 +58,24 @@ module.exports = class Ability {
                 const { userRoles, botRoles } = joinRoles;
                 const rolesToAssign = member.user.bot ? botRoles : userRoles;
 
-                await Promise.all(rolesToAssign.map(async (roleId) => {
-                    const role = member.guild.roles.cache.get(roleId);
-                    if (role) {
-                        try {
-                            await member.roles.add(role);
-                        } catch (error) {
-                            console.error(`Failed to assign role ${role.name} to ${member.user.tag} in guild ${member.guild.name}:`, error);
+                await Promise.all(
+                    rolesToAssign.map(async (roleId) => {
+                        const role = member.guild.roles.cache.get(roleId); // Fetch the role by ID from the guild's role cache
+                        if (role) {
+                            try {
+                                await member.roles.add(role); // Assign the role to the member
+                                console.log(`Assigned role ${role.name} to ${member.user.tag}`);
+                            } catch (error) {
+                                console.error(
+                                    `Failed to assign role ${role.name} to ${member.user.tag} in guild ${member.guild.name}:`,
+                                    error
+                                );
+                            }
+                        } else {
+                            console.warn(`Role with ID ${roleId} not found in guild ${member.guild.name}`);
                         }
-                    }
-                }));
+                    })
+                );
             }
 
             if (inviteTracker) {
