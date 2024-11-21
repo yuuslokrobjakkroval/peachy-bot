@@ -60,11 +60,13 @@ module.exports = class Ability {
 
                 await Promise.all(
                     rolesToAssign.map(async (roleId) => {
-                        const role = member.guild.roles.cache.get(roleId); // Fetch the role by ID from the guild's role cache
-                        if (role) {
+                        const role = member.guild.roles.cache.get(roleId);
+
+                        if(!role) return;
+
+                        if (role)  {
                             try {
-                                await member.roles.add(role); // Assign the role to the member
-                                console.log(`Assigned role ${role.name} to ${member.user.tag}`);
+                                await member.roles.add(role);
                             } catch (error) {
                                 console.error(
                                     `Failed to assign role ${role.name} to ${member.user.tag} in guild ${member.guild.name}:`,
