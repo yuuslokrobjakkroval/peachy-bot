@@ -25,9 +25,11 @@ module.exports = class Timeout extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]);
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
+
 
         if (!mention) {
             return await ctx.sendMessage({
@@ -35,16 +37,8 @@ module.exports = class Timeout extends Command {
             });
         }
 
-        // Prevent applying timeout to a bot
-        if (mention.bot) {
-            return await client.utils.sendErrorMessage(client, ctx, "You cannot timeout a bot.", color);
-        }
-
-        // Prevent applying timeout to a moderator or admin
-        if (mention.permissions.has('ManageMessages')) {
-            return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.danger).setDescription('You cannot timeout a moderator or admin.')],
-            });
+        if (mention && mention.user.bot) {
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
         }
 
         // Get the duration (e.g., 5min or 10min)
@@ -63,8 +57,8 @@ module.exports = class Timeout extends Command {
             });
         }
 
-        // Get user from the database
-        let user = await Users.findOne({ userId: mention.id });
+        const userId = typeof mention === 'string' ? mention : mention.id;
+        let user = await Users.findOne({ userId });
         if (!user) {
             user = new Users({
                 userId: mention.id,

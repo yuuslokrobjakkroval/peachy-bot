@@ -24,6 +24,7 @@ module.exports = class BanUser extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         if (args.length < 2) {
             return await ctx.sendMessage({
                 embeds: [client.embed().setColor(color.danger).setDescription('Please specify whether to `ban` or `unban`, and mention a user.')],
@@ -39,6 +40,10 @@ module.exports = class BanUser extends Command {
             embeds: [client.embed().setColor(color.danger).setDescription('Please mention a valid user.')],
         });
 
+        if (mention && mention.user.bot) {
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
+        }
+
         const userId = typeof mention === 'string' ? mention : mention.id;
 
         let user = await Users.findOne({ userId });
@@ -53,9 +58,6 @@ module.exports = class BanUser extends Command {
         }
 
         const { isBanned } = user.verification;
-
-        // Prevent banning or unbanning the bot itself
-        if (mention.bot) return await client.utils.sendErrorMessage(client, ctx, "You cannot ban or unban a bot.", color);
 
         // Ban Action
         if (action === 'ban') {
