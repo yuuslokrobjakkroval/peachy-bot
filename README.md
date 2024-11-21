@@ -177,12 +177,21 @@ If you need any additional help, make sure to join our support server [here](htt
 - Feel free to [Fork](https://github.com/yuuslokrobjakkroval/peachy-bot/fork) this repository, create a feature branch and submit a pull request
 - You can keep track of all the planned features [here](https://github.com/yuuslokrobjakkroval/peachy-bot/projects) or make a request for one at our discord
 
-## 💌 Support Server
+<h1 align="center"> 💌 Support Server </h1>
 
-[//]: # ([![DiscordBanner]&#40;https://invidget.switchblade.xyz/mRt2FkwxYu&#41;]&#40;https://discord.gg/sE7VuPx54a&#41;)
 
-- [PEACHY](https://discord.gg/BJT4h55hbg) - Join us now
+
+## 😎 OWNER
+- [𝐏𝐄𝐀𝐂𝐇𝐘](https://discord.gg/BJT4h55hbg) - Join us now
+
+## 🤝 SUPPORTER
+- [𝐀𝐧𝐠𝐤𝐨𝐫 𝐏𝐚𝐫𝐢𝐬](https://discord.gg/7pjA2PB6bt) - Join us now
+
+## 😁 TESTER
+- [𝐘𝐎𝐔&𝐌𝐄](https://discord.gg/Wg6D9HYxDC) - Join us now
+- [𝐓𝐡𝐞 𝐒𝐨𝐯𝐢𝐞𝐭 𝐆𝐚𝐲 𝐇𝐮𝐧𝐭𝐞𝐫 ツ](https://discord.gg/EjhDDaTH2a) - Join us now
 
 <br>
+
 Peachy is a discord bot mode by [Yuu](https://discord.gg/CmsxPWNEjf)
 If you liked this repository, feel free to leave a star ⭐ to help promote !
