@@ -17,9 +17,9 @@
   •
   <a href="#-unique-features">Unique Features</a>
   •
-  <a href="#--features">Features</a>
+  <a href="#--features--">Features</a>
   •
-  <a href="#--contributing">Contributing</a>
+  <a href="#--contributing--">Contributing</a>
 </p>
 
 <br>
