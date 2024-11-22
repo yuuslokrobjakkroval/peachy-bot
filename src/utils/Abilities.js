@@ -5,6 +5,7 @@ const AutoResponseSchema = require("../schemas/response");
 const InviteTrackerSchema = require("../schemas/inviteTrackerMessages");
 const JoinRolesSchema = require("../schemas/joinRoles");
 const GoodByeMessagesSchema = require("../schemas/goodByeMessages");
+const moment = require("moment");
 
 let inviteData = {};
 
@@ -185,6 +186,7 @@ module.exports = class Ability {
     }
 
     static getReplacementData(member, guild, invite, inviter) {
+        const accountCreationDate = moment(member.user.createdAt).fromNow();
         return {
             // User Data
             userid: member.id,
@@ -196,7 +198,7 @@ module.exports = class Ability {
             userserveravatarurl: member.displayAvatarURL(),
             usernickname: member.nickname,
             userdisplayname: member.displayName,
-            usercreatedat: member.user.createdAt.toLocaleString(),
+            usercreatedat: accountCreationDate,
             usercreatedtimestamp: member.user.createdTimestamp,
             userjoinedat: member.joinedAt?.toLocaleString(),
             userjoinedtimestamp: member.joinedTimestamp,
