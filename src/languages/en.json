@@ -261,6 +261,8 @@
 	"gamblingMessages": {
 		"blackjackMessages": {
 			"title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
+			"hit": "Hit",
+			"stand": "Stand",
 			"youWon": "You won **`%{coin}`** %{coinEmote}",
 			"youLost": "You lost **`%{coin}`** %{coinEmote}",
 			"bothBust": "You both bust!",

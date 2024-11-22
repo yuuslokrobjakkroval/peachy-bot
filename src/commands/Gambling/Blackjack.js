@@ -1,9 +1,7 @@
 const { Command } = require('../../structures/index.js');
-const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
 const maxAmount = 250000;
 const deck = Array.from({ length: 52 }, (_, i) => i + 1);
 const bjUtil = require('../../utils/BlackjackUtil.js');
-const Users = require('../../schemas/user');
 const activeGames = new Map();
 
 module.exports = class Cmd extends Command {
@@ -35,87 +33,109 @@ module.exports = class Cmd extends Command {
             ],
         });
     }
-    async run(client, ctx, args, color, emoji, language) {
+    run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const user = await Users.findOne({ userId: ctx.author.id }).exec();
-        if (activeGames.has(ctx.author.id)) {
-            return await client.utils.sendErrorMessage(client, ctx, generalMessages.alreadyInGame, color);
-        }
+        const blackjackMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.blackjackMessages;
+        client.utils.getUser(ctx.author.id).then(user => {
 
-        const { coin, bank } = user.balance;
-
-        if (coin < 1) {
-            return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
-        }
-
-        let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
-        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
-            const amountMap = { all: coin, half: Math.ceil(coin / 2) };
-            if (amount in amountMap) {
-                amount = amountMap[amount];
-            } else {
-                return await client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
+            if (!user) {
+                return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
-        }
 
-        const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
-        const newBalance = coin - baseCoins;
-        await Users.updateOne({ userId: ctx.author.id }, { $set: { 'balance.coin': newBalance, 'balance.bank': bank } }).exec();
-        activeGames.set(ctx.author.id, true);
+            if (activeGames.has(ctx.author.id)) {
+                return client.utils.sendErrorMessage(client, ctx, generalMessages.alreadyInGame, color);
+            }
 
-        return await initBlackjack(ctx, client, color, emoji, baseCoins);
+            const {coin, bank} = user.balance;
+
+            if (coin < 1) {
+                return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
+            }
+
+            let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
+            if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
+                const amountMap = {all: coin, half: Math.ceil(coin / 2)};
+                if (amount in amountMap) {
+                    amount = amountMap[amount];
+                } else {
+                    return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
+                }
+            }
+
+            const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
+
+            user.balance.coin = coin - baseCoins
+            user.balance.bank = bank
+            user.save().catch(err => console.error("Error saving user data:", err));
+
+            activeGames.set(ctx.author.id, true);
+
+            initBlackjack(ctx, client, color, emoji, baseCoins, generalMessages, blackjackMessages);
+        }).catch(err => {
+            console.error("Error fetching user data:", err);
+            client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+        });
     }
 };
 
-async function initBlackjack(ctx, client, color, emoji, bet) {
+function initBlackjack(ctx, client, color, emoji, bet, generalMessages, blackjackMessages) {
     let tdeck = deck.slice(0);
-    let player = [await bjUtil.randCard(tdeck, 'f'), await bjUtil.randCard(tdeck, 'f')];
-    let dealer = [await bjUtil.randCard(tdeck, 'f'), await bjUtil.randCard(tdeck, 'b')];
+    let player = [bjUtil.randCard(client, tdeck, 'f'), bjUtil.randCard(client, tdeck, 'f')];
+    let dealer = [bjUtil.randCard(client, tdeck, 'f'), bjUtil.randCard(client, tdeck, 'b')];
 
-    await blackjack(ctx, client, color, emoji, player, dealer, bet);
+    return blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessages, blackjackMessages);
 }
 
-async function blackjack(ctx, client, color, emoji, player, dealer, bet) {
-    let embed = await bjUtil.generateEmbed(ctx.author, client, color, emoji, dealer, player, bet);
+function blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessages, blackjackMessages) {
+    try {
+        let embed = bjUtil.generateEmbed(ctx.author, client, color, emoji, dealer, player, bet, '', '', generalMessages, blackjackMessages);
 
-    let row = new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('hit').setLabel('Hit').setStyle(1),
-        new ButtonBuilder().setCustomId('stand').setLabel('Stand').setStyle(2)
-    );
+        const hitButton = client.utils.fullOptionButton('hit', '', blackjackMessages.hit, 1);
+        const standButton = client.utils.fullOptionButton('stand', '', blackjackMessages.stand, 2);
+        const row = client.utils.createButtonRow(hitButton, standButton);
 
-    const msg = await ctx.sendMessage({ embeds: [embed], components: [row] });
+        ctx.sendMessage({ embeds: [embed], components: [row] }).then(msg => {
+            const collector = msg.createMessageComponentCollector({
+                filter: async int => {
+                    if (int.user.id === ctx.author.id) return true;
+                    else {
+                        await int.reply({ ephemeral: true, content: `This button is controlled by **${ctx.author.displayName}**!` });
+                        return false;
+                    }
+                },
+                time: 60000,
+            });
 
-    const collector = msg.createMessageComponentCollector({
-        filter: async int => {
-            if (int.user.id === ctx.author.id) return true;
-            else {
-                await int.reply({ ephemeral: true, content: `This button is controlled by **${ctx.author.displayName}**!` });
-                return false;
-            }
-        },
-        time: 60000,
-    });
+            collector.on('collect', int => {
+                if (int.customId === 'hit') {
+                    int.deferUpdate().then(() => {
+                        hit(int, client, color, emoji, player, dealer, msg, bet, collector, generalMessages, blackjackMessages);
+                    });
+                } else if (int.customId === 'stand') {
+                    int.deferUpdate().then(() => {
+                        collector.stop('done');
+                        stop(int, client, color, emoji, player, dealer, msg, bet,true, generalMessages, blackjackMessages);
+                    });
+                }
+            });
 
-    collector.on('collect', async int => {
-        if (int.customId === 'hit') {
-            await int.deferUpdate();
-            await hit(int, client, color, emoji, player, dealer, msg, bet, collector);
-        } else if (int.customId === 'stand') {
-            await int.deferUpdate();
-            collector.stop('done');
-            await stop(int, client, color, emoji, player, dealer, msg, bet);
-        }
-    });
-
-    collector.on('end', () => {
-        activeGames.delete(ctx.author.id);
-        msg.edit({ components: [new ActionRowBuilder().addComponents(row.components.map(c => c.setDisabled(true)))] });
-    });
+            collector.on('end', () => {
+                activeGames.delete(ctx.author.id);
+                msg.edit({ components: [] });
+            });
+        }).catch(err => {
+            console.error("Failed to send the message:", err);
+        });
+    } catch (err) {
+        console.error("Error in blackjack function:", err);
+    }
 }
 
-async function hit(int, client, color, emoji, player, dealer, msg, bet, collector) {
+
+
+function hit(int, client, color, emoji, player, dealer, msg, bet, collector, generalMessages, blackjackMessages) {
     let tdeck = bjUtil.initDeck(deck.slice(0), player, dealer);
-    let card = await bjUtil.randCard(tdeck, 'f');
+    let card = bjUtil.randCard(client, tdeck, 'f');
     player.push(card);
 
     // Recalculate points after drawing a new card
@@ -124,18 +144,20 @@ async function hit(int, client, color, emoji, player, dealer, msg, bet, collecto
 
     if (ppoints >= 21) {
         collector.stop('done');
-        await stop(int, client, color, emoji, player, dealer, msg, bet, true);
+        stop(int, client, color, emoji, player, dealer, msg, bet, true, generalMessages, blackjackMessages);
     } else {
-        let embed = await bjUtil.generateEmbed(int.user, client, color, emoji, dealer, player, bet);
+        let embed = bjUtil.generateEmbed(int.user, client, color, emoji, dealer, player, bet, '', '', generalMessages, blackjackMessages);
         msg.edit({ embeds: [embed] });
     }
 }
 
-async function stop(int, client, color, emoji, player, dealer, msg, bet, fromHit) {
-    if (!fromHit) player.forEach(card => (card.type = 'c'));
+function stop(int, client, color, emoji, player, dealer, msg, bet, fromHit, generalMessages, blackjackMessages) {
+    if (!fromHit) {
+        player.forEach(card => (card.type = 'c')); // Reveal all player's cards
+    }
     dealer.forEach(card => {
-        if (card.type == 'b') card.type = 'f';
-        else card.type = 'c';
+        if (card.type === 'b') card.type = 'f'; // Reveal face-down dealer cards
+        else card.type = 'c'; // Mark other dealer cards as completed
     });
 
     let playerHand = bjUtil.cardValue(player);
@@ -146,40 +168,49 @@ async function stop(int, client, color, emoji, player, dealer, msg, bet, fromHit
 
     let tdeck = bjUtil.initDeck(deck.slice(0), player, dealer);
 
+    // Dealer continues to draw cards until their total points >= 17
     while (dpoints < 17) {
-        dealer.push(await bjUtil.randCard(tdeck, 'f'));
+        const nextCard = bjUtil.randCard(client, tdeck, 'f');
+        if (!nextCard) break; // Prevent error if the deck runs out of cards
+        dealer.push(nextCard);
         dealerHand = bjUtil.cardValue(dealer);
         dpoints = dealerHand.points;
     }
 
+    // Determine the game outcome
     let winner;
-    if (ppoints > 21 && dpoints > 21) winner = 'tb';
-    else if (ppoints === dpoints) winner = 't';
-    else if (ppoints > 21) winner = 'l';
-    else if (dpoints > 21) winner = 'w';
-    else if (ppoints > dpoints) winner = 'w';
-    else winner = 'l';
+    if (ppoints > 21 && dpoints > 21) winner = 'tb'; // Both bust
+    else if (ppoints === dpoints) winner = 't'; // Tie
+    else if (ppoints > 21) winner = 'l'; // Player busts
+    else if (dpoints > 21) winner = 'w'; // Dealer busts
+    else if (ppoints > dpoints) winner = 'w'; // Player wins
+    else winner = 'l'; // Dealer wins
 
-    const user = await Users.findOne({ userId: int.user.id }).exec();
+    // Adjust user balance based on the result
+    client.utils.getUser(int.user.id).then(user => {
+        const { coin } = user.balance;
+        let newBalance = coin;
 
-    const { coin } = user.balance;
-    let newBalance;
-    if (winner === 'w') newBalance = coin + bet * 2;
-    else if (winner === 't' || winner === 'tb') newBalance = coin + bet;
+        if (winner === 'w') {
+            newBalance += bet * 2; // Win: Double the bet
+        } else if (winner === 't' || winner === 'tb') {
+            newBalance += bet; // Tie: Refund the bet
+        } // Lose: No changes as the bet is already deducted
 
-    await Users.updateOne({ userId: int.user.id }, { $set: { 'balance.coin': newBalance } }).exec();
+        user.balance.coin = newBalance;
+        user.save().catch(err => console.error("Error saving user data:", err));
 
-    let embed = await bjUtil.generateEmbed(int.user, client, color, emoji, dealer, player, bet, winner, bet);
+        // Generate and send the final result embed
+        const embed = bjUtil.generateEmbed(
+            int.user, client, color, emoji, dealer, player, bet, winner, bet, generalMessages, blackjackMessages
+        );
 
-    activeGames.delete(int.user.id);
-    msg.edit({
-        embeds: [embed],
-        components: [
-            new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setCustomId('hit').setLabel('Hit').setStyle(1).setDisabled(true),
-                new ButtonBuilder().setCustomId('stand').setLabel('Stand').setStyle(2).setDisabled(true)
-            ),
-        ],
+        activeGames.delete(int.user.id);
+
+        msg.edit({ embeds: [embed], components: [] }).catch(console.error);
+    }).catch(err => {
+        console.error("Error fetching user data:", err);
     });
 }
+
 

@@ -63,8 +63,8 @@ const cardsf = [
 const random = require('random-number-csprng');
 const DEALER = '<:DEALERBLACKJACK:1283852034784886885>';
 exports.randCard = randCard;
-async function randCard(deck, type) {
-    let card = deck.splice(await random(0, deck.length - 1), 1)[0];
+function randCard(client, deck, type) {
+    let card = deck.splice(client.utils.getRandomNumber(0, deck.length - 1), 1)[0];
     return { card: card, type: type };
 }
 
@@ -76,7 +76,7 @@ function initDeck(deck, player, dealer) {
 }
 
 exports.generateEmbed = generateEmbed;
-async function generateEmbed(author, client, color, emoji, dealer, player, bet, end, winnings) {
+function generateEmbed(author, client, color, emoji, dealer, player, bet, end, winnings, generalMessages, blackjackMessages) {
     let description = '';
     let endColor = '';
     let dealerValue = cardValue(dealer);
@@ -84,38 +84,36 @@ async function generateEmbed(author, client, color, emoji, dealer, player, bet, 
 
     if (end == 'w') {
         endColor = color.success;
-        description = `**You bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You won \`${client.utils.formatNumber(winnings)}\` ${emoji.coin}**`;
+        description = `You bet **${client.utils.formatNumber(bet)}** ${emoji.coin}\nYou won **${client.utils.formatNumber(winnings)}** ${emoji.coin}`;
     } else if (end == 'l') {
         endColor = color.danger;
-        description = `**You bet \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**\n**You lost \`${client.utils.formatNumber(bet)}\` ${emoji.coin}**`;
+        description = `You bet **${client.utils.formatNumber(bet)}** ${emoji.coin}\nYou lost **${client.utils.formatNumber(bet)}** ${emoji.coin}`;
     } else if (end == 'tb') {
         endColor = color.blue;
-        description = '**You both bust!**';
+        description = 'You both **bust!**';
     } else if (end == 't') {
         endColor = color.blue;
-        description = '**You tied!**';
+        description = 'You **tied!**';
     } else {
         endColor = color.main;
         dealerValue.points = dealerValue.shownPoints + '+?';
     }
 
-    return {
-        color: endColor,
-        description: `# ${emoji.mainLeft} 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊 ${emoji.mainRight}\n` +
-            `The winner is the one who's closest to 21.\n` +
-            `## **DEALER ${DEALER} \`[${dealerValue.points}]\`**\n` +
-            `# \n${dealerValue.display}\n` +
-            `## **${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
-            `# ${playerValue.display}\n` +
-            `${description}`,
-        thumbnail: {
-            url: author.displayAvatarURL({ dynamic: true, size: 1024 }),
-        },
-        footer: {
-            text: !!end ? `${author.displayName}! your game is over.` : `${author.displayName}, your game is in progress!`,
+    return client.embed()
+        .setColor(endColor)
+        .setThumbnail(author.displayAvatarURL({ dynamic: true, size: 1024 }))
+        .setDescription(
+            generalMessages.title.replace('%{mainLeft}', emoji.mainLeft).replace('%{title}', blackjackMessages.title).replace('%{mainRight}', emoji.mainRight) +
+                `The winner is the one who's closest to 21.\n` +
+                `## **DEALER ${DEALER} \`[${dealerValue.points}]\`**\n` +
+                `# \n${dealerValue.display}\n` +
+                `## **${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
+                `# ${playerValue.display}\n` +
+                `${description}`)
+        .setFooter({
+            text: !end ? generalMessages.gameInProgress.replace('%{user}', author.displayName) : generalMessages.gameOver.replace('%{user}', author.displayName),
             iconURL: author.displayAvatarURL(),
-        },
-    };
+        })
 }
 
 exports.cardValue = cardValue;
