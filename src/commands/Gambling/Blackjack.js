@@ -100,7 +100,12 @@ function blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessag
         const standButton = client.utils.fullOptionButton('stand', '', blackjackMessages.stand, 2);
         const row = client.utils.createButtonRow(hitButton, standButton);
 
-        ctx.sendMessage({ embeds: [embed], components: [row] }).then(msg => {
+        ctx.sendMessage({ embeds: [embed], components: [] }).then(msg => {
+            setTimeout(() => {
+                msg.edit({ embeds: [embed], components: [row] }).catch(err => {
+                    console.error("Failed to disable the buttons:", err);
+                });
+            }, 1000);
             const collector = msg.createMessageComponentCollector({
                 filter: async int => {
                     if (int.user.id === ctx.author.id) return true;
