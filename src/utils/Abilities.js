@@ -31,7 +31,6 @@ module.exports = class Ability {
             const joinRoles = await JoinRolesSchema.findOne({ id: member.guild.id, isActive: true });
             const inviteTracker = await InviteTrackerSchema.findOne({ id: member.guild.id, isActive: true });
 
-
             if (welcomeMessage) {
                 const { channel, content, message, isEmbed } = welcomeMessage;
                 const welcomeChannel = member.guild.channels.cache.get(channel);
@@ -57,6 +56,10 @@ module.exports = class Ability {
             if (joinRoles) {
                 const { userRoles, botRoles } = joinRoles;
                 const rolesToAssign = member.user.bot ? botRoles : userRoles;
+
+                if(!rolesToAssign) {
+                    return;
+                }
 
                 await Promise.all(
                     rolesToAssign.map(async (roleId) => {
