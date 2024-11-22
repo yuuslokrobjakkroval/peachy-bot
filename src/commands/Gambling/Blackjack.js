@@ -94,48 +94,65 @@ function initBlackjack(ctx, client, color, emoji, bet, generalMessages, blackjac
 
 function blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessages, blackjackMessages) {
     try {
-        let embed = bjUtil.generateEmbed(ctx.author, client, color, emoji, dealer, player, bet, '', '', generalMessages, blackjackMessages);
+        // First embed with GIF
+        let embed = client.embed()
+            .setColor(color.main)
+            .setImage('https://i.imgur.com/lKe4ssI.gif');
 
-        const hitButton = client.utils.fullOptionButton('hit', '', blackjackMessages.hit, 1);
-        const standButton = client.utils.fullOptionButton('stand', '', blackjackMessages.stand, 2);
-        const row = client.utils.createButtonRow(hitButton, standButton);
-
-        ctx.sendMessage({ embeds: [embed], components: [] }).then(msg => {
+        ctx.sendDeferMessage({
+            embeds: [embed],
+        }).then(msg => {
+            // Wait 2.4 seconds before sending the next embed
             setTimeout(() => {
-                msg.edit({ embeds: [embed], components: [row] }).catch(err => {
-                    console.error("Failed to disable the buttons:", err);
+                // New embed after 2.4 seconds
+                embed = bjUtil.generateEmbed(ctx.author, client, color, emoji, dealer, player, bet, '', '', generalMessages, blackjackMessages);
+
+                const hitButton = client.utils.fullOptionButton('hit', '', blackjackMessages.hit, 1);
+                const standButton = client.utils.fullOptionButton('stand', '', blackjackMessages.stand, 2);
+                const row = client.utils.createButtonRow(hitButton, standButton);
+
+                // Edit the message to update the embed and components
+                msg.edit({
+                    embeds: [embed],
+                    components: [row]
+                }).then(msg => {
+                    const collector = msg.createMessageComponentCollector({
+                        filter: async int => {
+                            if (int.user.id === ctx.author.id) return true;
+                            else {
+                                await int.reply({
+                                    ephemeral: true,
+                                    content: `This button is controlled by **${ctx.author.displayName}**!`
+                                });
+                                return false;
+                            }
+                        },
+                        time: 60000,
+                    });
+
+                    collector.on('collect', int => {
+                        if (int.customId === 'hit') {
+                            int.deferUpdate().then(() => {
+                                hit(int, client, color, emoji, player, dealer, msg, bet, collector, generalMessages, blackjackMessages);
+                            });
+                        } else if (int.customId === 'stand') {
+                            int.deferUpdate().then(() => {
+                                collector.stop('done');
+                                stop(int, client, color, emoji, player, dealer, msg, bet, true, generalMessages, blackjackMessages);
+                            });
+                        }
+                    });
+
+                    collector.on('end', () => {
+                        activeGames.delete(ctx.author.id);
+                        msg.edit({ components: [] });
+                    });
+                }).catch(err => {
+                    console.error("Failed to edit the message:", err);
                 });
-            }, 2500);
-            const collector = msg.createMessageComponentCollector({
-                filter: async int => {
-                    if (int.user.id === ctx.author.id) return true;
-                    else {
-                        await int.reply({ ephemeral: true, content: `This button is controlled by **${ctx.author.displayName}**!` });
-                        return false;
-                    }
-                },
-                time: 60000,
-            });
-
-            collector.on('collect', int => {
-                if (int.customId === 'hit') {
-                    int.deferUpdate().then(() => {
-                        hit(int, client, color, emoji, player, dealer, msg, bet, collector, generalMessages, blackjackMessages);
-                    });
-                } else if (int.customId === 'stand') {
-                    int.deferUpdate().then(() => {
-                        collector.stop('done');
-                        stop(int, client, color, emoji, player, dealer, msg, bet,true, generalMessages, blackjackMessages);
-                    });
-                }
-            });
-
-            collector.on('end', () => {
-                activeGames.delete(ctx.author.id);
-                msg.edit({ components: [] });
-            });
+            }, 2400); // 2.4 second delay before editing the embed
         }).catch(err => {
-            console.error("Failed to send the message:", err);
+            console.error("Failed to send the initial message:", err);
         });
     } catch (err) {
         console.error("Error in blackjack function:", err);
