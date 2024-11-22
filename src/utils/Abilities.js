@@ -108,7 +108,7 @@ module.exports = class Ability {
                                         embeds: trackerEmbed ? [trackerEmbed] : []
                                     });
                                 }  else {
-                                    trackingChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '' });
+                                    trackingChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content, invite, inviter) : '' });
                                 }
                             }
                             break;
