@@ -52,7 +52,7 @@ module.exports = class GuildCreate extends Event {
                     const inverter = guild.preferredLocale || 'Unknown';
 
                     const embed = client.embed()
-                        .setColor('Green')
+                        .setColor(client.color.success)
                         .setAuthor({ name: guild.name, iconURL: guild.iconURL({ format: 'jpeg' }) })
                         .setDescription(`**${guild.name}** has been invited to the bot!`)
                         .setThumbnail(guild.iconURL({ format: 'jpeg' }))

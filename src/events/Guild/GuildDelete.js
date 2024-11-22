@@ -7,52 +7,32 @@ module.exports = class GuildDelete extends Event {
         });
     }
 
-    async run(guild) {
+    run(guild) {
         let owner;
         owner = guild.members.cache.get(guild?.ownerId);
-
         if (!owner) {
-            try {
-                owner = await guild.fetchOwner();
-            } catch {
+            guild.fetchOwner().then(fetchedOwner => {
+                owner = fetchedOwner;
+                sendGuildInfo(this.client, guild, owner);
+            }).catch(() => {
                 owner = { user: { tag: 'Unknown#0000' } };
-            }
-        }
-
-        // Attempt to fetch the user who removed the bot
-        let remover = { tag: 'Unknown', id: 'Unknown' };
-        try {
-            const auditLogs = await guild.fetchAuditLogs({
-                limit: 1,
-                type: 'BOT_REMOVE',
+                sendGuildInfo(this.client, guild, owner);
             });
-            const logEntry = auditLogs.entries.first();
-
-            if (logEntry && logEntry.target.id === this.client.user.id) {
-                remover = {
-                    tag: logEntry.executor.tag,
-                    id: logEntry.executor.id,
-                };
-            }
-        } catch (err) {
-            console.error("Could not fetch audit logs:", err);
+        } else {
+            sendGuildInfo(this.client, guild, owner);
         }
 
-        sendGuildInfo(this.client, guild, owner, remover);
-
-        // Helper function to send guild leave information
-        function sendGuildInfo(client, guild, owner, remover) {
-            const channel = client.channels.cache.get(client.config.channel.log);
+        function sendGuildInfo(client, guild, owner) {
+            const channel = this.client.channels.cache.get(this.client.config.channel.log);
             if (!channel) {
                 console.log('Log channel not found!');
                 return;
             }
-
             const memberCount = guild.memberCount ? guild.memberCount.toString() : 'Unknown';
 
             // Build the embed message
             const embed = client.embed()
-                .setColor('Red')
+                .setColor(client.color.danger)
                 .setAuthor({ name: guild.name, iconURL: guild.iconURL({ format: 'jpeg' }) })
                 .setDescription(`**${guild.name}** has removed the bot.`)
                 .setThumbnail(guild.iconURL({ format: 'jpeg' }))
@@ -61,7 +41,6 @@ module.exports = class GuildDelete extends Event {
                     { name: 'ID', value: guild.id, inline: true },
                     { name: 'Members', value: memberCount, inline: true },
                     { name: 'Created At', value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`, inline: true },
-                    { name: 'Removed By', value: `${remover.tag} (${remover.id})`, inline: true },
                 ])
                 .setTimestamp()
                 .setFooter({ text: 'Sorry to see you go!', iconURL: client.user.displayAvatarURL() });
