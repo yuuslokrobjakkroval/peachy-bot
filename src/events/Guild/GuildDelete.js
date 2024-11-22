@@ -23,7 +23,7 @@ module.exports = class GuildDelete extends Event {
         }
 
         function sendGuildInfo(client, guild, owner) {
-            const channel = this.client.channels.cache.get(this.client.config.channel.log);
+            const channel = client.channels.cache.get(client.config.channel.log);
             if (!channel) {
                 console.log('Log channel not found!');
                 return;
