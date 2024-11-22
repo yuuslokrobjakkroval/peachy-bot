@@ -177,7 +177,7 @@ module.exports = class InteractionCreate extends Event {
             await channel.send({embeds: [embed]}).catch(() => console.error('Error sending log message'));
           }
 
-          await command.run(this.client, ctx, ctx.args, color, emoji, language);
+          command.run(this.client, ctx, ctx.args, color, emoji, language);
         } catch (error) {
           console.error(`Error handling command ${interaction.commandName}:`, error);
           await interaction.reply({

@@ -399,7 +399,7 @@ module.exports = class MessageCreate extends Event {
                     .setTimestamp();
                 channel.send({embeds: [embed]}).catch(() => console.error('Error sending log message'));
               }
-              return command.run(this.client, ctx, ctx.args, color, emoji, language);
+              command.run(this.client, ctx, ctx.args, color, emoji, language);
             } catch (error) {
               console.error('Error executing command:', error);
               BotLog.send(this.client, `An error occurred: \`${error.message}\``, 'error');
