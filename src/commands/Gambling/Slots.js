@@ -2,7 +2,7 @@ const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const emojiImage = require("../../utils/Emoji");
 
-const maxAmount = 200000;
+const maxAmount = 30000;
 
 module.exports = class Slots extends Command {
 	constructor(client) {
@@ -15,7 +15,7 @@ module.exports = class Slots extends Command {
 			},
 			category: 'gambling',
 			aliases: ['slot', 's'],
-			cooldown: 3,
+			cooldown: 4,
 			args: false,
 			permissions: {
 				dev: false,
