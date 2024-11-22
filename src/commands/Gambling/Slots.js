@@ -15,7 +15,7 @@ module.exports = class Slots extends Command {
 			},
 			category: 'gambling',
 			aliases: ['slot', 's'],
-			cooldown: 4,
+			cooldown: 3,
 			args: false,
 			permissions: {
 				dev: false,
@@ -96,22 +96,22 @@ module.exports = class Slots extends Command {
 					rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
 				}
 			} else {
-				if (rand <= 12) { // 12% for baseCoins
+				if (rand <= 18) { // 12% for baseCoins
 					win = baseCoins;
 					rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-				} else if (rand <= 18) { // 6% for baseCoins * 2
+				} else if (rand <= 26) { // 6% for baseCoins * 2
 					win = baseCoins * 2;
 					rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-				} else if (rand <= 23) { // 5% for baseCoins * 3
+				} else if (rand <= 31) { // 5% for baseCoins * 3
 					win = baseCoins * 3;
 					rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-				} else if (rand <= 27) { // 4% for baseCoins * 4
+				} else if (rand <= 35) { // 4% for baseCoins * 4
 					win = baseCoins * 4;
 					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-				} else if (rand <= 30) { // 3% for baseCoins * 5
+				} else if (rand <= 38) { // 3% for baseCoins * 5
 					win = baseCoins * 5;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 32) { // 2% for baseCoins * 10
+				} else if (rand <= 40) { // 2% for baseCoins * 10
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
 				} else { // 60% chance to lose
