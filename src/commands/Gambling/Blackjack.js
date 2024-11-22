@@ -138,12 +138,13 @@ function blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessag
                         } else if (int.customId === 'stand') {
                             int.deferUpdate().then(() => {
                                 collector.stop('done');
-                                stop(int, client, color, emoji, player, dealer, msg, bet, true, generalMessages, blackjackMessages);
+                                return stop(int, client, color, emoji, player, dealer, msg, bet, true, generalMessages, blackjackMessages);
                             });
                         }
                     });
 
-                    collector.on('end', () => {
+                    collector.on('end', (collected, reason) => {
+                        if (reason === 'done') return;
                         activeGames.delete(ctx.author.id);
                         const embed = client.embed()
                             .setColor(color.warning)
@@ -162,7 +163,7 @@ function blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessag
                 }).catch(err => {
                     console.error("Failed to edit the message:", err);
                 });
-            }, 2800); // 2.4 second delay before editing the embed
+            }, 2800); // 2.8second delay before editing the embed
         }).catch(err => {
             console.error("Failed to send the initial message:", err);
         });
