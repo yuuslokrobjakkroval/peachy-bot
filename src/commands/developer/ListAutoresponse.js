@@ -30,7 +30,7 @@ module.exports = class ListAutoResponse extends Command {
         const responseDoc = await Response.findOne({ guildId });
 
         if (!responseDoc || !responseDoc.autoresponse || responseDoc.autoresponse.length === 0) {
-            return ctx.sendErrorMessage(client, ctx, 'No autoresponses found for this guild.', color);
+            return client.utils.sendErrorMessage(client, ctx, 'No autoresponses found for this guild.', color);
         }
 
         // Map autoresponse entries to include ID, Trigger, and Response
