@@ -145,12 +145,24 @@ function blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessag
 
                     collector.on('end', () => {
                         activeGames.delete(ctx.author.id);
-                        msg.edit({ components: [] });
+                        const embed = client.embed()
+                            .setColor(color.warning)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', blackjackMessages.title)
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                `⏳ **Time is up** !!! You didn't click the button in time.`)
+                            .setFooter({
+                                text: `${ctx.author.displayName}, please start again`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            })
+                        msg.edit({ embeds: [embed], components: [] });
                     });
                 }).catch(err => {
                     console.error("Failed to edit the message:", err);
                 });
-            }, 2400); // 2.4 second delay before editing the embed
+            }, 2800); // 2.4 second delay before editing the embed
         }).catch(err => {
             console.error("Failed to send the initial message:", err);
         });
