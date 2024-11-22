@@ -27,7 +27,7 @@ module.exports = class Slots extends Command {
 				{
 					name: 'amount',
 					description: 'The baseCoins you want to bet.',
-					type: 10,
+					type: 3,
 					required: true,
 				},
 			],

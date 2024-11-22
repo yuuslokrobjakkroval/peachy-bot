@@ -9,9 +9,7 @@ module.exports = class GuildCreate extends Event {
     }
 
     run(guild) {
-        const channelId = '1289803142606622771';
         let owner;
-
         owner = guild.members.cache.get(guild?.ownerId);
         if (!owner) {
             guild.fetchOwner().then(fetchedOwner => {
@@ -26,7 +24,7 @@ module.exports = class GuildCreate extends Event {
         }
 
         function sendGuildInfo(client, guild, owner) {
-            const channel = client.channels.cache.get(channelId);
+            const channel = client.channels.cache.get(client.config.channel.log);
             if (!channel) {
                 console.log('Channel not found!');
                 return;
@@ -46,9 +44,12 @@ module.exports = class GuildCreate extends Event {
                 return channel.send("Sorry, I don't have permission to create an invite link in this channel.").catch(console.error);
             }
 
-            inviteChannel.createInvite({ maxAge: 0, maxUses: 5, reason: `Requested by Peachy Dev` })
+            inviteChannel.createInvite({ maxAge: 0, maxUses: 5, reason: 'Requested by Peachy Dev' })
                 .then(invite => {
                     let inviteLink = invite?.url || `https://discord.gg/${invite?.code}`;
+
+                    // Add the inverter logic (example: guild's region as a placeholder for "Inverter")
+                    const inverter = guild.preferredLocale || 'Unknown';
 
                     const embed = client.embed()
                         .setColor('Green')
@@ -61,6 +62,7 @@ module.exports = class GuildCreate extends Event {
                             { name: 'Members', value: memberCount, inline: true },
                             { name: 'Created At', value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`, inline: true },
                             { name: 'Invite Link', value: inviteLink, inline: true },
+                            { name: 'Inverter', value: inverter, inline: true }, // New field added here
                         ])
                         .setTimestamp()
                         .setFooter({ text: 'Thank you for inviting me!', iconURL: client.user.displayAvatarURL() });

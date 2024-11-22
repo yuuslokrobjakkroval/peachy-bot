@@ -36,7 +36,11 @@ module.exports = class Cmd extends Command {
     run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const blackjackMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.blackjackMessages;
-        client.utils.getUser(ctx.author.id).then(user => {
+
+        const interaction = ctx.isInteraction ? ctx.interaction : null;
+        const userId = ctx.author.id;
+
+        client.utils.getUser(userId).then(user => {
 
             if (!user) {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
@@ -52,7 +56,7 @@ module.exports = class Cmd extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
             }
 
-            let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
+            let amount = ctx.isInteraction ? interaction.options.getString('amount') || '1' : args[0] || '1';
             if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
                 const amountMap = {all: coin, half: Math.ceil(coin / 2)};
                 if (amount in amountMap) {
@@ -69,6 +73,8 @@ module.exports = class Cmd extends Command {
             user.save().catch(err => console.error("Error saving user data:", err));
 
             activeGames.set(ctx.author.id, true);
+
+            if (interaction) interaction.deferReply();
 
             initBlackjack(ctx, client, color, emoji, baseCoins, generalMessages, blackjackMessages);
         }).catch(err => {
@@ -130,8 +136,6 @@ function blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessag
         console.error("Error in blackjack function:", err);
     }
 }
-
-
 
 function hit(int, client, color, emoji, player, dealer, msg, bet, collector, generalMessages, blackjackMessages) {
     let tdeck = bjUtil.initDeck(deck.slice(0), player, dealer);
