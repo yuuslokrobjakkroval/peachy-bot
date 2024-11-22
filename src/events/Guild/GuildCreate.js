@@ -1,3 +1,5 @@
+const { Event } = require('../../structures/index.js');
+
 module.exports = class GuildCreate extends Event {
     constructor(client, file) {
         super(client, file, {
@@ -42,7 +44,7 @@ module.exports = class GuildCreate extends Event {
                     { name: 'ID', value: guild.id, inline: true },
                     { name: 'Members', value: memberCount, inline: true },
                     { name: 'Created At', value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`, inline: true },
-                    { name: 'Inviter', value: inviter, inline: true }, // Add inviter here
+                    { name: 'Inviter', value: inviter ? inviter : 'Unknown', inline: true }, // Add inviter here
                 ])
                 .setTimestamp()
                 .setFooter({ text: 'Thank you for inviting me!', iconURL: client.user.displayAvatarURL() });
