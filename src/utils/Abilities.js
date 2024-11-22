@@ -221,11 +221,11 @@ module.exports = class Ability {
             invitername: inviter?.username || "Unknown",
             invitermention: inviter ? `<@${inviter.id}>` : "N/A",
             inviteravatarurl: inviter?.displayAvatarURL() || "N/A",
-            // invitertotalinvites: inviter?.totalInvites || 0,
-            // inviterfakeinvites: inviter?.fakeInvites || 0,
-            // inviterleftinvites: inviter?.leftInvites || 0,
-            // inviterjoinedinvites: inviter?.joinedInvites || 0,
-            // inviterbonusinvites: inviter?.bonusInvites || 0,
+            invitertotalinvites: inviter?.totalInvites || 0,
+            inviterfakeinvites: inviter?.fakeInvites || 0,
+            inviterleftinvites: inviter?.leftInvites || 0,
+            inviterjoinedinvites: inviter?.joinedInvites || 0,
+            inviterbonusinvites: inviter?.bonusInvites || 0,
         };
     }
 
