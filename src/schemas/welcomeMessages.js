@@ -23,11 +23,24 @@ const MessageSchema = new Schema({
     },
 });
 
+const ImageSchema = new Schema({
+    layout: { type: String, default: null },
+    avatarShape: { type: String, default: null },
+    circleColor: { type: String, default: '#DFF2EB' },
+    feature: { type: String, default: null },
+    featureColor: { type: String, default: '#00D1D1' },
+    usernameColor: { type: String, default: '#333333' },
+    backgroundImage: { type: String, default: null },
+    message: { type: String, default: null },
+    messageColor: { type: String, default: '#333333' },
+});
+
 const WelcomeMessagesSchema = new Schema({
     id: { type: String, default: null, index: true },
     channel: { type: String, default: null },
     content: { type: String, default: '' },
     message: { type: MessageSchema, default: () => ({})},
+    image: { type: ImageSchema, default: () => ({})},
     isActive: { type: Boolean, default: true },
     isEmbed: { type: Boolean, default: false },
 }, { timestamps: { createdAt: true, updatedAt: true } });

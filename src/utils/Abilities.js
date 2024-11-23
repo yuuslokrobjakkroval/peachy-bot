@@ -1,4 +1,5 @@
-const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, Permissions, PermissionsBitField} = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, Permissions, PermissionsBitField, AttachmentBuilder } = require('discord.js');
+const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const Users = require('../schemas/user');
 const WelcomeSchema = require("../schemas/welcomeMessages");
 const AutoResponseSchema = require("../schemas/response");
@@ -8,6 +9,10 @@ const GoodByeMessagesSchema = require("../schemas/goodByeMessages");
 const moment = require("moment");
 
 let inviteData = {};
+
+GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Roman.otf', 'Kelvinch-Roman');
+GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Bold.otf', 'Kelvinch-Bold');
+GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-BoldItalic.otf', 'Kelvinch-SemiBoldItalic');
 
 module.exports = class Ability {
     static async catchInvites(client) {
@@ -33,7 +38,7 @@ module.exports = class Ability {
             const inviteTracker = await InviteTrackerSchema.findOne({ id: member.guild.id, isActive: true });
 
             if (welcomeMessage) {
-                const { channel, content, message, isEmbed } = welcomeMessage;
+                const { channel, content, message, image, isEmbed } = welcomeMessage;
                 const welcomeChannel = member.guild.channels.cache.get(channel);
 
                 if (!welcomeChannel) {
@@ -49,7 +54,8 @@ module.exports = class Ability {
                             embeds: welcomeEmbed ? [welcomeEmbed] : []
                         });
                     } else {
-                        welcomeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '' });
+                        const files = await client.abilities.getBackgroundImage(client, member, image);
+                        welcomeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '', files: files ? [files] : [] });
                     }
                 }
             }
@@ -290,102 +296,87 @@ module.exports = class Ability {
         }
     }
 
-    // static getWelcomeMessage(client, member) {
-    //     const memberCount = member.guild.memberCount;
-    //     const guildName = member.guild.name;
-    //
-    //     return client.embed()
-    //         .setColor(client.color.main)
-    //         .setDescription(`# **WELCOME TO ${guildName}** ${emoji.main.signature}\n\n${emoji.border.topLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.topRight}
-    //
-    //         > **${emoji.channel.announce}** : <#${globalConfig.channel.announcement}>
-    //         > **${emoji.channel.rule}** : <#${globalConfig.channel.rule}>
-    //         > **${emoji.channel.role}** : <#${globalConfig.channel.role}>
-    //         > **${emoji.channel.booster}** : <#${globalConfig.channel.booster}>
-    //         > **${emoji.channel.giveaway}** : <#${globalConfig.channel.giveaways}>
-    //         \n${emoji.border.bottomLeft}   ${client.utils.getLoopElement(emoji.border.bottomMiddle, 12)}   ${emoji.border.bottomRight}\n\n**USER INFO** ${member}\n\n**NOW WE HAVE ${memberCount} MEMBERS**
-    //     `)
-    //         .setImage('https://i.imgur.com/MTOqT51.jpg')
-    //         .setFooter({text: 'We hope you enjoy your stay!'})
-    //         .setTimestamp();
-    // }
+    static async getBackgroundImage(client, member, data) {
+        const width = 800; // Set canvas width
+        const height = 450; // Set canvas height
 
-    // static async getInviteMessage(client, member, invite, inviter) {
-    //     const memberCount = member.guild.memberCount;
-    //     const accountCreationDate = moment(member.user.createdAt).fromNow();
-    //
-    //     let inviteMember = 0;
-    //     try {
-    //         const result = await InviteTrackerSchema.aggregate([
-    //             {
-    //                 $group: {
-    //                     _id: '$inviterId',
-    //                     totalUses: { $sum: '$uses' },
-    //                 }
-    //             },
-    //             {
-    //                 $project: {
-    //                     inviterId: '$_id',
-    //                     totalUses: 1,
-    //                 }
-    //             },
-    //             { $sort: { totalUses: -1 } }
-    //         ]).exec();
-    //
-    //         inviteMember = result.find(({ inviterId }) => inviterId === inviter.id)?.totalUses + 1 || 0;
-    //
-    //     } catch (err) {
-    //         console.error(err);
-    //     }
-    //
-    //     return client.embed()
-    //         .setColor(client.color.main)
-    //         .setThumbnail('https://i.imgur.com/jRjHmwW.gif')
-    //         .setDescription(`## **Heyoo ${member}** ${emoji.main.signature}\nYou have joined the server ${emoji.congratulation}`)
-    //         .addFields([
-    //             {
-    //                 name: `${emoji.inviteTracker.inviteBy} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑩𝒚`,
-    //                 value: `**${inviter.globalName ? inviter.globalName : inviter}**`,
-    //                 inline: false
-    //             },
-    //             {
-    //                 name: `${emoji.inviteTracker.inviteCode} 𝑰𝒏𝒗𝒊𝒕𝒆 𝑪𝒐𝒅𝒆`,
-    //                 value: `**https://discord.gg/${invite.code}**`,
-    //                 inline: false
-    //             },
-    //             {
-    //                 name: `${emoji.inviteTracker.inviteStats} 𝑰𝒏𝒗𝒊𝒕𝒆𝒅 𝑴𝒆𝒎𝒃𝒆𝒓`,
-    //                 value: `${inviteMember > 1 ? `${inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔` : `${inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓`}`,
-    //                 inline: false
-    //             },
-    //             {
-    //                 name: `${emoji.inviteTracker.memberCreated} 𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑫𝒂𝒕𝒆`,
-    //                 value: `${accountCreationDate}`,
-    //                 inline: false
-    //             },
-    //             {
-    //                 name: `${emoji.inviteTracker.inviteMember} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`,
-    //                 value: `${memberCount} 𝑴𝒆𝒎𝒃𝒆𝒓𝒔`,
-    //                 inline: false
-    //             }
-    //         ])
-    //         .setImage('https://i.imgur.com/XiZrSty.gif')
-    //         .setFooter({
-    //             text: `Invite Tracker | Powered by ${client.user.displayName}`,
-    //             iconURL: client.user.displayAvatarURL()
-    //         })
-    //         .setTimestamp();
-    // }
+        const canvas = createCanvas(width, height);
+        const ctx = canvas.getContext('2d');
 
-    // static getGoodbyeMessage(client, member) {
-    //     const memberCount = member.guild.memberCount;
-    //     const guildName = member.guild.name;
-    //
-    //     return client.embed()
-    //         .setColor(client.color.danger)
-    //         .setDescription(`# **Goodbye from ${guildName}** ${emoji.main.signature}\n\nWe're sad to see you go, <@${member.id}> ${emoji.channel.poof}\n\n**NOW WE HAVE ${memberCount} MEMBERS LEFT**`)
-    //         .setImage('https://i.imgur.com/t2s3fNF.jpg')
-    //         .setFooter({text: 'Goodbye! We hope to see you again soon.'})
-    //         .setTimestamp();
-    // }
+        let background
+        if (data.backgroundImage) {
+            background = await loadImage(data.backgroundImage);
+            ctx.drawImage(background, 0, 0, width, height);
+        } else {
+            ctx.fillStyle = '#DFF2EB';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        const avatar = await loadImage(member.displayAvatarURL({ format: 'png', size: 256 }));
+        const userAvatarSize = 128;
+        const userAvatarX = width / 2 - userAvatarSize / 2;
+        const userAvatarY = 100;
+
+        ctx.textAlign = 'center';
+
+        // Apply shadow for text
+        ctx.shadowColor = 'rgba(0, 0, 0, 1)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 1;
+
+        // FEATURE Text
+        ctx.font = 'Bold 72px Kelvinch-Bold, Arial';
+        ctx.fillStyle = data.featureColor;
+        ctx.fillText(data.feature, width / 2, 300);
+
+        // Username
+        ctx.font = '32px Kelvinch-Bold, Arial';
+        ctx.fillStyle = data.usernameColor;
+        ctx.fillText(client.utils.formatUpperCase(member.user.username), width / 2, 340);
+
+        // Message
+        ctx.font = '28px Kelvinch-Bold, Arial';
+        ctx.fillStyle = data.messageColor;
+        ctx.fillText(data.message, width / 2, 380);
+
+        // Reset shadow settings
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+
+        if (data.avatarShape === 'Square') {
+            const borderRadius = 16;
+            ctx.drawImage(avatar, userAvatarX, userAvatarY, userAvatarSize, userAvatarSize);
+            ctx.beginPath();
+            ctx.moveTo(userAvatarX + borderRadius, userAvatarY);
+            ctx.lineTo(userAvatarX + userAvatarSize - borderRadius, userAvatarY);
+            ctx.arcTo(userAvatarX + userAvatarSize, userAvatarY, userAvatarX + userAvatarSize, userAvatarY + borderRadius, borderRadius);
+            ctx.lineTo(userAvatarX + userAvatarSize, userAvatarY + userAvatarSize - borderRadius);
+            ctx.arcTo(userAvatarX + userAvatarSize, userAvatarY + userAvatarSize, userAvatarX + userAvatarSize - borderRadius, userAvatarY + userAvatarSize, borderRadius);
+            ctx.lineTo(userAvatarX + borderRadius, userAvatarY + userAvatarSize);
+            ctx.arcTo(userAvatarX, userAvatarY + userAvatarSize, userAvatarX, userAvatarY + userAvatarSize - borderRadius, borderRadius);
+            ctx.lineTo(userAvatarX, userAvatarY + borderRadius);
+            ctx.arcTo(userAvatarX, userAvatarY, userAvatarX + borderRadius, userAvatarY, borderRadius);
+            ctx.closePath();
+
+            ctx.lineWidth = 8;
+            ctx.strokeStyle = data.circleColor;
+            ctx.stroke();
+
+            ctx.clip();
+        } else {
+            ctx.drawImage(avatar, userAvatarX, userAvatarY, userAvatarSize, userAvatarSize);
+            ctx.beginPath();
+            ctx.arc(userAvatarX + userAvatarSize / 2, userAvatarY + userAvatarSize / 2, userAvatarSize / 2 + 2, 0, Math.PI * 2, true); // Slightly larger circle
+
+            ctx.lineWidth = 8;
+            ctx.strokeStyle = data.circleColor;
+            ctx.stroke();
+            ctx.clip();
+        }
+
+        return new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${data.feature}.png` });
+    }
 }
