@@ -350,7 +350,6 @@ module.exports = class Ability {
 
         if (data.avatarShape === 'Square') {
             const borderRadius = 16;
-            ctx.drawImage(avatar, userAvatarX, userAvatarY, userAvatarSize, userAvatarSize);
             ctx.beginPath();
             ctx.moveTo(userAvatarX + borderRadius, userAvatarY);
             ctx.lineTo(userAvatarX + userAvatarSize - borderRadius, userAvatarY);
@@ -368,8 +367,8 @@ module.exports = class Ability {
             ctx.stroke();
 
             ctx.clip();
-        } else {
             ctx.drawImage(avatar, userAvatarX, userAvatarY, userAvatarSize, userAvatarSize);
+        } else {
             ctx.beginPath();
             ctx.arc(userAvatarX + userAvatarSize / 2, userAvatarY + userAvatarSize / 2, userAvatarSize / 2 + 2, 0, Math.PI * 2, true); // Slightly larger circle
 
@@ -377,6 +376,7 @@ module.exports = class Ability {
             ctx.strokeStyle = data.circleColor;
             ctx.stroke();
             ctx.clip();
+            ctx.drawImage(avatar, userAvatarX, userAvatarY, userAvatarSize, userAvatarSize);
         }
 
         return new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${data.feature}.png` });
