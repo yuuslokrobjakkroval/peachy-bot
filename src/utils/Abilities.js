@@ -95,7 +95,7 @@ module.exports = class Ability {
 
             if (inviteTracker) {
                 try {
-                    const { channel, content, message, isEmbed } = inviteTracker;
+                    const { channel, content, message, image, isEmbed } = inviteTracker;
                     const currentInvites = await member.guild.invites.fetch();
                     const previousInvites = inviteData[member.guild.id] || new Map();
 
@@ -114,7 +114,8 @@ module.exports = class Ability {
                                         embeds: trackerEmbed ? [trackerEmbed] : []
                                     });
                                 }  else {
-                                    trackingChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content, invite, inviter) : '' });
+                                    const files = await client.abilities.getBackgroundImage(client, member, image);
+                                    trackingChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content, invite, inviter) : '', files: files ? [files] : [] });
                                 }
                             }
                             break;
@@ -166,7 +167,7 @@ module.exports = class Ability {
             const goodByeMessage = await GoodByeMessagesSchema.findOne({ id: member.guild.id, isActive: true });
 
             if (goodByeMessage) {
-                const { channel, content, message, isEmbed } = goodByeMessage;
+                const { channel, content, message, image, isEmbed } = goodByeMessage;
                 const goodbyeChannel = member.guild.channels.cache.get(channel);
 
                 if (goodbyeChannel){
@@ -177,7 +178,8 @@ module.exports = class Ability {
                             embeds: goodByeEmbed ? [goodByeEmbed] : []
                         });
                     } else {
-                        goodbyeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '' });
+                        const files = await client.abilities.getBackgroundImage(client, member, image);
+                        goodbyeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '', files: files ? [files] : [] });
                     }
                 }
             }
