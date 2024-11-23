@@ -71,6 +71,8 @@ module.exports = {
         bee: '<:BTITLE:1304106395209039932>',
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
+        cappuccino: '<:CAFEMAIN:1309842668200923228>',
+        fox: '<:FOXMAIN:1309852274339614780>',
     },
 
     // EXCHANGE

@@ -374,5 +374,35 @@ module.exports = [
         emoji: emoji.specialTheme.cucumber,
         available: ['use'],
         price: { buy: 1e8, sell: 15e6 },
+    },
+    {
+        id: 'st13',
+        name: 'Cappuccino Charm',
+        description: 'Bask in the cozy vibes of a warm cappuccino. Enjoy a palette of soft browns and creamy whites, accented with a frothy cappuccino cup emoji for that perfect café-inspired charm.',
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: false,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.cappuccino,
+        available: ['use'],
+        price: { buy: 1e8, sell: 15e6 },
+    },
+    {
+        id: 'st14',
+        name: 'Foxy Fun',
+        description: 'Unleash your playful side with this lively theme featuring vibrant oranges and subtle whites. The adorable fox emoji adds a dash of wild fun to your style!',
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: false,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.fox,
+        available: ['use'],
+        price: { buy: 1e8, sell: 15e6 },
     }
 ];

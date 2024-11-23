@@ -55,18 +55,8 @@ module.exports = {
         mainRight: '<:BSHOPRIGHT:1304112332640620564>',
     },
     heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
-    drink: {
-        guest: '<a:DRINKING:1271717032882077766>',
-    },
-    cake: {
-        birthday: '<a:PIXELCAKE:1272826868776702024>',
-        cupcake: '<:CUPCAKE:1272838036358565912>',
-        lemon: '<:LEMONCAKE:1272826776246026365>',
-        chocolate: '<:CHOCOLATECAKE:1272826811281182764>',
-        orange: '<:ORANGECAKE:1272826817912508456>',
-        white: '<:WHITECAKE:1272826828981010433>',
-        pink: '<:PINKCAKE:1272826839655645236>',
-    },
+    
+    
     time: {
         clock: '`⏰`',
         daily: '<:DAILY:1272008002228060221>',
