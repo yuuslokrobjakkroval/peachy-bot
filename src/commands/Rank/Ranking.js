@@ -101,7 +101,7 @@ module.exports = class Ranking extends Command {
             ]).exec();
 
             if (!users.length) {
-                return await client.utils.oops(client, ctx, rankingMessages.bal.noUsers, color);
+                return await client.utils.oops(client, ctx, rankingMessages.balance.noUsers, color);
             }
 
             const userPosition = users.findIndex(({ userId }) => userId === ctx.author.id) + 1;
@@ -118,7 +118,7 @@ module.exports = class Ranking extends Command {
             const pages = chunks.map((chunk, i) => {
                 return client
                     .embed()
-                    .setTitle(`${emoji.rank.owner} ${rankingMessages.bal.top} ${emoji.rank.owner}`)
+                    .setTitle(`${emoji.rank.owner} ${rankingMessages.balance.top} ${emoji.rank.owner}`)
                     .setColor(color.main)
                     .setDescription(`${userRank}\n${chunk.join('\n\n')}`)  // Include user rank message here
                     .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });

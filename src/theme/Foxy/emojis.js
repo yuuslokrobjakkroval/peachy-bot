@@ -9,7 +9,7 @@ module.exports = {
     gomaCongratulation: '<a:PEACHCONGRATULATIONS:1287987432947712010>',
     peachCongratulation: '<a:GOMACONGRATULATIONS:1287985458109747251>',
     top: '<a:TOP:1287634364095528971>',
-     tick: '<:YES:1302273199911731200>',
+    tick: '<:YES:1302273199911731200>',
     deny: '<:NO:1302273419957764168>',
     mark: '`❕`',
     plus: '``➕``',
@@ -46,13 +46,13 @@ module.exports = {
     update: '`📡`',
     tickets: '`🎫`',
     shop: {
-        mainLeft: '<:PEACHMIDATUM:1293259754998726736>',
-        mainRight: '<:GOMAMIDATUM:1293259742243721399>',
+        mainLeft: '<:FOXSHOPLEFT:1309861455369080862>',
+        mainRight: '<:FOXSHOPRIGHT:1309861461333377095>',
     },
     inventory: {
-        main: '<a:INVETORY:1287625502105800714>',
-        mainLeft: '<:INVENTORYLEFT:1287624821202620476>',
-        mainRight: '<:INVENTORIGHT:1287624805742542868>',
+        main: '<:SHOPMAIN:1309861780910243840>',
+        mainLeft: '<:FOXINVLEFT:1309862295723311124>',
+        mainRight: '<:FOXINVRIGHT:1309862302551380021>',
     },
     heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
     time: {

@@ -154,7 +154,7 @@
 			"cooldown": "Peachy is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
 		},
 		"rankingMessages": {
-			"bal": {
+			"balance": {
 				"noUsers": "No one has gained coins yet.",
 				"top": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇𝐘 𝐂𝐋𝐀𝐈𝐌"
 			},
