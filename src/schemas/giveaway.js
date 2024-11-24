@@ -19,4 +19,4 @@ const GiveawaySchema = new Schema({
     rerolledWinners: { type: [String], default: [] },
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
-module.exports = model('giveaway', GiveawaySchema);
+module.exports = model('giveaways', GiveawaySchema);

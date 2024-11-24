@@ -33,6 +33,10 @@ client.on('guildMemberRemove', async (member) => {
     return await client.abilities.getGoodByeMessage(client, member);
 });
 
+setInterval(async () => {
+    return await client.abilities.getSendMessage(client);
+}, 1000);
+
 setInterval(() => {
     const guild = client.guilds.cache.get(client.config.guildId);
     if (!guild) {

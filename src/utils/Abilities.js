@@ -2,6 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, Permi
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const Users = require('../schemas/user');
 const WelcomeSchema = require("../schemas/welcomeMessages");
+const SendMessageSchema = require("../schemas/sendMessage");
 const AutoResponseSchema = require("../schemas/response");
 const InviteTrackerSchema = require("../schemas/inviteTrackerMessages");
 const JoinRolesSchema = require("../schemas/joinRoles");
@@ -30,6 +31,43 @@ module.exports = class Ability {
             }
         }
     }
+
+    static async getSendMessage(client) {
+        try {
+            const sendMessage = await SendMessageSchema.findOne({ isActive: true });
+            if (!sendMessage) {
+                return
+            }
+            sendMessage.isActive = false;
+            await sendMessage.save();
+            const { guild, userId, feature } = sendMessage;
+            let server = client.guilds.cache.get(guild);
+            if (!server) {
+                return;
+            }
+
+            const member = server.members.cache.get(userId);
+            if (!member) {
+                return;
+            }
+
+            switch (feature) {
+                case 'welcome-message':
+                    await client.abilities.getWelcomeMessage(client, member);
+                    break;
+                case 'goodbye-message':
+                    await client.abilities.getGoodByeMessage(client, member);
+                    break;
+                default:
+                    return;
+            }
+
+
+        } catch (error) {
+            console.error('Error processing message:', error);
+        }
+    }
+
 
     static async getWelcomeMessage(client, member) {
         try {

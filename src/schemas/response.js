@@ -11,4 +11,4 @@ const ResponseSchema = new Schema({
     ]
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
-module.exports = model('Response', ResponseSchema);
+module.exports = model('responses', ResponseSchema);

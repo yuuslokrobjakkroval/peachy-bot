@@ -7,4 +7,4 @@ const FeedBackSchema = new Schema({
     timestamp: { type: Date, default: Date.now }
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
-module.exports = model('feedback', FeedBackSchema);
+module.exports = model('feedbacks', FeedBackSchema);

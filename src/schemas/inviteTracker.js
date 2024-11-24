@@ -9,4 +9,4 @@ const InviteSchema = new Schema({
     inviterTag: { type: String, required: true },
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
-module.exports = model('Invite', InviteSchema);
+module.exports = model('invites', InviteSchema);
