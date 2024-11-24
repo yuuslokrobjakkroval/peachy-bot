@@ -211,14 +211,14 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.cucumberCool.color;
                         emoji = emojiCucumber;
                         break;
-                    // case 'st13':
-                    //     color = themeConfig.cappuccinoCharm.color;
-                    //     emoji = emojiCappuccino;
-                    //     break;
-                    case 'st14':
-                        color = themeConfig.foxyFun.color;
-                        emoji = emojiFoxyFun;
+                    case 'st13':
+                        color = themeConfig.cappuccinoCharm.color;
+                        emoji = emojiCappuccino;
                         break;
+                    // case 'st14':
+                    //     color = themeConfig.foxyFun.color;
+                    //     emoji = emojiFoxyFun;
+                    //     break;
                     case 'peach':
                         color = themeConfig.peach.color;
                         emoji = emojiPeach;
