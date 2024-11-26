@@ -1,5 +1,6 @@
 const { Command } = require('../../structures');
 const Invite = require('../../schemas/inviteTracker');
+const globalEmoji = require('../../utils/Emoji');
 
 module.exports = class SyncInvites extends Command {
     constructor(client) {
@@ -36,7 +37,7 @@ module.exports = class SyncInvites extends Command {
         let processedGuilds = 0;
 
         // Initial progress message
-        const progressMessage = await ctx.sendDeferMessage(`${emoji.loading} Synchronizing invites...`);
+        const progressMessage = await ctx.sendDeferMessage(`${emoji.loading ? emoji.loading : globalEmoji.loading} Synchronizing invites...`);
 
         for (const guild of guilds) {
             try {
@@ -93,7 +94,7 @@ module.exports = class SyncInvites extends Command {
 
             // Update progress
             processedGuilds++;
-            await progressMessage.edit(`${emoji.loading} Synchronizing invites... (${processedGuilds}/${totalGuilds})`);
+            await progressMessage.edit(`${emoji.loading ? emoji.loading : globalEmoji.loading} Synchronizing invites... (${processedGuilds}/${totalGuilds})`);
         }
 
         // Final summary message

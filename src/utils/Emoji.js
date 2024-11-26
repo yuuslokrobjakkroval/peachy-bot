@@ -13,6 +13,7 @@ module.exports = {
 
     // VERIFY
     normal: '<:NORMAL:1294270096109211658>',
+    loading: '<a:LOADING:1311021680264482817>',
     verify: '<:VERIFY:1294514114856615947>',
 
     // SHOP
