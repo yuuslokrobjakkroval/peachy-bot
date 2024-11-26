@@ -129,7 +129,7 @@ module.exports = class Slots extends Command {
 			const initialEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
-				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ━━━»•» 🌺 «•«━\n ## **  「${emoji.slots.spin} ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ━»•» 🌺 «•«━━━\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
+				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔═══»•» 🌺 «•«═╗\n ## **  「${emoji.slots.spin} ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ╚═»•» 🌺 «•«═══╝\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
 				.setFooter({
 					text: `${ctx.author.displayName}, your game is in progress!`,
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
@@ -138,6 +138,13 @@ module.exports = class Slots extends Command {
 			ctx.sendMessage({embeds: [initialEmbed]}).then(initialMessage => {
 				ctx.msg = initialMessage; // Store the message object
 				// Update the user's balance immediately
+				`✰ ∵ ∴ ∵ ∴ 🌊 ∴ ∵ ∴ ∵ ✰
+
+╔═══ ✰ 🌊 ✰ ═══╗
+
+text here
+
+╚═══ ✰ 🌊 ✰ ═══╝`
 				Users.updateOne({userId: ctx.author.id}, {
 					$set: {
 						'balance.coin': newBalance,
@@ -148,7 +155,7 @@ module.exports = class Slots extends Command {
 			const spinEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
-				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ━━━»•» 🌺 «•«━\n ## **  「${rslots[0]} ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ━»•» 🌺 «•«━━━\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
+				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔═══»•» 🌺 «•«═╗\n ## **  「${rslots[0]} ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ╚═»•» 🌺 «•«═══╝\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
 				.setFooter({
 					text: `${ctx.author.displayName}, your game is in progress!`,
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
@@ -157,7 +164,7 @@ module.exports = class Slots extends Command {
 			const spinSecondEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
-				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ━━━»•» 🌺 «•«━\n ## **  「${rslots[0]} ${emoji.slots.spin} ${rslots[2]}」 **\n ### ━»•» 🌺 «•«━━━\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
+				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔═══»•» 🌺 «•«═╗\n ## **  「${rslots[0]} ${emoji.slots.spin} ${rslots[2]}」 **\n ### ╚═»•» 🌺 «•«═══╝\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n`)
 				.setFooter({
 					text: `${ctx.author.displayName}, your game is in progress!`,
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
@@ -166,7 +173,7 @@ module.exports = class Slots extends Command {
 			const resultEmbed = client.embed()
 				.setColor(color.main)
 				.setThumbnail(ctx.author.displayAvatarURL({dynamic: true, size: 1024}))
-				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ━━━»•» 🌺 «•«━\n ## **  「${rslots[0]} ${rslots[1]} ${rslots[2]}」 **\n ### ━»•» 🌺 «•«━━━\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n${win === 0 ? `and lost **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}` : `and won **${client.utils.formatNumber(win)}** ${emoji.coin}`}`)
+				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔═══»•» 🌺 «•«═╗\n ## **  「${rslots[0]} ${rslots[1]} ${rslots[2]}」 **\n ### ╚═»•» 🌺 «•«═══╝\n\nYou bet **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}\n${win === 0 ? `and lost **${client.utils.formatNumber(baseCoins)}** ${emoji.coin}` : `and won **${client.utils.formatNumber(win)}** ${emoji.coin}`}`)
 				.setFooter({
 					text: `${ctx.author.displayName}! your game is over.`,
 					iconURL: verify ? client.utils.emojiToImage(emojiImage.verify) : ctx.author.displayAvatarURL(),
