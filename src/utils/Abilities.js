@@ -64,7 +64,6 @@ module.exports = class Ability {
                 { $set: data },
                 { upsert: true }
             );
-            console.log(`Invite created and synced: ${invite.code}`);
         } catch (error) {
             console.error(`Failed to sync created invite: ${invite.code}`, error);
         }
@@ -73,7 +72,6 @@ module.exports = class Ability {
     static async getInviteDelete(invite) {
         try {
             await InviteSchema.deleteOne({ inviteCode: invite.code });
-            console.log(`Invite deleted and removed from DB: ${invite.code}`);
         } catch (error) {
             console.error(`Failed to delete invite from DB: ${invite.code}`, error);
         }

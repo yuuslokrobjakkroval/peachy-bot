@@ -4,11 +4,11 @@ const Invite = require('../../schemas/inviteTracker');
 module.exports = class SyncInvites extends Command {
     constructor(client) {
         super(client, {
-            name: 'fetchinvites',
+            name: 'syncinvites',
             description: {
                 content: 'Sync all invite codes for the guild or all guilds.',
-                examples: ['fetchinvites', 'fetchinvites all'],
-                usage: 'fetchinvites [all]',
+                examples: ['syncinvites', 'syncinvites all'],
+                usage: 'syncinvites [all]',
             },
             category: 'utility',
             aliases: ['si'],
