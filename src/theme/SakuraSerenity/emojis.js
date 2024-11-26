@@ -45,6 +45,7 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
+    verify: '<:SAKURAVERIFY:1295967228608385085>',
     shop: {
         mainLeft: '<:PEACHMIDATUM:1293259754998726736>',
         mainRight: '<:GOMAMIDATUM:1293259742243721399>',
