@@ -118,7 +118,7 @@ module.exports = class SyncInvites extends Command {
         // Final response with pagination
         await progressMessage.delete();
         if (pages.length === 1) {
-            return ctx.send({ embeds: [pages[0]] });
+            return ctx.sendMessage({ embeds: [pages[0]] });
         } else {
             return client.utils.reactionPaginate(ctx, pages);
         }
