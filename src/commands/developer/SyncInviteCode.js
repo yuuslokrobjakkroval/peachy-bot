@@ -30,15 +30,19 @@ module.exports = class SyncInvites extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         const syncAll = args[0]?.toLowerCase() === 'all'; // Check if syncing all guilds
-        const guilds = syncAll ? client.guilds.cache.values() : [ctx.guild];
+        const guilds = syncAll ? [...client.guilds.cache.values()] : [ctx.guild];
+        const totalGuilds = guilds.length;
         const resultMessages = [];
+        let processedGuilds = 0;
+
+        // Initial progress message
+        const progressMessage = await ctx.sendDeferMessage(`${emoji.loading} Synchronizing invites...`);
 
         for (const guild of guilds) {
             try {
                 const invites = await guild.invites.fetch();
                 const inviteCodes = invites.map(invite => invite.code);
 
-                // Fetch and delete outdated invites from the database
                 const dbInvites = await Invite.find({ guildId: guild.id });
                 let removedCount = 0;
                 for (const dbInvite of dbInvites) {
@@ -80,12 +84,20 @@ module.exports = class SyncInvites extends Command {
                     resultMessages.push(`Guild **${guild.name}** synchronized successfully with no outdated invite codes.`);
                 }
             } catch (error) {
-                console.error(`Error syncing invites for guild ${guild.name}:`, error);
-                resultMessages.push(`Failed to sync invites for guild **${guild.name}**.`);
+                if (error.code === 50013) {
+                    resultMessages.push(`Guild **${guild.name}**: Insufficient permissions to fetch invites.`);
+                } else {
+                    resultMessages.push(`Guild **${guild.name}**: An error occurred during synchronization.`);
+                }
             }
+
+            // Update progress
+            processedGuilds++;
+            await progressMessage.edit(`${emoji.loading} Synchronizing invites... (${processedGuilds}/${totalGuilds})`);
         }
 
+        // Final summary message
         const summary = resultMessages.join('\n');
-        return client.utils.sendSuccessMessage(client, ctx, `${emoji.tick} **Invite Synchronization Summary:**\n${summary}`, color);
+        await progressMessage.edit(`${emoji.tick} **Invite Synchronization Summary:**\n${summary}`);
     }
 };
