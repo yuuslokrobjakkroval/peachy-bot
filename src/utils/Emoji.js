@@ -61,7 +61,7 @@ module.exports = {
     // THEME
     theme: {
         mysticCharm: '<a:MAINV2:1287988959606997012>',
-        oceanBreeze: '<:MAIN:1281847051860054016>',
+        oceanBreeze: '<:OMAIN:1310877632325353542>',
         halloween: '<:HECONOMY:1290645165391872020>',
         halloweenNew: '<:H2MAIN:1300675214182711357>',
     },
