@@ -38,7 +38,10 @@ module.exports = class Ability {
                     );
                 }
             } catch (error) {
-                console.error(`Failed to sync invites for guild: ${guild.name} (${guild.id})`, error);
+                if (error.code === 50013) {
+                    continue;
+                }
+                continue;
             }
         }
     }
