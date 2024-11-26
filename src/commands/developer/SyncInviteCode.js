@@ -37,7 +37,9 @@ module.exports = class SyncInvites extends Command {
         let processedGuilds = 0;
 
         // Initial progress message
-        const progressMessage = await ctx.sendDeferMessage(`${emoji.loading ? emoji.loading : globalEmoji.loading} Synchronizing invites...`);
+        const progressMessage = await ctx.sendDeferMessage(
+            `${emoji.loading || globalEmoji.loading} Synchronizing invites...`
+        );
 
         for (const guild of guilds) {
             try {
@@ -46,6 +48,7 @@ module.exports = class SyncInvites extends Command {
 
                 const dbInvites = await Invite.find({ guildId: guild.id });
                 let removedCount = 0;
+
                 for (const dbInvite of dbInvites) {
                     if (!inviteCodes.includes(dbInvite.inviteCode)) {
                         await dbInvite.deleteOne();
@@ -79,26 +82,45 @@ module.exports = class SyncInvites extends Command {
                 await Promise.all(invitePromises);
 
                 // Prepare a result message for the current guild
-                if (removedCount > 0) {
-                    resultMessages.push(`Guild **${guild.name}** removed **${removedCount}** outdated invite code(s) and synchronized successfully.`);
-                } else {
-                    resultMessages.push(`Guild **${guild.name}** synchronized successfully with no outdated invite codes.`);
-                }
+                const result = removedCount > 0
+                    ? `**${guild.name}** - Removed **${removedCount}** outdated invite code(s), synchronized successfully.`
+                    : `**${guild.name}** - Synchronized successfully, no outdated invite codes.`;
+
+                resultMessages.push(result);
             } catch (error) {
                 if (error.code === 50013) {
-                    resultMessages.push(`Guild **${guild.name}**: Insufficient permissions to fetch invites.`);
+                    resultMessages.push(`**${guild.name}** - Insufficient permissions to fetch invites.`);
                 } else {
-                    resultMessages.push(`Guild **${guild.name}**: An error occurred during synchronization.`);
+                    resultMessages.push(`**${guild.name}** - An error occurred during synchronization.`);
                 }
             }
 
             // Update progress
             processedGuilds++;
-            await progressMessage.edit(`${emoji.loading ? emoji.loading : globalEmoji.loading} Synchronizing invites... (${processedGuilds}/${totalGuilds})`);
+            await progressMessage.edit(
+                `${emoji.loading || globalEmoji.loading} Synchronizing invites... (${processedGuilds}/${totalGuilds})`
+            );
         }
 
-        // Final summary message
-        const summary = resultMessages.join('\n');
-        await progressMessage.edit(`${emoji.tick} **Invite Synchronization Summary:**\n${summary}`);
+        // Split results into pages
+        const chunks = client.utils.chunk(resultMessages, 10);
+        const pages = [];
+
+        for (let i = 0; i < chunks.length; i++) {
+            const embed = client.embed()
+                .setColor(color.main)
+                .setTitle('Invite Synchronization Summary')
+                .setDescription(chunks[i].join('\n\n'))
+                .setFooter({ text: `Page ${i + 1} of ${chunks.length}` });
+            pages.push(embed);
+        }
+
+        // Final response with pagination
+        await progressMessage.delete();
+        if (pages.length === 1) {
+            return ctx.send({ embeds: [pages[0]] });
+        } else {
+            return client.utils.reactionPaginate(ctx, pages);
+        }
     }
 };
