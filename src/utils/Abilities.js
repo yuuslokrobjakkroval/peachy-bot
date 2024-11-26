@@ -4,31 +4,73 @@ const Users = require('../schemas/user');
 const WelcomeSchema = require("../schemas/welcomeMessages");
 const SendMessageSchema = require("../schemas/sendMessage");
 const AutoResponseSchema = require("../schemas/response");
+const InviteSchema = require("../schemas/inviteTracker");
 const InviteTrackerSchema = require("../schemas/inviteTrackerMessages");
 const JoinRolesSchema = require("../schemas/joinRoles");
 const GoodByeMessagesSchema = require("../schemas/goodByeMessages");
 const moment = require("moment");
-
-let inviteData = {};
 
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Roman.otf', 'Kelvinch-Roman');
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Bold.otf', 'Kelvinch-Bold');
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-BoldItalic.otf', 'Kelvinch-SemiBoldItalic');
 
 module.exports = class Ability {
-    static async catchInvites(client) {
-        for (const [guildId, guild] of client.guilds.cache) {
+    static async syncInvites(client) {
+        const allGuilds = client.guilds.cache;
+        for (const [guildId, guild] of allGuilds) {
             try {
                 const invites = await guild.invites.fetch();
-                if (!invites) return;
-                inviteData[guildId] = new Map(invites.map(invite => [invite.code, invite.uses]));
 
-            } catch (error) {
-                if (error.code === 50013) {
-                    continue;
+                for (const invite of invites.values()) {
+                    const data = {
+                        guildId: guild.id,
+                        inviteCode: invite.code,
+                        uses: invite.uses,
+                        userId: [],
+                        inviterId: invite.inviter?.id || 'Unknown',
+                        inviterTag: invite.inviter?.tag || 'Unknown',
+                    };
+
+                    await InviteSchema.updateOne(
+                        { inviteCode: invite.code },
+                        { $set: data },
+                        { upsert: true }
+                    );
                 }
-                continue;
+            } catch (error) {
+                console.error(`Failed to sync invites for guild: ${guild.name} (${guild.id})`, error);
             }
+        }
+    }
+
+    static async getInviteCreate(invite) {
+        const data = {
+            guildId: invite.guild.id,
+            inviteCode: invite.code,
+            uses: invite.uses,
+            userId: [], // Populate as needed
+            inviterId: invite.inviter?.id || 'Unknown',
+            inviterTag: invite.inviter?.tag || 'Unknown',
+        };
+
+        try {
+            await InviteSchema.updateOne(
+                { inviteCode: invite.code },
+                { $set: data },
+                { upsert: true }
+            );
+            console.log(`Invite created and synced: ${invite.code}`);
+        } catch (error) {
+            console.error(`Failed to sync created invite: ${invite.code}`, error);
+        }
+    }
+
+    static async getInviteDelete(invite) {
+        try {
+            await InviteSchema.deleteOne({ inviteCode: invite.code });
+            console.log(`Invite deleted and removed from DB: ${invite.code}`);
+        } catch (error) {
+            console.error(`Failed to delete invite from DB: ${invite.code}`, error);
         }
     }
 
@@ -67,7 +109,6 @@ module.exports = class Ability {
             console.error('Error processing message:', error);
         }
     }
-
 
     static async getWelcomeMessage(client, member) {
         try {
@@ -135,32 +176,48 @@ module.exports = class Ability {
                 try {
                     const { channel, content, message, image, isEmbed } = inviteTracker;
                     const currentInvites = await member.guild.invites.fetch();
-                    const previousInvites = inviteData[member.guild.id] || new Map();
 
                     for (const invite of currentInvites.values()) {
-                        const previousUses = previousInvites.get(invite.code) || 0;
-                        if (invite.uses > previousUses) {
-                            const inviter = invite.inviter;
-                            previousInvites.set(invite.code, invite.uses);
+                        const previousInvite = await InviteSchema.findOne({ guildId: member.guild.id, inviteCode: invite.code });
 
+                        const previousUses = previousInvite ? previousInvite.uses : 0;
+
+                        if (invite.uses > previousUses) {
+                            await InviteSchema.updateOne(
+                                { guildId: member.guild.id, inviteCode: invite.code },
+                                { $set: { uses: invite.uses } },
+                                { upsert: true }
+                            );
+
+                            const inviter = invite.inviter;
                             const trackingChannel = member.guild.channels.cache.get(channel);
                             if (trackingChannel) {
-                                if(isEmbed) {
+                                if (isEmbed) {
                                     const trackerEmbed = await client.abilities.resultMessage(client, member, member.guild, message, invite, inviter);
                                     trackingChannel.send({
                                         content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '',
-                                        embeds: trackerEmbed ? [trackerEmbed] : []
+                                        embeds: trackerEmbed ? [trackerEmbed] : [],
                                     });
-                                }  else {
+                                } else {
                                     const files = await client.abilities.getBackgroundImage(client, member, image);
-                                    trackingChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content, invite, inviter) : '', files: files ? [files] : [] });
+                                    trackingChannel.send({
+                                        content: content ? await client.abilities.resultMessage(client, member, member.guild, content, invite, inviter) : '',
+                                        files: files ? [files] : [],
+                                    });
                                 }
                             }
+
                             break;
                         }
                     }
 
-                    inviteData[member.guild.id] = new Map([...previousInvites, ...currentInvites.map(invite => [invite.code, invite.uses])]);
+                    for (const invite of currentInvites.values()) {
+                        await InviteSchema.updateOne(
+                            { guildId: member.guild.id, inviteCode: invite.code },
+                            { $set: { uses: invite.uses } },
+                            { upsert: true }
+                        );
+                    }
                 } catch (error) {
                     console.error(`Failed to fetch or update invites for guild ${member.guild.name}:`, error);
                     if (error.code === 50013) {
@@ -168,6 +225,7 @@ module.exports = class Ability {
                     }
                 }
             }
+
         } catch (error) {
             console.error('Error processing message:', error);
         }

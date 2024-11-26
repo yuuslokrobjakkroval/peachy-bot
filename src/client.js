@@ -18,7 +18,7 @@ const clientOptions = {
 const client = new PeachyClient(clientOptions);
 
 client.once('ready', async () => {
-    return await client.abilities.catchInvites(client)
+    return await client.abilities.syncInvites(client)
 });
 
 client.on('guildMemberAdd', async (member) => {
@@ -30,7 +30,22 @@ client.on('messageCreate', async (message) => {
 });
 
 client.on('guildMemberRemove', async (member) => {
-    return await client.abilities.getGoodByeMessage(client, member);
+    console.log('guildMemberRemove triggered for:', member.user.tag);
+    console.log('Abilities:', client.abilities);
+    try {
+        await client.abilities.getGoodByeMessage(client, member);
+    } catch (error) {
+        console.error('Error in getGoodByeMessage:', error);
+    }
+});
+
+client.on('inviteCreate', async (invite) => {
+    await client.abilities.getInviteCreate(invite);
+});
+
+
+client.on('inviteDelete', async (invite) => {
+    await client.abilities.getInviteDelete(invite);
 });
 
 setInterval(async () => {
