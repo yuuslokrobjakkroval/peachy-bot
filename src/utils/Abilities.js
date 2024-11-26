@@ -24,6 +24,7 @@ module.exports = class Ability {
                 for (const invite of invites.values()) {
                     const data = {
                         guildId: guild.id,
+                        guildName: guild.name,
                         inviteCode: invite.code,
                         uses: invite.uses,
                         userId: [],
@@ -49,6 +50,7 @@ module.exports = class Ability {
     static async getInviteCreate(invite) {
         const data = {
             guildId: invite.guild.id,
+            guildName: invite.guild.name,
             inviteCode: invite.code,
             uses: invite.uses,
             userId: [], // Populate as needed
@@ -188,7 +190,7 @@ module.exports = class Ability {
                         if (invite.uses > previousUses) {
                             await InviteSchema.updateOne(
                                 { guildId: member.guild.id, inviteCode: invite.code },
-                                { $set: { uses: invite.uses } },
+                                { $set: { uses: invite.uses, guildName: member.guild.name } },
                                 { upsert: true }
                             );
 
@@ -217,7 +219,7 @@ module.exports = class Ability {
                     for (const invite of currentInvites.values()) {
                         await InviteSchema.updateOne(
                             { guildId: member.guild.id, inviteCode: invite.code },
-                            { $set: { uses: invite.uses } },
+                            { $set: { uses: invite.uses, guildName: member.guild.name } },
                             { upsert: true }
                         );
                     }
