@@ -42,9 +42,15 @@ module.exports = class CheckInvites extends Command {
             ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
 
+        const guildId = ctx.guild.id;
+        const userId = mention.id;
+
         InviteTrackerSchema.aggregate([
             {
-                $match: { inviterId: mention.id },
+                $match: {
+                    guildId, // Match current guild
+                    inviterId: userId, // Match specified user
+                },
             },
             {
                 $group: {
