@@ -390,19 +390,19 @@ module.exports = [
         available: ['use'],
         price: { buy: 1e8, sell: 15e6 },
     },
-    // {
-    //     id: 'st14',
-    //     name: 'Foxy Fun',
-    //     description: 'Unleash your playful side with this lively theme featuring vibrant oranges and subtle whites. The adorable fox emoji adds a dash of wild fun to your style!',
-    //     type: 'special theme',
-    //     able: {
-    //         use: true,
-    //         gift: false,
-    //         multiple: false,
-    //     },
-    //     quantity: 1,
-    //     emoji: emoji.specialTheme.fox,
-    //     available: ['use'],
-    //     price: { buy: 1e8, sell: 15e6 },
-    // }
+    {
+        id: 'st14',
+        name: 'Froggy Fun',
+        description: 'Unleash your playful side with this lively theme featuring vibrant oranges and subtle whites. The adorable fox emoji adds a dash of wild fun to your style!',
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: false,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.froggy,
+        available: ['use'],
+        price: { buy: 1e8, sell: 15e6 },
+    }
 ];
