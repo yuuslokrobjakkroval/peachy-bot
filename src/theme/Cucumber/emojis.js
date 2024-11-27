@@ -45,6 +45,7 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
+    loading: '<a:LOADING:1311021680264482817>',
     help: {
         actions: '<:CUMACTIONS:1308068228236574800>',
         bank: '<:CUMBANK:1308067730028626001>',

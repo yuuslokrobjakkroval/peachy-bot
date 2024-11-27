@@ -45,6 +45,7 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
+    loading: '<a:LOADING:1311021680264482817>',
     shop: {
         mainLeft: '<:SHOPLEFT:1282635416649859134>',
         mainRight: '<:SHOPRIGHT:1282635426883960896>',

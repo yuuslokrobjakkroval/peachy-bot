@@ -40,9 +40,9 @@ module.exports = class Avatar extends Command {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(generalMessages.search);
+      await ctx.interaction.reply(generalMessages.search.replace('loading', emoji.loading));
     } else {
-      await ctx.sendDeferMessage(generalMessages.search);
+      await ctx.sendDeferMessage(generalMessages.search.replace('loading', emoji.loading));
     }
 
 
@@ -60,7 +60,7 @@ module.exports = class Avatar extends Command {
         .setDescription(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
-                .replace('%{title}', `𝐀𝐕𝐀𝐓𝐀𝐑 𝐎𝐅 ${mention.displayName}`)
+                .replace('%{title}', `𝐀𝐕𝐀𝐓𝐀𝐑`)
                 .replace('%{mainRight}', emoji.mainRight)
         )
         .setImage(mention.displayAvatarURL({ format: 'png', size: 1024 }))

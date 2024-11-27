@@ -45,6 +45,7 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
+    loading: '<a:LOADING:1311021680264482817>',
     questionMark: '<:questionmark:1289459054296698900>',
     exclamationPoint: '<:exclamationpoint:1289459037745975339>',
     shop: {

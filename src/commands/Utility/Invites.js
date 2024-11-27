@@ -33,9 +33,9 @@ module.exports = class CheckInvites extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
         if (ctx.isInteraction) {
-            await ctx.interaction.reply(generalMessages.search);
+            await ctx.interaction.reply(generalMessages.search.replace('loading', emoji.loading));
         } else {
-            await ctx.sendDeferMessage(generalMessages.search);
+            await ctx.sendDeferMessage(generalMessages.search.replace('loading', emoji.loading));
         }
 
         const mention = ctx.isInteraction

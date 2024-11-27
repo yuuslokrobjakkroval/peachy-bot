@@ -45,6 +45,7 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
+    loading: '<a:LOADING:1311021680264482817>',
     help: {
         actions: '<a:SPACTIONS:1307346205415702548>',
         bank: '<:SPBANK:1307346229759443015>',

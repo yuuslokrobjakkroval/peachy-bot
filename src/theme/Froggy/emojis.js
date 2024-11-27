@@ -45,6 +45,7 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
+    loading: '<a:LOADING:1311021680264482817>',
     help: {
         actions: '<a:NORMALACTIONS:1282637922863939597>',
         bank: '<:NORMALBANK:1290531741270020146>',

@@ -45,6 +45,7 @@ module.exports = {
     learn: '`📚`',
     update: '`📡`',
     tickets: '`🎫`',
+    loading: '<a:LOADING:1311021680264482817>',
     shop: {
         mainLeft: '<:PEACHMIDATUM:1293259754998726736>',
         mainRight: '<:GOMAMIDATUM:1293259742243721399>',
