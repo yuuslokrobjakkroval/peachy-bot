@@ -33,12 +33,8 @@ client.on('inviteCreate', async (invite) => await client.abilities.getInviteCrea
 client.on('inviteDelete', async (invite) => await client.abilities.getInviteDelete(invite));
 
 setInterval(async () => {
-    return await client.abilities.getReward(client);
-}, 10000);
-
-setInterval(async () => {
     return await client.abilities.getSendMessage(client);
-}, 10000);
+}, 20000);
 
 setInterval(() => {
     const guild = client.guilds.cache.get(client.config.guildId);
