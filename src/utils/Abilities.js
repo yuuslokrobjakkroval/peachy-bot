@@ -498,6 +498,8 @@ module.exports = class Ability {
                 return;
             }
 
+            const userInfo = await client.users.fetch(userId);
+
             let user = await Users.findOne({ userId });
             if (!user) {
                 user = new Users({
@@ -536,9 +538,14 @@ module.exports = class Ability {
 
             const embed = client.embed()
                 .setColor(client.color.main)
+                .setThumbnail(client.user.displayAvatarURL())
                 .setDescription(
                     `You have received **+${client.utils.formatNumber(baseCoins)}** ${client.emoji.coin} and **${client.utils.formatNumber(baseExp)}** ${client.emoji.exp} for voting!${bonusMessage}`
-                );
+                )
+                .setFooter({
+                    text: `reward for ${userInfo.displayName}`,
+                    iconURL: userInfo.displayAvatarURL()
+                })
 
             await voteChannel.send({ embeds: [embed] });
 
