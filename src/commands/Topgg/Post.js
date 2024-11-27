@@ -29,10 +29,10 @@ module.exports = class Post extends Command {
         await ctx.sendDeferMessage('Thinking...');
 
         const ap = AutoPoster(process.env.TOPGG_TOKEN, client);
-        let content = 'Error occurred while setting up the autoposter.';
+        let content = '';
 
         ap.on('posted', () => {
-            content = `${emoji.success || '✅'} AutoPoster is active and automatically posting stats to top.gg every 30 minutes!`;
+            content = `${emoji.tick || '✅'} AutoPoster is active and automatically posting stats to top.gg every 30 minutes!`;
             ctx.editMessage({ content });
         });
 
@@ -40,11 +40,5 @@ module.exports = class Post extends Command {
             content = `Error posting stats to top.gg: ${error.message || 'Unknown error'}`;
             ctx.editMessage({ content });
         });
-
-        setTimeout(() => {
-            if (content === 'Error occurred while setting up the autoposter.') {
-                ctx.editMessage({ content: 'Failed to initialize AutoPoster. Please try again later.' });
-            }
-        }, 5000);
     }
 };
