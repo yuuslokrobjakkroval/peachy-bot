@@ -196,11 +196,11 @@ setTimeout(() => {
 
 client.start(globalConfig.token);
 
-const webhook = new Topgg.Webhook(process.env.TOPGG_WEBHOOK);
+const webhook = new Topgg.Webhook(process.env.TOPGG_AUTH);
 
 // Define the webhook listener
 app.post('/dblwebhook', webhook.listener(async vote => {
-    console.log('Vote received from user:', vote.user); // Logs the user who voted
+    console.log('Vote received from user:', vote.user);
     await client.utils.getReward(client, vote);
 }));
 
