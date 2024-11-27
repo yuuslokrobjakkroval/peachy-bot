@@ -1,17 +1,17 @@
 const { Command } = require('../../structures/index.js');
 const { AutoPoster } = require('topgg-autoposter');
 
-module.exports = class TopGGConnect extends Command {
+module.exports = class Post extends Command {
     constructor(client) {
         super(client, {
-            name: 'topgg',
+            name: 'post',
             description: {
                 content: 'Set up AutoPoster for top.gg and confirm its status.',
-                examples: ['topgg autoposter'],
-                usage: 'topgg autoposter',
+                examples: ['post autoposter'],
+                usage: 'post autoposter',
             },
-            category: 'developer',
-            aliases: ['topggstats', 'topstats'],
+            category: 'topgg',
+            aliases: ['post'],
             cooldown: 3,
             args: false,
             permissions: {
@@ -23,24 +23,28 @@ module.exports = class TopGGConnect extends Command {
             slashCommand: false,
             options: [],
         });
-
-
     }
 
     async run(client, ctx, args, color, emoji, language) {
         await ctx.sendDeferMessage('Thinking...');
-        const TOPGG_API_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyNzE2OTM3ODg1NDg0MzYwMDgiLCJib3QiOnRydWUsImlhdCI6MTczMjYyMjI2OH0.Y3Js9I3uMbcJ1mhKymbUVhAlxgGLu-XJ8QZmMzY2p5A'; // Replace with your actual token.
-        const ap = AutoPoster(TOPGG_API_TOKEN, client);
-        let  content;
-        // Event listeners for success or error handling
+
+        const ap = AutoPoster(process.env.TOPGG_TOKEN, client);
+        let content = 'Error occurred while setting up the autoposter.';
+
         ap.on('posted', () => {
             content = `${emoji.success || '✅'} AutoPoster is active and automatically posting stats to top.gg every 30 minutes!`;
+            ctx.editMessage({ content });
         });
 
-        ap.on('error', () => {
-            content = `Error posting stats to top.gg`;
+        ap.on('error', (error) => {
+            content = `Error posting stats to top.gg: ${error.message || 'Unknown error'}`;
+            ctx.editMessage({ content });
         });
 
-        return await ctx.editMessage({ content: content });
+        setTimeout(() => {
+            if (content === 'Error occurred while setting up the autoposter.') {
+                ctx.editMessage({ content: 'Failed to initialize AutoPoster. Please try again later.' });
+            }
+        }, 5000);
     }
 };

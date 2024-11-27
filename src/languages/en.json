@@ -897,5 +897,11 @@
 			"applyingJob": "You have applied to position: **%{position}** but not yet approved.\nplease wait.",
 			"noJob": "You don't have a job yet. Apply for one first using the `applyjob` command."
 		}
+	},
+	"topgg": {
+		"voteMessages": {
+			"success": "You have claimed your daily reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp} xp**\n%{bonusMessage}",
+			"error": "There was an error processing your daily claim."
+		}
 	}
 }

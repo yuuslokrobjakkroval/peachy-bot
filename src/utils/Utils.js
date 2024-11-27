@@ -573,7 +573,7 @@ module.exports = class Utils {
 
         const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && user.id === author.id;
 
-        const collector = msg.createReactionCollector({ filter, time: 60000 });
+        const collector = msg.createReactionCollector({ filter, time: 120000 });
 
         collector.on('collect', (reaction, user) => {
             if (user.id !== author.id) return;
@@ -658,7 +658,7 @@ module.exports = class Utils {
             : ctx.channel.send({ ...msgOptions, fetchReply: true }));
 
         const filter = int => int.user.id === author.id;
-        const collector = msg.createMessageComponentCollector({ filter, time: 60000 });
+        const collector = msg.createMessageComponentCollector({ filter, time: 120000 });
 
         collector.on('end', async () => await msg.edit({ embeds: [embed[page]], components: [] }));
         collector.on('collect', async interaction => {
@@ -726,7 +726,7 @@ module.exports = class Utils {
             console.log('Users with birthdays today:', usersWithBirthdayToday);
 
             // Fetch the birthday channel
-            const birthdayChannel = await client.channels.fetch('1272074580797952116').catch(err => {
+            const birthdayChannel = await client.channels.fetch(client.config.channel.reward).catch(err => {
                 console.error('[Birthday] Error fetching birthday channel:', err.message);
             });
 
@@ -977,6 +977,83 @@ module.exports = class Utils {
                     await data.save();
                 }
             }
+        }
+    }
+
+    static async getReward(client, vote) {
+        const generalMessages = client.i18n.locales.get(client.i18n.defaultLocale)?.generalMessages;
+        const voteMessages = client.i18n.locales.get(client.i18n.defaultLocale)?.topgg?.voteMessages;
+        const userId = vote.user;
+
+        try {
+            const voteChannel = await client.channels.fetch(client.config.channel.reward);
+            if (!voteChannel) {
+                console.error('Vote channel not found.');
+                return;
+            }
+
+            // Get the user and handle rewards
+            const user = await client.utils.getUser(userId);
+            if (!user) {
+                console.log('User not found, creating new user...');
+                const newUser = new Users({
+                    userId,
+                    balance: {
+                        coin: 0,  // Assign initial balance of coins
+                        bank: 0,
+                    },
+                    'profile.xp': 0,  // Initial XP
+                });
+                await newUser.save();  // Save the new user to the database
+            }
+
+            // Apply the rewards
+            const baseCoins = chance.integer({ min: 25000, max: 50000 });
+            const baseExp = chance.integer({ min: 50, max: 75 });
+
+            let bonusCoins = 0;
+            let bonusExp = 0;
+
+            const verify = user.verification.verify.status === 'verified';
+            if (verify) {
+                bonusCoins = Math.floor(baseCoins * 0.40);
+                bonusExp = Math.floor(baseExp * 0.40);
+            }
+
+            const totalCoins = baseCoins + bonusCoins;
+            const totalExp = baseExp + bonusExp;
+            user.balance.coin += totalCoins;
+            user.profile.xp += totalExp;
+
+            // Save the updated user data
+            await user.save();
+
+            let bonusMessage = '';
+            if (bonusCoins > 0 || bonusExp > 0) {
+                bonusMessage = `\n**+40% Bonus**\n${client.emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${client.emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
+            }
+
+            // Create and send the embed message
+            const embed = client.embed()
+                .setColor(client.color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', client.emoji.mainLeft)
+                        .replace('%{title}', "𝐕𝐎𝐓𝐄")
+                        .replace('%{mainRight}', client.emoji.mainRight) +
+                    voteMessages.success
+                        .replace('%{coinEmote}', client.emoji.coin)
+                        .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                        .replace('%{expEmote}', client.emoji.exp)
+                        .replace('%{exp}', client.utils.formatNumber(baseExp))
+                        .replace('%{bonusMessage}', bonusMessage)
+                );
+
+            // Send the embed to the vote channel
+            await voteChannel.send({ embeds: [embed] });
+
+        } catch (error) {
+            console.error(`Error getting reward for vote: ${error}`);
         }
     }
 };
