@@ -1,15 +1,10 @@
 const { GatewayIntentBits } = require('discord.js');
 const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildInvites, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
-const Topgg = require('@top-gg/sdk');
-const express = require('express');
-const Users = require('./schemas/user');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
 const InviteSchema = require("./schemas/inviteTracker");
 const globalConfig = require('./utils/Config');
 const PeachyClient = require('./structures/Client.js');
-
-const app = express();
 
 const clientOptions = {
     intents: [Guilds, GuildMessages, GuildInvites, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
@@ -25,14 +20,7 @@ client.once('ready', async () => {
     return await client.abilities.syncInvites(client)
 });
 
-client.on('guildMemberAdd', async (member) => {
-    return await client.abilities.getWelcomeMessage(client, member);
-});
-
-client.on('messageCreate', async (message) => {
-    return await client.abilities.getAutoResponse(client, message);
-});
-
+client.on('guildMemberAdd', async (member) => await client.abilities.getWelcomeMessage(client, member));
 client.on('guildMemberRemove', async (member) => {
     try {
         await client.abilities.getGoodByeMessage(client, member);
@@ -40,15 +28,9 @@ client.on('guildMemberRemove', async (member) => {
         console.error('Error in getGoodByeMessage:', error);
     }
 });
-
-client.on('inviteCreate', async (invite) => {
-    await client.abilities.getInviteCreate(invite);
-});
-
-
-client.on('inviteDelete', async (invite) => {
-    await client.abilities.getInviteDelete(invite);
-});
+client.on('messageCreate', async (message) => await client.abilities.getAutoResponse(client, message));
+client.on('inviteCreate', async (invite) => await client.abilities.getInviteCreate(invite));
+client.on('inviteDelete', async (invite) => await client.abilities.getInviteDelete(invite));
 
 setInterval(async () => {
     return await client.abilities.getSendMessage(client);
@@ -195,16 +177,3 @@ setTimeout(() => {
 }, client.utils.getDelayUntil7PM());
 
 client.start(globalConfig.token);
-
-const webhook = new Topgg.Webhook(process.env.TOPGG_AUTH);
-
-// Define the webhook listener
-app.post('/dblwebhook', webhook.listener(async vote => {
-    console.log('Vote received from user:', vote.user);
-    await client.utils.getReward(client, vote);
-}));
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    client.logger.start(`Webhook listener running on port ${port}`);
-});
