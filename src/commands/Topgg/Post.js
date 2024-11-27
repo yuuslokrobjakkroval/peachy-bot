@@ -28,15 +28,11 @@ module.exports = class Post extends Command {
     async run(client, ctx, args, color, emoji, language) {
         await ctx.sendDeferMessage('Thinking...');
 
-        const ap = AutoPoster(process.env.TOPGG_TOKEN, client);
         let content = '';
-
-        ap.on('posted', () => {
+        AutoPoster(process.env.TOPGG_TOKEN, client).on('posted', () => {
             content = `${emoji.tick || '✅'} AutoPoster is active and automatically posting stats to top.gg every 30 minutes!`;
             ctx.editMessage({ content });
-        });
-
-        ap.on('error', (error) => {
+        }).on('error', (error) => {
             content = `Error posting stats to top.gg: ${error.message || 'Unknown error'}`;
             ctx.editMessage({ content });
         });
