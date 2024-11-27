@@ -30,8 +30,6 @@ client.on('messageCreate', async (message) => {
 });
 
 client.on('guildMemberRemove', async (member) => {
-    console.log('guildMemberRemove triggered for:', member.user.tag);
-    console.log('Abilities:', client.abilities);
     try {
         await client.abilities.getGoodByeMessage(client, member);
     } catch (error) {

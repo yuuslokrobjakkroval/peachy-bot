@@ -53,8 +53,7 @@ module.exports = class GuildListInvite extends Command {
 
         const inviteChunks = client.utils.chunk(guildInviteData, 10);
         const pages = inviteChunks.map((chunk, index) => {
-            return this.client
-                .embed()
+            return client.embed()
                 .setColor(color.main)
                 .setTitle('Guild Invite List')
                 .setDescription(chunk.join('\n\n'))
