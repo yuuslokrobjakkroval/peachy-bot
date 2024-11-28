@@ -36,8 +36,8 @@ module.exports = class StudentClaim extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
-            const baseCoins = chance.integer({ min: 800, max: 1000 });
-            const baseExp = chance.integer({ min: 15, max: 20 });
+            const baseCoins = chance.integer({ min: 5000, max: 10000 });
+            const baseExp = chance.integer({ min: 30, max: 40 });
 
             const totalCoins = baseCoins;
             const totalExp = baseExp;
