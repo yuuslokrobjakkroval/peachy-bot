@@ -19,7 +19,7 @@ module.exports = class Text extends Command {
                 client: ["SendMessages"],
                 user: ["ManageMessages"],
             },
-            slashCommand: true,
+            slashCommand: false,
             options: [
                 {
                     name: "message",

@@ -18,7 +18,7 @@ module.exports = class Clear extends Command {
                 client: ["ManageMessages"],
                 user: ["ManageMessages"],
             },
-            slashCommand: true,
+            slashCommand: false,
             options: [
                 {
                     name: "number_message_delete",

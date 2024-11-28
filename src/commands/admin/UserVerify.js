@@ -18,7 +18,7 @@ module.exports = class UpdatePaymentStatus extends Command {
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: true,
+            slashCommand: false,
             options: [
                 {
                     name: 'userid',
