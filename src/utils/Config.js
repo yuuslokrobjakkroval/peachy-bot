@@ -32,9 +32,10 @@ const channel = {
   logGambling: '1280343485731442784',
   logGiveaways: '1299316476083441675',
   logUtility: '1293964183913758790',
+  logWork: '1311522502484426772',
 }
 
-const logChannelId = [channel.logAll, channel.logGame, channel.logGambling, channel.logBalance, channel.logShop, channel.logUtility, channel.logGiveaways]
+const logChannelId = [channel.logAll, channel.logGame, channel.logGambling, channel.logBalance, channel.logShop, channel.logUtility, channel.logGiveaways, channel.logWork]
 
 module.exports = {
   token: process.env.TOKEN,
