@@ -88,7 +88,32 @@ module.exports = class Rob extends Command {
                 }
 
                 // Calculate the robbery success and the amount to steal
-                const success = chance.bool({ likelihood: 75 }); // 75% chance to succeed
+                const victimCoins = victim.balance.coin;
+                let successRate;
+
+                // Set success rate based on the coin balance
+                if (victimCoins >= 500000000) {
+                    successRate = 10;  // 500M+ coins
+                } else if (victimCoins >= 300000000) {
+                    successRate = 20;  // 300M coins
+                } else if (victimCoins >= 200000000) {
+                    successRate = 30;  // 200M coins
+                } else if (victimCoins >= 100000000) {
+                    successRate = 40;  // 100M coins
+                } else if (victimCoins >= 50000000) {
+                    successRate = 50;  // 50M coins
+                } else if (victimCoins >= 20000000) {
+                    successRate = 60;  // 20M coins
+                } else if (victimCoins >= 10000000) {
+                    successRate = 65;  // 10M coins
+                } else if (victimCoins >= 5000000) {
+                    successRate = 70;  // 5M coins
+                } else if (victimCoins >= 1000000) {
+                    successRate = 75;  // 1M coins
+                } else {
+                    successRate = 80;  // Below 1M coins
+                }
+                const success = chance.bool({ likelihood: successRate }); // 75% chance to succeed
                 const stolenAmount = Math.floor(victim.balance.coin * (chance.integer({ min: 0.5, max: 1 }) / 100));
 
                 if (success) {
