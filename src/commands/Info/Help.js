@@ -44,7 +44,7 @@ module.exports = class Help extends Command {
     const embed = client.embed();
     const prefix = client.config.prefix;
     const commands = client.commands.filter(cmd => cmd.category !== 'dev');
-    let categories = ['actions', 'bank', 'rank', 'economy', 'inventory', 'emotes', 'fun', 'games', 'gambling', 'giveaways', 'profile', 'social', 'utility', 'info'];
+    let categories = ['actions', 'bank', 'rank', 'economy', 'work', 'inventory', 'emotes', 'fun', 'games', 'gambling', 'giveaways', 'profile', 'social', 'utility', 'info'];
 
     if (!args[0]) {
       const sortedCommands = {};

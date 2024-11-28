@@ -49,6 +49,7 @@ module.exports = {
     help: {
         actions: '<a:SPACTIONS:1307346205415702548>',
         bank: '<:SPBANK:1307346229759443015>',
+        work: '<a:WORK:1311512283108741200>',
         rank: '<:OWNER:1282976626560335883>',
         economy: '<:SPECONOMY:1307346252442370118>',
         inventory: '<:SPINVENTORY:1307351777569669120>',

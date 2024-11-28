@@ -82,6 +82,7 @@ module.exports = {
         actions: '<:H2ACTIONS:1300667962889474068>',
         bank: '<:H2BANK:1300670018786299904>',
         rank: '<:H2TOP:1300673148810690580>',
+        work: '<a:WORK:1311512283108741200>',
         economy: '<:H2COIN:1300668481070432266>',
         inventory: '<:H2INVENTORY:1300668696683089943>',
         fun: '<:H2FUN:1300668797358706698>',

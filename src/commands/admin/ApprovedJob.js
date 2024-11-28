@@ -72,28 +72,14 @@ module.exports = class ApprovedJob extends Command {
                 return client.utils.sendErrorMessage(client, ctx, 'This user has not applied for a job yet.', color);
             }
 
-            const salary = client.utils.getSalary(user.work.position);
+            let embedDescription;
 
             if (status.toLowerCase() === 'approved') {
-                user.work.salary = salary;
                 user.work.status = 'approved';
                 user.work.approvedDate = new Date();
                 await user.save();
 
-                const embed = client.embed()
-                    .setColor(color.main)
-                    .setDescription(
-                        generalMessages.title
-                        .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐓𝐀𝐒𝐊𝐒")
-                        .replace('%{mainRight}', emoji.mainRight) +
-                        `Successfully approved the job application for user <@${userId}>.`
-                    )
-                    .setFooter({
-                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName),
-                        iconURL: ctx.author.displayAvatarURL(),
-                    });
-                return ctx.sendMessage({ embed: [embed] });
+                embedDescription = `Successfully approved the job application for user <@${userId}>.`;
             }
 
             if (status.toLowerCase() === 'rejected') {
@@ -102,24 +88,27 @@ module.exports = class ApprovedJob extends Command {
                 user.work.rejections += 1;
                 await user.save();
 
-                const embed = client.embed()
-                    .setColor(color.main)
-                    .setDescription(
-                        generalMessages.title
-                            .replace('%{mainLeft}', emoji.mainLeft)
-                            .replace('%{title}', "𝐓𝐀𝐒𝐊𝐒")
-                            .replace('%{mainRight}', emoji.mainRight) +
-                        `Successfully approved the job application for user <@${userId}>.`
-                    )
-                    .setFooter({
-                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName),
-                        iconURL: ctx.author.displayAvatarURL(),
-                    });
-                return ctx.sendMessage({ embed: [embed] });
+                embedDescription = `Successfully rejected the job application for user <@${userId}>. Reason: ${reason}`;
             }
+
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐀𝐏𝐏𝐑𝐎𝐕𝐄𝐃 𝐉𝐎𝐁")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    embedDescription // Use embedDescription here
+                )
+                .setFooter({
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName),
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            return ctx.sendMessage({ embeds: [embed] }); // Send embed in an array
         } catch (err) {
             console.error(err);
-            return client.utils.sendErrorMessage(client, ctx,`An error occurred while processing the job application status.`, color);
+            return client.utils.sendErrorMessage(client, ctx, 'An error occurred while processing the job application status.', color);
         }
     }
 };

@@ -340,6 +340,7 @@
 			"categoriesMessages": {
 				"actions": "𝐀𝐂𝐓𝐈𝐎𝐍𝐒",
 				"bank": "𝐁𝐀𝐍𝐊",
+				"work": "𝐖𝐎𝐑𝐊",
 				"rank": "𝐑𝐀𝐍𝐊",
 				"economy": "𝐄𝐂𝐎𝐍𝐎𝐌𝐘",
 				"inventory": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
@@ -882,20 +883,37 @@
 	},
 	"workMessages": {
 		"applyJobMessages": {
-			"success": "You have successfully applied for the **%{position}** job! Your application date is %{applyDate}.",
 			"invalidPosition": "This position is invalid. Please choose a valid job position.",
 			"alreadyApplied": "You already have an active application or job.\nYou can't apply for another job right now.",
 			"jobUnavailable": "This job is currently unavailable. Please choose another position or try again later.",
-			"jobNotFound": "Job not found. Please apply for a job first."
-		},
-		"taskMessages": {
-			"noJob": "You don't have a job yet. Apply for one first using the `applyjob` command.",
-			"noTasks": "You don't have any tasks to complete right now.",
-			"cooldown": "You need to wait **%{hours} hours, %{minutes} minutes, and %{seconds} seconds** before you can work again."
+			"jobNotFound": "Job not found. Please apply for a job first.",
+			"autoApproved": "Your application for the position of %{position} has been auto-approved as of %{approvedDate}. Welcome aboard!",
+			"success": "You have successfully applied for the **%{position}** job! Your application date is %{applyDate}."
 		},
 		"positionMessages": {
 			"applyingJob": "You have applied to position: **%{position}** but not yet approved.\nplease wait.",
 			"noJob": "You don't have a job yet. Apply for one first using the `applyjob` command."
+		},
+		"studentMessages": {
+			"cooldown": "You need to wait %{hours}h %{minutes}m %{seconds}s before claiming your student reward again!",
+			"success": "%{coinEmote} You earned **+%{coin}** coins!\n%{expEmote} You gained **+%{exp}** experience!"
+		},
+		"robMessages": {
+			"invalidTarget": "You must specify a valid user to rob!",
+			"cannotRobAsPolice": "You cannot rob others while you are a police officer!",
+			"protectedByPolice": "You can't rob %{victim}, they are protected by the police!",
+			"notEnoughCoins": "%{victim} doesn't have enough coins to be worth robbing.",
+			"cooldown": "You need to wait %{minutes} minute and %{seconds} second before you can attempt to rob again.",
+			"failed": "You failed to rob %{victim} and lost %{penalty} coins as a penalty.",
+			"success": "You successfully robbed %{victim} and stole %{stolenAmount} coins!"
+		},
+		"policeMessages": {
+			"invalidTarget": "You cannot catch yourself or an invalid user.",
+			"notPolice": "Only users with the 'police' position can catch thieves.",
+			"noRobberyToCatch": "This user has not robbed anyone recently.",
+			"success": "Success! You caught **%{thief}** and seized **%{stolenAmount}** coins.\nYou receive **%{policeReward}** coins as a reward.",
+			"failed": "You failed to catch **%{thief}** and have been penalized. You lose **%{penalty}** coins.",
+			"cooldown": "You must wait before attempting to catch another thief."
 		}
 	},
 	"topgg": {

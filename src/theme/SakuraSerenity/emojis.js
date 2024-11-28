@@ -83,6 +83,7 @@ module.exports = {
         actions: '<:SACTIONS:1296027745071009853>',
         rank: '<:SRANKTITLE:1296021976304848927>',
         economy: '<:SCOIN:1295967985348907031>',
+        work: '<a:WORK:1311512283108741200>',
         inventory: '<:SINVENTORY:1296027811093549086>',
         bank: '<:SAKURABANK:1295967856369860629>',
         fun: '<:SFUN:1296027831830188063>',

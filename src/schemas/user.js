@@ -77,37 +77,27 @@ const VerificationSchema = new Schema({
 
 // Work Schema
 const WorkSchema = new Schema({
+
     position: { type: String, default: 'Not yet applied' },
     status: { type: String, default: 'pending' },  // 'pending', 'approved', 'rejected'
     applyDate: { type: Date, default: Date.now },
     approvedDate: { type: Date, default: null },
-    salary: { type: Number, default: 0 },
-    lastWorkedAt: { type: Date, default: null },
-    workCooldown: { type: Number, default: 0 }, // stores timestamp
     jobHistory: [{
         position: String,
         appliedAt: Date,
         approvedAt: Date,
         completedTasks: Number,
     }],
-    currentTask: { type: String, default: null },
     performanceRating: { type: Number, default: 0 },
-    workStreak: { type: Number, default: 0 },
-    tasksCompleted: { type: Number, default: 0 },
     rejections: { type: Number, default: 0 },
     rejectionReason: { type: String, default: null },
-    lastPromotion: { type: Date, default: null },
-    promotionHistory: [{
-        position: String,
-        promotedAt: Date,
-    }],
-    isWorking: { type: Boolean, default: false },
-    workDuration: { type: Number, default: 0 },  // duration in minutes or hours
     specialBonuses: [{
         type: String,
         value: Number,
         appliedAt: Date
-    }]
+    }],
+    rob: { type: Boolean, default: false },
+    robAmount: { type: Number, default: 0 },
 });
 
 // Relationship Schema

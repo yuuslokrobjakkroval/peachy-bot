@@ -83,6 +83,7 @@ module.exports = {
         economy: '<:GOMACOIN:1281820649416953878>',
         bank: '<:GOMABANK:1290531864746004511>',
         rank: '<:OWNER:1282976626560335883>',
+        work: '<a:WORK:1311512283108741200>',
         inventory: '<a:GOMAINVENTORY:1282954822437310516>',
         fun: '<a:ROAR_1:1283083752896987209>',
         games: '<a:GOMAGAME:1282954836006010910>',

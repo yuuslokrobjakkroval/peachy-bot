@@ -50,6 +50,7 @@ module.exports = {
         actions: '<:CUMACTIONS:1308068228236574800>',
         bank: '<:CUMBANK:1308067730028626001>',
         rank: '<:CUMLEFT:1308067575846010942>',
+        work: '<a:WORK:1311512283108741200>',
         economy: '<:CUMECONOMY:1308068374571647068>',
         inventory: '<:CUMINVENTORY:1308068425691824189>',
         fun: '<:CUMFUNS:1308068457753083925>',

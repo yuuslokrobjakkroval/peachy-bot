@@ -51,6 +51,7 @@ module.exports = {
         bank: '<:NORMALBANK:1290531741270020146>',
         rank: '<:OWNER:1282976626560335883>',
         economy: '<:COIN:1281821085209460797>',
+        work: '<a:WORK:1311512283108741200>',
         inventory: '<a:NORMALINVENTORY:1282637993156411432>',
         fun: '<a:ROAR_1:1283083752896987209>',
         games: '<:NORMALGAME:1282638025402224704>',

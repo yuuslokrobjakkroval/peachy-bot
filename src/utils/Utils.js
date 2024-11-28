@@ -521,23 +521,6 @@ module.exports = class Utils {
         }
     }
 
-    static getSalary(position) {
-        switch (position) {
-            case 'police':
-                return 60000;
-            case 'it':
-                return 80000;
-            case 'doctor':
-                return 120000;
-            case 'engineer':
-                return 90000;
-            case 'teacher':
-                return 50000;
-            default:
-                return 50000;
-        }
-    }
-
     static async reactionPaginate(ctx, embed) {
         const author = ctx instanceof CommandInteraction ? ctx.user : ctx.author;
         const isInteraction = ctx.isInteraction;

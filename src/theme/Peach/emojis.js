@@ -86,6 +86,7 @@ module.exports = {
         bank: '<:PEACHBANK:1290531776514494494>',
         economy: '<:PEACHCOIN:1281820633621074023>',
         rank: '<:OWNER:1282976626560335883>',
+        work: '<a:WORK:1311512283108741200>',
         inventory: '<a:PEACHINVENTORY:1282953361250975795>',
         fun: '<a:ROAR_1:1283083752896987209>',
         games: '<:PEACHGAME:1282953378158346250>',

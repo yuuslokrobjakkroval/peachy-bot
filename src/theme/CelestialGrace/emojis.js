@@ -82,6 +82,7 @@ module.exports = {
         actions: '<:HEAVENACTIONS:1293253828715610182>',
         economy: '<:COIN:1281821085209460797>',
         rank: '<:HTITLE:1303975442159636521>',
+        work: '<a:WORK:1311512283108741200>',
         bank: '<:HEAVENBANK:1295237522502451221>',
         inventory: '<:HEAVENINVENTORY:1293254212683173898>',
         fun: '<:HEAVENFUN:1293258773053571155>',

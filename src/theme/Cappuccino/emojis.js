@@ -50,6 +50,7 @@ module.exports = {
         actions: '<:CAFEACTIONS:1309850567794884678>',
         bank: '<:CAFEBANK:1309840127568379916>',
         rank: '<:CAFETOP:1309840264206094346>',
+        work: '<a:WORK:1311512283108741200>',
         economy: '<:CAFECOIN:1309808386124152843>',
         inventory: '<a:NORMALINVENTORY:1282637993156411432>',
         fun: '<:CAFEFUN:1309850576653123615>',
