@@ -95,7 +95,7 @@ module.exports = class Help extends Command {
 
       const helpEmbed = embed
           .setColor(color.main)
-          .setTitle(`${commandTitle.title} - ${command.name}`)
+          .setTitle(`${helpMessages.commandTitle.title} - ${command.name}`)
           .setDescription(command.description.content)
           .addFields([
             {
