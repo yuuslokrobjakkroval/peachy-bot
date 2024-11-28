@@ -8,9 +8,7 @@ const InviteSchema = require("../schemas/inviteTracker");
 const InviteTrackerSchema = require("../schemas/inviteTrackerMessages");
 const JoinRolesSchema = require("../schemas/joinRoles");
 const GoodByeMessagesSchema = require("../schemas/goodByeMessages");
-const UserVoteSchema = require("../schemas/userVote");
 const moment = require("moment");
-const chance = require('chance').Chance();
 
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Roman.otf', 'Kelvinch-Roman');
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Bold.otf', 'Kelvinch-Bold');
@@ -481,76 +479,5 @@ module.exports = class Ability {
         }
 
         return new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${data.feature}.png` });
-    }
-
-    static async getReward(client) {
-        try {
-            const reward = await UserVoteSchema.findOne({ rewarded: false });
-            if (!reward) {
-                return;
-            }
-
-            const { userId } = reward;
-
-            const voteChannel = await client.channels.fetch(client.config.channel.reward);
-            if (!voteChannel) {
-                console.warn("Reward channel not found.");
-                return;
-            }
-
-            const userInfo = await client.users.fetch(userId);
-
-            let user = await Users.findOne({ userId });
-            if (!user) {
-                user = new Users({
-                    userId,
-                    balance: { coin: 0, bank: 0 },
-                    'profile.xp': 0,
-                });
-                await user.save();
-                console.log(`New user created for ${userId}`);
-            }
-
-            user.balance = user.balance || { coin: 0, bank: 0 };
-            user.profile = user.profile || { xp: 0 };
-
-            const baseCoins = chance.integer({ min: 25000, max: 50000 });
-            const baseExp = chance.integer({ min: 50, max: 75 });
-
-            const isVerified = user.verification?.verify?.status === 'verified';
-            const bonusCoins = isVerified ? Math.floor(baseCoins * 0.4) : 0;
-            const bonusExp = isVerified ? Math.floor(baseExp * 0.4) : 0;
-
-            const totalCoins = baseCoins + bonusCoins;
-            const totalExp = baseExp + bonusExp;
-
-            user.balance.coin += totalCoins;
-            user.profile.xp += totalExp;
-            await user.save();
-
-            reward.rewarded = true;
-            await reward.save();
-
-            const bonusMessage =
-                bonusCoins > 0 || bonusExp > 0
-                    ? `\n**+40% Bonus**\n${client.emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${client.emoji.exp}: **+${client.utils.formatNumber(bonusExp)}** xp`
-                    : '';
-
-            const embed = client.embed()
-                .setColor(client.color.main)
-                .setThumbnail(client.user.displayAvatarURL())
-                .setDescription(
-                    `You have received **+${client.utils.formatNumber(baseCoins)}** ${client.emoji.coin} and **${client.utils.formatNumber(baseExp)}** ${client.emoji.exp} for voting!${bonusMessage}`
-                )
-                .setFooter({
-                    text: `reward for ${userInfo.displayName}`,
-                    iconURL: userInfo.displayAvatarURL()
-                })
-
-            await voteChannel.send({ embeds: [embed] });
-
-        } catch (error) {
-            console.error(`Error getting reward for vote: ${error.message}`, error);
-        }
     }
 }
