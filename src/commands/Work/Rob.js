@@ -84,7 +84,7 @@ module.exports = class Rob extends Command {
             } else {
                 // Check if victim has enough coins
                 if (victim.balance.coin < 100) {
-                    return client.utils.sendErrorMessage(client, ctx, robMessages.notEnoughCoins, color);
+                    return client.utils.sendErrorMessage(client, ctx, robMessages.notEnoughCoins.replace('%{victim}', target.displayName), color);
                 }
 
                 // Calculate the robbery success and the amount to steal
