@@ -114,7 +114,7 @@ module.exports = class Rob extends Command {
                     successRate = 80;  // Below 1M coins
                 }
                 const success = chance.bool({ likelihood: successRate }); // 75% chance to succeed
-                const stolenAmount = Math.floor(victim.balance.coin * (chance.integer({ min: 0.5, max: 1 }) / 100));
+                const stolenAmount = Math.floor(victim.balance.coin * (chance.integer({ min: 1, max: 1.5 }) / 100));
 
                 if (success) {
                     robber.balance.coin += stolenAmount;
