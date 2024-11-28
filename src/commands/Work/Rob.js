@@ -62,7 +62,7 @@ module.exports = class Rob extends Command {
         }
 
         // Prevent robbing users with the position of 'police'
-        if (victim.work.position.toLowerCase() === 'police') {
+        if (victim.work.status === 'approved' && victim.work.position.toLowerCase() === 'police') {
             return client.utils.sendErrorMessage(client, ctx, robMessages.protectedByPolice.replace('%{victim}', target.displayName), color);
         }
 
