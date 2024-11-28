@@ -43,23 +43,37 @@ module.exports = class Info extends Command {
     const embed = client.embed()
         .setColor(color.main)
         .setTitle(`${emoji.mainLeft} ${infoMessages.title} ${emoji.mainRight}`)
-        .setDescription(
-            `${client.user.username} ${infoMessages.description}`
-        )
+        .setDescription(`${client.user.username} ${infoMessages.description}`)
         .addFields([
           {
             name: infoMessages.developer.title,
             value: `[${infoMessages.developer.value}](${client.config.links.support})`,
             inline: false,
           },
+          {
+            name: "🌐 Dashboard",
+            value: `[Click Here](${client.config.links.dashboard})`,
+            inline: false,
+          },
+          {
+            name: "📘 Facebook Page",
+            value: `[Click Here](${client.config.links.facebook})`,
+            inline: true,
+          },
+          // {
+          //   name: "📷 Instagram",
+          //   value: `[Click Here](${client.config.links.instagram})`,
+          //   inline: true,
+          // },
         ])
         .setFooter({ text: infoMessages.footer });
 
-    const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
-    const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
-    // const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
+    const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support);
+    const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite);
     const row = client.utils.createButtonRow(supportButton, inviteButton);
 
-    return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed], components: [row] }) : await ctx.editMessage({ content: "", embeds: [embed], components: [row] });
+    return ctx.isInteraction
+        ? await ctx.interaction.editReply({ content: "", embeds: [embed], components: [row] })
+        : await ctx.editMessage({ content: "", embeds: [embed], components: [row] });
   }
-}
+};

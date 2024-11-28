@@ -63,7 +63,8 @@ module.exports = {
     support: 'https://discord.gg/BJT4h55hbg',
     invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&permissions=8&integration_type=0&scope=bot+applications.commands`,
     vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
-    website: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
+    dashboard: `https://peachy-dashboard.vercel.app`,
+    facebook: `https://web.facebook.com/profile.php?id=61568712312805`,
   },
 };
 
