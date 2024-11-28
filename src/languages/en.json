@@ -914,6 +914,11 @@
 			"success": "Success! You caught **%{thief}** and seized **%{stolenAmount}** coins.\nYou receive **%{policeReward}** coins as a reward.",
 			"failed": "You failed to catch **%{thief}** and have been penalized. You lose **%{penalty}** coins.",
 			"cooldown": "You must wait before attempting to catch another thief."
+		},
+		"resignJobMessages": {
+			"noJobToResign": "You have not applied for any job yet, so there's nothing to resign from.",
+			"success": "You have successfully resigned from your current job. You are no longer associated with any job position.",
+			"alreadyResigned": "You have already resigned from your job, or you haven't been approved yet."
 		}
 	},
 	"topgg": {
