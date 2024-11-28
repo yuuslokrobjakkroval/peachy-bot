@@ -961,4 +961,18 @@ module.exports = class Utils {
             }
         }
     }
+
+    static async getResetThief() {
+        try {
+            const users = await Users.find();
+            for (const user of users) {
+                if (user.work && user.work.rob) {
+                    user.work.rob = false;
+                    await user.save();
+                }
+            }
+        } catch (error) {
+            console.error('Error during user reset:', error);
+        }
+    }
 };

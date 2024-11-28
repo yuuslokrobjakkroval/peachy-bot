@@ -33,6 +33,14 @@ client.on('inviteCreate', async (invite) => await client.abilities.getInviteCrea
 client.on('inviteDelete', async (invite) => await client.abilities.getInviteDelete(invite));
 
 setInterval(async () => {
+    try {
+        await client.utils.getResetThief(client);
+    } catch (error) {
+        console.error('Error resetting rob status:', error);
+    }
+}, 5 * 60 * 1000);
+
+setInterval(async () => {
     return await client.abilities.getSendMessage(client);
 }, 20000);
 
