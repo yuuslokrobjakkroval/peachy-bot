@@ -40,7 +40,7 @@ module.exports = class Rob extends Command {
         // Get target user
         const target = ctx.isInteraction
             ? ctx.interaction.options.getUser('target')
-            : ctx.message.mentions.users.first() || client.users.cache.get(args[0]);
+            : ctx.message.mentions.users.first();
 
         if (!target || target.id === ctx.author.id) {
             return client.utils.sendErrorMessage(client, ctx, robMessages.invalidTarget, color);

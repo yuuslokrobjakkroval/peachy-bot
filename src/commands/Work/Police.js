@@ -39,7 +39,7 @@ module.exports = class CatchThief extends Command {
         // Get target user (the one to be caught by the police)
         const target = ctx.isInteraction
             ? ctx.interaction.options.getUser('target')
-            : ctx.message.mentions.users.first() || client.users.cache.get(args[0]);
+            : ctx.message.mentions.users.first();
 
         if (!target || target.id === ctx.author.id) {
             return client.utils.sendErrorMessage(client, ctx, policeMessages.invalidTarget, color);
