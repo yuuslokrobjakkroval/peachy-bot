@@ -35,9 +35,9 @@ module.exports = class UserInfo extends Command {
     const userInfoMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.userInfoMessages;
 
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(generalMessages.search.replace('loading', emoji.loading));
+      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.loading));
     } else {
-      await ctx.sendDeferMessage(generalMessages.search.replace('loading', emoji.loading));
+      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.loading));
     }
 
     // Fetch the user or member based on the context

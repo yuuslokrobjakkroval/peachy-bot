@@ -35,9 +35,9 @@ module.exports = class Info extends Command {
     const infoMessages = language.locales.get(language.defaultLocale)?.informationMessages?.infoMessages;
 
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(generalMessages.search.replace('loading', emoji.loading));
+      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.loading));
     } else {
-      await ctx.sendDeferMessage(generalMessages.search.replace('loading', emoji.loading));
+      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.loading));
     }
 
     const embed = client.embed()

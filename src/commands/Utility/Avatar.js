@@ -40,9 +40,9 @@ module.exports = class Avatar extends Command {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(generalMessages.search.replace('loading', emoji.loading));
+      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.loading));
     } else {
-      await ctx.sendDeferMessage(generalMessages.search.replace('loading', emoji.loading));
+      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.loading));
     }
 
 
