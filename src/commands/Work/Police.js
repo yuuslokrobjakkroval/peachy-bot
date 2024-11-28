@@ -85,11 +85,11 @@ module.exports = class CatchThief extends Command {
 
             // Send success message
             const successEmbed = client.embed()
-                .setColor(color.success)
+                .setColor(color.main)
                 .setDescription(
                     policeMessages.success
                         .replace('%{policeReward}', client.utils.formatNumber(policeReward))
-                        .replace('%{thief}', target.username)
+                        .replace('%{thief}', target.displayName)
                         .replace('%{stolenAmount}', client.utils.formatNumber(stolenAmount))
                 )
                 .setFooter({
@@ -110,7 +110,7 @@ module.exports = class CatchThief extends Command {
                 .setDescription(
                     policeMessages.failed
                         .replace('%{penalty}', client.utils.formatNumber(penalty))
-                        .replace('%{thief}', target.username)
+                        .replace('%{thief}', target.displayName)
                 )
                 .setFooter({
                     text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName),
