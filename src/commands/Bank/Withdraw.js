@@ -46,6 +46,15 @@ module.exports = class Withdraw extends Command {
             }
 
             let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') || 1 : args[0] || 1;
+
+            if (amount.toString().startsWith('-')) {
+                return ctx.sendMessage({
+                    embeds: [
+                        client.embed().setColor(color.danger).setDescription(withdrawMessages.invalidAmount)
+                    ],
+                });
+            }
+
             if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',') || amount.toString().startsWith('-')) {
                 const amountMap = { all: bank, half: Math.ceil(bank / 2) };
                 const multiplier = { k: 1000, m: 1000000, b: 1000000000 };

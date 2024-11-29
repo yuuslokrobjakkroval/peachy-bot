@@ -51,8 +51,16 @@ module.exports = class MultiTransfer extends Command {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
         }
 
+        if (amount.toString().startsWith('-')) {
+            return ctx.sendMessage({
+                embeds: [
+                    client.embed().setColor(color.danger).setDescription(multiTransferMessages.invalidAmount)
+                ],
+            });
+        }
+
         let transferAmount;
-        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',') || amount.toString().startsWith('-')) {
+        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
             const multiplier = {k: 1000, m: 1000000, b: 1000000000};
             if (amount.match(/\d+[kmbtq]/i)) {
                 // Handling amounts with unit suffix (e.g., 1k, 5m)
