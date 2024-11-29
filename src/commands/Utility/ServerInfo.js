@@ -71,14 +71,13 @@ module.exports = class ServerInfo extends Command {
     **𝑴𝒆𝒎𝒃𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**
     - **𝑶𝒏𝒍𝒊𝒏𝒆** ${onlineCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑰𝒅𝒍𝒆** ${idleCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑫𝒐 𝑵𝒐𝒕 𝑫𝒊𝒔𝒕𝒖𝒓𝒃** ${dndCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑶𝒇𝒇𝒍𝒊𝒏𝒆** ${offlineCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
     **𝑶𝒇𝒇𝒍𝒊𝒏𝒆 𝑴𝒆𝒎𝒃𝒆𝒓𝒔**
-    - **7 𝑫𝒂𝒚𝒔** ${offline7Days} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **30 𝑫𝒂𝒚𝒔** ${offline30Days} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔
-    
-    **𝑩𝒐𝒐𝒔𝒕𝒔** ${globalEmoji.arrow} ${guild.premiumSubscriptionCount || 0}
-    **𝑩𝒐𝒐𝒔𝒕 𝒍𝒆𝒗𝒆𝒍** ${globalEmoji.arrow} ${guild.premiumTier}
-    **𝑹𝒐𝒍𝒆𝒔** ${globalEmoji.arrow} ${guild.roles.cache.size}
-    **𝑬𝒎𝒐𝒋𝒊** ${globalEmoji.arrow} ${guild.emojis.cache.size}
-    **𝑺𝒕𝒊𝒄𝒌𝒆𝒓** ${globalEmoji.arrow} ${guild.stickers.cache.size}
-    **𝑨𝒍𝒍 𝑴𝒆𝒎𝒃𝒆𝒓** ${globalEmoji.arrow} ${guild.memberCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔
+    - **7 𝑫𝒂𝒚𝒔** ${offline7Days} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **30 𝑫𝒂𝒚𝒔** ${offline30Days} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
+    **𝑩𝒐𝒐𝒔𝒕𝒔** ${globalEmoji.arrow} ${guild.premiumSubscriptionCount || 0}\n
+    **𝑩𝒐𝒐𝒔𝒕 𝒍𝒆𝒗𝒆𝒍** ${globalEmoji.arrow} ${guild.premiumTier}\n
+    **𝑹𝒐𝒍𝒆𝒔** ${globalEmoji.arrow} ${guild.roles.cache.size}\n
+    **𝑬𝒎𝒐𝒋𝒊** ${globalEmoji.arrow} ${guild.emojis.cache.size}\n
+    **𝑺𝒕𝒊𝒄𝒌𝒆𝒓** ${globalEmoji.arrow} ${guild.stickers.cache.size}\n
+    **𝑨𝒍𝒍 𝑴𝒆𝒎𝒃𝒆𝒓** ${globalEmoji.arrow} ${guild.memberCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
     **𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑨𝒕** ${guild.createdAt.toDateString()} (${Math.floor((Date.now() - guild.createdAt) / (1000 * 60 * 60 * 24 * 365))} years ago)`;
 
     const embed = client.embed()
