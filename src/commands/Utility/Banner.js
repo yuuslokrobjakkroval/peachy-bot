@@ -13,12 +13,6 @@ module.exports = class Banner extends Command {
             aliases: ["profilebanner", "pfp-banner"],
             cooldown: 3,
             args: false,
-            player: {
-                voice: false,
-                dj: false,
-                active: false,
-                djPerm: null,
-            },
             permissions: {
                 dev: false,
                 client: ["SendMessages", "ViewChannel", "EmbedLinks"],
@@ -29,7 +23,7 @@ module.exports = class Banner extends Command {
                 {
                     name: "user",
                     description: "The user to get the banner of",
-                    type: 6, // USER type
+                    type: 6,
                     required: false,
                 },
             ],
@@ -50,16 +44,15 @@ module.exports = class Banner extends Command {
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
 
         if (!mention) {
-            const errorMessage = bannerMessages?.noUserMentioned || "No user mentioned";
+            const errorMessage = bannerMessages?.noUserMentioned;
             return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
         try {
-            // Fetch banner URL using the user ID
             const bannerURL = await mention.fetch().then(user => user.bannerURL({ format: 'png', size: 1024 }));
 
             if (!bannerURL) {
-                const errorMessage = bannerMessages?.noBannerFound || "User does not have a banner";
+                const errorMessage = bannerMessages?.noBannerFound;
                 return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
             }
 
@@ -80,7 +73,7 @@ module.exports = class Banner extends Command {
 
             return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
         } catch (err) {
-            const errorMessage = bannerMessages?.error || "An error occurred while fetching the banner";
+            const errorMessage = bannerMessages?.error;
             return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
     }
