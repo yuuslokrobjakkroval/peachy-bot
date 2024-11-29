@@ -52,7 +52,7 @@ module.exports = class MultiTransfer extends Command {
         }
 
         let transferAmount;
-        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
+        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',') || amount.toString().startsWith('-')) {
             const multiplier = {k: 1000, m: 1000000, b: 1000000000};
             if (amount.match(/\d+[kmbtq]/i)) {
                 // Handling amounts with unit suffix (e.g., 1k, 5m)
