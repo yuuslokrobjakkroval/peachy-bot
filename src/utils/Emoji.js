@@ -13,7 +13,7 @@ module.exports = {
 
     // VERIFY
     normal: '<:NORMAL:1294270096109211658>',
-
+    arrow: '<a:ARROW:1312003841167851530>',
     hiring: '<:HIRING:1311502310051942510>',
 
     loading: '<a:LOADING:1311021680264482817>',

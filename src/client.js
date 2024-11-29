@@ -1,5 +1,5 @@
 const { GatewayIntentBits } = require('discord.js');
-const { GuildMembers, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildInvites, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
+const { GuildMembers, GuildPresences, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildInvites, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
 const InviteSchema = require("./schemas/inviteTracker");
@@ -7,7 +7,7 @@ const globalConfig = require('./utils/Config');
 const PeachyClient = require('./structures/Client.js');
 
 const clientOptions = {
-    intents: [Guilds, GuildMessages, GuildInvites, MessageContent, GuildVoiceStates, GuildMembers, GuildMessageTyping, GuildMessageReactions],
+    intents: [Guilds, GuildMessages, GuildInvites, MessageContent, GuildVoiceStates, GuildMembers, GuildPresences, GuildMessageTyping, GuildMessageReactions],
     allowedMentions: {
         parse: ['users', 'roles'],
         repliedUser: false,
