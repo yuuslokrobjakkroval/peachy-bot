@@ -66,12 +66,9 @@ module.exports = class ServerInfo extends Command {
     **𝑵𝒂𝒎𝒆** ${globalEmoji.arrow} ${guild.name}
     **𝑶𝒘𝒏𝒆𝒓** ${globalEmoji.arrow} <@${guild.ownerId}>
     **𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏** ${globalEmoji.arrow} ${verificationLevels[guild.verificationLevel]}\n
-    **𝑪𝒉𝒂𝒏𝒏𝒆𝒍**
-    - **𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒊𝒆𝒔** ${guild.channels.cache.filter(ch => ch.type === 4).size}\n- **𝑻𝒆𝒙𝒕 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔** ${guild.channels.cache.filter(ch => ch.type === 0).size}\n- **𝑽𝒐𝒊𝒄𝒆 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔** ${guild.channels.cache.filter(ch => ch.type === 2).size}\n
-    **𝑴𝒆𝒎𝒃𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**
-    - **𝑶𝒏𝒍𝒊𝒏𝒆** ${onlineCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑰𝒅𝒍𝒆** ${idleCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑫𝒐 𝑵𝒐𝒕 𝑫𝒊𝒔𝒕𝒖𝒓𝒃** ${dndCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑶𝒇𝒇𝒍𝒊𝒏𝒆** ${offlineCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
-    **𝑶𝒇𝒇𝒍𝒊𝒏𝒆 𝑴𝒆𝒎𝒃𝒆𝒓𝒔**
-    - **7 𝑫𝒂𝒚𝒔** ${offline7Days} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **30 𝑫𝒂𝒚𝒔** ${offline30Days} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
+    **𝑪𝒉𝒂𝒏𝒏𝒆𝒍**\n- **𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒊𝒆𝒔** ${guild.channels.cache.filter(ch => ch.type === 4).size}\n- **𝑻𝒆𝒙𝒕 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔** ${guild.channels.cache.filter(ch => ch.type === 0).size}\n- **𝑽𝒐𝒊𝒄𝒆 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔** ${guild.channels.cache.filter(ch => ch.type === 2).size}\n
+    **𝑴𝒆𝒎𝒃𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**\n- **𝑶𝒏𝒍𝒊𝒏𝒆** ${onlineCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑰𝒅𝒍𝒆** ${idleCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑫𝒐 𝑵𝒐𝒕 𝑫𝒊𝒔𝒕𝒖𝒓𝒃** ${dndCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑶𝒇𝒇𝒍𝒊𝒏𝒆** ${offlineCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
+    **𝑶𝒇𝒇𝒍𝒊𝒏𝒆 𝑴𝒆𝒎𝒃𝒆𝒓𝒔**\n- **7 𝑫𝒂𝒚𝒔** ${offline7Days} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **30 𝑫𝒂𝒚𝒔** ${offline30Days} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
     **𝑩𝒐𝒐𝒔𝒕𝒔** ${globalEmoji.arrow} ${guild.premiumSubscriptionCount || 0}\n
     **𝑩𝒐𝒐𝒔𝒕 𝒍𝒆𝒗𝒆𝒍** ${globalEmoji.arrow} ${guild.premiumTier}\n
     **𝑹𝒐𝒍𝒆𝒔** ${globalEmoji.arrow} ${guild.roles.cache.size}\n

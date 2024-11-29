@@ -73,7 +73,6 @@ module.exports = class UserInfo extends Command {
             `**𝑱𝒐𝒊𝒏𝒆𝒅 ${guild.name} 𝒂𝒕** ${globalEmoji.arrow} ${guildMember?.joinedTimestamp ?
                 `${Math.floor((Date.now() - guildMember.joinedTimestamp) / (1000 * 60 * 60 * 24))} 𝒅𝒂𝒚𝒔 𝒂𝒈𝒐 (${new Date(guildMember.joinedTimestamp).toLocaleString()})`
                 : "N/A"}\n` +
-
             `**𝑩𝒐𝒕** ${globalEmoji.arrow} ${user.bot ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}\n` +
             `**𝑩𝒐𝒐𝒔𝒕𝒆𝒅 𝒕𝒉𝒊𝒔 𝒔𝒆𝒓𝒗𝒆𝒓** ${globalEmoji.arrow} ${guildMember?.premiumSince ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}\n` +
             `**𝑳𝒊𝒔𝒕 𝑹𝒐𝒍𝒆** ${globalEmoji.arrow} ${guildMember?.roles.cache.filter(role => role.id !== ctx.guild.id).map(role => role).join(", ") || userInfoMessages?.noRoles || "𝑵𝒐𝒏𝒆"}\n` +
