@@ -42,8 +42,12 @@ module.exports = class Info extends Command {
 
     const embed = client.embed()
         .setColor(color.main)
-        .setTitle(`${emoji.mainLeft} ${infoMessages.title} ${emoji.mainRight}`)
-        .setDescription(`${client.user.username} ${infoMessages.description}`)
+        .setDescription(
+            generalMessages.title
+                .replace('%{mainLeft}', emoji.mainLeft)
+                .replace('%{title}', infoMessages.title)
+                .replace('%{mainRight}', emoji.mainRight) +
+            `${client.user.username} ${infoMessages.description}`)
         .addFields([
           {
             name: infoMessages.developer.title,

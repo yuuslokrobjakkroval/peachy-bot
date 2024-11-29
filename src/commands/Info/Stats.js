@@ -43,7 +43,8 @@ module.exports = class Stats extends Command {
 
         const embed = client.embed()
             .setColor(color.main)
-            .setDescription(generalMessages.title
+            .setDescription(
+                generalMessages.title
                     .replace('%{mainLeft}', emoji.mainLeft)
                     .replace('%{title}', statsMessages.title)
                     .replace('%{mainRight}', emoji.mainRight) +
