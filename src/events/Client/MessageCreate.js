@@ -321,6 +321,7 @@ module.exports = class MessageCreate extends Event {
             if (!this.client.cooldown.has(cmd)) {
               this.client.cooldown.set(cmd, new Collection());
             }
+
             const now = Date.now();
             const timestamps = this.client.cooldown.get(cmd);
             const cooldownAmount = Math.floor(command.cooldown || 5) * 1000;
@@ -382,14 +383,14 @@ module.exports = class MessageCreate extends Event {
                     .addFields([
                       {
                         name: 'Author',
-                        value: `**Name:** ${message.author.username}\n**Id:** ${message.author.id}\n**Channel:** ${message.channel.name}`,
+                        value: `**ID:** ${message.author.id}\n**Name:** ${message.author.displayName}\n**Channel:** ${message.channel.name}`,
                         inline: true,
                       },
                       {
                         name: 'Extra Guild Info',
                         value: `\`\`\`arm
+[+] ID: ${message.guild.id}
 [+] Name: ${message.guild.name}
-[+] Id: ${message.guild.id}
 [+] Members: ${message.guild.memberCount.toString()}
 \`\`\``,
                       },

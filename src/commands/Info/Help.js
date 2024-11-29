@@ -56,8 +56,8 @@ module.exports = class Help extends Command {
           .setColor(color.main)
           .setTitle(`${emoji.mainLeft} ${helpMessages.title} ${emoji.mainRight}`)
           .setDescription(
-              `${helpMessages.description} **\`${prefix}help [command]\`**\n` +
-              `${helpMessages.examples} **\`${prefix}help balance\`**\n\n` +
+              `${helpMessages.description} ***${prefix}help [command]***\n` +
+              `${helpMessages.examples} ***${prefix}help balance***\n\n` +
               `${helpMessages.note}`
           )
           .setImage(client.config.links.banner)
@@ -95,7 +95,7 @@ module.exports = class Help extends Command {
 
       const helpEmbed = embed
           .setColor(color.main)
-          .setTitle(`${helpMessages.commandTitle.title} - ${command.name}`)
+          .setTitle(`${helpMessages.commandTitle} - ${command.name}`)
           .setDescription(command.description.content)
           .addFields([
             {
