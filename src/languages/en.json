@@ -449,6 +449,12 @@
 				"title": "𝐃𝐄𝐕",
 				"value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
 			},
+			"dashboard": {
+				"title": "𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃"
+			},
+			"facebook": {
+				"title": "𝐏𝐄𝐀𝐂𝐇 𝐀𝐍𝐃 𝐆𝐎𝐌𝐀"
+			},
 			"footer": "Having any issues, need help, or want to report bugs? Clicking the link below",
 			"supportButton": {
 				"label": "Click for support"

@@ -51,20 +51,15 @@ module.exports = class Info extends Command {
             inline: false,
           },
           {
-            name: "🌐 Dashboard",
-            value: `[Click Here](${client.config.links.dashboard})`,
+            name: infoMessages.dashboard.title,
+            value: `[𝐏𝐄𝐀𝐂𝐇𝐘](${client.config.links.dashboard})`,
             inline: false,
           },
           {
-            name: "📘 Facebook Page",
-            value: `[Click Here](${client.config.links.facebook})`,
-            inline: true,
+            name: infoMessages.facebook.title,
+            value: `[𝐏𝐄𝐀𝐂𝐇 𝐀𝐍𝐃 𝐆𝐎𝐌𝐀](${client.config.links.facebook})`,
+            inline: false,
           },
-          // {
-          //   name: "📷 Instagram",
-          //   value: `[Click Here](${client.config.links.instagram})`,
-          //   inline: true,
-          // },
         ])
         .setFooter({ text: infoMessages.footer });
 
