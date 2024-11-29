@@ -16,7 +16,8 @@ module.exports = {
     arrow: '<a:ARROW:1312003841167851530>',
     hiring: '<:HIRING:1311502310051942510>',
 
-    loading: '<a:LOADING:1311021680264482817>',
+    searching: '<a:SEARCHING:1312011231053348904>',
+    searching: '<a:SEARCHING:1312011231053348904>', loading: '<a:LOADING:1311021680264482817>',
 
     verify: '<:VERIFY:1294514114856615947>',
 

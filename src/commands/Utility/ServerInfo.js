@@ -34,9 +34,9 @@ module.exports = class ServerInfo extends Command {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.loading));
+      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
     } else {
-      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.loading));
+      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
     }
 
     const { guild } = ctx;

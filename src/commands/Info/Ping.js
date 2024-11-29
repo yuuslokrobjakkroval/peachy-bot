@@ -33,9 +33,9 @@ module.exports = class Ping extends Command {
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.reply("Pinging...");
+      await ctx.interaction.reply(emoji.searching);
     } else {
-      await ctx.sendDeferMessage("Pinging...");
+      await ctx.sendDeferMessage(emoji.searching);
     }
 
     let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;

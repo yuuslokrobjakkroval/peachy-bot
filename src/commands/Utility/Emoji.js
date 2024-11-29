@@ -35,9 +35,9 @@ module.exports = class Emoji extends Command {
         const emojiMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.emojiMessages;
 
         if (ctx.isInteraction) {
-            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.loading));
+            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
         } else {
-            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.loading));
+            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
         }
 
         const emojiInput = ctx.isInteraction ? ctx.interaction.options.getString("emoji") : args[0];

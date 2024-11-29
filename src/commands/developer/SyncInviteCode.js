@@ -38,7 +38,7 @@ module.exports = class SyncInvites extends Command {
 
         // Initial progress message
         const progressMessage = await ctx.sendDeferMessage(
-            `Synchronizing invites${emoji.loading || globalEmoji.loading}`
+            `Synchronizing invites${emoji.searching || globalEmoji.loading}`
         );
 
         for (const guild of guilds) {
@@ -98,7 +98,7 @@ module.exports = class SyncInvites extends Command {
             // Update progress
             processedGuilds++;
             await progressMessage.edit(
-                `Synchronizing invites${emoji.loading || globalEmoji.loading} (${processedGuilds}/${totalGuilds})`
+                `Synchronizing invites${emoji.searching || globalEmoji.loading} (${processedGuilds}/${totalGuilds})`
             );
         }
 
