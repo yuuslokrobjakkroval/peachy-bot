@@ -516,13 +516,13 @@
 			"footer": "Thank you for using {botName}!"
 		},
 		"statsMessages": {
-			"title": "{botName}'s Statistics",
-			"description": "Here are some statistics about {botName}:",
+			"title": "𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒",
+			"description": "Here are some information:",
 			"fields": {
-				"servers": "Servers: {guildCount}",
-				"users": "Users: {userCount}",
-				"channels": "Channels: {channelCount}",
-				"uptime": "Uptime: {uptime} minutes"
+				"servers": "𝐒𝐄𝐑𝐕𝐄𝐑𝐒 {arrow} {guildCount}",
+				"users": "𝐔𝐒𝐄𝐑𝐒 {arrow} {userCount}",
+				"channels": "𝐂𝐇𝐀𝐍𝐍𝐄𝐋𝐒 {arrow} {channelCount}",
+				"uptime": "𝐔𝐏𝐓𝐈𝐌𝐄 {arrow} {uptime} minutes"
 			},
 			"footer": "For more information, click the buttons below."
 		}

@@ -1,5 +1,6 @@
 const Command = require('../../structures/Command.js');
 const Users = require('../../schemas/user');
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Stats extends Command {
     constructor(client) {
@@ -38,17 +39,20 @@ module.exports = class Stats extends Command {
         const guildCount = client.guilds.cache.size;
         const userCount = users ? users.length : client.users.cache.size;
         const channelCount = client.channels.cache.size;
-        const uptime = Math.floor(client.uptime / 1000 / 60); // Bot uptime in minutes
+        const uptime = Math.floor(client.uptime / 1000 / 60);
 
         const embed = client.embed()
             .setColor(color.main)
-            .setTitle(statsMessages.title.replace('{botName}', client.user.username)) // Replace {botName} with actual bot name
-            .setDescription(statsMessages.description.replace('{botName}', client.user.username)) // Replace {botName}
+            .setDescription(generalMessages.title
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{title}', statsMessages.title)
+                    .replace('%{mainRight}', emoji.mainRight) +
+                statsMessages.description)
             .addFields([
-                { name: statsMessages.fields.servers.replace('{guildCount}', guildCount), value: '\u200b', inline: false },
-                { name: statsMessages.fields.users.replace('{userCount}', userCount), value: '\u200b', inline: false },
-                { name: statsMessages.fields.channels.replace('{channelCount}', channelCount), value: '\u200b', inline: false },
-                { name: statsMessages.fields.uptime.replace('{uptime}', uptime), value: '\u200b', inline: false }
+                { name: statsMessages.fields.servers.replace('{arrow}', globalEmoji.arrow).replace('{guildCount}', guildCount), value: '\u200b', inline: false },
+                { name: statsMessages.fields.users.replace('{arrow}', globalEmoji.arrow).replace('{userCount}', userCount), value: '\u200b', inline: false },
+                { name: statsMessages.fields.channels.replace('{arrow}', globalEmoji.arrow).replace('{channelCount}', channelCount), value: '\u200b', inline: false },
+                { name: statsMessages.fields.uptime.replace('{arrow}', globalEmoji.arrow).replace('{uptime}', uptime), value: '\u200b', inline: false }
             ])
             .setFooter({ text: statsMessages.footer });
 
