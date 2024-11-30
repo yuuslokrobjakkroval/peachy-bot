@@ -98,7 +98,7 @@ module.exports = class Withdraw extends Command {
                                 .replace('%{coinEmote}', emoji.coin)
                         )
                         .setFooter({
-                            text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                            text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
                             iconURL: ctx.author.displayAvatarURL(),
                         });
 

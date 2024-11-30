@@ -155,7 +155,7 @@ function blackjack(ctx, client, color, emoji, player, dealer, bet, generalMessag
                                     .replace('%{mainRight}', emoji.mainRight) +
                                 `⏳ **Time is up** !!! You didn't click the button in time.`)
                             .setFooter({
-                                text: `${ctx.author.displayName}, please start again`,
+                                text: `${ctx.author.displayName}, ${generalMessages.pleaseStartAgain}`,
                                 iconURL: ctx.author.displayAvatarURL(),
                             })
                         msg.edit({ embeds: [embed], components: [] });

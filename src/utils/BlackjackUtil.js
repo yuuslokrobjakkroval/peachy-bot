@@ -84,19 +84,20 @@ function generateEmbed(author, client, color, emoji, dealer, player, bet, end, w
 
     if (end == 'w') {
         endColor = color.success;
-        description = `You bet **${client.utils.formatNumber(bet)}** ${emoji.coin}\nYou won **${client.utils.formatNumber(winnings)}** ${emoji.coin}`;
+        description = `${blackjackMessages.bet.replace('%{coin}', client.utils.formatNumber(bet)).replace('%{coinEmote}', emoji.coin)}\n${blackjackMessages.won.replace('%{coin}', client.utils.formatNumber(winnings)).replace('%{coinEmote}', emoji.coin)}`;
     } else if (end == 'l') {
         endColor = color.danger;
-        description = `You bet **${client.utils.formatNumber(bet)}** ${emoji.coin}\nYou lost **${client.utils.formatNumber(bet)}** ${emoji.coin}`;
+        description = `${blackjackMessages.bet.replace('%{coin}', client.utils.formatNumber(bet)).replace('%{coinEmote}', emoji.coin)}\n${blackjackMessages.lost.replace('%{coin}', client.utils.formatNumber(bet)).replace('%{coinEmote}', emoji.coin)}`;
     } else if (end == 'tb') {
         endColor = color.blue;
-        description = 'You both **bust!**';
+        description = `${blackjackMessages.bothBust}`;
     } else if (end == 't') {
         endColor = color.blue;
-        description = 'You **tied!**';
+        description = `${blackjackMessages.tied}`;
     } else {
         endColor = color.main;
         dealerValue.points = dealerValue.shownPoints + '+?';
+        description = `${blackjackMessages.bet.replace('%{coin}', client.utils.formatNumber(bet)).replace('%{coinEmote}', emoji.coin)}`;
     }
 
     return client.embed()
@@ -104,14 +105,14 @@ function generateEmbed(author, client, color, emoji, dealer, player, bet, end, w
         .setThumbnail(author.displayAvatarURL({ dynamic: true, size: 1024 }))
         .setDescription(
             generalMessages.title.replace('%{mainLeft}', emoji.mainLeft).replace('%{title}', blackjackMessages.title).replace('%{mainRight}', emoji.mainRight) +
-                `The winner is the one who's closest to 21.\n` +
-                `## **DEALER ${DEALER} \`[${dealerValue.points}]\`**\n` +
+                `${blackjackMessages.winnerInfo}\n` +
+                `## **${blackjackMessages.dealer} ${DEALER} \`[${dealerValue.points}]\`**\n` +
                 `# \n${dealerValue.display}\n` +
                 `## **${author.displayName} \`[${playerValue.points}]${playerValue.ace ? '*' : ''}\`**\n` +
                 `# ${playerValue.display}\n` +
                 `${description}`)
         .setFooter({
-            text: !end ? generalMessages.gameInProgress.replace('%{user}', author.displayName) : generalMessages.gameOver.replace('%{user}', author.displayName),
+            text: !end ? generalMessages.gameInProgress.replace('%{user}', `*${author.displayName}*`) : generalMessages.gameOver.replace('%{user}', `*${author.displayName}*`),
             iconURL: author.displayAvatarURL(),
         })
 }

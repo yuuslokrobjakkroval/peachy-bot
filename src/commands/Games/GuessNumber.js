@@ -39,7 +39,7 @@ module.exports = class GuessNumber extends Command {
                                     .replace('%{mainRight}', emoji.mainRight) +
                                 guessNumberMessages.insufficientBalance.description.replace('%{coinEmote}', emoji.coin))
                             .setFooter({
-                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
                                 iconURL: ctx.author.displayAvatarURL(),
                             })
                     ]
@@ -64,7 +64,7 @@ module.exports = class GuessNumber extends Command {
                         .replace('%{mainRight}', emoji.mainRight) +
                     guessNumberMessages.description)
                 .setFooter({
-                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 

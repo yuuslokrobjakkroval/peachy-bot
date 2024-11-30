@@ -82,15 +82,17 @@ module.exports = class Coinflip extends Command {
                 .setColor(color.main)
                 .setThumbnail(client.utils.emojiToImage(emoji.coinFlip.flip))
                 .setDescription(
-                    coinflipMessages.description
+                    generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{mainRight}', emoji.mainRight)
+                        .replace('%{title}', coinflipMessages.title)
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    coinflipMessages.description
                         .replace('%{coinEmote}', emoji.coin)
                         .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                        .replace('%{choice}', choice === 'p' ? 'Peach' : 'Goma')
+                        .replace('%{choice}', choice === 'p' ? '𝑷𝒆𝒂𝒄𝒉' : '𝑮𝒐𝒎𝒂')
                 )
                 .setFooter({
-                    text: generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName),
+                    text: generalMessages.gameInProgress.replace('%{user}', `*${ctx.author.displayName}*`),
                     iconURL: ctx.author.displayAvatarURL(),
                 })
 
@@ -107,18 +109,20 @@ module.exports = class Coinflip extends Command {
                         .setColor(color.main)
                         .setThumbnail(client.utils.emojiToImage(win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.goma : emoji.coinFlip.peach)))
                         .setDescription(
-                            coinflipMessages.resultDescription
+                            generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{mainRight}', emoji.mainRight)
-                                .replace('%{coinEmote}', emoji.coin)
+                                .replace('%{title}', coinflipMessages.title)
+                                .replace('%{mainRight}', emoji.mainRight) +
+                            coinflipMessages.result
                                 .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                                .replace('%{choice}', choice === 'p' ? 'Peach' : 'Goma')
-                                .replace('%{result}', win ? 'won' : 'lost')
+                                .replace('%{coinEmote}', emoji.coin)
+                                .replace('%{choice}', choice === 'p' ? '𝑷𝒆𝒂𝒄𝒉' : '𝑮𝒐𝒎𝒂')
+                                .replace('%{result}', win ? '𝒘𝒐𝒏' : '𝒍𝒐𝒔𝒕')
                                 .replace('%{resultCoin}', client.utils.formatNumber(resultCoin))
                                 .replace('%{coinEmote}', emoji.coin)
                         )
                         .setFooter({
-                            text: generalMessages.gameOver.replace('%{user}', ctx.author.displayName),
+                            text: generalMessages.gameOver.replace('%{user}', `*${ctx.author.displayName}*`),
                             iconURL: ctx.author.displayAvatarURL(),
                         })
 

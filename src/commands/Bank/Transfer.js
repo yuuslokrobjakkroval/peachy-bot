@@ -108,7 +108,7 @@ module.exports = class Transfer extends Command {
                     .replace('%{user}', targetUser.displayName)
             )
             .setFooter({
-                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
                 iconURL: ctx.author.displayAvatarURL(),
             });
 
@@ -153,7 +153,7 @@ module.exports = class Transfer extends Command {
                                             .replace('%{user}', targetUser.displayName)
                                     )
                                     .setFooter({
-                                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                        text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
                                         iconURL: ctx.author.displayAvatarURL(),
                                     });
 

@@ -69,7 +69,7 @@ module.exports = class Ping extends Command {
           },
         ])
         .setFooter({
-          text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+          text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
