@@ -71,14 +71,14 @@ module.exports = class UserInfo extends Command {
             `**𝑰𝑫** ${globalEmoji.arrow} ${user.id}\n` +
             `**𝑵𝒂𝒎𝒆** ${globalEmoji.arrow} ${user.username}\n` +
             `**𝑱𝒐𝒊𝒏𝒆𝒅 ${guild.name} 𝒂𝒕** ${globalEmoji.arrow} ${guildMember?.joinedTimestamp ?
-                `${Math.floor((Date.now() - guildMember.joinedTimestamp) / (1000 * 60 * 60 * 24))} 𝒅𝒂𝒚𝒔 𝒂𝒈𝒐 (${new Date(guildMember.joinedTimestamp).toLocaleString()})`
+                `${Math.floor((Date.now() - guildMember.joinedTimestamp) / (1000 * 60 * 60 * 24))} 𝒅𝒂𝒚𝒔 𝒂𝒈𝒐})`
                 : "N/A"}\n` +
             `**𝑩𝒐𝒕** ${globalEmoji.arrow} ${user.bot ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}\n` +
             `**𝑩𝒐𝒐𝒔𝒕𝒆𝒅 𝒕𝒉𝒊𝒔 𝒔𝒆𝒓𝒗𝒆𝒓** ${globalEmoji.arrow} ${guildMember?.premiumSince ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}\n` +
             `**𝑳𝒊𝒔𝒕 𝑹𝒐𝒍𝒆** ${globalEmoji.arrow} ${guildMember?.roles.cache.filter(role => role.id !== ctx.guild.id).map(role => role).join(", ") || userInfoMessages?.noRoles || "𝑵𝒐𝒏𝒆"}\n` +
             `**𝑹𝒐𝒍𝒆𝒔 [${guildMember?.roles.cache.size - 1 || 0}]**\n` +
             `**𝑻𝒐𝒑 𝒓𝒐𝒍𝒆** ${globalEmoji.arrow} ${guildMember?.roles.highest.name || "𝑵𝒐𝒏𝒆"}\n` +
-            `**𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝒂𝒕** ${globalEmoji.arrow} ${Math.floor((Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365))} 𝒚𝒆𝒂𝒓𝒔 𝒂𝒈𝒐 (${new Date(user.createdTimestamp).toLocaleString()})\n`
+            `**𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝒂𝒕** ${globalEmoji.arrow} ${Math.floor((Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365))} 𝒚𝒆𝒂𝒓𝒔 𝒂𝒈𝒐\n`
         )
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,

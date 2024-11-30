@@ -75,7 +75,7 @@ module.exports = class ServerInfo extends Command {
     **𝑬𝒎𝒐𝒋𝒊** ${globalEmoji.arrow} ${guild.emojis.cache.size}\n
     **𝑺𝒕𝒊𝒄𝒌𝒆𝒓** ${globalEmoji.arrow} ${guild.stickers.cache.size}\n
     **𝑨𝒍𝒍 𝑴𝒆𝒎𝒃𝒆𝒓** ${globalEmoji.arrow} ${guild.memberCount} 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
-    **𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑨𝒕** ${guild.createdAt.toDateString()} (${Math.floor((Date.now() - guild.createdAt) / (1000 * 60 * 60 * 24 * 365))} years ago)`;
+    **𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑨𝒕** ${guild.createdAt.toLocaleString()}`;
 
     const embed = client.embed()
         .setColor(color.main)
