@@ -63,7 +63,7 @@ module.exports = class Kill extends Command {
                     .replace('%{displayName}', ctx.author.displayName)
                     .replace('%{target}', target.displayName))
             .setFooter({
-                text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
             });
 

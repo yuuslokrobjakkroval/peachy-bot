@@ -53,7 +53,7 @@ module.exports = class Sticker extends Command {
             )
             .setImage(client.utils.stickerToImage(stickerInput))
             .setFooter({
-                text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
             })
             .setTimestamp();

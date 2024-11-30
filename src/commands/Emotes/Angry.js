@@ -41,7 +41,7 @@ module.exports = class Angry extends Command {
                     angryMessages.description.replace('%{user}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji))
                 .setFooter({
-                    text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 

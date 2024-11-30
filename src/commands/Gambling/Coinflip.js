@@ -92,7 +92,7 @@ module.exports = class Coinflip extends Command {
                         .replace('%{choice}', choice === 'p' ? '𝑷𝒆𝒂𝒄𝒉' : '𝑮𝒐𝒎𝒂')
                 )
                 .setFooter({
-                    text: generalMessages.gameInProgress.replace('%{user}', `*${ctx.author.displayName}*`),
+                    text: generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName),
                     iconURL: ctx.author.displayAvatarURL(),
                 })
 
@@ -122,7 +122,7 @@ module.exports = class Coinflip extends Command {
                                 .replace('%{coinEmote}', emoji.coin)
                         )
                         .setFooter({
-                            text: generalMessages.gameOver.replace('%{user}', `*${ctx.author.displayName}*`),
+                            text: generalMessages.gameOver.replace('%{user}', ctx.author.displayName),
                             iconURL: ctx.author.displayAvatarURL(),
                         })
 

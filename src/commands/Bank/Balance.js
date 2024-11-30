@@ -50,7 +50,7 @@ module.exports = class Balance extends Command {
                     )
                     .setImage(globalGif.balanceBanner)
                     .setFooter({
-                        text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                         iconURL: ctx.author.displayAvatarURL(),
                     })
                 return ctx.sendMessage({embeds: [embed]});

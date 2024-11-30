@@ -112,7 +112,7 @@ function generateEmbed(author, client, color, emoji, dealer, player, bet, end, w
                 `# ${playerValue.display}\n` +
                 `${description}`)
         .setFooter({
-            text: !end ? generalMessages.gameInProgress.replace('%{user}', `*${author.displayName}*`) : generalMessages.gameOver.replace('%{user}', `*${author.displayName}*`),
+            text: !end ? generalMessages.gameInProgress.replace('%{user}', author.displayName) : generalMessages.gameOver.replace('%{user}', author.displayName),
             iconURL: author.displayAvatarURL(),
         })
 }

@@ -93,7 +93,7 @@ module.exports = class StudentClaim extends Command {
                                         .replace('%{exp}', client.utils.formatNumber(baseExp))
                                 )
                                 .setFooter({
-                                    text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                                     iconURL: ctx.author.displayAvatarURL(),
                                 });
 

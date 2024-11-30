@@ -57,7 +57,7 @@ module.exports = class Shop extends Command {
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(`${selectedShop.description}\n${itemList}`)
                 .setFooter({
-                    text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 })
 
@@ -98,7 +98,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(`${selectedShop.description}\n\n${itemList}`)
                 .setFooter({
-                    text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 })
 
@@ -157,7 +157,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
             .setDescription(`**ID:** \`${item.id}\`\n**Description:** ${item.description}\n**Price:**  ${client.utils.formatString(item.price.buy)} ${emoji.coin}\n**Type:** ${client.utils.formatCapitalize(item.type)}`)
             .setImage(item.image)
             .setFooter({
-                text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
             })
 

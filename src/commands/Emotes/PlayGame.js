@@ -47,7 +47,7 @@ module.exports = class PlayGame extends Command {
                 )
                 .setImage(emoteImageUrl)
                 .setFooter({
-                    text: generalMessages.requestedBy.replace('%{username}', `*${ctx.author.displayName}*`) || `Requested by *${ctx.author.displayName}*`,
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
