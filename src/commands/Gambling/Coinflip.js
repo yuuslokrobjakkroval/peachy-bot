@@ -45,7 +45,7 @@ module.exports = class Coinflip extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const coinflipMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.coinflipMessages;
         client.utils.getUser(ctx.author.id).then(user => {
-            const {coin, bank} = user.balance;
+            const { coin, bank } = user.balance;
 
             if (coin < 1) {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
@@ -130,7 +130,7 @@ module.exports = class Coinflip extends Command {
                 }, 2000);
             })
         }).catch(error => {
-                console.error('Error processing Peachy command:', error);
+                console.error('Error processing command:', error);
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
             });
     }
