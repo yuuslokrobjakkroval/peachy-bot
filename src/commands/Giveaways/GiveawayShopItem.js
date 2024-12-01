@@ -102,7 +102,7 @@ module.exports = class GiveawayShopItem extends Command {
                 `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
             );
 
-        if (image) giveawayEmbed.setImage(image);
+        if (image) giveawayEmbed.setImage(image.url);
 
         const joinButton = client.utils.fullOptionButton('giveawayshopitem-join', emoji.main, '0', 1, false);
         const participantsButton = client.utils.fullOptionButton('giveawayshopitem-participants', '', 'Participants', 2, false);
