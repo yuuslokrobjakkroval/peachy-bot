@@ -18,7 +18,7 @@ module.exports = class Clear extends Command {
                 client: ["ManageMessages"],
                 user: ["ManageMessages"],
             },
-            slashCommand: false,
+            slashCommand: true,
             options: [
                 {
                     name: "number_message_delete",
@@ -30,7 +30,7 @@ module.exports = class Clear extends Command {
         });
     }
 
-    async run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args) {
         let numberMessageDelete = ctx.isInteraction
             ? ctx.interaction.options.getInteger("number_message_delete")
             : parseInt(args[0]);
