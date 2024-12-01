@@ -1,7 +1,7 @@
 const { model, Schema } = require('mongoose');
 
 const GiveawayShopItemSchema = new Schema({
-    guildId: { type: String, default: null, unique: true, },
+    guildId: { type: String, default: null },
     channelId: { type: String, default: null },
     messageId: { type: String, required: true, unique: true },
     winners: { type: Number, default: 1 },
