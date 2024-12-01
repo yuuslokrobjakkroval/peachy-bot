@@ -16,7 +16,7 @@ module.exports = class Clear extends Command {
             permissions: {
                 dev: false,
                 client: ["ManageMessages"],
-                user: ["ManageMessages"],
+                user: ["ManageMessages"], // Default permissions for users without Admin
             },
             slashCommand: true,
             options: [
@@ -31,6 +31,16 @@ module.exports = class Clear extends Command {
     }
 
     async run(client, ctx, args) {
+        // Check for user permissions
+        const hasManageMessages = ctx.member.permissions.has("ManageMessages");
+        const isAdmin = ctx.member.permissions.has("Administrator");
+
+        if (!hasManageMessages && !isAdmin) {
+            return client.utils.sendErrorMessage(
+                "You need the 'Manage Messages' or 'Administrator' permission to use this command."
+            );
+        }
+
         let numberMessageDelete = ctx.isInteraction
             ? ctx.interaction.options.getInteger("number_message_delete")
             : parseInt(args[0]);
