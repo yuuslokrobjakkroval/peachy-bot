@@ -71,7 +71,7 @@ module.exports = class CatchThief extends Command {
         if (success) {
             // Police successfully catches the thief and uses the stolen amount from robAmount
             const stolenAmount = thief.work.robAmount;
-            const policeReward = Math.floor(stolenAmount * 0.8);
+            const policeReward = Math.floor(stolenAmount * 1.2);
 
             // Update balances
             thief.balance.coin -= stolenAmount; // Thief loses the stolen amount
