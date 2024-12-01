@@ -330,21 +330,7 @@ module.exports = [
         available: ['sell'],
         price: { buy: 55e5, sell: 5e6 },
     },
-    {
-        id: 'st03',
-        name: 'Buzzing Bliss',
-        description: 'Bring the buzz to your embed with the vibrant energy of bees and golden honeycombs. Adorn your design with warm yellows and black accents, featuring cheerful bee emojis to spread positivity and sweetness.',
-        type: 'special theme',
-        able: {
-            use: true,
-            gift: true,
-            multiple: false,
-        },
-        quantity: 1,
-        emoji: emoji.specialTheme.bee,
-        available: ['use'],
-        price: { buy: 4e7, sell: 35e6 },
-    },
+
     {
         id: 'st11',
         name: 'Spider Man',
@@ -390,19 +376,4 @@ module.exports = [
         available: ['use'],
         price: { buy: 1e8, sell: 15e6 },
     },
-    {
-        id: 'st14',
-        name: 'Froggy Fun',
-        description: 'Unleash your playful side with this lively theme featuring vibrant oranges and subtle whites. The adorable fox emoji adds a dash of wild fun to your style!',
-        type: 'special theme',
-        able: {
-            use: true,
-            gift: false,
-            multiple: false,
-        },
-        quantity: 1,
-        emoji: emoji.specialTheme.froggy,
-        available: ['use'],
-        price: { buy: 1e8, sell: 15e6 },
-    }
 ];

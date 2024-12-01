@@ -71,6 +71,7 @@ module.exports = {
         oceanBreeze: '<:OMAIN:1310877632325353542>',
         halloween: '<:HECONOMY:1290645165391872020>',
         halloweenNew: '<:H2MAIN:1300675214182711357>',
+        jingleJolly: '<:CMAIN:1312606545187569736>',
     },
     specialTheme: {
         heaven: '<:MAINHEAVEN:1293603530699046982>',
@@ -79,7 +80,7 @@ module.exports = {
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
         cappuccino: '<:CAFEMAIN:1309842668200923228>',
-        froggy: '<:FMAIN:1311007474576261260>',
+        froggy: '<:FMAIN:1312652464830414939>',
     },
 
     // EXCHANGE
