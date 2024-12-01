@@ -24,7 +24,7 @@ module.exports = [
             },
             {
                 id: 'f02',
-                name: 'Benji Donut',
+                name: 'Benji',
                 description: 'Eat to earn XP and upgrade level',
                 type: 'food',
                 able: {
@@ -40,7 +40,7 @@ module.exports = [
             },
             {
                 id: 'f03',
-                name: 'Chico Cake',
+                name: 'Chico',
                 description: 'Eat to earn XP and upgrade level',
                 type: 'food',
                 able: {

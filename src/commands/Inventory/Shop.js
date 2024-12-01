@@ -53,7 +53,6 @@ module.exports = class Shop extends Command {
             const embed = client.embed()
                 .setColor(client.color.main)
                 .setTitle(`𝐒𝐇𝐎𝐏 : ${selectedShop.name}`)
-                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(`${selectedShop.description}\n${itemList}`)
                 .setFooter({
                     text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
@@ -93,7 +92,6 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
             const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`𝐒𝐇𝐎𝐏 : ${selectedShop.name}`)
-                .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(`${selectedShop.description}\n\n${itemList}`)
                 .setFooter({
                     text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,

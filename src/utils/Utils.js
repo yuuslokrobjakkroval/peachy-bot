@@ -4,13 +4,10 @@ const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
 const importantItems = require('../assets/inventory/ImportantItems');
 const shopItems = require('../assets/inventory/ShopItems');
-const tasks = require('../assets/inventory/Tasks');
 const canvafy = require("canvafy");
 const globalConfig = require("./Config");
 const gif = require("./Gif");
 const globalEmoji = require("./Emoji");
-const emoji = require("./Emoji");
-const moment = require("moment");
 const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Utils {
@@ -496,12 +493,6 @@ module.exports = class Utils {
             default:
                 return;
         }
-    }
-
-
-
-    static getTasksForPosition(position) {
-        return tasks[position]?.tasks || [];
     }
 
     static emojiPosition(position) {
