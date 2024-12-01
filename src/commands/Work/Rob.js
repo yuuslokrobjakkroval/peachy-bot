@@ -9,7 +9,7 @@ module.exports = class Rob extends Command {
             name: 'rob',
             description: {
                 content: 'Attempt to rob another user for their coins.',
-                examples: ['rob @username', 'rob 123456789012345678'],
+                examples: ['rob @username'],
                 usage: 'rob <user>',
             },
             category: 'work',
