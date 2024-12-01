@@ -1,4 +1,4 @@
-const { Command } = require("../../structures/index.js");
+const { Command } = require("../../structures");
 
 module.exports = class Clear extends Command {
     constructor(client) {
@@ -9,7 +9,7 @@ module.exports = class Clear extends Command {
                 examples: ["clear 10", "clear 250"],
                 usage: "clear <number>",
             },
-            category: "dev",
+            category: "utility",
             aliases: ["purge", "delete"],
             cooldown: 3,
             args: true,
