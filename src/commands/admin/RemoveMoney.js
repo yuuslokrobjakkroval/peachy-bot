@@ -25,8 +25,11 @@ module.exports = class RemoveMoney extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
-        const user = await Users.findOne({ userId: mention.id });
+            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
+
+        const userId = typeof mention === 'string' ? mention : mention.id;
+
+        const user = await Users.findOne({ userId });
         const { coin, bank } = user.balance;
 
         if (mention.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'), color);
