@@ -50,8 +50,7 @@ module.exports = class Shop extends Command {
             const currentItems = items.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
             const itemList = currentItems.map(item => `**${item.id}** ${item.emoji} ${item.name} - ${client.utils.formatString(item.price.buy)} ${emoji.coin}`).join('\n');
 
-            const embed = client
-                .embed()
+            const embed = client.embed()
                 .setColor(client.color.main)
                 .setTitle(`𝐒𝐇𝐎𝐏 : ${selectedShop.name}`)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
@@ -79,7 +78,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
 
         pages.length = 0; // Clear existing pages
         const totalPages = Math.ceil(items.length / itemsPerPage);
-        const charLen = 13;
+        const charLen = 15;
 
         for (let i = 0; i < totalPages; i++) {
             const currentItems = items.slice(i * itemsPerPage, (i + 1) * itemsPerPage);
@@ -91,8 +90,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
                 return `\`${item.id}\` ${item.emoji} \`${item.name} ${' '.repeat(cLength)} ${price}\` ${emoji.coin}`;
             }).join('\n');
 
-            const embed = client
-                .embed()
+            const embed = client.embed()
                 .setColor(color.main)
                 .setTitle(`𝐒𝐇𝐎𝐏 : ${selectedShop.name}`)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
@@ -149,8 +147,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
     const displayItemDetails = (selectedItemIndex) => {
         const item = items[selectedItemIndex];
 
-        const embed = client
-            .embed()
+        const embed = client.embed()
             .setColor(client.color.main)
             .setTitle(`𝐈𝐓𝐄𝐌 𝐃𝐄𝐓𝐀𝐈𝐋𝐒 : ${item.name}`)
             .setThumbnail(item.emoji ? client.utils.emojiToImage(item.emoji) : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
