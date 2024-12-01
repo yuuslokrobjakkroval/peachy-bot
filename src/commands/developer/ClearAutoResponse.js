@@ -20,7 +20,7 @@ module.exports = class ClearAutoResponse extends Command {
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: true,
+            slashCommand: false,
             options: [],
         });
     }
@@ -46,8 +46,6 @@ module.exports = class ClearAutoResponse extends Command {
             })
         } catch (error) {
             console.error('Error in Clear Respond Command:', error);
-            // const balanceMessages = language.locales.get(language.defaultLocale)?.economyMessages?.balanceMessages;
-            // return client.utils.sendErrorMessage(client, ctx, balanceMessages.errors.fetchFail, color);
             return client.utils.sendErrorMessage(client, ctx, 'Clear Response is Error', color);
         }
     }
