@@ -45,8 +45,7 @@ module.exports = class UserBalance extends Command {
 
             const { coin = 0, bank = 0 } = user.balance;
 
-            const embed = client
-                .embed()
+            const embed = client.embed()
                 .setTitle(`${target.displayName}'s Balance`)
                 .setColor(color.main)
                 .setThumbnail(target.displayAvatarURL({ dynamic: true, size: 1024 }))
