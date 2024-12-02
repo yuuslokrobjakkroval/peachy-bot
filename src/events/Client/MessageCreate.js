@@ -92,8 +92,7 @@ module.exports = class MessageCreate extends Event {
         const permissionCommand = ['help', 'links', 'info', 'ping', 'rules', 'privacypolicy', 'stats']
         if (match) {
           if (!user && !permissionCommand.includes(command.name)) {
-            const embed = this.client
-                .embed()
+            const embed = this.client.embed()
                 .setColor(color.main)
                 .setTitle(`${emoji.mainLeft}  𝐏𝐄𝐀𝐂𝐇𝐘  ${emoji.mainRight}`)
                 .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
@@ -264,15 +263,15 @@ module.exports = class MessageCreate extends Event {
                   .then(userInfo => {
                     if (!user.username || user.username !== userInfo.displayName) {
                       user.username = userInfo ? userInfo.displayName : userInfo.username;
-                      user.save();
-                      // if (!user.isSaving) {
-                      //   user.isSaving = true;  // Flag to indicate a save operation is in progress
-                      //   user.save().then(() => {
-                      //     user.isSaving = false; // Reset the flag once saving is done
-                      //   }).catch(() => {
-                      //     user.isSaving = false; // Reset the flag if saving fails
-                      //   });
-                      // }
+                    
+                      if (!user.isSaving) {
+                         user.isSaving = true;  // Flag to indicate a save operation is in progress
+                         user.save().then(() => {
+                           user.isSaving = false; // Reset the flag once saving is done
+                         }).catch(() => {
+                           user.isSaving = false; // Reset the flag if saving fails
+                         });
+                       }
                     }
                   })
                   .catch(() => null);
