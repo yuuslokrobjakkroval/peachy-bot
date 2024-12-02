@@ -48,7 +48,6 @@ module.exports = class UserBalance extends Command {
             const embed = client.embed()
                 .setTitle(`${target.displayName}'s Balance`)
                 .setColor(color.main)
-                .setThumbnail(target.displayAvatarURL({ dynamic: true, size: 1024 }))
                 .setDescription(
                     `**Coin: \`${client.utils.formatNumber(coin)}\`** ${emoji.coin}\n` +
                     `**Bank: \`${client.utils.formatNumber(bank)}\`** ${emoji.coin}`
