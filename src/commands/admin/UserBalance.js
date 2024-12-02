@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
+const globalGif = require('../../utils/Gif');
 
 module.exports = class UserBalance extends Command {
     constructor(client) {
@@ -48,6 +49,7 @@ module.exports = class UserBalance extends Command {
             const embed = client.embed()
                 .setTitle(`${target.displayName}'s Balance`)
                 .setColor(color.main)
+                .setThumbnail(globalGif.balanceThumbnail ? globalGif.balanceThumbnail : client.utils.emojiToImage(emoji.main))
                 .setDescription(
                     `**Coin: \`${client.utils.formatNumber(coin)}\`** ${emoji.coin}\n` +
                     `**Bank: \`${client.utils.formatNumber(bank)}\`** ${emoji.coin}`
