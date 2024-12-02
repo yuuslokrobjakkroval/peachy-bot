@@ -130,19 +130,22 @@ module.exports = class InteractionCreate extends Event {
           const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
           const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'serverinfo', 'theme', 'userinfo', 'verify'];
           const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
+          const workCommands = ['applyjob', 'police', 'position', 'rob', 'student'];
 
           let logChannelId;
-          if (giveawaysCommands.includes(interaction.commandName)) {
+          if (workCommands.includes(command.name)) {
+            logChannelId = this.client.config.logChannelId[7];
+          } else if (giveawaysCommands.includes(command.name)) {
             logChannelId = this.client.config.logChannelId[6];
-          } else if (utilityCommands.includes(interaction.commandName)) {
+          } else if (utilityCommands.includes(command.name)) {
             logChannelId = this.client.config.logChannelId[5];
-          } else if (mineCommands.includes(interaction.commandName)) {
+          } else if (mineCommands.includes(command.name)) {
             logChannelId = this.client.config.logChannelId[4];
-          } else if (balanceCommands.includes(interaction.commandName)) {
+          } else if (balanceCommands.includes(command.name)) {
             logChannelId = this.client.config.logChannelId[3];
-          } else if (gamblingCommands.includes(interaction.commandName)) {
+          } else if (gamblingCommands.includes(command.name)) {
             logChannelId = this.client.config.logChannelId[2];
-          } else if (gameCommands.includes(interaction.commandName)) {
+          } else if (gameCommands.includes(command.name)) {
             logChannelId = this.client.config.logChannelId[1];
           } else {
             logChannelId = this.client.config.logChannelId[0];
