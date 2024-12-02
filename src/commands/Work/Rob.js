@@ -1,6 +1,7 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const moment = require("moment/moment");
+const globalEmoji = require("../../utils/Emoji");
 const chance = require('chance').Chance();
 
 module.exports = class Rob extends Command {
@@ -67,7 +68,7 @@ module.exports = class Rob extends Command {
         }
 
         // Check cooldown
-        const cooldownTime = 5 * 60 * 1000;
+        const cooldownTime = 2 * 60 * 1000;
         client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime).then(async isCooldownExpired => {
             if (!isCooldownExpired) {
                 client.utils.getCooldown(ctx.author.id, this.name.toLowerCase()).then(lastCooldownTimestamp => {
@@ -118,16 +119,20 @@ module.exports = class Rob extends Command {
 
                 if (success) {
                     robber.balance.coin += stolenAmount;
-                    robber.work.rob = true;  // Mark the robber as successful
-                    robber.work.robAmount = stolenAmount;  // Save the robbed amount
+                    robber.work.rob = true;
+                    robber.work.robAmount = stolenAmount;
 
                     victim.balance.coin -= stolenAmount;  // Victim loses coins
                     await Promise.all([robber.save(), victim.save()]);
                     client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
 
                     // Send success message
+                    const robEmoji = [globalEmoji.peachRob, globalEmoji.gomaRob];
+                    const randomRob = client.utils.getRandomElement(robEmoji);
+
                     const successEmbed = client.embed()
                         .setColor(color.main)
+                        .setThumbnail(client.utils.emojiToImage(randomRob))
                         .setDescription(
                             robMessages.success
                                 .replace('%{stolenAmount}', client.utils.formatNumber(stolenAmount))
@@ -143,6 +148,8 @@ module.exports = class Rob extends Command {
                     // Failed robbery - Apply penalty
                     const penalty = Math.floor(robber.balance.coin * 0.01); // 1% of robber's balance
                     robber.balance.coin = Math.max(0, robber.balance.coin - penalty);
+                    robber.work.rob = true;
+                    robber.work.robAmount = penalty;
                     await robber.save();
 
                     const failureEmbed = client.embed()

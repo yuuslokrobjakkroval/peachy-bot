@@ -38,7 +38,7 @@ setInterval(async () => {
     } catch (error) {
         console.error('Error resetting rob status:', error);
     }
-}, 5 * 60 * 1000);
+}, 2 * 60 * 1000);
 
 setInterval(async () => {
     return await client.abilities.getSendMessage(client);

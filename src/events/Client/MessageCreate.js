@@ -263,16 +263,16 @@ module.exports = class MessageCreate extends Event {
               this.client.users.fetch(user?.userId)
                   .then(userInfo => {
                     if (!user.username || user.username !== userInfo.displayName) {
-                      user.username = userInfo ? userInfo.displayName : 'Unknown';
-
-                      if (!user.isSaving) {
-                        user.isSaving = true;  // Flag to indicate a save operation is in progress
-                        user.save().then(() => {
-                          user.isSaving = false; // Reset the flag once saving is done
-                        }).catch(() => {
-                          user.isSaving = false; // Reset the flag if saving fails
-                        });
-                      }
+                      user.username = userInfo ? userInfo.displayName : userInfo.username;
+                      user.save();
+                      // if (!user.isSaving) {
+                      //   user.isSaving = true;  // Flag to indicate a save operation is in progress
+                      //   user.save().then(() => {
+                      //     user.isSaving = false; // Reset the flag once saving is done
+                      //   }).catch(() => {
+                      //     user.isSaving = false; // Reset the flag if saving fails
+                      //   });
+                      // }
                     }
                   })
                   .catch(() => null);

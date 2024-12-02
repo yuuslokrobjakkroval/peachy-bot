@@ -1,0 +1,72 @@
+const { Command } = require('../../structures/index.js');
+const User = require('../../schemas/user');
+
+module.exports = class ApplyJobList extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'joblist',
+            description: {
+                content: 'List all users with job grouped by position.',
+                examples: ['joblist', 'jl'],
+                usage: 'joblist',
+            },
+            category: 'work',
+            aliases: ['jl'],
+            cooldown: 3,
+            args: false,
+            permissions: {
+                dev: true,
+                staff: true,
+                client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
+                user: [],
+            },
+            slashCommand: false,
+            options: [],
+        });
+    }
+
+    async run(client, ctx, args, color, emoji, language) {
+        try {
+            const users = await User.find({ 'work.status': 'approved' });
+
+            if (users.length === 0) {
+                return client.utils.sendErrorMessage(client, ctx, 'No users apply for job.', color);
+            }
+
+            // Group users by their job position
+            const groupedByPosition = users.reduce((acc, user) => {
+                const position = user.work.position || 'Unspecified';
+                if (!acc[position]) acc[position] = [];
+                acc[position].push(
+                    `**ID**: ${user.userId}\n**Name**: ${user.username || 'Unknown'}\n**Approved Date**: ${new Date(user.work.approvedDate).toLocaleDateString()}\n`
+                );
+                return acc;
+            }, {});
+
+            const pages = [];
+            for (const [position, userList] of Object.entries(groupedByPosition)) {
+                const chunks = client.utils.chunk(userList, 10);
+
+                chunks.forEach((chunk, index) => {
+                    const embed = client.embed()
+                        .setColor(color.main)
+                        .setTitle(`**Position**: ${position === 'it' ? 'IT' : client.utils.formatCapitalize(position)}`)
+                        .setDescription(chunk.join('\n\n'))
+                        .setFooter({
+                            text: `Page ${index + 1} of ${chunks.length}`,
+                        });
+                    pages.push(embed);
+                });
+            }
+            return await client.utils.reactionPaginate(ctx, pages);
+        } catch (error) {
+            console.error('Error fetching apply job list:', error);
+            return client.utils.sendErrorMessage(
+                client,
+                ctx,
+                'An error occurred while fetching the job applications. Please try again later.',
+                color
+            );
+        }
+    }
+};

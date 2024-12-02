@@ -1,4 +1,4 @@
-const { Command } = require('../../structures/index.js');
+const { Command } = require('../../structures');
 const Users = require('../../schemas/user');
 
 module.exports = class AddUsername extends Command {

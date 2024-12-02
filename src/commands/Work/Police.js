@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
+const globalEmoji = require("../../utils/Emoji");
 const chance = require('chance').Chance();
 
 module.exports = class CatchThief extends Command {
@@ -84,8 +85,11 @@ module.exports = class CatchThief extends Command {
             await Promise.all([police.save(), thief.save()]);
 
             // Send success message
+            const policeEmoji = [globalEmoji.peachPolice, globalEmoji.gomaPolice];
+            const randomPolice = client.utils.getRandomElement(policeEmoji);
             const successEmbed = client.embed()
                 .setColor(color.main)
+                .setThumbnail(client.utils.emojiToImage(randomPolice))
                 .setDescription(
                     policeMessages.success
                         .replace('%{policeReward}', client.utils.formatNumber(policeReward))

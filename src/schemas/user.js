@@ -77,7 +77,6 @@ const VerificationSchema = new Schema({
 
 // Work Schema
 const WorkSchema = new Schema({
-
     position: { type: String, default: 'Not yet applied' },
     status: { type: String, default: 'pending' },  // 'pending', 'approved', 'rejected'
     applyDate: { type: Date, default: Date.now },
