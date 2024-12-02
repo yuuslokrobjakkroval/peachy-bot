@@ -9,7 +9,7 @@ module.exports = class GuildLeave extends Command {
                 examples: ['guildleave'],
                 usage: 'guildleave',
             },
-            category: 'developer',
+            category: 'guild',
             aliases: ['gl'],
             cooldown: 3,
             args: false,

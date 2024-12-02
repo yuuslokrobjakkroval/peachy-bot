@@ -9,7 +9,7 @@ module.exports = class GuildList extends Command {
                 examples: ['guildlist'],
                 usage: 'guildlist',
             },
-            category: 'developer',
+            category: 'guild',
             aliases: ['glt'],
             cooldown: 3,
             args: false,

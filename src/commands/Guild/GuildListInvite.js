@@ -10,7 +10,7 @@ module.exports = class GuildListInvite extends Command {
                 examples: ['guildlistinvite'],
                 usage: 'guildlistinvite',
             },
-            category: 'developer',
+            category: 'guild',
             aliases: ['gli'],
             cooldown: 3,
             args: false,
