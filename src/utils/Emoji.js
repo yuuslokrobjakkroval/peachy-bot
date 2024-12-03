@@ -127,7 +127,6 @@ module.exports = {
     avocado: '<:AVOCADO:1287593039380090931>',
     banana: '<:BANANA:1287593031461240852>',
 
-
     // COUNTRY FLAG
     countryFlag: {
         en: '<:US:1293929766239604766>',
@@ -185,6 +184,15 @@ module.exports = {
       // delivery: '',
       student: '<a:STUDENT:1307674085966352394>',
     },
+
+    // gambling: {
+    //     win: {
+    //
+    //     },
+    //     lose: {
+    //         peachPew: '<:PEACHPEEPEE:1313424034612117555>'
+    //     }
+    // },
 
     actions: {
         bites: [
@@ -247,7 +255,6 @@ module.exports = {
             '<a:GSLAP2:1302431622225985556>',
         ],
     },
-
     emotes: {
         angry: [
             '<a:PANGRY1:1302431805202366497>',
@@ -367,7 +374,6 @@ module.exports = {
             '<a:OK_2:1280413165083033631>',
         ],
     },
-
     letter: {
         a: '<a:A_:1281517563846721546>',
         b: '<a:B_:1281517556234059807>',

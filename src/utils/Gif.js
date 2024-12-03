@@ -28,4 +28,11 @@ module.exports = {
     // QR CODE
     qrKH: 'https://i.imgur.com/D1pGSlN.jpg',
     qrUSD: 'https://i.imgur.com/Sg7xVkl.jpg',
+
+    gambling: {
+        lose: {
+            peachPew: 'https://i.imgur.com/gasOeTQ.gif',
+            gomaPew: 'https://i.imgur.com/YUvhkE1.gif',
+        }
+    },
 };
