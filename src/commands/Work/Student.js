@@ -38,7 +38,7 @@ module.exports = class StudentClaim extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
-            const cooldownTime = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
+            const cooldownTime = 15 * 60 * 1000; // 4 hours in milliseconds
             const isCooldownExpired = await client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
 
             if (!isCooldownExpired) {
