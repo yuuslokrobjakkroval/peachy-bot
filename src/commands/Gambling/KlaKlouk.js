@@ -2,6 +2,13 @@ const { Command } = require('../../structures/index.js');
 const kkUtil = require("../../utils/KlaKloukUtil");
 
 const maxAmount = 300000;
+const activeGames = new Map();
+
+// async function resetActiveGameState(userId) {
+//     if (activeGames.has(userId)) {
+//         activeGames.delete(userId);
+//     }
+// }
 
 module.exports = class Klalouk extends Command {
     constructor(client) {
@@ -29,12 +36,18 @@ module.exports = class Klalouk extends Command {
                     type: 3,
                     required: true,
                 },
-                {
-                    name: 'player',
-                    description: 'The amount you want to play together.',
-                    type: 4,
-                    required: false,
-                },
+                // {
+                //     name: 'player',
+                //     description: 'The amount you want to play together.',
+                //     type: 4,
+                //     required: false,
+                // },
+                // {
+                //     name: "user",
+                //     description: "The user to get for reset game",
+                //     type: 6,
+                //     required: false,
+                // },
             ],
         });
     }
@@ -44,14 +57,22 @@ module.exports = class Klalouk extends Command {
         const klaKloukMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.klaKloukMessages;
         try {
             client.utils.getUser(ctx.author.id).then(user => {
+                // const targetUser = ctx.isInteraction ? ctx.options.getUser('user') : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[1]) || ctx.author;
+                // resetActiveGameState(targetUser.id);
+                if (activeGames.has(ctx.author.id)) {
+                    return client.utils.sendErrorMessage(client, ctx, generalMessages.alreadyInGame, color);
+                }
+                activeGames.set(ctx.author.id, true);
                 const { coin } = user.balance;
 
                 if (coin < 1) {
+                    activeGames.delete(ctx.author.id);
                     return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
                 }
 
                 let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
                 if (amount.toString().startsWith('-')) {
+                    activeGames.delete(ctx.author.id);
                     return ctx.sendMessage({
                         embeds: [
                             client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount)
@@ -68,20 +89,20 @@ module.exports = class Klalouk extends Command {
                     }
                 }
                 const betCoins = parseInt(Math.min(amount, coin, maxAmount));
-                let player = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
+                // let player = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
 
-                if(player > 1) {
-                    const startEmbed = client.embed()
-                        .setColor(color.main)
-                        .setDescription(
-                            generalMessages.title
-                                .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{title}', klaKloukMessages.title)
-                                .replace('%{mainRight}', emoji.mainRight) +
-                            klaKloukMessages.waiting.replace('%{player}', ctx.author.displayName))
-                } else {
-                    return kkUtil.klakloukStarting(client, ctx, color, emoji, coin, betCoins, generalMessages, klaKloukMessages);
-                }
+                // if (player > 1) {
+                //     const startEmbed = client.embed()
+                //         .setColor(color.main)
+                //         .setDescription(
+                //             generalMessages.title
+                //                 .replace('%{mainLeft}', emoji.mainLeft)
+                //                 .replace('%{title}', klaKloukMessages.title)
+                //                 .replace('%{mainRight}', emoji.mainRight) +
+                //             klaKloukMessages.waiting.replace('%{player}', ctx.author.displayName))
+                // } else {
+                    return kkUtil.klakloukStarting(client, ctx, color, emoji, user, coin, betCoins, generalMessages, klaKloukMessages, activeGames)
+                // }
             })
         } catch (error) {
             console.error(error);

@@ -45,7 +45,6 @@ module.exports = class Avatar extends Command {
       await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
     }
 
-
     const mention = ctx.isInteraction
         ? ctx.interaction.options.getUser("user") || ctx.author
         : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;

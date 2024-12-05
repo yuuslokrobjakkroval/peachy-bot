@@ -1,5 +1,6 @@
 const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage } = require('@napi-rs/canvas');
+const globalEmoji = require("./Emoji");
 
 const kkEmoji = {
     lion: '<:KKLION:1314104873704230932>',
@@ -29,7 +30,7 @@ const kkImage= {
 
 exports.klakloukStarting = klakloukStarting;
 
-async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, generalMessages, klaKloukMessages) {
+async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCoin, generalMessages, klaKloukMessages, activeGames) {
     const startEmbed = client.embed()
             .setColor(color.main)
             .setDescription(
@@ -37,13 +38,13 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
                     .replace('%{mainLeft}', emoji.mainLeft)
                     .replace('%{title}', klaKloukMessages.title)
                     .replace('%{mainRight}', emoji.mainRight) +
-                klaKloukMessages.description
+                klaKloukMessages.startGame
                     .replace('%{betCoin}', client.utils.formatNumber(betCoin))
                     .replace('%{coinEmote}', emoji.coin)
             )
             .setImage(kkGif.kda)
             .setFooter({
-                text: generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName),
+                text: generalMessages.gameStart.replace('%{user}', ctx.author.displayName),
                 iconURL: kkGif.ball
             });
 
@@ -61,9 +62,9 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
         const firstRow = client.utils.createButtonRow(b1, b2, b3, b4);
         const secondRow = client.utils.createButtonRow(b5, b6, b7, b8);
 
-        const KK = client.utils.getRandomNumber(1, 7);
-        const KK2 = client.utils.getRandomNumber(1, 7);
-        const KK3 = client.utils.getRandomNumber(1, 7);
+        const KK = client.utils.getRandomNumber(1, 6);
+        const KK2 = client.utils.getRandomNumber(1, 6);
+        const KK3 = client.utils.getRandomNumber(1, 6);
 
         let D1 = '';
         let D2 = '';
@@ -174,11 +175,22 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
     let selectedButton = [];
     collector.on('collect', async int => {
         try {
-            // Defer as soon as the interaction is received to buy more time
             await int.deferUpdate();
+            const buttonCost = betCoin; // Cost per button
+            const maxSelectable = Math.floor(userCoin / buttonCost);
             if (int.customId !== 'clear' && int.customId !== 'start') {
                 const selected = [...firstRow.components, ...secondRow.components].find(b => b.data.custom_id === int.customId);
                 if (!selectedButton.includes(int.customId)) {
+                    if (selectedButton.length >= maxSelectable) {
+                        return int.followUp({
+                            content: klaKloukMessages.notEnoughCoins
+                                .replace('%{coin}', client.utils.formatNumber(userCoin))
+                                .replace('%{coinEmote}', emoji.coin)
+                                .replace('%{needed}', client.utils.formatNumber((selectedButton.length + 1) * buttonCost))
+                                .replace('%{coinEmote}', emoji.coin),
+                            ephemeral: true,
+                        });
+                    }
                     selectedButton.push(int.customId);
                     selected.setStyle(1);
                 } else {
@@ -225,7 +237,6 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
                     await client.utils.getSleep(3000);
                     const canvas = createCanvas(384, 128);
                     const ctxCanvas = canvas.getContext('2d');
-                    console.log('G1', G1, 'G2', G2, 'G3', G3, D1, D2, D3)
                     const [img1, img2, img3] = await Promise.all([loadImage(D1), loadImage(D2), loadImage(D3)]);
                     ctxCanvas.drawImage(img1, 0, 0, 128, 128);
                     ctxCanvas.drawImage(img2, 128, 0, 128, 128);
@@ -245,6 +256,8 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
                     if (winKK > 0) {
                         // Handle Win
                         userCoin += winCash;
+                        user.balance.coin = userCoin;
+                        await user.save();
 
                         const embed = client.embed()
                             .setColor(color.success)
@@ -252,49 +265,46 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
                                 generalMessages.title
                                     .replace('%{mainLeft}', emoji.mainLeft)
                                     .replace('%{title}', klaKloukMessages.title)
-                                    .replace('%{mainRight}', emoji.mainRight)
-                            )
-                            .addFields(
-                                {
-                                    name: `Dealer Result`,
-                                    value: `${P1} ${P2} ${P3}`,
-                                    inline: true,
-                                },
-                                {
-                                    name: `${ctx.author.displayName}`,
-                                    value: `Won **${client.utils.formatNumber(winCash)} ${emoji.coin}**`,
-                                    inline: true,
-                                }
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
+                                `## ${P1} ${P2} ${P3}\n` +
+                                `${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
+                                `𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
+                                `𝑾𝒐𝒏 ***${client.utils.formatNumber(winCash)}*** ${emoji.coin}`
                             )
                             .setImage('attachment://result.png')
-                            .setFooter({text: `Your choices: ${selectedButton.map(id => kkEmoji[id]).join(", ")}`});
-
+                            .setFooter({
+                                text: `${generalMessages.gameOver.replace('%{user}', ctx.author.displayName)}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
+                        activeGames.delete(ctx.author.id);
                         await msg.edit({embeds: [embed], components: [], files: [attachment]});
                     } else {
+                        // Handle Lose
                         userCoin -= totalBet;
+                        user.balance.coin = userCoin;
+                        await user.save();
+
                         const embed = client.embed()
                             .setColor(color.danger)
                             .setDescription(
                                 generalMessages.title
                                     .replace('%{mainLeft}', emoji.mainLeft)
                                     .replace('%{title}', klaKloukMessages.title)
-                                    .replace('%{mainRight}', emoji.mainRight)
-                            )
-                            .addFields(
-                                {
-                                    name: `Dealer Result`,
-                                    value: `${P1} ${P2} ${P3}`,
-                                    inline: true,
-                                },
-                                {
-                                    name: `${ctx.author.displayName}`,
-                                    value: `Lost **${client.utils.formatNumber(totalBet)} ${emoji.coin}**`,
-                                    inline: true,
-                                }
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
+                                `## ${P1} ${P2} ${P3}\n` +
+                                `${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
+                                `𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
+                                `𝑳𝒐𝒔𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}`
                             )
                             .setImage('attachment://result.png')
-                            .setFooter({text: `Your choices: ${selectedButton.map(id => kkEmoji[id]).join(", ")}`});
+                            .setFooter({
+                                text: `${generalMessages.gameOver.replace('%{user}', ctx.author.displayName)}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
 
+                        activeGames.delete(ctx.author.id);
                         await msg.edit({embeds: [embed], components: [], files: [attachment]});
                     }
                 }
@@ -306,6 +316,7 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
 
     collector.on('end', collected => {
         if (collected.size === 0) {
+            activeGames.delete(ctx.author.id);
             const embed = client.embed()
                 .setColor(color.warning)
                 .setDescription(
