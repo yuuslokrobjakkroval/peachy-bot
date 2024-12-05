@@ -250,11 +250,22 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                     if (selectedButton.includes(G2)) winKK += 1;
                     if (selectedButton.includes(G3)) winKK += 1;
 
-                    const winCash = betCoin * winKK;
                     const totalBet = betCoin * selectedButton.length;
+                    let winCash = 0;
 
                     if (winKK > 0) {
                         // Handle Win
+                        if (selectedButton.length === 1) {
+                            winCash = betCoin * winKK * 2;
+                        } else if (selectedButton.length === 2) {
+                            if (winKK === 1) {
+                                winCash = totalBet;
+                            } else {
+                                winCash = betCoin * winKK * 2;
+                            }
+                        } else {
+                            winCash = betCoin * winKK * 2;
+                        }
                         userCoin += winCash - totalBet;
                         user.balance.coin = userCoin;
                         await user.save();
