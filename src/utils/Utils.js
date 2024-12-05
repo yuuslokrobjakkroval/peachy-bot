@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, PermissionsBitField} = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ComponentType, CommandInteraction, EmbedBuilder, PermissionsBitField} = require('discord.js');
 const Users = require('../schemas/user');
 const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
@@ -117,6 +117,10 @@ module.exports = class Utils {
         }
     }
 
+    static getSleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     static cooldown(id, timeout, cdId, cooldowntime, message, cooldowns, prem) {
         if (id === this.client.config.ownerId) {
             return false;
@@ -191,6 +195,13 @@ module.exports = class Utils {
                 return false;
             }
         }
+    }
+
+    static getCollectionButton(mgs, timeout){
+        return mgs.createMessageComponentCollector({
+            componentType: ComponentType.Button,
+            time: timeout,
+        });
     }
 
     static getCooldown(userId, command) {

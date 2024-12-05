@@ -91,7 +91,7 @@ module.exports = class Transfer extends Command {
 
         // Create confirm and cancel buttons
         const confirmButton = client.utils.labelButton('confirm_button', 'Confirm', 3);
-        const cancelButton = client.utils.labelButton(`cancel_button`, 'Cancel', 4);
+        const cancelButton = client.utils.labelButton('cancel_button', 'Cancel', 4);
         const allButtons = client.utils.createButtonRow(confirmButton, cancelButton);
 
         // Embed for confirmation

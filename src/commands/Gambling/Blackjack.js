@@ -56,7 +56,16 @@ module.exports = class Cmd extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
             }
 
-            let amount = ctx.isInteraction ? interaction.options.getString('amount') || '1' : args[0] || '1';
+            let amount = ctx.isInteraction ? interaction.options.getString('amount') || 1 : args[0] || 1;
+
+            if (amount.toString().startsWith('-')) {
+                return ctx.sendMessage({
+                    embeds: [
+                        client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount)
+                    ],
+                });
+            }
+
             if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
                 const amountMap = {all: coin, half: Math.ceil(coin / 2)};
                 if (amount in amountMap) {

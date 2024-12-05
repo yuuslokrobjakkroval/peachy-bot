@@ -52,6 +52,15 @@ module.exports = class Coinflip extends Command {
             }
 
             let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
+
+            if (amount.toString().startsWith('-')) {
+                return ctx.sendMessage({
+                    embeds: [
+                        client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount)
+                    ],
+                });
+            }
+
             if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
                 const amountMap = {all: coin, half: Math.ceil(coin / 2)};
                 if (amount in amountMap) {

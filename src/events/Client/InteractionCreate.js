@@ -19,7 +19,7 @@ module.exports = class InteractionCreate extends Event {
 
   async run(interaction) {
     if (interaction.user.bot || !interaction.guild) return;
-
+    if (interaction.guild?.id !== '1303552679578042438') return;
     this.client.setColorBasedOnTheme(interaction.user.id).then(async ({user, color, emoji, language}) => {
       if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
         const command = this.client.commands.get(interaction.commandName);

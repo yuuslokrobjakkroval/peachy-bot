@@ -14,6 +14,7 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
+    if (message.guild?.id !== '1303552679578042438') return;
 
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
