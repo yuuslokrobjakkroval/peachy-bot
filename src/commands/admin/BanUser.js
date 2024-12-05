@@ -40,10 +40,6 @@ module.exports = class BanUser extends Command {
             embeds: [client.embed().setColor(color.danger).setDescription('Please mention a valid user.')],
         });
 
-        if (mention && mention.user.bot) {
-            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
-        }
-
         const userId = typeof mention === 'string' ? mention : mention.id;
 
         let user = await Users.findOne({ userId });
