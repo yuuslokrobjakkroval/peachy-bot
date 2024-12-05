@@ -71,13 +71,10 @@ module.exports = class Profile extends Command {
                 backgroundColor = Colors.find(colorItem => colorItem.id === equippedColor.id)?.color;
             }
 
-            const avatarDecoration = client.utils.getAvatarDecoration(targetUser.id);
-            const userAvatarDecoration = avatarDecoration ? await loadImage(avatarDecoration) : null;
-
             const canvas = createCanvas(1280, 720);
             const context = canvas.getContext('2d');
 
-            await this.drawProfile(client, context, targetUser, user, userAvatarDecoration, color, backgroundColor, emoji, bannerImage);
+            await this.drawProfile(client, context, targetUser, user, color, backgroundColor, emoji, bannerImage);
 
             const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), { name: `${ctx.author.username}.png` });
 
@@ -160,7 +157,7 @@ module.exports = class Profile extends Command {
         return lines;
     }
 
-    async drawProfile(client, context, targetUser, userInfo, userAvatarDecoration, color, backgroundColor, emoji, banner) {
+    async drawProfile(client, context, targetUser, userInfo, color, backgroundColor, emoji, banner) {
         // Draw the background color
         context.fillStyle = backgroundColor ? backgroundColor.primary : client.utils.formatColor(color.main);
         context.fillRect(0, 0, 1280, 720);
@@ -207,9 +204,9 @@ module.exports = class Profile extends Command {
 
         // Draw the avatar as a circular image
         const userAvatar = await loadImage(targetUser.displayAvatarURL({ format: 'png', size: 256 }));
-        const userAvatarX = 50;
-        const userAvatarY = 576;
-        const userAvatarSize = 128;
+        const userAvatarX = 1200;
+        const userAvatarY = 34;
+        const userAvatarSize = 40;
 
         context.save();
         context.beginPath();
@@ -220,15 +217,11 @@ module.exports = class Profile extends Command {
         context.restore();
 
         // Add Avatar Decoration
-        if(userAvatarDecoration) {
-            context.drawImage(userAvatarDecoration, userAvatarX - (208 - userAvatarSize) / 2, userAvatarY - (248 - userAvatarSize) / 2, 208, 208);
-        } else {
-            context.beginPath();
-            context.arc(userAvatarX + userAvatarSize / 2, userAvatarY + userAvatarSize / 2, userAvatarSize / 2 + 2, 0, Math.PI * 2, true); // Slightly larger circle
-            context.lineWidth = 4;
-            context.strokeStyle = color.main;
-            context.stroke();
-        }
+        context.beginPath();
+        context.arc(userAvatarX + userAvatarSize / 2, userAvatarY + userAvatarSize / 2, userAvatarSize / 2 + 2, 0, Math.PI * 2, true); // Slightly larger circle
+        context.lineWidth = 1;
+        context.strokeStyle = color.main;
+        context.stroke();
 
         // Draw each setting item text and switch
         const userInfoDetail = [

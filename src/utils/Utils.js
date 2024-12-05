@@ -493,19 +493,6 @@ module.exports = class Utils {
         return null;
     }
 
-    static getAvatarDecoration(useId) {
-        switch (useId) {
-            case '966688007493140591': // KYUU
-                return 'https://i.imgur.com/b0fG2wu.png'
-            case '946079190971732041': // KEO
-                return 'https://i.imgur.com/Hggcevl.png'
-            case '1259714830483329065': // KOL
-                return 'https://i.imgur.com/11JtCud.png'
-            default:
-                return;
-        }
-    }
-
     static emojiPosition(position) {
         switch (position) {
             case 'police':
