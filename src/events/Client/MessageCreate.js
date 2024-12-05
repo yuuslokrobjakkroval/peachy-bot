@@ -19,7 +19,7 @@ module.exports = class MessageCreate extends Event {
       const prefix = this.client.config.prefix;
       this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
 
-      if (user?.verification?.isBanned) {
+      if (user.verification.isBanned) {
         return;
       }
 
