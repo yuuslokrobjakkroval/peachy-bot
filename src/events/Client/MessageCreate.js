@@ -345,19 +345,16 @@ module.exports = class MessageCreate extends Event {
             }
 
             const balanceCommands = ['balance', 'deposit', 'withdraw', 'multitransfer', 'transfer', 'buy', 'sell'];
-            const gamblingCommands = ['slots', 'blackjack', 'coinflip'];
+            const gamblingCommands = ['slots', 'blackjack', 'coinflip', 'klaklouk'];
             const gameCommands = ['guessnumber'];
             const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
             const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'serverinfo', 'theme', 'userinfo', 'verify'];
             const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
             const workCommands = ['applyjob', 'police', 'position', 'rob', 'student'];
-            const klakloukCommands = ['klaklouk'];
 
             try {
               let logChannelId;
-              if (klakloukCommands.includes(command.name)) {
-                logChannelId = '1314142452877361213';
-              } else if (workCommands.includes(command.name)) {
+              if (workCommands.includes(command.name)) {
                 logChannelId = this.client.config.logChannelId[7];
               } else if (giveawaysCommands.includes(command.name)) {
                 logChannelId = this.client.config.logChannelId[6];
