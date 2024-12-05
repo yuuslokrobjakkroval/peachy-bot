@@ -8,6 +8,9 @@ const kkEmoji = {
     cow: '<:KKCOW:1314104900933648404>',
     crab: '<:KKCRAB:1314104909695680602>',
     trey: '<:KKFISH:1314104949067612220>',
+    clear: '<:CLEAR:1314218233284395049>',
+    cancel: '<:CANCEL:1314217717217234964>',
+    start: '<a:START:1314216911734571111>',
 }
 
 const kkGif = {
@@ -51,16 +54,16 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
         const b1 = client.utils.emojiButton('lion', kkEmoji.lion, 2);
         const b2 = client.utils.emojiButton('angpav', kkEmoji.angpav, 2);
         const b3 = client.utils.emojiButton('tiger', kkEmoji.tiger, 2);
-        const b4 = client.utils.labelButton('clear', klaKloukMessages.clear, 2);
-        const b9 = client.utils.labelButton('cancel', klaKloukMessages.cancel, 4);
+        const b4 = client.utils.emojiButton('clear', kkEmoji.clear, 2);
 
         const b5 = client.utils.emojiButton('cow', kkEmoji.cow, 2);
         const b6 = client.utils.emojiButton('crab', kkEmoji.crab, 2);
         const b7 = client.utils.emojiButton('trey', kkEmoji.trey, 2);
-        const b8 = client.utils.labelButton('start', klaKloukMessages.start, 3);
+        const b8 = client.utils.emojiButton('start', kkEmoji.start, 3);
+        const b9 = client.utils.emojiButton('cancel', kkEmoji.cancel, 4);
 
-        const firstRow = client.utils.createButtonRow(b1, b2, b3, b4, b9);
-        const secondRow = client.utils.createButtonRow(b5, b6, b7, b8);
+        const firstRow = client.utils.createButtonRow(b1, b2, b3, b4);
+        const secondRow = client.utils.createButtonRow(b5, b6, b7, b8, b9);
 
         const KK = client.utils.getRandomNumber(1, 6);
         const KK2 = client.utils.getRandomNumber(1, 6);
@@ -205,7 +208,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
             } else if (int.customId === 'clear') {
                 selectedButton = [];
                 [...firstRow.components, ...secondRow.components].forEach(button => {
-                    if (button.data.custom_id !== 'cancel' || button.data.custom_id !== 'start') {
+                    if (button.data.custom_id !== 'clear' && button.data.custom_id !== 'cancel' && button.data.custom_id !== 'start') {
                         button.setStyle(2);
                     }
                 });
@@ -283,10 +286,10 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                                     .replace('%{title}', klaKloukMessages.title)
                                     .replace('%{mainRight}', emoji.mainRight) +
                                 `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
-                                `## ${P1} \`|\` ${P2} \`|\` ${P3} \n\n` +
-                                `${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
-                                `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")} \n\n` +
-                                `𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
+                                `## ${P1} \`|\` ${P2} \`|\` ${P3} \n` +
+                                `\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
+                                `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")} \n` +
+                                `\n𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
                                 `𝑾𝒐𝒏 ***${client.utils.formatNumber(winCash)}*** ${emoji.coin}`
                             )
                             .setImage('attachment://result.png')
@@ -310,10 +313,10 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                                     .replace('%{title}', klaKloukMessages.title)
                                     .replace('%{mainRight}', emoji.mainRight) +
                                 `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
-                                `## ${P1} \`|\` ${P2} \`|\` ${P3} \n\n` +
-                                `${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
-                                `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")} \n\n` +
-                                `𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
+                                `## ${P1} \`|\` ${P2} \`|\` ${P3} \n` +
+                                `\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
+                                `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")} \n` +
+                                `\n𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
                                 `𝑳𝒐𝒔𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}`
                             )
                             .setImage('attachment://result.png')
@@ -342,7 +345,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                         .replace('%{mainLeft}', emoji.mainLeft)
                         .replace('%{title}', klaKloukMessages.title)
                         .replace('%{mainRight}', emoji.mainRight) +
-                    `⏳ **Time is up** !!! You didn't click the button in time.`
+                    `⏳ **Time is up** !!! You didn't click the button start in the game.`
                 )
                 .setFooter({
                     text: `${ctx.author.displayName}, ${generalMessages.pleaseStartAgain}`,
