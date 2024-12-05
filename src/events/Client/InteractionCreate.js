@@ -24,7 +24,7 @@ module.exports = class InteractionCreate extends Event {
         const command = this.client.commands.get(interaction.commandName);
         if (!command) return;
 
-        if (user?.verification?.isBanned) {
+        if (user.verification.isBanned) {
           return;
         }
 
