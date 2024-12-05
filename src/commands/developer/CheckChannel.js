@@ -10,7 +10,7 @@ module.exports = class CheckChannelInAllServers extends Command {
                 usage: 'checkchannel <channelId>',
             },
             category: 'developer',
-            aliases: ['checkchannel'],
+            aliases: ['checkchannel', 'cc'],
             cooldown: 5,
             args: true,
             permissions: {
