@@ -14,8 +14,6 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-    if (message.guild?.id !== '1303552679578042438') return;
-
     this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
@@ -353,10 +351,13 @@ module.exports = class MessageCreate extends Event {
             const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'serverinfo', 'theme', 'userinfo', 'verify'];
             const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
             const workCommands = ['applyjob', 'police', 'position', 'rob', 'student'];
+            const klakloukCommands = ['klaklouk'];
 
             try {
               let logChannelId;
-              if (workCommands.includes(command.name)) {
+              if (klakloukCommands.includes(command.name)) {
+                logChannelId = '1314142452877361213';
+              } else if (workCommands.includes(command.name)) {
                 logChannelId = this.client.config.logChannelId[7];
               } else if (giveawaysCommands.includes(command.name)) {
                 logChannelId = this.client.config.logChannelId[6];

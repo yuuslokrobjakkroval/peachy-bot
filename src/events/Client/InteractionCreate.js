@@ -19,7 +19,6 @@ module.exports = class InteractionCreate extends Event {
 
   async run(interaction) {
     if (interaction.user.bot || !interaction.guild) return;
-    if (interaction.guild?.id !== '1303552679578042438') return;
     this.client.setColorBasedOnTheme(interaction.user.id).then(async ({user, color, emoji, language}) => {
       if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
         const command = this.client.commands.get(interaction.commandName);
@@ -131,9 +130,12 @@ module.exports = class InteractionCreate extends Event {
           const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'serverinfo', 'theme', 'userinfo', 'verify'];
           const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
           const workCommands = ['applyjob', 'police', 'position', 'rob', 'student'];
+          const klakloukCommands = ['klaklouk'];
 
           let logChannelId;
-          if (workCommands.includes(command.name)) {
+          if (klakloukCommands.includes(command.name)) {
+            logChannelId = '1314142452877361213';
+          } else if (workCommands.includes(command.name)) {
             logChannelId = this.client.config.logChannelId[7];
           } else if (giveawaysCommands.includes(command.name)) {
             logChannelId = this.client.config.logChannelId[6];
