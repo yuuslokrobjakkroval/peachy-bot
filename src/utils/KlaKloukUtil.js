@@ -261,10 +261,10 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                             if (winKK === 1) {
                                 winCash = totalBet;
                             } else {
-                                winCash = betCoin * winKK * 2;
+                                winCash = betCoin * winKK;
                             }
                         } else {
-                            winCash = betCoin * winKK * 2;
+                            winCash = betCoin * winKK;
                         }
                         userCoin += winCash - totalBet;
                         user.balance.coin = userCoin;
@@ -327,7 +327,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
         }
     });
 
-    collector.on('end', collected => {
+    collector.on('end', async collected => {
         if (collected.size === 0) {
             activeGames.delete(ctx.author.id);
             const embed = client.embed()
