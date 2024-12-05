@@ -286,11 +286,8 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                                     .replace('%{title}', klaKloukMessages.title)
                                     .replace('%{mainRight}', emoji.mainRight) +
                                 `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
-                                `## ${P1} \`|\` ${P2} \`|\` ${P3} \n` +
-                                `\n\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
-                                `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")} \n` +
-                                `\n\n𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
-                                `𝑾𝒐𝒏 ***${client.utils.formatNumber(winCash)}*** ${emoji.coin}`
+                                `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
+                                `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")}\n\n\n𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n𝑾𝒐𝒏 ***${client.utils.formatNumber(winCash)}*** ${emoji.coin}`
                             )
                             .setImage('attachment://result.png')
                             .setFooter({
@@ -313,11 +310,8 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                                     .replace('%{title}', klaKloukMessages.title)
                                     .replace('%{mainRight}', emoji.mainRight) +
                                 `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
-                                `## ${P1} \`|\` ${P2} \`|\` ${P3} \n` +
-                                `\n\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
-                                `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")} \n` +
-                                `\n\n𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
-                                `𝑳𝒐𝒔𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}`
+                                `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
+                                `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")}\n\n\n𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n𝑳𝒐𝒔𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}`
                             )
                             .setImage('attachment://result.png')
                             .setFooter({
