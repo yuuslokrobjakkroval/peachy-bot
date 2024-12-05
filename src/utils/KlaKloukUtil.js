@@ -267,7 +267,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                                     .replace('%{title}', klaKloukMessages.title)
                                     .replace('%{mainRight}', emoji.mainRight) +
                                 `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
-                                `## ${P1} ${P2} ${P3} \n\n` +
+                                `## ${P1} \`|\` ${P2} \`|\` ${P3} \n\n` +
                                 `${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
                                 `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")} \n\n` +
                                 `𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
@@ -294,7 +294,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                                     .replace('%{title}', klaKloukMessages.title)
                                     .replace('%{mainRight}', emoji.mainRight) +
                                 `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
-                                `## ${P1} ${P2} ${P3} \n\n` +
+                                `## ${P1} \`|\` ${P2} \`|\` ${P3} \n\n` +
                                 `${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
                                 `## ${selectedButton.map(id => kkEmoji[id]).join(" \`|\` ")} \n\n` +
                                 `𝑩𝒆𝒕 ***${client.utils.formatNumber(totalBet)}*** ${emoji.coin}\n` +
