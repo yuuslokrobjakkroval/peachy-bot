@@ -11,6 +11,7 @@ const kkEmoji = {
 }
 
 const kkGif = {
+    kda: 'https://i.imgur.com/9BYyire.png',
     ball: 'https://i.imgur.com/Es6GcJj.gif',
     secondBall: 'https://i.imgur.com/6uW6Qng.gif',
     thirdBall: 'https://i.imgur.com/IDI6x8f.gif',
@@ -24,7 +25,6 @@ const kkImage= {
     cow: 'https://i.imgur.com/07gO3iy.png', // tick
     crab: 'https://i.imgur.com/Pi3Xjna.png',
     trey: 'https://i.imgur.com/dGzUdmn.png', // tick
-    kda: 'https://i.imgur.com/9BYyire.png',
 }
 
 exports.klakloukStarting = klakloukStarting;
@@ -38,13 +38,13 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
                     .replace('%{title}', klaKloukMessages.title)
                     .replace('%{mainRight}', emoji.mainRight) +
                 klaKloukMessages.description
-                    .replace('%{betCoin}', betCoin)
+                    .replace('%{betCoin}', client.utils.formatNumber(betCoin))
                     .replace('%{coinEmote}', emoji.coin)
             )
-            .setImage(kkImage.kda)
+            .setImage(kkGif.kda)
             .setFooter({
                 text: generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName),
-                iconURL: kkImage.ball
+                iconURL: kkGif.ball
             });
 
         // Creating the buttons with initial SECONDARY style
@@ -209,9 +209,9 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
                                 .replace('%{mainRight}', emoji.mainRight) +
                             klaKloukMessages.selected
                                 .replace('%{selectedButton}', selectButtonEmojis)
-                                .replace('%{betCoin}', betCoin)
+                                .replace('%{betCoin}', client.utils.formatNumber(betCoin))
                                 .replace('%{coinEmote}', emoji.coin)
-                                .replace('%{totalCoin}', totalCoin)
+                                .replace('%{totalCoin}', client.utils.formatNumber(totalCoin))
                                 .replace('%{coinEmote}', emoji.coin)
                         )
                         .setImage(kkGif.klok)
@@ -225,7 +225,7 @@ async function klakloukStarting(client, ctx, color, emoji, userCoin, betCoin, ge
                     await client.utils.getSleep(3000);
                     const canvas = createCanvas(384, 128);
                     const ctxCanvas = canvas.getContext('2d');
-                    console.log(G1, G2, G3, D1, D2, D3)
+                    console.log('G1', G1, 'G2', G2, 'G3', G3, D1, D2, D3)
                     const [img1, img2, img3] = await Promise.all([loadImage(D1), loadImage(D2), loadImage(D3)]);
                     ctxCanvas.drawImage(img1, 0, 0, 128, 128);
                     ctxCanvas.drawImage(img2, 128, 0, 128, 128);
