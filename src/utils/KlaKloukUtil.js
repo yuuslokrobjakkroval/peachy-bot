@@ -1,6 +1,5 @@
 const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage } = require('@napi-rs/canvas');
-const globalEmoji = require("./Emoji");
 
 const kkEmoji = {
     lion: '<:KKLION:1314104873704230932>',
@@ -53,13 +52,14 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
         const b2 = client.utils.emojiButton('angpav', kkEmoji.angpav, 2);
         const b3 = client.utils.emojiButton('tiger', kkEmoji.tiger, 2);
         const b4 = client.utils.labelButton('clear', klaKloukMessages.clear, 2);
+        const b9 = client.utils.labelButton('cancel', klaKloukMessages.cancel, 4);
 
         const b5 = client.utils.emojiButton('cow', kkEmoji.cow, 2);
         const b6 = client.utils.emojiButton('crab', kkEmoji.crab, 2);
         const b7 = client.utils.emojiButton('trey', kkEmoji.trey, 2);
         const b8 = client.utils.labelButton('start', klaKloukMessages.start, 3);
 
-        const firstRow = client.utils.createButtonRow(b1, b2, b3, b4);
+        const firstRow = client.utils.createButtonRow(b1, b2, b3, b4, b9);
         const secondRow = client.utils.createButtonRow(b5, b6, b7, b8);
 
         const KK = client.utils.getRandomNumber(1, 6);
@@ -175,10 +175,9 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
     let selectedButton = [];
     collector.on('collect', async int => {
         try {
-            await int.deferUpdate();
-            const buttonCost = betCoin; // Cost per button
+            const buttonCost = betCoin;
             const maxSelectable = Math.floor(userCoin / buttonCost);
-            if (int.customId !== 'clear' && int.customId !== 'start') {
+            if (int.customId !== 'cancel' && int.customId !== 'clear' && int.customId !== 'start') {
                 const selected = [...firstRow.components, ...secondRow.components].find(b => b.data.custom_id === int.customId);
                 if (!selectedButton.includes(int.customId)) {
                     if (selectedButton.length >= maxSelectable) {
@@ -197,16 +196,22 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                     selectedButton.splice(selectedButton.indexOf(int.customId), 1);
                     selected.setStyle(2);
                 }
+                await int.deferUpdate();
                 msg.edit({components: [firstRow, secondRow]});
+            } else if (int.customId === 'cancel') {
+                selectedButton = [];
+                activeGames.delete(ctx.author.id);
+                msg.delete();
             } else if (int.customId === 'clear') {
                 selectedButton = [];
                 [...firstRow.components, ...secondRow.components].forEach(button => {
-                    if (button.data.custom_id !== 'start') {
+                    if (button.data.custom_id !== 'cancel' || button.data.custom_id !== 'start') {
                         button.setStyle(2);
                     }
                 });
+                await int.deferUpdate();
                 msg.edit({components: [firstRow, secondRow]});
-            } else if (int.customId === 'start') {
+            }  else if (int.customId === 'start') {
                 if (selectedButton.length === 0) {
                     return int.reply({content: klaKloukMessages.notSelected, ephemeral: true});
                 } else {
