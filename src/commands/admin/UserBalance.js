@@ -41,7 +41,6 @@ module.exports = class UserBalance extends Command {
 
             const userId = typeof mention === 'string' ? mention : mention.id;
             const syncUser = await client.users.fetch(userId);
-            console.log(syncUser)
             const user = await Users.findOne({ userId: syncUser.id });
             if (!user) {
                 return await client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
