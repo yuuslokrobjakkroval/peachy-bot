@@ -63,6 +63,7 @@ module.exports = class UserInfo extends Command {
 
     const embed = client.embed()
         .setColor(color.main)
+        .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, extension: 'png' }))
         .setDescription(
             generalMessages.title
                 .replace("%{mainLeft}", emoji.mainLeft)
@@ -80,6 +81,7 @@ module.exports = class UserInfo extends Command {
             `**𝑻𝒐𝒑 𝒓𝒐𝒍𝒆** ${globalEmoji.arrow} *${guildMember?.roles.highest.name || "𝑵𝒐𝒏𝒆"}*\n` +
             `**𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝒂𝒕** ${globalEmoji.arrow} *${Math.floor((Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365))}* 𝒚𝒆𝒂𝒓𝒔 𝒂𝒈𝒐\n`
         )
+        .setImage(ctx.author.bannerURL() ? ctx.author.bannerURL({ dynamic: true, extension: 'png' }) : client.config.links.banner)
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),

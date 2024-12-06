@@ -79,7 +79,7 @@ module.exports = class ServerInfo extends Command {
 
     const embed = client.embed()
         .setColor(color.main)
-        .setThumbnail(guild.iconURL({ dynamic: true }))
+        .setThumbnail(guild.iconURL({ dynamic: true, extension: 'png' }))
         .setDescription(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
@@ -87,6 +87,7 @@ module.exports = class ServerInfo extends Command {
                 .replace('%{mainRight}', emoji.mainRight) +
             description
         )
+        .setImage(guild.bannerURL() ? guild.bannerURL({ dynamic: true, extension: 'png' }) : client.config.links.banner)
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
