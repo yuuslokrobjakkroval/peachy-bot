@@ -81,7 +81,7 @@ module.exports = class UserInfo extends Command {
             `**𝑻𝒐𝒑 𝒓𝒐𝒍𝒆** ${globalEmoji.arrow} *${guildMember?.roles.highest.name || "𝑵𝒐𝒏𝒆"}*\n` +
             `**𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝒂𝒕** ${globalEmoji.arrow} *${Math.floor((Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365))}* 𝒚𝒆𝒂𝒓𝒔 𝒂𝒈𝒐\n`
         )
-        .setImage(ctx.author.bannerURL() ? ctx.author.bannerURL() : client.config.links.banner)
+        .setImage(ctx.author.bannerURL() ? ctx.author.bannerURL({ size: 1024 }) : client.config.links.banner)
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
