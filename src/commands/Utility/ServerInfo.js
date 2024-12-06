@@ -87,7 +87,7 @@ module.exports = class ServerInfo extends Command {
                 .replace('%{mainRight}', emoji.mainRight) +
             description
         )
-        .setImage(guild.bannerURL() ? guild.bannerURL({ dynamic: true, extension: 'png' }) : client.config.links.banner)
+        .setImage(guild.bannerURL() ? guild.bannerURL() : client.config.links.banner)
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
