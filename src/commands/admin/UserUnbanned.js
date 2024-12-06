@@ -42,34 +42,17 @@ module.exports = class BanUser extends Command {
 
         const userId = typeof mention === 'string' ? mention : mention.id;
         const syncUser = await client.users.fetch(userId);
-        let user = await Users.findOne({ userId: syncUser.id });
-        if (!user) {
-            user = new Users({
-                userId: mention.id,
-                verification: {
-                    isBanned: false,
-                    banReason: null,
-                }
-            });
-        }
+        await Users.updateOne(
+            {userId: syncUser.id},
+            {$set: {'verification.isBanned': false, 'verification.banReason': null}},
+            {upsert: true}
+        ).exec();
 
-        const { isBanned } = user.verification;
-        if (isBanned) {
-            return await ctx.sendMessage({
-                embeds: [client.embed().setColor(color.danger).setDescription(`${mention} is already banned.`)],
-            });
-        } else {
-            await Users.updateOne(
-                {userId: mention.id},
-                {$set: {'verification.isBanned': false, 'verification.banReason': null}},
-                {upsert: true}
-            ).exec();
+        const embed = client.embed()
+            .setColor(color.main)
+            .setDescription(`${emoji.tick} Unbanned **${mention}**.`);
 
-            const embed = client.embed()
-                .setColor(color.main)
-                .setDescription(`${emoji.tick} Unbanned **${mention}**.`);
+        return await ctx.sendMessage({embeds: [embed]});
 
-            return await ctx.sendMessage({embeds: [embed]});
-        }
     }
 };
