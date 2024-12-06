@@ -45,7 +45,7 @@ module.exports = class Transfer extends Command {
 
         // Fetch user data for both sender and receiver
         const user = await Users.findOne({ userId: ctx.author.id });
-        const target = await Users.findOne({ userId: targetUser.id });
+        const target = await Users.findOne({ userId: targetUser.id }) || new Users({ userId: targetUser.id, balance: { coin: 0, bank: 0 } });
 
         if (user.balance.coin < 1) {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
