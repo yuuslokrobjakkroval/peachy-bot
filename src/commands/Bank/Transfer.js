@@ -46,7 +46,6 @@ module.exports = class Transfer extends Command {
         // Fetch user data for both sender and receiver
         const user = await Users.findOne({ userId: ctx.author.id });
         const target = await Users.findOne({ userId: targetUser.id });
-        console.log(target)
 
         if (user.balance.coin < 1) {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
@@ -128,7 +127,7 @@ module.exports = class Transfer extends Command {
                 interaction.deferUpdate().then(async () => {
                     if (interaction.customId === 'confirm') {
                         target.balance.coin += parseInt(amount);
-                        await Users.updateOne({ userId: target.id }, { 'balance.coin': target.balance.coin } ).exec();
+                        await Users.updateOne({ userId: targetUser.id }, { 'balance.coin': target.balance.coin } ).exec();
                         const confirmationEmbed = client.embed()
                             .setColor(color.main)
                             .setDescription(
