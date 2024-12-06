@@ -24,12 +24,12 @@ module.exports = class InteractionCreate extends Event {
         const command = this.client.commands.get(interaction.commandName);
         if (!command) return;
 
-        if (user.verification.isBanned) {
+        if (user?.verification?.isBanned) {
           return;
         }
 
         const now = new Date();
-        if (user?.verification?.timeout?.expiresAt && user.verification.timeout.expiresAt > now) {
+        if (user?.verification?.timeout?.expiresAt > now) {
           const remainingTime = user.verification.timeout.expiresAt - now; // Remaining time in milliseconds
 
           // Calculate hours, minutes, and seconds
