@@ -45,7 +45,8 @@ module.exports = class Transfer extends Command {
 
         // Fetch user data for both sender and receiver
         const user = await Users.findOne({ userId: ctx.author.id });
-        const target = await Users.findOne({ userId: targetUser.id }) || new Users({ userId: targetUser.id, balance: { coin: 0, bank: 0 } });
+        const target = await Users.findOne({ userId: targetUser.id });
+        console.log(target)
 
         if (user.balance.coin < 1) {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
@@ -90,8 +91,8 @@ module.exports = class Transfer extends Command {
         }
 
         // Create confirm and cancel buttons
-        const confirmButton = client.utils.labelButton('confirm_button', 'Confirm', 3);
-        const cancelButton = client.utils.labelButton('cancel_button', 'Cancel', 4);
+        const confirmButton = client.utils.labelButton('confirm', 'Confirm', 3);
+        const cancelButton = client.utils.labelButton('cancel', 'Cancel', 4);
         const allButtons = client.utils.createButtonRow(confirmButton, cancelButton);
 
         // Embed for confirmation
@@ -112,85 +113,82 @@ module.exports = class Transfer extends Command {
                 iconURL: ctx.author.displayAvatarURL(),
             });
 
-        const messageEmbed = await ctx.channel.send({ embeds: [embed], components: [allButtons] });
+        const msg = await ctx.channel.send({ embeds: [embed], components: [allButtons] });
+
+        user.balance.coin -= parseInt(amount);
+        await Users.updateOne({ userId: ctx.author.id }, { 'balance.coin': user.balance.coin }).exec();
 
         const filter = (interaction) => interaction.user.id === ctx.author.id;
-        const collector = messageEmbed.createMessageComponentCollector({ filter, time: 60000 });
+        const collector = msg.createMessageComponentCollector({ filter, time: 60000 });
 
-        collector.on('collect', (interaction) => {
+        collector.on('collect', (interaction) =>  {
             if (interaction.user.id !== ctx.author.id) {
                 return interaction.reply({ content: generalMessages.notForYou || "This action is not for you.", ephemeral: true });
             } else {
-                interaction.deferUpdate().then(() => {
-                    if (interaction.customId === 'confirm_button') {
-                        // Perform the transfer
-                        user.balance.coin -= parseInt(amount);
+                interaction.deferUpdate().then(async () => {
+                    if (interaction.customId === 'confirm') {
                         target.balance.coin += parseInt(amount);
-
-                        Users.findOneAndUpdate(
-                            { userId: ctx.author.id },
-                            { 'balance.coin': user.balance.coin }
-                        )
-                            .then(() => {
-                                return Users.findOneAndUpdate(
-                                    { userId: targetUser.id },
-                                    { 'balance.coin': target.balance.coin },
-                                    { upsert: true, new: true } // Use upsert to create the document if it doesn't exist
-                                );
-                            })
-                            .then(() => {
-                                // Create and send the confirmation embed
-                                const confirmationEmbed = client.embed()
-                                    .setColor(color.main)
-                                    .setDescription(
-                                        generalMessages.title
-                                            .replace('%{mainLeft}', emoji.mainLeft)
-                                            .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
-                                            .replace('%{mainRight}', emoji.mainRight) +
-                                        transferMessages.success
-                                            .replace('%{amount}', client.utils.formatNumber(amount))
-                                            .replace('%{emoji}', emoji.coin)
-                                            .replace('%{user}', targetUser.displayName)
-                                    )
-                                    .setFooter({
-                                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                                        iconURL: ctx.author.displayAvatarURL(),
-                                    });
-
-                                ctx.channel.send({ embeds: [confirmationEmbed] });
-
-                                // Optional: Thanks GIF message
-                                setTimeout(() => {
-                                    const imageEmbed = client.embed()
-                                        .setColor(color.main)
-                                        .setDescription(`${targetUser} wants to say thanks to ${ctx.author}.`)
-                                        .setImage(globalGif.thanks);
-
-                                    ctx.channel.send({ embeds: [imageEmbed] });
-                                }, 2000);
-
-                                messageEmbed.delete();
-                            })
-                            .catch(error => {
-                                console.error('Database update error:', error);
-                                ctx.channel.send(generalMessages.databaseUpdate);
+                        await Users.updateOne({ userId: target.id }, { 'balance.coin': target.balance.coin } ).exec();
+                        const confirmationEmbed = client.embed()
+                            .setColor(color.main)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                transferMessages.success
+                                    .replace('%{amount}', client.utils.formatNumber(amount))
+                                    .replace('%{emoji}', emoji.coin)
+                                    .replace('%{user}', targetUser.displayName)
+                            )
+                            .setFooter({
+                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
                             });
+
+                        ctx.sendMessage({ embeds: [confirmationEmbed] });
+
+                        // Optional: Thanks GIF message
+                        setTimeout(() => {
+                            const imageEmbed = client.embed()
+                                .setColor(color.main)
+                                .setDescription(`${targetUser} wants to say thanks to ${ctx.author}.`)
+                                .setImage(globalGif.thanks);
+
+                            ctx.sendMessage({ embeds: [imageEmbed] });
+                        }, 2000);
+                        msg.delete();
                     } else {
-                        ctx.channel.send(transferMessages.cancel);
-                        messageEmbed.delete();
+                        user.balance.coin += parseInt(amount);
+                        await Users.updateOne({ userId: ctx.author.id }, { 'balance.coin': user.balance.coin }).exec();
+                        const cancelEmbed = client.embed()
+                            .setColor(color.main)
+                            .setDescription(
+                                generalMessages.title
+                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                    .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
+                                    .replace('%{mainRight}', emoji.mainRight) +
+                                transferMessages.cancel
+                            )
+                            .setFooter({
+                                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                                iconURL: ctx.author.displayAvatarURL(),
+                            });
+                        msg.edit({ embeds: [cancelEmbed], components: [] });
                     }
                 })
             }
         });
 
-        collector.on('end', collected => {
+        collector.on('end', async collected => {
             if (collected.size === 0) {
+                user.balance.coin += parseInt(amount);
+                await Users.updateOne({ userId: ctx.author.id }, { 'balance.coin': user.balance.coin }).exec();
                 const timeoutEmbed = client.embed()
                     .setColor(color.warning)
                     .setTitle(transferMessages.expire)
                     .setDescription(transferMessages.timeout);
-
-                messageEmbed.edit({ embeds: [timeoutEmbed], components: [] });
+                msg.edit({ embeds: [timeoutEmbed], components: [] });
             }
         });
     }

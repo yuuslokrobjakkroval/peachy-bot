@@ -33,13 +33,13 @@ module.exports = class UserBalance extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         try {
-            const target = ctx.isInteraction
+            const mention = ctx.isInteraction
                 ? ctx.interaction.options.getUser('user')
                 : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
 
-            const userId = typeof target === 'string' ? target : target.id;
-
-            const user = await Users.findOne({ userId });
+            const userId = typeof mention === 'string' ? mention : mention.id;
+            const syncUser = await client.users.fetch(userId);
+            const user = await Users.findOne({ userId: syncUser.id });
             if (!user) {
                 return await client.utils.sendErrorMessage(client, ctx, 'User not found.', color);
             }

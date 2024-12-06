@@ -58,7 +58,8 @@ module.exports = class Timeout extends Command {
         }
 
         const userId = typeof mention === 'string' ? mention : mention.id;
-        let user = await Users.findOne({ userId });
+        const syncUser = await client.users.fetch(userId);
+        let user = await Users.findOne({ userId: syncUser.id });
         if (!user) {
             user = new Users({
                 userId: mention.id,

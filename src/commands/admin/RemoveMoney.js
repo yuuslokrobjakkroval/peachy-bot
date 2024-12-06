@@ -28,8 +28,8 @@ module.exports = class RemoveMoney extends Command {
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
 
         const userId = typeof mention === 'string' ? mention : mention.id;
-
-        const user = await Users.findOne({ userId });
+        const syncUser = await client.users.fetch(userId);
+        const user = await Users.findOne({ userId: syncUser.id });
         const { coin, bank } = user.balance;
 
         if (mention.bot) return await client.utils.sendErrorMessage(client, ctx, client.i18n.get(language, 'commands', 'mention_to_bot'), color);

@@ -30,7 +30,8 @@ module.exports = class AddBank extends Command {
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
 
         const userId = typeof mention === 'string' ? mention : mention.id;
-        let user = await Users.findOne({ userId });
+        const syncUser = await client.users.fetch(userId);
+        let user = await Users.findOne({ userId: syncUser.id });
         if (!user) {
             user = new Users({
                 userId,

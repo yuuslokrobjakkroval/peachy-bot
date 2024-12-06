@@ -37,11 +37,12 @@ module.exports = class UpdatePaymentStatus extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const user = ctx.isInteraction
+        const mention = ctx.isInteraction
             ? ctx.interaction.options.getUser('user') || ctx.author
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
 
-        const userId = typeof user === 'string' ? user : user.id;
+        const userId = typeof mention === 'string' ? mention : mention.id;
+        const syncUser = await client.users.fetch(userId);
         const status = ctx.isInteraction ? ctx.interaction.options.getString('status') : args[1];
 
         if (!userId || !status || !['paid', 'unpaid', 'reset', 'clear'].includes(status.toLowerCase())) {
@@ -55,7 +56,7 @@ module.exports = class UpdatePaymentStatus extends Command {
 
         try {
             // Find the user by the provided userId
-            const user = await Users.findOne({ userId });
+            const user = await Users.findOne({ userId: syncUser.id });
 
             if (!user) {
                 return await this.sendReply(ctx, {

@@ -45,7 +45,8 @@ module.exports = class AddItem extends Command {
         }
 
         const userId = typeof mention === 'string' ? mention : mention.id;
-        let userData = await Users.findOne({ userId });
+        const syncUser = await client.users.fetch(userId);
+        let userData = await Users.findOne({ userId: syncUser.id });
         if (!userData) {
             userData = new Users({
                 userId,

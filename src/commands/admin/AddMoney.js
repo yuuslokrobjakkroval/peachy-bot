@@ -26,11 +26,12 @@ module.exports = class AddMoney extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const mention = ctx.isInteraction
-            ? ctx.interaction.options.getUser('user')
+            ? ctx.interaction.options.getUser('user') || ctx.author
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
 
         const userId = typeof mention === 'string' ? mention : mention.id;
-        let user = await Users.findOne({ userId });
+        const syncUser = await client.users.fetch(userId);
+        let user = await Users.findOne({ userId: syncUser.id });
         if (!user) {
             user = new Users({
                 userId,
@@ -43,7 +44,7 @@ module.exports = class AddMoney extends Command {
 
         const { coin, bank } = user.balance;
 
-        if (mention && mention.user.bot) {
+        if (mention && mention?.user?.bot) {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
         }
 
