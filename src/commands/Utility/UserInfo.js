@@ -75,7 +75,7 @@ module.exports = class UserInfo extends Command {
           { name: `📛 **𝑵𝒂𝒎𝒆**`, value: `${globalEmoji.arrow} *${user.displayName}* (*${user.username}*)`, inline: false },
           {
             name: `🙋 **𝑱𝒐𝒊𝒏𝒆𝒅 ${guild.name} 𝒂𝒕**`,
-            value: `*${globalEmoji.arrow} ${guildMember?.joinedTimestamp ? `${Math.floor((Date.now() - guildMember.joinedTimestamp) / (1000 * 60 * 60 * 24))} 𝒅𝒂𝒚𝒔 𝒂𝒈𝒐})` : "N/A"}*`,
+            value: `*${globalEmoji.arrow} ${guildMember?.joinedTimestamp ? `${Math.floor((Date.now() - guildMember.joinedTimestamp) / (1000 * 60 * 60 * 24))} 𝒅𝒂𝒚𝒔 𝒂𝒈𝒐` : "N/A"}*`,
             inline: false
           },
           { name: `🤖 **𝑩𝒐𝒕**`, value: `${globalEmoji.arrow} *${user.bot ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}*`, inline: false },
