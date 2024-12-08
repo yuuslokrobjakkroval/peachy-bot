@@ -68,7 +68,7 @@ module.exports = class Rob extends Command {
         }
 
         // Check cooldown
-        const cooldownTime = 2 * 60 * 1000;
+        const cooldownTime = 4 * 60 * 1000;
         client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime).then(async isCooldownExpired => {
             if (!isCooldownExpired) {
                 client.utils.getCooldown(ctx.author.id, this.name.toLowerCase()).then(lastCooldownTimestamp => {
