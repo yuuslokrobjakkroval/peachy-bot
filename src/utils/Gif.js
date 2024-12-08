@@ -22,7 +22,7 @@ module.exports = {
     balanceBanner: 'https://i.imgur.com/L0S7Zr1.png',
 
     // MENTION BOT
-    mentionBot: 'https://i.imgur.com/C85ONWz.jpg',
+    mentionBot: 'https://i.imgur.com/kYXE4No.gif',
     // SHOP
     foodShop: 'https://i.imgur.com/rCAfhxi.jpg',
     drinkShop: 'https://i.imgur.com/cGlVN9t.jpg',
