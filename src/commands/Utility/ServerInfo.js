@@ -61,32 +61,38 @@ module.exports = class ServerInfo extends Command {
         member => !member.presence && member.joinedTimestamp < thirtyDaysAgo
     ).size;
 
-    const description = `
-    **𝑰𝑫** ${globalEmoji.arrow} *${guild.id}*
-    **𝑵𝒂𝒎𝒆** ${globalEmoji.arrow} *${guild.name}*
-    **𝑶𝒘𝒏𝒆𝒓** ${globalEmoji.arrow} *<@${guild.ownerId}>*
-    **𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏** ${globalEmoji.arrow} ${verificationLevels[guild.verificationLevel]}\n
-    **𝑪𝒉𝒂𝒏𝒏𝒆𝒍**\n- **𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒊𝒆𝒔** *${guild.channels.cache.filter(ch => ch.type === 4).size}*\n- **𝑻𝒆𝒙𝒕 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔** *${guild.channels.cache.filter(ch => ch.type === 0).size}*\n- **𝑽𝒐𝒊𝒄𝒆 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔** *${guild.channels.cache.filter(ch => ch.type === 2).size}*\n
-    **𝑴𝒆𝒎𝒃𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**\n- **𝑶𝒏𝒍𝒊𝒏𝒆** *${onlineCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑰𝒅𝒍𝒆** *${idleCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑫𝒐 𝑵𝒐𝒕 𝑫𝒊𝒔𝒕𝒖𝒓𝒃** *${dndCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **𝑶𝒇𝒇𝒍𝒊𝒏𝒆** *${offlineCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
-    **𝑶𝒇𝒇𝒍𝒊𝒏𝒆 𝑴𝒆𝒎𝒃𝒆𝒓𝒔**\n- **7 𝑫𝒂𝒚𝒔** *${offline7Days}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n- **30 𝑫𝒂𝒚𝒔** *${offline30Days}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
-    **𝑩𝒐𝒐𝒔𝒕𝒔** ${globalEmoji.arrow} *${guild.premiumSubscriptionCount || 0}*\n
-    **𝑩𝒐𝒐𝒔𝒕 𝒍𝒆𝒗𝒆𝒍** ${globalEmoji.arrow} *${guild.premiumTier}*\n
-    **𝑹𝒐𝒍𝒆𝒔** ${globalEmoji.arrow} *${guild.roles.cache.size}*\n
-    **𝑬𝒎𝒐𝒋𝒊** ${globalEmoji.arrow} *${guild.emojis.cache.size}*\n
-    **𝑺𝒕𝒊𝒄𝒌𝒆𝒓** ${globalEmoji.arrow} *${guild.stickers.cache.size}*\n
-    **𝑨𝒍𝒍 𝑴𝒆𝒎𝒃𝒆𝒓** ${globalEmoji.arrow} *${guild.memberCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n
-    **𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑨𝒕** ${globalEmoji.arrow} *${guild.createdAt.toLocaleString()}*`;
-
     const embed = client.embed()
         .setColor(color.main)
         .setThumbnail(guild.iconURL({ dynamic: true, extension: 'png' }))
-        .setDescription(
+        .setTitle(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
                 .replace('%{title}', "𝐒𝐄𝐑𝐕𝐄𝐑 𝐈𝐍𝐅𝐎")
-                .replace('%{mainRight}', emoji.mainRight) +
-            description
+                .replace('%{mainRight}', emoji.mainRight)
         )
+        .addFields([
+            { name: `🆔 **𝑰𝑫**`, value: `${globalEmoji.arrow} *${guild.id}*`, inline: false },
+            { name: `📛 **𝑵𝒂𝒎𝒆**`, value: `${globalEmoji.arrow} *${guild.name}*`, inline: false },
+            { name: `👑 **𝑶𝒘𝒏𝒆𝒓**`, value: `${globalEmoji.arrow} *<@${guild.ownerId}>*`, inline: false },
+            { name: "🔒 **𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏**", value: `${globalEmoji.arrow} ${verificationLevels[guild.verificationLevel]}`, inline: false },
+            { name: "📊 **𝑪𝒉𝒂𝒏𝒏𝒆𝒍**",
+              value: `**𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒊𝒆𝒔** ${globalEmoji.arrow} *${guild.channels.cache.filter(ch => ch.type === 4).size}*\n**𝑻𝒆𝒙𝒕 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔** ${globalEmoji.arrow} *${guild.channels.cache.filter(ch => ch.type === 0).size}*\n**𝑽𝒐𝒊𝒄𝒆 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔** ${globalEmoji.arrow} *${guild.channels.cache.filter(ch => ch.type === 2).size}*`,
+              inline: false },
+            { name: "🧍 **𝑴𝒆𝒎𝒃𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔**",
+              value: `**𝑶𝒏𝒍𝒊𝒏𝒆** ${globalEmoji.arrow} *${onlineCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n**𝑰𝒅𝒍𝒆** ${globalEmoji.arrow} *${idleCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n**𝑫𝒐 𝑵𝒐𝒕 𝑫𝒊𝒔𝒕𝒖𝒓𝒃** ${globalEmoji.arrow} *${dndCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n**𝑶𝒇𝒇𝒍𝒊𝒏𝒆** ${globalEmoji.arrow} *${offlineCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`,
+              inline: false },
+            { name: "📅 **𝑶𝒇𝒇𝒍𝒊𝒏𝒆 𝑴𝒆𝒎𝒃𝒆𝒓𝒔**",
+              value: `**7 𝑫𝒂𝒚𝒔** ${globalEmoji.arrow} *${offline7Days}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n**30 𝑫𝒂𝒚𝒔** ${globalEmoji.arrow} *${offline30Days}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`,
+              inline: false },
+            { name: "🚀 **𝑩𝒐𝒐𝒔𝒕 𝑰𝒏𝒇𝒐**",
+              value: `**𝑩𝒐𝒐𝒔𝒕𝒔** ${globalEmoji.arrow} *${guild.premiumSubscriptionCount || 0}*\n**𝑩𝒐𝒐𝒔𝒕 𝒍𝒆𝒗𝒆𝒍** ${globalEmoji.arrow} *${guild.premiumTier}*`,
+              inline: false },
+            { name: "🎭 **𝑹𝒐𝒍𝒆𝒔 𝒂𝒏𝒅 𝑬𝒎𝒐𝒋𝒊**",
+              value: `**𝑹𝒐𝒍𝒆𝒔** ${globalEmoji.arrow} *${guild.roles.cache.size}*\n**𝑬𝒎𝒐𝒋𝒊** ${globalEmoji.arrow} *${guild.emojis.cache.size}*\n**𝑺𝒕𝒊𝒄𝒌𝒆𝒓** ${globalEmoji.arrow} *${guild.stickers.cache.size}*`,
+              inline: false },
+            { name: "👥 **𝑻𝒐𝒕𝒂𝒍 𝑴𝒆𝒎𝒃𝒆𝒓𝒔**", value: `${globalEmoji.arrow} *${guild.memberCount}* 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`, inline: false },
+            { name: "📅 **𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑨𝒕**", value: `${globalEmoji.arrow} *${guild.createdAt.toLocaleString()}*`, inline: false }
+        ])
         .setImage(guild.bannerURL() ? guild.bannerURL({ size: 1024 }) : client.config.links.banner)
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
