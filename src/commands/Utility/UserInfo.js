@@ -60,6 +60,7 @@ module.exports = class UserInfo extends Command {
     const { guild } = ctx;
     const guildMember = guild.members.cache.get(userId);
     const user = guildMember?.user || target;
+    const bannerURL = user.bannerURL({ size: 1024 }) || target.author.bannerURL({ size: 1024 });
 
     const embed = client.embed()
         .setColor(color.main)
@@ -93,7 +94,7 @@ module.exports = class UserInfo extends Command {
             inline: false
           }
         ])
-        .setImage(user.bannerURL() ? user.bannerURL({ size: 1024 }) : client.config.links.banner)
+        .setImage(bannerURL ? bannerURL : client.config.links.banner)
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
