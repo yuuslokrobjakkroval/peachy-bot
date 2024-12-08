@@ -45,7 +45,7 @@ module.exports = class Help extends Command {
     const prefix = client.config.prefix;
     const adminCategory = ['admin', 'dev', 'guild'];
     const commands = client.commands.filter(cmd => !adminCategory.includes(cmd.category));
-    let categories = ['actions', 'bank', 'rank', 'economy', 'work', 'inventory', 'emotes', 'fun', 'games', 'gambling', 'giveaways', 'profile', 'social', 'utility', 'info'];
+    let categories = ['actions', 'bank', 'economy', 'emotes', 'fun', 'gambling', 'games', 'giveaways', 'info', 'inventory', 'profile', 'rank', 'social', 'utility', 'work'];
 
     if (!args[0]) {
       const sortedCommands = {};

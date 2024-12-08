@@ -32,6 +32,11 @@ const booBash = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x9B7EBD, none: 0x2B2D31 },
 };
 
+// Jingle Jolly ( T04 )
+const jingleJolly = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF1F0E8, none: 0x2B2D31 },
+};
+
 // Celestial Grace ( ST01 )
 const celestialGrace = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFEEE91, none: 0x2B2D31 },
@@ -47,28 +52,29 @@ const buzzingBliss = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFCF596, none: 0x2B2D31 },
 };
 
+// Froggy Fun ( ST04 )
+const froggyFun = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xC2FFC7, none: 0x2B2D31 },
+};
+
 // SPIDER MAN FOR ANGKOR PARIS ( ST11 )
 const spiderMan = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFF2929, none: 0x2B2D31 },
 };
 
-// CUCUMBER FOR SUPPORTER ( ST11 )
+// CUCUMBER FOR SUPPORTER ( ST12 )
 const cucumberCool = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x9EDF9C, none: 0x2B2D31 },
 };
 
+// CAPPUCCINO FOR SUPPORTER ( ST13 )
 const cappuccinoCharm = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xB6A28E, none: 0x2B2D31 },
 };
 
-const jingleJolly = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF1F0E8, none: 0x2B2D31 },
+// BABE OWNER FOR SUPPORTER ( ST99 )
+const quirkyQuackers = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF5F0CD, none: 0x2B2D31 },
 };
 
-const froggyFun = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xC2FFC7, none: 0x2B2D31 },
-};
-
-
-
-module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, celestialGrace, sakuraSerenity, buzzingBliss, spiderMan, cucumberCool, cappuccinoCharm, jingleJolly, froggyFun }
+module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, celestialGrace, sakuraSerenity, buzzingBliss,  froggyFun, spiderMan, cucumberCool, cappuccinoCharm, quirkyQuackers }

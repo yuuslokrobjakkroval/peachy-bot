@@ -376,4 +376,19 @@ module.exports = [
         available: ['use'],
         price: { buy: 1e8, sell: 15e6 },
     },
+    {
+        id: 'st99',
+        name: 'Quirky Quackers',
+        description: 'Dive into the playful charm of Quirky Quackers! With a delightful blend of joyful vibes and heartwarming cuteness, this theme brings a touch of sunshine to every moment. Embrace the cheerful energy of a little duckling who knows how to brighten your day, no matter the weather.',
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: false,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.duckling,
+        available: ['use'],
+        price: { buy: 1e8, sell: 15e6 },
+    }
 ];

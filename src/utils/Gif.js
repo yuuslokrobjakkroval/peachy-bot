@@ -21,6 +21,8 @@ module.exports = {
     balanceThumbnail: 'https://i.imgur.com/3KU57Ed.gif',
     balanceBanner: 'https://i.imgur.com/L0S7Zr1.png',
 
+    // MENTION BOT
+    mentionBot: 'https://i.imgur.com/C85ONWz.jpg',
     // SHOP
     foodShop: 'https://i.imgur.com/rCAfhxi.jpg',
     drinkShop: 'https://i.imgur.com/cGlVN9t.jpg',

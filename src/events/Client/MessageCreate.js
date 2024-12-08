@@ -64,6 +64,7 @@ module.exports = class MessageCreate extends Event {
                 `My prefix for this server is **\`${prefix}\`**.\n\n` +
                 `Do you need help? please use **\`${prefix}help\`**!!!`
             )
+            .setImage(globalGif.mentionBot)
             .setFooter({
               text: 'Buy Me A Coffee | ABA: 500 057 310',
               iconURL: this.client.utils.emojiToImage(globalEmoji.buyMeCafe),

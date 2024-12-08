@@ -83,10 +83,12 @@ module.exports = {
         heaven: '<:MAINHEAVEN:1293603530699046982>',
         sakura: '<:SAKURAMAIN:1295967137482936440>',
         bee: '<:BTITLE:1304106395209039932>',
+        froggy: '<:FMAIN:1312652464830414939>',
+
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
         cappuccino: '<:CAFEMAIN:1309842668200923228>',
-        froggy: '<:FMAIN:1312652464830414939>',
+        duckling: '<:KMAIN:1315309185138823279>',
     },
 
     // EXCHANGE

@@ -11,6 +11,8 @@ const {
 } = require('discord.js');
 const GiveawaySchema = require('../../schemas/giveaway');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
+const globalGif = require("../../utils/Gif");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class InteractionCreate extends Event {
   constructor(client, file) {
@@ -20,6 +22,8 @@ module.exports = class InteractionCreate extends Event {
   async run(interaction) {
     if (interaction.user.bot || !interaction.guild) return;
     this.client.setColorBasedOnTheme(interaction.user.id).then(async ({user, color, emoji, language}) => {
+      const prefix = this.client.config.prefix;
+      // this.client.utils.getCheckingUser(this.client, interaction, user, color, emoji, prefix);
       if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
         const command = this.client.commands.get(interaction.commandName);
         if (!command) return;
@@ -58,6 +62,28 @@ module.exports = class InteractionCreate extends Event {
                   .setDescription(`You are in timeout for: \`${user.verification.timeout.reason || 'No reason provided'}\`.\nTimeout ends in **${timeString}**.`)
             ]
           });
+        }
+
+        const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
+        if (mention.test(interaction.content)) {
+          const embed = this.client.embed()
+              .setColor(color.main)
+              .setTitle(`Heyoo! ${interaction.user.displayName}`)
+              .setDescription(
+                  `My Name is ${this.client.user.displayName}.\n` +
+                  `My prefix for this server is **\`${prefix}\`**.\n\n` +
+                  `Do you need help? please use **\`${prefix}help\`**!!!`
+              )
+              .setImage(globalGif.mentionBot)
+              .setFooter({
+                text: 'Buy Me A Coffee | ABA: 500 057 310',
+                iconURL: this.client.utils.emojiToImage(globalEmoji.buyMeCafe),
+              })
+
+          const clickSuppButton = this.client.utils.linkButton('Click for support', this.client.config.links.support)
+
+          const row = this.client.utils.createButtonRow(clickSuppButton);
+          return interaction.reply({ embeds: [embed], components: [row] });
         }
 
         try {
