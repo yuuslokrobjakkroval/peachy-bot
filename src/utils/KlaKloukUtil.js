@@ -198,8 +198,8 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                 } else {
                     selectedButton.splice(selectedButton.indexOf(int.customId), 1);
                     selected.setStyle(2);
+                    await int.deferUpdate();
                 }
-                await int.deferUpdate();
                 msg.edit({components: [firstRow, secondRow]});
             } else if (int.customId === 'cancel') {
                 selectedButton = [];
