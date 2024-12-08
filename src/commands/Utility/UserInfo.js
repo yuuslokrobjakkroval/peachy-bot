@@ -93,7 +93,7 @@ module.exports = class UserInfo extends Command {
             inline: false
           }
         ])
-        .setImage(ctx.author.bannerURL() ? ctx.author.bannerURL({ size: 1024 }) : client.config.links.banner)
+        .setImage(user.bannerURL() ? user.bannerURL({ size: 1024 }) : client.config.links.banner)
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
