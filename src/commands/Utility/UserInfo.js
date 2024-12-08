@@ -60,7 +60,7 @@ module.exports = class UserInfo extends Command {
     const { guild } = ctx;
     const guildMember = guild.members.cache.get(userId);
     const user = guildMember?.user || target;
-    const bannerURL = user.fetch().then(userInfo => {
+    const bannerURL = await user.fetch().then(userInfo => {
       userInfo.bannerURL({ size: 1024 })
     }).catch(err => {
       console.error("Failed to fetch user info:", err);
