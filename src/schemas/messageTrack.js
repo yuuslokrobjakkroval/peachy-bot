@@ -3,7 +3,7 @@ const { model, Schema } = require('mongoose');
 const MessageTrackingSchema = new Schema({
     guildId: { type: String, default: null, index: true },
     isActive: { type: Boolean, default: true },
-    message: [{
+    messages: [{
         userId: { type: String, require: true, default: null},
         userName: { type: String, require: true, default: null},
         messageCount: { type: Number, default: 0},
