@@ -122,7 +122,8 @@ async function createChartCanvas(messages, period) {
         year: 'numeric'
     });
 
-    const dates = filteredMessages.map(msg => dateFormatter.format(new Date(msg.date)));
+    const today = dateFormatter.format(new Date());
+    // const dates = filteredMessages.map(msg => dateFormatter.format(new Date(msg.date)));
     const username = filteredMessages.map(msg => msg.username);
     const counts = filteredMessages.map(msg => msg.messageCount);
 
@@ -164,7 +165,7 @@ async function createChartCanvas(messages, period) {
             plugins: {
                 title: {
                     display: true,
-                    text: `Messages - ${period.label} for ${dates}`,
+                    text: `Messages - ${period.label} for ${today}`,
                     color: '#FFFFFF',
                 },
                 legend: {
