@@ -1,5 +1,8 @@
 const { Command } = require("../../structures/index.js");
 const MessageTrackingSchema = require("../../schemas/messageTrack");
+const { createCanvas } = require('@napi-rs/canvas');
+const { Chart } = require("chart.js/auto");
+const { AttachmentBuilder } = require("discord.js");
 
 module.exports = class MessageTracker extends Command {
     constructor(client) {
@@ -46,14 +49,12 @@ module.exports = class MessageTracker extends Command {
         const userId = mention.id;
 
         try {
-            // Check if the guild data exists
             let guildData = await MessageTrackingSchema.findOne({ guildId });
             if (!guildData) {
-                // If the guild data doesn't exist, create a new document
                 guildData = new MessageTrackingSchema({
                     guildId,
                     isActive: true,
-                    message: [],
+                    messages: [],
                 });
                 await guildData.save();
             }
@@ -71,30 +72,127 @@ module.exports = class MessageTracker extends Command {
             }
 
             const messageCount = userData.messageCount;
-
             const message = messageCount > 0
-                ? `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒔𝒆𝒏𝒕 ***${messageCount}*** 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔.`
-                : "𝑵𝒐 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔 𝒕𝒓𝒂𝒄𝒌𝒆𝒅 𝒇𝒐𝒓 𝒚𝒐𝒖 𝒚𝒆𝒕.";
+                ? `${mention.id !== ctx.author.id ? mention.username : 'You'} have sent ***${messageCount}*** messages.`
+                : "No messages tracked for you yet.";
+
+            const attachment = await createChartCanvas(guildData.messages, { days: 30, label: 'Last 30 Days' });
 
             const embed = client.embed()
                 .setColor(color.main)
                 .setDescription(
                     generalMessages.title
                         .replace("%{mainLeft}", emoji.mainLeft)
-                        .replace("%{title}", "𝐌𝐄𝐒𝐒𝐀𝐆𝐄𝐒")
+                        .replace("%{title}", "Messages")
                         .replace("%{mainRight}", emoji.mainRight) +
                     message
                 )
                 .setFooter({
-                    text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `𝑹𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝒃𝒚 ${ctx.author.displayName}`,
+                    text: generalMessages.requestedBy.replace("%{username}", ctx.author.username) || `Requested by ${ctx.author.username}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 })
+                .setImage('attachment://messages.png')
                 .setTimestamp();
 
-            return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
+            return ctx.isInteraction
+                ? await ctx.interaction.editReply({ content: "", embeds: [embed], files: [attachment] })
+                : await ctx.editMessage({ content: "", embeds: [embed], files: [attachment] });
         } catch (err) {
             console.error(err);
-            client.utils.sendErrorMessage(client, ctx, "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒕𝒉𝒆 𝒎𝒆𝒔𝒔𝒂𝒈𝒆 𝒕𝒓𝒂𝒄𝒌𝒊𝒏𝒈 𝒅𝒂𝒕𝒂.", color);
+            client.utils.sendErrorMessage(client, ctx, "An error occurred while processing the message tracking data.", color);
         }
     }
 };
+
+async function createChartCanvas(messages, period) {
+    const canvas = createCanvas(800, 400);
+    const ctx = canvas.getContext('2d');
+
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - period.days);
+    const filteredMessages = messages.filter(msg => new Date(msg.date) >= cutoffDate);
+
+    if (filteredMessages.length === 0) {
+        filteredMessages.push({ date: cutoffDate, messageCount: 0 });
+    }
+
+    const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+
+    const dates = filteredMessages.map(msg => dateFormatter.format(new Date(msg.date)));
+    const counts = filteredMessages.map(msg => msg.messageCount);
+
+    const movingAverageWindow = Math.min(7, Math.floor(period.days / 4));
+    // const movingAverages = counts.map((_, index) => {
+    //     const start = Math.max(0, index - movingAverageWindow);
+    //     const end = Math.min(counts.length, index + movingAverageWindow + 1);
+    //     const sum = counts.slice(start, end).reduce((acc, val) => acc + val, 0);
+    //     return sum / (end - start);
+    // });
+
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dates,
+            datasets: [
+                {
+                    label: 'Messages',
+                    data: counts,
+                    borderColor: '#8BD3DD',
+                    borderWidth: 2,
+                    pointRadius: 2,
+                    fill: true,
+                    tension: 0.4
+                },
+                // {
+                //     label: 'Trend',
+                //     data: movingAverages,
+                //     borderColor: '#94716B',
+                //     borderWidth: 2,
+                //     pointRadius: 0 ,
+                //     fill: true,
+                //     tension: 0.4
+                // }
+            ],
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: `Messages - ${period.label}`,
+                    color: '#FFFFFF',
+                },
+                legend: {
+                    labels: {
+                        color: '#FFFFFF',
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    // grid: { color: 'rgba(255, 255, 255, 0.1)'},
+                    // ticks: {
+                    //     color: '#FFFFFF',
+                    //     maxRotation: 45,
+                    //     minRotation: 45,
+                    // }
+                },
+                y: {
+                    beginAtZero: true,
+                    // grid: { color: 'rgba(255, 255, 255, 0.1)'},
+                    // ticks: { color: '#FFFFFF'}
+                }
+            },
+        },
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const attachment= new AttachmentBuilder(canvas.toBuffer('image/png'), { name: 'messages.png' });
+    chart.destroy();
+    return attachment;
+}
+
