@@ -58,7 +58,7 @@ module.exports = class MessageTracker extends Command {
                 await guildData.save();
             }
 
-            let userData = guildData.message.find(msg => msg.userId === userId);
+            let userData = guildData.message.findOne(msg => msg.userId === userId);
             if (!userData) {
                 userData = {
                     userId,
