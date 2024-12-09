@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ComponentType, CommandInteraction, EmbedBuilder, PermissionsBitField} = require('discord.js');
 const Users = require('../schemas/user');
+const MessageTracking = require('../schemas/messageTrack');
 const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
 const importantItems = require('../assets/inventory/ImportantItems');
@@ -87,6 +88,34 @@ module.exports = class Utils {
                     console.error("Error saving user data:", err);
                 });
             }
+        }
+    }
+
+    static async getMessageTackUser(client, message) {
+        try {
+            const tracking = await MessageTracking.findOne({ guildId: message.guildId })
+            if (!tracking || !tracking.isActive) return;
+            const today =  new Date();
+            today.setHours(0, 0, 0, 0);
+
+            const messageIndex = tracking.messages.findIndex(msg =>
+                msg.userId === message.author.id &&
+                new Date(msg.date).setHours(0, 0, 0, 0) === today.getTime()
+            );
+
+            if (messageIndex === -1) {
+                tracking.messages.push({
+                    userId: message.author.id,
+                    username: message.author.username,
+                    messageCount: 1,
+                    date: today
+                });
+            } else {
+                tracking.messages[messageIndex].messageCount += 1;
+            }
+            await tracking.save();
+        } catch (err) {
+            console.error('Error', err)
         }
     }
 
