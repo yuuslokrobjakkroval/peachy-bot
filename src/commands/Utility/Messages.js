@@ -62,7 +62,7 @@ module.exports = class MessageTracker extends Command {
             if (!userData) {
                 userData = {
                     userId,
-                    userName: mention.username,
+                    username: mention.username,
                     messageCount: 0,
                     date: new Date(),
                 };
