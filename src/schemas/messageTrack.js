@@ -5,7 +5,7 @@ const MessageTrackingSchema = new Schema({
     isActive: { type: Boolean, default: true },
     messages: [{
         userId: { type: String, require: true, default: null},
-        userName: { type: String, require: true, default: null},
+        username: { type: String, require: true, default: null},
         messageCount: { type: Number, default: 0},
         date: { type: Date, default: Date.now },
     }]

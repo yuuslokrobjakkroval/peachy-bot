@@ -94,9 +94,9 @@ module.exports = class Utils {
     static async getMessageTackUser(client, message) {
         try {
             const tracking = await MessageTracking.findOne({ guildId: message.guildId })
-            console.log(tracking)
+
             if (!tracking || !tracking.isActive) return;
-            console.log('hi')
+
             const today =  new Date();
             today.setHours(0, 0, 0, 0);
 
