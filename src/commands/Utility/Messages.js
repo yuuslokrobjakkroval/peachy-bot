@@ -73,8 +73,8 @@ module.exports = class MessageTracker extends Command {
             const messageCount = userData.messageCount;
 
             const message = messageCount > 0
-                ? `You have sent **${messageCount}** messages.`
-                : "No messages tracked for you yet.";
+                ? `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒔𝒆𝒏𝒕 ***${messageCount}*** 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔.`
+                : "𝑵𝒐 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔 𝒕𝒓𝒂𝒄𝒌𝒆𝒅 𝒇𝒐𝒓 𝒚𝒐𝒖 𝒚𝒆𝒕.";
 
             const embed = client.embed()
                 .setColor(color.main)
@@ -86,7 +86,7 @@ module.exports = class MessageTracker extends Command {
                     message
                 )
                 .setFooter({
-                    text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `𝑹𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝒃𝒚 ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 })
                 .setTimestamp();
@@ -97,7 +97,7 @@ module.exports = class MessageTracker extends Command {
             ctx.sendErrorMessage(
                 client,
                 ctx,
-                "An error occurred while processing the message tracking data.",
+                "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒕𝒉𝒆 𝒎𝒆𝒔𝒔𝒂𝒈𝒆 𝒕𝒓𝒂𝒄𝒌𝒊𝒏𝒈 𝒅𝒂𝒕𝒂.",
                 color
             );
         }
