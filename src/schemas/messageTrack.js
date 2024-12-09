@@ -4,8 +4,8 @@ const MessageTrackingSchema = new Schema({
     guildId: { type: String, default: null, index: true },
     isActive: { type: Boolean, default: true },
     message: [{
-        userId: { type: String, require: true},
-        userName: { type: String, require: true},
+        userId: { type: String, require: true, default: null},
+        userName: { type: String, require: true, default: null},
         messageCount: { type: Number, default: 0},
         date: { type: Date, default: Date.now },
     }]
