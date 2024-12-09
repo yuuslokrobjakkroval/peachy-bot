@@ -108,12 +108,12 @@ module.exports = class Utils {
             if (messageIndex === -1) {
                 tracking.messages.push({
                     userId: message.author.id,
-                    username: message.author.displayName,
+                    username: message.author.username,
                     messageCount: 1,
                     date: today
                 });
             } else {
-                tracking.messages[messageIndex].username = message.author.displayName;
+                tracking.messages[messageIndex].username = message.author.username;
                 tracking.messages[messageIndex].messageCount += 1;
             }
             await tracking.save();
