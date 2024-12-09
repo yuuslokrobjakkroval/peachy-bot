@@ -11,7 +11,7 @@ module.exports = class MessageTracker extends Command {
                 usage: "messages",
             },
             category: "utility",
-            aliases: [],
+            aliases: ['message', 'msg'],
             cooldown: 3,
             args: false,
             permissions: {
@@ -94,12 +94,7 @@ module.exports = class MessageTracker extends Command {
             return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
         } catch (err) {
             console.error(err);
-            ctx.sendErrorMessage(
-                client,
-                ctx,
-                "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒕𝒉𝒆 𝒎𝒆𝒔𝒔𝒂𝒈𝒆 𝒕𝒓𝒂𝒄𝒌𝒊𝒏𝒈 𝒅𝒂𝒕𝒂.",
-                color
-            );
+            client.utils.sendErrorMessage(client, ctx, "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒕𝒉𝒆 𝒎𝒆𝒔𝒔𝒂𝒈𝒆 𝒕𝒓𝒂𝒄𝒌𝒊𝒏𝒈 𝒅𝒂𝒕𝒂.", color);
         }
     }
 };

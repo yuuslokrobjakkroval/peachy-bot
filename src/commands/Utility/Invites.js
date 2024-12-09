@@ -90,12 +90,7 @@ module.exports = class CheckInvites extends Command {
             })
             .catch(err => {
                 console.error(err);
-                ctx.sendErrorMessage(
-                    client,
-                    ctx,
-                    "An error occurred while fetching your invite data.",
-                    color
-                );
+                client.utils.sendErrorMessage(client, ctx, "An error occurred while fetching your invite data.", color);
             });
     }
 };
