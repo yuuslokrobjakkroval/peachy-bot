@@ -41,30 +41,19 @@ module.exports = class UserInfo extends Command {
       await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
     }
 
-    // Fetch the user or member based on the context
     const target =
         ctx.isInteraction
             ? ctx.interaction.options.getUser("user") || ctx.interaction.options.getMember("user") || ctx.author
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.message.mentions.users.first() || args[0];
 
     if (!target) {
-      return ctx.sendErrorMessage(
-          client,
-          ctx,
-          generalMessages?.userNotFound || "User not found! Please mention a valid user or provide a valid user ID.",
-          color
-      );
+      return ctx.sendErrorMessage(client, ctx, generalMessages?.userNotFound, color);
     }
-
-    const userId = typeof target === 'string' ? target : target.id;
     const { guild } = ctx;
+    const userId = typeof target === 'string' ? target : target.id;
     const guildMember = guild.members.cache.get(userId);
-    const user = guildMember?.user || target;
-    const bannerURL = await user.fetch().then(userInfo => {
-      userInfo.bannerURL({ size: 1024 })
-    }).catch(err => {
-      console.error("Failed to fetch user info:", err);
-    });
+    const user = await client.users.fetch(userId);
+    const bannerURL = user.bannerURL({ format: 'png', size: 1024 });
 
     const embed = client.embed()
         .setColor(color.main)
