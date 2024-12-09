@@ -63,7 +63,7 @@ module.exports = class MessageTracker extends Command {
             if (!userData) {
                 userData = {
                     userId,
-                    username: mention.username,
+                    username: mention.displayName,
                     messageCount: 0,
                     date: new Date(),
                 };
@@ -73,7 +73,7 @@ module.exports = class MessageTracker extends Command {
 
             const messageCount = userData.messageCount;
             const message = messageCount > 0
-                ? `${mention.id !== ctx.author.id ? mention.username : 'You'} have sent ***${messageCount}*** messages.`
+                ? `${mention.id !== ctx.author.id ? mention.displayName : 'You'} have sent ***${messageCount}*** messages.`
                 : "No messages tracked for you yet.";
 
             const attachment = await createChartCanvas(guildData.messages, { days: 30, label: 'Last 30 Days' });
