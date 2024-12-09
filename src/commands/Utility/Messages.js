@@ -123,9 +123,10 @@ async function createChartCanvas(messages, period) {
     });
 
     const dates = filteredMessages.map(msg => dateFormatter.format(new Date(msg.date)));
+    const username = filteredMessages.map(msg => msg.username);
     const counts = filteredMessages.map(msg => msg.messageCount);
 
-    const movingAverageWindow = Math.min(7, Math.floor(period.days / 4));
+    // const movingAverageWindow = Math.min(7, Math.floor(period.days / 4));
     // const movingAverages = counts.map((_, index) => {
     //     const start = Math.max(0, index - movingAverageWindow);
     //     const end = Math.min(counts.length, index + movingAverageWindow + 1);
@@ -136,7 +137,7 @@ async function createChartCanvas(messages, period) {
     const chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: dates,
+            labels: username,
             datasets: [
                 {
                     label: 'Messages',
@@ -163,7 +164,7 @@ async function createChartCanvas(messages, period) {
             plugins: {
                 title: {
                     display: true,
-                    text: `Messages - ${period.label}`,
+                    text: `Messages - ${period.label} for ${dates}`,
                     color: '#FFFFFF',
                 },
                 legend: {
