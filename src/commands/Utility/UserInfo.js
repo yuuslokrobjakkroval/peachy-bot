@@ -52,8 +52,8 @@ module.exports = class UserInfo extends Command {
     const { guild } = ctx;
     const userId = typeof target === 'string' ? target : target.id;
     const guildMember = guild.members.cache.get(userId);
-    const user = await client.users.fetch(userId);
-    const bannerURL = user.bannerURL({ format: 'png', size: 1024 });
+    const user = await client.user.fetch(userId);
+    const bannerURL = await target.fetch().then(user => user.bannerURL({ format: 'png', size: 1024 }));
 
     const embed = client.embed()
         .setColor(color.main)
@@ -86,7 +86,7 @@ module.exports = class UserInfo extends Command {
             inline: false
           }
         ])
-        .setImage(!bannerURL ? client.config.links.banner : user.bannerURL({ format: 'png', size: 1024 }))
+        .setImage(bannerURL ? bannerURL : client.config.links.banner)
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
