@@ -139,7 +139,7 @@ async function createChartCanvas(messages, period) {
     const chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: `${username}`,
+            labels: username,
             datasets: [
                 {
                     label: 'Messages',
