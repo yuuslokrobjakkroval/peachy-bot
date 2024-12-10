@@ -77,10 +77,10 @@ module.exports = class MessageTracker extends Command {
 
             const messageCount = userData.messageCount;
             const message = messageCount > 0
-                ? `${mention.id !== ctx.author.id ? mention.displayName : 'You'} have sent ***${messageCount}*** messages.`
-                : "No messages tracked for you yet.";
+                ? `${mention.id !== ctx.author.id ? mention.displayName : '𝒀𝒐𝒖'} 𝒉𝒂𝒗𝒆 𝒔𝒆𝒏𝒕 ***${messageCount}*** 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔.`
+                : "𝑵𝒐 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔 𝒕𝒓𝒂𝒄𝒌𝒆𝒅 𝒇𝒐𝒓 𝒚𝒐𝒖 𝒚𝒆𝒕.";
 
-            const attachment = await createChartCanvas(guildData.messages, { days: 30, label: 'Last 30 Days' });
+            const attachment = await createChartCanvas(guildData.messages, { days: 1, label: '𝑨𝒍𝒍 𝑼𝒔𝒆𝒓𝒔' });
 
             const embed = client.embed()
                 .setColor(color.main)
@@ -145,7 +145,7 @@ async function createChartCanvas(messages, period) {
             labels: username,
             datasets: [
                 {
-                    label: 'Messages',
+                    label: '𝑴𝒆𝒔𝒔𝒂𝒈𝒆𝒔',
                     data: counts,
                     borderColor: '#8BD3DD',
                     borderWidth: 2,
@@ -169,7 +169,7 @@ async function createChartCanvas(messages, period) {
             plugins: {
                 title: {
                     display: true,
-                    text: `Messages - ${period.label} for ${today}`,
+                    text: `𝑴𝒆𝒔𝒔𝒂𝒈𝒆𝒔 - ${period.label} 𝒇𝒐𝒓 ***${today}***`,
                     color: '#FFFFFF',
                 },
                 legend: {
