@@ -20,7 +20,7 @@ module.exports = class MessageCreate extends Event {
       this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
 
       if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-        this.client.utils.getMessageTackUser(this.client, message);
+        this.client.utils.getMessageTackUser(this.client, message, user, color, emoji);
       }
 
       if (user?.verification?.isBanned) {
