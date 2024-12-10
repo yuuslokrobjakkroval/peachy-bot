@@ -75,10 +75,9 @@ module.exports = class UserInfo extends Command {
           { name: `🤖 **𝑩𝒐𝒕**`, value: `${globalEmoji.arrow} *${user.bot ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}*`, inline: false },
           { name: `🚀 **𝑩𝒐𝒐𝒔𝒕𝒆𝒅 𝒕𝒉𝒊𝒔 𝒔𝒆𝒓𝒗𝒆𝒓**`, value: `${globalEmoji.arrow} *${guildMember?.premiumSince ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}*`, inline: false },
           { name: `⭐ **𝑻𝒐𝒑 𝒓𝒐𝒍𝒆**`, value: `${globalEmoji.arrow} *${guildMember?.roles.highest.name || "𝑵𝒐𝒏𝒆"}*`, inline: false },
-          { name: `🧩 **𝑹𝒐𝒍𝒆𝒔**`, value: `${globalEmoji.arrow} *[${guildMember?.roles.cache.size - 1 || 0}]*`, inline: false },
           {
-            name: `📜 **𝑳𝒊𝒔𝒕 𝑹𝒐𝒍𝒆**`,
-            value: `${globalEmoji.arrow} ${guildMember?.roles.cache.filter(role => role.id !== ctx.guild.id).map(role => role).join(", ") || userInfoMessages?.noRoles || "𝑵𝒐𝒏𝒆"}`,
+            name: `📜 **𝑳𝒊𝒔𝒕 𝑹𝒐𝒍𝒆𝒔**`,
+            value: `*[${guildMember?.roles.cache.size - 1 || 0}]* ${globalEmoji.arrow} ${guildMember?.roles.cache.filter(role => role.id !== ctx.guild.id).map(role => role).join(", ") || userInfoMessages?.noRoles || "𝑵𝒐𝒏𝒆"}`,
             inline: false
           },
           {
@@ -87,7 +86,7 @@ module.exports = class UserInfo extends Command {
             inline: false
           }
         ])
-        .setImage(bannerURL ? bannerURL : client.config.links.banner)
+        .setImage(!bannerURL ? client.config.links.banner : user.bannerURL({ format: 'png', size: 1024 }))
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),

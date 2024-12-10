@@ -45,6 +45,10 @@ module.exports = class MessageTracker extends Command {
             ? ctx.interaction.options.getUser('user')
             : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
 
+        if (mention && mention?.user?.bot) {
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botMention, color);
+        }
+
         const guildId = ctx.guild.id;
         const userId = mention.id;
 
@@ -83,12 +87,12 @@ module.exports = class MessageTracker extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace("%{mainLeft}", emoji.mainLeft)
-                        .replace("%{title}", "Messages")
+                        .replace("%{title}", "𝐌𝐄𝐒𝐒𝐀𝐆𝐄𝐒")
                         .replace("%{mainRight}", emoji.mainRight) +
                     message
                 )
                 .setFooter({
-                    text: generalMessages.requestedBy.replace("%{username}", ctx.author.username) || `Requested by ${ctx.author.username}`,
+                    text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 })
                 .setImage('attachment://messages.png')
