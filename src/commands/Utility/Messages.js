@@ -75,8 +75,16 @@ module.exports = class MessageTracker extends Command {
                 await guildData.save();
             }
 
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const todayMessages = userData.filter(msg => {
+                const msgDate = new Date(msg.date);
+                msgDate.setHours(0, 0, 0, 0);
+                return msgDate.getTime() === today.getTime();
+            });
             const messageCount = userData.messageCount;
-            const message = messageCount > 0
+            const message = todayMessages && messageCount > 0
                 ? `${mention.id !== ctx.author.id ? mention.displayName : '𝒀𝒐𝒖'} 𝒉𝒂𝒗𝒆 𝒔𝒆𝒏𝒕 ***${messageCount}*** 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔.`
                 : "𝑵𝒐 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔 𝒕𝒓𝒂𝒄𝒌𝒆𝒅 𝒇𝒐𝒓 𝒚𝒐𝒖 𝒚𝒆𝒕.";
 
