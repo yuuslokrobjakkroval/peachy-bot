@@ -116,36 +116,36 @@ module.exports = class Utils {
                 tracking.messages[messageIndex].username = message.author.username;
                 tracking.messages[messageIndex].messageCount += 1;
 
-                const messageCount = tracking.messages[messageIndex].messageCount;
-                const milestones = [200, 500, 1000, 1500, 2000, 2500];
-                const baseRewards = [700000, 1000000, 1500000, 2000000, 2500000, 3000000];
-                const milestoneIndex = milestones.indexOf(messageCount);
-                if (milestoneIndex !== -1) {
-                    const reward = baseRewards[milestoneIndex];
-                    user.balance.coin += reward;
-                    await user.save();
-                    const embed = client.embed()
-                        .setColor(color.main)
-                        .setTitle(`${emoji.congratulation} Milestone Reached!`)
-                        .setDescription(`Congratulations ${message.member.displayName || message.author.username}! You have sent ${messageCount} messages today and earned ${reward} coins!`)
-                        .setFooter({ text: `Keep messaging to earn more rewards!`, iconURL: client.user.avatarURL() });
-
-                    await message.channel.send({ embeds: [embed] });
-                }
-
-                if (messageCount === 5000) {
-                    const extraReward = 5000000;
-                    user.balance.coin += extraReward;
-                    await user.save();
-
-                    const specialEmbed = client.embed()
-                        .setColor(color.main)
-                        .setTitle(`${emoji.top} Incredible Milestone!`)
-                        .setDescription(`Amazing! ${message.member.displayName || message.author.username}, you've reached ${messageCount} messages and earned an additional ${extraReward} coins!`)
-                        .setFooter({ text: `You're an absolute legend!`, iconURL: client.user.avatarURL() });
-
-                    await message.channel.send({ embeds: [specialEmbed] });
-                }
+                // const messageCount = tracking.messages[messageIndex].messageCount;
+                // const milestones = [200, 500, 1000, 1500, 2000, 2500];
+                // const baseRewards = [700000, 1000000, 1500000, 2000000, 2500000, 3000000];
+                // const milestoneIndex = milestones.indexOf(messageCount);
+                // if (milestoneIndex !== -1) {
+                //     const reward = baseRewards[milestoneIndex];
+                //     user.balance.coin += reward;
+                //     await user.save();
+                //     const embed = client.embed()
+                //         .setColor(color.main)
+                //         .setTitle(`${emoji.congratulation} Milestone Reached!`)
+                //         .setDescription(`Congratulations ${message.member.displayName || message.author.username}! You have sent ${messageCount} messages today and earned ${reward} coins!`)
+                //         .setFooter({ text: `Keep messaging to earn more rewards!`, iconURL: client.user.avatarURL() });
+                //
+                //     await message.channel.send({ embeds: [embed] });
+                // }
+                //
+                // if (messageCount === 5000) {
+                //     const extraReward = 5000000;
+                //     user.balance.coin += extraReward;
+                //     await user.save();
+                //
+                //     const specialEmbed = client.embed()
+                //         .setColor(color.main)
+                //         .setTitle(`${emoji.top} Incredible Milestone!`)
+                //         .setDescription(`Amazing! ${message.member.displayName || message.author.username}, you've reached ${messageCount} messages and earned an additional ${extraReward} coins!`)
+                //         .setFooter({ text: `You're an absolute legend!`, iconURL: client.user.avatarURL() });
+                //
+                //     await message.channel.send({ embeds: [specialEmbed] });
+                // }
             }
             await tracking.save();
         } catch (err) {
