@@ -133,14 +133,13 @@ async function createChartCanvas(messages, period) {
     });
 
     const currentDay = dateFormatter.format(today);
-    const dates = todayMessages.map(msg => dateFormatter.format(new Date(msg.date)));
     const username = todayMessages.map(msg => msg.username || 'Unknown');
     const counts = todayMessages.map(msg => msg.messageCount);
 
     const chart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: `${username} ${dates}`,
+            labels: `${username}`,
             datasets: [
                 {
                     label: 'Messages',
