@@ -80,7 +80,7 @@ module.exports = class MessageTracker extends Command {
                 ? `${mention.id !== ctx.author.id ? mention.displayName : '𝒀𝒐𝒖'} 𝒉𝒂𝒗𝒆 𝒔𝒆𝒏𝒕 ***${messageCount}*** 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔.`
                 : "𝑵𝒐 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔 𝒕𝒓𝒂𝒄𝒌𝒆𝒅 𝒇𝒐𝒓 𝒚𝒐𝒖 𝒚𝒆𝒕.";
 
-            const attachment = await createChartCanvas(guildData.messages, { days: 30, label: 'All Users' });
+            const attachment = await createChartCanvas(guildData.messages, { days: 1, label: 'All Users' });
 
             const embed = client.embed()
                 .setColor(color.main)
@@ -112,30 +112,30 @@ async function createChartCanvas(messages, period) {
     const canvas = createCanvas(800, 400);
     const ctx = canvas.getContext('2d');
 
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - period.days);
-    const filteredMessages = messages.filter(msg => new Date(msg.date) >= cutoffDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const formattedToday = today.toISOString();
 
-    if (filteredMessages.length === 0) {
-        filteredMessages.push({ date: cutoffDate, messageCount: 0 });
+    const todayMessages = messages.filter(msg => {
+        const msgDate = new Date(msg.date);
+        msgDate.setHours(0, 0, 0, 0);
+        return msgDate.getTime() === today.getTime();
+    });
+
+    if (todayMessages.length === 0) {
+        todayMessages.push({ date: formattedToday, username: 'No Data', messageCount: 0 });
     }
 
     const dateFormatter = new Intl.DateTimeFormat('en-GB', {
         day: '2-digit',
         month: 'short',
-        year: 'numeric'
+        year: 'numeric',
     });
-    const dates = filteredMessages.map(msg => dateFormatter.format(new Date(msg.date)));
-    const username = filteredMessages.map(msg => msg.username);
-    const counts = filteredMessages.map(msg => msg.messageCount);
 
-    // const movingAverageWindow = Math.min(7, Math.floor(period.days / 4));
-    // const movingAverages = counts.map((_, index) => {
-    //     const start = Math.max(0, index - movingAverageWindow);
-    //     const end = Math.min(counts.length, index + movingAverageWindow + 1);
-    //     const sum = counts.slice(start, end).reduce((acc, val) => acc + val, 0);
-    //     return sum / (end - start);
-    // });
+    const currentDay = dateFormatter.format(today);
+    const dates = todayMessages.map(msg => dateFormatter.format(new Date(msg.date)));
+    const username = todayMessages.map(msg => msg.username || 'Unknown');
+    const counts = todayMessages.map(msg => msg.messageCount);
 
     const chart = new Chart(ctx, {
         type: 'line',
@@ -167,7 +167,7 @@ async function createChartCanvas(messages, period) {
             plugins: {
                 title: {
                     display: true,
-                    text: `Messages - ${period.label}}`,
+                    text: `Messages - ${period.label} for ${currentDay}`,
                     color: '#FFFFFF',
                 },
                 legend: {
