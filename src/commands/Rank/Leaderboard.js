@@ -12,7 +12,7 @@ module.exports = class Ranking extends Command {
             category: 'rank',
             aliases: ['rank', 'top', 'lb'],
             cooldown: 3,
-            args: false,
+            args: true,
             permissions: {
                 dev: false,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
