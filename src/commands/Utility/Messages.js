@@ -121,17 +121,12 @@ async function createChartCanvas(messages, period) {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const formattedToday = today.toISOString();
 
     const todayMessages = messages.filter(msg => {
         const msgDate = new Date(msg.date);
         msgDate.setHours(0, 0, 0, 0);
         return msgDate.getTime() === today.getTime();
     });
-
-    if (todayMessages.length === 0) {
-        todayMessages.push({ date: formattedToday, username: 'No Data', messageCount: 0 });
-    }
 
     const dateFormatter = new Intl.DateTimeFormat('en-GB', {
         day: '2-digit',

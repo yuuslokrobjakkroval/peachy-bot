@@ -98,12 +98,16 @@ module.exports = class Utils {
             if (!tracking || !tracking.isActive) return;
 
             const today =  new Date();
+            console.log(today)
             today.setHours(0, 0, 0, 0);
+            console.log(today)
+
 
             const messageIndex = tracking.messages.findIndex(msg =>
                 msg.userId === message.author.id &&
                 new Date(msg.date).setHours(0, 0, 0, 0) === today.getTime()
             );
+            console.log(messageIndex)
 
             if (messageIndex === -1) {
                 tracking.messages.push({
@@ -113,7 +117,6 @@ module.exports = class Utils {
                     date: today
                 });
             } else {
-                tracking.messages[messageIndex].username = message.author.username;
                 tracking.messages[messageIndex].messageCount += 1;
 
                 // const messageCount = tracking.messages[messageIndex].messageCount;
