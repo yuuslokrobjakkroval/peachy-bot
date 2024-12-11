@@ -91,7 +91,7 @@ module.exports = class Utils {
         }
     }
 
-    static async getMessageTackUser(client, message, user, color, emoji,) {
+    static async getMessageTackUser(client, message, user, color, emoji, command, gamblingCommands) {
         try {
             const tracking = await MessageTracking.findOne({ guildId: message.guildId })
 
@@ -113,7 +113,9 @@ module.exports = class Utils {
                     date: today.setHours(0, 0, 0, 0)
                 });
             } else {
-                tracking.messages[messageIndex].messageCount += 1;
+                if (gamblingCommands.includes(command.name)) {
+                    tracking.messages[messageIndex].messageCount += 1;
+                }
 
                 // const messageCount = tracking.messages[messageIndex].messageCount;
                 // const milestones = [200, 500, 1000, 1500, 2000, 2500];

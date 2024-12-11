@@ -18,11 +18,6 @@ module.exports = class MessageCreate extends Event {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
       this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
-
-      if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-        this.client.utils.getMessageTackUser(this.client, message, user, color, emoji);
-      }
-
       if (user?.verification?.isBanned) {
         return;
       }
@@ -356,6 +351,10 @@ module.exports = class MessageCreate extends Event {
             const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'serverinfo', 'theme', 'userinfo', 'verify'];
             const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
             const workCommands = ['applyjob', 'police', 'position', 'rob', 'student'];
+
+            if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
+              this.client.utils.getMessageTackUser(this.client, message, user, color, emoji, command, gamblingCommands);
+            }
 
             try {
               let logChannelId;
