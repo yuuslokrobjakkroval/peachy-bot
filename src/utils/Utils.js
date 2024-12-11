@@ -149,7 +149,7 @@ module.exports = class Utils {
             }
             await tracking.save();
         } catch (err) {
-            console.error('Error', err)
+            console.error('Error saving tracking document:', err);
         }
     }
 
