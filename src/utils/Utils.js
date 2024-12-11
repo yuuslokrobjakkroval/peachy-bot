@@ -604,7 +604,7 @@ module.exports = class Utils {
                     {
                         $project: {
                             username: '$username',
-                            total: '$peach.streak',
+                            total: '$peachy.streak',
                         }
                     },
                     { $sort: { total: -1 } }

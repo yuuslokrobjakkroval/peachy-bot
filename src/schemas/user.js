@@ -157,9 +157,6 @@ const userSchema = new Schema({
     peachy: {
         streak: { type: Number, default: 0 }
     },
-    peach: {
-        streak: { type: Number, default: 0 }
-    },
     goma: {
         streak: { type: Number, default: 0 }
     },
