@@ -51,7 +51,7 @@ module.exports = class Peachy extends Command {
             const totalExp = baseExp + bonusExp;
             const newBalance = user.balance.coin + totalCoins;
             const newExp = user.profile.xp + totalExp;
-            const newStreak = user.peachy.streak + 1;
+            const newStreak = user.peach.streak + 1;
 
             const cooldownTime = 300000;
             return client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime)
@@ -81,7 +81,7 @@ module.exports = class Peachy extends Command {
                                 $set: {
                                     "balance.coin": newBalance,
                                     "profile.xp": newExp,
-                                    "peachy.streak": newStreak
+                                    "peach.streak": newStreak
                                 }
                             }
                         ).then(() => {
