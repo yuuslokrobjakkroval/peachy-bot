@@ -342,14 +342,14 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                         .replace('%{mainLeft}', emoji.mainLeft)
                         .replace('%{title}', klaKloukMessages.title)
                         .replace('%{mainRight}', emoji.mainRight) +
-                    `⏳ **Time is up** !!! You didn't click the button start in the game.`
+                    `⏳ 𝑻𝒊𝒎𝒆 𝒊𝒔 𝒖𝒑 !!! 𝒀𝒐𝒖 𝒅𝒊𝒅𝒏'𝒕 𝒄𝒍𝒊𝒄𝒌 𝒕𝒉𝒆 𝒃𝒖𝒕𝒕𝒐𝒏 𝒔𝒕𝒂𝒓𝒕 𝒊𝒏 𝒕𝒉𝒆 𝒈𝒂𝒎𝒆.`
                 )
                 .setFooter({
-                    text: `${ctx.author.displayName}, ${generalMessages.pleaseStartAgain}`,
+                    text: `${generalMessages.pleaseStartAgain.replace('%{user}', ctx.author.displayName)}`,
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
-            msg.edit({embeds: [embed], components: []});
+            msg.edit({ embeds: [embed], components: [] });
         }
     });
 }
