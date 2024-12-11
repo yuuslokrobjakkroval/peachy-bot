@@ -380,6 +380,7 @@ module.exports = class Utils {
     }
 
     static formatNumber(num) {
+        console.log(num)
         if (isNaN(num) || num <= 0 || num.toString().includes('.') || num.toString().includes(',')) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
         } else {
@@ -557,20 +558,123 @@ module.exports = class Utils {
         return null;
     }
 
+    static async userRanking(client, ctx, color, type) {
+        switch (type) {
+            case 'slots': case 'slot':
+                return await Users.aggregate([
+                    {
+                        $project: {
+                            total: '$balance.slots',
+                            username: '$username',
+                        }
+                    },
+                    { $sort: { total: -1 } }
+                ]).exec();
+            case 'blackjack': case 'bj':
+                return await Users.aggregate([
+                    {
+                        $project: {
+                            total: '$balance.blackjack',
+                            username: '$username',
+                        }
+                    },
+                    { $sort: { total: -1 } }
+                ]).exec();
+            case 'coinflip': case 'cf':
+                return await Users.aggregate([
+                    {
+                        $project: {
+                            total: '$balance.coinflip',
+                            username: '$username',
+                        }
+                    },
+                    { $sort: { total: -1 } }
+                ]).exec();
+            case 'klaklouk': case 'kk':
+                return await Users.aggregate([
+                    {
+                        $project: {
+                            total: '$balance.klaklouk',
+                            username: '$username',
+                        }
+                    },
+                    { $sort: { total: -1 } }
+                ]).exec();
+            case 'peach': case 'p':
+                return await Users.aggregate([
+                    {
+                        $project: {
+                            username: '$username',
+                            total: '$peachy.streak',
+                        }
+                    },
+                    { $sort: { total: -1 } }
+                ]).exec();
+            case 'goma':case 'g':
+                return await Users.aggregate([
+                    {
+                        $project: {
+                            username: '$username',
+                            total: '$goma.streak',
+                        }
+                    },
+                    { $sort: { total: -1 } }
+                ]).exec();
+            default:
+                return await Users.aggregate([
+                    {
+                        $project: {
+                            total: '$balance.coin',
+                            username: '$username',
+                        }
+                    },
+                    { $sort: { total: -1 } }
+                ]).exec();
+        }
+    }
+
+    static titleRanking(type, rankingMessages) {
+        switch (type) {
+            case 'balance' : case 'bal': return rankingMessages.balance;
+            case 'peach': case 'p': return rankingMessages.peach;
+            case 'goma': case 'g': return rankingMessages.goma;
+            case 'slots': case 'slot': return rankingMessages.slots;
+            case 'blackjack': case 'bj': return rankingMessages.blackjack;
+            case 'coinflip': case 'cf': return rankingMessages.coinflip;
+            case 'klaklouk': case 'kk': return rankingMessages.klaklouk;
+            default: return rankingMessages.top;
+        }
+    }
+
+    static typeRanking(type, emoji) {
+        if(['peach', 'goma', 'p', 'g'].includes(type)) {
+            return "𝒔𝒕𝒓𝒆𝒂𝒌";
+        } else {
+            return emoji.coin;
+        }
+    }
+
+    static emojiRank(emoji, position) {
+        switch (position) {
+            case 1: return emoji.rank.one;
+            case 2: return emoji.rank.two;
+            case 3: return emoji.rank.three;
+            case 4: return emoji.rank.four;
+            case 5: return emoji.rank.five;
+            case 6: return emoji.rank.six;
+            case 7: return emoji.rank.seven;
+            default: return emoji.rank.eight;
+        }
+    }
+
     static emojiPosition(position) {
         switch (position) {
-            case 'police':
-                return globalEmoji.position.police;
-            case 'it':
-                return globalEmoji.position.it;
-            case 'doctor':
-                return globalEmoji.position.doctor;
-            case 'engineer':
-                return globalEmoji.position.engineer;
-            case 'teacher':
-                return globalEmoji.position.teacher;
-            default:
-                return globalEmoji.position.student;
+            case 'police': return globalEmoji.position.police;
+            case 'it': return globalEmoji.position.it;
+            case 'doctor': return globalEmoji.position.doctor;
+            case 'engineer': return globalEmoji.position.engineer;
+            case 'teacher': return globalEmoji.position.teacher;
+            default: return globalEmoji.position.student;
         }
     }
 

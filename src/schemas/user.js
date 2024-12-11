@@ -146,9 +146,13 @@ const userSchema = new Schema({
     work: { type: WorkSchema, default: () => ({}) },
     verification: { type: VerificationSchema, default: () => ({}) },
     balance: {
-        coin: { type: Number, default: 500000 },
+        coin: { type: Number, default: 25000 },
         bank: { type: Number, default: 0 },
         sponsor: { type: Number, default: 0 },
+        slots: { type: Number, default: 0 },
+        blackjack: { type: Number, default: 0 },
+        coinflip: { type: Number, default: 0 },
+        klaklouk: { type: Number, default: 0 },
     },
     peachy: {
         streak: { type: Number, default: 0 }

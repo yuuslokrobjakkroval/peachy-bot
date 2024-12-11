@@ -50,7 +50,7 @@ module.exports = class Cmd extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.alreadyInGame, color);
             }
 
-            const {coin, bank} = user.balance;
+            const {coin, blackjack, bank} = user.balance;
 
             if (coin < 1) {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
@@ -78,6 +78,7 @@ module.exports = class Cmd extends Command {
             const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
 
             user.balance.coin = coin - baseCoins
+            user.balance.blackjack = blackjack + baseCoins;
             user.balance.bank = bank
             user.save().catch(err => console.error("Error saving user data:", err));
 

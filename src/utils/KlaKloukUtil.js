@@ -221,6 +221,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                 } else {
                     const selectButtonEmojis = selectedButton.map(id => kkEmoji[id]).join(" \`|\` ");
                     const totalCoin = betCoin * selectedButton.length;
+
                     const progressEmbed = client.embed()
                         .setColor(color.main)
                         .setDescription(
@@ -277,6 +278,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                         }
                         userCoin += winCash - totalBet;
                         user.balance.coin = userCoin;
+                        user.balance.klaklouk += totalBet;
                         await user.save();
 
                         const embed = client.embed()

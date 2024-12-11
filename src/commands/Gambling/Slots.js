@@ -42,7 +42,7 @@ module.exports = class Slots extends Command {
 		client.utils.getUser(ctx.author.id).then(user => {
 			const SLOTS = [emoji.slots.cat, emoji.slots.coffee, emoji.slots.heart, emoji.slots.cake, emoji.slots.milk, emoji.slots.peachy]
 			const verify = user.verification.verify.status === 'verified';
-			const {coin, bank} = user.balance;
+			const { coin, slots, bank} = user.balance;
 
 			if (coin < 1) {
 				return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
@@ -71,6 +71,7 @@ module.exports = class Slots extends Command {
 			Users.updateOne({userId: ctx.author.id}, {
 				$set: {
 					'balance.coin': coin - baseCoins,
+					'balance.slots': slots + baseCoins,
 					'balance.bank': bank
 				}
 			}).exec();
