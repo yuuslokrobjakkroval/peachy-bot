@@ -184,7 +184,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                 const selected = [...firstRow.components, ...secondRow.components].find(b => b.data.custom_id === int.customId);
                 if (!selectedButton.includes(int.customId)) {
                     if (selectedButton.length >= maxSelectable) {
-                        return int.followUp({
+                        return int.reply({
                             content: klaKloukMessages.notEnoughCoins
                                 .replace('%{coin}', client.utils.formatNumber(userCoin))
                                 .replace('%{coinEmote}', emoji.coin)
@@ -198,8 +198,9 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                 } else {
                     selectedButton.splice(selectedButton.indexOf(int.customId), 1);
                     selected.setStyle(2);
-                    await int.deferUpdate();
+
                 }
+                await int.deferUpdate();
                 msg.edit({components: [firstRow, secondRow]});
             } else if (int.customId === 'cancel') {
                 selectedButton = [];
