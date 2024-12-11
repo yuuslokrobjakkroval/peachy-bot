@@ -380,7 +380,6 @@ module.exports = class Utils {
     }
 
     static formatNumber(num) {
-        console.log(num)
         if (isNaN(num) || num <= 0 || num.toString().includes('.') || num.toString().includes(',')) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
         } else {
