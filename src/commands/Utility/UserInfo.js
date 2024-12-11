@@ -52,7 +52,7 @@ module.exports = class UserInfo extends Command {
     const { guild } = ctx;
     const userId = typeof target === 'string' ? target : target.id;
     const guildMember = guild.members.cache.get(userId);
-    const user = await client.user.fetch(userId);
+    const user = guildMember?.user || target;
     const bannerURL = await target.fetch().then(user => user.bannerURL({ format: 'png', size: 1024 }));
 
     const embed = client.embed()
