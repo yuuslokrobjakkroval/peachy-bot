@@ -562,6 +562,11 @@ module.exports = class Utils {
             case 'slots': case 'slot':
                 return await Users.aggregate([
                     {
+                        $match: {
+                            'balance.slots': { $gt: 0 }
+                        }
+                    },
+                    {
                         $project: {
                             total: '$balance.slots',
                             username: '$username',
@@ -571,6 +576,11 @@ module.exports = class Utils {
                 ]).exec();
             case 'blackjack': case 'bj':
                 return await Users.aggregate([
+                    {
+                        $match: {
+                            'balance.blackjack': { $gt: 0 }
+                        }
+                    },
                     {
                         $project: {
                             total: '$balance.blackjack',
@@ -582,6 +592,11 @@ module.exports = class Utils {
             case 'coinflip': case 'cf':
                 return await Users.aggregate([
                     {
+                        $match: {
+                            'balance.coinflip': { $gt: 0 }
+                        }
+                    },
+                    {
                         $project: {
                             total: '$balance.coinflip',
                             username: '$username',
@@ -591,6 +606,11 @@ module.exports = class Utils {
                 ]).exec();
             case 'klaklouk': case 'kk':
                 return await Users.aggregate([
+                    {
+                        $match: {
+                            'balance.klaklouk': { $gt: 0 }
+                        }
+                    },
                     {
                         $project: {
                             total: '$balance.klaklouk',
@@ -602,6 +622,11 @@ module.exports = class Utils {
             case 'peach': case 'p':
                 return await Users.aggregate([
                     {
+                        $match: {
+                            'peachy.streak': { $gt: 0 }
+                        }
+                    },
+                    {
                         $project: {
                             username: '$username',
                             total: '$peachy.streak',
@@ -609,8 +634,13 @@ module.exports = class Utils {
                     },
                     { $sort: { total: -1 } }
                 ]).exec();
-            case 'goma':case 'g':
+            case 'goma': case 'g':
                 return await Users.aggregate([
+                    {
+                        $match: {
+                            'goma.streak': { $gt: 0 }
+                        }
+                    },
                     {
                         $project: {
                             username: '$username',
@@ -621,6 +651,11 @@ module.exports = class Utils {
                 ]).exec();
             default:
                 return await Users.aggregate([
+                    {
+                        $match: {
+                            'balance.coin': { $gt: 0 }
+                        }
+                    },
                     {
                         $project: {
                             total: '$balance.coin',
