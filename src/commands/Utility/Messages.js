@@ -76,7 +76,7 @@ module.exports = class MessageTracker extends Command {
                     userId,
                     username: mention.username,
                     messageCount: 0,
-                    date: new Date(),
+                    date: today,
                 };
                 guildData.messages.push(userData);
                 await guildData.save();

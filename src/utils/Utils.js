@@ -110,7 +110,7 @@ module.exports = class Utils {
                     userId: message.author.id,
                     username: message.author.username,
                     messageCount: 1,
-                    date: today
+                    date: today.setHours(0, 0, 0, 0)
                 });
             } else {
                 tracking.messages[messageIndex].messageCount += 1;
