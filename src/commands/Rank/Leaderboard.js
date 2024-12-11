@@ -7,7 +7,7 @@ module.exports = class Ranking extends Command {
             description: {
                 embed: 'Check top coin, spent coin, and streak of peachy in your Discord guild and globally.',
                 examples: ['leaderboard', 'top', 'lb'],
-                usage: 'leaderboard <bal|peach|goma|slots|blackjack|coinflip>',
+                usage: 'leaderboard bal\n leaderboard peach\n leaderboard goma\n leaderboard slots\n leaderboard blackjack\n leaderboard coinflip\n leaderboard klaklouk',
             },
             category: 'rank',
             aliases: ['rank', 'top', 'lb'],
