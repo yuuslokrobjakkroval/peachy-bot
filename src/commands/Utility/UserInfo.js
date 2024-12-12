@@ -53,8 +53,15 @@ module.exports = class UserInfo extends Command {
     const userId = typeof target === 'string' ? target : target.id;
     const guildMember = guild.members.cache.get(userId);
     const user = guildMember?.user || target;
-    const bannerURL = await target.fetch().then(user => user.bannerURL({ format: 'png', size: 1024 }));
-
+    let bannerURL;
+    try {
+      bannerURL = await target.fetch().then(user => user.bannerURL?.({ format: 'png', size: 1024 }));
+      if (!bannerURL) {
+        bannerURL = client.config.links.banner;
+      }
+    } catch (error) {
+      bannerURL = client.config.links.banner;
+    }
     const embed = client.embed()
         .setColor(color.main)
         .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, extension: 'png' }))
@@ -86,7 +93,7 @@ module.exports = class UserInfo extends Command {
             inline: false
           }
         ])
-        .setImage(bannerURL ? bannerURL : client.config.links.banner)
+        .setImage(bannerURL)
         .setFooter({
           text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
