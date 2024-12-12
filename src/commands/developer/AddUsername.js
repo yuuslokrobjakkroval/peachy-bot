@@ -47,7 +47,7 @@ module.exports = class AddUsername extends Command {
                 }
                 try {
                     const userInfo = await client.users.fetch(user.userId);
-                    const username = userInfo ? userInfo.username : 'Unknown';
+                    const username = userInfo ? userInfo.displayName : 'Unknown';
                     await Users.updateOne(
                         {userId: user.userId},
                         {$set: {username: username}}
