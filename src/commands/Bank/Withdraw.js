@@ -81,7 +81,7 @@ module.exports = class Withdraw extends Command {
             }
 
             // Update user balance
-            user.balance.coin += baseCoins;
+            user.balance.coin += baseCoins ?? 0;
             user.balance.bank = bank - baseCoins;
 
             user.save()

@@ -122,7 +122,7 @@ module.exports = class Utils {
                     const milestoneIndex = milestones.indexOf(messageCount);
                     if (milestoneIndex !== -1) {
                         const reward = baseRewards[milestoneIndex];
-                        user.balance.coin += reward;
+                        user.balance.coin += reward || 0;
                         await user.save();
                         const embed = client.embed()
                             .setColor(color.main)
