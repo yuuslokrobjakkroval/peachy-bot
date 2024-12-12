@@ -377,6 +377,21 @@ module.exports = [
         price: { buy: 1e8, sell: 15e6 },
     },
     {
+        id: 'st1801',
+        name: `Yuna's Radiance`,
+        description: `Step into the serene beauty of Yuna's Radiance! With an aura of grace and a touch of elegance, this theme captures the essence of a bright and inspiring soul. Embrace the warmth and positivity of a world where every moment reflects Yuna's calm strength and radiant charm, bringing light and joy to those around her.`,
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: false,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.yuna,
+        available: ['use'],
+        price: { buy: 1e8, sell: 15e6 },
+    },
+    {
         id: 'st99',
         name: 'Quirky Quackers',
         description: 'Dive into the playful charm of Quirky Quackers! With a delightful blend of joyful vibes and heartwarming cuteness, this theme brings a touch of sunshine to every moment. Embrace the cheerful energy of a little duckling who knows how to brighten your day, no matter the weather.',

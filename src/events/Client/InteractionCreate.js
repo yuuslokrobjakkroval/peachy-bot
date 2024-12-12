@@ -25,6 +25,7 @@ module.exports = class InteractionCreate extends Event {
       const prefix = this.client.config.prefix;
       // this.client.utils.getCheckingUser(this.client, interaction, user, color, emoji, prefix);
       if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
+
         const command = this.client.commands.get(interaction.commandName);
         if (!command) return;
 

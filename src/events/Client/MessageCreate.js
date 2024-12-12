@@ -18,6 +18,7 @@ module.exports = class MessageCreate extends Event {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
       this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
+
       if (user?.verification?.isBanned) {
         return;
       }
@@ -262,7 +263,6 @@ module.exports = class MessageCreate extends Event {
                   .then(userInfo => {
                     if (!user.username || user.username !== userInfo.displayName) {
                       user.username = userInfo ? userInfo.displayName : userInfo.username;
-                    
                       if (!user.isSaving) {
                          user.isSaving = true;  // Flag to indicate a save operation is in progress
                          user.save().then(() => {
