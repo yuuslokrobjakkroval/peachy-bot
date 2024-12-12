@@ -746,7 +746,7 @@ module.exports = class Utils {
 
         const filter = (reaction, user) => reactions.includes(reaction.emoji.name) && user.id === author.id;
 
-        const collector = msg.createReactionCollector({ filter, time: 120000 });
+        const collector = msg.createReactionCollector({ filter, time: 300000 });
 
         collector.on('collect', (reaction, user) => {
             if (user.id !== author.id) return;
@@ -831,7 +831,7 @@ module.exports = class Utils {
             : ctx.channel.send({ ...msgOptions, fetchReply: true }));
 
         const filter = int => int.user.id === author.id;
-        const collector = msg.createMessageComponentCollector({ filter, time: 120000 });
+        const collector = msg.createMessageComponentCollector({ filter, time: 300000 });
 
         collector.on('end', async () => await msg.edit({ embeds: [embed[page]], components: [] }));
         collector.on('collect', async interaction => {
