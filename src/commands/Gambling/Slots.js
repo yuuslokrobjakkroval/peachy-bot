@@ -16,7 +16,7 @@ module.exports = class Slots extends Command {
 			},
 			category: 'gambling',
 			aliases: ['slot', 's'],
-			cooldown: 3,
+			cooldown: 5,
 			args: false,
 			permissions: {
 				dev: false,
@@ -112,22 +112,22 @@ module.exports = class Slots extends Command {
 				if (rand <= 20) { // 20% for baseCoins
 					win = baseCoins;
 					rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-				} else if (rand <= 33) { // 13% for baseCoins * 2
+				} else if (rand <= 27) { // 10% for baseCoins * 2
 					win = baseCoins * 2;
 					rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-				} else if (rand <= 39) { // 6% for baseCoins * 3
+				} else if (rand <= 32) { // 5% for baseCoins * 3
 					win = baseCoins * 3;
 					rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-				} else if (rand <= 44) { // 5% for baseCoins * 4
+				} else if (rand <= 36) { // 4% for baseCoins * 4
 					win = baseCoins * 4;
 					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-				} else if (rand <= 47) { // 3% for baseCoins * 5
+				} else if (rand <= 39) { // 3% for baseCoins * 5
 					win = baseCoins * 5;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 48) { // 1% for baseCoins * 10
+				} else if (rand <= 40) { // 2% for baseCoins * 10
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-				} else { // 52% chance to lose
+				} else { // 60% chance to lose
 					let slot1 = Math.floor(Math.random() * SLOTS.length);
 					let slot2 = Math.floor(Math.random() * SLOTS.length);
 					let slot3 = Math.floor(Math.random() * SLOTS.length);
