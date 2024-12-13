@@ -89,7 +89,7 @@ module.exports = {
         cucumber: '<:CUMPROFILE:1308067665264513084>',
         cappuccino: '<:CAFEMAIN:1309842668200923228>',
         duckling: '<:KMAIN:1315309185138823279>',
-        yuna: '<:YUNAMAIN:1316793376254722171>',
+        yuna: '<:YUNAMAIN:1317117650131746816>',
     },
 
     // EXCHANGE
