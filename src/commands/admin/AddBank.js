@@ -32,7 +32,7 @@ module.exports = class AddBank extends Command {
         const userId = typeof mention === 'string' ? mention : mention.id;
         const syncUser = await client.users.fetch(userId);
 
-        if (syncUser && syncUser.user.bot) {
+        if (syncUser && syncUser?.bot) {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
         }
 
