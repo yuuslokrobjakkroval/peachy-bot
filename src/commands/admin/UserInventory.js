@@ -45,8 +45,6 @@ module.exports = class UserInventory extends Command {
                     color
                 );
             }
-            const isBot = target ? target.bot : false;
-            if (isBot) return await client.utils.sendErrorMessage(client, ctx, giveItemMessages.mentionToBot, color);
 
             const itemList = {};
             let totalWorth = 0;

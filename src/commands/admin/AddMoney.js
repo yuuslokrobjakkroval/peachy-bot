@@ -31,6 +31,11 @@ module.exports = class AddMoney extends Command {
 
         const userId = typeof mention === 'string' ? mention : mention.id;
         const syncUser = await client.users.fetch(userId);
+
+        if (syncUser && syncUser?.user?.bot) {
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
+        }
+
         let user = await Users.findOne({ userId: syncUser.id });
         if (!user) {
             user = new Users({
@@ -43,10 +48,6 @@ module.exports = class AddMoney extends Command {
         }
 
         const { coin, bank } = user.balance;
-
-        if (mention && mention?.user?.bot) {
-            return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
-        }
 
         let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
         if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
