@@ -127,7 +127,7 @@ module.exports = class Utils {
                         const embed = client.embed()
                             .setColor(color.main)
                             .setTitle(`${emoji.congratulation} Milestone Reached!`)
-                            .setDescription(`Congratulations ${message.member.displayName || message.author.username}! You have sent ${messageCount} messages today and earned ${reward} coins!`)
+                            .setDescription(`Congratulations ${message.member.displayName || message.author.username}! You have sent ${messageCount} messages today and earned ${client.utils.formatNumber(reward)} coins!`)
                             .setFooter({ text: `Keep messaging to earn more rewards!`, iconURL: client.user.avatarURL() });
 
                         await message.channel.send({ embeds: [embed] });
@@ -141,7 +141,7 @@ module.exports = class Utils {
                         const specialEmbed = client.embed()
                             .setColor(color.main)
                             .setTitle(`${emoji.top} Incredible Milestone!`)
-                            .setDescription(`Amazing! ${message.member.displayName || message.author.username}, you've reached ${messageCount} messages and earned an additional ${extraReward} coins!`)
+                            .setDescription(`Amazing! ${message.member.displayName || message.author.username}, you've reached ${messageCount} messages and earned an additional ${client.utils.formatNumber(extraReward)} coins!`)
                             .setFooter({ text: `You're an absolute legend!`, iconURL: client.user.avatarURL() });
 
                         await message.channel.send({ embeds: [specialEmbed] });
