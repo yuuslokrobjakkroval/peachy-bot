@@ -40,12 +40,13 @@ module.exports = class AddItem extends Command {
             ? ctx.interaction.options.getUser('user') || ctx.author // Default to the author if no user is provided
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || args[0];
 
-        if (mention && mention.user.bot) {
+        const userId = typeof mention === 'string' ? mention : mention.id;
+        const syncUser = await client.users.fetch(userId);
+
+        if (syncUser && syncUser.user.bot) {
             return await client.utils.sendErrorMessage(client, ctx, generalMessages.botTransfer, color);
         }
 
-        const userId = typeof mention === 'string' ? mention : mention.id;
-        const syncUser = await client.users.fetch(userId);
         let userData = await Users.findOne({ userId: syncUser.id });
         if (!userData) {
             userData = new Users({
