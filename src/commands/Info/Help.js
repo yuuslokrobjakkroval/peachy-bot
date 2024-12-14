@@ -55,8 +55,11 @@ module.exports = class Help extends Command {
 
       const helpEmbed = embed
           .setColor(color.main)
-          .setTitle(`${emoji.mainLeft} ${helpMessages.title} ${emoji.mainRight}`)
           .setDescription(
+              generalMessages.title
+                  .replace('%{mainLeft}', emoji.mainLeft)
+                  .replace('%{title}', "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
+                  .replace('%{mainRight}', emoji.mainRight)
               `${helpMessages.description} ***${prefix}help [command]***\n` +
               `${helpMessages.examples} ***${prefix}help balance***\n\n` +
               `${helpMessages.note}`
@@ -96,7 +99,7 @@ module.exports = class Help extends Command {
 
       const helpEmbed = embed
           .setColor(color.main)
-          .setTitle(`${helpMessages.commandTitle} - ${command.name}`)
+          .setTitle(`${helpMessages.title} - ${command.name}`)
           .setDescription(command.description.content)
           .addFields([
             {
@@ -115,7 +118,7 @@ module.exports = class Help extends Command {
               inline: false,
             },
             {
-              name: `${helpMessages.botPermissions}`,
+              name: `${helpMessages.permissions}`,
               value: `${command.permissions.client.map(perm => `\`${perm}\``).join(', ')}`,
               inline: false,
             },
