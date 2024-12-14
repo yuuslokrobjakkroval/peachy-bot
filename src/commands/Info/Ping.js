@@ -53,17 +53,17 @@ module.exports = class Ping extends Command {
         .setThumbnail(client.utils.emojiToImage(emoji.main))
         .addFields([
           {
-            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 2)} BOT ${client.utils.getLoopElement(' ', 2)}${globalEmoji.ping}`,
+            name: `𝐁𝐎𝐓 ${client.utils.getLoopElement(' ', 2)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${randomNumber}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 2)} API ${client.utils.getLoopElement(' ', 2)}${globalEmoji.ping}`,
+            name: `𝐀𝐏𝐈 ${client.utils.getLoopElement(' ', 2)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
             inline: true,
           },
           {
-            name: `${globalEmoji.ping}${client.utils.getLoopElement(' ', 2)} DB ${client.utils.getLoopElement(' ', 2)}${globalEmoji.ping}`,
+            name: `𝐃𝐁 ${client.utils.getLoopElement(' ', 2)}${globalEmoji.ping}`,
             value: `\`\`\`ini\n[ ${await dbPing()}ms ]\n\`\`\``,
             inline: true,
           },
