@@ -59,7 +59,7 @@ module.exports = class Help extends Command {
               generalMessages.title
                   .replace('%{mainLeft}', emoji.mainLeft)
                   .replace('%{title}', "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
-                  .replace('%{mainRight}', emoji.mainRight)
+                  .replace('%{mainRight}', emoji.mainRight) +
               `${helpMessages.description} ***${prefix}help [command]***\n` +
               `${helpMessages.examples} ***${prefix}help balance***\n\n` +
               `${helpMessages.note}`
