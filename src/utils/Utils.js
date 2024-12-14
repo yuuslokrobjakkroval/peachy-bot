@@ -774,7 +774,7 @@ module.exports = class Utils {
         });
 
         collector.on('end', async () => {
-            const botPermissions = msg.channel.permissionsFor(msg.guild.me);
+            const botPermissions = msg?.channel?.permissionsFor(msg.guild.me);
 
             if (!botPermissions || !botPermissions.has('ManageMessages')) {
                 return;
