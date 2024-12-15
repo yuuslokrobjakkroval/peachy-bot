@@ -338,13 +338,13 @@ module.exports = [
         type: 'special theme',
         able: {
             use: true,
-            gift: false,
+            gift: true,
             multiple: false,
         },
         quantity: 1,
         emoji: emoji.specialTheme.spiderMan,
         available: ['use'],
-        price: { buy: 1e8, sell: 35e6 },
+        price: { buy: 1e10, sell: 35e6 },
     },
     {
         id: 'st12',
@@ -353,13 +353,13 @@ module.exports = [
         type: 'special theme',
         able: {
             use: true,
-            gift: false,
+            gift: true,
             multiple: false,
         },
         quantity: 1,
         emoji: emoji.specialTheme.cucumber,
         available: ['use'],
-        price: { buy: 1e8, sell: 15e6 },
+        price: { buy: 1e10, sell: 15e6 },
     },
     {
         id: 'st13',
@@ -368,13 +368,13 @@ module.exports = [
         type: 'special theme',
         able: {
             use: true,
-            gift: false,
+            gift: true,
             multiple: false,
         },
         quantity: 1,
         emoji: emoji.specialTheme.cappuccino,
         available: ['use'],
-        price: { buy: 1e8, sell: 15e6 },
+        price: { buy: 1e10, sell: 15e6 },
     },
     {
         id: 'st1801',
@@ -383,13 +383,13 @@ module.exports = [
         type: 'special theme',
         able: {
             use: true,
-            gift: false,
+            gift: true,
             multiple: false,
         },
         quantity: 1,
         emoji: emoji.specialTheme.yuna,
         available: ['use'],
-        price: { buy: 1e8, sell: 15e6 },
+        price: { buy: 1e10, sell: 15e6 },
     },
     {
         id: 'st99',
@@ -398,12 +398,27 @@ module.exports = [
         type: 'special theme',
         able: {
             use: true,
-            gift: false,
+            gift: true,
             multiple: false,
         },
         quantity: 1,
         emoji: emoji.specialTheme.duckling,
         available: ['use'],
-        price: { buy: 1e8, sell: 15e6 },
+        price: { buy: 1e10, sell: 15e6 },
+    },
+    {
+        id: 'st168',
+        name: 'Ghastly Grins',
+        description: 'Step into the shadowy allure of Ghastly Grins! This theme oozes with spooky charm, capturing the playful mischief and eerie elegance of a grinning ghostly trickster. Perfect for those who embrace the fun side of the dark and mysterious, it’s a hauntingly delightful way to add a spectral spark to your day!',
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: true,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.ghastlyGrins,
+        available: ['use'],
+        price: { buy: 1e10, sell: 15e6 },
     }
 ];
