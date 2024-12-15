@@ -57,7 +57,7 @@ module.exports = class CatchThief extends Command {
         }
 
         // Check if the user has the position of "police"
-        if (police.work.position.toLowerCase() !== 'police' && police.work.status !== 'approved' ) {
+        if (police.work.position.toLowerCase() !== 'police' || police.work.status !== 'approved') {
             return client.utils.sendErrorMessage(client, ctx, policeMessages.notPolice, color);
         }
 

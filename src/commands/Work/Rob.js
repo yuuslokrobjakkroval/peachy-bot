@@ -58,17 +58,17 @@ module.exports = class Rob extends Command {
         }
 
         // Prevent robbing if the robber's position is 'police'
-        if (robber.work.status === 'approved' && robber.work.position.toLowerCase() === 'police') {
+        if (robber.work.position.toLowerCase() === 'police' && robber.work.status === 'approved') {
             return client.utils.sendErrorMessage(client, ctx, robMessages.cannotRobAsPolice, color);
         }
 
         // Prevent robbing users with the position of 'police'
-        if (victim.work.status === 'approved' && victim.work.position.toLowerCase() === 'police') {
+        if (victim.work.position.toLowerCase() === 'police' && victim.work.status === 'approved') {
             return client.utils.sendErrorMessage(client, ctx, robMessages.protectedByPolice.replace('%{victim}', target.displayName), color);
         }
 
         // Check cooldown
-        const cooldownTime = 4 * 60 * 1000;
+        const cooldownTime = 3 * 60 * 1000;
         client.utils.checkCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime).then(async isCooldownExpired => {
             if (!isCooldownExpired) {
                 client.utils.getCooldown(ctx.author.id, this.name.toLowerCase()).then(lastCooldownTimestamp => {
