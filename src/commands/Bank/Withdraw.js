@@ -10,7 +10,7 @@ module.exports = class Withdraw extends Command {
                 usage: 'withdraw <amount>',
             },
             category: 'bank',
-            aliases: ['with', 'dokluy', 'berkluy'],
+            aliases: ['dokluy', 'with', 'dok'],
             cooldown: 5,
             args: true,
             permissions: {

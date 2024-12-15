@@ -11,7 +11,7 @@ module.exports = class Deposit extends Command {
                 usage: 'deposit <amount>',
             },
             category: 'bank',
-            aliases: ['dep'],
+            aliases: ['dakluy', 'dak', 'dep'],
             cooldown: 5,
             args: false,
             permissions: {
