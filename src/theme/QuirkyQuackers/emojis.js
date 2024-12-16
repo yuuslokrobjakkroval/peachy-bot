@@ -113,8 +113,8 @@ module.exports = {
         milk: '<:KKTX5:1317145352478130268>',
         peachy: '<:KKTX10:1317145362489806890>',
         spin: '<a:KKTSLOTS:1317145378142814218>',
-        mainLeft: '<:KTMAINLEFT:1317886166099296406>',
-        mainRight: '<:KTMAINRIGHT:1317886173259104368>',
+        mainLeft: '<:KTMAINLEFT:1318162303014801429>',
+        mainRight: '<:KTMAINRIGHT:1318162311084507137>',
     },
     coinFlip: {
         peach: '<:PEACHCOIN:1281820633621074023>',
