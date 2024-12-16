@@ -100,7 +100,7 @@ module.exports = class Partner extends Command {
 
         // Send confirmation embed to the mentioned user
         const confirmEmbed = client.embed()
-            .setColor(color)
+            .setColor(color.main)
             .setTitle(`💍 Partner Request`)
             .setDescription(
                 `${ctx.author.username} is asking you to become their partner!\n` +
