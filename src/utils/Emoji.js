@@ -71,6 +71,12 @@ module.exports = {
         princessCake: '<:c05:1302198019105493041>',
     },
 
+    // RING
+    ring: {
+        peach: '<:PEACHRING:1318230764495700048>',
+        goma: '<:GOMARING:1318230754366324806>'
+    },
+
     // THEME
     theme: {
         mysticCharm: '<a:MAINV2:1287988959606997012>',
@@ -84,6 +90,8 @@ module.exports = {
         sakura: '<:SAKURAMAIN:1295967137482936440>',
         bee: '<:BTITLE:1304106395209039932>',
         froggy: '<:FMAIN:1312652464830414939>',
+        asleepypeach: '<:FMAIN:1312652464830414939>',
+
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
         cappuccino: '<:CAFEMAIN:1309842668200923228>',

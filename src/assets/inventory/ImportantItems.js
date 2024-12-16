@@ -420,5 +420,20 @@ module.exports = [
         emoji: emoji.specialTheme.ghastlyGrins,
         available: ['use'],
         price: { buy: 1e10, sell: 15e6 },
-    }
+    },
+    {
+        id: 'st05',
+        name: 'ASleepy Peach',
+        description: "Bask in the soft and sweet charm of 'ASleepy Peach'! This theme blends soothing pastel tones with adorable icons like peaches, blossoms, and desserts, bringing a sense of calm and warmth to your day. Perfect for those who adore cozy vibes and a sprinkle of sweetness.",
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: false,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.asleepypeach,
+        available: ['use'],
+        price: { buy: 4e7, sell: 35e6 },
+    },
 ];

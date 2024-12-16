@@ -5,16 +5,20 @@ const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
 const importantItems = require('../assets/inventory/ImportantItems');
 const shopItems = require('../assets/inventory/ShopItems');
+const inventory = shopItems.flatMap(shop => shop.inventory);
 const canvafy = require("canvafy");
 const globalConfig = require("./Config");
 const gif = require("./Gif");
 const globalEmoji = require("./Emoji");
-const items = shopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Utils {
 
     static getUser(userId) {
         return Users.findOne({ userId }).then(user => { return user; }).catch(error => { console.log(`Error fetching user data: ${error}`); return null });
+    }
+
+    static async updateUser(userId, data) {
+        await Users.findByIdAndUpdate(userId, data, { new: true });
     }
 
     static calculateNextLevelXpBonus(level) {
@@ -1066,7 +1070,7 @@ module.exports = class Utils {
         if (data.paused) return;
 
         // Find the item in the inventory based on the itemId
-        const category = items.concat(importantItems).filter(c => c.type === data.type); // Adjusted to use data.type
+        const category = inventory.concat(importantItems).filter(c => c.type === data.type); // Adjusted to use data.type
         if (!category) {
             console.error(`Invalid item type specified for winner <@${winner}>.`);
             return;
