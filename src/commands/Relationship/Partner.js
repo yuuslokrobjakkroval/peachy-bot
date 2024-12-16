@@ -109,11 +109,11 @@ module.exports = class Partner extends Command {
             )
             .setFooter({ text: 'You have 2 minute to respond.' });
 
-        const acceptedButton = client.utils.labelButton('accept', 'Accept', 2);
-        const declineButton = client.utils.labelButton('decline', 'Decline', 3);
+        const acceptedButton = client.utils.labelButton('accept', 'Accept', 3);
+        const declineButton = client.utils.labelButton('decline', 'Decline', 4);
         const row = client.utils.createButtonRow(acceptedButton, declineButton)
 
-        const confirmMessage = await ctx.channel.send({ content: `<@${mention.id}>`, embeds: [confirmEmbed], components: [row] });
+        const confirmMessage = await ctx.channel.send({ content: '', embeds: [confirmEmbed], components: [row] });
 
         // Await confirmation response
         const filter = (interaction) =>
