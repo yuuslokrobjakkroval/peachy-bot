@@ -57,7 +57,7 @@ module.exports = class Inventory extends Command {
                 });
 
                 const fields = [];
-                const inventoryTypes = ['milk', 'food', 'drink', 'cake', 'color', 'theme', 'special theme', 'wallpaper'];
+                const inventoryTypes = ['milk', 'food', 'drink', 'cake', 'ring', 'color', 'theme', 'special theme', 'wallpaper'];
 
                 inventoryTypes.forEach(type => {
                     const items = itemList[type];
