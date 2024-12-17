@@ -56,7 +56,7 @@ module.exports = class Profile extends Command {
                 console.error(error);
             }
 
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            await new Promise(resolve => setTimeout(resolve, 4000));
 
             const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
             const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('p'));

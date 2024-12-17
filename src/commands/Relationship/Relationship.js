@@ -59,11 +59,10 @@ module.exports = class Profile extends Command {
                     console.error(error);
                 }
 
-                // await new Promise(resolve => setTimeout(resolve, 3000));
+                await new Promise(resolve => setTimeout(resolve, 4000));
 
                 let bannerImage;
                 let backgroundColor;
-                let descriptionColor;
                 if (user?.profile?.gender === 'male') {
                     bannerImage = 'https://i.imgur.com/fMtSCsL.png';
                     backgroundColor = '#CCCAC9';
@@ -210,7 +209,6 @@ module.exports = class Profile extends Command {
             context.drawImage(partnerAvatar, partnerAvatarX, partnerAvatarY, partnerAvatarSize, partnerAvatarSize);
             context.restore();
         }
-
 
         // BANNER SECTION
         if (banner) {
