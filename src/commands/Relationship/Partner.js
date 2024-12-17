@@ -113,42 +113,54 @@ module.exports = class Partner extends Command {
         const declineButton = client.utils.labelButton('decline', 'Decline', 4);
         const row = client.utils.createButtonRow(acceptedButton, declineButton)
 
-        const confirmMessage = await ctx.channel.send({ content: '', embeds: [confirmEmbed], components: [row] });
-
         // Await confirmation response
-        const filter = (interaction) =>
-            interaction.user.id === mention.id &&
-            ['accept', 'decline'].includes(interaction.customId);
+        const msg = await ctx.channel.send( {embeds: [confirmEmbed], components: [row] });
 
-        try {
-            const collected = await confirmMessage.awaitMessageComponent({ filter, time: 120000 });
-            if (collected.customId === 'accept') {
-                // Update partner data
-                user.partner = { userId: mention.id };
-                mention.partner = { userId: ctx.author.id };
+        const collector = msg.createMessageComponentCollector({
+            filter: async int => {
+                if (int.user.id === mention.id && ['accept', 'decline'].includes(int.customId)) return true;
+                else {
+                    await int.reply({
+                        ephemeral: true,
+                        content: `This button for **${mention.username}**!`
+                    });
+                    return false;
+                }
+            },
+            time: 60000,
+        });
 
-                await client.utils.updateUser(ctx.author.id, user); // Save user data
-                await client.utils.updateUser(mention.id, mention); // Save mention data
+        collector.on('collect', async int => {
+            try {
+                if (int.customId.customId === 'accept') {
+                    // Update partner data
+                    user.partner = { userId: mention.id};
+                    mention.partner = { userId: ctx.author.id };
 
-                await collected.update({
-                    content: `🎉 **${ctx.author.displayName}** and **${mention.username}** are now partners! 💍`,
-                    embeds: [],
-                    components: [],
-                });
-            } else {
-                await collected.update({
-                    content: `❌ **${mention.username}** declined the partnership request.`,
+                    await client.utils.updateUser(ctx.author.id, user);
+                    await client.utils.updateUser(mention.id, mention);
+
+                    await msg.edit({
+                        content: `🎉 **${ctx.author.displayName}** and **${mention.username}** are now partners! 💍`,
+                        embeds: [],
+                        components: [],
+                    });
+                } else {
+                    await int.customId.update({
+                        content: `❌ **${mention.username}** declined the partnership request.`,
+                        embeds: [],
+                        components: [],
+                    });
+                }
+                await int.deferUpdate();
+            } catch (err) {
+                await msg.edit({
+                    content: `⌛ **${mention.username}** did not respond in time. Request cancelled.`,
                     embeds: [],
                     components: [],
                 });
             }
-        } catch (err) {
-            await confirmMessage.edit({
-                content: `⌛ **${mention.username}** did not respond in time. Request cancelled.`,
-                embeds: [],
-                components: [],
-            });
-        }
+        });
     }
 
     async removePartner(client, ctx, user, mention, color, emoji, language) {
