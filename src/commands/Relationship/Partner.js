@@ -118,11 +118,11 @@ module.exports = class Partner extends Command {
 
         const collector = msg.createMessageComponentCollector({
             filter: async int => {
-                if (int.user.id === mention.id && ['accept', 'decline'].includes(int.customId)) return true;
+                if (int.user.id === mention.userId && ['accept', 'decline'].includes(int.customId)) return true;
                 else {
                     await int.reply({
-                        ephemeral: true,
-                        content: `This button for **${mention.username}**!`
+                        content: `This button for **${mention.username}**!`,
+                        ephemeral: true
                     });
                     return false;
                 }
