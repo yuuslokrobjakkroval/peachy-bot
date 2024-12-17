@@ -64,17 +64,16 @@ module.exports = class Partner extends Command {
             return client.utils.sendErrorMessage(client, ctx, relationshipMessages.error.notRegistered, color);
         }
 
-        // Check for existing partners
-        if (user.relationship?.partner?.userId) {
-            return client.utils.sendErrorMessage(client, ctx, `${ctx.author.displayName}, 𝒚𝒐𝒖 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒗𝒆 𝒂 𝒑𝒂𝒓𝒕𝒏𝒆𝒓!`, color);
-        }
-
-        if (mention.relationship?.partner?.userId) {
-            return client.utils.sendErrorMessage(client, ctx, `${mention.username} 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒔 𝒂 𝒑𝒂𝒓𝒕𝒏𝒆𝒓!`, color);
-        }
-
         // Check for partner relationship
         if (action === 'add') {
+            // Check for existing partners
+            if (user.relationship?.partner?.userId) {
+                return client.utils.sendErrorMessage(client, ctx, `${ctx.author.displayName}, 𝒚𝒐𝒖 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒗𝒆 𝒂 𝒑𝒂𝒓𝒕𝒏𝒆𝒓!`, color);
+            }
+
+            if (mention.relationship?.partner?.userId) {
+                return client.utils.sendErrorMessage(client, ctx, `${mention.username} 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒔 𝒂 𝒑𝒂𝒓𝒕𝒏𝒆𝒓!`, color);
+            }
             await this.checkAndAddPartner(client, ctx, user, target, mention, color, emoji, language);
         } else if (action === 'remove') {
             await this.removePartner(client, ctx, user, target, mention, color, emoji, language);
@@ -101,8 +100,6 @@ module.exports = class Partner extends Command {
         if (badgeIds[userRing.id] !== mentionRing.id) {
             return client.utils.sendErrorMessage(client, ctx, `${ctx.author.displayName} 𝒂𝒏𝒅 ${target.displayName} 𝒎𝒖𝒔𝒕 𝒉𝒂𝒗𝒆 𝒄𝒐𝒎𝒑𝒍𝒆𝒎𝒆𝒏𝒕𝒂𝒓𝒚 *(𝒓01 𝒂𝒏𝒅 𝒓02)*.`, color);
         }
-
-
 
         // Send confirmation embed to the mentioned user
         const confirmEmbed = client.embed()
@@ -131,25 +128,27 @@ module.exports = class Partner extends Command {
             if (int.customId === 'accept') {
                 if(int.user.id === target.id) {
                     // Update partner data
-                    // user.inventory = user.inventory.map(item => {
-                    //     if (item.id === userRing.id) {
-                    //         item.quantity -= 1;
-                    //     }
-                    //     return item;
-                    // }).filter(item => item.quantity > 0);
+                    user.inventory = user.inventory.map(item => {
+                        if (item.id === userRing.id) {
+                            item.quantity -= 1;
+                        }
+                        return item;
+                    }).filter(item => item.quantity > 0);
                     user.relationship.partner.userId = target.id;
                     user.relationship.partner.name = target.displayName;
+                    user.relationship.partner.date = new Date();
                     user.relationship.partner.xp = 0;
                     user.relationship.partner.level = 1;
 
-                    // mention.inventory = mention.inventory.map(item => {
-                    //     if (item.id === mentionRing.id) {
-                    //         item.quantity -= 1;
-                    //     }
-                    //     return item;
-                    // }).filter(item => item.quantity > 0);
+                    mention.inventory = mention.inventory.map(item => {
+                        if (item.id === mentionRing.id) {
+                            item.quantity -= 1;
+                        }
+                        return item;
+                    }).filter(item => item.quantity > 0);
                     mention.relationship.partner.userId = ctx.author.id;
                     mention.relationship.partner.name = ctx.author.displayName;
+                    mention.relationship.partner.date = new Date();
                     mention.relationship.partner.xp = 0;
                     mention.relationship.partner.level = 1;
 
@@ -195,27 +194,25 @@ module.exports = class Partner extends Command {
 
         collector.on('end', async () => {
             await msg.edit({
-                content: `⌛ **${mention.username}** did not respond in time. Request cancelled.`,
+                content: `⌛ **${target.displayName}** did not respond in time. Request cancelled.`,
                 embeds: [],
                 components: [],
             });
         });
     }
 
-    async removePartner(client, ctx, user, mention, color, emoji, language) {
+    async removePartner(client, ctx, user, target, mention, color, emoji, language) {
         // Check if user and mention are partners
-        if (user.partner?.userId !== mention.id || mention.partner?.userId !== user.id) {
-            return client.utils.sendErrorMessage(client, ctx, `You are not partners with ${mention.username}.`, color);
+        if (user?.relationship?.partner?.userId !== mention.userId || mention?.relationship?.partner?.userId !== user.userId) {
+            return client.utils.sendErrorMessage(client, ctx, `You are not partners with ${target.displayName}.`, color);
         }
 
         // Remove partner relationship
-        user.partner = null;
-        mention.partner = null;
+        user.relationship.partner = null;
+        mention.relationship.partner = null;
 
         // Save updated data
-        await Users.findByIdAndUpdate(ctx.author.id, user);
-        await Users.findByIdAndUpdate(mention.id, mention);
-
-        return client.utils.sendSuccessMessage(client, ctx, `${ctx.author.username} and ${mention.username} are no longer partners. 💔`, color);
+        await Promise.all([user.save(), mention.save()]);
+        return client.utils.sendSuccessMessage(client, ctx, `${ctx.author.displayName} and ${target.displayName} are no longer partners. 💔`, color);
     }
 };

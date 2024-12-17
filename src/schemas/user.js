@@ -104,30 +104,35 @@ const RelationshipSchema = new Schema({
     partner: {
         userId: { type: String, default: null },
         name: { type: String, default: null },
+        date: { type: Date, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     },
     brothers: [{
         userId: { type: String, default: null },
         name: { type: String, default: null },
+        date: { type: Date, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     }],
     sisters: [{
         userId: { type: String, default: null },
         name: { type: String, default: null },
+        date: { type: Date, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     }],
     besties: [{
         userId: { type: String, default: null },
         name: { type: String, default: null },
+        date: { type: Date, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     }],
     confidants: [{
         userId: { type: String, default: null },
         name: { type: String, default: null },
+        date: { type: Date, default: null },
         xp: { type: Number, default: 0 },
         level: { type: Number, default: 1 }
     }]

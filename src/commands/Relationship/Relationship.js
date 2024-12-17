@@ -46,8 +46,8 @@ module.exports = class Profile extends Command {
             const user = await client.utils.getUser(targetUser.id);
             const syncUserInfo = await client.users.fetch(targetUser.id);
             if (user?.relationship?.partner?.userId) {
-                const syncPartnerInfo = await client.users.fetch(user?.relationship?.partner?.userId);
-
+                const partner = await client.utils.getUser(user?.relationship?.partner?.userId);
+                const syncPartnerInfo = await client.users.fetch(partner?.userId);
                 if (!user) {
                     return await this.sendUserNotFoundEmbed(ctx, color);
                 }
@@ -59,27 +59,26 @@ module.exports = class Profile extends Command {
                     console.error(error);
                 }
 
-                await new Promise(resolve => setTimeout(resolve, 3000));
-
-                const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
-                const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('p'));
+                // await new Promise(resolve => setTimeout(resolve, 3000));
 
                 let bannerImage;
-                // if (equippedWallpaper) {
-                //     bannerImage = Wallpapers.find(wallpaperItem => wallpaperItem.id === equippedWallpaper.id)?.image;
-                // } else {
-                bannerImage = 'https://i.imgur.com/ewjtYQO.png';
-                // }
-
                 let backgroundColor;
-                if (equippedColor) {
-                    backgroundColor = Colors.find(colorItem => colorItem.id === equippedColor.id)?.color;
+                let descriptionColor;
+                if (user?.profile?.gender === 'male') {
+                    bannerImage = 'https://i.imgur.com/fMtSCsL.png';
+                    backgroundColor = '#CCCAC9';
+                } else if (user?.profile?.gender === 'female') {
+                    bannerImage = 'https://i.imgur.com/W0cNDDP.png';
+                    backgroundColor = '#F8E0E0';
+                } else {
+                    bannerImage = 'https://i.imgur.com/4DqQYT7.png';
+                    backgroundColor = '#D0E7FF';
                 }
 
                 const canvas = createCanvas(1280, 800);
                 const context = canvas.getContext('2d');
 
-                await this.drawPartnership(client, context, user, syncUserInfo, syncPartnerInfo, color, backgroundColor, emoji, bannerImage);
+                await this.drawPartnership(client, context, user, syncUserInfo, partner, syncPartnerInfo, color, backgroundColor, emoji, bannerImage);
 
                 const attachment = new AttachmentBuilder(canvas.toBuffer('image/png'), {name: `${ctx.author.username}.png`});
 
@@ -154,20 +153,15 @@ module.exports = class Profile extends Command {
         }
     }
 
-    async drawPartnership(client, context, user, userInfo, partnerInfo, color, backgroundColor, emoji, banner) {
+    async drawPartnership(client, context, user, userInfo, partner, partnerInfo, color, backgroundColor, emoji, banner) {
         // Draw the background color
-        context.fillStyle = backgroundColor ? backgroundColor.primary : client.utils.formatColor(color.main);
+        context.fillStyle = backgroundColor;
         context.fillRect(0, 0, 1280, 800);
 
-        // this.drawRoundedRectangle(context, 16, 32, 1248, 735, 32, '#F7D8DF');
-        this.drawRoundedRectangle(context, 16, 32, 1248, 735, 6, '#D8B6A4', '#7A5E4F', 15);
-
-        // Draw the avatar as a circular image
         const userAvatar = await loadImage(userInfo.displayAvatarURL({ format: 'png', size: 256 }));
-        const userAvatarX = 64;
+        const userAvatarX = 72;
         const userAvatarY = 186;
         const userAvatarSize = 300;
-
         if (userAvatar) {
             const borderRadius = 16;
             context.save();
@@ -190,12 +184,12 @@ module.exports = class Profile extends Command {
             context.restore();
         }
 
+        // PARTNER SECTION
         const partnerAvatar = await loadImage(partnerInfo.displayAvatarURL({ format: 'png', size: 256 }));
         const partnerAvatarX = 400;
         const partnerAvatarY = 186;
         const partnerAvatarSize = 300;
-
-        if (userAvatar) {
+        if (partnerAvatar) {
             const borderRadius = 16;
             context.save();
             context.beginPath();
@@ -217,16 +211,39 @@ module.exports = class Profile extends Command {
             context.restore();
         }
 
+
+        // BANNER SECTION
         if (banner) {
             const bannerImage = await loadImage(banner);
-            const x = 16;
+            const x = 15;
             const y = 32;
-            const width = 736;
+            const width = 1250;
             const height = 736;
             context.drawImage(bannerImage, x, y, width, height);
         }
 
-        // const titleImage = await loadImage('https://i.imgur.com/iRSvEVL.png');
-        // context.drawImage(titleImage, 772, 190, 128, 128);
+        // USER SECTION
+        context.fillStyle = user?.profile?.gender === 'male' ? '#A3E4FA' : user?.profile?.gender === 'female' ? '#FFF574' : '#FFDEE9';
+        context.font = "28px Kelvinch-SemiBoldItalic, Arial";
+        context.fillText(client.utils.formatCapitalize(userInfo.username), 958, 210);
+        context.fillText(client.utils.formatCapitalize(user.social.facebook?.name ? user.social.facebook.name : 'Not Set'), 958, 290);
+        context.fillText(client.utils.formatCapitalize(user.social.instagram?.name ? user.social.instagram.name : 'Not Set'), 958, 370);
+
+        // PARTNER SECTION
+        context.fillStyle = partner?.profile?.gender === 'male' ? '#A3E4FA' : partner?.profile?.gender === 'female' ? '#FFF574' : '#FFDEE9';
+        context.font = "28px Kelvinch-SemiBoldItalic, Arial";
+        context.fillText(client.utils.formatCapitalize(partnerInfo.username), 958, 545);
+        context.fillText(client.utils.formatCapitalize(partner.social.facebook?.name ? user.social.facebook.name : 'Not Set'), 958, 625);
+        context.fillText(client.utils.formatCapitalize(partner.social.instagram?.name ? user.social.instagram.name : 'Not Set'), 958, 705);
+
+        if (user?.relationship?.partner?.date) {
+            const partnerDate = new Date(user?.relationship?.partner?.date);
+            const currentDate = Date.now();
+            const diffInDays = Math.floor((currentDate - partnerDate) / (1000 * 60 * 60 * 24));
+            context.fillStyle = '#000000';
+            context.textAlign = 'center';
+            context.font = "28px Kelvinch-SemiBoldItalic, Arial";
+            context.fillText(`${diffInDays + 1} Days`, 380, 656);
+        }
     }
 };
