@@ -131,34 +131,50 @@ module.exports = class Partner extends Command {
         });
 
         collector.on('collect', async int => {
-            try {
-                if (int.customId === 'accept') {
-                    // Update partner data
-                    user.partner.userId = mention.id;
-                    mention.partner.userId = ctx.author.id;
+            if (int.customId === 'accept') {
+                // Update partner data
+                user.inventory = user.inventory.map(item => {
+                    if (item.id === userRing.id) {
+                        item.quantity -= 1;
+                    }
+                    return item;
+                }).filter(item => item.quantity > 0);
+                user.relationship.partner.userId = mention.userId;
+                user.relationship.partner.name = mention.username;
 
-                    await Promise.all([user, mention]);
+                mention.inventory = mention.inventory.map(item => {
+                    if (item.id === mentionRing.id) {
+                        item.quantity -= 1;
+                    }
+                    return item;
+                }).filter(item => item.quantity > 0);
+                mention.relationship.partner.userId = ctx.author.id;
+                mention.relationship.partner.name = ctx.author.displayName;
 
-                    await msg.edit({
-                        content: `🎉 **${ctx.author.displayName}** and **${mention.username}** are now partners! 💍`,
-                        embeds: [],
-                        components: [],
-                    });
-                } else {
-                    await int.customId.update({
-                        content: `❌ **${mention.username}** declined the partnership request.`,
-                        embeds: [],
-                        components: [],
-                    });
-                }
-                await int.deferUpdate();
-            } catch (err) {
+                await Promise.all([user.save(), mention.save()]);
+
                 await msg.edit({
-                    content: `⌛ **${mention.username}** did not respond in time. Request cancelled.`,
+                    content: `🎉 **${ctx.author.displayName}** and **${mention.username}** are now partners! 💍`,
+                    embeds: [],
+                    components: [],
+                });
+            } else {
+                await int.customId.update({
+                    content: `❌ **${mention.username}** declined the partnership request.`,
                     embeds: [],
                     components: [],
                 });
             }
+
+            await int.deferUpdate();
+        });
+
+        collector.on('end', async () => {
+            await msg.edit({
+                content: `⌛ **${mention.username}** did not respond in time. Request cancelled.`,
+                embeds: [],
+                components: [],
+            });
         });
     }
 
