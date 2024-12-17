@@ -127,7 +127,6 @@ module.exports = class Utils {
                     if (milestoneIndex !== -1) {
                         const reward = baseRewards[milestoneIndex];
                         user.balance.coin += reward || 0;
-                        await user.save();
                         const embed = client.embed()
                             .setColor(color.main)
                             .setTitle(`${emoji.congratulation} Milestone Reached!`)
@@ -140,8 +139,6 @@ module.exports = class Utils {
                     if (messageCount === 5000) {
                         const extraReward = 5000000;
                         user.balance.coin += extraReward;
-                        await user.save();
-
                         const specialEmbed = client.embed()
                             .setColor(color.main)
                             .setTitle(`${emoji.top} Incredible Milestone!`)
@@ -151,6 +148,7 @@ module.exports = class Utils {
                         await message.channel.send({ embeds: [specialEmbed] });
                     }
                 }
+                await user.save();
             }
             await tracking.save();
         } catch (err) {
