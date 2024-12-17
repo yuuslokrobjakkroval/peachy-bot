@@ -134,11 +134,10 @@ module.exports = class Partner extends Command {
             try {
                 if (int.customId.customId === 'accept') {
                     // Update partner data
-                    user.partner = { userId: mention.id};
-                    mention.partner = { userId: ctx.author.id };
+                    user.partner.userId = mention.id;
+                    mention.partner.userId = ctx.author.id;
 
-                    await client.utils.updateUser(ctx.author.id, user);
-                    await client.utils.updateUser(mention.id, mention);
+                    await Promise.all([user, mention]);
 
                     await msg.edit({
                         content: `🎉 **${ctx.author.displayName}** and **${mention.username}** are now partners! 💍`,
