@@ -97,11 +97,11 @@ module.exports = class Utils {
 
     static async getMessageTackUser(client, message, user, color, emoji, command, gamblingCommands) {
         try {
-            const tracking = await MessageTracking.findOne({ guildId: message.guildId })
+            const tracking = await MessageTracking.findOne({ guildId: message.guildId });
 
             if (!tracking || !tracking.isActive) return;
 
-            const today =  new Date();
+            const today = new Date();
             today.setHours(0, 0, 0, 0);
 
             const messageIndex = tracking.messages.findIndex(msg =>
@@ -114,7 +114,7 @@ module.exports = class Utils {
                     userId: message.author.id,
                     username: message.author.username,
                     messageCount: 1,
-                    date: today.setHours(0, 0, 0, 0)
+                    date: today.getTime()
                 });
             } else {
                 if (gamblingCommands.includes(command.name)) {
@@ -124,9 +124,11 @@ module.exports = class Utils {
                     const milestones = [200, 500, 1000, 1500, 2000, 2500];
                     const baseRewards = [700000, 1000000, 1500000, 2000000, 2500000, 3000000];
                     const milestoneIndex = milestones.indexOf(messageCount);
+
                     if (milestoneIndex !== -1) {
                         const reward = baseRewards[milestoneIndex];
                         user.balance.coin += reward || 0;
+
                         const embed = client.embed()
                             .setColor(color.main)
                             .setTitle(`${emoji.congratulation} Milestone Reached!`)
@@ -139,6 +141,7 @@ module.exports = class Utils {
                     if (messageCount === 5000) {
                         const extraReward = 5000000;
                         user.balance.coin += extraReward;
+
                         const specialEmbed = client.embed()
                             .setColor(color.main)
                             .setTitle(`${emoji.top} Incredible Milestone!`)
@@ -148,8 +151,10 @@ module.exports = class Utils {
                         await message.channel.send({ embeds: [specialEmbed] });
                     }
                 }
+
                 await user.save();
             }
+
             await tracking.save();
         } catch (err) {
             console.error('Error saving tracking document:', err);
