@@ -233,8 +233,8 @@ module.exports = class Profile extends Command {
         context.fillStyle = partner?.profile?.gender === 'male' ? '#A3E4FA' : partner?.profile?.gender === 'female' ? '#FFF574' : '#FFDEE9';
         context.font = "28px Kelvinch-SemiBoldItalic, Arial";
         context.fillText(client.utils.formatCapitalize(partnerInfo.username), 958, 545);
-        context.fillText(client.utils.formatCapitalize(partner.social.facebook?.name ? user.social.facebook.name : 'Not Set'), 958, 625);
-        context.fillText(client.utils.formatCapitalize(partner.social.instagram?.name ? user.social.instagram.name : 'Not Set'), 958, 705);
+        context.fillText(client.utils.formatCapitalize(partner.social.facebook?.name ? partner.social.facebook.name : 'Not Set'), 958, 625);
+        context.fillText(client.utils.formatCapitalize(partner.social.instagram?.name ? partner.social.instagram.name : 'Not Set'), 958, 705);
 
         if (user?.relationship?.partner?.date) {
             const partnerDate = new Date(user?.relationship?.partner?.date);
