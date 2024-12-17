@@ -124,7 +124,6 @@ module.exports = class Utils {
                     const milestones = [200, 500, 1000, 1500, 2000, 2500];
                     const baseRewards = [700000, 1000000, 1500000, 2000000, 2500000, 3000000];
                     const milestoneIndex = milestones.indexOf(messageCount);
-
                     if (milestoneIndex !== -1) {
                         const reward = baseRewards[milestoneIndex];
                         user.balance.coin += reward || 0;
@@ -136,9 +135,7 @@ module.exports = class Utils {
                             .setFooter({ text: `Keep messaging to earn more rewards!`, iconURL: client.user.avatarURL() });
 
                         await message.channel.send({ embeds: [embed] });
-                    }
-
-                    if (messageCount === 5000) {
+                    } else if (messageCount === 5000) {
                         const extraReward = 5000000;
                         user.balance.coin += extraReward;
 
@@ -150,11 +147,9 @@ module.exports = class Utils {
 
                         await message.channel.send({ embeds: [specialEmbed] });
                     }
+                    await user.save();
                 }
-
-                await user.save();
             }
-
             await tracking.save();
         } catch (err) {
             console.error('Error saving tracking document:', err);
