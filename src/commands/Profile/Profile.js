@@ -278,6 +278,6 @@ module.exports = class Profile extends Command {
         context.fillStyle = backgroundColor ? backgroundColor.text : client.utils.formatColor(color.dark);
         context.textAlign = 'center';
         context.font = "28px Kelvinch-SemiBoldItalic, Arial";
-        context.fillText(!!userInfo?.relationship?.userId ? "Taken" : "Single", 1070, 632);
+        context.fillText(!!userInfo?.relationship?.partner?.userId ? "Taken" : "Single", 1070, 632);
     }
 };
