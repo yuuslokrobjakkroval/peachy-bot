@@ -108,7 +108,7 @@ module.exports = class Profile extends Command {
             .setColor(color.main)
             .setTitle(`**${emoji.mainLeft} 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 ${emoji.mainRight}**`)
             .setDescription('**Generating your profile...**')
-            .setImage('https://i.imgur.com/UCsKa6Z.gif')
+            .setImage('https://i.imgur.com/0BrEHuc.gif')
         return await ctx.sendDeferMessage({
             embeds: [embed],
         });

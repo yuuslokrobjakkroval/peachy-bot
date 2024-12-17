@@ -113,7 +113,7 @@ module.exports = class Profile extends Command {
             .setColor(color.main)
             .setTitle(`**${emoji.mainLeft} 𝐑𝐄𝐋𝐀𝐓𝐈𝐎𝐍𝐒𝐇𝐈𝐏 ${emoji.mainRight}**`)
             .setDescription('**Generating...**')
-            .setImage('https://i.pinimg.com/originals/f4/d7/de/f4d7de6463d3ada02058a094fd6917ac.gif')
+            .setImage('https://i.imgur.com/ygbvn3G.gif')
         return await ctx.sendDeferMessage({
             embeds: [embed],
         });
