@@ -132,7 +132,7 @@ module.exports = class Partner extends Command {
 
         collector.on('collect', async int => {
             try {
-                if (int.customId.customId === 'accept') {
+                if (int.customId === 'accept') {
                     // Update partner data
                     user.partner.userId = mention.id;
                     mention.partner.userId = ctx.author.id;
