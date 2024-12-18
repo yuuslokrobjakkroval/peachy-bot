@@ -1024,7 +1024,7 @@ module.exports = class Utils {
                     .setColor(color.main)
                     .setDescription(
                         winnerIdArray.length
-                            ? `# Congratulations ${emoji.congratulation}\n${winnerIdArray.map(user => `<@${user}>`).join(', ')} ! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin} ${autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll ${message.id}\``}`
+                            ? `Congratulations ${emoji.congratulation}\n${winnerIdArray.map(user => `<@${user}>`).join(', ')} ! You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin} ${autopay ? `` : `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll ${message.id}\``}`
                             : `No one entered the giveaway for **\`${client.utils.formatNumber(data.prize)}\`**!`
                     )
                     .setFooter({ text: 'Better luck next time!', iconURL: client.user.displayAvatarURL() })
@@ -1115,7 +1115,7 @@ module.exports = class Utils {
                     .setThumbnail(client.utils.emojiToImage(itemInfo.emoji))
                     .setDescription(
                         winnerIdArray.length
-                            ? `# Congratulations ${emoji.congratulation}` +
+                            ? `Congratulations ${emoji.congratulation}` +
                             `${winnerIdArray.map(user => `<@${user}>`).join(', ')} ! You have won **${itemInfo.name} \`${client.utils.formatNumber(data.amount)}\`**` +
                             (autoAdd ? `` : `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll item ${message.id}\``)
                             : `No one entered the giveaway for ${itemInfo.name} **\`${client.utils.formatNumber(data.amount)}\`** ${itemInfo.emoji}!`
