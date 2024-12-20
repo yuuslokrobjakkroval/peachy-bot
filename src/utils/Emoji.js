@@ -94,6 +94,7 @@ module.exports = {
         halloween: '<:HECONOMY:1290645165391872020>',
         halloweenNew: '<:H2MAIN:1300675214182711357>',
         jingleJolly: '<:CMAIN:1312606545187569736>',
+        festiveFrost: '<:CMAIN:1312606545187569736>',
     },
     specialTheme: {
         heaven: '<:MAINHEAVEN:1293603530699046982>',
@@ -104,8 +105,13 @@ module.exports = {
 
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
+
         cappuccino: '<:CAFEMAIN:1309842668200923228>',
+        nithGojo: '<:JUJUSTUKAISEN:1319699972072931330>',
+
         yuna: '<:YUNAMAIN:1317117650131746816>',
+        yunayuna: '<:YUNAMAIN:1317117650131746816>',
+
         duckling: '<:KMAIN:1315309185138823279>',
         ghastlyGrins: '<:PHYYYMAIN:1317865867958157372>',
     },

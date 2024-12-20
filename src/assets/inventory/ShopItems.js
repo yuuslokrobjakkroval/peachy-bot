@@ -885,7 +885,7 @@ module.exports = [
                     multiple: false
                 },
                 quantity: 1,
-                emoji: emoji.theme.jingleJolly,
+                emoji: emoji.theme.festiveFrost,
                 available: ['use'],
                 price: { buy: 15e6, sell: 13e6 },
             }
