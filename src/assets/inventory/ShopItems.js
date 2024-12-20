@@ -632,6 +632,166 @@ module.exports = [
                 price: { buy: 15e6, sell: 1e7 },
                 image: "https://i.imgur.com/7Iot3LV.jpg"
             },
+            {
+                id: "w12",
+                name: "Lucy",
+                description: "A pastel pink scene featuring a girl in cozy attire standing outside a charming convenience store, radiating warmth and whimsy.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w12,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/jqmaqYk.png"
+            },
+            {
+                id: "w13",
+                name: "Nuni",
+                description: "A charming pastel illustration of a girl dressed in pink, standing outside a cozy convenience store with a striped pink awning. The scene is bathed in soft hues, creating a dreamy, peaceful vibe.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w13,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/XFLKMyM.png"
+            },
+            {
+                id: "w14",
+                name: "Neo",
+                description: "A picturesque shopfront adorned with soft pink cherry blossoms in full bloom. Petals gently fall around the cozy storefront, which showcases delicate displays under a warm, inviting awning. The scene captures the essence of springtime tranquility and charm.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w14,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/YpwTMDW.png"
+            },
+            {
+                id: "w15",
+                name: "Chazy",
+                description: "A cozy café or shop with a striped awning sits under the blossoms, exuding warmth and charm. Soft lighting and falling petals create a dreamy and serene springtime atmosphere.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w15,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/smT6o13.png"
+            },
+            {
+                id: "w16",
+                name: "Nutty",
+                description: "A whimsical and cozy room bathed in soft pastel pink hues. The space features a neatly arranged desk, shelves filled with books and decorations, and a warm, inviting ambiance. Cherry blossom motifs and gentle lighting add a dreamy, tranquil vibe, perfect for relaxation or creativity.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w16,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/sqWy215.png"
+            },
+            {
+                id: "w17",
+                name: "Jujisu",
+                description: "A serene lakeside view framed by soft pastel cherry blossoms in full bloom. A wooden pier extends over the calm, reflective water, surrounded by delicate pink petals floating in the air. The tranquil scene evokes a sense of peace and springtime beauty.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w17,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/73ajdeJ.png"
+            },
+            {
+                id: "w18",
+                name: "Aflac",
+                description: "A playful duck dressed like a champion, exuding confidence and charm.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w18,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/gKU6zAz.png"
+            },
+            {
+                id: "w19",
+                name: "Bill Team",
+                description: "Four adorable ducks sit around a glowing campfire by a calm pond under a starry night sky, enjoying a cozy and serene camping scene.",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w19,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/wuO7s8J.png"
+            },
+            {
+                id: "w20",
+                name: "Donald",
+                description: "Duck was sad and walk on the water when he lost his girlfriend",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w20,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/oPkMzJL.png"
+            },
+            {
+                id: "w21",
+                name: "Hoppy",
+                description: "Two of frog looking with each other",
+                type: "wallpaper",
+                able: {
+                    use: true,
+                    gift: true,
+                    multiple: true
+                },
+                quantity: 1,
+                emoji: emoji.frame.w21,
+                available: ["use", "gift"],
+                price: { buy: 15e6, sell: 1e7 },
+                image: "https://i.imgur.com/MuUCJwA.png"
+            }
         ]
     },
     {
@@ -713,6 +873,21 @@ module.exports = [
                 emoji: emoji.theme.jingleJolly,
                 available: ['use'],
                 price: { buy: 15e6, sell: 13e6 },
+            },
+            {
+                id: "t05",
+                name: "Festive Frost",
+                description: "Step into a winter wonderland with Festive Frost! This year’s Christmas theme sparkles with icy blues, snowy whites, and shimmering silver, capturing the magic of a frosty holiday season. Perfect for celebrating cozy nights and frosted mornings, it’s Christmas charm reimagined.",
+                type: "theme",
+                able: {
+                    use: true,
+                    gift: false,
+                    multiple: false
+                },
+                quantity: 1,
+                emoji: emoji.theme.jingleJolly,
+                available: ['use'],
+                price: { buy: 15e6, sell: 13e6 },
             }
         ],
     },
@@ -778,6 +953,21 @@ module.exports = [
                 },
                 quantity: 1,
                 emoji: emoji.specialTheme.froggy,
+                available: ['use'],
+                price: { buy: 4e7, sell: 35e6 },
+            },
+            {
+                id: 'st05',
+                name: 'ASleepy Peach',
+                description: "Bask in the soft and sweet charm of 'ASleepy Peach'! This theme blends soothing pastel tones with adorable icons like peaches, blossoms, and desserts, bringing a sense of calm and warmth to your day. Perfect for those who adore cozy vibes and a sprinkle of sweetness.",
+                type: 'special theme',
+                able: {
+                    use: true,
+                    gift: false,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.specialTheme.asleepypeach,
                 available: ['use'],
                 price: { buy: 4e7, sell: 35e6 },
             }

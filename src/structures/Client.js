@@ -18,18 +18,24 @@ const emojiOcean = require('../theme/OceanBreeze/emojis');
 const emojiHalloween = require('../theme/Halloween/emojis');
 const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
 const emojiChristmas = require('../theme/Christmas/emojis');
+const emojiFestiveFrost = require('../theme/FestiveFrost/emojis');
 
 const emojiHeaven = require('../theme/CelestialGrace/emojis');
 const emojiSakura = require('../theme/SakuraSerenity/emojis');
 const emojiBee = require('../theme/BuzzingBliss/emojis');
 const emojiFroggy = require('../theme/Froggy/emojis');
+const emojiSleepyPeach = require('../theme/ASleepyPeach/emojis');
 
 const emojiSpiderMan = require('../theme/SpiderMan/emojis');
 const emojiCucumber = require('../theme/Cucumber/emojis');
+
 const emojiCappuccino = require('../theme/Cappuccino/emojis');
+const emojiNithGojo = require('../theme/NithGoJo/emojis');
 
 const emojiQuirkyQuackers = require('../theme/QuirkyQuackers/emojis');
+
 const emojiYuna = require('../theme/Yuna/emojis');
+const emojiYunaYuna = require('../theme/YunaYuna/emojis');
 const emojiGhastlyGrins = require('../theme/GhastlyGrins/emojis');
 
 const Logger = require('./Logger');
@@ -203,6 +209,10 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.jingleJolly.color;
                         emoji = emojiChristmas;
                         break;
+                    case 't05':
+                        color = themeConfig.frightFest.color;
+                        emoji = emojiFestiveFrost;
+                        break;
 
                     case 'st01':
                         color = themeConfig.celestialGrace.color;
@@ -220,6 +230,12 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.froggyFun.color;
                         emoji = emojiFroggy;
                         break;
+                    case 'st05':
+                        color = themeConfig.aSleepyPeach.color;
+                        emoji = emojiSleepyPeach;
+                        break;
+
+
                     case 'st11':
                         color = themeConfig.spiderMan.color;
                         emoji = emojiSpiderMan;
@@ -232,6 +248,11 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.cappuccinoCharm.color;
                         emoji = emojiCappuccino;
                         break;
+                    case 'st14':
+                        color = themeConfig.nithGojo.color;
+                        emoji = emojiNithGojo;
+                        break;
+
                     case 'st99':
                         color = themeConfig.quirkyQuackers.color;
                         emoji = emojiQuirkyQuackers;
@@ -240,6 +261,11 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.yuna.color;
                         emoji = emojiYuna;
                         break;
+                    case 'st0118':
+                        color = themeConfig.yunayuna.color;
+                        emoji = emojiYunaYuna;
+                        break;
+
                     case 'st168':
                         color = themeConfig.ghastlyGrins.color;
                         emoji = emojiGhastlyGrins;

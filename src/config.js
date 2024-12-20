@@ -37,6 +37,11 @@ const jingleJolly = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF1F0E8, none: 0x2B2D31 },
 };
 
+// Festive Frost ( T05 )
+const festiveFrost = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x81BFDA, none: 0x2B2D31 },
+};
+
 // Celestial Grace ( ST01 )
 const celestialGrace = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFEEE91, none: 0x2B2D31 },
@@ -57,6 +62,11 @@ const froggyFun = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xC2FFC7, none: 0x2B2D31 },
 };
 
+// ASleepy Peach ( ST05 )
+const aSleepyPeach = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF29F58, none: 0x2B2D31 },
+};
+
 // SPIDER MAN FOR ANGKOR PARIS ( ST11 )
 const spiderMan = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFF2929, none: 0x2B2D31 },
@@ -72,9 +82,19 @@ const cappuccinoCharm = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xB6A28E, none: 0x2B2D31 },
 };
 
+// CAPPUCCINO V2 FOR SUPPORTER ( ST14 )
+const nithGojo = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x564A94, none: 0x2B2D31 },
+};
+
 // YUNA FOR SUPPORTER ( ST1801 )
 const yuna = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFFCCE1, none: 0x2B2D31 },
+};
+
+// YUNA V2 FOR SUPPORTER ( ST0118 )
+const yunayuna = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x131010, none: 0x2B2D31 },
 };
 
 // BABE OWNER FOR SUPPORTER ( ST99 )
@@ -87,4 +107,4 @@ const ghastlyGrins = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xA294F9, none: 0x2B2D31 },
 };
 
-module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, celestialGrace, sakuraSerenity, buzzingBliss,  froggyFun, spiderMan, cucumberCool, cappuccinoCharm, yuna, quirkyQuackers, ghastlyGrins }
+module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, festiveFrost, celestialGrace, sakuraSerenity, buzzingBliss, froggyFun, aSleepyPeach, spiderMan, cucumberCool, cappuccinoCharm, nithGojo, yuna, yunayuna, quirkyQuackers, ghastlyGrins }
