@@ -422,7 +422,7 @@ module.exports = [
         price: { buy: 75e5, sell: 7e6 },
     },
     {
-        id: 'dm04',
+        id: 'dm07',
         name: 'Caratty',
         description: 'Sell Caratty to get coin.',
         type: 'milk',
@@ -437,7 +437,7 @@ module.exports = [
         price: { buy: 85e5, sell: 8e6 },
     },
     {
-        id: 'dm04',
+        id: 'dm08',
         name: 'Mojito',
         description: 'Sell Mojito to get coin.',
         type: 'milk',
