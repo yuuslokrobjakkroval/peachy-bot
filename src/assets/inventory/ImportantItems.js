@@ -452,6 +452,7 @@ module.exports = [
         price: { buy: 11e6, sell: 1e7 },
     },
 
+    // KAMBO
     {
         id: 'st11',
         name: 'Spider Man',
@@ -467,6 +468,8 @@ module.exports = [
         available: ['use'],
         price: { buy: 1e10, sell: 35e6 },
     },
+
+    // CUMBER
     {
         id: 'st12',
         name: 'Cucumber Cool',
@@ -482,6 +485,8 @@ module.exports = [
         available: ['use'],
         price: { buy: 1e10, sell: 15e6 },
     },
+
+    // CAPPUCCINO
     {
         id: 'st13',
         name: 'Cappuccino Charm',
@@ -513,6 +518,7 @@ module.exports = [
         price: { buy: 1e10, sell: 15e6 },
     },
 
+    // YUNA
     {
         id: 'st1801',
         name: `Yuna's Radiance`,
@@ -543,6 +549,8 @@ module.exports = [
         available: ['use'],
         price: { buy: 1e10, sell: 15e6 },
     },
+
+    // KEO
     {
         id: 'st99',
         name: 'Quirky Quackers',
@@ -558,6 +566,8 @@ module.exports = [
         available: ['use'],
         price: { buy: 1e10, sell: 15e6 },
     },
+
+    // PHY
     {
         id: 'st168',
         name: 'Ghastly Grins',

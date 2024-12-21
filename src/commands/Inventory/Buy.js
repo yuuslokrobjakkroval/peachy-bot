@@ -66,7 +66,7 @@ module.exports = class Buy extends Command {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                buyMessages.invalidItem.replace('{{itemId}}', args.join(' ')),
+                buyMessages.invalidItem.replace('%{itemId}', args.join(' ')),
                 color
             );
         }

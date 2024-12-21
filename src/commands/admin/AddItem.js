@@ -64,7 +64,7 @@ module.exports = class AddItem extends Command {
         const itemInfo = allItems.find((item) => item.id?.toLowerCase() === itemId);
 
         if (!itemInfo) {
-            return await client.utils.sendErrorMessage(client, ctx, generalMessages.invalidItem, color);
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.invalidItem.replace('%{itemId}', itemId), color);
         }
 
         let quantity = args[2] || 1;
@@ -91,7 +91,7 @@ module.exports = class AddItem extends Command {
         const embed = client.embed()
             .setColor(color.main)
             .setDescription(`${emoji.tick} Added ${itemInfo.emoji} **\`x${baseQuantity}\`** ${itemInfo.id} to ${mention}.`);
- 
+
         return ctx.sendMessage({ embeds: [embed] });
     }
 };

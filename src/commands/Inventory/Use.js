@@ -130,7 +130,7 @@ module.exports = class Use extends Command {
                     .setColor(color.main)
                     .setDescription(
                         useMessages?.applied
-                            .replace('%{type}', 'theme')
+                            .replace('%{type}', '𝒕𝒉𝒆𝒎𝒆')
                             .replace('%{itemEmote}', themeItem.emoji)
                             .replace('%{itemName}', themeItem.name)
                     );
@@ -199,7 +199,7 @@ module.exports = class Use extends Command {
                     .setColor(color.main)
                     .setDescription(
                         useMessages?.applied
-                            .replace('%{type}', 'wallpaper')
+                            .replace('%{type}', '𝒘𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓')
                             .replace('%{itemEmote}', wallpaperItem.emoji)
                             .replace('%{itemName}', wallpaperItem.name)
                     );
@@ -268,7 +268,7 @@ module.exports = class Use extends Command {
                     .setColor(color.main)
                     .setDescription(
                         useMessages?.applied
-                            .replace('%{type}', 'color')
+                            .replace('%{type}', '𝒄𝒐𝒍𝒐𝒓')
                             .replace('%{itemEmote}', colorItem.emoji)
                             .replace('%{itemName}', colorItem.name)
                     );
