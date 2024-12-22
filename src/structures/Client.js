@@ -258,7 +258,7 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.quirkyQuackers.color;
                         emoji = emojiQuirkyQuackers;
                         break;
-                    case 'st2708':
+                    case 'st2707':
                         color = themeConfig.keoyuu.color;
                         emoji = emojiKeoYuu;
                         break;
