@@ -102,9 +102,14 @@ const quirkyQuackers = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF5F0CD, none: 0x2B2D31 },
 };
 
+// BABE OWNER FOR SUPPORTER ( ST99 )
+const keoyuu = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFFCFCF, none: 0x2B2D31 },
+};
+
 // PHY FOR SUPPORTER ( ST168 )
 const ghastlyGrins = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xA294F9, none: 0x2B2D31 },
 };
 
-module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, festiveFrost, celestialGrace, sakuraSerenity, buzzingBliss, froggyFun, aSleepyPeach, spiderMan, cucumberCool, cappuccinoCharm, nithGojo, yuna, yunayuna, quirkyQuackers, ghastlyGrins }
+module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, festiveFrost, celestialGrace, sakuraSerenity, buzzingBliss, froggyFun, aSleepyPeach, spiderMan, cucumberCool, cappuccinoCharm, nithGojo, yuna, yunayuna, quirkyQuackers, keoyuu, ghastlyGrins }

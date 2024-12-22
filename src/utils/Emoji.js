@@ -113,6 +113,8 @@ module.exports = {
         yunayuna: '<:YUNAMAIN:1317117650131746816>',
 
         duckling: '<:KMAIN:1315309185138823279>',
+        keoyuu: '<:KYMAIN:1320065632678449168>',
+
         ghastlyGrins: '<:PHYYYMAIN:1317865867958157372>',
     },
     // EXCHANGE
