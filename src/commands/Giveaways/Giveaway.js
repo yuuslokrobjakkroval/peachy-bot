@@ -155,9 +155,9 @@ module.exports = class Start extends Command {
         let cleanedPrize = prize.replace(/[^0-9,]/g, '');
         let prizeAmountStr = cleanedPrize.replace(/,/g, '');
         let prizeAmount = parseFloat(prizeAmountStr) || 0;
-        if (prize.match(/[kmbtq]/i)) {
+        if (prizeAmount.match(/[kmbtq]/i)) {
             const multipliers = { k: 1000, m: 1000000, b: 1000000000, t: 1000000000000, q: 1000000000000000 };
-            const unit = prize.slice(-1).toLowerCase();
+            const unit = prizeAmount.slice(-1).toLowerCase();
             prizeAmount *= multipliers[unit];
         }
 
