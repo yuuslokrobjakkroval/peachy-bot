@@ -126,6 +126,24 @@ module.exports = class Start extends Command {
 
         const endTime = Date.now() + duration;
         const formattedDuration = parseInt(endTime / 1000, 10);
+
+        if (prize.toString().startsWith('-')) {
+            return ctx.sendMessage({
+                embeds: [
+                    client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount)
+                ],
+            });
+        }
+
+        if (isNaN(prize) || prize <= 0 || prize.toString().includes('.') || prize.toString().includes(',')) {
+            const multipliers = { k: 1000, m: 1000000, b: 1000000000, t: 1000000000000, q: 1000000000000000 };
+            if (prize.match(/\d+[kmbtq]/i)) {
+                const unit = prize.slice(-1).toLowerCase();
+                const number = parseInt(prize);
+                prize = number * (multipliers[unit] || 1);
+            }
+        }
+
         const giveawayEmbed = client.embed()
             .setColor(color.main)
             .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
@@ -151,23 +169,6 @@ module.exports = class Start extends Command {
             return ctx.isInteraction
                 ? await ctx.interaction.editReply({ content: response })
                 : await ctx.editMessage({ content: response });
-        }
-
-        if (prize.toString().startsWith('-')) {
-            return ctx.sendMessage({
-                embeds: [
-                    client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount)
-                ],
-            });
-        }
-
-        if (isNaN(prize) || prize <= 0 || prize.toString().includes('.') || prize.toString().includes(',')) {
-            const multipliers = { k: 1000, m: 1000000, b: 1000000000, t: 1000000000000, q: 1000000000000000 };
-            if (prize.match(/\d+[kmbtq]/i)) {
-                const unit = prize.slice(-1).toLowerCase();
-                const number = parseInt(prize);
-                prize = number * (multipliers[unit] || 1);
-            }
         }
 
         await GiveawaySchema.create({
