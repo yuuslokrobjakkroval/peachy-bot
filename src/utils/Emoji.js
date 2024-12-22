@@ -110,7 +110,7 @@ module.exports = {
         nithGojo: '<:JUJUSTUKAISEN:1319699972072931330>',
 
         yuna: '<:YUNAMAIN:1317117650131746816>',
-        yunayuna: '<:YUNAMAIN:1317117650131746816>',
+        yunayuna: '<:YV2MAIN:1320248026534514688>',
 
         duckling: '<:KMAIN:1315309185138823279>',
         keoyuu: '<:KYMAIN:1320065632678449168>',
