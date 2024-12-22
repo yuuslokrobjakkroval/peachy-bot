@@ -94,7 +94,7 @@ const yuna = {
 
 // YUNA V2 FOR SUPPORTER ( ST0118 )
 const yunayuna = {
-  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x131010, none: 0x2B2D31 },
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x4C585B, none: 0x2B2D31 },
 };
 
 // BABE OWNER FOR SUPPORTER ( ST99 )
