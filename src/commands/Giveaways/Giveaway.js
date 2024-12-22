@@ -63,6 +63,7 @@ module.exports = class Start extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         if (ctx.isInteraction) {
             await ctx.interaction.deferReply();
         } else {
@@ -86,7 +87,7 @@ module.exports = class Start extends Command {
         // Fetch arguments for giveaway
         const durationStr = ctx.isInteraction ? ctx.interaction.options.getString('duration') : args[0];
         const winnersStr = ctx.isInteraction ? ctx.interaction.options.getInteger('winners') : args[1];
-        const prize = ctx.isInteraction ? ctx.interaction.options.getString('prize') : args[2];
+        let prize = ctx.isInteraction ? ctx.interaction.options.getString('prize') : args[2];
         const image = ctx.isInteraction ? ctx.interaction.options.getAttachment('image') : args[3];
         const thumbnail = ctx.isInteraction ? ctx.interaction.options.getAttachment('thumbnail') : args[4];
         const autoPay = ctx.isInteraction ? ctx.interaction.options.getString('autopay') : args[5];
@@ -152,13 +153,21 @@ module.exports = class Start extends Command {
                 : await ctx.editMessage({ content: response });
         }
 
-        let cleanedPrize = prize.replace(/[^0-9,]/g, '');
-        let prizeAmountStr = cleanedPrize.replace(/,/g, '');
-        let prizeAmount = parseFloat(prizeAmountStr) || 0;
-        if (prizeAmount.match(/[kmbtq]/i)) {
+        if (prize.toString().startsWith('-')) {
+            return ctx.sendMessage({
+                embeds: [
+                    client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount)
+                ],
+            });
+        }
+
+        if (isNaN(prize) || prize <= 0 || prize.toString().includes('.') || prize.toString().includes(',')) {
             const multipliers = { k: 1000, m: 1000000, b: 1000000000, t: 1000000000000, q: 1000000000000000 };
-            const unit = prizeAmount.slice(-1).toLowerCase();
-            prizeAmount *= multipliers[unit];
+            if (prize.match(/\d+[kmbtq]/i)) {
+                const unit = prize.slice(-1).toLowerCase();
+                const number = parseInt(prize);
+                prize = number * (multipliers[unit] || 1);
+            }
         }
 
         await GiveawaySchema.create({
@@ -167,7 +176,7 @@ module.exports = class Start extends Command {
             messageId: giveawayMessage.id,
             hostedBy: ctx.author.id,
             winners: winners,
-            prize: prizeAmount,
+            prize: prize,
             endTime: Date.now() + duration,
             paused: false,
             ended: false,
