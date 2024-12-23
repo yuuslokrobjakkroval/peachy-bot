@@ -221,14 +221,14 @@ module.exports = class Profile extends Command {
         }
 
         // USER SECTION
-        context.fillStyle = user?.profile?.gender === 'male' ? '#A3E4FA' : user?.profile?.gender === 'female' ? '#FFF574' : '#FFDEE9';
+        context.fillStyle = user?.profile?.gender === 'male' ? '#4C585B' : user?.profile?.gender === 'female' ? '#4C585B' : '#FFDEE9';
         context.font = "28px Kelvinch-SemiBoldItalic, Arial";
         context.fillText(client.utils.formatCapitalize(userInfo.username), 958, 210);
         context.fillText(client.utils.formatCapitalize(user.social.facebook?.name ? user.social.facebook.name : 'Not Set'), 958, 290);
         context.fillText(client.utils.formatCapitalize(user.social.instagram?.name ? user.social.instagram.name : 'Not Set'), 958, 370);
 
         // PARTNER SECTION
-        context.fillStyle = partner?.profile?.gender === 'male' ? '#A3E4FA' : partner?.profile?.gender === 'female' ? '#FFF574' : '#FFDEE9';
+        context.fillStyle = partner?.profile?.gender === 'male' ? '#4C585B' : partner?.profile?.gender === 'female' ? '#4C585B' : '#FFDEE9';
         context.font = "28px Kelvinch-SemiBoldItalic, Arial";
         context.fillText(client.utils.formatCapitalize(partnerInfo.username), 958, 545);
         context.fillText(client.utils.formatCapitalize(partner.social.facebook?.name ? partner.social.facebook.name : 'Not Set'), 958, 625);
