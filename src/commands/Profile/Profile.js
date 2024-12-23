@@ -227,7 +227,7 @@ module.exports = class Profile extends Command {
 
         // Draw each setting item text and switch
         const userInfoDetail = [
-            { label: "Name", description: userInfo.profile && userInfo.profile.username ? client.utils.formatCapitalize(userInfo.profile.username) : targetUser.username, x: 895, y: 140 },
+            { label: "Name", description: client.utils.formatCapitalize(targetUser.username), x: 895, y: 140 },
             { label: "Gender", description: userInfo.profile && userInfo.profile.gender ? client.utils.formatCapitalize(userInfo.profile.gender) : 'Not Set', x: 895, y: 220 },
             { label: "Date of birth", description: userInfo.profile && userInfo.profile.birthday ? userInfo.profile.birthday : 'Not Set', x: 895, y: 300 },
             { label: "Bio", description: userInfo.profile && userInfo.profile.bio ? userInfo.profile.bio : 'Not Set', x: 895, y: 380 }
