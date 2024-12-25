@@ -94,14 +94,14 @@ module.exports = {
         halloween: '<:HECONOMY:1290645165391872020>',
         halloweenNew: '<:H2MAIN:1300675214182711357>',
         jingleJolly: '<:CMAIN:1312606545187569736>',
-        festiveFrost: '<:CMAIN:1312606545187569736>',
+        festiveFrost: '<:CHMAIN:1321466057730297907>',
     },
     specialTheme: {
         heaven: '<:MAINHEAVEN:1293603530699046982>',
         sakura: '<:SAKURAMAIN:1295967137482936440>',
         bee: '<:BTITLE:1304106395209039932>',
         froggy: '<:FMAIN:1312652464830414939>',
-        asleepypeach: '<:FMAIN:1312652464830414939>',
+        asleepypeach: '<:ASMAIN:1321485206456373308>',
 
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
