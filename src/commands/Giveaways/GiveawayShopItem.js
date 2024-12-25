@@ -112,11 +112,9 @@ module.exports = class GiveawayShopItem extends Command {
         // After sending the giveaway message
         let giveawayMessage;
         try {
-            if (ctx.isInteraction) {
-                giveawayMessage = await ctx.interaction.editReply({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
-            } else {
-                giveawayMessage = await ctx.editMessage({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
-            }
+            giveawayMessage = ctx.isInteraction
+                ? await ctx.interaction.editReply({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true })
+                : await ctx.editMessage({ content: '', embeds: [giveawayEmbed], components: [buttonRow], fetchReply: true });
         } catch (err) {
             console.error(err);
             const response = 'There was an error sending the giveaway message.';
