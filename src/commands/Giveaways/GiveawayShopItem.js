@@ -84,7 +84,7 @@ module.exports = class GiveawayShopItem extends Command {
                 ],
             };
             if (ctx.isInteraction) {
-                await ctx.interaction.reply(replyMessage);
+                await ctx.interaction.editReply(replyMessage);
             } else {
                 await ctx.editMessage(replyMessage);
             }
