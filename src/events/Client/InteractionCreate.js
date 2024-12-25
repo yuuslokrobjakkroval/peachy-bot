@@ -180,7 +180,7 @@ module.exports = class InteractionCreate extends Event {
           const channel = this.client.channels.cache.get(logChannelId);
           if (channel && channel.isTextBased()) {
             const embed = this.client.embed()
-                .setColor(color.success)
+                .setColor(color.blue)
                 .setTitle(`Command - ${this.client.utils.formatCapitalize(interaction.commandName)}`)
                 .setThumbnail(interaction.guild.iconURL({extension: 'jpeg'}))
                 .addFields([
