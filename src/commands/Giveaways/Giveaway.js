@@ -141,6 +141,8 @@ module.exports = class Start extends Command {
                 const unit = prize.slice(-1).toLowerCase();
                 const number = parseInt(prize);
                 prize = number * (multipliers[unit] || 1);
+            } else if (prize.toString().includes('.') || prize.toString().includes(',')) {
+                prize = parseFloat(prize.replace(/,/g, ''));
             }
         }
 

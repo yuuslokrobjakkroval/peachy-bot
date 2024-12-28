@@ -78,6 +78,8 @@ module.exports = class Deposit extends Command {
                             const unit = amount.slice(-1).toLowerCase();
                             const number = parseInt(amount);
                             amount = number * (multiplier[unit] || 1);
+                        } else if (amount.toString().includes('.') || amount.toString().includes(',')) {
+                            amount = parseFloat(amount.replace(/,/g, ''));
                         } else {
                             return ctx.sendMessage({
                                 embeds: [
