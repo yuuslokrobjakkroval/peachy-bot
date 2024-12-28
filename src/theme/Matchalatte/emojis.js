@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:MLGAMBLING:1322574680862888059>',
         giveaways: '<:MLGIVEAWAYS:1322574700555014225>',
         profile: '<:MLPROFILE:1322574731874009149>',
-        relationships: '<:MLRELATIONSHIP:1322576658821152788>',
+        relationship: '<:MLRELATIONSHIP:1322576658821152788>',
         social: '<:MLSOCIAL:1322574750978932787>',
         emotes: '<:MLEMOTES:1322574670511476827>',
         utility: '<:MLUTILITY:1322574760059736104>',

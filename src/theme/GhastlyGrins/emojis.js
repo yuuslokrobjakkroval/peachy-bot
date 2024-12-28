@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:PHYGAMBLING:1319976510479667262>',
         giveaways: '<:PHYGIVEAWAYS:1319976522458599505>',
         profile: '<:PHYPROFILE:1319976548765274214>',
-        relationships: '<:PHYRELATIONS:1319976564666138654>',
+        relationship: '<:PHYRELATIONS:1319976564666138654>',
         social: '<:PHYSOCIAL:1319976573314531411>',
         emotes: '<:PHYEMOTES:1319976468318781451>',
         utility: '<:PHYUTILITY:1319976580591652926>',

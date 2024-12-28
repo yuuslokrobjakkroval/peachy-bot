@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:KYGAMBLING:1320065383494848613>',
         giveaways: '<:KYGIVEAWAYS:1320065396858028062>',
         profile: '<:KYPROFILE:1320065425601462292>',
-        relationships: '<:KYRELATIONSHIP:1320065433306529822>',
+        relationship: '<:KYRELATIONSHIP:1320065433306529822>',
         social: '<:KYSOCIAL:1320065588533661706>',
         emotes: '<:KYEMOTES:1320065365371260990>',
         utility: '<:KYUTILITY:1320065596792246312>',

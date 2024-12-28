@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:YV2GAMBLING:1320247654445482138>',
         giveaways: '<:YV2GIVEAWAYS:1320245740185976873>',
         profile: '<:YV2PROFILE:1320245766740115496>',
-        relationships: '<:YV2RELATIONSHIP:1320246193179070464>',
+        relationship: '<:YV2RELATIONSHIP:1320246193179070464>',
         social: '<:YV2SOCIAL:1320246200108318770>',
         emotes: '<:YV2EMOTES:1320245711689748522>',
         utility: '<:YV2UTILITY:1320246207276388372>',

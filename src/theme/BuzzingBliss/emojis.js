@@ -90,7 +90,7 @@ module.exports = {
         gambling: '<:BEEGAMBLING:1319993185296191519>',
         giveaways: '<:BEEGIVEAWAYS:1319992227883384842>',
         profile: '<:BEEPROFILE:1319992241435185203>',
-        relationships: '<:BEERELATIONSHIP:1319992257138655273>',
+        relationship: '<:BEERELATIONSHIP:1319992257138655273>',
         social: '<:BEESOCIAL:1319992264604389427>',
         emotes: '<:BEEEMOTES:1319992183268446329>',
         utility: '<:BEEUTILITY:1319992272615510047>',

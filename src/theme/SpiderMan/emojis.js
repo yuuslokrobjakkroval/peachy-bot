@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:SPGAMBLING:1307347908730818632>',
         giveaways: '<:SPGIVEAWAYS:1307350637947781214>',
         profile: '<a:SPPROFILE:1307347428751704197>',
-        relationships: '<:SPRELATIONSHIP:1307347395897724988>',
+        relationship: '<:SPRELATIONSHIP:1307347395897724988>',
         social: '<:SPSOCIAL:1307350568498626560>',
         emotes: '<a:SPEMOTES:1307347558879723540>',
         utility: '<:SPUTILITY:1307347403308798014>',

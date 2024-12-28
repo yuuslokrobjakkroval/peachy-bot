@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:CHGAMBLING:1321465295432581151>',
         giveaways: '<:CHGIVEAWAYS:1321465309177315370>',
         profile: '<:CHPROFILE:1321465335404171306>',
-        relationships: '<:CHRELATIONSHIP:1321465350675496960>',
+        relationship: '<:CHRELATIONSHIP:1321465350675496960>',
         social: '<:CHSOCIAL:1321465358749794346>',
         emotes: '<:CHEMOTES:1321465250725498951>',
         utility: '<:CHUTILITY:1321465367356248165>',

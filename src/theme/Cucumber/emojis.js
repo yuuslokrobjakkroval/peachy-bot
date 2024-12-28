@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:CUMGAMBLING:1308068480074907718>',
         giveaways: '<:CUMGIVEAWAYS:1308068488706916352>',
         profile: '<:CUMPROFILE:1308067665264513084>',
-        relationships: '<:CUMRELATIONSHIP:1308068672727679026>',
+        relationship: '<:CUMRELATIONSHIP:1308068672727679026>',
         social: '<:CUMSOCIAL:1308068691107385386>',
         emotes: '<:CUMEMOTES:1308068772833132584>',
         utility: '<:CUMUTILITY:1308068811227795527>',

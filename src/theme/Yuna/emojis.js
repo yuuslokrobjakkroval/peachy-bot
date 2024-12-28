@@ -90,7 +90,7 @@ module.exports = {
         gambling: '<:YGAMBLING:1317122956354260992>',
         giveaways: '<:YGIVEAWAYS:1317122978508570736>',
         profile: '<:YPROFILE:1317123077066457168>',
-        relationships: '<:YRELATIONSHIP:1317123316024086588>',
+        relationship: '<:YRELATIONSHIP:1317123316024086588>',
         social: '<:YSOCIALS:1317123117981761557>',
         emotes: '<:YEMOTES:1317122930404102217>',
         utility: '<:YUTILITY:1317123513257164802>',

@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:FGAMBLING:1319697184593150086>',
         giveaways: '<:FGIVEAWAYS:1319696546077347913>',
         profile: '<:FPROFILE:1319696591854108702>',
-        relationships: '<:FRELATIONSHIP:1319696645973348424>',
+        relationship: '<:FRELATIONSHIP:1319696645973348424>',
         social: '<:FSOCIAL:1319696636078981160>',
         emotes: '<:FEMOTES:1319696394088480830>',
         utility: '<:FUTILITY:1319696686934786079>',

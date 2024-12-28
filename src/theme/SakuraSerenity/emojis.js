@@ -92,7 +92,7 @@ module.exports = {
         gambling: '<:SGAMBLING:1296027849857175612>',
         giveaways: '<a:GIVEAWAYS:1299315576514023485>',
         profile: '<:SPROFILE:1296027865422499901>',
-        relationships: '<a:RELATIONSHIP:1299209836973785099>',
+        relationship: '<a:RELATIONSHIP:1299209836973785099>',
         social: '<:SSOCIAL:1296027882941841468>',
         emotes: '<:SEMOTES:1296027907931635754>',
         utility: '<:SUTILITY:1296027923345834027>',

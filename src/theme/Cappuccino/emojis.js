@@ -59,7 +59,7 @@ module.exports = {
         gambling: '<:CAFEX4:1309808043885854802>',
         giveaways: '<:CAFEGIVEAWAYS:1309851883329949696>',
         profile: '<:CAFEPROFILE:1309851006317887559>',
-        relationships: '<a:RELATIONSHIP:1299209836973785099>',
+        relationship: '<a:RELATIONSHIP:1299209836973785099>',
         social: '<:CAFESOCIAL:1309850603396137022>',
         emotes: '<:CAFEEMOTES:1309851297767227442>',
         utility: '<:CAFEUTILITY:1309850609842655303>',
