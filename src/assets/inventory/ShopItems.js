@@ -903,7 +903,7 @@ module.exports = [
                 type: 'special theme',
                 able: {
                     use: true,
-                    gift: true,
+                    gift: false,
                     multiple: false,
                 },
                 quantity: 1,
@@ -918,7 +918,7 @@ module.exports = [
                 type: 'special theme',
                 able: {
                     use: true,
-                    gift: true,
+                    gift: false,
                     multiple: false,
                 },
                 quantity: 1,
@@ -933,7 +933,7 @@ module.exports = [
                 type: 'special theme',
                 able: {
                     use: true,
-                    gift: true,
+                    gift: false,
                     multiple: false,
                 },
                 quantity: 1,
@@ -968,6 +968,36 @@ module.exports = [
                 },
                 quantity: 1,
                 emoji: emoji.specialTheme.asleepypeach,
+                available: ['use'],
+                price: { buy: 4e7, sell: 35e6 },
+            },
+            {
+                id: 'st06',
+                name: 'Magical Forest',
+                description: "Step into the enchanting world of the 'Magical Forest'! This theme surrounds you with lush greenery, twinkling fireflies, and mystical creatures, creating a serene and whimsical escape into nature's hidden wonders.",
+                type: 'special theme',
+                able: {
+                    use: true,
+                    gift: false,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.specialTheme.asleepypeach,
+                available: ['use'],
+                price: { buy: 4e7, sell: 35e6 },
+            },
+            {
+                id: 'st07',
+                name: 'Matcha Latte:',
+                description: "Indulge in the soothing charm of 'Matcha Latte'! This theme blends earthy green tones with creamy accents, evoking the calm and cozy feeling of sipping a warm matcha drink on a peaceful afternoon.",
+                type: 'special theme',
+                able: {
+                    use: true,
+                    gift: false,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.specialTheme.matchaLatte,
                 available: ['use'],
                 price: { buy: 4e7, sell: 35e6 },
             }

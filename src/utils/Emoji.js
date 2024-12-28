@@ -102,6 +102,8 @@ module.exports = {
         bee: '<:BTITLE:1304106395209039932>',
         froggy: '<:FMAIN:1312652464830414939>',
         asleepypeach: '<:ASMAIN:1321485206456373308>',
+        magicalForest: '<:ASMAIN:1321485206456373308>',
+        matchaLatte: '<:MLMAIN:1322574581759873097>',
 
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
@@ -114,6 +116,8 @@ module.exports = {
 
         duckling: '<:KMAIN:1315309185138823279>',
         keoyuu: '<:KYMAIN:1320065632678449168>',
+
+        loveBunnie: '<:KYMAIN:1320065632678449168>',
 
         ghastlyGrins: '<:PHYYYMAIN:1317865867958157372>',
     },

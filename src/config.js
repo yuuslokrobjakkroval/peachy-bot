@@ -67,6 +67,16 @@ const aSleepyPeach = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF29F58, none: 0x2B2D31 },
 };
 
+// Magical Forest ( ST06 )
+const magicalForest = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x74C5EC, none: 0x2B2D31 },
+};
+
+// Matcha Latte ( ST07 )
+const matchaLatte = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xBDCAA6, none: 0x2B2D31 },
+};
+
 // SPIDER MAN FOR ANGKOR PARIS ( ST11 )
 const spiderMan = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFF2929, none: 0x2B2D31 },
@@ -97,14 +107,19 @@ const yunayuna = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x4C585B, none: 0x2B2D31 },
 };
 
-// BABE OWNER FOR SUPPORTER ( ST99 )
+// BABE OWNER FOR LOVE ( ST99 )
 const quirkyQuackers = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF5F0CD, none: 0x2B2D31 },
 };
 
-// BABE OWNER FOR SUPPORTER ( ST99 )
+// OWNER FOR ANNIVERSARY ( ST2707 )
 const keoyuu = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFFCFCF, none: 0x2B2D31 },
+};
+
+// PHY FOR SUPPORTER ( ST168 )
+const loveBunnie = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xEDB7C9, none: 0x2B2D31 },
 };
 
 // PHY FOR SUPPORTER ( ST168 )
@@ -112,4 +127,4 @@ const ghastlyGrins = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xA294F9, none: 0x2B2D31 },
 };
 
-module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, festiveFrost, celestialGrace, sakuraSerenity, buzzingBliss, froggyFun, aSleepyPeach, spiderMan, cucumberCool, cappuccinoCharm, nithGojo, yuna, yunayuna, quirkyQuackers, keoyuu, ghastlyGrins }
+module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, festiveFrost, celestialGrace, sakuraSerenity, buzzingBliss, froggyFun, aSleepyPeach, magicalForest, matchaLatte, spiderMan, cucumberCool, cappuccinoCharm, nithGojo, yuna, yunayuna, quirkyQuackers, keoyuu, loveBunnie, ghastlyGrins }

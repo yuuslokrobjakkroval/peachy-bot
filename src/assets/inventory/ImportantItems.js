@@ -452,6 +452,23 @@ module.exports = [
         price: { buy: 11e6, sell: 1e7 },
     },
 
+    // BOOSTER
+    {
+        id: 'st272',
+        name: 'Love Bunnie',
+        description: `Hop into a world of sweetness with 'Love Bunnie'! This theme is filled with soft pastel hues, adorable bunny icons, and heartwarming details that bring a touch of love and charm to every moment.`,
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: false,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.loveBunnie,
+        available: ['use'],
+        price: { buy: 1e10, sell: 15e6 },
+    },
+
     // KEO
     {
         id: 'st99',
