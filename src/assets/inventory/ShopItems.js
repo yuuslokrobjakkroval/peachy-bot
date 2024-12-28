@@ -982,7 +982,7 @@ module.exports = [
                     multiple: false,
                 },
                 quantity: 1,
-                emoji: emoji.specialTheme.asleepypeach,
+                emoji: emoji.specialTheme.magicalForest,
                 available: ['use'],
                 price: { buy: 4e7, sell: 35e6 },
             },

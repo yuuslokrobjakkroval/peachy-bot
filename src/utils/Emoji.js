@@ -102,7 +102,7 @@ module.exports = {
         bee: '<:BTITLE:1304106395209039932>',
         froggy: '<:FMAIN:1312652464830414939>',
         asleepypeach: '<:ASMAIN:1321485206456373308>',
-        magicalForest: '<:ASMAIN:1321485206456373308>',
+        magicalForest: '<:MFMAIN:1322577278592618567>',
         matchaLatte: '<:MLMAIN:1322574581759873097>',
 
         spiderMan: '<:SPMAIN:1307343653848485921>',
