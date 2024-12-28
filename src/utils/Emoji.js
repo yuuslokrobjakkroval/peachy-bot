@@ -117,7 +117,7 @@ module.exports = {
         duckling: '<:KMAIN:1315309185138823279>',
         keoyuu: '<:KYMAIN:1320065632678449168>',
 
-        loveBunnie: '<:KYMAIN:1320065632678449168>',
+        loveBunnie: '<:LBMAIN:1322580984645943306>',
 
         ghastlyGrins: '<:PHYYYMAIN:1317865867958157372>',
     },
