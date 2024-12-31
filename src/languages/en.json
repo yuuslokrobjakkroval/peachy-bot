@@ -133,11 +133,11 @@
 			"expire": "𝑻𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏 𝑬𝒙𝒑𝒊𝒓𝒆𝒅."
 		},
 		"withdrawMessages": {
-			"zeroBalance": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒏𝒐 𝒄𝒐𝒊𝒏𝒔 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-			"invalidAmount": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕 𝒕𝒐 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘. 𝒀𝒐𝒖 𝒄𝒂𝒏 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 '𝒂𝒍𝒍', '𝒉𝒂𝒍𝒇', 𝒐𝒓 𝒂 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒄 𝒏𝒖𝒎𝒃𝒆𝒓.",
-			"tooHigh": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 𝒎𝒐𝒓𝒆 𝒕𝒉𝒂𝒏 𝒘𝒉𝒂𝒕 𝒚𝒐𝒖 𝒉𝒂𝒗𝒆 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-			"success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘𝒏 ***%{amount}*** %{coinEmote} 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-			"error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘𝒂𝒍 𝒓𝒆𝒒𝒖𝒆𝒔𝒕."
+			"zeroBalance": "You have no coins in your bank.",
+			"invalidAmount": "Please provide a valid amount to withdraw. You can withdraw 'all', 'half', or a specific number.",
+			"tooHigh": "You cannot withdraw more than what you have in your bank.",
+			"success": "You have withdrawn **%{amount}** %{coinEmote} from your bank.",
+			"error": "There was an error processing your withdrawal request."
 		}
 	},
 	"economyMessages": {
