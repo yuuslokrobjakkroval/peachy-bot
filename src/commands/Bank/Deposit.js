@@ -68,22 +68,21 @@ module.exports = class Deposit extends Command {
                         });
                     }
 
-                    if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
-                        const amountMap = {all: coin, half: Math.ceil(coin / 2)};
-                        const multiplier = {k: 1000, m: 1000000, b: 1000000000};
-
+                    if (isNaN(amount) || amount <= 0 || amount.toString().includes(',')) {
+                        const amountMap = { all: bank, half: Math.ceil(bank / 2) };
+                        const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
                         if (amount in amountMap) {
                             amount = amountMap[amount];
                         } else if (amount.match(/\d+[kmbtq]/i)) {
                             const unit = amount.slice(-1).toLowerCase();
                             const number = parseInt(amount);
                             amount = number * (multiplier[unit] || 1);
-                        } else if (amount.toString().includes('.') || amount.toString().includes(',')) {
-                            amount = parseFloat(amount.replace(/,/g, ''));
+                        } else if (amount.toString().includes(',')) {
+                            amount = parseInt(amount.replace(/,/g, ''));
                         } else {
                             return ctx.sendMessage({
                                 embeds: [
-                                    client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount)
+                                    client.embed().setColor(color.danger).setDescription(withdrawMessages.invalidAmount),
                                 ],
                             });
                         }
