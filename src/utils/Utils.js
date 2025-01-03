@@ -1,6 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ComponentType, CommandInteraction, EmbedBuilder, PermissionsBitField} = require('discord.js');
 const Users = require('../schemas/user');
-const MessageTracking = require('../schemas/messageTrack');
 const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
 const importantItems = require('../assets/inventory/ImportantItems');

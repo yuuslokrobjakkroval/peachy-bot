@@ -1,6 +1,5 @@
-const { ActionRowBuilder, ButtonBuilder, CommandInteraction, EmbedBuilder, Permissions, PermissionsBitField, AttachmentBuilder } = require('discord.js');
+const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
-const Users = require('../schemas/user');
 const WelcomeSchema = require("../schemas/welcomeMessages");
 const SendMessageSchema = require("../schemas/sendMessage");
 const AutoResponseSchema = require("../schemas/response");
