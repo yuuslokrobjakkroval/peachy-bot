@@ -115,19 +115,19 @@ module.exports = class Slots extends Command {
 				} else if (rand <= 30) { // 10% for baseCoins * 2
 					win = baseCoins * 2;
 					rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-				} else if (rand <= 35) { // 5% for baseCoins * 3
+				} else if (rand <= 36) { // 5% for baseCoins * 3
 					win = baseCoins * 3;
 					rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-				} else if (rand <= 39) { // 4% for baseCoins * 4
+				} else if (rand <= 41) { // 4% for baseCoins * 4
 					win = baseCoins * 4;
 					rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-				} else if (rand <= 43) { // 3% for baseCoins * 5
+				} else if (rand <= 45) { // 3% for baseCoins * 5
 					win = baseCoins * 5;
 					rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-				} else if (rand <= 44.5) { // 1.5% for baseCoins * 10
+				} else if (rand <= 47.5) { // 1.5% for baseCoins * 10
 					win = baseCoins * 10;
 					rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-				} else { // 60% chance to lose
+				} else { // 52.5% chance to lose
 					let slot1 = Math.floor(Math.random() * SLOTS.length);
 					let slot2 = Math.floor(Math.random() * SLOTS.length);
 					let slot3 = Math.floor(Math.random() * SLOTS.length);
@@ -147,7 +147,7 @@ module.exports = class Slots extends Command {
 					text: `${generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName)}`,
 					iconURL: verify ? client.utils.emojiToImage(emoji.verify ? emoji.verify : globalEmoji.verify) : ctx.author.displayAvatarURL(),
 				})
-			
+
 			ctx.sendMessage({embeds: [initialEmbed]}).then(initialMessage => {
 				ctx.msg = initialMessage;
 				Users.updateOne({userId: ctx.author.id}, {

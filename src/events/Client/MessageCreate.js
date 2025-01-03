@@ -352,10 +352,6 @@ module.exports = class MessageCreate extends Event {
             const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
             const workCommands = ['applyjob', 'police', 'position', 'rob', 'student'];
 
-            if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
-              this.client.utils.getMessageTackUser(this.client, message, user, color, emoji, command, gamblingCommands);
-            }
-
             try {
               let logChannelId;
               if (workCommands.includes(command.name)) {

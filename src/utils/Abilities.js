@@ -407,7 +407,12 @@ module.exports = class Ability {
         let background
         if (data.backgroundImage) {
             background = await loadImage(data.backgroundImage);
-            ctx.drawImage(background, 0, 0, width, height);
+            if (background) {
+                ctx.drawImage(background, 0, 0, width, height);
+            } else {
+                ctx.fillStyle = '#DFF2EB';
+                ctx.fillRect(0, 0, width, height);
+            }
         } else {
             ctx.fillStyle = '#DFF2EB';
             ctx.fillRect(0, 0, width, height);

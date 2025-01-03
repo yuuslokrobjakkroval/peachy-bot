@@ -95,66 +95,6 @@ module.exports = class Utils {
         }
     }
 
-    static async getMessageTackUser(client, message, user, color, emoji, command, gamblingCommands) {
-        try {
-            const tracking = await MessageTracking.findOne({ guildId: message.guildId });
-
-            if (!tracking || !tracking.isActive) return;
-
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const messageIndex = tracking.messages.findIndex(msg =>
-                msg.userId === message.author.id &&
-                new Date(msg.date).setHours(0, 0, 0, 0) === today.getTime()
-            );
-
-            if (messageIndex === -1) {
-                tracking.messages.push({
-                    userId: message.author.id,
-                    username: message.author.username,
-                    messageCount: 1,
-                    date: today.getTime()
-                });
-            } else {
-                if (gamblingCommands.includes(command.name)) {
-                    tracking.messages[messageIndex].messageCount += 1;
-
-                    // const messageCount = tracking.messages[messageIndex].messageCount;
-                    // const milestones = [200, 500, 1000, 1500, 2000, 2500];
-                    // const baseRewards = [700000, 1000000, 1500000, 2000000, 2500000, 3000000];
-                    // const milestoneIndex = milestones.indexOf(messageCount);
-                    // if (milestoneIndex !== -1) {
-                    //     const reward = baseRewards[milestoneIndex];
-                    //     user.balance.coin += reward || 0;
-                    //     await user.save();
-                    //     const embed = client.embed()
-                    //         .setColor(color.main)
-                    //         .setTitle(`${emoji.congratulation} Milestone Reached!`)
-                    //         .setDescription(`Congratulations ${message.member.displayName || message.author.username}! You have sent ${messageCount} messages today and earned ${client.utils.formatNumber(reward)} coins!`)
-                    //         .setFooter({ text: `Keep messaging to earn more rewards!`, iconURL: client.user.avatarURL() });
-                    //
-                    //     await message.channel.send({ embeds: [embed] });
-                    // } else if (messageCount === 5000) {
-                    //     const extraReward = 5000000;
-                    //     user.balance.coin += extraReward;
-                    //     await user.save();
-                    //     const specialEmbed = client.embed()
-                    //         .setColor(color.main)
-                    //         .setTitle(`${emoji.top} Incredible Milestone!`)
-                    //         .setDescription(`Amazing! ${message.member.displayName || message.author.username}, you've reached ${messageCount} messages and earned an additional ${client.utils.formatNumber(extraReward)} coins!`)
-                    //         .setFooter({ text: `You're an absolute legend!`, iconURL: client.user.avatarURL() });
-                    //
-                    //     await message.channel.send({ embeds: [specialEmbed] });
-                    // }
-                }
-            }
-            await tracking.save();
-        } catch (err) {
-            console.error('Error saving tracking document:', err);
-        }
-    }
-
     static getGiveaway(interaction) {
         return GiveawaySchema.findOne({
             guildId: interaction.guild.id,
