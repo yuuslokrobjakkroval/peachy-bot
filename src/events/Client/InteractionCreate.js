@@ -96,7 +96,7 @@ module.exports = class InteractionCreate extends Event {
           if (!interaction.channel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.ViewChannel)) {
             return;
           }
-          
+
           if (command.permissions.dev && !this.client.config.owners.includes(interaction.user.id)) {
             return;
           }
@@ -152,7 +152,7 @@ module.exports = class InteractionCreate extends Event {
 
           const balanceCommands = ['balance', 'deposit', 'withdraw', 'multitransfer', 'transfer', 'buy', 'sell'];
           const gamblingCommands = ['slots', 'blackjack', 'coinflip', 'klaklouk'];
-          const gameCommands = ['guessnumber'];
+          const gameCommands = ['guessnumber', 'post', 'guess', 'feedback', 'wallpaper'];
           const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
           const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'serverinfo', 'theme', 'userinfo', 'verify'];
           const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
