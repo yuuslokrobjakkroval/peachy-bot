@@ -346,7 +346,7 @@ module.exports = class MessageCreate extends Event {
 
             const balanceCommands = ['balance', 'deposit', 'withdraw', 'multitransfer', 'transfer', 'buy', 'sell'];
             const gamblingCommands = ['slots', 'blackjack', 'coinflip', 'klaklouk'];
-            const gameCommands = ['guessnumber'];
+            const gameCommands = ['guessnumber', 'post', 'guess', 'feedback', 'wallpaper'];
             const mineCommands = ['eat', 'drink', 'shop', 'inventory', 'giveitem'];
             const utilityCommands = ['avatar', 'emoji', 'language', 'qr', 'serverinfo', 'theme', 'userinfo', 'verify'];
             const giveawaysCommands = ['giveaway', 'giveawayshopitem', 'reroll'];
