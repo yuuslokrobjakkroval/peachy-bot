@@ -68,7 +68,7 @@ module.exports = class Deposit extends Command {
                         });
                     }
 
-                    if (isNaN(amount) || amount <= 0 || amount.toString().includes(',')) {
+                    if (!!amount || amount <= 0 || amount.toString().includes(',')) {
                         const amountMap = { all: bank, half: Math.ceil(bank / 2) };
                         const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
                         if (amount in amountMap) {
@@ -77,7 +77,7 @@ module.exports = class Deposit extends Command {
                             const unit = amount.slice(-1).toLowerCase();
                             const number = parseInt(amount);
                             amount = number * (multiplier[unit] || 1);
-                        } else if (amount.toString().includes(',')) {
+                        } else if (typeof amount === 'string' || amount.toString().includes(',')) {
                             amount = parseInt(amount.replace(/,/g, ''));
                         } else {
                             return ctx.sendMessage({
