@@ -67,7 +67,7 @@ module.exports = class Transfer extends Command {
         }
 
         if (isNaN(amount) || amount <= 0 || amount.toString().includes(',')) {
-            const amountMap = { all: bank, half: Math.ceil(bank / 2) };
+            const amountMap = { all: user.balance.coin, half: Math.ceil(user.balance.coin / 2) };
             const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
             if (amount in amountMap) {
                 amount = amountMap[amount];
