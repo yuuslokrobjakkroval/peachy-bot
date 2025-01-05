@@ -82,7 +82,7 @@ module.exports = class Deposit extends Command {
                         } else {
                             return ctx.sendMessage({
                                 embeds: [
-                                    client.embed().setColor(color.danger).setDescription(withdrawMessages.invalidAmount),
+                                    client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount),
                                 ],
                             });
                         }
