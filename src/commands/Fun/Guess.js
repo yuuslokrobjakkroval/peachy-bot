@@ -54,10 +54,16 @@ module.exports = class Ship extends Command {
                 : ctx.message.mentions.users.at(1) || ctx.guild.members.cache.get(args[1]);
 
             if (!target || !partner) {
+                ctx.isInteraction
+                    ? await ctx.interaction.editReply({ content: '', embeds: [], files: [] })
+                    : await ctx.editMessage({ content: '', embeds: [], files: [] });
                 return client.utils.sendErrorMessage(client, ctx, 'Please mention two valid users.', color);
             }
 
             if (target.id === partner.id) {
+                ctx.isInteraction
+                    ? await ctx.interaction.editReply({ content: '', embeds: [], files: [] })
+                    : await ctx.editMessage({ content: '', embeds: [], files: [] });
                 return client.utils.sendErrorMessage(client, ctx, 'You cannot guess a relationship with the same user.', color);
             }
 
