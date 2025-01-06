@@ -15,7 +15,7 @@ module.exports = class ShopInfo extends Command {
             },
             cooldown: 5,
             category: 'inventory',
-            aliases: ['si', 'iteminfo', 'ii'],
+            aliases: ['iteminfo'],
             args: true,
             permissions: {
                 dev: false,
