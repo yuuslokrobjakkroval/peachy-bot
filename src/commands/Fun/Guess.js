@@ -39,11 +39,9 @@ module.exports = class Ship extends Command {
 
     async run(client, ctx, args, color, emoji, language) {
         try {
-            if (ctx.isInteraction) {
-                await ctx.interaction.reply('Thinking...');
-            } else {
-                await ctx.sendDeferMessage('Thinking...');
-            }
+            ctx.isInteraction
+                ? await ctx.interaction.reply('Thinking...')
+                : await ctx.sendMessage('Thinking...');
 
             const target = ctx.isInteraction
                 ? ctx.interaction.options.getUser('target')
@@ -54,17 +52,37 @@ module.exports = class Ship extends Command {
                 : ctx.message.mentions.users.at(1) || ctx.guild.members.cache.get(args[1]) || ctx.author;
 
             if (!target || !partner) {
+                const embed = client.embed()
+                    .setColor(color.danger)
+                    .setDescription('Please mention two valid users.');
                 ctx.isInteraction
-                    ? await ctx.interaction.editReply({ content: '', embeds: [], files: [] })
-                    : await ctx.editMessage({ content: '', embeds: [], files: [] });
-                return client.utils.sendErrorMessage(client, ctx, 'Please mention two valid users.', color);
+                    ? await ctx.interaction.editReply({
+                        content: '',
+                        embeds: [embed],
+                        files: [],
+                    })
+                    : await ctx.editMessage({
+                        content: '',
+                        embeds: [embed],
+                        files: [],
+                    });
             }
 
             if (target.id === partner.id) {
+                const embed = client.embed()
+                    .setColor(color.danger)
+                    .setDescription('You cannot guess a relationship with the same user.');
                 ctx.isInteraction
-                    ? await ctx.interaction.editReply({ content: '', embeds: [], files: [] })
-                    : await ctx.editMessage({ content: '', embeds: [], files: [] });
-                return client.utils.sendErrorMessage(client, ctx, 'You cannot guess a relationship with the same user.', color);
+                    ? await ctx.interaction.editReply({
+                        content: '',
+                        embeds: [embed],
+                        files: [],
+                    })
+                    : await ctx.editMessage({
+                        content: '',
+                        embeds: [embed],
+                        files: [],
+                    });
             }
 
             const ship = await new canvafy.Ship()
@@ -89,12 +107,13 @@ module.exports = class Ship extends Command {
                     files: [{ attachment: ship, name: `ship-${target.username}-${partner.username}.png` }],
                 });
         } catch (error) {
-            await client.utils.sendErrorMessage(
-                client,
-                ctx,
-                'An error occurred while generating the ship image. Please try again later.',
-                color
-            );
+            const errorMessage = 'An error occurred while generating the ship image. Please try again later.';
+            if (ctx.isInteraction) {
+                await ctx.interaction.editReply(errorMessage);
+            } else {
+                await ctx.editMessage(errorMessage);
+            }
+            await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
             console.error(error);
         }
     }
