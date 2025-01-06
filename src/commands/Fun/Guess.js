@@ -51,7 +51,7 @@ module.exports = class Ship extends Command {
 
             const partner = ctx.isInteraction
                 ? ctx.interaction.options.getUser('partner')
-                : ctx.message.mentions.users.at(1) || ctx.guild.members.cache.get(args[1]);
+                : ctx.message.mentions.users.at(1) || ctx.guild.members.cache.get(args[1]) || ctx.author;
 
             if (!target || !partner) {
                 ctx.isInteraction
