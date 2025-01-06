@@ -319,6 +319,68 @@ module.exports = class Utils {
         return parts.join(' ');
     }
 
+    static formatBalance(client, ctx, color, coin, amount, invalidAmount) {
+        if (!amount || typeof amount !== 'string') {
+            return ctx.sendMessage({
+                embeds: [
+                    client.embed()
+                        .setColor(color.danger)
+                        .setDescription(invalidAmount)
+                ],
+            });
+        }
+
+        // Remove commas for safe parsing
+        amount = amount.replace(/,/g, '');
+
+        const amountMap = {
+            all: coin,
+            half: Math.ceil(coin / 2)
+        };
+        const multiplier = {
+            k: 1000,
+            m: 1000000,
+            b: 1000000000
+        };
+
+        // Check predefined amounts (all/half)
+        if (amount in amountMap) {
+            return amountMap[amount];
+        }
+
+        // Check for multiplier-based formats (e.g., 10k, 5m)
+        if (/^\d+[kmb]$/i.test(amount)) {
+            const unit = amount.slice(-1).toLowerCase(); // Get the last character (k, m, b)
+            const number = parseInt(amount.slice(0, -1)); // Remove the unit and parse the number
+
+            if (isNaN(number)) {
+                return ctx.sendMessage({
+                    embeds: [
+                        client.embed()
+                            .setColor(color.danger)
+                            .setDescription(invalidAmount)
+                    ],
+                });
+            }
+
+            return number * (multiplier[unit] || 1);
+        }
+
+        // Validate numeric input
+        if (/^\d+$/.test(amount)) {
+            return parseInt(amount);
+        }
+
+        // If all validations fail
+        return ctx.sendMessage({
+            embeds: [
+                client.embed()
+                    .setColor(color.danger)
+                    .setDescription(invalidAmount)
+            ],
+        });
+    }
+
     static formatNumber(num) {
         if (isNaN(num) || num <= 0 || num.toString().includes('.') || num.toString().includes(',')) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');

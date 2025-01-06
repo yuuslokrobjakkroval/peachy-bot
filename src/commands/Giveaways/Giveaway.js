@@ -142,7 +142,7 @@ module.exports = class Start extends Command {
                 const number = parseInt(prize);
                 prize = number * (multipliers[unit] || 1);
             } else if (prize.toString().includes('.') || prize.toString().includes(',')) {
-                prize = parseFloat(prize.replace(/,/g, ''));
+                prize = parseInt(prize.replace(/,/g, ''));
             }
         }
 
@@ -179,7 +179,7 @@ module.exports = class Start extends Command {
             messageId: giveawayMessage.id,
             hostedBy: ctx.author.id,
             winners: winners,
-            prize: prize,
+            prize: parseInt(prize),
             endTime: Date.now() + duration,
             paused: false,
             ended: false,

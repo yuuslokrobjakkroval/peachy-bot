@@ -21,7 +21,20 @@ module.exports = class Transfer extends Command {
                 user: [],
             },
             slashCommand: false,
-            options: [],
+            options: [
+                {
+                    name: 'target',
+                    description: 'The user for transfer.',
+                    type: 6,
+                    required: true,
+                },
+                {
+                    name: 'amount',
+                    description: 'The amount for give to the target',
+                    type: 3,
+                    required: true,
+                },
+            ],
         });
     }
 
@@ -30,7 +43,7 @@ module.exports = class Transfer extends Command {
         const transferMessages = language.locales.get(language.defaultLocale)?.bankMessages?.transferMessages;
 
         const targetUser = ctx.isInteraction
-            ? ctx.interaction.options.getUser('user') || ctx.author
+            ? ctx.interaction.options.getUser('target') || ctx.author
             : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
 
         // Prevent transferring to self
@@ -55,42 +68,14 @@ module.exports = class Transfer extends Command {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.balanceNotExist, color);
         }
 
-        // Validate target user and amount
-        let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
-
-        if (amount.toString().startsWith('-')) {
-            return ctx.sendMessage({
-                embeds: [
-                    client.embed().setColor(color.danger).setDescription(transferMessages.invalidAmount)
-                ],
-            });
-        }
-
-        if (!!amount || amount <= 0 || amount.toString().includes(',')) {
-            const amountMap = { all: user.balance.coin, half: Math.ceil(user.balance.coin / 2) };
-            const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
-            if (amount in amountMap) {
-                amount = amountMap[amount];
-            } else if (amount.match(/\d+[kmbtq]/i)) {
-                const unit = amount.slice(-1).toLowerCase();
-                const number = parseInt(amount);
-                amount = number * (multiplier[unit] || 1);
-            } else if (typeof amount === 'string' || amount.toString().includes(',')) {
-                amount = parseInt(amount.replace(/,/g, ''));
-            } else {
-                return ctx.sendMessage({
-                    embeds: [
-                        client.embed().setColor(color.danger).setDescription(transferMessages.invalidAmount),
-                    ],
-                });
-            }
-        } else {
-            return ctx.sendMessage({
-                embeds: [
-                    client.embed().setColor(color.danger).setDescription(transferMessages.invalidAmount)
-                ],
-            });
-        }
+        const amount = client.utils.formatBalance(
+            client,
+            ctx,
+            color,
+            user.balance.coin,
+            ctx.isInteraction ? ctx.interaction.options.getString('amount') : args[1] || 1,
+            transferMessages.invalidAmount
+        );
 
         if (user.balance.coin < amount) {
             return await client.utils.sendErrorMessage(client, ctx, transferMessages.insufficientFunds, color);

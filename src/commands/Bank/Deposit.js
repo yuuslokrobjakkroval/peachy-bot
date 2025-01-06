@@ -20,7 +20,14 @@ module.exports = class Deposit extends Command {
                 user: [],
             },
             slashCommand: true,
-            options: [{ name: 'amount', description: 'The amount you want to deposit.', type: 4, required: true }],
+            options: [
+                {
+                    name: 'amount',
+                    description: 'The amount you want to deposit.',
+                    type: 3,
+                    required: true,
+                },
+            ],
         });
     }
 
@@ -58,8 +65,7 @@ module.exports = class Deposit extends Command {
                         return client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
                     }
 
-                    let amount = ctx.isInteraction ? ctx.interaction.options.getInteger('amount') || 1 : args[0] || 1;
-
+                    let amount = ctx.isInteraction ? ctx.interaction.options.getString('amount') : args[0] || 1
                     if (amount.toString().startsWith('-')) {
                         return ctx.sendMessage({
                             embeds: [
@@ -68,31 +74,14 @@ module.exports = class Deposit extends Command {
                         });
                     }
 
-                    if (!!amount || amount <= 0 || amount.toString().includes(',')) {
-                        const amountMap = { all: bank, half: Math.ceil(bank / 2) };
-                        const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
-                        if (amount in amountMap) {
-                            amount = amountMap[amount];
-                        } else if (amount.match(/\d+[kmbtq]/i)) {
-                            const unit = amount.slice(-1).toLowerCase();
-                            const number = parseInt(amount);
-                            amount = number * (multiplier[unit] || 1);
-                        } else if (typeof amount === 'string' || amount.toString().includes(',')) {
-                            amount = parseInt(amount.replace(/,/g, ''));
-                        } else {
-                            return ctx.sendMessage({
-                                embeds: [
-                                    client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount),
-                                ],
-                            });
-                        }
-                    } else {
-                        return ctx.sendMessage({
-                            embeds: [
-                                client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount)
-                            ],
-                        });
-                    }
+                    amount = client.utils.formatBalance(
+                        client,
+                        ctx,
+                        color,
+                        coin,
+                        amount,
+                        depositMessages.invalidAmount
+                    );
 
                     const baseCoins = Math.min(amount, coin);
                     user.balance.coin -= baseCoins;
