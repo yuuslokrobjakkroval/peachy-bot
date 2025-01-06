@@ -39,7 +39,7 @@ module.exports = class Withdraw extends Command {
                 return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
-            const { coin, bank } = user.balance;
+            const { bank } = user.balance;
 
             if (bank < 1) {
                 return client.utils.sendErrorMessage(client, ctx, withdrawMessages.zeroBalance, color);

@@ -59,7 +59,7 @@ module.exports = class Deposit extends Command {
                         }
                     })
                 } else {
-                    const { coin, bank } = user.balance;
+                    const { coin } = user.balance;
 
                     if (coin < 1) {
                         return client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
