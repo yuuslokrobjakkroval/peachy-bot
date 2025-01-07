@@ -84,8 +84,10 @@ module.exports = class Deposit extends Command {
                     );
 
                     const baseCoins = Math.min(amount, coin);
-                    user.balance.coin -= baseCoins;
-                    user.balance.bank += baseCoins;
+
+                    user.balance.coin -= parseInt(baseCoins);
+                    user.balance.bank += parseInt(baseCoins);
+
                     user.save()
                         .then(() => {
                             const embed = client.embed()
