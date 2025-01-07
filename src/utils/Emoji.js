@@ -121,7 +121,7 @@ module.exports = {
 
         ghastlyGrins: '<:PHYYYMAIN:1317865867958157372>',
 
-        seaCoral: '<:SEAMAIN:1326152557143396392>',
+        seaCoral: '<:SEASLAY:1326152567998124072>',
     },
     // EXCHANGE
     heartMilk: '<:HEARTMILK:1290653998054903899>',
