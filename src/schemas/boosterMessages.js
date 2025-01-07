@@ -35,7 +35,7 @@ const ImageSchema = new Schema({
     messageColor: { type: String, default: '#333333' },
 });
 
-const WelcomeMessagesSchema = new Schema({
+const BoosterMessagesSchema = new Schema({
     id: { type: String, default: null, index: true },
     channel: { type: String, default: null },
     content: { type: String, default: '' },
@@ -46,4 +46,4 @@ const WelcomeMessagesSchema = new Schema({
     isCustomImage: { type: Boolean, default: true },
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
-module.exports = model('welcomemessages', WelcomeMessagesSchema);
+module.exports = model('boostermessages', BoosterMessagesSchema);

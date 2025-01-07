@@ -43,6 +43,7 @@ const InviteTrackerMessageSchema = new Schema({
     image: { type: ImageSchema, default: () => ({})},
     isActive: { type: Boolean, default: true },
     isEmbed: { type: Boolean, default: false },
+    isCustomImage: { type: Boolean, default: true },
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
 module.exports = model('invitetrackermessages', InviteTrackerMessageSchema);

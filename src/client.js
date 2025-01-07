@@ -21,6 +21,12 @@ client.once('ready', async () => {
 });
 
 client.on('guildMemberAdd', async (member) => await client.abilities.getWelcomeMessage(client, member));
+client.on('guildMemberUpdate', async (oldMember, newMember) => {
+    if (oldMember.premiumSince === null && newMember.premiumSince !== null) {
+        // Member has just boosted the server
+        await client.abilities.getBoosterMessage(client, newMember);
+    }
+});
 client.on('guildMemberRemove', async (member) => {
     try {
         await client.abilities.getGoodByeMessage(client, member);

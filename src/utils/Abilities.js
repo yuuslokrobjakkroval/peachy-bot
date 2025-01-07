@@ -3,6 +3,7 @@ const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const WelcomeSchema = require("../schemas/welcomeMessages");
 const SendMessageSchema = require("../schemas/sendMessage");
 const AutoResponseSchema = require("../schemas/response");
+const BoosterSchema = require("../schemas/boosterMessages");
 const InviteSchema = require("../schemas/inviteTracker");
 const InviteTrackerSchema = require("../schemas/inviteTrackerMessages");
 const JoinRolesSchema = require("../schemas/joinRoles");
@@ -76,42 +77,6 @@ module.exports = class Ability {
         }
     }
 
-    static async getSendMessage(client) {
-        try {
-            const sendMessage = await SendMessageSchema.findOne({ isActive: true });
-            if (!sendMessage) {
-                return
-            }
-            sendMessage.isActive = false;
-            await sendMessage.save();
-            const { guild, userId, feature } = sendMessage;
-            let server = client.guilds.cache.get(guild);
-            if (!server) {
-                return;
-            }
-
-            const member = server.members.cache.get(userId);
-            if (!member) {
-                return;
-            }
-
-            switch (feature) {
-                case 'welcome-message':
-                    await client.abilities.getWelcomeMessage(client, member);
-                    break;
-                case 'goodbye-message':
-                    await client.abilities.getGoodByeMessage(client, member);
-                    break;
-                default:
-                    return;
-            }
-
-
-        } catch (error) {
-            console.error('Error processing message:', error);
-        }
-    }
-
     static async getWelcomeMessage(client, member) {
         try {
             const welcomeMessage = await WelcomeSchema.findOne({ id: member.guild.id, isActive: true });
@@ -119,7 +84,7 @@ module.exports = class Ability {
             const inviteTracker = await InviteTrackerSchema.findOne({ id: member.guild.id, isActive: true });
 
             if (welcomeMessage) {
-                const { channel, content, message, image, isEmbed } = welcomeMessage;
+                const { channel, content, message, image, isEmbed, isCustomImage } = welcomeMessage;
                 const welcomeChannel = member.guild.channels.cache.get(channel);
 
                 if (!welcomeChannel) {
@@ -135,7 +100,9 @@ module.exports = class Ability {
                             embeds: welcomeEmbed ? [welcomeEmbed] : []
                         });
                     } else {
-                        const files = await client.abilities.getBackgroundImage(client, member, image);
+                        const files = isCustomImage
+                            ? await client.abilities.getBackgroundCustom(client, member, image)
+                            : await client.abilities.getBackgroundNormal(client, member, image);
                         welcomeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '', files: files ? [files] : [] });
                     }
                 }
@@ -176,7 +143,7 @@ module.exports = class Ability {
 
             if (inviteTracker) {
                 try {
-                    const { channel, content, message, image, isEmbed } = inviteTracker;
+                    const { channel, content, message, image, isEmbed, isCustomImage } = inviteTracker;
                     const currentInvites = await member.guild.invites.fetch();
 
                     for (const invite of currentInvites.values()) {
@@ -201,7 +168,9 @@ module.exports = class Ability {
                                         embeds: trackerEmbed ? [trackerEmbed] : [],
                                     });
                                 } else {
-                                    const files = await client.abilities.getBackgroundImage(client, member, image);
+                                    const files = isCustomImage
+                                        ? await client.abilities.getBackgroundCustom(client, member, image)
+                                        : await client.abilities.getBackgroundNormal(client, member, image);
                                     trackingChannel.send({
                                         content: content ? await client.abilities.resultMessage(client, member, member.guild, content, invite, inviter) : '',
                                         files: files ? [files] : [],
@@ -260,12 +229,45 @@ module.exports = class Ability {
         }
     }
 
+    static async getBoosterMessage(client, member) {
+        try {
+            const boosterMessage = await BoosterSchema.findOne({ id: member.guild.id, isActive: true });
+            if (boosterMessage) {
+                const { channel, content, message, image, isEmbed, isCustomImage } = boosterMessage;
+                const boosterChannel = member.guild.channels.cache.get(channel);
+
+                if (!boosterChannel) {
+                    console.warn(`Booster channel ${channel} not found in guild ${member.guild.name}.`);
+                    return;
+                }
+
+                if (boosterChannel) {
+                    if (isEmbed) {
+                        const boosterEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
+                        boosterChannel.send({
+                            content: content ? await client.abilities.replacePlaceholders(client.abilities.getReplacementData(member, member.guild, content)) : '',
+                            embeds: boosterEmbed ? [boosterEmbed] : []
+                        });
+                    } else {
+                        const files = isCustomImage
+                            ? await client.abilities.getBackgroundCustom(client, member, image)
+                            : await client.abilities.getBackgroundNormal(client, member, image);
+                        boosterChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '', files: files ? [files] : [] });
+                    }
+                }
+            }
+
+        } catch (error) {
+            console.error('Error processing message:', error);
+        }
+    }
+
     static async getGoodByeMessage(client, member) {
         try {
             const goodByeMessage = await GoodByeMessagesSchema.findOne({ id: member.guild.id, isActive: true });
 
             if (goodByeMessage) {
-                const { channel, content, message, image, isEmbed } = goodByeMessage;
+                const { channel, content, message, image, isEmbed, isCustomImage } = goodByeMessage;
                 const goodbyeChannel = member.guild.channels.cache.get(channel);
 
                 if (goodbyeChannel){
@@ -276,13 +278,194 @@ module.exports = class Ability {
                             embeds: goodByeEmbed ? [goodByeEmbed] : []
                         });
                     } else {
-                        const files = await client.abilities.getBackgroundImage(client, member, image);
+                        const files = isCustomImage
+                            ? await client.abilities.getBackgroundCustom(client, member, image)
+                            : await client.abilities.getBackgroundNormal(client, member, image);
                         goodbyeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '', files: files ? [files] : [] });
                     }
                 }
             }
         } catch (error) {
             console.error('Error processing goodbye message:', error);
+        }
+    }
+
+    static async getSendMessage(client) {
+        try {
+            const sendMessage = await SendMessageSchema.findOne({ isActive: true });
+            if (!sendMessage) {
+                return
+            }
+            sendMessage.isActive = false;
+            await sendMessage.save();
+            const { guild, userId, feature } = sendMessage;
+            let server = client.guilds.cache.get(guild);
+            if (!server) {
+                return;
+            }
+
+            const member = server.members.cache.get(userId);
+            if (!member) {
+                return;
+            }
+
+            return await await client.abilities.SendMessage(client, member, feature);
+            // switch (feature) {
+            //     case 'welcome-message':
+            //         await client.abilities.SendMessage(client, member, feature);
+            //         break;
+            //     case 'booster-message':
+            //         await client.abilities.SendMessage(client, member, feature);
+            //         break;
+            //     case 'invite-tracker-message':
+            //         await client.abilities.SendMessage(client, member, feature);
+            //         break;
+            //     case 'goodbye-message':
+            //         await client.abilities.SendMessage(client, member);
+            //         break;
+            //     default:
+            //         return;
+            // }
+        } catch (error) {
+            console.error('Error processing message:', error);
+        }
+    }
+
+    static async SendMessage(client, member, feature) {
+        try {
+            const welcomeMessage = await WelcomeSchema.findOne({ id: member.guild.id, isActive: true });
+            const boosterMessage = await BoosterSchema.findOne({ id: member.guild.id, isActive: true });
+            const inviteTracker = await InviteTrackerSchema.findOne({ id: member.guild.id, isActive: true });
+            const goodByeMessage = await GoodByeMessagesSchema.findOne({ id: member.guild.id, isActive: true });
+
+            if (welcomeMessage && feature === 'welcome-message') {
+                const { channel, content, message, image, isEmbed, isCustomImage } = welcomeMessage;
+                const welcomeChannel = member.guild.channels.cache.get(channel);
+
+                if (!welcomeChannel) {
+                    console.warn(`Welcome channel ${channel} not found in guild ${member.guild.name}.`);
+                    return;
+                }
+
+                if (welcomeChannel) {
+                    if (isEmbed) {
+                        const welcomeEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
+                        welcomeChannel.send({
+                            content: content ? await client.abilities.replacePlaceholders(client.abilities.getReplacementData(member, member.guild, content)) : '',
+                            embeds: welcomeEmbed ? [welcomeEmbed] : []
+                        });
+                    } else {
+                        const files = isCustomImage
+                            ? await client.abilities.getBackgroundCustom(client, member, image)
+                            : await client.abilities.getBackgroundNormal(client, member, image);
+                        welcomeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '', files: files ? [files] : [] });
+                    }
+                }
+            }
+
+            if (boosterMessage && feature === 'booster-message') {
+                const { channel, content, message, image, isEmbed, isCustomImage } = boosterMessage;
+                const boosterChannel = member.guild.channels.cache.get(channel);
+
+                if (!boosterChannel) {
+                    console.warn(`Booster channel ${channel} not found in guild ${member.guild.name}.`);
+                    return;
+                }
+
+                if (boosterChannel) {
+                    if (isEmbed) {
+                        const boosterEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
+                        boosterChannel.send({
+                            content: content ? await client.abilities.replacePlaceholders(client.abilities.getReplacementData(member, member.guild, content)) : '',
+                            embeds: boosterEmbed ? [boosterEmbed] : []
+                        });
+                    } else {
+                        const files = isCustomImage
+                            ? await client.abilities.getBackgroundCustom(client, member, image)
+                            : await client.abilities.getBackgroundNormal(client, member, image);
+                        boosterChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '', files: files ? [files] : [] });
+                    }
+                }
+            }
+
+            if (inviteTracker && feature === 'invite-tracker-message') {
+                try {
+                    const { channel, content, message, image, isEmbed, isCustomImage } = inviteTracker;
+                    const currentInvites = await member.guild.invites.fetch();
+
+                    for (const invite of currentInvites.values()) {
+                        const previousInvite = await InviteSchema.findOne({ guildId: member.guild.id, inviteCode: invite.code });
+
+                        const previousUses = previousInvite ? previousInvite.uses : 0;
+
+                        if (invite.uses > previousUses) {
+                            await InviteSchema.updateOne(
+                                { guildId: member.guild.id, inviteCode: invite.code },
+                                { $set: { uses: invite.uses, guildName: member.guild.name } },
+                                { upsert: true }
+                            );
+
+                            const inviter = invite.inviter;
+                            const trackingChannel = member.guild.channels.cache.get(channel);
+                            if (trackingChannel) {
+                                if (isEmbed) {
+                                    const trackerEmbed = await client.abilities.resultMessage(client, member, member.guild, message, invite, inviter);
+                                    trackingChannel.send({
+                                        content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '',
+                                        embeds: trackerEmbed ? [trackerEmbed] : [],
+                                    });
+                                } else {
+                                    const files = isCustomImage
+                                        ? await client.abilities.getBackgroundCustom(client, member, image)
+                                        : await client.abilities.getBackgroundNormal(client, member, image);
+                                    trackingChannel.send({
+                                        content: content ? await client.abilities.resultMessage(client, member, member.guild, content, invite, inviter) : '',
+                                        files: files ? [files] : [],
+                                    });
+                                }
+                            }
+
+                            break;
+                        }
+                    }
+
+                    for (const invite of currentInvites.values()) {
+                        await InviteSchema.updateOne(
+                            { guildId: member.guild.id, inviteCode: invite.code },
+                            { $set: { uses: invite.uses, guildName: member.guild.name } },
+                            { upsert: true }
+                        );
+                    }
+                } catch (error) {
+                    console.error(`Failed to fetch or update invites for guild ${member.guild.name}:`, error);
+                    if (error.code === 50013) {
+                        console.error('Missing Permissions: Ensure the bot has the Manage Server permission.');
+                    }
+                }
+            }
+
+            if (goodByeMessage && feature === 'goodbye-message') {
+                const { channel, content, message, image, isEmbed, isCustomImage } = goodByeMessage;
+                const goodbyeChannel = member.guild.channels.cache.get(channel);
+
+                if (goodbyeChannel){
+                    if(isEmbed) {
+                        const goodByeEmbed = await client.abilities.resultMessage(client, member, member.guild, message);
+                        goodbyeChannel.send({
+                            content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '',
+                            embeds: goodByeEmbed ? [goodByeEmbed] : []
+                        });
+                    } else {
+                        const files = isCustomImage
+                            ? await client.abilities.getBackgroundCustom(client, member, image)
+                            : await client.abilities.getBackgroundNormal(client, member, image);
+                        goodbyeChannel.send({ content: content ? await client.abilities.resultMessage(client, member, member.guild, content) : '', files: files ? [files] : [] });
+                    }
+                }
+            }
+
+        } catch (error) {
+            console.error('Error processing message:', error);
         }
     }
 
@@ -396,7 +579,15 @@ module.exports = class Ability {
         }
     }
 
-    static async getBackgroundImage(client, member, data) {
+    static async getBackgroundNormal(client, member, data) {
+        if (data.backgroundImage) {
+            return data.backgroundImage;
+        } else {
+            return 'https://i.imgur.com/fFqwcK2.gif';
+        }
+    }
+
+    static async getBackgroundCustom(client, member, data) {
         const width = 800; // Set canvas width
         const height = 450; // Set canvas height
 
