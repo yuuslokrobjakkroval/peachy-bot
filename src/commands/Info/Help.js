@@ -110,7 +110,7 @@ module.exports = class Help extends Command {
 
         const commandNames = categoryCommands.size > 0
             ? Array.from(categoryCommands.values())
-                .map(cmd => `- ${directoriesMessages[cmd.name] || cmd.name}: ${cmd.description.content}`) // Limit description to 100 chars
+                .map(cmd => `- ${directoriesMessages[cmd.name] || cmd.name}\n${cmd.description.content}`) // Limit description to 100 chars
                 .join('\n')
             : '𝑵𝒐 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.';
 
