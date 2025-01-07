@@ -476,6 +476,12 @@ module.exports = class Ability {
 
     static getReplacementData(member, guild, invite, inviter) {
         const accountCreationDate = moment(member.user.createdAt).fromNow();
+
+        const guildTotalBoosts = guild.premiumSubscriptionCount || 0;
+        const guildBoostLevel = guild.premiumTier || 0;
+        const boostsMissingForNext = [2, 7, 14][guildBoostLevel] - guildTotalBoosts || 0;
+        const nextBoostLevel = guildBoostLevel < 3 ? guildBoostLevel + 1 : "Max";
+
         return {
             // User Data
             userid: member.id,
@@ -499,6 +505,12 @@ module.exports = class Ability {
             guildbannerurl: guild.bannerURL(),
             guildmembercount: guild.memberCount,
             guildvanitycode: guild.vanityURLCode,
+
+            // Guild Boost Data
+            guildtotalboosts: guildTotalBoosts,
+            guildboostlevel: guildBoostLevel,
+            guildboostsmissingfornext: boostsMissingForNext >= 0 ? boostsMissingForNext : 0,
+            guildboostnextlevel: nextBoostLevel,
 
             // Invite Data
             invitecode: invite?.code || "N/A",
