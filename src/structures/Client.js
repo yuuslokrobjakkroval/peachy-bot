@@ -42,6 +42,8 @@ const emojiYunaYuna = require('../theme/YunaYuna/emojis');
 const emojiGhastlyGrins = require('../theme/GhastlyGrins/emojis');
 const emojiLoveBunnie = require('../theme/LoveBunnie/emojis');
 
+const emojiSeaCoral = require('../theme/SeaCoral/emojis');
+
 const Logger = require('./Logger');
 
 module.exports = class PeachyClient extends Client {
@@ -289,6 +291,10 @@ module.exports = class PeachyClient extends Client {
                     case 'st272':
                         color = themeConfig.loveBunnie.color;
                         emoji = emojiLoveBunnie;
+                        break;
+                    case 'st2111':
+                        color = themeConfig.seaCoral.color;
+                        emoji = emojiSeaCoral;
                         break;
 
                     case 'peach':

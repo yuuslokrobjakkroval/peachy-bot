@@ -117,7 +117,7 @@ const keoyuu = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xFFCFCF, none: 0x2B2D31 },
 };
 
-// PHY FOR SUPPORTER ( ST168 )
+// BOOSTER FOR SUPPORTER ( ST168 )
 const loveBunnie = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xEDB7C9, none: 0x2B2D31 },
 };
@@ -127,4 +127,9 @@ const ghastlyGrins = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xA294F9, none: 0x2B2D31 },
 };
 
-module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, festiveFrost, celestialGrace, sakuraSerenity, buzzingBliss, froggyFun, aSleepyPeach, magicalForest, matchaLatte, spiderMan, cucumberCool, cappuccinoCharm, nithGojo, yuna, yunayuna, quirkyQuackers, keoyuu, loveBunnie, ghastlyGrins }
+// REACH FOR SUPPORTER ( ST2111 )
+const seaCoral = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x577BC1, none: 0x2B2D31 },
+};
+
+module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, festiveFrost, celestialGrace, sakuraSerenity, buzzingBliss, froggyFun, aSleepyPeach, magicalForest, matchaLatte, spiderMan, cucumberCool, cappuccinoCharm, nithGojo, yuna, yunayuna, quirkyQuackers, keoyuu, loveBunnie, ghastlyGrins, seaCoral }

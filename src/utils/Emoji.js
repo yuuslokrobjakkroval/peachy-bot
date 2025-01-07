@@ -120,6 +120,8 @@ module.exports = {
         loveBunnie: '<:LBMAIN:1322580984645943306>',
 
         ghastlyGrins: '<:PHYYYMAIN:1317865867958157372>',
+
+        seaCoral: '<:SEAMAIN:1326152557143396392>',
     },
     // EXCHANGE
     heartMilk: '<:HEARTMILK:1290653998054903899>',

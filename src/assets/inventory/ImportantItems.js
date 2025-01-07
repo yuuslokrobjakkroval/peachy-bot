@@ -615,4 +615,21 @@ module.exports = [
         available: ['use'],
         price: { buy: 1e10, sell: 15e6 },
     },
+
+    // REACH
+    {
+        id: 'st2111',
+        name: 'Sea Coral',
+        description: 'Immerse yourself in the tranquil beauty of Sea Coral, where oceanic blues and delicate coral hues create a soothing, underwater escape. Perfect for those drawn to the peaceful elegance of the sea.',
+        type: 'special theme',
+        able: {
+            use: true,
+            gift: true,
+            multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.seaCoral,
+        available: ['use'],
+        price: { buy: 1e10, sell: 15e6 },
+    },
 ];
