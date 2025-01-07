@@ -76,7 +76,8 @@ module.exports = class Help extends Command {
             });
 
         const categoryOptions = categories.map((category) => ({
-          label: `${emoji.help[category.toLowerCase()] || ''} ${categoriesMessages[category.toLowerCase()] || category}`,
+          emoji: `${emoji.help[category.toLowerCase()] || ''}`,
+          label: `${categoriesMessages[category.toLowerCase()] || category}`,
           value: category.toLowerCase(),
           default: selectedItemIndex === category.toLowerCase(), // Only true if matched
         }));
@@ -136,7 +137,8 @@ module.exports = class Help extends Command {
             });
 
         const categoryOptions = categories.map((category) => ({
-          label: `${emoji.help[category.toLowerCase()] || ''} ${categoriesMessages[category.toLowerCase()] || category}`,
+          emoji: `${emoji.help[category.toLowerCase()] || ''}`,
+          label: `${categoriesMessages[category.toLowerCase()] || category}`,
           value: category.toLowerCase(),
           default: category.toLowerCase() === selectedCategory.toLowerCase(),
         }));
