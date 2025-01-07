@@ -9,7 +9,7 @@ module.exports = class Buy extends Command {
         super(client, {
             name: 'buy',
             description: {
-                content: 'Buy an item from the shop.',
+                content: '𝑩𝒖𝒚 𝒂𝒏 𝒊𝒕𝒆𝒎 𝒇𝒓𝒐𝒎 𝒕𝒉𝒆 𝒔𝒉𝒐𝒑.',
                 examples: ['buy f01'],
                 usage: 'buy <itemId>',
             },

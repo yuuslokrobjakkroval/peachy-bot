@@ -6,7 +6,7 @@ module.exports = class Kiss extends Command {
         super(client, {
             name: 'kiss',
             description: {
-                content: 'Sends a cute kiss anime action.',
+                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒄𝒖𝒕𝒆 𝒌𝒊𝒔𝒔 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
                 examples: ['kiss @user'],
                 usage: 'kiss <user>',
             },

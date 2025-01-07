@@ -5,7 +5,7 @@ module.exports = class Avatar extends Command {
     super(client, {
       name: "avatar",
       description: {
-        content: "Displays a user's avatar",
+        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒂 𝒖𝒔𝒆𝒓'𝒔 𝒂𝒗𝒂𝒕𝒂𝒓",
         examples: ["avatar @User"],
         usage: "avatar [@User]",
       },

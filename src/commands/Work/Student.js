@@ -9,7 +9,7 @@ module.exports = class StudentClaim extends Command {
         super(client, {
             name: 'student',
             description: {
-                content: 'Claim your student rewards by answering a quiz question. Can be claimed every 4 hours.',
+                content: '𝑪𝒍𝒂𝒊𝒎 𝒚𝒐𝒖𝒓 𝒔𝒕𝒖𝒅𝒆𝒏𝒕 𝒓𝒆𝒘𝒂𝒓𝒅𝒔 𝒃𝒚 𝒂𝒏𝒔𝒘𝒆𝒓𝒊𝒏𝒈 𝒂 𝒒𝒖𝒊𝒛 𝒒𝒖𝒆𝒔𝒕𝒊𝒐𝒏. 𝑪𝒂𝒏 𝒃𝒆 𝒄𝒍𝒂𝒊𝒎𝒆𝒅 𝒆𝒗𝒆𝒓𝒚 4 𝒉𝒐𝒖𝒓𝒔.',
                 examples: ['student'],
                 usage: 'student',
             },

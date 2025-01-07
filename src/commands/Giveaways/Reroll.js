@@ -11,7 +11,11 @@ module.exports = class Reroll extends Command {
     constructor(client) {
         super(client, {
             name: 'reroll',
-            description: 'Reroll the giveaway to pick new winners.',
+            description: {
+                content: '𝑹𝒆𝒓𝒐𝒍𝒍 𝒕𝒉𝒆 𝒈𝒊𝒗𝒆𝒂𝒘𝒂𝒚 𝒕𝒐 𝒑𝒊𝒄𝒌 𝒏𝒆𝒘 𝒘𝒊𝒏𝒏𝒆𝒓𝒔.',
+                examples: ['reroll messageId'],
+                usage: 'reroll <messageId>',
+            },
             category: 'giveaway',
             aliases: [],
             args: true,

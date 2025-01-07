@@ -8,7 +8,7 @@ module.exports = class Shop extends Command {
         super(client, {
             name: 'shop',
             description: {
-                content: 'View which items you can buy.',
+                content: '𝑽𝒊𝒆𝒘 𝒘𝒉𝒊𝒄𝒉 𝒊𝒕𝒆𝒎𝒔 𝒚𝒐𝒖 𝒄𝒂𝒏 𝒃𝒖𝒚.',
                 examples: ['shop'],
                 usage: 'shop',
             },

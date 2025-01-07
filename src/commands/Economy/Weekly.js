@@ -8,9 +8,9 @@ module.exports = class Weekly extends Command {
         super(client, {
             name: 'weekly',
             description: {
-                content: 'Earn some coins weekly.',
-                examples: ['weekly'],
-                usage: 'weekly',
+                content: '𝑬𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒔 𝒘𝒆𝒆𝒌𝒍𝒚.',
+                examples: ['𝒘𝒆𝒆𝒌𝒍𝒚'],
+                usage: '𝒘𝒆𝒆𝒌𝒍𝒚',
             },
             category: 'economy',
             aliases: ['week'],

@@ -6,9 +6,9 @@ module.exports = class Slap extends Command {
         super(client, {
             name: 'slap',
             description: {
-                content: 'Sends a playful slap to the mentioned user.',
-                examples: ['slap @User'],
-                usage: 'slap @User',
+                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒑𝒍𝒂𝒚𝒇𝒖𝒍 𝒔𝒍𝒂𝒑 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                examples: ['𝒔𝒍𝒂𝒑 @𝑼𝒔𝒆𝒓'],
+                usage: '𝒔𝒍𝒂𝒑 @𝑼𝒔𝒆𝒓',
             },
             category: 'actions',
             aliases: ['smack'],

@@ -1,11 +1,12 @@
 const Command = require('../../structures/Command.js');
+const { StringSelectMenuBuilder } = require('discord.js');
 
 module.exports = class Help extends Command {
   constructor(client) {
     super(client, {
       name: 'help',
       description: {
-        content: 'Displays the commands of the bot',
+        content: '𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒕𝒉𝒆 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒐𝒇 𝒕𝒉𝒆 𝒃𝒐𝒕',
         examples: ['help'],
         usage: 'help',
       },
@@ -41,55 +42,122 @@ module.exports = class Help extends Command {
     const helpMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages;
     const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
     const directoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.directoriesMessages;
-    const embed = client.embed();
     const prefix = client.config.prefix;
     const adminCategory = ['admin', 'dev', 'guild'];
-    const commands = client.commands.filter(cmd => !adminCategory.includes(cmd.category));
     let categories = ['actions', 'bank', 'economy', 'emotes', 'fun', 'gambling', 'games', 'giveaways', 'info', 'inventory', 'profile', 'rank', 'social', 'relationship', 'utility', 'work'];
+    const commands = client.commands.filter(cmd => !adminCategory.includes(cmd.category));
+    const selectedItemIndex = null;
+    // Message Options
 
     if (!args[0]) {
-      const sortedCommands = {};
-      categories.forEach(category => {
-        sortedCommands[category] = commands.filter(cmd => cmd.category.toLowerCase() === category.toLowerCase());
+      const messageOptions = () => {
+        const helpEmbed = client.embed()
+            .setColor(color.main)
+            .setDescription(
+                generalMessages.title
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{title}', "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
+                    .replace('%{mainRight}', emoji.mainRight) +
+                `${helpMessages.description} ***${prefix}help [command]***\n` +
+                `${helpMessages.examples} ***${prefix}help balance***\n\n` +
+                `${helpMessages.note}`
+            )
+            .addFields([{
+              name: `📚 __𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐄𝐒__`,
+              value: categories
+                  .map(category => `- ${emoji.help[category.toLowerCase()] || ''} ${categoriesMessages[category.toLowerCase()] || category}`)
+                  .join('\n'),
+              inline: false,
+            }])
+            .setImage(client.config.links.banner)
+            .setFooter({
+              text: helpMessages.footer,
+              iconURL: client.user.displayAvatarURL(),
+            });
+
+        const categoryOptions = categories.map((category) => ({
+          label: `${emoji.help[category.toLowerCase()] || ''} ${categoriesMessages[category.toLowerCase()] || category}`,
+          value: category.toLowerCase(),
+          default: selectedItemIndex === category.toLowerCase(), // Only true if matched
+        }));
+
+        const categorySelectButton = new StringSelectMenuBuilder()
+            .setCustomId('category_select')
+            .setPlaceholder('Select a category')
+            .addOptions(categoryOptions);
+
+        const row = client.utils.createButtonRow(categorySelectButton);
+
+        return {embeds: [helpEmbed], components: [row]};
+      };
+
+      // Send Help Message
+      const replyMessage = await (ctx.isInteraction
+          ? ctx.interaction.reply({...messageOptions(), fetchReply: true})
+          : ctx.channel.send({...messageOptions(), fetchReply: true}));
+
+      // Collector for Category Selection
+      const collector = replyMessage.createMessageComponentCollector({
+        filter: (interaction) => interaction.user.id === ctx.author.id,
+        time: 60000,
       });
 
-      const helpEmbed = embed
-          .setColor(color.main)
-          .setDescription(
-              generalMessages.title
-                  .replace('%{mainLeft}', emoji.mainLeft)
-                  .replace('%{title}', "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
-                  .replace('%{mainRight}', emoji.mainRight) +
-              `${helpMessages.description} ***${prefix}help [command]***\n` +
-              `${helpMessages.examples} ***${prefix}help balance***\n\n` +
-              `${helpMessages.note}`
-          )
-          .setImage(client.config.links.banner)
-          .setFooter({
-            text: helpMessages.footer,
-            iconURL: client.user.displayAvatarURL(),
-          });
+      collector.on('collect', async (interaction) => {
+        const selectedCategory = interaction.values[0];
+        const categoryCommands = commands
+            .filter(cmd => cmd.category.toLowerCase() === selectedCategory.toLowerCase());
 
-      for (const category in sortedCommands) {
-        if (Object.prototype.hasOwnProperty.call(sortedCommands, category)) {
-          const categoryCommands = sortedCommands[category];
-          const commandNames = categoryCommands.map(cmd => `\`${directoriesMessages[cmd.name] || cmd.name}\``).join(', ');
+        const commandNames = categoryCommands.size > 0
+            ? Array.from(categoryCommands.values())
+                .map(cmd => `- ${directoriesMessages[cmd.name] || cmd.name}: ${cmd.description.content}`) // Limit description to 100 chars
+                .join('\n')
+            : '𝑵𝒐 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.';
 
-          helpEmbed.addFields([{
-            name: `${emoji.help[category.toLowerCase()]} ${categoriesMessages[category.toLowerCase()] || category}`,
-            value: commandNames,
-            inline: false,
-          }]);
+        const selectedEmbed = client.embed()
+            .setColor(color.main)
+            .setDescription(
+                generalMessages.title
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{title}', "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
+                    .replace('%{mainRight}', emoji.mainRight) +
+                `${helpMessages.description} ***${prefix}help [command]***\n` +
+                `${helpMessages.examples} ***${prefix}help balance***\n\n` +
+                `${helpMessages.note}`
+            )
+            .addFields([{
+              name: `${emoji.help[selectedCategory.toLowerCase()] || ''} ${categoriesMessages[selectedCategory.toLowerCase()] || selectedCategory}`,
+              value: commandNames.length > 1024 ? commandNames.slice(0, 1021) + '...' : commandNames,
+              inline: false,
+            }])
+            .setImage(client.config.links.banner)
+            .setFooter({
+              text: helpMessages.footer,
+              iconURL: client.user.displayAvatarURL(),
+            });
 
-        }
-      }
+        const categoryOptions = categories.map((category) => ({
+          label: `${emoji.help[category.toLowerCase()] || ''} ${categoriesMessages[category.toLowerCase()] || category}`,
+          value: category.toLowerCase(),
+          default: category.toLowerCase() === selectedCategory.toLowerCase(),
+        }));
 
-      const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
-      const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
-      // const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
-      const row = client.utils.createButtonRow(supportButton, inviteButton);
+        const categorySelectMenu = new StringSelectMenuBuilder()
+            .setCustomId('category_select')
+            .setPlaceholder('Select a category')
+            .addOptions(categoryOptions);
 
-      await ctx.sendMessage({ embeds: [helpEmbed], components: [row], ephemeral: true });
+        const row = client.utils.createButtonRow(categorySelectMenu);
+
+        await interaction.update({
+          embeds: [selectedEmbed],
+          components: [row],
+        });
+      });
+
+      collector.on('end', () => {
+        replyMessage.edit({components: []}).catch(() => {
+        });
+      });
     } else {
       const command = client.commands.get(args[0].toLowerCase());
       if (!command)
@@ -97,7 +165,7 @@ module.exports = class Help extends Command {
           embeds: [client.embed().setColor(color.danger).setDescription(`${helpMessages.commandNotFound} \`${args[0]}\``)],
         });
 
-      const helpEmbed = embed
+      const helpEmbed = client.embed()
           .setColor(color.main)
           .setTitle(`${helpMessages.title} - ${command.name}`)
           .setDescription(command.description.content)
@@ -128,8 +196,7 @@ module.exports = class Help extends Command {
               inline: false,
             },
           ]);
-
-      await ctx.sendMessage({ embeds: [helpEmbed] });
+      await ctx.sendMessage({embeds: [helpEmbed]});
     }
   }
 };

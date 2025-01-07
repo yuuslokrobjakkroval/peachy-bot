@@ -5,9 +5,9 @@ module.exports = class Withdraw extends Command {
         super(client, {
             name: 'withdraw',
             description: {
-                content: 'Withdraw currency coins from your bank.',
-                examples: ['withdraw 100'],
-                usage: 'withdraw <amount>',
+                content: '𝑾𝒊𝒕𝒉𝒅𝒓𝒂𝒘 𝒄𝒖𝒓𝒓𝒆𝒏𝒄𝒚 𝒄𝒐𝒊𝒏𝒔 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.',
+                examples: ['𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 100'],
+                usage: '𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 <𝒂𝒎𝒐𝒖𝒏𝒕>',
             },
             category: 'bank',
             aliases: ['dokluy', 'with', 'dok'],

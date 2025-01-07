@@ -6,7 +6,7 @@ module.exports = class UserInfo extends Command {
     super(client, {
       name: "userinfo",
       description: {
-        content: "Displays information about a user",
+        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒊𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏 𝒂𝒃𝒐𝒖𝒕 𝒂 𝒖𝒔𝒆𝒓",
         examples: ["userinfo @User"],
         usage: "userinfo [@User]",
       },

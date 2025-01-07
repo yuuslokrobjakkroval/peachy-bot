@@ -6,7 +6,7 @@ module.exports = class Gender extends Command {
         super(client, {
             name: 'gender',
             description: {
-                content: 'Sets, resets, or shows your gender.',
+                content: '𝑺𝒆𝒕, 𝒓𝒆𝒔𝒆𝒕, 𝒐𝒓 𝒔𝒉𝒐𝒘 𝒚𝒐𝒖𝒓 𝒈𝒆𝒏𝒅𝒆𝒓.',
                 examples: [
                     'gender',
                     'gender male',

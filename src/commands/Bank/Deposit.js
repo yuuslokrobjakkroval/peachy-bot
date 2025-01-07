@@ -6,9 +6,9 @@ module.exports = class Deposit extends Command {
         super(client, {
             name: 'deposit',
             description: {
-                content: 'Deposit currency coins to your bank.',
-                examples: ['deposit 100'],
-                usage: 'deposit <amount>',
+                content: '𝑫𝒆𝒑𝒐𝒔𝒊𝒕 𝒄𝒖𝒓𝒓𝒆𝒏𝒄𝒚 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.',
+                examples: ['𝒅𝒆𝒑𝒐𝒔𝒊𝒕 100'],
+                usage: '𝒅𝒆𝒑𝒐𝒔𝒊𝒕 <𝒂𝒎𝒐𝒖𝒏𝒕>',
             },
             category: 'bank',
             aliases: ['dakluy', 'dak', 'dep'],

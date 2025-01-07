@@ -6,9 +6,9 @@ module.exports = class Hug extends Command {
         super(client, {
             name: 'hug',
             description: {
-                content: 'Sends a cute hug to the mentioned user.',
-                examples: ['hug @user'],
-                usage: 'hug @user',
+                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒄𝒖𝒕𝒆 𝒉𝒖𝒈 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                examples: ['𝒉𝒖𝒈 @𝒖𝒔𝒆𝒓'],
+                usage: '𝒉𝒖𝒈 @𝒖𝒔𝒆𝒓',
             },
             category: 'actions',
             aliases: [],

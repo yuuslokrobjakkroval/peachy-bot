@@ -6,7 +6,7 @@ module.exports = class Position extends Command {
         super(client, {
             name: 'position',
             description: {
-                content: 'Check your current work position.',
+                content: '𝑪𝒉𝒆𝒄𝒌 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒘𝒐𝒓𝒌 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏.',
                 examples: ['position'],
                 usage: 'position',
             },

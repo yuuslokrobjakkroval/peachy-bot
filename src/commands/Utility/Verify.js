@@ -9,7 +9,7 @@ module.exports = class Verify extends Command {
         super(client, {
             name: "verify",
             description: {
-                content: "Verify your account for $0.99/month.",
+                content: "𝑽𝒆𝒓𝒊𝒇𝒚 𝒚𝒐𝒖𝒓 𝒂𝒄𝒄𝒐𝒖𝒏𝒕 𝒇𝒐𝒓 $0.99/𝒎𝒐𝒏𝒕𝒉.",
                 examples: ["verify"],
                 usage: "verify",
             },

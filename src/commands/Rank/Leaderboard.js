@@ -5,14 +5,14 @@ module.exports = class Ranking extends Command {
         super(client, {
             name: 'leaderboard',
             description: {
-                embed: 'Check top coin, spent coin, and streak of peachy in your Discord guild and globally.',
+                embed: '𝑪𝒉𝒆𝒄𝒌 𝒕𝒐𝒑 𝒄𝒐𝒊𝒏, 𝒔𝒑𝒆𝒏𝒕 𝒄𝒐𝒊𝒏, 𝒂𝒏𝒅 𝒔𝒕𝒓𝒆𝒂𝒌 𝒐𝒇 𝒑𝒆𝒂𝒄𝒉𝒚 𝒊𝒏 𝒚𝒐𝒖𝒓 𝑫𝒊𝒔𝒄𝒐𝒓𝒅 𝒈𝒖𝒊𝒍𝒅 𝒂𝒏𝒅 𝒈𝒍𝒐𝒃𝒂𝒍𝒍𝒚.',
                 examples: ['leaderboard bal', 'leaderboard peach', 'leaderboard slots'],
                 usage: 'leaderboard bal\nrank bal\ntop bal\nlb bal',
             },
             category: 'rank',
             aliases: ['rank', 'top', 'lb'],
             cooldown: 3,
-            args: true,
+            args: false,
             permissions: {
                 dev: false,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],

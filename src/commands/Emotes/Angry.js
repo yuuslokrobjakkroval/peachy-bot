@@ -6,7 +6,7 @@ module.exports = class Angry extends Command {
         super(client, {
             name: 'angry',
             description: {
-                content: 'Show off your angriest expression with a fierce animation!',
+                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒚𝒐𝒖𝒓 𝒂𝒏𝒈𝒓𝒊𝒆𝒔𝒕 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏!',
                 examples: ['angry'],
                 usage: 'angry',
             },

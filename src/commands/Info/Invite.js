@@ -5,7 +5,7 @@ module.exports = class Invite extends Command {
     super(client, {
       name: "invite",
       description: {
-        content: "Sends the bot's invite link",
+        content: "𝑺𝒆𝒏𝒅𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒊𝒏𝒗𝒊𝒕𝒆 𝒍𝒊𝒏𝒌",
         examples: ["invite"],
         usage: "invite",
       },

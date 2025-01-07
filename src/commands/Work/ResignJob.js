@@ -6,7 +6,7 @@ module.exports = class ResignJob extends Command {
         super(client, {
             name: 'resignjob',
             description: {
-                content: 'Resign from your current job position.',
+                content: '𝑹𝒆𝒔𝒊𝒈𝒏 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒋𝒐𝒃 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏.',
                 examples: ['resignjob'],
                 usage: 'resignjob',
             },

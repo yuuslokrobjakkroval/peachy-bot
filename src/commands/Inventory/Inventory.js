@@ -9,7 +9,7 @@ module.exports = class Inventory extends Command {
         super(client, {
             name: 'inventory',
             description: {
-                content: 'Shows your inventory.',
+                content: '𝑺𝒉𝒐𝒘𝒔 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.',
                 examples: ['inventory'],
                 usage: 'inventory',
             },

@@ -8,9 +8,9 @@ module.exports = class Daily extends Command {
         super(client, {
             name: 'daily',
             description: {
-                content: 'Earn some coins daily.',
-                examples: ['daily'],
-                usage: 'daily',
+                content: '𝑬𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒔 𝒅𝒂𝒊𝒍𝒚.',
+                examples: ['𝒅𝒂𝒊𝒍𝒚'],
+                usage: '𝒅𝒂𝒊𝒍𝒚',
             },
             category: 'economy',
             aliases: ['daily'],

@@ -1,11 +1,6 @@
 const { Command } = require('../../structures');
 const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
-const ShopItems = require('../../assets/inventory/ShopItems');
-const moment = require("moment");
-const inventory = ShopItems.flatMap(shop => shop.inventory);
-const Wallpapers = inventory.filter(value => value.type === 'wallpaper');
-const Colors = inventory.filter(value => value.type === 'color');
 
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Roman.otf', 'Kelvinch-Roman');
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Bold.otf', 'Kelvinch-Bold');
@@ -16,7 +11,7 @@ module.exports = class Profile extends Command {
         super(client, {
             name: 'relationship',
             description: {
-                content: 'Shows the current XP, level, rank, and other details of a user',
+                content: '𝑺𝒉𝒐𝒘𝒔 𝒕𝒉𝒆 𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑 𝒃𝒆𝒕𝒘𝒆𝒆𝒏 𝒚𝒐𝒖 𝒂𝒏𝒅 𝒚𝒐𝒖𝒓 𝒑𝒂𝒓𝒕𝒏𝒆𝒓',
                 examples: ['profile @user'],
                 usage: 'profile <user>',
             },

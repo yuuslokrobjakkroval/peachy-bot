@@ -12,7 +12,7 @@ module.exports = class Language extends Command {
         super(client, {
             name: 'language',
             description: {
-                content: 'Manage your language settings or view your current language.',
+                content: '𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒔𝒆𝒕𝒕𝒊𝒏𝒈𝒔 𝒐𝒓 𝒗𝒊𝒆𝒘 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆.',
                 examples: [
                     'language show - Shows your current language.',
                     'language en - Sets your language to English.',

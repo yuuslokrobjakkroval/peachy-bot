@@ -6,7 +6,7 @@ module.exports = class Makeup extends Command {
         super(client, {
             name: 'makeup',
             description: {
-                content: 'Show off some makeup!',
+                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒔𝒐𝒎𝒆 𝒎𝒂𝒌𝒆𝒖𝒑!',
                 examples: ['makeup'],
                 usage: 'makeup',
             },

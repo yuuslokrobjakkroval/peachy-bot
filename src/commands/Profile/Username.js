@@ -6,7 +6,7 @@ module.exports = class Username extends Command {
         super(client, {
             name: 'username',
             description: {
-                content: 'set, reset, help, or shows your username.',
+                content: '𝑺𝒆𝒕, 𝒓𝒆𝒔𝒆𝒕, 𝒉𝒆𝒍𝒑, 𝒐𝒓 𝒔𝒉𝒐𝒘𝒔 𝒚𝒐𝒖𝒓 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆.',
                 examples: [
                     'username peachy',
                     'username reset',

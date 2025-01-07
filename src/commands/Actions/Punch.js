@@ -6,9 +6,9 @@ module.exports = class Punch extends Command {
         super(client, {
             name: 'punch',
             description: {
-                content: 'Throws a playful punch at the mentioned user.',
-                examples: ['punch @User'],
-                usage: 'punch @User',
+                content: '𝑻𝒉𝒓𝒐𝒘𝒔 𝒂 𝒑𝒍𝒂𝒚𝒇𝒖𝒍 𝒑𝒖𝒏𝒄𝒉 𝒂𝒕 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                examples: ['𝒑𝒖𝒏𝒄𝒉 @𝑼𝒔𝒆𝒓'],
+                usage: '𝒑𝒖𝒏𝒄𝒉 @𝑼𝒔𝒆𝒓',
             },
             category: 'actions',
             aliases: [],

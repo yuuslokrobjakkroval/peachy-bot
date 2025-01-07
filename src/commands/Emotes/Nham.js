@@ -6,7 +6,7 @@ module.exports = class Eat extends Command {
         super(client, {
             name: 'nham',
             description: {
-                content: 'Show off a feeling of eating!',
+                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒆𝒂𝒕𝒊𝒏𝒈!',
                 examples: ['nham'],
                 usage: 'nham',
             },

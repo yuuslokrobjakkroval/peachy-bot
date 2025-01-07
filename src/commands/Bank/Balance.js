@@ -6,9 +6,9 @@ module.exports = class Balance extends Command {
         super(client, {
             name: 'balance',
             description: {
-                content: 'Displays your balance and daily transfer/receive limits.',
-                examples: ['balance'],
-                usage: 'balance',
+                content: '𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒚𝒐𝒖𝒓 𝒃𝒂𝒍𝒂𝒏𝒄𝒆',
+                examples: ['𝒃𝒂𝒍𝒂𝒏𝒄𝒆'],
+                usage: '𝒃𝒂𝒍𝒂𝒏𝒄𝒆',
             },
             category: 'bank',
             aliases: ['bal', 'money', 'cash'],

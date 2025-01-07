@@ -6,7 +6,7 @@ module.exports = class Roar extends Command {
         super(client, {
             name: 'roar',
             description: {
-                content: 'Let out a mighty roar!',
+                content: '𝑳𝒆𝒕 𝒐𝒖𝒕 𝒂 𝒎𝒊𝒈𝒉𝒕𝒚 𝒓𝒐𝒂𝒓!',
                 examples: ['roar'],
                 usage: 'roar',
             },

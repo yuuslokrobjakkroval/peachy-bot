@@ -13,7 +13,7 @@ module.exports = class ServerInfo extends Command {
     super(client, {
       name: "serverinfo",
       description: {
-        content: "Displays information about the server",
+        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒊𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏 𝒂𝒃𝒐𝒖𝒕 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓",
         examples: ["serverinfo"],
         usage: "serverinfo",
       },

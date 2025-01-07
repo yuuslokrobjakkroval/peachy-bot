@@ -6,7 +6,7 @@ module.exports = class PlayGame extends Command {
         super(client, {
             name: 'playgame',
             description: {
-                content: 'Show an emote related to playing a game!',
+                content: '𝑺𝒉𝒐𝒘 𝒂𝒏 𝒆𝒎𝒐𝒕𝒆 𝒓𝒆𝒍𝒂𝒕𝒆𝒅 𝒕𝒐 𝒑𝒍𝒂𝒚𝒊𝒏𝒈 𝒂 𝒈𝒂𝒎𝒆!',
                 examples: ['playgame'],
                 usage: 'playgame',
             },

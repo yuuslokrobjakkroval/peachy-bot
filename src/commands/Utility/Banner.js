@@ -5,7 +5,7 @@ module.exports = class Banner extends Command {
         super(client, {
             name: "banner",
             description: {
-                content: "Displays a user's banner",
+                content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒂 𝒖𝒔𝒆𝒓'𝒔 𝒃𝒂𝒏𝒏𝒆𝒓",
                 examples: ["banner @User"],
                 usage: "banner [@User]",
             },

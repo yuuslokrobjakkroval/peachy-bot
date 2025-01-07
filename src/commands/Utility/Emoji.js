@@ -5,7 +5,7 @@ module.exports = class Emoji extends Command {
         super(client, {
             name: "emoji",
             description: {
-                content: "Generate an emoji image from the server",
+                content: "𝑮𝒆𝒏𝒆𝒓𝒂𝒕𝒆 𝒂𝒏 𝒆𝒎𝒐𝒋𝒊 𝒊𝒎𝒂𝒈𝒆 𝒇𝒓𝒐𝒎 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓",
                 examples: ["emoji :emoji:"],
                 usage: "emoji <emoji>",
             },

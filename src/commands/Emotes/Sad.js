@@ -6,7 +6,7 @@ module.exports = class Sad extends Command {
         super(client, {
             name: 'sad',
             description: {
-                content: 'Express a feeling of sadness.',
+                content: '𝑬𝒙𝒑𝒓𝒆𝒔𝒔 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒔𝒂𝒅𝒏𝒆𝒔𝒔.',
                 examples: ['sad'],
                 usage: 'sad',
             },

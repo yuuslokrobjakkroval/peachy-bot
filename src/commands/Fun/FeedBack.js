@@ -6,9 +6,9 @@ module.exports = class Feedback extends Command {
         super(client, {
             name: 'feedback',
             description: {
-                content: 'Submit feedback about the bot or list all submitted feedback.',
-                examples: ['feedback 5/10 not good', 'feedback list'],
-                usage: 'feedback <rating/10> <feedback> | feedback list',
+                content: '𝑺𝒖𝒃𝒎𝒊𝒕 𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌 𝒂𝒃𝒐𝒖𝒕 𝒕𝒉𝒆 𝒃𝒐𝒕.',
+                examples: ['𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌 5/10 𝒏𝒐𝒕 𝒈𝒐𝒐𝒅', '𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌 𝒍𝒊𝒔𝒕'],
+                usage: '𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌 <𝒓𝒂𝒕𝒊𝒏𝒈/10> <𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌> | 𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌 𝒍𝒊𝒔𝒕',
             },
             category: 'fun',
             aliases: ['suggestions', 'feedbacks', 'fbl'],

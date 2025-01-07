@@ -6,7 +6,7 @@ module.exports = class CheckInvites extends Command {
         super(client, {
             name: "invites",
             description: {
-                content: "Displays the total number of uses for all invites.",
+                content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒕𝒉𝒆 𝒕𝒐𝒕𝒂𝒍 𝒏𝒖𝒎𝒃𝒆𝒓 𝒐𝒇 𝒖𝒔𝒆𝒔 𝒇𝒐𝒓 𝒂𝒍𝒍 𝒊𝒏𝒗𝒊𝒕𝒆𝒔.",
                 examples: ["invites"],
                 usage: "invites",
             },

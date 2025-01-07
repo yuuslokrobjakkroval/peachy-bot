@@ -11,7 +11,7 @@ module.exports = class GiveawayShopItem extends Command {
         super(client, {
             name: 'giveawayshopitem',
             description: {
-                content: 'Start a shop item giveaway for food, drink, or themes, milk, ring in the shop.',
+                content: '𝑺𝒕𝒂𝒓𝒕 𝒂 𝒔𝒉𝒐𝒑 𝒊𝒕𝒆𝒎 𝒈𝒊𝒗𝒆𝒂𝒘𝒂𝒚 𝒇𝒐𝒓 𝒇𝒐𝒐𝒅, 𝒅𝒓𝒊𝒏𝒌, 𝒐𝒓 𝒕𝒉𝒆𝒎𝒆𝒔, 𝒎𝒊𝒍𝒌, 𝒓𝒊𝒏𝒈 𝒊𝒏 𝒕𝒉𝒆 𝒔𝒉𝒐𝒑.',
                 examples: ['giveawayshopitem 1h 1 food f01 5 true', 'giveawayshopitem 2h 3 drink d01 false @User #channel'],
                 usage: 'giveawayshopitem <duration> <winners> <type> <itemID> <amount> <image> <thumbnail> <autoadd> [host] [channel]',
             },

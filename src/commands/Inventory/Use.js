@@ -12,7 +12,7 @@ module.exports = class Use extends Command {
         super(client, {
             name: 'use',
             description: {
-                content: 'Use a theme, wallpaper, or color item to customize your profile.',
+                content: '𝑼𝒔𝒆 𝒂 𝒕𝒉𝒆𝒎𝒆, 𝒘𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓, 𝒐𝒓 𝒄𝒐𝒍𝒐𝒓 𝒊𝒕𝒆𝒎 𝒕𝒐 𝒄𝒖𝒔𝒕𝒐𝒎𝒊𝒛𝒆 𝒚𝒐𝒖𝒓 𝒑𝒓𝒐𝒇𝒊𝒍𝒆.',
                 examples: ['use t01', 'use w01'],
                 usage: 'use <itemId>',
             },

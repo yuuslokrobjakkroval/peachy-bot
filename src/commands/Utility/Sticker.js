@@ -5,7 +5,7 @@ module.exports = class Sticker extends Command {
         super(client, {
             name: "sticker",
             description: {
-                content: "Generate an image of a sticker from the server",
+                content: "𝑮𝒆𝒏𝒆𝒓𝒂𝒕𝒆 𝒂𝒏 𝒊𝒎𝒂𝒈𝒆 𝒐𝒇 𝒂 𝒔𝒕𝒊𝒄𝒌𝒆𝒓 𝒇𝒓𝒐𝒎 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓",
                 examples: ["sticker :sticker:"],
                 usage: "sticker <sticker>",
             },

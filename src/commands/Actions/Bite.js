@@ -6,9 +6,9 @@ module.exports = class Bite extends Command {
         super(client, {
             name: 'bite',
             description: {
-                content: 'Playfully bites the mentioned user.',
-                examples: ['bite @User'],
-                usage: 'bite @User',
+                content: '𝑷𝒍𝒂𝒚𝒇𝒖𝒍𝒍𝒚 𝒃𝒊𝒕𝒆𝒔 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                examples: ['𝒃𝒊𝒕𝒆 @𝑼𝒔𝒆𝒓'],
+                usage: '𝒃𝒊𝒕𝒆 @𝑼𝒔𝒆𝒓',
             },
             category: 'actions',
             aliases: [],

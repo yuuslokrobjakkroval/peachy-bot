@@ -8,7 +8,7 @@ module.exports = class CatchThief extends Command {
         super(client, {
             name: 'police',
             description: {
-                content: 'Police can catch thieves who have successfully robbed someone.',
+                content: '𝑷𝒐𝒍𝒊𝒄𝒆 𝒄𝒂𝒏 𝒄𝒂𝒕𝒄𝒉 𝒕𝒉𝒊𝒆𝒗𝒆𝒔 𝒘𝒉𝒐 𝒉𝒂𝒗𝒆 𝒔𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒓𝒐𝒃𝒃𝒆𝒅 𝒔𝒐𝒎𝒆𝒐𝒏𝒆.',
                 examples: ['police @username'],
                 usage: 'police <user>',
             },

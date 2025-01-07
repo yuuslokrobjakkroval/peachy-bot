@@ -10,7 +10,7 @@ module.exports = class Slots extends Command {
 		super(client, {
 			name: 'slots',
 			description: {
-				content: 'Bet your money in the slot machine! Earn up to 10x your money.',
+				content: '𝑩𝒆𝒕 𝒚𝒐𝒖𝒓 𝒎𝒐𝒏𝒆𝒚 𝒊𝒏 𝒕𝒉𝒆 𝒔𝒍𝒐𝒕 𝒎𝒂𝒄𝒉𝒊𝒏𝒆!',
 				examples: ['slots 100'],
 				usage: 'slots <baseCoins>',
 			},

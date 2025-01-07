@@ -6,7 +6,7 @@ module.exports = class Theme extends Command {
         super(client, {
             name: 'theme',
             description: {
-                content: 'Toggle between peach, goma, and normal themes or view your current theme setting.',
+                content: '𝑻𝒐𝒈𝒈𝒍𝒆 𝒃𝒆𝒕𝒘𝒆𝒆𝒏 𝒑𝒆𝒂𝒄𝒉, 𝒈𝒐𝒎𝒂, 𝒂𝒏𝒅 𝒏𝒐𝒓𝒎𝒂𝒍 𝒕𝒉𝒆𝒎𝒆𝒔 𝒐𝒓 𝒗𝒊𝒆𝒘 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒕𝒉𝒆𝒎𝒆 𝒔𝒆𝒕𝒕𝒊𝒏𝒈.',
                 examples: [
                     'theme show - Shows your current theme.',
                     'theme normal - Sets your theme to normal.',

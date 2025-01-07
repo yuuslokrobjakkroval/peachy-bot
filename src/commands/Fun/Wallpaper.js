@@ -9,7 +9,7 @@ module.exports = class Wallpaper extends Command {
         super(client, {
             name: 'wallpaper',
             description: {
-                content: 'View and select wallpapers for PC or Phone.',
+                content: '𝑽𝒊𝒆𝒘 𝒘𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓𝒔 𝒇𝒐𝒓 𝑷𝑪 𝒐𝒓 𝑷𝒉𝒐𝒏𝒆.',
                 examples: ['wallpaper'],
                 usage: 'wallpaper',
             },

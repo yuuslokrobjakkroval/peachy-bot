@@ -6,7 +6,7 @@ module.exports = class Ping extends Command {
     super(client, {
       name: "ping",
       description: {
-        content: "Shows the bot's ping",
+        content: "𝑺𝒉𝒐𝒘𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒑𝒊𝒏𝒈",
         examples: ["ping"],
         usage: "ping",
       },

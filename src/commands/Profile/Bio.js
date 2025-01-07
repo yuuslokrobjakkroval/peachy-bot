@@ -6,7 +6,7 @@ module.exports = class Bio extends Command {
         super(client, {
             name: 'bio',
             description: {
-                content: 'Sets, resets, or shows your profile bio.',
+                content: '𝑺𝒆𝒕, 𝒓𝒆𝒔𝒆𝒕, 𝒐𝒓 𝒔𝒉𝒐𝒘 𝒚𝒐𝒖𝒓 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒃𝒊𝒐.',
                 examples: [
                     'bio I love coding',
                     'bio reset',

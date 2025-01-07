@@ -5,7 +5,7 @@ module.exports = class Clear extends Command {
         super(client, {
             name: "clear",
             description: {
-                content: "Clear a specified number of messages",
+                content: "𝑪𝒍𝒆𝒂𝒓 𝒂 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅 𝒏𝒖𝒎𝒃𝒆𝒓 𝒐𝒇 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔",
                 examples: ["clear 10", "clear 250"],
                 usage: "clear <number>",
             },

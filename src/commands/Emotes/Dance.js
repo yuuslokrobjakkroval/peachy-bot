@@ -6,7 +6,7 @@ module.exports = class Dance extends Command {
         super(client, {
             name: 'dance',
             description: {
-                content: 'Shows off some dance moves!',
+                content: '𝑺𝒉𝒐𝒘𝒔 𝒐𝒇𝒇 𝒔𝒐𝒎𝒆 𝒅𝒂𝒏𝒄𝒆 𝒎𝒐𝒗𝒆𝒔!',
                 examples: ['dance'],
                 usage: 'dance',
             },

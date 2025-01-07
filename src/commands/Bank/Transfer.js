@@ -7,9 +7,9 @@ module.exports = class Transfer extends Command {
         super(client, {
             name: "transfer",
             description: {
-                content: "Transfer coins to another user.",
-                examples: ["transfer @user 100", "transfer all"],
-                usage: "transfer <user> [amount]",
+                content: "𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒖𝒔𝒆𝒓.",
+                examples: ["𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 @𝒖𝒔𝒆𝒓 100", "𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒂𝒍𝒍"],
+                usage: "𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 <𝒖𝒔𝒆𝒓> [𝒂𝒎𝒐𝒖𝒏𝒕]",
             },
             category: "bank",
             aliases: ["pay", "give", "oy", "t"],

@@ -5,7 +5,7 @@ module.exports = class Rules extends Command {
     super(client, {
       name: "rules",
       description: {
-        content: "Displays the rules for using the bot",
+        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒕𝒉𝒆 𝒓𝒖𝒍𝒆𝒔 𝒇𝒐𝒓 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒆 𝒃𝒐𝒕",
         examples: ["rules"],
         usage: "rules",
       },

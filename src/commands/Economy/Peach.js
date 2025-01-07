@@ -8,9 +8,9 @@ module.exports = class Peachy extends Command {
         super(client, {
             name: 'peach',
             description: {
-                content: 'Earn some coins by being peachy.',
-                examples: ['peach'],
-                usage: 'peach',
+                content: '𝑬𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒔 𝒃𝒚 𝒃𝒆𝒊𝒏𝒈 𝒑𝒆𝒂𝒄𝒉.',
+                examples: ['𝒑𝒆𝒂𝒄𝒉'],
+                usage: '𝒑𝒆𝒂𝒄𝒉',
             },
             category: 'economy',
             aliases: ['each', 'each', 'p'],

@@ -6,7 +6,7 @@ module.exports = class Coinflip extends Command {
         super(client, {
             name: 'coinflip',
             description: {
-                content: "Flip a coin and let's see who's the lucky one after!",
+                content: "𝑭𝒍𝒊𝒑 𝒂 𝒄𝒐𝒊𝒏 𝒂𝒏𝒅 𝒍𝒆𝒕'𝒔 𝒔𝒆𝒆 𝒘𝒉𝒐'𝒔 𝒕𝒉𝒆 𝒍𝒖𝒄𝒌𝒚",
                 examples: ['coinflip 100 peach', 'coinflip 100 goma'],
                 usage: 'coinflip <amount> <choice>',
             },

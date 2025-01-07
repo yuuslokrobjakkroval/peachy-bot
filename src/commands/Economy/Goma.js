@@ -8,9 +8,9 @@ module.exports = class Goma extends Command {
         super(client, {
             name: 'goma',
             description: {
-                content: 'Earn some coins by being goma.',
-                examples: ['goma'],
-                usage: 'goma',
+                content: '𝑬𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒔 𝒃𝒚 𝒃𝒆𝒊𝒏𝒈 𝒈𝒐𝒎𝒂.',
+                examples: ['𝒈𝒐𝒎𝒂'],
+                usage: '𝒈𝒐𝒎𝒂',
             },
             category: 'economy',
             aliases: ['g'],

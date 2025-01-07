@@ -6,9 +6,9 @@ module.exports = class Loung extends Command {
         super(client, {
             name: 'loung',
             description: {
-                content: 'Sends a cute emoji loung to the mentioned user.',
-                examples: ['loung @User'],
-                usage: 'loung @User',
+                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒄𝒖𝒕𝒆 𝒆𝒎𝒐𝒋𝒊 𝒍𝒐𝒖𝒏𝒈 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                examples: ['𝒍𝒐𝒖𝒏𝒈 @𝑼𝒔𝒆𝒓'],
+                usage: '𝒍𝒐𝒖𝒏𝒈 @𝑼𝒔𝒆𝒓',
             },
             category: 'actions',
             aliases: [],

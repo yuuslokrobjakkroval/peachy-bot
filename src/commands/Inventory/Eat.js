@@ -7,7 +7,7 @@ module.exports = class Eat extends Command {
         super(client, {
             name: 'eat',
             description: {
-                content: 'Eat a food item to gain XP.',
+                content: '𝑬𝒂𝒕 𝒂 𝒇𝒐𝒐𝒅 𝒊𝒕𝒆𝒎 𝒕𝒐 𝒈𝒂𝒊𝒏 𝑿𝑷.',
                 examples: ['eat f01 1'],
                 usage: 'eat <item> <amount>',
             },

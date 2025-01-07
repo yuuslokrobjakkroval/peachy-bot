@@ -10,7 +10,7 @@ module.exports = class Sell extends Command {
         super(client, {
             name: 'sell',
             description: {
-                content: 'Sell an item from your inventory.',
+                content: '𝑺𝒆𝒍𝒍 𝒂𝒏 𝒊𝒕𝒆𝒎 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.',
                 examples: ['sell coal', 'sell all'],
                 usage: 'sell <item_id>',
             },

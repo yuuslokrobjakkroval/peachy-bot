@@ -6,7 +6,7 @@ module.exports = class Happy extends Command {
         super(client, {
             name: 'happy',
             description: {
-                content: 'Show off a feeling of happiness!',
+                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒉𝒂𝒑𝒑𝒊𝒏𝒆𝒔𝒔!',
                 examples: ['happy'],
                 usage: 'happy',
             },

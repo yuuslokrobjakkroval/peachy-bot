@@ -9,7 +9,7 @@ module.exports = class ShopInfo extends Command {
         super(client, {
             name: 'shopinfo',
             description: {
-                content: 'Display detailed information about a shop item or list all items sorted by type.',
+                content: '𝑫𝒊𝒔𝒑𝒍𝒂𝒚 𝒅𝒆𝒕𝒂𝒊𝒍𝒆𝒅 𝒊𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏 𝒂𝒃𝒐𝒖𝒕 𝒂 𝒔𝒉𝒐𝒑 𝒊𝒕𝒆𝒎 𝒐𝒓 𝒍𝒊𝒔𝒕 𝒂𝒍𝒍 𝒊𝒕𝒆𝒎𝒔 𝒔𝒐𝒓𝒕𝒆𝒅 𝒃𝒚 𝒕𝒚𝒑𝒆.',
                 examples: ['shopinfo <id>', 'shopinfo list'],
                 usage: 'shopinfo <id | list>',
             },

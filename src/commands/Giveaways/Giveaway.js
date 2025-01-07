@@ -8,7 +8,7 @@ module.exports = class Start extends Command {
         super(client, {
             name: 'giveaway',
             description: {
-                content: 'Start a giveaway with a specified duration, number of winners, and prize.',
+                content: '𝑺𝒕𝒂𝒓𝒕 𝒂 𝒈𝒊𝒗𝒆𝒂𝒘𝒂𝒚 𝒘𝒊𝒕𝒉 𝒂 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅 𝒅𝒖𝒓𝒂𝒕𝒊𝒐𝒏, 𝒏𝒖𝒎𝒃𝒆𝒓 𝒐𝒇 𝒘𝒊𝒏𝒏𝒆𝒓𝒔, 𝒂𝒏𝒅 𝒑𝒓𝒊𝒛𝒆.',
                 examples: ['giveaway 1h 2 1000 true'],
                 usage: 'giveaway <duration> <winners> <prize> <autopay> <image> <thumbnail>',
             },

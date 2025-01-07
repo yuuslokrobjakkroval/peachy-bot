@@ -8,7 +8,7 @@ module.exports = class Drink extends Command {
         super(client, {
             name: 'drink',
             description: {
-                content: 'Drink an item to gain XP.',
+                content: '𝑫𝒓𝒊𝒏𝒌 𝒂𝒏 𝒊𝒕𝒆𝒎 𝒕𝒐 𝒈𝒂𝒊𝒏 𝑿𝑷.',
                 examples: ['drink tembo 1'],
                 usage: 'drink <item> <amount>',
             },

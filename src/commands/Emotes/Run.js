@@ -6,7 +6,7 @@ module.exports = class Run extends Command {
         super(client, {
             name: 'run',
             description: {
-                content: 'Let out a mighty run!',
+                content: '𝑳𝒆𝒕 𝒐𝒖𝒕 𝒂 𝒎𝒊𝒈𝒉𝒕𝒚 𝒓𝒖𝒏!',
                 examples: ['run'],
                 usage: 'run',
             },

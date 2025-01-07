@@ -16,7 +16,7 @@ module.exports = class Profile extends Command {
         super(client, {
             name: 'profile',
             description: {
-                content: 'Shows the current XP, level, rank, and other details of a user',
+                content: '𝑺𝒉𝒐𝒘 𝒕𝒉𝒆 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝑿𝑷, 𝒍𝒆𝒗𝒆𝒍, 𝒓𝒂𝒏𝒌, 𝒂𝒏𝒅 𝒐𝒕𝒉𝒆𝒓 𝒅𝒆𝒕𝒂𝒊𝒍𝒔 𝒐𝒇 𝒂 𝒖𝒔𝒆𝒓',
                 examples: ['profile @user'],
                 usage: 'profile <user>',
             },

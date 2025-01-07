@@ -6,7 +6,7 @@ module.exports = class Shy extends Command {
         super(client, {
             name: 'shy',
             description: {
-                content: 'Show off a shy expression with a cute animation!',
+                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒂 𝒔𝒉𝒚 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏 𝒘𝒊𝒕𝒉 𝒂 𝒄𝒖𝒕𝒆 𝒂𝒏𝒊𝒎𝒂𝒕𝒊𝒐𝒏!',
                 examples: ['shy'],
                 usage: 'shy',
             },

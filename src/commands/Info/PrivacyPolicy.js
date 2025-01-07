@@ -5,7 +5,7 @@ module.exports = class PrivacyPolicy extends Command {
     super(client, {
       name: "privacy",
       description: {
-        content: "Displays the bot's privacy policy",
+        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒑𝒓𝒊𝒗𝒂𝒄𝒚 𝒑𝒐𝒍𝒊𝒄𝒚",
         examples: ["privacy"],
         usage: "privacy",
       },

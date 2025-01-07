@@ -9,7 +9,7 @@ module.exports = class Cmd extends Command {
         super(client, {
             name: 'blackjack',
             description: {
-                content: '',
+                content: '𝑩𝒆𝒕 𝒂𝒏 𝒂𝒎𝒐𝒖𝒏𝒕 𝒂𝒏𝒅 𝒕𝒓𝒚 𝒕𝒐 𝒈𝒆𝒕 𝒄𝒍𝒐𝒔𝒆𝒓 𝒕𝒐 21.',
                 examples: ['blackjack 100'],
                 usage: 'blackjack <amount>',
             },

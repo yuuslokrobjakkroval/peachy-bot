@@ -6,7 +6,7 @@ module.exports = class ApplyJob extends Command {
         super(client, {
             name: 'applyjob',
             description: {
-                content: 'Apply for a job with one of the five available positions.',
+                content: '𝑨𝒑𝒑𝒍𝒚 𝒇𝒐𝒓 𝒂 𝒋𝒐𝒃 𝒘𝒊𝒕𝒉 𝒐𝒏𝒆 𝒐𝒇 𝒕𝒉𝒆 𝒇𝒊𝒗𝒆 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏𝒔.',
                 examples: ['applyjob Police', 'applyjob IT', 'applyjob Doctor', 'applyjob Teacher', 'applyjob Engineer'],
                 usage: 'applyjob <position>',
             },

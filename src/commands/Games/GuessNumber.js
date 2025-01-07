@@ -5,7 +5,7 @@ module.exports = class GuessNumber extends Command {
         super(client, {
             name: 'guessnumber',
             description: {
-                content: 'Guess the number game. Try to guess the number between 1 and 100.',
+                content: '𝑻𝒓𝒚 𝒕𝒐 𝒈𝒖𝒆𝒔𝒔 𝒕𝒉𝒆 𝒏𝒖𝒎𝒃𝒆𝒓 𝒃𝒆𝒕𝒘𝒆𝒆𝒏 1 𝒂𝒏𝒅 100.',
                 examples: ['guessnumber'],
                 usage: 'guessnumber',
             },

@@ -10,7 +10,7 @@ module.exports = class GiveItem extends Command {
         super(client, {
             name: 'giveitem',
             description: {
-                content: 'Give your item to another user.',
+                content: '𝑮𝒊𝒗𝒆 𝒚𝒐𝒖𝒓 𝒊𝒕𝒆𝒎 𝒕𝒐 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒖𝒔𝒆𝒓.',
                 examples: ['giveitem @user gem 1', 'gi @user gem 1'],
                 usage: 'give <user> <item> <amount>, gi <user> <item> <amount>',
             },

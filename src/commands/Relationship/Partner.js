@@ -6,7 +6,7 @@ module.exports = class Partner extends Command {
         super(client, {
             name: 'partner',
             description: {
-                content: 'Manage your partner relationship.',
+                content: '𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝒑𝒂𝒓𝒕𝒏𝒆𝒓 𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑.',
                 examples: [
                     'partner add @user - Adds the mentioned user as your partner.',
                     'partner remove @user - Removes the mentioned user from your partner slot.'
