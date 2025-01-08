@@ -179,6 +179,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
     collector.on('collect', async int => {
         try {
             const buttonCost = betCoin;
+            const totalBet = buttonCost * selectedButton.length;
             const maxSelectable = Math.floor(userCoin / buttonCost);
             if (int.customId !== 'cancel' && int.customId !== 'clear' && int.customId !== 'start') {
                 const selected = [...firstRow.components, ...secondRow.components].find(b => b.data.custom_id === int.customId);
@@ -193,10 +194,14 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                             ephemeral: true,
                         });
                     }
+                    user.balance.coin -= buttonCost;
+                    await user.save();
                     selectedButton.push(int.customId);
                     selected.setStyle(1);
                 } else {
                     selectedButton.splice(selectedButton.indexOf(int.customId), 1);
+                    user.balance.coin += buttonCost;
+                    await user.save();
                     selected.setStyle(2);
 
                 }
@@ -204,6 +209,8 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                 msg.edit({components: [firstRow, secondRow]});
             } else if (int.customId === 'cancel') {
                 selectedButton = [];
+                user.balance.coin += totalBet;
+                await user.save();
                 msg.delete();
             } else if (int.customId === 'clear') {
                 selectedButton = [];
@@ -212,6 +219,8 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                         button.setStyle(2);
                     }
                 });
+                user.balance.coin += totalBet;
+                await user.save();
                 await int.deferUpdate();
                 msg.edit({components: [firstRow, secondRow]});
             }  else if (int.customId === 'start') {
@@ -259,9 +268,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                     if (selectedButton.includes(G2)) winKK += 1;
                     if (selectedButton.includes(G3)) winKK += 1;
 
-                    const totalBet = betCoin * selectedButton.length;
                     let winCash = 0;
-
                     if (winKK > 0) {
                         // Handle Win
                         if (selectedButton.length === 1) {
@@ -300,8 +307,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                         await msg.edit({embeds: [embed], components: [], files: [attachment]});
                     } else {
                         // Handle Lose
-                        userCoin -= totalBet;
-                        user.balance.coin = userCoin;
+                        user.balance.klaklouk += totalBet;
                         user.validation.isKlaKlouk = false;
                         await user.save();
 
