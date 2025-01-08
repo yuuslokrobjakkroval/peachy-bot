@@ -159,6 +159,10 @@ const userSchema = new Schema({
         coinflip: { type: Number, default: 0 },
         klaklouk: { type: Number, default: 0 },
     },
+    validation: {
+        isMultiTransfer: { type: Boolean, default: false },
+        isKlaKlouk: { type: Boolean, default: false },
+    },
     peachy: {
         streak: { type: Number, default: 0 }
     },

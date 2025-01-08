@@ -1,0 +1,98 @@
+const { Command } = require('../../structures/index.js');
+const kkUtil = require("../../utils/KlaKloukUtil");
+
+const maxAmount = 300000;
+
+module.exports = class KlaKlouk extends Command {
+    constructor(client) {
+        super(client, {
+            name: 'klaklouk',
+            description: {
+                content: '𝑷𝒍𝒂𝒚 𝒕𝒉𝒆 𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌 𝒈𝒂𝒎𝒆 𝒂𝒏𝒅 𝒔𝒆𝒆 𝒊𝒇 𝒚𝒐𝒖 𝒄𝒂𝒏 𝒘𝒊𝒏!',
+                examples: ['kk 1000'],
+                usage: 'kk <amount>',
+            },
+            category: 'gambling',
+            aliases: ['kk'],
+            cooldown: 4,
+            args: true,
+            permissions: {
+                dev: false,
+                client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
+                user: [],
+            },
+            slashCommand: true,
+            options: [
+                {
+                    name: 'amount',
+                    description: 'The amount you want to bet.',
+                    type: 3,
+                    required: true,
+                },
+                // {
+                //     name: 'player',
+                //     description: 'The amount you want to play together.',
+                //     type: 4,
+                //     required: false,
+                // },
+                // {
+                //     name: "user",
+                //     description: "The user to get for reset game",
+                //     type: 6,
+                //     required: false,
+                // },
+            ],
+        });
+    }
+
+    async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const klaKloukMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.klaKloukMessages;
+        try {
+            client.utils.getUser(ctx.author.id).then(user => {
+                const { coin } = user.balance;
+
+                if (coin < 1) {
+                    return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
+                }
+
+                let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
+
+                if (amount.toString().startsWith('-')) {
+                    return ctx.sendMessage({
+                        embeds: [
+                            client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount)
+                        ],
+                    });
+                }
+
+                if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
+                    const amountMap = {all: coin, half: Math.ceil(coin / 2)};
+                    if (amount in amountMap) {
+                        amount = amountMap[amount];
+                    } else {
+                        return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
+                    }
+                }
+
+                const betCoins = parseInt(Math.min(amount, coin, maxAmount));
+                // let player = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
+
+                // if (player > 1) {
+                //     const startEmbed = client.embed()
+                //         .setColor(color.main)
+                //         .setDescription(
+                //             generalMessages.title
+                //                 .replace('%{mainLeft}', emoji.mainLeft)
+                //                 .replace('%{title}', klaKloukMessages.title)
+                //                 .replace('%{mainRight}', emoji.mainRight) +
+                //             klaKloukMessages.waiting.replace('%{player}', ctx.author.displayName))
+                // } else {
+                return kkUtil.klakloukStarting(client, ctx, color, emoji, user, coin, betCoins, generalMessages, klaKloukMessages)
+                // }
+            })
+        } catch (error) {
+            console.error(error);
+        }
+    }
+};

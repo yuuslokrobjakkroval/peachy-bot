@@ -32,7 +32,7 @@ const kkImage= {
 
 exports.klakloukStarting = klakloukStarting;
 
-async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCoin, generalMessages, klaKloukMessages, activeGames) {
+async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCoin, generalMessages, klaKloukMessages) {
     const startEmbed = client.embed()
             .setColor(color.main)
             .setDescription(
@@ -204,7 +204,6 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                 msg.edit({components: [firstRow, secondRow]});
             } else if (int.customId === 'cancel') {
                 selectedButton = [];
-                activeGames.delete(ctx.author.id);
                 msg.delete();
             } else if (int.customId === 'clear') {
                 selectedButton = [];
@@ -279,6 +278,7 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                         userCoin += winCash - totalBet;
                         user.balance.coin = userCoin;
                         user.balance.klaklouk += totalBet;
+                        user.validation.isKlaKlouk = false;
                         await user.save();
 
                         const embed = client.embed()
@@ -297,12 +297,12 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                                 text: `${generalMessages.gameOver.replace('%{user}', ctx.author.displayName)}`,
                                 iconURL: ctx.author.displayAvatarURL(),
                             });
-                        activeGames.delete(ctx.author.id);
                         await msg.edit({embeds: [embed], components: [], files: [attachment]});
                     } else {
                         // Handle Lose
                         userCoin -= totalBet;
                         user.balance.coin = userCoin;
+                        user.validation.isKlaKlouk = false;
                         await user.save();
 
                         const embed = client.embed()
@@ -321,8 +321,6 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
                                 text: `${generalMessages.gameOver.replace('%{user}', ctx.author.displayName)}`,
                                 iconURL: ctx.author.displayAvatarURL(),
                             });
-
-                        activeGames.delete(ctx.author.id);
                         await msg.edit({embeds: [embed], components: [], files: [attachment]});
                     }
                 }
@@ -334,7 +332,6 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
 
     collector.on('end', async collected => {
         if (collected.size === 0) {
-            activeGames.delete(ctx.author.id);
             const embed = client.embed()
                 .setColor(color.warning)
                 .setDescription(

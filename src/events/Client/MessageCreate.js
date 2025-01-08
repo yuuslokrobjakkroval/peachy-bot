@@ -14,7 +14,7 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-    this.client.setColorBasedOnTheme(message.author.id).then(({user, color, emoji, language}) => {
+    this.client.setColorBasedOnTheme(message.author.id).then(async ({user, color, emoji, language}) => {
       const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
       const prefix = this.client.config.prefix;
       this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
@@ -343,6 +343,8 @@ module.exports = class MessageCreate extends Event {
                 content: language.noEveryoneOrHereUsage, // Use language file for message
               });
             }
+
+            await this.client.utils.getValidationUser(this.client, message, user, color, emoji, command);
 
             const balanceCommands = ['balance', 'deposit', 'withdraw', 'multitransfer', 'transfer', 'buy', 'sell'];
             const gamblingCommands = ['slots', 'blackjack', 'coinflip', 'klaklouk'];

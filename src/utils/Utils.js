@@ -26,7 +26,7 @@ module.exports = class Utils {
         return Math.floor(base * Math.pow(scalingFactor, level - 1));
     }
 
-    static getCheckingUser(client, message, user, color, emoji,  prefix) {
+    static getCheckingUser(client, message, user, color, emoji, prefix) {
         const congratulations = [emoji.congratulation, emoji.peachCongratulation, emoji.gomaCongratulation];
         if (user) {
             const now = Date.now();
@@ -91,6 +91,26 @@ module.exports = class Utils {
                     console.error("Error saving user data:", err);
                 });
             }
+        }
+    }
+
+    static async getValidationUser(client, message, user, color, emoji, command) {
+        let updateField;
+        switch (command.name) {
+            case 'klaklouk':
+                updateField = { 'validation.isKlaKlouk': true };
+                break;
+            case 'multitransfer':
+                updateField = { 'validation.isMultiTransfer': true };
+                break;
+            default:
+                return;
+        }
+        if(updateField) {
+            await Users.updateOne(
+                {userId: user.userId},
+                { $set: updateField }
+            );
         }
     }
 
