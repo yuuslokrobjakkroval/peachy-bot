@@ -106,7 +106,7 @@ module.exports = class Utils {
             default:
                 return;
         }
-        if(updateField) {
+        if (updateField) {
             await Users.updateOne(
                 {userId: user.userId},
                 { $set: updateField }

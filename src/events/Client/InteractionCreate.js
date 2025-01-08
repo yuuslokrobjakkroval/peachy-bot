@@ -150,6 +150,8 @@ module.exports = class InteractionCreate extends Event {
             }
           }
 
+          await this.client.utils.getValidationUser(this.client, interaction, user, color, emoji, interaction.commandName);
+
           const balanceCommands = ['balance', 'deposit', 'withdraw', 'multitransfer', 'transfer', 'buy', 'sell'];
           const gamblingCommands = ['slots', 'blackjack', 'coinflip', 'klaklouk'];
           const gameCommands = ['guessnumber', 'post', 'guess', 'feedback', 'wallpaper'];
