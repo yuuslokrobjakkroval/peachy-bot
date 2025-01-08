@@ -42,7 +42,17 @@ module.exports = class Slots extends Command {
 		client.utils.getUser(ctx.author.id).then(user => {
 			const SLOTS = [emoji.slots.cat, emoji.slots.coffee, emoji.slots.heart, emoji.slots.cake, emoji.slots.milk, emoji.slots.peachy]
 			const verify = user.verification.verify.status === 'verified';
-			const { coin, slots, bank} = user.balance;
+			const { coin, bank, slots } = user.balance;
+
+			if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
+				const activeCommand = user.validation.isKlaKlouk ? '𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌' : '𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓';
+				return client.utils.sendErrorMessage(
+					client,
+					ctx,
+					`𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒔𝒕𝒂𝒓𝒕𝒆𝒅 𝒕𝒉𝒆 "${activeCommand}" 𝒆𝒗𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.`,
+					color
+				);
+			}
 
 			if (coin < 1) {
 				return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
