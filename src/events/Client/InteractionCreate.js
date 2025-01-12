@@ -8,11 +8,11 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle, StringSelectMenuBuilder, EmbedBuilder,
+  // ModalBuilder,
+  // TextInputBuilder,
+  // TextInputStyle, zStringSelectMenuBuilder, EmbedBuilder,
 } = require('discord.js');
-const JoinToCreateSchema = require('../../schemas/joinToCreate');
+// const JoinToCreateSchema = require('../../schemas/joinToCreate');
 const GiveawaySchema = require('../../schemas/giveaway');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
 const globalGif = require("../../utils/Gif");
