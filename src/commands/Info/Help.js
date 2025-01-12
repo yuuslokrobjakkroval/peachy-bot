@@ -63,7 +63,7 @@ module.exports = class Help extends Command {
                 `${helpMessages.note}`
             )
             .addFields([{
-              name: `📚 __𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐄𝐒__`,
+              name: `${emoji.help.category ? emoji.help.category : '📚'} __𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐄𝐒__`,
               value: categories
                   .map(category => `- ${emoji.help[category.toLowerCase()] || ''} ${categoriesMessages[category.toLowerCase()] || category}`)
                   .join('\n'),
