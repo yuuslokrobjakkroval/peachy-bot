@@ -251,7 +251,6 @@ module.exports = class InteractionCreate extends Event {
             switch (interaction.customId) {
               case 'vc-lock': {
                 const isLocked = tempChannel.locked;
-                console.log(isLocked)
                 await channel.permissionOverwrites.edit(interaction.guild.id, {
                   Connect: isLocked ? null : false
                 });
