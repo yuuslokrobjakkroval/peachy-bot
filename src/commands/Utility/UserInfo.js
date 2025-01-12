@@ -64,7 +64,7 @@ module.exports = class UserInfo extends Command {
     }
     const embed = client.embed()
         .setColor(color.main)
-        .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, extension: 'png' }))
+        .setThumbnail(target.displayAvatarURL({ dynamic: true, extension: 'png' }))
         .setDescription(
             generalMessages.title
                 .replace("%{mainLeft}", emoji.mainLeft)
