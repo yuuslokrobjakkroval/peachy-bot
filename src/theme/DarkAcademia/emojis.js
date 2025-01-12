@@ -17,7 +17,7 @@ module.exports = {
     help: {
         category: '<:DARKCATEGORY:1327986928104112230>',
         actions: '<:DARKACTIONS:1327986904657825926>',
-        bank: '<:NORMALBANK:1290531741270020146>',
+        bank: '<:DARKBANK:1327986914812231711>',
         work: '<:DARKWORK:1327987296817123359>',
         rank: '<:DARKRANK:1327987140344418358>',
         economy: '<:DARKECONOMY:1327986991513731133>',
