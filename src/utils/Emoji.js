@@ -232,6 +232,9 @@ module.exports = {
       student: '<a:STUDENT:1307674085966352394>',
     },
 
+    giveaway: {
+        participants: '<:emoji_56:1207319081552707644>',
+    },
     // gambling: {
     //     win: {
     //

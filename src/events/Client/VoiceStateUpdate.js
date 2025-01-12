@@ -1,9 +1,6 @@
 const { Event } = require('../../structures/index.js');
-const {
-    PermissionFlagsBits, ButtonBuilder,
-} = require('discord.js');
+const { PermissionFlagsBits } = require('discord.js');
 const JoinToCreateSchema = require('../../schemas/joinToCreate');
-const {channel} = require("../../utils/Emoji");
 
 module.exports = class VoiceStateUpdate extends Event {
     constructor(client, file) {

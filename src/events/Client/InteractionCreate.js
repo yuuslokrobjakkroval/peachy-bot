@@ -156,8 +156,6 @@ module.exports = class InteractionCreate extends Event {
 
           await this.client.utils.getValidationUser(this.client, interaction, user, color, emoji, interaction.commandName);
 
-
-
           const balanceCommands = ['balance', 'deposit', 'withdraw', 'multitransfer', 'transfer', 'buy', 'sell'];
           const gamblingCommands = ['slots', 'blackjack', 'coinflip', 'klaklouk'];
           const gameCommands = ['guessnumber', 'post', 'guess', 'feedback', 'wallpaper'];
@@ -515,11 +513,11 @@ module.exports = class InteractionCreate extends Event {
                       new ButtonBuilder()
                           .setCustomId('giveaway-join')
                           .setLabel(`${newLabel}`)
-                          .setEmoji(`${emoji.main}`)
+                          .setEmoji(emoji.main)
                           .setStyle(3),
                       new ButtonBuilder()
                           .setCustomId('giveaway-participants')
-                          .setEmoji(emoji.userList)
+                          .setEmoji(globalEmoji.giveaway.participants)
                           .setLabel('Participants')
                           .setStyle(1)
                   ),
