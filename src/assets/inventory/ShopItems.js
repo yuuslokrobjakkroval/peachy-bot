@@ -988,7 +988,7 @@ module.exports = [
             },
             {
                 id: 'st07',
-                name: 'Matcha Latte:',
+                name: 'Matcha Latte',
                 description: "Indulge in the soothing charm of 'Matcha Latte'! This theme blends earthy green tones with creamy accents, evoking the calm and cozy feeling of sipping a warm matcha drink on a peaceful afternoon.",
                 type: 'special theme',
                 able: {
@@ -998,6 +998,21 @@ module.exports = [
                 },
                 quantity: 1,
                 emoji: emoji.specialTheme.matchaLatte,
+                available: ['use'],
+                price: { buy: 4e7, sell: 35e6 },
+            },
+            {
+                id: 'st08',
+                name: 'Dark Academia',
+                description: "Immerse yourself in the intellectual allure of 'Dark Academia'! This theme weaves deep green tones with muted, vintage-inspired accents, evoking the ambiance of candlelit libraries, classic literature, and autumnal afternoons spent in thoughtful study.",
+                type: 'special theme',
+                able: {
+                    use: true,
+                    gift: false,
+                    multiple: false,
+                },
+                quantity: 1,
+                emoji: emoji.specialTheme.darkAcademia,
                 available: ['use'],
                 price: { buy: 4e7, sell: 35e6 },
             }

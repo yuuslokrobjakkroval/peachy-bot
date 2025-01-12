@@ -104,6 +104,7 @@ module.exports = {
         asleepypeach: '<:ASMAIN:1321485206456373308>',
         magicalForest: '<:MFMAIN:1322577278592618567>',
         matchaLatte: '<:MLMAIN:1322574581759873097>',
+        darkAcademia: '<:DARKMAIN:1327987106387202160>',
 
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
