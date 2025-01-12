@@ -79,7 +79,7 @@ module.exports = {
         cake: '<:STAR:1286264407294349383>',
         milk: '<:PEARL:1286264416756699147>',
         peachy: '<:NORMALV2:1286264431264927744>',
-        spin: '<a:SLOTS:1286264728397811772>',
+        spin: '<a:SLOTS:1328001279791861831>',
         mainLeft: '<:PEACHKILL:1302096053931081789>',
         mainRight: '<:GOMAKILL:1302096066279247984>',
     },
