@@ -674,7 +674,7 @@ module.exports = class InteractionCreate extends Event {
                           .setStyle(3),
                       new ButtonBuilder()
                           .setCustomId('giveawayshopitem-participants')
-                          .setEmoji(emoji.userList)
+                          .setEmoji(globalEmoji.giveaway.participants)
                           .setLabel('Participants')
                           .setStyle(1)
                   ),
