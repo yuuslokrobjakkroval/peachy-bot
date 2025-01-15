@@ -640,23 +640,4 @@ module.exports = [
     available: ["use"],
     price: { buy: 1e10, sell: 15e6 },
   },
-
-  // CHINA NEW YEAR
-  {
-    id: "w168",
-    name: "Fortune Blossoms",
-    description:
-      "Celebrate Chinese New Year with Peachy Cat and Goma as lucky symbols of prosperity and joy in this festive wallpaper adorned with vibrant red and gold hues.",
-    type: "wallpaper",
-    able: {
-      use: true,
-      gift: true,
-      multiple: true,
-    },
-    quantity: 1,
-    emoji: emoji.frame.w168,
-    available: ["use", "gift"],
-    price: { buy: 15e6, sell: 1e7 },
-    image: "https://i.imgur.com/RmfP9ie.png",
-  },
 ];
