@@ -654,7 +654,7 @@ module.exports = [
       multiple: true,
     },
     quantity: 1,
-    emoji: emoji.frame.default,
+    emoji: emoji.frame.w168,
     available: ["use", "gift"],
     price: { buy: 15e6, sell: 1e7 },
     image: "https://i.imgur.com/RmfP9ie.png",
