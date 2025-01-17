@@ -3,6 +3,9 @@ module.exports = {
 
     backgroundLevel: 'https://i.imgur.com/eIiaG96.png',
 
+    // DEPOSIT AND WITHDRAW BANNER
+    depositWithdraw: 'https://i.imgur.com/qwHBFYk.png',
+
     // WELCOME
     welcomeToPeachAndGoma: 'https://i.imgur.com/jd1ksEo.gif',
     welcomeToPeach: 'https://i.imgur.com/NoUsygl.gif',

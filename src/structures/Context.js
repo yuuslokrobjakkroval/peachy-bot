@@ -35,8 +35,8 @@ module.exports = class Context {
             this.msg = this.message.channel.send(content)
                 .then(response => this.msg = response)
                 .catch(err => console.error("Error sending message:", err));
+            return this.msg;
         }
-        return this.msg;
     }
 
     editMessage(content) {

@@ -1,5 +1,6 @@
 const { Command } = require("../../structures");
 const moment = require("moment/moment");
+const globalGif = require("../../utils/Gif");
 
 module.exports = class Withdraw extends Command {
   constructor(client) {
@@ -170,6 +171,7 @@ module.exports = class Withdraw extends Command {
                       )
                       .replace("%{coinEmote}", emoji.coin)
                 )
+                .setImage(globalGif.depositWithdraw)
                 .setFooter({
                   text:
                     generalMessages.requestedBy.replace(
