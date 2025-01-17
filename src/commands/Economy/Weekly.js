@@ -1,6 +1,7 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const moment = require("moment-timezone");
+const globalGif = require("../../utils/Gif");
 const chance = require('chance').Chance();
 
 module.exports = class Weekly extends Command {
@@ -146,6 +147,7 @@ module.exports = class Weekly extends Command {
                     .replace('%{exp}', client.utils.formatNumber(totalExp))
                     .replace('%{bonusMessage}', bonusMessage)
             )
+            .setImage(globalGif.banner.weeklyReminder)
             .setFooter({
                 text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),

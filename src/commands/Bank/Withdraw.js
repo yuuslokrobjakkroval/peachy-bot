@@ -171,7 +171,7 @@ module.exports = class Withdraw extends Command {
                       )
                       .replace("%{coinEmote}", emoji.coin)
                 )
-                .setImage(globalGif.depositWithdraw)
+                .setImage(globalGif.banner.depositWithdraw)
                 .setFooter({
                   text:
                     generalMessages.requestedBy.replace(

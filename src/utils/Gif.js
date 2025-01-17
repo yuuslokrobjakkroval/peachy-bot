@@ -3,8 +3,17 @@ module.exports = {
 
     backgroundLevel: 'https://i.imgur.com/eIiaG96.png',
 
-    // DEPOSIT AND WITHDRAW BANNER
-    depositWithdraw: 'https://i.imgur.com/qwHBFYk.png',
+    banner: {
+        // ECONOMY BANNER
+        dailyReminder: 'https://i.imgur.com/ubr53ef.gif',
+        weeklyReminder: 'https://i.imgur.com/zAHVXPG.gif',
+
+        // BANK BANNER
+        transferPending: 'https://i.imgur.com/PrxuKDs.gif',
+        transferSuccess: 'https://i.imgur.com/lz14kFM.gif',
+
+        depositWithdraw: 'https://i.imgur.com/qwHBFYk.png',
+    },
 
     // WELCOME
     welcomeToPeachAndGoma: 'https://i.imgur.com/jd1ksEo.gif',

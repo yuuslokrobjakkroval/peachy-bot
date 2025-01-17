@@ -80,13 +80,7 @@ module.exports = class Transfer extends Command {
                 return await client.utils.sendErrorMessage(client, ctx, transferMessages.balanceNotExist, color);
             }
 
-            const amount = client.utils.formatBalance(
-                client,
-                ctx,
-                color,
-                user.balance.coin,
-                ctx.isInteraction ? ctx.interaction.options.getString('amount') : args[1] || 1,
-                transferMessages.invalidAmount
+            const amount = client.utils.formatBalance(client, ctx, color, user.balance.coin, ctx.isInteraction ? ctx.interaction.options.getString('amount') : args[1] || 1, transferMessages.invalidAmount
             );
 
             if (user.balance.coin < amount) {
@@ -111,6 +105,7 @@ module.exports = class Transfer extends Command {
                         .replace('%{emoji}', emoji.coin)
                         .replace('%{user}', targetUser.displayName)
                 )
+                .setImage(globalGif.banner.transferPending)
                 .setFooter({
                     text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                     iconURL: ctx.author.displayAvatarURL(),
@@ -137,6 +132,7 @@ module.exports = class Transfer extends Command {
                             await Users.updateOne({userId: targetUser.id}, {'balance.coin': target.balance.coin}).exec();
                             const confirmationEmbed = client.embed()
                                 .setColor(color.main)
+                                .setThumbnail(globalGif.banner.transferSuccess)
                                 .setDescription(
                                     generalMessages.title
                                         .replace('%{mainLeft}', emoji.mainLeft)

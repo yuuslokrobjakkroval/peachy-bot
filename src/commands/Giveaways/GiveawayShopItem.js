@@ -65,10 +65,14 @@ module.exports = class GiveawayShopItem extends Command {
         }
 
         const category = items.concat(importantItems).filter(c => c.type === type);
-        if (!category) return ctx.sendMessage({ content: 'Invalid item type specified.' });
+        if (!category) return ctx.isInteraction
+            ? await ctx.interaction.editReply({ content: 'Invalid item type specified.', fetchReply: true })
+            : await ctx.editMessage({ content: 'Invalid item type specified.', fetchReply: true });
 
         const item = category.find(i => i.id.toLowerCase() === itemID.toLowerCase());
-        if (!item) return ctx.sendMessage({ content: `No item found with ID ${itemID} in category ${type}.` });
+        if (!item) return ctx.isInteraction
+            ? await ctx.interaction.editReply({ content: `No item found with ID ${itemID} in category ${type}.`, fetchReply: true })
+            : await ctx.editMessage({ content: `No item found with ID ${itemID} in category ${type}.`, fetchReply: true });
 
         const duration = ms(durationStr);
         const winners = parseInt(winnersStr, 10);

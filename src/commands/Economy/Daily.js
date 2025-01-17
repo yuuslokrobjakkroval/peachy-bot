@@ -2,6 +2,7 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const chance = require('chance').Chance();
 const moment = require('moment-timezone');
+const globalGif = require("../../utils/Gif");
 
 module.exports = class Daily extends Command {
     constructor(client) {
@@ -105,6 +106,7 @@ module.exports = class Daily extends Command {
                                     .replace('%{exp}', client.utils.formatNumber(baseExp))
                                     .replace('%{bonusMessage}', bonusMessage)
                             )
+                            .setImage(globalGif.banner.dailyReminder)
                             .setFooter({
                                 text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                                 iconURL: ctx.author.displayAvatarURL(),
