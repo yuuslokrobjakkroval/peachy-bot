@@ -132,7 +132,6 @@ module.exports = class Transfer extends Command {
                             await Users.updateOne({userId: targetUser.id}, {'balance.coin': target.balance.coin}).exec();
                             const confirmationEmbed = client.embed()
                                 .setColor(color.main)
-                                .setThumbnail(globalGif.banner.transferSuccess)
                                 .setDescription(
                                     generalMessages.title
                                         .replace('%{mainLeft}', emoji.mainLeft)
@@ -143,6 +142,7 @@ module.exports = class Transfer extends Command {
                                         .replace('%{emoji}', emoji.coin)
                                         .replace('%{user}', targetUser.displayName)
                                 )
+                                .setImage(globalGif.banner.transferSuccess)
                                 .setFooter({
                                     text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                                     iconURL: ctx.author.displayAvatarURL(),
