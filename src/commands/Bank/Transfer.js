@@ -142,7 +142,6 @@ module.exports = class Transfer extends Command {
                                         .replace('%{emoji}', emoji.coin)
                                         .replace('%{user}', targetUser.displayName)
                                 )
-                                .setImage(globalGif.banner.transferSuccess)
                                 .setFooter({
                                     text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
                                     iconURL: ctx.author.displayAvatarURL(),
