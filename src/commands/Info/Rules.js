@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const globalGif = require("../../utils/Gif");
 
 module.exports = class Rules extends Command {
   constructor(client) {
@@ -35,6 +36,7 @@ module.exports = class Rules extends Command {
         .setColor(color.main)
         .setTitle(rulesMessages.title)
         .setDescription(rulesMessages.description)
+        .setImage(globalGif.banner.rule)
         .setFooter({
           text: rulesMessages.footer.replace('{botName}', this.client.user.username),
           iconURL: this.client.user.displayAvatarURL(),

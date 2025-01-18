@@ -38,7 +38,6 @@ module.exports = class Slots extends Command {
 	run(client, ctx, args, color, emoji, language) {
 		const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 		const slotMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.slotMessages;
-		const loseImage = [globalGif.gambling.lose.peachPew, globalGif.gambling.lose.gomaPew]
 		client.utils.getUser(ctx.author.id).then(user => {
 			const SLOTS = [emoji.slots.cat, emoji.slots.coffee, emoji.slots.heart, emoji.slots.cake, emoji.slots.milk, emoji.slots.peachy]
 			const verify = user.verification.verify.status === 'verified';
@@ -155,7 +154,7 @@ module.exports = class Slots extends Command {
 				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${emoji.slots.spin} ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ╚═ •» ${globalEmoji.romdoul} «•« ══╝\n\n${slotMessages.bet.replace('%{coin}', client.utils.formatNumber(baseCoins)).replace('%{coinEmote}', emoji.coin)}\n`)
 				.setFooter({
 					text: `${generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName)}`,
-					iconURL: verify ? client.utils.emojiToImage(emoji.verify ? emoji.verify : globalEmoji.verify) : ctx.author.displayAvatarURL(),
+					iconURL: ctx.author.displayAvatarURL(),
 				})
 
 			ctx.sendMessage({embeds: [initialEmbed]}).then(initialMessage => {
@@ -173,7 +172,7 @@ module.exports = class Slots extends Command {
 				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ╚═ •» ${globalEmoji.romdoul} «•« ══╝\n\n${slotMessages.bet.replace('%{coin}', client.utils.formatNumber(baseCoins)).replace('%{coinEmote}', emoji.coin)}\n`)
 				.setFooter({
 					text: `${generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName)}`,
-					iconURL: verify ? client.utils.emojiToImage(emoji.verify ? emoji.verify : globalEmoji.verify) : ctx.author.displayAvatarURL(),
+					iconURL: ctx.author.displayAvatarURL(),
 				})
 
 			const spinSecondEmbed = client.embed()
@@ -182,16 +181,16 @@ module.exports = class Slots extends Command {
 				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${rslots[2]}」 **\n ### ╚═ •» ${globalEmoji.romdoul} «•« ══╝\n\n${slotMessages.bet.replace('%{coin}', client.utils.formatNumber(baseCoins)).replace('%{coinEmote}', emoji.coin)}\n`)
 				.setFooter({
 					text: `${generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName)}`,
-					iconURL: verify ? client.utils.emojiToImage(emoji.verify ? emoji.verify : globalEmoji.verify) : ctx.author.displayAvatarURL(),
+					iconURL: ctx.author.displayAvatarURL(),
 				})
 
 			const resultEmbed = client.embed()
 				.setColor(color.main)
-				.setThumbnail(win === 0 ? client.utils.getRandomElement(loseImage) : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
+				.setThumbnail(win === 0 ? client.utils.emojiToImage(globalEmoji.option.lose) : client.utils.emojiToImage(globalEmoji.option.win))
 				.setDescription(`# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.slots.mainRight}**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${rslots[0]} ${rslots[1]} ${rslots[2]}」 **\n ### ╚═ •» ${globalEmoji.romdoul} «•« ══╝\n\n${slotMessages.bet.replace('%{coin}', client.utils.formatNumber(baseCoins)).replace('%{coinEmote}', emoji.coin)}\n${win === 0 ? `${slotMessages.lost.replace('%{coin}', client.utils.formatNumber(baseCoins)).replace('%{coinEmote}', emoji.coin)}` : `${slotMessages.won.replace('%{coin}', client.utils.formatNumber(win)).replace('%{coinEmote}', emoji.coin)}`}`)
 				.setFooter({
 					text: `${generalMessages.gameOver.replace('%{user}', ctx.author.displayName)}`,
-					iconURL: verify ? client.utils.emojiToImage(emoji.verify ? emoji.verify : globalEmoji.verify) : ctx.author.displayAvatarURL(),
+					iconURL: ctx.author.displayAvatarURL(),
 				})
 
 			setTimeout(async () => {

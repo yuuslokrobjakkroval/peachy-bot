@@ -9,8 +9,8 @@ module.exports = {
     gomaCongratulation: '<a:PEACHCONGRATULATIONS:1287987432947712010>',
     peachCongratulation: '<a:GOMACONGRATULATIONS:1287985458109747251>',
     top: '<a:TOP:1287634364095528971>',
-    tick: '<:YES:1302273199911731200>',
-    deny: '<:NO:1302273419957764168>',
+    tick: '<:YES:1330164333950537728>',
+    deny: '<:NO:1330164530847813663>',
     mark: '`❕`',
     plus: '``➕``',
     minus: '`➖`',
@@ -18,8 +18,7 @@ module.exports = {
     entry: '`⛔`',
     error: '`⚠`',
 
-    yes: '<:YES:1302273199911731200>',
-    no: '<:NO:1302273419957764168>',
+    banned: '<:BAN:1330164131763982438>',
     
     searching: '<a:SEARCHING:1312011231053348904>',
     loading: '<a:LOADING:1311021680264482817>',

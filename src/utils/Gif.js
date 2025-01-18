@@ -13,6 +13,9 @@ module.exports = {
         transferSuccess: 'https://i.imgur.com/lz14kFM.gif',
 
         depositWithdraw: 'https://i.imgur.com/qwHBFYk.png',
+
+        // INFO BANNER
+        rule: 'https://i.imgur.com/gU221K0.jpg',
     },
 
     // WELCOME

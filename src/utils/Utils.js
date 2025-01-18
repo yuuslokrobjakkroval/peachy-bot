@@ -484,9 +484,12 @@ module.exports = class Utils {
     static fullOptionButton(id, emoji, label, style, disabled = false) {
         const button = new ButtonBuilder()
             .setCustomId(id)
-            .setLabel(label)
             .setStyle(style)
             .setDisabled(disabled);
+
+        if (label) {
+            button.setLabel(label)
+        }
 
         if (emoji) {
             button.setEmoji(emoji);

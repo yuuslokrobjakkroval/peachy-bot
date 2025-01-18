@@ -61,6 +61,7 @@ const cardsf = [
     '<a:kdf:1281795928159944899>',
 ];
 const random = require('random-number-csprng');
+const globalEmoji = require("./Emoji");
 const DEALER = '<:DEALERBLACKJACK:1283852034784886885>';
 exports.randCard = randCard;
 function randCard(client, deck, type) {
@@ -82,16 +83,16 @@ function generateEmbed(author, client, color, emoji, dealer, player, bet, end, w
     let dealerValue = cardValue(dealer);
     let playerValue = cardValue(player);
 
-    if (end == 'w') {
+    if (end === 'w') {
         endColor = color.success;
         description = `${blackjackMessages.bet.replace('%{coin}', client.utils.formatNumber(bet)).replace('%{coinEmote}', emoji.coin)}\n${blackjackMessages.won.replace('%{coin}', client.utils.formatNumber(winnings)).replace('%{coinEmote}', emoji.coin)}`;
-    } else if (end == 'l') {
+    } else if (end === 'l') {
         endColor = color.danger;
         description = `${blackjackMessages.bet.replace('%{coin}', client.utils.formatNumber(bet)).replace('%{coinEmote}', emoji.coin)}\n${blackjackMessages.lost.replace('%{coin}', client.utils.formatNumber(bet)).replace('%{coinEmote}', emoji.coin)}`;
-    } else if (end == 'tb') {
+    } else if (end === 'tb') {
         endColor = color.blue;
         description = `${blackjackMessages.bothBust}`;
-    } else if (end == 't') {
+    } else if (end === 't') {
         endColor = color.blue;
         description = `${blackjackMessages.tied}`;
     } else {
@@ -100,9 +101,22 @@ function generateEmbed(author, client, color, emoji, dealer, player, bet, end, w
         description = `${blackjackMessages.bet.replace('%{coin}', client.utils.formatNumber(bet)).replace('%{coinEmote}', emoji.coin)}`;
     }
 
+    const checkThumbnail = (result) => {
+        switch (result) {
+            case 'w':
+                return client.utils.emojiToImage(globalEmoji.option.win)
+            case 'l':
+                return client.utils.emojiToImage(globalEmoji.option.lose)
+            case 't':
+            case 'tb':
+                return client.utils.emojiToImage(globalEmoji.option.wfu)
+                default: return client.utils.emojiToImage(globalEmoji.option.doIt);
+        }
+    }
+
     return client.embed()
         .setColor(endColor)
-        .setThumbnail(author.displayAvatarURL({ dynamic: true, size: 1024 }))
+        .setThumbnail(checkThumbnail(end))
         .setDescription(
             generalMessages.title.replace('%{mainLeft}', emoji.mainLeft).replace('%{title}', blackjackMessages.title).replace('%{mainRight}', emoji.mainRight) +
                 `${blackjackMessages.winnerInfo}\n` +
