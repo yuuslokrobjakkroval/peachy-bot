@@ -88,8 +88,8 @@ module.exports = class Transfer extends Command {
             }
 
             // Create confirm and cancel buttons
-            const confirmButton = client.utils.fullOptionButton('confirm', emoji.tick, '', 3);
-            const cancelButton = client.utils.fullOptionButton('cancel', emoji.deny, '', 4);
+            const confirmButton = client.utils.fullOptionButton('confirm', emoji.tick, 'Confirm', 3);
+            const cancelButton = client.utils.fullOptionButton('cancel', emoji.deny, 'Cancel', 4);
             const allButtons = client.utils.createButtonRow(confirmButton, cancelButton);
 
             // Embed for confirmation
