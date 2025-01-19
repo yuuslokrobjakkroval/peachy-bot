@@ -191,7 +191,7 @@ module.exports = [
       },
       {
         id: "d09",
-        name: "Butterfly Pea Lemon",
+        name: "B.Pea Lemon",
         description: "Drink to earn XP and upgrade level",
         type: "drink",
         able: {
@@ -207,7 +207,7 @@ module.exports = [
       },
       {
         id: "d10",
-        name: "Grape Fruit Green Tea",
+        name: "G.Green Tea",
         description: "Drink to earn XP and upgrade level",
         type: "drink",
         able: {
@@ -271,7 +271,7 @@ module.exports = [
       },
       {
         id: "d14",
-        name: "Passion Mango Slush",
+        name: "P.Mango Slush",
         description: "Drink to earn XP and upgrade level",
         type: "drink",
         able: {
@@ -288,7 +288,7 @@ module.exports = [
       {
         id: "d15",
         name: "Piscerry",
-        descripton: "Drink to earn XP and upgrade level",
+        description: "Drink to earn XP and upgrade level",
         type: "drink",
         able: {
           use: true,
@@ -614,7 +614,7 @@ module.exports = [
       },
       {
         id: "c16",
-        name: "Swedish Princess",
+        name: "Swedish Prince",
         description: "Eat to earn XP and upgrade level",
         type: "cake",
         able: {
