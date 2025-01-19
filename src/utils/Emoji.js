@@ -161,7 +161,7 @@ module.exports = {
         yuna: '<:YUNAMAIN:1317117650131746816>',
         yunayuna: '<:YV2MAIN:1320248026534514688>',
 
-        duckling: '<:KMAIN:1315309185138823279>',
+        duckling: '<:DMAIN:1319996518761107580>',
         keoyuu: '<:KYMAIN:1320065632678449168>',
 
         loveBunnie: '<:LBMAIN:1322580984645943306>',
