@@ -16,6 +16,9 @@ module.exports = {
 
         // INFO BANNER
         rule: 'https://i.imgur.com/gU221K0.jpg',
+
+        // Relationship
+        partner: 'https://i.imgur.com/rnyGU9P.jpg',
     },
 
     // WELCOME

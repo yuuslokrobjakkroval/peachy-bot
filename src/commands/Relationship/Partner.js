@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const Users = require("../../schemas/user.js");
+const globalGif = require('../../utils/Gif');
 
 module.exports = class Partner extends Command {
     constructor(client) {
@@ -110,6 +110,7 @@ module.exports = class Partner extends Command {
                 `You have the complementary ring **(${mentionRing.id.toUpperCase()})** to match theirs.\n` +
                 `Do you accept this partnership?`
             )
+            .setImage(globalGif.banner.partner)
             .setFooter({ text: 'You have 2 minute to respond.' });
 
         const acceptedButton = client.utils.labelButton('accept', 'Accept', 3);

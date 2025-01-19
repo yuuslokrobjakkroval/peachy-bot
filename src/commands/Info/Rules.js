@@ -38,7 +38,7 @@ module.exports = class Rules extends Command {
         .setDescription(rulesMessages.description)
         .setImage(globalGif.banner.rule)
         .setFooter({
-          text: rulesMessages.footer.replace('{botName}', this.client.user.username),
+          text: rulesMessages.footer.replace('%{botName}', client.user.displayName),
           iconURL: this.client.user.displayAvatarURL(),
         })
         .setTimestamp();
