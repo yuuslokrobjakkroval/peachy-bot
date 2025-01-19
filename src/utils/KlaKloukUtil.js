@@ -270,18 +270,21 @@ async function klakloukStarting(client, ctx, color, emoji, user, userCoin, betCo
 
                     let winCash = 0;
                     if (winKK > 0) {
-                        // Handle Win
+
+                        // Updated logic for calculating winCash
                         if (selectedButton.length === 1) {
-                            winCash = betCoin * winKK * 2;
+                            winCash = betCoin * winKK * 2; // Double winnings for a single selection
                         } else if (selectedButton.length === 2) {
                             if (winKK === 1) {
-                                winCash = totalBet;
+                                winCash = totalBet; // Return total bet for one match
                             } else {
-                                winCash = betCoin * winKK;
+                                winCash = betCoin * winKK; // Winnings are based on the number of matches
                             }
-                        } else {
-                            winCash = betCoin * winKK;
+                        } else if (selectedButton.length > 2) {
+                            winCash = betCoin * winKK; // Winnings for more than two selections
                         }
+
+                        // Update user's coin and save
                         userCoin += winCash - totalBet;
                         user.balance.coin = userCoin;
                         user.balance.klaklouk += totalBet;

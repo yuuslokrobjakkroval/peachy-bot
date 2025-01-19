@@ -75,7 +75,7 @@ module.exports = {
     food: {
         bun: '<:f01:1302197238252048414>',
         brownDonut: '<:f02:1302197268287328336>',
-        chocolatecake: '<:f03:1302197277334700072>'
+        chocolateCake: '<:f03:1302197277334700072>'
     },
 
     // DRINK
@@ -87,6 +87,20 @@ module.exports = {
         sunflowerCan: '<:d05:1302216140147392554>',
         violetCan: '<:d06:1302216149400027186>',
         moonCan: '<:d07:1302216123827359774>',
+
+        // NEW
+        piscerry: '<:PISCERRY:1330400536314511501>',
+        brownSuger: '<:BROWNSUGER:1330400474892861523>',
+        butterflyPeaLemonade: '<:BUTTERFLYPEALEMONADE:1330400481083654156>',
+        grapeFruitGreenTea: '<:GRAPEFRUITGREENTEA:1330400491032674304>',
+        hokkaido: '<:HOKKAIDO:1330400497814999052>',
+        honeyLemon: '<:HONEYLEMON:1330400504932601856>',
+        matchaLatte: '<:MATCHALATTE:1330400523161178144>',
+        passionMangoSlush: '<:PASSIONMANGOSLUSH:1330400530656395355>',
+        royalMilkTea: '<:ROYALMILKTEA:1330400547865362442>',
+        sparkLinGrose: '<:SPARKLINGROSE:1330400556694638703>',
+        taro: '<:TARO:1330400566182023169>',
+        thaiTea: '<:THAITEA:1330400573442490388>',
     },
 
     // CAKE
@@ -96,6 +110,20 @@ module.exports = {
         starCake: '<:c03:1302197992492634174>',
         princeCake: '<:c04:1302198008405954571>',
         princessCake: '<:c05:1302198019105493041>',
+
+        // NEW
+        angelFood: '<:ANGELFOOD:1330400589317799946>',
+        blackForest: '<:BLACKFOREST:1330400599237202033>',
+        creamBrulee: '<:CREMEBRULEE:1330400605587640401>',
+        devilFood: '<:DEVILFOOD:1330400615310037032>',
+        lemonSponge: '<:LEMONSPONGE:1330400621953683567>',
+        miniCharlotte: '<:MINICHARLOTTE:1330406217205416109>',
+        montBlanc: '<:MONTBLANC:1330400642396721273>',
+        neapolitan: '<:NEAPOLITAN:1330400650135212095>',
+        redVelVet: '<:REDVELVET:1330400660801327104>',
+        strawChiCake: '<:STARWCHICAKE:1330400674042876005>',
+        swedishPrincess: '<:SWEDISHPRINCESS:1330400682301194301>',
+        swissRoll: '<:SWISSROLL:1330400689720922112>',
     },
 
     // RING
