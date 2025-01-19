@@ -122,6 +122,7 @@ async function paginate(client, ctx, color, emoji, pages, categories, selectedCa
         const itemOptions = items.map(item => ({
             label: item.name,
             value: item.id,
+            emoji: item.emoji,
             default: item.id === items[selectedItemIndex]?.id,
         }));
 
