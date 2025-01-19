@@ -49,7 +49,7 @@ module.exports = [
           multiple: false,
         },
         quantity: 1,
-        emoji: emoji.food.chocolatecake,
+        emoji: emoji.food.chocolateCake,
         available: ["use", "gift"],
         xp: 30,
         price: { buy: 10000, sell: 0 },
