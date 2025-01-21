@@ -638,21 +638,4 @@ module.exports = [
     available: ["use"],
     price: { buy: 1e10, sell: 15e6 },
   },
-
-    // For FEBRUARY
-  {
-    id: "st09",
-    name: "Spring Bear",
-    description: "Celebrate the charm of springtime with the delightful Spring Bear! This theme exudes warmth and joy, capturing the playful energy of blooming flowers, sunny days, and the cheerful spirit of a cuddly bear. Perfect for those who love the gentle embrace of nature's renewal, it’s a heartwarming way to brighten your day and spread smiles all around!",
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.springBear,
-    available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
-  },
 ];
