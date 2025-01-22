@@ -1,5 +1,5 @@
 module.exports = {
-    coin: '<:SCOIN:1295967985348907031>',
+    coin: '<:HEARTCOIN:1330164694928986214>',
     bank: '<:YBANK:1317122904487366716>',
     exp: '<:YEXP:1317123963326955560>',
     main: '<:YUNAMAIN:1317117650131746816>',
@@ -19,7 +19,7 @@ module.exports = {
     error: '`⚠`',
 
     banned: '<:BAN:1330164131763982438>',
-    
+
     searching: '<a:SEARCHING:1312011231053348904>',
     loading: '<a:LOADING:1311021680264482817>',
     verify: '<:SAKURAVERIFY:1295967228608385085>',
@@ -112,6 +112,6 @@ module.exports = {
         scorpio: '<:SSCORPIO:1295968872352190554>',
         sagittarius: '<:SSAGITTARIUS:1295968889758416906>',
     },
-    
+
 };
 

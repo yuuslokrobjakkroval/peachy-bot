@@ -1,5 +1,5 @@
 module.exports = {
-    coin: '<:COIN:1281821085209460797>',
+    coin: '<:FCOIN:1331284085003391057>',
     bank: '<:FBANK:1319696367009927178>',
     exp: '<:FEXP:1319696913032810648>',
     main: '<:FMAIN:1312652464830414939>',
@@ -19,14 +19,14 @@ module.exports = {
     error: '`⚠`',
 
     banned: '<:BAN:1330164131763982438>',
-    
+
     searching: '<a:SEARCHING:1312011231053348904>',
     loading: '<a:LOADING:1311021680264482817>',
     help: {
         actions: '<:FACTIONS:1319696353781088326>',
         bank: '<:FBANK:1319696367009927178>',
         rank: '<:FRANK:1319696614084055050>',
-        economy: '<:COIN:1281821085209460797>',
+        economy: '<:FCOIN:1331284085003391057>',
         work: '<:FWORK:1319696504172187718>',
         inventory: '<:FINVENTORY:1319696575253184654>',
         fun: '<:FFUN:1319696444684501104>',

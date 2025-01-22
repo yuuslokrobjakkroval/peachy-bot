@@ -1,5 +1,5 @@
 module.exports = {
-    coin: '<:SCOIN:1295967985348907031>',
+    coin: '<:BEECOIN:1331284094977441906>',
     bank: '<:BEEBANK:1319993863154176100>',
     exp: '<:BEEEXP:1319993854622961766>',
     main: '<:BTITLE:1304106395209039932>',
@@ -46,7 +46,7 @@ module.exports = {
 
     help: {
         actions: '<:BEEACTIONS:1319992200280412241>',
-        economy: '<:SCOIN:1295967985348907031>',
+        economy: '<:BEECOIN:1331284094977441906>',
         rank: '<:BEERANK:1319992249618268231>',
         work: '<:BEEWORK:1319992281050386500>',
         inventory: '<:BEEINVENTORY:1319992234254274651>',

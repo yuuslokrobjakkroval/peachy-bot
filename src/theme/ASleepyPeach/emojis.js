@@ -1,5 +1,5 @@
 module.exports = {
-    coin: '<:COIN:1281821085209460797>',
+    coin: '<:ASCOIN:1331284056599429120>',
     bank: '<:NORMALBANK:1290531741270020146>',
     exp: '<:EXP:1302563982841876520>',
     main: '<:MAIN:1281847051860054016>',
@@ -18,7 +18,7 @@ module.exports = {
         bank: '<:NORMALBANK:1290531741270020146>',
         work: '<a:WORK:1311512283108741200>',
         rank: '<:OWNER:1282976626560335883>',
-        economy: '<:COIN:1281821085209460797>',
+        economy: '<:ASCOIN:1331284056599429120>',
         inventory: '<a:NORMALINVENTORY:1282637993156411432>',
         fun: '<a:ROAR_1:1283083752896987209>',
         games: '<:NORMALGAME:1282638025402224704>',
