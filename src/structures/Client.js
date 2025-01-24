@@ -8,12 +8,14 @@ const Utils = require('../utils/Utils');
 const Abilities = require('../utils/Abilities');
 const globalConfig = require('../utils/Config');
 const { I18n } = require('@hammerhq/localization');
-
 const themeConfig = require('../config');
+
+// FREE
 const emojis = require('../emojis');
 const emojiPeach = require('../theme/Peach/emojis');
 const emojiGoma = require('../theme/Goma/emojis');
 
+// NORMAL
 const emojiOcean = require('../theme/OceanBreeze/emojis');
 const emojiHalloween = require('../theme/Halloween/emojis');
 const emojiHalloweenNew = require('../theme/Halloween/emojisNew');
@@ -21,6 +23,7 @@ const emojiChristmas = require('../theme/Christmas/emojis');
 const emojiFestiveFrost = require('../theme/FestiveFrost/emojis');
 const emojiMysticRealm = require('../theme/MySticRealm/emojis');
 
+// SPECIAL
 const emojiHeaven = require('../theme/CelestialGrace/emojis');
 const emojiSakura = require('../theme/SakuraSerenity/emojis');
 const emojiBee = require('../theme/BuzzingBliss/emojis');
@@ -32,21 +35,21 @@ const emojiDarkAcademia = require('../theme/DarkAcademia/emojis');
 const emojiSpringBear = require('../theme/SpringBear/emojis');
 const emojiFantasy = require('../theme/FantasyRpg/emojis');
 
+// SUPPORT
 const emojiSpiderMan = require('../theme/SpiderMan/emojis');
 const emojiCucumber = require('../theme/Cucumber/emojis');
-
 const emojiCappuccino = require('../theme/Cappuccino/emojis');
 const emojiNithGojo = require('../theme/NithGoJo/emojis');
-
 const emojiQuirkyQuackers = require('../theme/QuirkyQuackers/emojis');
 const emojiKeoYuu = require('../theme/KeoYuu/emojis');
-
 const emojiYuna = require('../theme/Yuna/emojis');
 const emojiYunaYuna = require('../theme/YunaYuna/emojis');
 const emojiGhastlyGrins = require('../theme/GhastlyGrins/emojis');
 const emojiLoveBunnie = require('../theme/LoveBunnie/emojis');
-
 const emojiSeaCoral = require('../theme/SeaCoral/emojis');
+
+// SELL
+const emojiEnchantedCatLake = require('../theme/EnchantedCatLake/emojis');
 
 const Logger = require('./Logger');
 
@@ -202,6 +205,7 @@ module.exports = class PeachyClient extends Client {
 
             if (user && user.preferences && user.preferences.theme) {
                 switch (user.preferences.theme) {
+                        // NORMAL
                     case 't01':
                         color = themeConfig.oceanBreeze.color;
                         emoji = emojiOcean;
@@ -228,6 +232,7 @@ module.exports = class PeachyClient extends Client {
                         emoji = emojiMysticRealm;
                         break;
 
+                        // SPECIAL
                     case 'st01':
                         color = themeConfig.celestialGrace.color;
                         emoji = emojiHeaven;
@@ -268,6 +273,9 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.fantasyRpg.color;
                         emoji = emojiFantasy;
                         break;
+
+
+                        // SUPPORT
                     case 'st11':
                         color = themeConfig.spiderMan.color;
                         emoji = emojiSpiderMan;
@@ -284,7 +292,6 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.nithGojo.color;
                         emoji = emojiNithGojo;
                         break;
-
                     case 'st99':
                         color = themeConfig.quirkyQuackers.color;
                         emoji = emojiQuirkyQuackers;
@@ -293,7 +300,6 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.keoyuu.color;
                         emoji = emojiKeoYuu;
                         break;
-
                     case 'st1801':
                         color = themeConfig.yuna.color;
                         emoji = emojiYuna;
@@ -313,6 +319,12 @@ module.exports = class PeachyClient extends Client {
                     case 'st2111':
                         color = themeConfig.seaCoral.color;
                         emoji = emojiSeaCoral;
+                        break;
+
+                        // SELL
+                    case 'st1111':
+                        color = themeConfig.enchantedCatLake.color;
+                        emoji = emojiEnchantedCatLake;
                         break;
 
                     case 'peach':

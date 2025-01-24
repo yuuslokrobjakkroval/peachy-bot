@@ -638,4 +638,22 @@ module.exports = [
     available: ["use"],
     price: { buy: 1e10, sell: 15e6 },
   },
+
+
+  // SELL
+  {
+    id: "st1111",
+    name: "Enchanted Cat Lake",
+    description: "Step into the mystical wonder of Enchanted Cat Lake, where the serene waters shimmer under a moonlit sky and playful feline spirits roam. This magical setting blends tranquility with whimsy, creating a dreamlike escape for those who adore the charm of cats and the enchanting beauty of nature. Perfect for adventurers and dreamers alike, it’s a journey into a world of quiet magic and delightful surprises.",
+    type: "special theme",
+    able: {
+      use: true,
+      gift: true,
+      multiple: false,
+    },
+    quantity: 1,
+    emoji: emoji.specialTheme.enchantedCatLake,
+    available: ["use"],
+    price: { buy: 1e10, sell: 15e6 },
+  },
 ];

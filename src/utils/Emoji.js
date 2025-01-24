@@ -143,6 +143,7 @@ module.exports = {
         mystic: '<:STRAWBDRAGON:1332395885375520800>',
     },
     specialTheme: {
+        // SPECIAL
         heaven: '<:MAINHEAVEN:1293603530699046982>',
         sakura: '<:SAKURAMAIN:1295967137482936440>',
         bee: '<:BTITLE:1304106395209039932>',
@@ -154,23 +155,21 @@ module.exports = {
         springBear: '<:BEARMAIN:1330471681843789845>',
         fantasy: '<:FANMAIN:1332163174824149066>',
 
+        // SUPPORTER
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',
-
         cappuccino: '<:CAFEMAIN:1309842668200923228>',
         nithGojo: '<:JUJUSTUKAISEN:1319699972072931330>',
-
         yuna: '<:YUNAMAIN:1317117650131746816>',
         yunayuna: '<:YV2MAIN:1320248026534514688>',
-
         duckling: '<:DMAIN:1319996518761107580>',
         keoyuu: '<:KYMAIN:1320065632678449168>',
-
         loveBunnie: '<:LBMAIN:1322580984645943306>',
-
         ghastlyGrins: '<:PHYYYMAIN:1317865867958157372>',
-
         seaCoral: '<:SEASLAY:1326152567998124072>',
+
+        // SELL
+        enchantedCatLake: '<:ENCHANTECATMAIN:1332400320831295622>',
     },
     // EXCHANGE
     heartMilk: '<:HEARTMILK:1290653998054903899>',

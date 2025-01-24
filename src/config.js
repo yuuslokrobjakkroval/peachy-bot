@@ -156,6 +156,11 @@ const seaCoral = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x577BC1, none: 0x2B2D31 },
 };
 
+// FOR SALE ( ST1111 )
+const enchantedCatLake = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x9F8383, none: 0x2B2D31 },
+};
+
 module.exports = {
   normal,
   peach,
@@ -193,5 +198,9 @@ module.exports = {
   keoyuu,
   loveBunnie,
   ghastlyGrins,
-  seaCoral
+  seaCoral,
+
+  // ---------- //
+  // SELL THEME
+  enchantedCatLake,
 }
