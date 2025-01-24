@@ -29,6 +29,7 @@ const emojiMagicalForest = require('../theme/MagicalForest/emojis');
 const emojiMatchaLatte = require('../theme/Matchalatte/emojis');
 const emojiDarkAcademia = require('../theme/DarkAcademia/emojis');
 const emojiSpringBear = require('../theme/SpringBear/emojis');
+const emojiFantasy = require('../theme/FantasyRpg/emojis');
 
 const emojiSpiderMan = require('../theme/SpiderMan/emojis');
 const emojiCucumber = require('../theme/Cucumber/emojis');
@@ -258,8 +259,10 @@ module.exports = class PeachyClient extends Client {
                         color = themeConfig.springBear.color;
                         emoji = emojiSpringBear;
                         break;
-
-
+                    case 'st10':
+                        color = themeConfig.fantasyRpg.color;
+                        emoji = emojiFantasy;
+                        break;
                     case 'st11':
                         color = themeConfig.spiderMan.color;
                         emoji = emojiSpiderMan;

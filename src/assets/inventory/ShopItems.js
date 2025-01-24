@@ -1469,6 +1469,21 @@ module.exports = [
         available: ["use"],
         price: { buy: 4e7, sell: 35e6 },
       },
+      {
+        id: "st10",
+        name: "Fantasy RPG",
+        description: "Step into a world of magic and adventure with the Fantasy RPG theme! This immersive setting brings to life the thrill of epic quests, mythical creatures, and heroic tales. Perfect for those who dream of wielding swords, casting spells, and exploring enchanted lands, it captures the spirit of adventure and endless possibilities. Let the Fantasy RPG theme transport you to a realm where your imagination knows no bounds!",
+        type: "special theme",
+        able: {
+          use: true,
+          gift: true,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.fantasy,
+        available: ["use"],
+        price: { buy: 4e7, sell: 35e6 },
+      },
     ],
   },
 ];
