@@ -19,6 +19,14 @@ module.exports = class TicTacToe extends Command {
                 user: [],
             },
             slashCommand: true,
+            options: [
+                {
+                    name: "user",
+                    description: "The user you wish to play against. it must not be a bot or yourself",
+                    type: 6,
+                    required: true,
+                },
+            ],
         });
     }
 
@@ -26,7 +34,7 @@ module.exports = class TicTacToe extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const ticTacToeMessages = language.locales.get(language.defaultLocale)?.gameMessages?.ticTacToeMessages;
 
-        const opponent = ctx.mentions.users.first();
+        const opponent = ctx.isInteraction ? ctx.interaction.options.getUser("user") : ctx.message.mentions.users.first();
         if (!opponent || opponent.bot || opponent.id === ctx.author.id) {
             return ctx.sendMessage({
                 embeds: [
