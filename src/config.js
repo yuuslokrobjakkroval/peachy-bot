@@ -17,6 +17,8 @@ const goma = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x94716B, none: 0x2B2D31 },
 };
 
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------- //
+
 // Ocean Breeze ( T01 )
 const oceanBreeze = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xC9E6F0, none: 0x2B2D31 },
@@ -41,6 +43,13 @@ const jingleJolly = {
 const festiveFrost = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x81BFDA, none: 0x2B2D31 },
 };
+
+// Mystic Realms ( T06 )
+const mysticRealm = {
+  color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0xF6DED8, none: 0x2B2D31 },
+};
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------- //
 
 // Celestial Grace ( ST01 )
 const celestialGrace = {
@@ -147,4 +156,42 @@ const seaCoral = {
   color: { light: 0xFFFFFF, dark: 0x000000, danger: 0xFF0000, success: 0x00FF00, blue: 0x4CC9FE, pink: 0xE3A1AD, warning: 0xFFA500, main: 0x577BC1, none: 0x2B2D31 },
 };
 
-module.exports = { normal, peach, goma, oceanBreeze, frightFest, booBash, jingleJolly, festiveFrost, celestialGrace, sakuraSerenity, buzzingBliss, froggyFun, aSleepyPeach, magicalForest, matchaLatte, darkAcademia, springBear, fantasyRpg, spiderMan, cucumberCool, cappuccinoCharm, nithGojo, yuna, yunayuna, quirkyQuackers, keoyuu, loveBunnie, ghastlyGrins, seaCoral }
+module.exports = {
+  normal,
+  peach,
+  goma,
+  // ---------- //
+  // THEME
+  oceanBreeze,
+  frightFest,
+  booBash,
+  jingleJolly,
+  festiveFrost,
+  mysticRealm,
+  // ---------- //
+  // SPECIAL THEME
+  celestialGrace,
+  sakuraSerenity,
+  buzzingBliss,
+  froggyFun,
+  aSleepyPeach,
+  magicalForest,
+  matchaLatte,
+  darkAcademia,
+  springBear,
+  fantasyRpg,
+
+  // ---------- //
+  // SUPPORTER THEME
+  spiderMan,
+  cucumberCool,
+  cappuccinoCharm,
+  nithGojo,
+  yuna,
+  yunayuna,
+  quirkyQuackers,
+  keoyuu,
+  loveBunnie,
+  ghastlyGrins,
+  seaCoral
+}

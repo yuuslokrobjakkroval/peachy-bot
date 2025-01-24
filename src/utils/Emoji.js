@@ -140,6 +140,7 @@ module.exports = {
         halloweenNew: '<:H2MAIN:1300675214182711357>',
         jingleJolly: '<:CMAIN:1312606545187569736>',
         festiveFrost: '<:CHMAIN:1321466057730297907>',
+        mystic: '<:STRAWBDRAGON:1332395885375520800>',
     },
     specialTheme: {
         heaven: '<:MAINHEAVEN:1293603530699046982>',

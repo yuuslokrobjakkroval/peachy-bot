@@ -1318,6 +1318,21 @@ module.exports = [
         available: ["use"],
         price: { buy: 15e6, sell: 13e6 },
       },
+      {
+        id: "t06",
+        name: "Mystic Realms",
+        description: "Immerse yourself in the enchanting world of Mystic Realms! This theme captures the essence of heroic quests, magical artifacts, and mythical creatures. Perfect for adventurers who dream of exploring ancient ruins, casting powerful spells, and unlocking legendary treasures, it brings the excitement of fantasy to life. Step into a realm where every moment holds the promise of adventure!",
+        type: "theme",
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.theme.mystic,
+        available: ["use"],
+        price: { buy: 2e7, sell: 18e6 },
+      }
     ],
   },
   {
