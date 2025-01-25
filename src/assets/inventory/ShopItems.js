@@ -1349,7 +1349,7 @@ module.exports = [
         type: "special theme",
         able: {
           use: true,
-          gift: false,
+          gift: true,
           multiple: false,
         },
         quantity: 1,
@@ -1365,7 +1365,7 @@ module.exports = [
         type: "special theme",
         able: {
           use: true,
-          gift: false,
+          gift: true,
           multiple: false,
         },
         quantity: 1,
@@ -1381,7 +1381,7 @@ module.exports = [
         type: "special theme",
         able: {
           use: true,
-          gift: false,
+          gift: true,
           multiple: false,
         },
         quantity: 1,
@@ -1397,7 +1397,7 @@ module.exports = [
         type: "special theme",
         able: {
           use: true,
-          gift: false,
+          gift: true,
           multiple: false,
         },
         quantity: 1,
@@ -1413,7 +1413,7 @@ module.exports = [
         type: "special theme",
         able: {
           use: true,
-          gift: false,
+          gift: true,
           multiple: false,
         },
         quantity: 1,
@@ -1429,7 +1429,7 @@ module.exports = [
         type: "special theme",
         able: {
           use: true,
-          gift: false,
+          gift: true,
           multiple: false,
         },
         quantity: 1,
@@ -1445,7 +1445,7 @@ module.exports = [
         type: "special theme",
         able: {
           use: true,
-          gift: false,
+          gift: true,
           multiple: false,
         },
         quantity: 1,
@@ -1461,7 +1461,7 @@ module.exports = [
         type: "special theme",
         able: {
           use: true,
-          gift: false,
+          gift: true,
           multiple: false,
         },
         quantity: 1,
