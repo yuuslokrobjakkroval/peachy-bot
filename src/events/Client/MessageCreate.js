@@ -569,6 +569,7 @@ module.exports = class MessageCreate extends Event {
                 "withdraw",
                 "multitransfer",
                 "transfer",
+                "angpav",
                 "buy",
                 "sell",
               ];
