@@ -490,7 +490,7 @@ module.exports = [
     id: "st2707",
     name: "KEOYUU",
     description:
-      "This theme is a gift for our anniversary 6month, I love you **#KEOYUU**",
+      "This theme is a gift for our anniversary 6month, I love you ****#KEOYUU****",
     type: "special theme",
     able: {
       use: true,
@@ -609,7 +609,8 @@ module.exports = [
   {
     id: "st168",
     name: "Ghastly Grins",
-    description: "Step into the shadowy allure of Ghastly Grins! This theme oozes with spooky charm, capturing the playful mischief and eerie elegance of a grinning ghostly trickster. Perfect for those who embrace the fun side of the dark and mysterious, it’s a hauntingly delightful way to add a spectral spark to your day!",
+    description:
+      "Step into the shadowy allure of Ghastly Grins! This theme oozes with spooky charm, capturing the playful mischief and eerie elegance of a grinning ghostly trickster. Perfect for those who embrace the fun side of the dark and mysterious, it’s a hauntingly delightful way to add a spectral spark to your day!",
     type: "special theme",
     able: {
       use: true,
@@ -626,7 +627,8 @@ module.exports = [
   {
     id: "st2111",
     name: "Sea Coral",
-    description: "Immerse yourself in the tranquil beauty of Sea Coral, where oceanic blues and delicate coral hues create a soothing, underwater escape. Perfect for those drawn to the peaceful elegance of the sea.",
+    description:
+      "Immerse yourself in the tranquil beauty of Sea Coral, where oceanic blues and delicate coral hues create a soothing, underwater escape. Perfect for those drawn to the peaceful elegance of the sea.",
     type: "special theme",
     able: {
       use: true,
@@ -639,12 +641,12 @@ module.exports = [
     price: { buy: 1e10, sell: 15e6 },
   },
 
-
   // SELL
   {
     id: "st1111",
     name: "Enchanted Cat Lake",
-    description: "Step into the mystical wonder of Enchanted Cat Lake, where the serene waters shimmer under a moonlit sky and playful feline spirits roam. This magical setting blends tranquility with whimsy, creating a dreamlike escape for those who adore the charm of cats and the enchanting beauty of nature. Perfect for adventurers and dreamers alike, it’s a journey into a world of quiet magic and delightful surprises.",
+    description:
+      "Step into the mystical wonder of Enchanted Cat Lake, where the serene waters shimmer under a moonlit sky and playful feline spirits roam. This magical setting blends tranquility with whimsy, creating a dreamlike escape for those who adore the charm of cats and the enchanting beauty of nature. Perfect for adventurers and dreamers alike, it’s a journey into a world of quiet magic and delightful surprises.",
     type: "special theme",
     able: {
       use: true,

@@ -216,11 +216,11 @@ module.exports = class Slots extends Command {
           ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
         )
         .setDescription(
-          `# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${
+          `# ****${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${
             emoji.slots.mainRight
-          }**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${
+          }****\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## ****   「${
             emoji.slots.spin
-          } ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ╚═ •» ${
+          } ${emoji.slots.spin} ${emoji.slots.spin}」 ****\n ### ╚═ •» ${
             globalEmoji.romdoul
           } «•« ══╝\n\n${slotMessages.bet
             .replace("%{coin}", client.utils.formatNumber(baseCoins))
@@ -255,11 +255,11 @@ module.exports = class Slots extends Command {
               ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
             )
             .setDescription(
-              `# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${
+              `# ****${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${
                 emoji.slots.mainRight
-              }**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${
+              }****\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## ****   「${
                 rslots[0]
-              } ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ╚═ •» ${
+              } ${emoji.slots.spin} ${emoji.slots.spin}」 ****\n ### ╚═ •» ${
                 globalEmoji.romdoul
               } «•« ══╝\n\n${slotMessages.bet
                 .replace("%{coin}", client.utils.formatNumber(baseCoins))
@@ -280,11 +280,11 @@ module.exports = class Slots extends Command {
               ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
             )
             .setDescription(
-              `# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${
+              `# ****${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${
                 emoji.slots.mainRight
-              }**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${
+              }****\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## ****   「${
                 rslots[0]
-              } ${emoji.slots.spin} ${rslots[2]}」 **\n ### ╚═ •» ${
+              } ${emoji.slots.spin} ${rslots[2]}」 ****\n ### ╚═ •» ${
                 globalEmoji.romdoul
               } «•« ══╝\n\n${slotMessages.bet
                 .replace("%{coin}", client.utils.formatNumber(baseCoins))
@@ -307,11 +307,11 @@ module.exports = class Slots extends Command {
                 : client.utils.emojiToImage(globalEmoji.option.win)
             )
             .setDescription(
-              `# **${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${
+              `# ****${emoji.slots.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${
                 emoji.slots.mainRight
-              }**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${
+              }****\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## ****   「${
                 rslots[0]
-              } ${rslots[1]} ${rslots[2]}」 **\n ### ╚═ •» ${
+              } ${rslots[1]} ${rslots[2]}」 ****\n ### ╚═ •» ${
                 globalEmoji.romdoul
               } «•« ══╝\n\n${slotMessages.bet
                 .replace("%{coin}", client.utils.formatNumber(baseCoins))

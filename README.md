@@ -66,110 +66,95 @@ If you need any additional help, make sure to join our support server [here](htt
 
 <h1 align="center"> ✨ Features ✨ </h1>
 
-### 📡 **Advanced Dashboard**
+### 📡 **_*Advanced Dashboard*_**
 
 - Manage your servers and make your server-specific settings!
 - Make custom adjustments easy!
 
-### 🛑 **Powerful Moderation:**
+### 🛑 **_*Powerful Moderation:*_**
 
-- **Moderation Commands.** <br /> _Commands:_ `announce`, `ban`, `unban`, `timeout`, `blacklist`, ...
-- **Multi-Function Commands.** <br /> _Commands:_ `addmoney`, `removemoney`, `additem`, `removeitem`, ...
+- **_*Moderation Commands.*_** <br /> _Commands:_ `announce`, `ban`, `unban`, `timeout`, `blacklist`, ...
+- **_*Multi-Function Commands.*_** <br /> _Commands:_ `addmoney`, `removemoney`, `additem`, `removeitem`, ...
 
-[//]: # (### 🤖 **Auto Moderation:**)
+[//]: # "### 🤖 ****Auto Moderation:****"
+[//]: #
+[//]: # "- ****Anti system**** <br /> _Commands:_ `anti ghostping`, `anti spam`, `anti massmention`, ..."
+[//]: # "- ****Auto Delete system**** <br /> _Commands:_ `autodelete attachments`, `autodelete invites`, `autodelete links`, `autodelete maxlines`, ..."
+[//]: # "- ****AutoMod system**** <br /> _Commands:_ `automod status`, `automod strikes`, `automod action`, `automod debug`, `automod whitelist`, ..."
+[//]: # "### ⚙️ ****Admin Configuration:****"
+[//]: #
+[//]: # "- ****Let a bot be the server's assistant!**** <br /> _Commands:_ `autorole`, `farewell`, `welcome`, `counters`, `flag translation`, `reaction roles`, ..."
+[//]: # "- ****Make custom settings for your own server.**** <br /> _Commands:_ `setprefix`, `maxwarns`, `modlog`..."
 
-[//]: # ()
-[//]: # (- **Anti system** <br /> _Commands:_ `anti ghostping`, `anti spam`, `anti massmention`, ...)
+### 💁 **_*Information Gathering:*_**
 
-[//]: # (- **Auto Delete system** <br /> _Commands:_ `autodelete attachments`, `autodelete invites`, `autodelete links`, `autodelete maxlines`, ...)
+- **_*User Context Interactions*_**
+- **_*Advanced Information*_** Get deep information about a user, channel, role, etc.
 
-[//]: # (- **AutoMod system** <br /> _Commands:_ `automod status`, `automod strikes`, `automod action`, `automod debug`, `automod whitelist`, ...)
+[//]: # "### 🎵 ****Music:****"
+[//]: #
+[//]: # "- ****LossLess Music!**** Enjoy high quality lossless music"
+[//]: # "- ****Multi-Platform**** Play music from YouTube, SoundCloud, Spotify, and more"
+[//]: # "- ****Filters**** Apply filters to your music and spice it up"
 
-[//]: # (### ⚙️ **Admin Configuration:**)
+### 🎉 **_*Giveaways:*_**
 
-[//]: # ()
-[//]: # (- **Let a bot be the server's assistant!** <br /> _Commands:_ `autorole`, `farewell`, `welcome`, `counters`, `flag translation`, `reaction roles`, ...)
+- **_*Easy to use*_** Create giveaways with ease
+- **_*Role Specific*_** giveaways
+- **_*Customizable*_** Customize the giveaway to your liking
+- **_*Limitless*_** Create unlimited giveaways
 
-[//]: # (- **Make custom settings for your own server.** <br /> _Commands:_ `setprefix`, `maxwarns`, `modlog`...)
+### 🫂 **_*Social Content:*_**
 
-### 💁 **Information Gathering:**
+- **_*You Have A CV In Each Server-Specific Bot!*_** <br /> _Commands:_ `facebook`, `instagram`, `tik tok`,...
+- **_*Do You Love Someone?*_** <br /> _Commands:_ `fb name`, `fb link`, `ig name`, `ig link`, ...
 
-- **User Context Interactions**
-- **Advanced Information** Get deep information about a user, channel, role, etc.
+[//]: # "### 🎟 ****Ticket System:****"
+[//]: #
+[//]: # "- ****Make Supporting Members A Breeze With Tickets!**** <br/> Highly customizable ticket system with staff roles"
+[//]: # "- ****Multiple Categories**** <br/> Don't Want The Tickets To Be Everywhere? Categorize them using select menus"
 
-[//]: # (### 🎵 **Music:**)
+### 📉 **_*Stats Tracking:*_**
 
-[//]: # ()
-[//]: # (- **LossLess Music!** Enjoy high quality lossless music)
+- **_*Levelling*_** Track your server's activity with a level system
+- **_*Leaderboards*_** See who is the most active user in your server
+- **_*Customizable System*_** Configure the levelup message, rank cards to your liking
 
-[//]: # (- **Multi-Platform** Play music from YouTube, SoundCloud, Spotify, and more)
+[//]: # "### 🙋‍♂️ ****Suggestions:****"
+[//]: #
+[//]: # "- ****Get Suggestions From Server Members To Help Your Server Become The Best!**** <br /> _Commands:_ `suggest`, `suggestion`..."
+[//]: # "- ****Accept Or Decline The Suggestions And Customize Them To The Max!**** <br /> _Commands:_ `suggestion status`, `suggestion channel`, `suggestion appch`, `suggestion rejch`, `suggestion approve`, `suggestion staffadd`, `suggestion staffremove`..."
 
-[//]: # (- **Filters** Apply filters to your music and spice it up)
+### ⚒️ **_*Utility Commands:*_**
 
-### 🎉 **Giveaways:**
+- **_*Need Some Help With Something? Use The Utility Commands To Find Out The Answer To It*_** <br /> _Commands:_ `avatar`, `steal emoji`, `steal stickr`, `serverinfo`, `userinfo`, `language`...
+- **_*Need Help With Some More Stuff?*_** <br /> _Commands:_ `help`, `invite`, `rules`, `privacypolicy`, `ping`...
 
-- **Easy to use** Create giveaways with ease
-- **Role Specific** giveaways
-- **Customizable** Customize the giveaway to your liking
-- **Limitless** Create unlimited giveaways
+### ⭐ **_*Anime Content:*_**
 
-### 🫂 **Social Content:**
+- **_*Love Anime? Express You Love To Someone Using The React Commands*_** <br /> _Commands:_ `bite`, `hug`, `kiss`, `kill`, `slap`, `punch`...
 
-- **You Have A CV In Each Server-Specific Bot!** <br /> _Commands:_ `facebook`, `instagram`, `tik tok`,...
-- **Do You Love Someone?** <br /> _Commands:_ `fb name`, `fb link`, `ig name`, `ig link`, ...
+### 🪙 **_*Economy System:*_**
 
-[//]: # (### 🎟 **Ticket System:**)
+- **_*Want To Become Richest? Use The Economy Commands!*_** <br /> _Commands:_ `peach`, `goma`, `daily`, `weekly`...
+- **_*Give People Money, Check Your Balance, Or Just Flex!*_** <br /> _Commands:_ `balance`, `deposit`, `withdraw`, `transfer`...
 
-[//]: # ()
-[//]: # (- **Make Supporting Members A Breeze With Tickets!** <br/> Highly customizable ticket system with staff roles)
+### 😁 **_*Emotes Commands:*_**
 
-[//]: # (- **Multiple Categories** <br/> Don't Want The Tickets To Be Everywhere? Categorize them using select menus)
+- **_*Have Some Feeling to show In Your Server!*_** <br /> _Commands:_ `angry`, `cry`, `cute`, `happy`, `roar`, `shy`, `scare`...
 
-### 📉 **Stats Tracking:**
+[//]: # "- ****Play Games And Enjoy Yourself**** <br /> _Commands:_ `snake`, `together`, `flip coin`, `flip text`, ..."
 
-- **Levelling** Track your server's activity with a level system
-- **Leaderboards** See who is the most active user in your server
-- **Customizable System** Configure the levelup message, rank cards to your liking
+### 📨 **_*Invite Tracking:*_**
 
-[//]: # (### 🙋‍♂️ **Suggestions:**)
+- **_*Track who has been inviting people to your server!*_**
+- **_*Invite Ranks!*_** Inviter can get awesome rewards and be recognised
+- **_*Configure these settings and customize them to your liking!*_** <br /> _Commands:_ `inviters`...
 
-[//]: # ()
-[//]: # (- **Get Suggestions From Server Members To Help Your Server Become The Best!** <br /> _Commands:_ `suggest`, `suggestion`...)
-
-[//]: # (- **Accept Or Decline The Suggestions And Customize Them To The Max!** <br /> _Commands:_ `suggestion status`, `suggestion channel`, `suggestion appch`, `suggestion rejch`, `suggestion approve`, `suggestion staffadd`, `suggestion staffremove`...)
-
-### ⚒️ **Utility Commands:**
-
-- **Need Some Help With Something? Use The Utility Commands To Find Out The Answer To It** <br /> _Commands:_ `avatar`, `steal emoji`, `steal stickr`, `serverinfo`, `userinfo`, `language`...
-- **Need Help With Some More Stuff?** <br /> _Commands:_ `help`, `invite`, `rules`, `privacypolicy`,  `ping`...
-
-### ⭐ **Anime Content:**
-
-- **Love Anime? Express You Love To Someone Using The React Commands** <br /> _Commands:_ `bite`, `hug`, `kiss`, `kill`, `slap`, `punch`...
-
-### 🪙 **Economy System:**
-
-- **Want To Become Richest? Use The Economy Commands!** <br /> _Commands:_ `peach`, `goma`, `daily`, `weekly`...
-- **Give People Money, Check Your Balance, Or Just Flex!** <br /> _Commands:_ `balance`, `deposit`, `withdraw`, `transfer`...
-
-### 😁 **Emotes Commands:**
-
-- **Have Some Feeling to show In Your Server!** <br /> _Commands:_ `angry`, `cry`, `cute`, `happy`, `roar`, `shy`, `scare`...
-
-[//]: # (- **Play Games And Enjoy Yourself** <br /> _Commands:_ `snake`, `together`, `flip coin`, `flip text`, ...)
-
-### 📨 **Invite Tracking:**
-
-- **Track who has been inviting people to your server!**
-- **Invite Ranks!** Inviter can get awesome rewards and be recognised
-- **Configure these settings and customize them to your liking!** <br /> _Commands:_ `inviters`...
-
-[//]: # (### 📷 **Image Manipulation:**)
-
-[//]: # ()
-[//]: # (- **Customize other peoples avatars** <br /> _Commands:_ `blur`, `greyscale`, `invert`, `pixelate`, `blur`, `sepia`, `sharpen`, `ad`, `affect`, `beautiful`, `color`...)
-
-[//]: # (- **Make some images by yourself or make some art** <br /> _Commands:_ `bobross`, `confusedstonk`, `delete`, `facepalm`, ` hitler`, `jail`, `jokeoverhead`, `karaba`, `mms`, `notstonk`, `poutine`, `rainbow`, `rip`, ` shit`, `stonk`, `tatoo`, `thomas`, `trash`, `wanted`, `wasted`, ...)
+[//]: # "### 📷 ****Image Manipulation:****"
+[//]: #
+[//]: # "- ****Customize other peoples avatars**** <br /> _Commands:_ `blur`, `greyscale`, `invert`, `pixelate`, `blur`, `sepia`, `sharpen`, `ad`, `affect`, `beautiful`, `color`..."
+[//]: # "- ****Make some images by yourself or make some art**** <br /> _Commands:_ `bobross`, `confusedstonk`, `delete`, `facepalm`, ` hitler`, `jail`, `jokeoverhead`, `karaba`, `mms`, `notstonk`, `poutine`, `rainbow`, `rip`, ` shit`, `stonk`, `tatoo`, `thomas`, `trash`, `wanted`, `wasted`, ..."
 
 <h1 align="center"> 🤝 Contributing 🤝 </h1>
 
@@ -179,15 +164,16 @@ If you need any additional help, make sure to join our support server [here](htt
 
 <h1 align="center"> 💌 Support Server </h1>
 
-
-
 ## 😎 OWNER
+
 - [𝐏𝐄𝐀𝐂𝐇𝐘](https://discord.gg/BJT4h55hbg) - Join us now
 
 ## 🤝 SUPPORTER
+
 - [𝐀𝐧𝐠𝐤𝐨𝐫 𝐏𝐚𝐫𝐢𝐬](https://discord.gg/7pjA2PB6bt) - Join us now
 
 ## 😁 TESTER
+
 - [𝐘𝐎𝐔&𝐌𝐄](https://discord.gg/Wg6D9HYxDC) - Join us now
 - [𝐓𝐡𝐞 𝐒𝐨𝐯𝐢𝐞𝐭 𝐆𝐚𝐲 𝐇𝐮𝐧𝐭𝐞𝐫 ツ](https://discord.gg/EjhDDaTH2a) - Join us now
 

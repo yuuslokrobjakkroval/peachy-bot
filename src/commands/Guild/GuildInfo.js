@@ -1,69 +1,107 @@
-const { Command } = require('../../structures/index.js');
-const { ChannelType, PermissionFlagsBits } = require('discord.js');
+const { Command } = require("../../structures/index.js");
+const { ChannelType, PermissionFlagsBits } = require("discord.js");
 
 module.exports = class GuildInfo extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'guildinfo',
-            description: {
-                content: 'Fetches information about a guild and creates an invite link for joining.',
-                examples: ['guildinfo'],
-                usage: 'guildinfo <guild_id>',
-            },
-            category: 'guild',
-            aliases: ['ginfo'],
-            cooldown: 3,
-            args: true,
-            permissions: {
-                dev: true,
-                client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
-                user: [],
-            },
-            slashCommand: false,
-            options: [],
-        });
+  constructor(client) {
+    super(client, {
+      name: "guildinfo",
+      description: {
+        content:
+          "Fetches information about a guild and creates an invite link for joining.",
+        examples: ["guildinfo"],
+        usage: "guildinfo <guild_id>",
+      },
+      category: "guild",
+      aliases: ["ginfo"],
+      cooldown: 3,
+      args: true,
+      permissions: {
+        dev: true,
+        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
+        user: [],
+      },
+      slashCommand: false,
+      options: [],
+    });
+  }
+
+  async run(client, ctx, args, color, emoji, language) {
+    const guild = this.client.guilds.cache.get(args[0]);
+    if (!guild) {
+      return client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "Guild not found.",
+        color
+      );
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const guild = this.client.guilds.cache.get(args[0]);
-        if (!guild) {
-            return client.utils.sendErrorMessage(client, ctx,'Guild not found.', color);
-        }
-
-        let owner = await guild.members.fetch(guild.ownerId).catch(() => null);
-        if (!owner) {
-            owner = { user: { tag: 'Unknown#0000' } };
-        }
-
-        const memberCount = guild.memberCount ? guild.memberCount.toString() : 'Unknown';
-        let channel = guild.channels.cache.find(ch => ch.type === ChannelType.GuildText);
-        if (!channel) {
-            channel = guild.channels.cache.find(ch => ch.type === ChannelType.GuildVoice);
-            if (!channel) {
-                return client.utils.sendErrorMessage(client, ctx, 'No suitable channels found to create an invite link.', color);
-            }
-        }
-
-        if (!channel?.permissionsFor(channel.guild.members.me).has([PermissionFlagsBits.CreateInstantInvite])) {
-            return client.utils.sendErrorMessage(client, ctx, "Sorry, I don't have permission to create an invite link in this channel.", color);
-        }
-
-        let invite = await channel.createInvite({ maxAge: 0, maxUses: 5, reason: `Requested by KYUU` });
-        let inviteLink = invite?.url || `https://discord.gg/${invite?.code}`;
-        const embed = client.embed()
-            .setColor(color.main)
-            .setAuthor({ name: guild.name, iconURL: guild.iconURL({ format: 'jpeg' }) })
-            .setDescription(`**${guild.name}** has been added to my guilds!`)
-            .setThumbnail(guild.iconURL({ format: 'jpeg' }))
-            .addFields([
-                { name: 'Owner', value: owner.user.tag, inline: true },
-                { name: 'ID', value: guild.id, inline: true },
-                { name: 'Members', value: memberCount, inline: true },
-                { name: 'Created At', value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`, inline: true },
-                { name: 'Invite Link', value: inviteLink, inline: true },
-            ])
-            .setTimestamp();
-
-        await ctx.sendMessage({ embeds: [embed] });
+    let owner = await guild.members.fetch(guild.ownerId).catch(() => null);
+    if (!owner) {
+      owner = { user: { tag: "Unknown#0000" } };
     }
+
+    const memberCount = guild.memberCount
+      ? guild.memberCount.toString()
+      : "Unknown";
+    let channel = guild.channels.cache.find(
+      (ch) => ch.type === ChannelType.GuildText
+    );
+    if (!channel) {
+      channel = guild.channels.cache.find(
+        (ch) => ch.type === ChannelType.GuildVoice
+      );
+      if (!channel) {
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          "No suitable channels found to create an invite link.",
+          color
+        );
+      }
+    }
+
+    if (
+      !channel
+        ?.permissionsFor(channel.guild.members.me)
+        .has([PermissionFlagsBits.CreateInstantInvite])
+    ) {
+      return client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "Sorry, I don't have permission to create an invite link in this channel.",
+        color
+      );
+    }
+
+    let invite = await channel.createInvite({
+      maxAge: 0,
+      maxUses: 5,
+      reason: `Requested by KYUU`,
+    });
+    let inviteLink = invite?.url || `https://discord.gg/${invite?.code}`;
+    const embed = client
+      .embed()
+      .setColor(color.main)
+      .setAuthor({
+        name: guild.name,
+        iconURL: guild.iconURL({ format: "jpeg" }),
+      })
+      .setDescription(`****${guild.name}**** has been added to my guilds!`)
+      .setThumbnail(guild.iconURL({ format: "jpeg" }))
+      .addFields([
+        { name: "Owner", value: owner.user.tag, inline: true },
+        { name: "ID", value: guild.id, inline: true },
+        { name: "Members", value: memberCount, inline: true },
+        {
+          name: "Created At",
+          value: `<t:${Math.floor(guild.createdTimestamp / 1000)}:F>`,
+          inline: true,
+        },
+        { name: "Invite Link", value: inviteLink, inline: true },
+      ])
+      .setTimestamp();
+
+    await ctx.sendMessage({ embeds: [embed] });
+  }
 };

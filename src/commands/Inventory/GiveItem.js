@@ -1,209 +1,330 @@
-const { Command } = require('../../structures/index.js');
-const { ActionRowBuilder, ButtonBuilder } = require('discord.js');
-const Users = require('../../schemas/user');
-const ImportantItems = require('../../assets/inventory/ImportantItems.js');
-const ShopItems = require('../../assets/inventory/ShopItems.js');
-const AllItems = ShopItems.flatMap(shop => shop.inventory);
+const { Command } = require("../../structures/index.js");
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
+const Users = require("../../schemas/user");
+const ImportantItems = require("../../assets/inventory/ImportantItems.js");
+const ShopItems = require("../../assets/inventory/ShopItems.js");
+const AllItems = ShopItems.flatMap((shop) => shop.inventory);
 
 module.exports = class GiveItem extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'giveitem',
-            description: {
-                content: '𝑮𝒊𝒗𝒆 𝒚𝒐𝒖𝒓 𝒊𝒕𝒆𝒎 𝒕𝒐 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒖𝒔𝒆𝒓.',
-                examples: ['giveitem @user gem 1', 'gi @user gem 1'],
-                usage: 'give <user> <item> <amount>, gi <user> <item> <amount>',
-            },
-            category: 'inventory',
-            aliases: ['gi'],
-            cooldown: 5,
-            args: true,
-            permissions: {
-                dev: false,
-                client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
-                user: [],
-            },
-            slashCommand: true,
-            options: [
-                {
-                    name: 'user',
-                    description: 'The user you want to give to.',
-                    type: 6,
-                    required: true,
-                },
-                {
-                    name: 'item',
-                    description: 'The item you want to give.',
-                    type: 3,
-                    required: true,
-                },
-                {
-                    name: 'amount',
-                    description: 'The amount you want to give.',
-                    type: 3,
-                    required: true,
-                },
-            ],
-        });
+  constructor(client) {
+    super(client, {
+      name: "giveitem",
+      description: {
+        content: "𝑮𝒊𝒗𝒆 𝒚𝒐𝒖𝒓 𝒊𝒕𝒆𝒎 𝒕𝒐 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒖𝒔𝒆𝒓.",
+        examples: ["giveitem @user gem 1", "gi @user gem 1"],
+        usage: "give <user> <item> <amount>, gi <user> <item> <amount>",
+      },
+      category: "inventory",
+      aliases: ["gi"],
+      cooldown: 5,
+      args: true,
+      permissions: {
+        dev: false,
+        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
+        user: [],
+      },
+      slashCommand: true,
+      options: [
+        {
+          name: "user",
+          description: "The user you want to give to.",
+          type: 6,
+          required: true,
+        },
+        {
+          name: "item",
+          description: "The item you want to give.",
+          type: 3,
+          required: true,
+        },
+        {
+          name: "amount",
+          description: "The amount you want to give.",
+          type: 3,
+          required: true,
+        },
+      ],
+    });
+  }
+
+  async run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
+    const giveItemMessages = language.locales.get(language.defaultLocale)
+      ?.inventoryMessages?.giveItemMessages;
+    const authorId = ctx.author.id;
+    const user = await Users.findOne({ userId: authorId });
+
+    if (!user || user.inventory.length === 0) {
+      return await client.utils.sendErrorMessage(
+        client,
+        ctx,
+        giveItemMessages.emptyInventory,
+        color
+      );
     }
 
-    async run(client, ctx, args, color, emoji, language) {
-        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const giveItemMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.giveItemMessages;
-        const authorId = ctx.author.id;
+    const target = ctx.isInteraction
+      ? ctx.interaction.options.getUser("user") || ctx.author
+      : ctx.message.mentions.members.first() ||
+        ctx.guild.members.cache.get(args[0]) ||
+        ctx.member;
+    const isBot = target
+      ? ctx.isInteraction
+        ? target.bot
+        : target.user.bot
+      : false;
+    if (!target || isBot || target.id === authorId) {
+      let errorMessage = "";
+      if (!target) errorMessage += giveItemMessages.noUser;
+      else if (isBot) errorMessage += giveItemMessages.mentionToBot;
+      else if (target.id === authorId)
+        errorMessage += giveItemMessages.mentionToSelf;
+      return await client.utils.sendErrorMessage(
+        client,
+        ctx,
+        errorMessage,
+        color
+      );
+    }
+
+    const itemId = ctx.isInteraction
+      ? ctx.interaction.options.data[1]?.value.toString()
+      : args[1];
+    const itemInfo = AllItems.concat(ImportantItems).find(
+      ({ id }) => id.toLowerCase() === itemId.toLowerCase()
+    );
+    const hasItems = user.inventory.find(
+      (item) => item.id.toLowerCase() === itemId.toLowerCase()
+    );
+    if (!itemInfo || !hasItems || !itemInfo.able.gift) {
+      let errorMessage = "";
+      if (!itemInfo)
+        errorMessage += giveItemMessages.itemNotFound.replace(
+          "{{itemId}}",
+          itemId
+        );
+      if (!hasItems)
+        errorMessage += giveItemMessages.noItemInInventory
+          .replace("{{itemEmote}}", itemInfo?.emoji)
+          .replace("{{itemName}}", itemInfo?.name);
+      if (!itemInfo?.able.gift)
+        errorMessage += giveItemMessages.itemNotGiftable
+          .replace("{{itemEmote}}", itemInfo?.emoji)
+          .replace("{{itemName}}", itemInfo?.name);
+      return await client.utils.sendErrorMessage(
+        client,
+        ctx,
+        errorMessage,
+        color
+      );
+    }
+
+    let amount = ctx.isInteraction
+      ? ctx.interaction.options.data[2]?.value || 1
+      : args[2] || 1;
+    if (
+      isNaN(amount) ||
+      amount <= 0 ||
+      amount.toString().includes(".") ||
+      amount.toString().includes(",")
+    ) {
+      const amountMap = {
+        all: hasItems.quantity,
+        half: Math.ceil(hasItems.quantity / 2),
+      };
+      if (amount in amountMap) amount = amountMap[amount];
+      else {
+        return await client.utils.sendErrorMessage(
+          client,
+          ctx,
+          giveItemMessages.invalidAmount,
+          color
+        );
+      }
+    }
+
+    const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
+
+    const embed = client
+      .embed()
+      .setColor(color.main)
+      .setTitle(
+        giveItemMessages.confirmationTitle.replace(
+          "{{author}}",
+          ctx.author.displayName
+        )
+      )
+      .setDescription(
+        giveItemMessages.confirmationDescription.replace(
+          "{{author}}",
+          ctx.author.displayName
+        )
+      )
+      .addFields([
+        {
+          name: giveItemMessages.sentItem,
+          value: `${
+            itemInfo.emoji
+          } ****\`${itemAmount.toLocaleString()}\`**** ${itemInfo.name}`,
+          inline: true,
+        },
+        {
+          name: giveItemMessages.receivedItem,
+          value: `${
+            itemInfo.emoji
+          } ****\`${itemAmount.toLocaleString()}\`**** ${itemInfo.name}`,
+          inline: true,
+        },
+      ]);
+
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId(`${this.name}_accept`)
+        .setLabel("Accept")
+        .setStyle(3),
+      new ButtonBuilder()
+        .setCustomId(`${this.name}_cancel`)
+        .setLabel("Cancel")
+        .setStyle(4)
+    );
+
+    const msg = ctx.isInteraction
+      ? ctx.deferred
+        ? await ctx.interaction.followUp({
+            embeds: [embed],
+            components: [row],
+            fetchReply: true,
+          })
+        : await ctx.interaction.reply({
+            embeds: [embed],
+            components: [row],
+            fetchReply: true,
+          })
+      : await ctx.channel.send({
+          embeds: [embed],
+          components: [row],
+          fetchReply: true,
+        });
+
+    const filter = (interaction) => interaction.user.id === ctx.author.id;
+    const collector = msg.createMessageComponentCollector({
+      filter,
+      time: 120000,
+      idle: 60000,
+    });
+
+    collector.on("collect", async (int) => {
+      await int.deferUpdate();
+
+      if (int.customId === `${this.name}_accept`) {
         const user = await Users.findOne({ userId: authorId });
+        let targetUser = await Users.findOne({ userId: target.id });
 
         if (!user || user.inventory.length === 0) {
-            return await client.utils.sendErrorMessage(client, ctx, giveItemMessages.emptyInventory, color);
+          return await client.utils.sendErrorMessage(
+            client,
+            ctx,
+            "Your inventory is empty.",
+            color
+          );
         }
 
-        const target = ctx.isInteraction
-            ? ctx.interaction.options.getUser('user') || ctx.author
-            : ctx.message.mentions.members.first() || ctx.guild.members.cache.get(args[0]) || ctx.member;
-        const isBot = target ? (ctx.isInteraction ? target.bot : target.user.bot) : false;
-        if (!target || isBot || target.id === authorId) {
-            let errorMessage = '';
-            if (!target) errorMessage += giveItemMessages.noUser;
-            else if (isBot) errorMessage += giveItemMessages.mentionToBot;
-            else if (target.id === authorId) errorMessage += giveItemMessages.mentionToSelf;
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+        if (!targetUser) {
+          return client.utils.sendErrorMessage(
+            client,
+            ctx,
+            generalMessages.userNotFound,
+            color
+          );
         }
 
-        const itemId = ctx.isInteraction ? ctx.interaction.options.data[1]?.value.toString() : args[1];
-        const itemInfo = AllItems.concat(ImportantItems).find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
-        const hasItems = user.inventory.find(item => item.id.toLowerCase() === itemId.toLowerCase());
+        const itemInfo = AllItems.concat(ImportantItems).find(
+          ({ id }) => id === itemId.toLowerCase()
+        );
+        const hasItems = user.inventory.find((item) => item.id === itemId);
         if (!itemInfo || !hasItems || !itemInfo.able.gift) {
-            let errorMessage = '';
-            if (!itemInfo) errorMessage += giveItemMessages.itemNotFound.replace('{{itemId}}', itemId);
-            if (!hasItems) errorMessage += giveItemMessages.noItemInInventory.replace('{{itemEmote}}', itemInfo?.emoji).replace('{{itemName}}', itemInfo?.name);
-            if (!itemInfo?.able.gift) errorMessage += giveItemMessages.itemNotGiftable.replace('{{itemEmote}}', itemInfo?.emoji).replace('{{itemName}}', itemInfo?.name);
-            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
-        }
+          let errorMessage = "";
 
-        let amount = ctx.isInteraction ? ctx.interaction.options.data[2]?.value || 1 : args[2] || 1;
-        if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
-            const amountMap = { all: hasItems.quantity, half: Math.ceil(hasItems.quantity / 2) };
-            if (amount in amountMap) amount = amountMap[amount];
-            else {
-                return await client.utils.sendErrorMessage(client, ctx, giveItemMessages.invalidAmount, color);
-            }
+          if (!itemInfo)
+            errorMessage += `The item with id \`${args.join(
+              " "
+            )}\` couldn't be found!`;
+          if (!hasItems)
+            errorMessage += `You don't have ${itemInfo.emoji} \`${
+              itemInfo.id
+            }\` ****${client.utils.formatCapitalize(
+              itemInfo.name
+            )}**** in your inventory.`;
+          if (!itemInfo.able.gift)
+            errorMessage += `The item ${itemInfo.emoji} \`${
+              itemInfo.id
+            }\` ****${client.utils.formatCapitalize(
+              itemInfo.name
+            )}**** is not giveable!`;
+          return await client.utils.sendErrorMessage(
+            client,
+            ctx,
+            errorMessage,
+            color
+          );
         }
 
         const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
 
-        const embed = client
-            .embed()
-            .setColor(color.main)
-            .setTitle(giveItemMessages.confirmationTitle.replace('{{author}}', ctx.author.displayName))
-            .setDescription(giveItemMessages.confirmationDescription.replace('{{author}}', ctx.author.displayName))
-            .addFields([
-                {
-                    name: giveItemMessages.sentItem,
-                    value: `${itemInfo.emoji} **\`${itemAmount.toLocaleString()}\`** ${itemInfo.name}`,
-                    inline: true,
-                },
-                {
-                    name: giveItemMessages.receivedItem,
-                    value: `${itemInfo.emoji} **\`${itemAmount.toLocaleString()}\`** ${itemInfo.name}`,
-                    inline: true,
-                },
-            ]);
+        // Remove the item or reduce quantity for the author
+        if (hasItems.quantity - itemAmount === 0) {
+          await Users.updateOne(
+            { userId: authorId },
+            { $pull: { inventory: { id: itemId } } }
+          );
+        } else {
+          await Users.updateOne(
+            { userId: authorId, "inventory.id": itemId },
+            { $inc: { "inventory.$.quantity": -itemAmount } }
+          );
+        }
 
-        const row = new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId(`${this.name}_accept`).setLabel('Accept').setStyle(3),
-            new ButtonBuilder().setCustomId(`${this.name}_cancel`).setLabel('Cancel').setStyle(4)
+        const targetHasItem = targetUser.inventory.find(
+          (item) => item.id === itemId
         );
+        if (targetHasItem) {
+          await Users.updateOne(
+            { userId: target.id, "inventory.id": itemId },
+            { $inc: { "inventory.$.quantity": itemAmount } }
+          );
+        } else {
+          await Users.updateOne(
+            { userId: target.id },
+            { $push: { inventory: { id: itemId, quantity: itemAmount } } }
+          );
+        }
 
-        const msg = ctx.isInteraction
-            ? ctx.deferred
-                ? await ctx.interaction.followUp({ embeds: [embed], components: [row], fetchReply: true })
-                : await ctx.interaction.reply({ embeds: [embed], components: [row], fetchReply: true })
-            : await ctx.channel.send({ embeds: [embed], components: [row], fetchReply: true });
+        const embed = client
+          .embed()
+          .setColor(color.main)
+          .setDescription(
+            giveItemMessages.transactionSuccess
+              .replace("{{itemEmote}}", itemInfo.emoji)
+              .replace("{{itemAmount}}", itemAmount)
+              .replace("{{itemName}}", itemInfo.name)
+              .replace("{{target}}", target.displayName)
+          );
 
-        const filter = interaction => interaction.user.id === ctx.author.id;
-        const collector = msg.createMessageComponentCollector({ filter, time: 120000, idle: 60000 });
+        await int.editReply({ embeds: [embed], components: [] });
+      } else if (int.customId === `${this.name}_cancel`) {
+        const embed = client
+          .embed()
+          .setColor(color.main)
+          .setDescription(giveItemMessages.transactionCancelled);
 
+        await int.editReply({ embeds: [embed], components: [] });
+      }
+    });
 
-
-        collector.on('collect', async int => {
-            await int.deferUpdate();
-
-            if (int.customId === `${this.name}_accept`) {
-                const user = await Users.findOne({ userId: authorId });
-                let targetUser = await Users.findOne({ userId: target.id });
-
-                if (!user || user.inventory.length === 0) {
-                    return await client.utils.sendErrorMessage(client, ctx, 'Your inventory is empty.', color);
-                }
-
-                if (!targetUser) {
-                    return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
-                }
-
-                const itemInfo = AllItems.concat(ImportantItems).find(({ id }) => id === itemId.toLowerCase());
-                const hasItems = user.inventory.find(item => item.id === itemId);
-                if (!itemInfo || !hasItems || !itemInfo.able.gift) {
-                    let errorMessage = '';
-
-                    if (!itemInfo) errorMessage += `The item with id \`${args.join(' ')}\` couldn't be found!`;
-                    if (!hasItems)
-                        errorMessage += `You don't have ${itemInfo.emoji} \`${itemInfo.id}\` **${client.utils.formatCapitalize(itemInfo.name)}** in your inventory.`;
-                    if (!itemInfo.able.gift)
-                        errorMessage += `The item ${itemInfo.emoji} \`${itemInfo.id}\` **${client.utils.formatCapitalize(itemInfo.name)}** is not giveable!`;
-                    return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
-                }
-
-                const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
-
-                // Remove the item or reduce quantity for the author
-                if (hasItems.quantity - itemAmount === 0) {
-                    await Users.updateOne(
-                        { userId: authorId },
-                        { $pull: { inventory: { id: itemId } } }
-                    );
-                } else {
-                    await Users.updateOne(
-                        { userId: authorId, 'inventory.id': itemId },
-                        { $inc: { 'inventory.$.quantity': -itemAmount } }
-                    );
-                }
-
-                const targetHasItem = targetUser.inventory.find(item => item.id === itemId);
-                if (targetHasItem) {
-                    await Users.updateOne(
-                        { userId: target.id, 'inventory.id': itemId },
-                        { $inc: { 'inventory.$.quantity': itemAmount } }
-                    );
-                } else {
-                    await Users.updateOne(
-                        { userId: target.id },
-                        { $push: { inventory: { id: itemId, quantity: itemAmount } } }
-                    );
-                }
-
-                const embed = client
-                    .embed()
-                    .setColor(color.main)
-                    .setDescription(giveItemMessages.transactionSuccess
-                        .replace('{{itemEmote}}', itemInfo.emoji)
-                        .replace('{{itemAmount}}', itemAmount)
-                        .replace('{{itemName}}', itemInfo.name)
-                        .replace('{{target}}', target.displayName)
-                    );
-
-                await int.editReply({ embeds: [embed], components: [] });
-            } else if (int.customId === `${this.name}_cancel`) {
-                const embed = client
-                    .embed()
-                    .setColor(color.main)
-                    .setDescription(giveItemMessages.transactionCancelled);
-
-                await int.editReply({ embeds: [embed], components: [] });
-            }
-        });
-
-        collector.on('end', async () => {
-            await msg.edit({ components: [] });
-        });
-    }
+    collector.on("end", async () => {
+      await msg.edit({ components: [] });
+    });
+  }
 };

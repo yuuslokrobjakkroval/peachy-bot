@@ -3,7 +3,7 @@ const color = require("../../utils/Color");
 module.exports = [
   {
     name: "Food",
-    description: `Food items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
+    description: `Food items to earn XP!\n****・**** \`pbuy {id}\` to buy an item`,
     type: "food",
     inventory: [
       {
@@ -58,7 +58,7 @@ module.exports = [
   },
   {
     name: "Drink",
-    description: `Drink items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
+    description: `Drink items to earn XP!\n****・**** \`pbuy {id}\` to buy an item`,
     type: "drink",
     inventory: [
       {
@@ -369,7 +369,7 @@ module.exports = [
   },
   {
     name: "Cake",
-    description: `Eat items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
+    description: `Eat items to earn XP!\n****・**** \`pbuy {id}\` to buy an item`,
     type: "cake",
     inventory: [
       {
@@ -648,7 +648,7 @@ module.exports = [
   },
   {
     name: "Couple",
-    description: `Ring items to connection your relationship!\n**・** \`pbuy {id}\` to buy an item`,
+    description: `Ring items to connection your relationship!\n****・**** \`pbuy {id}\` to buy an item`,
     type: "ring",
     inventory: [
       {
@@ -687,7 +687,7 @@ module.exports = [
   },
   {
     name: "Color",
-    description: `Collect items to add color to your inventory!\n**・** \`pbuy {id}\` to buy an item`,
+    description: `Collect items to add color to your inventory!\n****・**** \`pbuy {id}\` to buy an item`,
     type: "color",
     inventory: [
       {
@@ -839,7 +839,7 @@ module.exports = [
   {
     name: "Wallpaper",
     description:
-      "Collect wallpapers to use with your profile!\n**・** `pbuy {id}` to buy an item\n**・** Some items may be used or gifted.",
+      "Collect wallpapers to use with your profile!\n****・**** `pbuy {id}` to buy an item\n****・**** Some items may be used or gifted.",
     type: "wallpaper",
     inventory: [
       {
@@ -1220,7 +1220,7 @@ module.exports = [
   },
   {
     name: "Theme",
-    description: `Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
+    description: `Themes to customize your embed color and emoji!\n****・**** \`pbuy {id}\` to buy a theme for customization.`,
     type: "theme",
     inventory: [
       // {
@@ -1321,7 +1321,8 @@ module.exports = [
       {
         id: "t06",
         name: "Mystic Realms",
-        description: "Immerse yourself in the enchanting world of Mystic Realms! This theme captures the essence of heroic quests, magical artifacts, and mythical creatures. Perfect for adventurers who dream of exploring ancient ruins, casting powerful spells, and unlocking legendary treasures, it brings the excitement of fantasy to life. Step into a realm where every moment holds the promise of adventure!",
+        description:
+          "Immerse yourself in the enchanting world of Mystic Realms! This theme captures the essence of heroic quests, magical artifacts, and mythical creatures. Perfect for adventurers who dream of exploring ancient ruins, casting powerful spells, and unlocking legendary treasures, it brings the excitement of fantasy to life. Step into a realm where every moment holds the promise of adventure!",
         type: "theme",
         able: {
           use: true,
@@ -1332,12 +1333,12 @@ module.exports = [
         emoji: emoji.theme.mystic,
         available: ["use"],
         price: { buy: 2e7, sell: 18e6 },
-      }
+      },
     ],
   },
   {
     name: "Special Theme",
-    description: `Special Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
+    description: `Special Themes to customize your embed color and emoji!\n****・**** \`pbuy {id}\` to buy a theme for customization.`,
     type: "special theme",
     inventory: [
       {
@@ -1472,7 +1473,8 @@ module.exports = [
       {
         id: "st09",
         name: "Spring Bear",
-        description: "Celebrate the charm of springtime with the delightful Spring Bear! This theme exudes warmth and joy, capturing the playful energy of blooming flowers, sunny days, and the cheerful spirit of a cuddly bear. Perfect for those who love the gentle embrace of nature's renewal, it’s a heartwarming way to brighten your day and spread smiles all around!",
+        description:
+          "Celebrate the charm of springtime with the delightful Spring Bear! This theme exudes warmth and joy, capturing the playful energy of blooming flowers, sunny days, and the cheerful spirit of a cuddly bear. Perfect for those who love the gentle embrace of nature's renewal, it’s a heartwarming way to brighten your day and spread smiles all around!",
         type: "special theme",
         able: {
           use: true,
@@ -1487,7 +1489,8 @@ module.exports = [
       {
         id: "st10",
         name: "Fantasy RPG",
-        description: "Step into a world of magic and adventure with the Fantasy RPG theme! This immersive setting brings to life the thrill of epic quests, mythical creatures, and heroic tales. Perfect for those who dream of wielding swords, casting spells, and exploring enchanted lands, it captures the spirit of adventure and endless possibilities. Let the Fantasy RPG theme transport you to a realm where your imagination knows no bounds!",
+        description:
+          "Step into a world of magic and adventure with the Fantasy RPG theme! This immersive setting brings to life the thrill of epic quests, mythical creatures, and heroic tales. Perfect for those who dream of wielding swords, casting spells, and exploring enchanted lands, it captures the spirit of adventure and endless possibilities. Let the Fantasy RPG theme transport you to a realm where your imagination knows no bounds!",
         type: "special theme",
         able: {
           use: true,
