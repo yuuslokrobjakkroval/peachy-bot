@@ -218,6 +218,7 @@ module.exports = class InteractionCreate extends Event {
               "withdraw",
               "multitransfer",
               "transfer",
+              "angpav",
               "buy",
               "sell",
             ];
