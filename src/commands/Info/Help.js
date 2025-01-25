@@ -83,8 +83,8 @@ module.exports = class Help extends Command {
               .replace("%{mainLeft}", emoji.mainLeft)
               .replace("%{title}", "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
               .replace("%{mainRight}", emoji.mainRight) +
-              `${helpMessages.description} ******${prefix}help [command]******\n` +
-              `${helpMessages.examples} ******${prefix}help balance******\n\n` +
+              `${helpMessages.description} ***${prefix}help [command]***\n` +
+              `${helpMessages.examples} ***${prefix}help balance***\n\n` +
               `${helpMessages.note}`
           )
           .addFields([
@@ -163,8 +163,8 @@ module.exports = class Help extends Command {
               .replace("%{mainLeft}", emoji.mainLeft)
               .replace("%{title}", "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
               .replace("%{mainRight}", emoji.mainRight) +
-              `${helpMessages.description} ******${prefix}help [command]******\n` +
-              `${helpMessages.examples} ******${prefix}help balance******\n\n` +
+              `${helpMessages.description} ***${prefix}help [command]***\n` +
+              `${helpMessages.examples} ***${prefix}help balance***\n\n` +
               `${helpMessages.note}`
           )
           .addFields([

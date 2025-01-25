@@ -64,9 +64,9 @@ module.exports = class Ranking extends Command {
       const emojiRank = client.utils.emojiRank(emoji, position);
       return `****${emojiRank} ${position}. ${
         user.username || "Unknown"
-      }****\n******${client.utils.formatNumber(
+      }****\n***${client.utils.formatNumber(
         user.total ?? 0
-      )}****** ${client.utils.typeRanking(type, emoji)}`;
+      )}*** ${client.utils.typeRanking(type, emoji)}`;
     });
 
     const chunks = client.utils.chunk(leaderboardList, 10);
