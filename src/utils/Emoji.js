@@ -209,6 +209,9 @@ module.exports = {
     avocado: '<:AVOCADO:1287593039380090931>',
     banana: '<:BANANA:1287593031461240852>',
 
+    // CHINA NEW YEAR
+    angpav: '<:ANGPAV:1332727823709900851>',
+
     // DUTCH MILK
     dutchMilk: {
         sassy: '<:SASSY:1319693302928244871>',

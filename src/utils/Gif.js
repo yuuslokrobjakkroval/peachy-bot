@@ -35,6 +35,9 @@ module.exports = {
     gift: 'https://i.imgur.com/fnVRQB7.jpg',
     giftClaimed: 'https://i.imgur.com/yS6CGBh.jpg',
 
+    lunarNewYear: 'https://i.imgur.com/MBmcCh9.gif',
+    angpav: 'https://i.imgur.com/1fYrBZm.png',
+
     // ECONOMY
     balanceThumbnail: 'https://i.imgur.com/3KU57Ed.gif',
     balanceBanner: 'https://i.imgur.com/L0S7Zr1.png',
