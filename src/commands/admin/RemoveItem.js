@@ -59,7 +59,7 @@ module.exports = class RemoveItem extends Command {
             const embed = client
                 .embed()
                 .setColor(color.main)
-                .setDescription(`${emoji.tick} Removed ${itemInfo.emoji} **\`x${baseQuantity}\`** ${itemInfo.id} from ${mention.displayName}'s inventory.`);
+                .setDescription(`${emoji.tick} Removed ${itemInfo.emoji} **x${baseQuantity}** ${itemInfo.id} from ${mention.displayName}'s inventory.`);
 
             return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {

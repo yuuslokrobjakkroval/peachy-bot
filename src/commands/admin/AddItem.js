@@ -90,7 +90,7 @@ module.exports = class AddItem extends Command {
 
         const embed = client.embed()
             .setColor(color.main)
-            .setDescription(`${emoji.tick} Added ${itemInfo.emoji} **\`x${baseQuantity}\`** ${itemInfo.id} to ${mention}.`);
+            .setDescription(`${emoji.tick} Added ${itemInfo.emoji} **x${baseQuantity}** ${itemInfo.id} to ${mention}.`);
 
         return ctx.sendMessage({ embeds: [embed] });
     }
