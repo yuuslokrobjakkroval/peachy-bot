@@ -104,7 +104,7 @@ module.exports = class Verify extends Command {
     ctx.sendMessage({
       embeds: [confirmEmbed],
       components: [row],
-      ephemeral: true,
+      flags: 64,
     });
 
     // Step 3: Create collector to handle button interactions
@@ -167,14 +167,14 @@ module.exports = class Verify extends Command {
         await i.update({
           embeds: [verificationEmbed],
           components: userPaymentStatus === "paid" ? [verificationRow] : [],
-          ephemeral: true,
+          flags: 64,
         });
       } else if (i.customId === "cancel") {
         await i.update({
           content: verifyMessages?.thankYou || "Thank you!",
           embeds: [],
           components: [],
-          ephemeral: true,
+          flags: 64,
         });
       }
 
@@ -290,7 +290,7 @@ module.exports = class Verify extends Command {
               content:
                 verifyMessages?.verificationFailed ||
                 "Verification failed or the code is incorrect. Please try again.",
-              ephemeral: true,
+              flags: 64,
             });
           }
         }
@@ -303,7 +303,7 @@ module.exports = class Verify extends Command {
           content:
             verifyMessages?.noResponseReceived ||
             "No response received. Please try again.",
-          ephemeral: true,
+          flags: 64,
         });
       }
     });

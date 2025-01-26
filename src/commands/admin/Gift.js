@@ -57,7 +57,7 @@ module.exports = class Gift extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     if (ctx.isInteraction) {
-      await ctx.interaction.deferReply({ ephemeral: true });
+      await ctx.interaction.deferReply({ flags: 64 });
     }
 
     const boxType = ctx.isInteraction
@@ -80,12 +80,12 @@ module.exports = class Gift extends Command {
         ? ctx.interaction.editReply({
             content:
               "Usage: `gift <type> <amount> [channel]` (type: common/rare/epic/legendary/mythic)",
-            ephemeral: true,
+            flags: 64,
           })
         : ctx.sendMessage({
             content:
               "Usage: `gift <type> <amount> [channel]` (type: common/rare/epic/legendary/mythic)",
-            ephemeral: true,
+            flags: 64,
           });
     }
 
@@ -120,11 +120,11 @@ module.exports = class Gift extends Command {
       return ctx.isInteraction
         ? ctx.interaction.editReply({
             content: "No available channels found.",
-            ephemeral: true,
+            flags: 64,
           })
         : ctx.sendMessage({
             content: "No available channels found.",
-            ephemeral: true,
+            flags: 64,
           });
     }
 
@@ -177,7 +177,7 @@ module.exports = class Gift extends Command {
           if (claimedGifts[selectedChannel.id].includes(interaction.user.id)) {
             return await interaction.followUp({
               content: "This gift has already been claimed by you!",
-              ephemeral: true,
+              flags: 64,
             });
           }
 
@@ -185,7 +185,7 @@ module.exports = class Gift extends Command {
           if (!reward) {
             return await interaction.followUp({
               content: "No rewards left to claim.",
-              ephemeral: true,
+              flags: 64,
             });
           }
 
@@ -268,7 +268,7 @@ module.exports = class Gift extends Command {
           if (ctx.isInteraction) {
             await ctx.interaction.editReply({ content: responseMessage });
           } else {
-            ctx.sendMessage({ content: responseMessage, ephemeral: true });
+            ctx.sendMessage({ content: responseMessage, flags: 64 });
           }
 
           // Schedule the embed message to be deleted after 10 seconds
@@ -306,7 +306,7 @@ module.exports = class Gift extends Command {
     if (ctx.isInteraction) {
       await ctx.interaction.editReply({ content: initialResponseMessage });
     } else {
-      ctx.sendMessage({ content: initialResponseMessage, ephemeral: true });
+      ctx.sendMessage({ content: initialResponseMessage, flags: 64 });
     }
   }
 };
@@ -482,7 +482,7 @@ async function addRewardToUserInventory(
     if (!user) {
       return await interaction.reply({
         content: "User not found in the database.",
-        ephemeral: true,
+        flags: 64,
       });
     }
 
@@ -525,7 +525,7 @@ async function addRewardToUserInventory(
     await interaction.reply({
       content:
         "An error occurred while processing your reward. Please try again.",
-      ephemeral: true,
+      flags: 64,
     });
   }
 }

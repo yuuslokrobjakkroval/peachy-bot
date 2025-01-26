@@ -51,7 +51,7 @@ module.exports = class Clear extends Command {
 
         // Defer the interaction to prevent timeout
         if (ctx.isInteraction) {
-            await ctx.interaction.deferReply({ ephemeral: true }).catch(err => console.error(err));
+            await ctx.interaction.deferReply({ flags: 64 }).catch(err => console.error(err));
         }
 
         let messagesDeleted = 0;
@@ -77,7 +77,7 @@ module.exports = class Clear extends Command {
         if (ctx.isInteraction) {
             await ctx.interaction.editReply({ content: `Deleted ${messagesDeleted} messages.` });
         } else {
-            ctx.sendMessage({ content: `Deleted ${messagesDeleted} messages.`, ephemeral: true });
+            ctx.sendMessage({ content: `Deleted ${messagesDeleted} messages.`, flags: 64 });
         }
     }
 };

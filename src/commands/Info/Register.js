@@ -37,7 +37,7 @@ module.exports = class Register extends Command {
                         .setTitle(registerMessages.titleAlreadyRegistered)
                         .setDescription(registerMessages.alreadyRegistered)
                 ],
-                ephemeral: true,
+                flags: 64,
             });
         }
 

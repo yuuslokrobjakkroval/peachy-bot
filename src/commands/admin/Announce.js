@@ -57,11 +57,11 @@ module.exports = class Announce extends Command {
         }
 
         if (targetChannel.type !== ChannelType.GuildText) {
-            return ctx.sendMessage({ content: `Please select a valid text channel for the announcement.`, ephemeral: true});
+            return ctx.sendMessage({ content: `Please select a valid text channel for the announcement.`, flags: 64});
         }
 
         if (!messageContent || messageContent.trim().length === 0) {
-            return ctx.sendMessage({ content: `Please provide a valid message to announce.`, ephemeral: true});
+            return ctx.sendMessage({ content: `Please provide a valid message to announce.`, flags: 64});
         }
 
         const roleToMention = ctx.isInteraction
@@ -79,7 +79,7 @@ module.exports = class Announce extends Command {
         if (roleToMention || targetChannel.permissionsFor(ctx.client.user).has('MENTION_EVERYONE')) {
             targetChannel.send(fullMessage)
                 .then(() => {
-                    ctx.sendMessage({ content: `Announcement sent in ${targetChannel.name} ${roleToMention ? `mentioning ${roleToMention.name}` : 'mentioning @everyone'}.`, ephemeral: true });
+                    ctx.sendMessage({ content: `Announcement sent in ${targetChannel.name} ${roleToMention ? `mentioning ${roleToMention.name}` : 'mentioning @everyone'}.`, flags: 64 });
                 })
                 .catch(err => {
                     console.error(err);

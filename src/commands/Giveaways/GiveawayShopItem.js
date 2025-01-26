@@ -109,11 +109,11 @@ module.exports = class GiveawayShopItem extends Command {
       return ctx.isInteraction
         ? ctx.interaction.editReply({
             content: "Only the bot owner can enable auto add for giveaways.",
-            ephemeral: true,
+            flags: 64,
           })
         : ctx.editMessage({
             content: "Only the bot owner can enable auto add for giveaways.",
-            ephemeral: true,
+            flags: 64,
           });
     }
 

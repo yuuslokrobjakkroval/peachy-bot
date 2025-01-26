@@ -54,7 +54,7 @@ module.exports = class CheckChannelInAllServers extends Command {
         return ctx.sendMessage({
           content:
             "The specified channel ID was not found in any of the servers the bot is in.",
-          ephemeral: true,
+          flags: 64,
         });
       }
 

@@ -123,7 +123,7 @@ module.exports = class Transfer extends Command {
                 if (interaction.user.id !== ctx.author.id) {
                     return interaction.reply({
                         content: generalMessages.notForYou || "This action is not for you.",
-                        ephemeral: true
+                        flags: 64
                     });
                 } else {
                     interaction.deferUpdate().then(async () => {

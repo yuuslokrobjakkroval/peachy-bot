@@ -48,12 +48,12 @@ module.exports = class Reroll extends Command {
         ? ctx.interaction.reply({
             content:
               "Only the bot owner, server owner, and administrators can use this giveaway.",
-            ephemeral: true,
+            flags: 64,
           })
         : ctx.sendMessage({
             content:
               "Only the bot owner, server owner, and administrators can use this giveaway.",
-            ephemeral: true,
+            flags: 64,
           });
     }
 

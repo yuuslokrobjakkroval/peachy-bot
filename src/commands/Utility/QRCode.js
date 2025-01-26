@@ -58,7 +58,7 @@ module.exports = class QRCode extends Command {
         } else {
             return ctx.sendMessage({
                 content: qrMessages?.invalidOption || "Invalid option! Please use 'kh' or 'usd'.",
-                ephemeral: true
+                flags: 64
             });
         }
 

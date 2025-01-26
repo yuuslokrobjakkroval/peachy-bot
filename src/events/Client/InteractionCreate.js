@@ -169,7 +169,7 @@ module.exports = class InteractionCreate extends Event {
                   await interaction.reply({
                     content:
                       "You don't have enough permissions to use this command.",
-                    ephemeral: true,
+                    flags: 64,
                   });
                   return;
                 }
@@ -331,7 +331,7 @@ module.exports = class InteractionCreate extends Event {
             );
             await interaction.reply({
               content: "An error occurred while processing the command.",
-              ephemeral: true,
+              flags: 64,
             });
           }
         } else if (
@@ -346,7 +346,7 @@ module.exports = class InteractionCreate extends Event {
           //       const embed = this.client.embed()
           //           .setColor(color.danger)
           //           .setDescription('The Join to create system is not enabled in this server.');
-          //       return interaction.reply({ embeds: [embed], ephemeral: true })
+          //       return interaction.reply({ embeds: [embed], flags: 64 })
           //     }
           //
           //     const tempChannel = config.tempChannels.find(tc => tc.channelId === interaction.channelId);
@@ -357,7 +357,7 @@ module.exports = class InteractionCreate extends Event {
           //       const embed = this.client.embed()
           //           .setColor(color.danger)
           //           .setDescription('Only the Channel owner can use theses controls.');
-          //       return interaction.reply({ embeds: [embed], ephemeral: true });
+          //       return interaction.reply({ embeds: [embed], flags: 64 });
           //     }
           //
           //     const channel = interaction.guild.channels.cache.get(tempChannel.channelId);
@@ -381,7 +381,7 @@ module.exports = class InteractionCreate extends Event {
           //           const successEmbed = this.client.embed()
           //               .setColor(color.success)
           //               .setDescription(`Channel ${isLocked ? 'unlocked' : 'locked'} Successfully.`);
-          //           await interaction.reply({embeds: [successEmbed], ephemeral: true});
+          //           await interaction.reply({embeds: [successEmbed], flags: 64});
           //         }
           //         break;
           //       }
@@ -401,7 +401,7 @@ module.exports = class InteractionCreate extends Event {
           //           const successEmbed = this.client.embed()
           //               .setColor(color.success)
           //               .setDescription(`Channel ${isHidden ? 'shown' : 'hidden'} Successfully.`);
-          //           await interaction.reply({embeds: [successEmbed], ephemeral: true});
+          //           await interaction.reply({embeds: [successEmbed], flags: 64});
           //         }
           //         break;
           //       }
@@ -434,7 +434,7 @@ module.exports = class InteractionCreate extends Event {
           //           const embed = this.client.embed()
           //               .setColor(color.danger)
           //               .setDescription('There are no members to kick from the channel!');
-          //           await interaction.reply({ embeds: [embed], ephemeral: true });
+          //           await interaction.reply({ embeds: [embed], flags: 64 });
           //         }
           //
           //         const row = this.client.utils.createButtonRow(
@@ -453,7 +453,7 @@ module.exports = class InteractionCreate extends Event {
           //           const embed = this.client.embed()
           //               .setColor(color.main)
           //               .setDescription(`Select a user to kick`);
-          //           await interaction.reply({content: "", embeds: [embed], components: [row], ephemeral: true});
+          //           await interaction.reply({content: "", embeds: [embed], components: [row], flags: 64});
           //         }
           //         break;
           //       }
@@ -476,7 +476,7 @@ module.exports = class InteractionCreate extends Event {
           //         const embed = this.client.embed()
           //             .setColor(color.danger)
           //             .setDescription('Please provide a valid number between 0 and 99')
-          //         await interaction.reply({ embeds: [embed], ephemeral: true });
+          //         await interaction.reply({ embeds: [embed], flags: 64 });
           //       }
           //
           //       await channel.setUserLimit(limit);
@@ -487,7 +487,7 @@ module.exports = class InteractionCreate extends Event {
           //         const successEmbed = this.client.embed()
           //             .setColor(color.success)
           //             .setDescription(`Voice channel limit ${limit === 0 ? 'removed' : `set to ${limit}`}!`)
-          //         await interaction.reply({embeds: [successEmbed], ephemeral: true});
+          //         await interaction.reply({embeds: [successEmbed], flags: 64});
           //       }
           //     }
           //   }
@@ -510,13 +510,13 @@ module.exports = class InteractionCreate extends Event {
           //         const embed = this.client.embed()
           //             .setColor(color.danger)
           //             .setDescription('Selected member is no longer in the channel.');
-          //         return interaction.reply({ embeds: [embed], ephemeral: true });
+          //         return interaction.reply({ embeds: [embed], flags: 64 });
           //       }
           //       await member.voice.disconnect();
           //       const embed = this.client.embed()
           //           .setColor(color.success)
           //           .setDescription(`Successfully kicked ${member.displayName} from the channel.`);
-          //       return interaction.reply({ embeds: [embed], ephemeral: true });
+          //       return interaction.reply({ embeds: [embed], flags: 64 });
           //     }
           //   }
           // } catch (err) {
@@ -545,7 +545,7 @@ module.exports = class InteractionCreate extends Event {
                         "An error occurred: Giveaway data not found."
                       ),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
               } else if (data.endTime * 1000 < Date.now()) {
                 return this.client.utils.endGiveaway(
@@ -566,7 +566,7 @@ module.exports = class InteractionCreate extends Event {
                       .setColor(color.danger)
                       .setDescription("This giveaway has already ended."),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
               } else if (data.paused) {
                 return interaction.reply({
@@ -580,7 +580,7 @@ module.exports = class InteractionCreate extends Event {
                       .setColor(color.danger)
                       .setDescription("This giveaway is currently paused."),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
               } else if (data.entered.includes(interaction.user.id)) {
                 return interaction.reply({
@@ -604,7 +604,7 @@ module.exports = class InteractionCreate extends Event {
                         .setStyle(ButtonStyle.Danger)
                     ),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
 
                 const filter = (int) =>
@@ -631,7 +631,7 @@ module.exports = class InteractionCreate extends Event {
                               "You have successfully left the giveaway."
                             ),
                         ],
-                        ephemeral: true,
+                        flags: 64,
                       });
                     } else {
                       int.deferUpdate();
@@ -657,7 +657,7 @@ module.exports = class InteractionCreate extends Event {
                         "You have successfully joined the giveaway."
                       ),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
 
                 const newLabel = data.entered.length;
@@ -691,7 +691,7 @@ module.exports = class InteractionCreate extends Event {
               if (!data.entered.length) {
                 return interaction.reply({
                   content: "No participants found.",
-                  ephemeral: true,
+                  flags: 64,
                 });
               }
 
@@ -727,7 +727,7 @@ module.exports = class InteractionCreate extends Event {
                   )}\n\nTotal Participants: ****${validParticipants.length}****`
                 );
 
-              await interaction.reply({ embeds: [embed], ephemeral: true });
+              await interaction.reply({ embeds: [embed], flags: 64 });
               break;
             }
 
@@ -752,7 +752,7 @@ module.exports = class InteractionCreate extends Event {
                         "An error occurred: Giveaway data not found."
                       ),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
               } else if (data.endTime * 1000 < Date.now()) {
                 return this.client.utils.endGiveawayShopItem(
@@ -773,7 +773,7 @@ module.exports = class InteractionCreate extends Event {
                       .setColor(color.danger)
                       .setDescription("This giveaway has already ended."),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
               } else if (data.paused) {
                 return interaction.reply({
@@ -787,7 +787,7 @@ module.exports = class InteractionCreate extends Event {
                       .setColor(color.danger)
                       .setDescription("This giveaway is currently paused."),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
               } else if (data.entered.includes(interaction.user.id)) {
                 return interaction.reply({
@@ -811,7 +811,7 @@ module.exports = class InteractionCreate extends Event {
                         .setStyle(ButtonStyle.Danger)
                     ),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
 
                 const filter = (int) =>
@@ -838,7 +838,7 @@ module.exports = class InteractionCreate extends Event {
                               "You have successfully left the giveaway."
                             ),
                         ],
-                        ephemeral: true,
+                        flags: 64,
                       });
                     } else {
                       int.deferUpdate();
@@ -864,7 +864,7 @@ module.exports = class InteractionCreate extends Event {
                         "You have successfully joined the giveaway."
                       ),
                   ],
-                  ephemeral: true,
+                  flags: 64,
                 });
 
                 const newLabel = data.entered.length;
@@ -898,7 +898,7 @@ module.exports = class InteractionCreate extends Event {
               if (!data.entered.length) {
                 return interaction.reply({
                   content: "No participants found.",
-                  ephemeral: true,
+                  flags: 64,
                 });
               }
 
@@ -934,7 +934,7 @@ module.exports = class InteractionCreate extends Event {
                   )}\n\nTotal Participants: ****${validParticipants.length}****`
                 );
 
-              await interaction.reply({ embeds: [embed], ephemeral: true });
+              await interaction.reply({ embeds: [embed], flags: 64 });
               break;
             }
 

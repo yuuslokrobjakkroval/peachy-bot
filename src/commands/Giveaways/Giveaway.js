@@ -82,7 +82,7 @@ module.exports = class Start extends Command {
     // if (!isOwner || !isAdmin) {
     //     const response = {
     //         content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
-    //         ephemeral: true,
+    //         flags: 64,
     //     };
     //     return ctx.isInteraction
     //         ? ctx.interaction.editReply(response)
@@ -113,11 +113,11 @@ module.exports = class Start extends Command {
       return ctx.isInteraction
         ? ctx.interaction.editReply({
             content: "Only the bot owner can enable autopay for giveaways.",
-            ephemeral: true,
+            flags: 64,
           })
         : ctx.editMessage({
             content: "Only the bot owner can enable autopay for giveaways.",
-            ephemeral: true,
+            flags: 64,
           });
     }
 

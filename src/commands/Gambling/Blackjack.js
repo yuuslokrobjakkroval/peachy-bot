@@ -254,7 +254,7 @@ function blackjack(
                   if (int.user.id === ctx.author.id) return true;
                   else {
                     await int.reply({
-                      ephemeral: true,
+                      flags: 64,
                       content: `This button is controlled by ****${ctx.author.displayName}****!`,
                     });
                     return false;

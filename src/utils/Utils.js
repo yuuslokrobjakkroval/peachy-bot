@@ -1002,7 +1002,7 @@ module.exports = class Utils {
       if (interaction.user.id !== author.id)
         return await interaction.reply({
           content: "You can't use this button",
-          ephemeral: true,
+          flags: 64,
         });
 
       await interaction.deferUpdate();

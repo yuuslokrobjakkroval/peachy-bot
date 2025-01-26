@@ -258,7 +258,7 @@ module.exports = class Partner extends Command {
         } else {
           await int.reply({
             content: `This button for ****${target.displayName}****!`,
-            ephemeral: true,
+            flags: 64,
           });
         }
       } else {
@@ -279,7 +279,7 @@ module.exports = class Partner extends Command {
         } else {
           await int.reply({
             content: `This button for ${ctx.author.displayName} and ****${target.displayName}****!`,
-            ephemeral: true,
+            flags: 64,
           });
         }
       }

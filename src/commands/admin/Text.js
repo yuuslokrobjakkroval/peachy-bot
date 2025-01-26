@@ -47,16 +47,16 @@ module.exports = class Text extends Command {
             : ctx.channel;
 
         if (targetChannel && targetChannel.type !== ChannelType.GuildText) {
-            return ctx.sendMessage({ content: `Please select a valid text channel for the announcement.`, ephemeral: true});
+            return ctx.sendMessage({ content: `Please select a valid text channel for the announcement.`, flags: 64});
         }
 
         if (!messageContent || messageContent.trim().length === 0) {
-            return ctx.sendMessage({ content: `Please provide a valid message to announce.`, ephemeral: true});
+            return ctx.sendMessage({ content: `Please provide a valid message to announce.`, flags: 64});
         }
 
         targetChannel.send(messageContent)
             .then(() => {
-                ctx.sendMessage({ content: `Message sent in ${messageContent}.`, ephemeral: true });
+                ctx.sendMessage({ content: `Message sent in ${messageContent}.`, flags: 64 });
             })
             .catch(err => {
                 console.error(err);

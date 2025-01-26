@@ -114,7 +114,7 @@ module.exports = class Avatar extends Command {
               .setColor(color.main)
               .setDescription('The Join to create system is not enabled in this server.');
           return ctx.isInteraction
-              ? ctx.interaction.editReply({ embeds: [embed], ephemeral: true })
+              ? ctx.interaction.editReply({ embeds: [embed], flags: 64 })
               : await ctx.editMessage({ embeds: [embed] });
         }
 

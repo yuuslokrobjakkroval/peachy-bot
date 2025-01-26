@@ -104,7 +104,7 @@ module.exports = class TicTacToe extends Command {
       if (interaction.customId === "deny") {
         return interaction.reply({
           content: ticTacToeMessages.opponentDenied,
-          ephemeral: true,
+          flags: 64,
         });
       }
 
@@ -187,7 +187,7 @@ module.exports = class TicTacToe extends Command {
 
         gameCollector.on("collect", async (interaction) => {
           if (interaction.user.id !== players[currentPlayerIndex].id) {
-            return interaction.reply({ content: ticTacToeMessages.notYourTurn, ephemeral: true });
+            return interaction.reply({ content: ticTacToeMessages.notYourTurn, flags: 64 });
           }
 
           const move = parseInt(interaction.customId);
