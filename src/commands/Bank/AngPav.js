@@ -232,10 +232,19 @@ module.exports = class Transfer extends Command {
                   )
                   .setImage(globalGif.lunarNewYear);
 
-                // Create 3 buttons with unique IDs
+                // Create 4 buttons with unique IDs
                 const successButtonId = `btn_${
-                  Math.floor(Math.random() * 3) + 1
+                  Math.floor(Math.random() * 4) + 1
                 }`; // Randomly pick 1 success button
+                const partialButtonId1 = `btn_${
+                  Math.floor(Math.random() * 4) + 1
+                }`; // Partial amount (amount / 2)
+                const partialButtonId2 = `btn_${
+                  Math.floor(Math.random() * 4) + 1
+                }`; // Partial amount (amount / 3)
+                const tryAgainButtonId = `btn_${
+                  Math.floor(Math.random() * 4) + 1
+                }`; // "Try again" button
                 const buttons = [
                   client.utils.fullOptionButton(
                     "btn_1",
@@ -253,6 +262,12 @@ module.exports = class Transfer extends Command {
                     "btn_3",
                     globalEmoji.angpav,
                     "𝑪𝒉𝒐𝒊𝒄𝒆 𝟑",
+                    2
+                  ),
+                  client.utils.fullOptionButton(
+                    "btn_4",
+                    globalEmoji.angpav,
+                    "𝑪𝒉𝒐𝒊𝒄𝒆 𝟒",
                     2
                   ),
                 ];
@@ -283,41 +298,16 @@ module.exports = class Transfer extends Command {
                   await interaction.deferUpdate();
 
                   if (interaction.customId === successButtonId) {
-                    // Success logic
+                    // Full amount success logic
                     target.balance.coin += parseInt(amount);
-                    await Users.updateOne(
-                      { userId: targetUser.id },
-                      { "balance.coin": target.balance.coin }
-                    ).exec();
-
-                    const successEmbed = client
-                      .embed()
-                      .setColor(color.main)
-                      .setThumbnail(globalGif.angpav)
-                      .setDescription(
-                        generalMessages.title
-                          .replace("%{mainLeft}", emoji.mainLeft)
-                          .replace("%{title}", "𝐀𝐍𝐆𝐏𝐀𝐕")
-                          .replace("%{mainRight}", emoji.mainRight) +
-                          angPavMessages.success
-                            .replace("%{user}", ctx.author.displayName)
-                            .replace(
-                              "%{amount}",
-                              client.utils.formatNumber(amount)
-                            )
-                            .replace("%{emoji}", emoji.coin)
-                      )
-                      .setFooter({
-                        text: `${targetUser.displayName} 𝑻𝒉𝒂𝒏𝒌𝒔 𝒕𝒐 ${ctx.author.displayName} 𝒇𝒐𝒓 𝑨𝒏𝒈𝒑𝒂𝒗.`,
-                      });
-
-                    await ctx.sendMessage({
-                      embeds: [successEmbed],
-                      components: [],
-                    });
-                    angMsg.delete();
-                  } else {
-                    // "Try again next year" logic
+                  } else if (interaction.customId === partialButtonId1) {
+                    // Partial success (amount / 2)
+                    target.balance.coin += Math.floor(amount / 2);
+                  } else if (interaction.customId === partialButtonId2) {
+                    // Partial success (amount / 3)
+                    target.balance.coin += Math.floor(amount / 3);
+                  } else if (interaction.customId === tryAgainButtonId) {
+                    // "Try again" logic
                     const tryAgainEmbed = client
                       .embed()
                       .setColor(color.warning)
@@ -335,6 +325,34 @@ module.exports = class Transfer extends Command {
                     });
                     angMsg.delete();
                   }
+
+                  // Success embed
+                  const successEmbed = client
+                    .embed()
+                    .setColor(color.main)
+                    .setThumbnail(globalGif.angpav)
+                    .setDescription(
+                      generalMessages.title
+                        .replace("%{mainLeft}", emoji.mainLeft)
+                        .replace("%{title}", "𝐀𝐍𝐆𝐏𝐀𝐕")
+                        .replace("%{mainRight}", emoji.mainRight) +
+                        angPavMessages.success
+                          .replace("%{user}", ctx.author.displayName)
+                          .replace(
+                            "%{amount}",
+                            client.utils.formatNumber(amount)
+                          )
+                          .replace("%{emoji}", emoji.coin)
+                    )
+                    .setFooter({
+                      text: `${targetUser.displayName} 𝑻𝒉𝒂𝒏𝒌𝒔 𝒕𝒐 ${ctx.author.displayName} 𝒇𝒐𝒓 𝑨𝒏𝒈𝒑𝒂𝒗.`,
+                    });
+
+                  await ctx.sendMessage({
+                    embeds: [successEmbed],
+                    components: [],
+                  });
+                  angMsg.delete();
                 });
 
                 collector.on("end", async (collected) => {
