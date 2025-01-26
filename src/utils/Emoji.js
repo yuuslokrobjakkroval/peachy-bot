@@ -170,6 +170,7 @@ module.exports = {
 
         // SELL
         enchantedCatLake: '<:ENCHANTECATMAIN:1332400320831295622>',
+        yuyuzu: '<:YUYUZUMAIN:1332947491586314311>',
     },
     // EXCHANGE
     heartMilk: '<:HEARTMILK:1290653998054903899>',
