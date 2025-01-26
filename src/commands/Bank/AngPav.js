@@ -307,7 +307,6 @@ module.exports = class Transfer extends Command {
                             )
                             .replace("%{emoji}", emoji.coin)
                       )
-                      .setImage(globalGif.thanks)
                       .setFooter({
                         text: `${targetUser.displayName} 𝑻𝒉𝒂𝒏𝒌𝒔 𝒕𝒐 ${ctx.author.displayName} 𝒇𝒐𝒓 𝑨𝒏𝒈𝒑𝒂𝒗.`,
                       });
