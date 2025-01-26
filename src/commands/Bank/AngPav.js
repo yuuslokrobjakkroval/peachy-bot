@@ -149,8 +149,7 @@ module.exports = class Transfer extends Command {
       );
 
       // Embed for confirmation
-      const embed = client
-        .embed()
+      const embed = client.embed()
         .setColor(color.main)
         .setDescription(
           generalMessages.title
