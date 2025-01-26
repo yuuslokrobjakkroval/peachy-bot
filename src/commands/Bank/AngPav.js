@@ -156,65 +156,83 @@ module.exports = class Transfer extends Command {
                                             .replace('%{mainRight}', emoji.mainRight) +
                                         `***${ctx.author}*** 𝒉𝒂𝒔 𝒔𝒆𝒏𝒅 𝑨𝒏𝒈𝒑𝒂𝒗 𝒕𝒐 ***${targetUser}***.`
                                     )
-                                    .setImage(globalGif.lunarNewYear)
+                                    .setImage(globalGif.lunarNewYear);
 
-                                const openButton = client.utils.fullOptionButton('open', globalEmoji.angpav, '𝑶𝒑𝒆𝒏', 3);
-                                const row = client.utils.createButtonRow(openButton);
+                                // Create 3 buttons with unique IDs
+                                const successButtonId = `btn_${Math.floor(Math.random() * 3) + 1}`; // Randomly pick 1 success button
+                                const buttons = [
+                                    client.utils.fullOptionButton('btn_1', globalEmoji.angpav, '𝑪𝒉𝒐𝒊𝒄𝒆 𝟏', 1),
+                                    client.utils.fullOptionButton('btn_2', globalEmoji.angpav, '𝑪𝒉𝒐𝒊𝒄𝒆 𝟐', 1),
+                                    client.utils.fullOptionButton('btn_3', globalEmoji.angpav, '𝑪𝒉𝒐𝒊𝒄𝒆 𝟑', 1),
+                                ];
+                                const buttonRow = client.utils.createButtonRow(...buttons);
 
-                                const angMsg = await ctx.channel.send({embeds: [imageEmbed], components: [row]});
+                                const angMsg = await ctx.channel.send({ embeds: [imageEmbed], components: [buttonRow] });
 
                                 const filter = (interaction) => interaction.user.id === targetUser.id;
                                 const collector = angMsg.createMessageComponentCollector({ filter, time: 60000 });
-                                collector.on('collect', (interaction) => {
+
+                                collector.on('collect', async (interaction) => {
                                     if (interaction.user.id !== targetUser.id) {
                                         return interaction.reply({
                                             content: generalMessages.notForYou || "This action is not for you.",
-                                            ephemeral: true
+                                            ephemeral: true,
                                         });
+                                    }
+
+                                    await interaction.deferUpdate();
+
+                                    if (interaction.customId === successButtonId) {
+                                        // Success logic
+                                        target.balance.coin += parseInt(amount);
+                                        await Users.updateOne(
+                                            { userId: targetUser.id },
+                                            { 'balance.coin': target.balance.coin }
+                                        ).exec();
+
+                                        const successEmbed = client.embed()
+                                            .setColor(color.main)
+                                            .setThumbnail(globalGif.angpav)
+                                            .setDescription(
+                                                generalMessages.title
+                                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                                    .replace('%{title}', "𝐀𝐍𝐆𝐏𝐀𝐕")
+                                                    .replace('%{mainRight}', emoji.mainRight) +
+                                                angPavMessages.success
+                                                    .replace('%{user}', ctx.author.displayName)
+                                                    .replace('%{amount}', client.utils.formatNumber(amount))
+                                                    .replace('%{emoji}', emoji.coin)
+                                            )
+                                            .setImage(globalGif.thanks)
+                                            .setFooter({
+                                                text: `${targetUser.displayName} 𝑻𝒉𝒂𝒏𝒌𝒔 𝒕𝒐 ${ctx.author.displayName} 𝒇𝒐𝒓 𝑨𝒏𝒈𝒑𝒂𝒗.`,
+                                            });
+
+                                        await ctx.sendMessage({ embeds: [successEmbed] });
+                                        angMsg.delete();
                                     } else {
-                                        interaction.deferUpdate().then(async () => {
-                                            if (interaction.customId === 'open') {
-                                                target.balance.coin += parseInt(amount);
-                                                await Users.updateOne(
-                                                    { userId: targetUser.id },
-                                                    {'balance.coin': target.balance.coin}
-                                                ).exec();
+                                        // "Try again next year" logic
+                                        const tryAgainEmbed = client.embed()
+                                            .setColor(color.warning)
+                                            .setDescription(
+                                                generalMessages.title
+                                                    .replace('%{mainLeft}', emoji.mainLeft)
+                                                    .replace('%{title}', "𝐀𝐍𝐆𝐏𝐀𝐕")
+                                                    .replace('%{mainRight}', emoji.mainRight) +
+                                                `***𝑻𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒏𝒆𝒙𝒕 𝒚𝒆𝒂𝒓!***`
+                                            );
 
-                                                // Optional: Thanks GIF message
-                                                setTimeout(() => {
-                                                    const imageEmbed = client.embed()
-                                                        .setColor(color.main)
-                                                        .setThumbnail(globalGif.angpav)
-                                                        .setDescription(
-                                                            generalMessages.title
-                                                                .replace('%{mainLeft}', emoji.mainLeft)
-                                                                .replace('%{title}', "𝐀𝐍𝐆𝐏𝐀𝐕")
-                                                                .replace('%{mainRight}', emoji.mainRight) +
-                                                            angPavMessages.success
-                                                                .replace('%{user}', ctx.author.displayName)
-                                                                .replace('%{amount}', client.utils.formatNumber(amount))
-                                                                .replace('%{emoji}', emoji.coin)
-                                                        )
-                                                        .setImage(globalGif.thanks)
-                                                        .setFooter({
-                                                            text: `𝑻𝒉𝒂𝒏𝒌𝒔 𝒕𝒐 ${ctx.author.displayName} 𝒇𝒐𝒓 𝑨𝒏𝒈𝒑𝒂𝒗.`
-                                                        })
-
-                                                    ctx.sendMessage({embeds: [imageEmbed]});
-                                                }, 2000);
-                                                angMsg.delete();
-                                            }
-                                        })
+                                        await ctx.channel.send({ embeds: [tryAgainEmbed] });
                                     }
                                 });
 
-                                collector.on('end', async collected => {
+                                collector.on('end', async (collected) => {
                                     if (collected.size === 0) {
                                         const timeoutEmbed = client.embed()
                                             .setColor(color.warning)
                                             .setTitle(angPavMessages.expire)
                                             .setDescription(angPavMessages.timeout);
-                                        angMsg.edit( { embeds: [timeoutEmbed], components: [] });
+                                        angMsg.edit({ embeds: [timeoutEmbed], components: [] });
                                     }
                                 });
                             }, 2000);
