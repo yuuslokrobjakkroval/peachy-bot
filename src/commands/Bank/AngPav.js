@@ -297,14 +297,18 @@ module.exports = class Transfer extends Command {
 
                   await interaction.deferUpdate();
 
+                  let angpavAmount;
                   if (interaction.customId === successButtonId) {
                     // Full amount success logic
+                    angpavAmount = parseInt(amount);
                     target.balance.coin += parseInt(amount);
                   } else if (interaction.customId === partialButtonId1) {
                     // Partial success (amount / 2)
+                    angpavAmount = parseInt(amount / 2);
                     target.balance.coin += Math.floor(amount / 2);
                   } else if (interaction.customId === partialButtonId2) {
                     // Partial success (amount / 3)
+                    angpavAmount = parseInt(amount / 3);
                     target.balance.coin += Math.floor(amount / 3);
                   } else if (interaction.customId === tryAgainButtonId) {
                     // "Try again" logic
@@ -341,7 +345,7 @@ module.exports = class Transfer extends Command {
                           .replace("%{user}", ctx.author.displayName)
                           .replace(
                             "%{amount}",
-                            client.utils.formatNumber(amount)
+                            client.utils.formatNumber(angpavAmount)
                           )
                           .replace("%{emoji}", emoji.coin)
                     )
