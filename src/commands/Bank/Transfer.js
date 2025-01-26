@@ -81,6 +81,7 @@ module.exports = class Transfer extends Command {
             }
 
             const amount = client.utils.formatBalance(client, ctx, color, user.balance.coin, ctx.isInteraction ? ctx.interaction.options.getString('amount') : args[1] || 1, transferMessages.invalidAmount);
+            if (typeof amount === "object") return;
 
             if (user.balance.coin < amount) {
                 return await client.utils.sendErrorMessage(client, ctx, transferMessages.insufficientFunds, color);

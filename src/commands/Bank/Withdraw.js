@@ -126,6 +126,7 @@ module.exports = class Withdraw extends Command {
             amount,
             withdrawMessages.invalidAmount
           );
+          if (typeof amount === "object") return;
 
           if (isNaN(amount) || amount <= 0) {
             return ctx.sendMessage({

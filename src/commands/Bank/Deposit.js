@@ -94,6 +94,7 @@ module.exports = class Deposit extends Command {
           }
 
           amount = client.utils.formatBalance(client, ctx, color, coin, amount, depositMessages.invalidAmount);
+          if (typeof amount === "object") return;
 
           if (isNaN(amount) || amount <= 0) {
             return ctx.sendMessage({
