@@ -324,6 +324,7 @@ module.exports = class Transfer extends Command {
                       components: [],
                     });
                     angMsg.delete();
+                    return;
                   }
 
                   // Success embed
