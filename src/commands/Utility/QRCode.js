@@ -56,7 +56,7 @@ module.exports = class QRCode extends Command {
         } else if (currency === 'usd') {
             qrCodeUrl = globalGif.qrUSD;
         } else {
-            ctx.isInteraction ? await ctx.interaction.editReply({ content: qrMessages?.invalidOption || "Invalid option! Please use 'kh' or 'usd'.", flags: 64 }) : await ctx.editMessage({ content: qrMessages?.invalidOption || "Invalid option! Please use 'kh' or 'usd'."})
+            return ctx.isInteraction ? await ctx.interaction.editReply({ content: qrMessages?.invalidOption || "Invalid option! Please use 'kh' or 'usd'.", flags: 64 }) : await ctx.editMessage({ content: qrMessages?.invalidOption || "Invalid option! Please use 'kh' or 'usd'."})
         }
 
         const embed = client.embed()
