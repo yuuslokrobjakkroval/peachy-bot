@@ -241,19 +241,19 @@ module.exports = class Transfer extends Command {
                     "btn_1",
                     globalEmoji.angpav,
                     "𝑪𝒉𝒐𝒊𝒄𝒆 𝟏",
-                    1
+                    2
                   ),
                   client.utils.fullOptionButton(
                     "btn_2",
                     globalEmoji.angpav,
                     "𝑪𝒉𝒐𝒊𝒄𝒆 𝟐",
-                    1
+                    2
                   ),
                   client.utils.fullOptionButton(
                     "btn_3",
                     globalEmoji.angpav,
                     "𝑪𝒉𝒐𝒊𝒄𝒆 𝟑",
-                    1
+                    2
                   ),
                 ];
                 const buttonRow = client.utils.createButtonRow(...buttons);
