@@ -197,8 +197,7 @@ module.exports = class Transfer extends Command {
         } else {
           interaction.deferUpdate().then(async () => {
             if (interaction.customId === "confirm") {
-              const confirmationEmbed = client
-                .embed()
+              const confirmationEmbed = client.embed()
                 .setColor(color.main)
                 .setDescription(
                   generalMessages.title
@@ -330,7 +329,6 @@ module.exports = class Transfer extends Command {
                     return;
                   }
 
-                  target.balance.coin += parseInt(amount);
                   await Users.updateOne(
                       { userId: targetUser.id },
                       { 'balance.coin': target.balance.coin }
