@@ -132,7 +132,7 @@ module.exports = class TicTacToe extends Command {
               row.addComponents(
                 new ButtonBuilder()
                   .setCustomId(`${index}`)
-                  .setLabel(board[index])
+                  .setEmoji(board[index])
                   .setStyle(board[index] === globalEmoji.tictactoe.milk ? 2 : board[index] === globalEmoji.tictactoe.peach ? 4 : 1)
                   .setDisabled(board[index] !== globalEmoji.tictactoe.milk)
               );
@@ -171,7 +171,7 @@ module.exports = class TicTacToe extends Command {
             .setDescription(
                 ticTacToeMessages.startGame
                     .replace("%{player}", players[0].displayName)
-                    .replace("%{playerEmoji}", globalEmoji.tictactoe.peach)
+                    .replace("%{playerEmote}", globalEmoji.tictactoe.peach)
                     .replace("%{opponent}", players[1].displayName)
                     .replace("%{opponentEmote}", globalEmoji.tictactoe.goma)
             )
