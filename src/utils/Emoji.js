@@ -146,6 +146,7 @@ module.exports = {
         jingleJolly: '<:CMAIN:1312606545187569736>',
         festiveFrost: '<:CHMAIN:1321466057730297907>',
         mystic: '<:STRAWBDRAGON:1332395885375520800>',
+        lunar: '<:LNYMAIN:1333458702908264489>',
     },
     specialTheme: {
         // SPECIAL

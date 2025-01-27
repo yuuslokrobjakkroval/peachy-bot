@@ -1334,6 +1334,22 @@ module.exports = [
         available: ["use"],
         price: { buy: 2e7, sell: 18e6 },
       },
+      {
+        id: "t07",
+        name: "Lunar Legends",
+        description:
+            "Celebrate the vibrant spirit of the Lunar New Year with Lunar Legends! This theme brings to life the energy of festive parades, glowing lanterns, and the mystical charm of the zodiac. Perfect for those who cherish traditions, seek fortune, and embrace the joy of a fresh beginning, it creates a magical atmosphere of unity and prosperity. Step into a world where every moment shines with the promise of new opportunities and timeless celebration!",
+        type: "theme",
+        able: {
+          "use": true,
+          "gift": false,
+          "multiple": false
+        },
+        quantity: 1,
+        emoji: emoji.theme.lunar,
+        available: ["use"],
+        price: { buy: 2e7, sell: 18e6 }
+      }
     ],
   },
   {

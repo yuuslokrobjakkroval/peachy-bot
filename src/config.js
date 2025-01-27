@@ -139,6 +139,21 @@ const mysticRealm = {
   },
 };
 
+// Luna Legend ( T07 )
+const lunaLegend = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xbe3144,
+    none: 0x2b2d31,
+  },
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------- //
 
 // Celestial Grace ( ST01 )
@@ -490,6 +505,7 @@ module.exports = {
   normal,
   peach,
   goma,
+
   // ---------- //
   // THEME
   oceanBreeze,
@@ -498,6 +514,8 @@ module.exports = {
   jingleJolly,
   festiveFrost,
   mysticRealm,
+  lunaLegend,
+
   // ---------- //
   // SPECIAL THEME
   celestialGrace,

@@ -30,6 +30,7 @@ const emojiHalloweenNew = require("../theme/Halloween/emojisNew");
 const emojiChristmas = require("../theme/Christmas/emojis");
 const emojiFestiveFrost = require("../theme/FestiveFrost/emojis");
 const emojiMysticRealm = require("../theme/MySticRealm/emojis");
+const emojiLunaLegend = require("../theme/LunarLegends/emojis");
 
 // SPECIAL
 const emojiHeaven = require("../theme/CelestialGrace/emojis");
@@ -266,6 +267,10 @@ module.exports = class PeachyClient extends Client {
             case "t06":
               color = themeConfig.mysticRealm.color;
               emoji = emojiMysticRealm;
+              break;
+            case "t07":
+              color = themeConfig.lunaLegend.color;
+              emoji = emojiLunaLegend;
               break;
 
             // SPECIAL
