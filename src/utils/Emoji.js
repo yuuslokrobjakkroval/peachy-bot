@@ -10,6 +10,11 @@ module.exports = {
     thankYou: '<a:PTY:1294514862390644782>',
     buyMeCafe: '<:BUYMEACOFFEE:1306174972489764894>',
 
+    tictactoe: {
+        milk: '<:DOSKO:1333297383236173825>',
+        peach: '<:SPEACH:1295967154897682543>',
+        goma: '<:SGOMA:1295967162841825324>',
+    },
     // OPTION
     option: {
         mvp: '<:MVP:1294514862390644782>',

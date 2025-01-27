@@ -1,6 +1,7 @@
 const { Command } = require("../../structures");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const Users = require("../../schemas/user");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class TicTacToe extends Command {
   constructor(client) {
@@ -118,7 +119,7 @@ module.exports = class TicTacToe extends Command {
           Users.updateOne({ userId: playerTwo.userId }, { "balance.coin": playerTwo.balance.coin }).exec(),
         ]);
         confirmMessage.delete();
-        const board = Array(9).fill("⬜");
+        const board = Array(9).fill(globalEmoji.tictactoe.milk);
         const players = [ctx.author, opponent];
         let currentPlayerIndex = 0;
 
@@ -129,17 +130,11 @@ module.exports = class TicTacToe extends Command {
             for (let j = 0; j < 3; j++) {
               const index = i * 3 + j;
               row.addComponents(
-                  new ButtonBuilder()
-                      .setCustomId(`${index}`)
-                      .setLabel(board[index])
-                      .setStyle(
-                          board[index] === "⬜"
-                              ? ButtonStyle.Secondary
-                              : board[index] === "❌"
-                                  ? ButtonStyle.Danger
-                                  : ButtonStyle.Primary
-                      )
-                      .setDisabled(board[index] !== "⬜")
+                new ButtonBuilder()
+                  .setCustomId(`${index}`)
+                  .setLabel(board[index])
+                  .setStyle(board[index] === globalEmoji.tictactoe.milk ? 2 : board[index] === globalEmoji.tictactoe.peach ? 4 : 1)
+                  .setDisabled(board[index] !== globalEmoji.tictactoe.milk)
               );
             }
             rows.push(row);
@@ -161,20 +156,24 @@ module.exports = class TicTacToe extends Command {
 
           for (const combo of winningCombos) {
             const [a, b, c] = combo;
-            if (board[a] !== "⬜" && board[a] === board[b] && board[a] === board[c]) {
+            if (board[a] !== globalEmoji.tictactoe.milk && board[a] === board[b] && board[a] === board[c]) {
               return board[a];
             }
           }
           return null;
         };
 
-        const isDraw = () => board.every((cell) => cell !== "⬜");
+        const isDraw = () => board.every((cell) => cell !== globalEmoji.tictactoe.milk);
 
 
         const gameEmbed = client.embed()
             .setColor(color.main)
             .setDescription(
-                ticTacToeMessages.startGame.replace("%{player}", players[currentPlayerIndex])
+                ticTacToeMessages.startGame
+                    .replace("%{player}", players[0].displayName)
+                    .replace("%{playerEmoji}", globalEmoji.tictactoe.peach)
+                    .replace("%{opponent}", players[1].displayName)
+                    .replace("%{opponentEmote}", globalEmoji.tictactoe.goma)
             )
             .setFooter({
               text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName),
@@ -191,7 +190,7 @@ module.exports = class TicTacToe extends Command {
           }
 
           const move = parseInt(interaction.customId);
-          board[move] = currentPlayerIndex === 0 ? "❌" : "⭕";
+          board[move] = currentPlayerIndex === 0 ? globalEmoji.tictactoe.peach : globalEmoji.tictactoe.goma;
           currentPlayerIndex = 1 - currentPlayerIndex;
 
           const winner = checkWinner();
