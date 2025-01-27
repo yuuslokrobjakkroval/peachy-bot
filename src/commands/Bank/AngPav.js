@@ -13,7 +13,7 @@ module.exports = class Transfer extends Command {
         usage: "𝑨𝒏𝒈𝒑𝒂𝒗 <𝒖𝒔𝒆𝒓> [𝒂𝒎𝒐𝒖𝒏𝒕]",
       },
       category: "bank",
-      aliases: [""],
+      aliases: ["ap"],
       cooldown: 5,
       args: true,
       permissions: {
@@ -347,7 +347,7 @@ module.exports = class Transfer extends Command {
                           .replace("%{user}", ctx.author.displayName)
                           .replace(
                             "%{amount}",
-                            client.utils.formatNumber(angpavAmount)
+                            client.utils.formatNumber(parseInt(angpavAmount))
                           )
                           .replace("%{emoji}", emoji.coin)
                     )
