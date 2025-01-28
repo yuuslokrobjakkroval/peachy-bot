@@ -45,7 +45,9 @@ module.exports = class PlayVideo extends Command {
 
         // Validate URL
         if (!videoURL || !/^https?:\/\/.*\.(mp4|mov|webm|ogg)$/i.test(videoURL)) {
-            return client.utils.sendErrorMessage(client, ctx, "Please provide a valid video URL (must end with .mp4, .mov, .webm, or .ogg).", color);
+        return ctx.isInteraction
+                ? await ctx.interaction.editReply({ content: "Please provide a valid video URL (must end with .mp4, .mov, .webm, or .ogg)." })
+                : await ctx.editMessage({ content: "Please provide a valid video URL (must end with .mp4, .mov, .webm, or .ogg)." });
         }
 
         try {
@@ -69,7 +71,9 @@ module.exports = class PlayVideo extends Command {
                 : await ctx.editMessage({ content: "", embeds: [embed] });
         } catch (err) {
             const errorMessage = "An error occurred while processing your request.";
-            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            return ctx.isInteraction
+                ? await ctx.interaction.editReply({ content: errorMessage })
+                : await ctx.editMessage({ content: errorMessage});
         }
     }
 };
