@@ -43,13 +43,6 @@ module.exports = class PlayVideo extends Command {
             ? ctx.interaction.options.getString("url")
             : args[0];
 
-        // Validate URL
-        if (!videoURL || !/^https?:\/\/.*\.(mp4|mov|webm|ogg)$/i.test(videoURL)) {
-        return ctx.isInteraction
-                ? await ctx.interaction.editReply({ content: "Please provide a valid video URL (must end with .mp4, .mov, .webm, or .ogg)." })
-                : await ctx.editMessage({ content: "Please provide a valid video URL (must end with .mp4, .mov, .webm, or .ogg)." });
-        }
-
         try {
             const embed = client.embed()
                 .setColor(color.main)
