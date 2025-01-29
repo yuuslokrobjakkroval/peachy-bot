@@ -49,7 +49,7 @@ module.exports = class Banner extends Command {
         }
 
         try {
-            const bannerURL = await mention.fetch().then(user => user.bannerURL({ format: 'png', size: 1024 }));
+            const bannerURL = await mention.fetch().then(user => user.bannerURL({ dynamic: true, size: 1024 }));
 
             if (!bannerURL) {
                 const errorMessage = bannerMessages?.noBannerFound;

@@ -79,7 +79,7 @@ module.exports = class ServerInfo extends Command {
       .embed()
       .setColor(color.main)
       .setThumbnail(guild.iconURL({ dynamic: true, extension: "png" }))
-      .setTitle(
+      .setDescription(
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", "𝐒𝐄𝐑𝐕𝐄𝐑 𝐈𝐍𝐅𝐎")

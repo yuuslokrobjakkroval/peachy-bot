@@ -1,16 +1,16 @@
 const { Command } = require("../../structures/index.js");
 
-module.exports = class Avatar extends Command {
+module.exports = class Icon extends Command {
   constructor(client) {
     super(client, {
-      name: "avatar",
+      name: "icon",
       description: {
-        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒂 𝒖𝒔𝒆𝒓'𝒔 𝒂𝒗𝒂𝒕𝒂𝒓",
-        examples: ["avatar @User"],
-        usage: "avatar [@User]",
+        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓'𝒔 𝒊𝒄𝒐𝒏",
+        examples: ["𝒊𝒄𝒐𝒏"],
+        usage: "𝒊𝒄𝒐𝒏",
       },
       category: "utility",
-      aliases: ["av", "pfp"],
+      aliases: ["servericon", "guildicon"],
       cooldown: 3,
       args: false,
       player: {
@@ -25,32 +25,24 @@ module.exports = class Avatar extends Command {
         user: [],
       },
       slashCommand: true,
-      options: [
-        {
-          name: "user",
-          description: "The user to get the avatar of",
-          type: 6, // USER type
-          required: false,
-        },
-      ],
+      options: [],
     });
   }
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
+    const iconMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.iconMessages;
+
     if (ctx.isInteraction) {
       await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
     } else {
       await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
     }
 
-    const mention = ctx.isInteraction
-        ? ctx.interaction.options.getUser("user") || ctx.author
-        : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+    const guild = ctx.guild;
 
-    if (!mention) {
-      const errorMessage = avatarMessages?.noUserMentioned || "No user mentioned";
+    if (!guild.icon) {
+      const errorMessage = iconMessages?.noIconAvailable || "This server has no icon.";
       return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
     }
 
@@ -59,10 +51,10 @@ module.exports = class Avatar extends Command {
         .setDescription(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
-                .replace('%{title}', `𝐀𝐕𝐀𝐓𝐀𝐑`)
+                .replace('%{title}', `𝐒𝐄𝐑𝐕𝐄𝐑 𝐈𝐂𝐎𝐍`)
                 .replace('%{mainRight}', emoji.mainRight)
         )
-        .setImage(mention.displayAvatarURL({ dynamic: true, extension: "png", size: 1024 }))
+        .setImage(guild.iconURL({ dynamic: true, extension: "png", size: 1024 }))
         .setFooter({
           text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
