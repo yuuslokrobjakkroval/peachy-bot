@@ -91,7 +91,7 @@ module.exports = class TwoZeroFourEight extends Command {
       if (interaction.user.id !== ctx.author.id) {
         return interaction.reply({
           content: 'You are not allowed to use buttons for this message!',
-          ephemeral: true
+          flags: true
         })
       }
 

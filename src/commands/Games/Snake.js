@@ -198,7 +198,7 @@ class SnakeGame {
     })
 
     collector.on('collect', async btn => {
-      if (btn.user.id !== this.message.author.id) return btn.reply({ content: this.options.othersMessage.replace('{author}', this.message.author.username),  ephemeral: true })
+      if (btn.user.id !== this.message.author.id) return btn.reply({ content: this.options.othersMessage.replace('{author}', this.message.author.username),  flags: true })
 
       try {
         const snakeHead = this.snake[0];
