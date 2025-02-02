@@ -112,7 +112,7 @@ module.exports = class TwoZeroFourEight extends Command {
 
         if (this.isBoardFull() && this.possibleMoves() === 0) {
           collector.stop()
-          return this.gameOver(client, ctx, msg, color, emoji);
+          return this.gameOver(client, ctx, msg, color, emoji, generalMessages);
         } else {
           const attachment = await this.getImage();
           const editEmbed = client.embed()
@@ -140,7 +140,7 @@ module.exports = class TwoZeroFourEight extends Command {
     })
 
     collector.on('end', async (_, r) => {
-      if (r === 'idle') await this.gameOver(msg)
+      if (r === 'idle') await this.gameOver(client, ctx, msg, color, emoji, generalMessages)
     })
   }
 
@@ -191,7 +191,7 @@ module.exports = class TwoZeroFourEight extends Command {
     }
   }
 
-  async gameOver(client, ctx, msg, color, emoji) {
+  async gameOver(client, ctx, msg, color, emoji, generalMessages) {
     const attachment = await this.getImage();
     const editEmbed = client.embed()
         .setColor(color.main)
