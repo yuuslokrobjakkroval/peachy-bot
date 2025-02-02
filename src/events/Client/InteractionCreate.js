@@ -229,7 +229,9 @@ module.exports = class InteractionCreate extends Event {
               "klaklouk",
             ];
             const gameCommands = [
+              "2048",
               "guessnumber",
+              "snake",
               "tictactoe",
               "post",
               "guess",

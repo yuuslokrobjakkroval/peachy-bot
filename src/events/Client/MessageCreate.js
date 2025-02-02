@@ -580,7 +580,9 @@ module.exports = class MessageCreate extends Event {
                 "klaklouk",
               ];
               const gameCommands = [
+                "2048",
                 "guessnumber",
+                "snake",
                 "tictactoe",
                 "post",
                 "guess",
