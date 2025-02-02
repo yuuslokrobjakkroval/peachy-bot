@@ -59,7 +59,7 @@ module.exports = class TwoZeroFourEight extends Command {
       .setDescription(
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
-          .replace("%{title}", "𝐓𝐖𝐎𝐙𝐄𝐑𝐎𝐅𝐎𝐔𝐑𝐄𝐈𝐆𝐇𝐓")
+          .replace("%{title}", "2048")
           .replace("%{mainRight}", emoji.mainRight)
       )
       .setImage("attachment://board.png")
@@ -120,7 +120,7 @@ module.exports = class TwoZeroFourEight extends Command {
             .setDescription(
                 generalMessages.title
                     .replace("%{mainLeft}", emoji.mainLeft)
-                    .replace("%{title}", "𝐓𝐖𝐎𝐙𝐄𝐑𝐎𝐅𝐎𝐔𝐑𝐄𝐈𝐆𝐇𝐓")
+                    .replace("%{title}", "2048")
                     .replace("%{mainRight}", emoji.mainRight) +
                 `Score: **${this.score.toString()}**`
             )
@@ -198,7 +198,7 @@ module.exports = class TwoZeroFourEight extends Command {
         .setDescription(
             generalMessages.title
                 .replace("%{mainLeft}", emoji.mainLeft)
-                .replace("%{title}", "𝐓𝐖𝐎𝐙𝐄𝐑𝐎𝐅𝐎𝐔𝐑𝐄𝐈𝐆𝐇𝐓")
+                .replace("%{title}", "2048")
                 .replace("%{mainRight}", emoji.mainRight) +
             this.board.includes('b') ? 'Win!' : 'Game Over'
         )
