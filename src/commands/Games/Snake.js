@@ -70,9 +70,9 @@ class SnakeGame {
               else
                 str += emojis.over;
             } else if (s === this.snake.length - 1) {
-              str += emojis.tail;
+              str += emojis.tail[this.direction];
             } else {
-              str += emojis.body[this.direction];
+              str += emojis.body;
             }
             flag = false;
           }
@@ -298,8 +298,8 @@ module.exports = class Snake extends Command {
         },
         body: '<:BODY:1335613817563906199>',
         tail: {
-          up: '<:DOWNTAIL:1335613939618283560>',    // Tail emoji when moving up
-          down: '<:DOWNTAIL:1335607710825185381>',  // Tail emoji when moving down
+          up: '<:UPTAIL:1335613869908820021>',    // Tail emoji when moving up
+          down: '<:DOWNTAIL:1335613939618283560>',  // Tail emoji when moving down
           left: '<:LEFTTAIL:1335613914859180032>',  // Tail emoji when moving left
           right: '<:RIGHTTAIL:1335613930252402820>', // Tail emoji when moving right
         },
