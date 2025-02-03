@@ -84,8 +84,8 @@ module.exports = class TwoZeroFourEight extends Command {
       components: [row1, row2],
       files: [attachment],
     });
-
-    const collector = msg.createMessageComponentCollector();
+    const filter = (int) => int.user.id === ctx.author.id;
+    const collector = msg.createMessageComponentCollector({ filter });
 
     collector.on('collect', async (interaction) => {
       if (interaction.user.id !== ctx.author.id) {
