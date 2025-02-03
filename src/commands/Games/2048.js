@@ -213,7 +213,6 @@ module.exports = class TwoZeroFourEight extends Command {
       embeds: [editEmbed],
       components: [],
       files: [attachment],
-      attachments: []
     })
   }
 
