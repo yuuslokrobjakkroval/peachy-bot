@@ -85,7 +85,7 @@ module.exports = class TwoZeroFourEight extends Command {
       files: [attachment],
     });
 
-    const collector = msg.createMessageComponentCollector({ time: 300000 });
+    const collector = msg.createMessageComponentCollector();
 
     collector.on('collect', async (interaction) => {
       if (interaction.user.id !== ctx.author.id) {

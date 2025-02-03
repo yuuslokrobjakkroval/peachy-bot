@@ -194,7 +194,6 @@ class SnakeGame {
     const filter = m => m;
     const collector = msg.createMessageComponentCollector({
       filter,
-      idle: 300000
     })
 
     collector.on('collect', async btn => {
