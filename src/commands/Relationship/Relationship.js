@@ -75,16 +75,12 @@ module.exports = class Profile extends Command {
         await new Promise((resolve) => setTimeout(resolve, 4000));
 
         let bannerImage;
-        let backgroundColor;
         if (user?.profile?.gender === "male") {
           bannerImage = "https://i.imgur.com/fMtSCsL.png";
-          backgroundColor = "#CCCAC9";
         } else if (user?.profile?.gender === "female") {
           bannerImage = "https://i.imgur.com/W0cNDDP.png";
-          backgroundColor = "#F8E0E0";
         } else {
           bannerImage = "https://i.imgur.com/4DqQYT7.png";
-          backgroundColor = "#D0E7FF";
         }
 
         const canvas = createCanvas(1280, 800);
@@ -98,7 +94,6 @@ module.exports = class Profile extends Command {
           partner,
           syncPartnerInfo,
           color,
-          backgroundColor,
           emoji,
           bannerImage
         );
@@ -214,12 +209,11 @@ module.exports = class Profile extends Command {
     partner,
     partnerInfo,
     color,
-    backgroundColor,
     emoji,
     banner
   ) {
     // Draw the background color
-    context.fillStyle = backgroundColor;
+    context.fillStyle = '#f582ae';
     context.fillRect(0, 0, 1280, 800);
 
     const userAvatar = await loadImage(
@@ -362,12 +356,7 @@ module.exports = class Profile extends Command {
     }
 
     // USER SECTION
-    context.fillStyle =
-      user?.profile?.gender === "male"
-        ? "#4C585B"
-        : user?.profile?.gender === "female"
-        ? "#4C585B"
-        : "#FFDEE9";
+    context.fillStyle = "#4C585B";
     context.font = "28px Kelvinch-SemiBoldItalic, Arial";
     context.fillText(
       client.utils.formatCapitalize(userInfo.username),
@@ -390,12 +379,7 @@ module.exports = class Profile extends Command {
     );
 
     // PARTNER SECTION
-    context.fillStyle =
-      partner?.profile?.gender === "male"
-        ? "#4C585B"
-        : partner?.profile?.gender === "female"
-        ? "#4C585B"
-        : "#FFDEE9";
+    context.fillStyle = "#4C585B";
     context.font = "28px Kelvinch-SemiBoldItalic, Arial";
     context.fillText(
       client.utils.formatCapitalize(partnerInfo.username),
