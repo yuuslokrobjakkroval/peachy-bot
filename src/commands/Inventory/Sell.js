@@ -46,7 +46,7 @@ module.exports = class Sell extends Command {
 
             if (itemInfo) return this.sellSingleItem(client, ctx, user, args, itemInfo, hasItems, color, emoji, sellMessages); // Use sellMessages
 
-            return client.utils.sendErrorMessage(client, ctx, sellMessages.itemNotFound.replace('{item}', itemId), color); // Dynamic message
+            return client.utils.sendErrorMessage(client, ctx, sellMessages.itemNotFound.replace('%{item}', itemId), color); // Dynamic message
         } catch (error) {
             console.error('Error in Sell command:', error);
             await client.utils.sendErrorMessage(client, ctx, sellMessages.sellError, color); // Use sellMessages for error handling
@@ -56,8 +56,8 @@ module.exports = class Sell extends Command {
     async sellSingleItem(client, ctx, user, args, itemInfo, hasItems, color, emoji, sellMessages) {
         if (!hasItems || itemInfo.price.sell === 0) {
             const errorMessage = !hasItems
-                ? sellMessages.itemNotOwned.replace('{item}', itemInfo.name)  // Dynamic error
-                : sellMessages.itemNotSellable.replace('{item}', itemInfo.name);  // Use sellMessages for not sellable
+                ? sellMessages.itemNotOwned.replace('%{item}', itemInfo.name)  // Dynamic error
+                : sellMessages.itemNotSellable.replace('%{item}', itemInfo.name);  // Use sellMessages for not sellable
             return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 

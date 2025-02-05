@@ -90,7 +90,6 @@ module.exports = class Use extends Command {
                     } else {
                         user.inventory.push({
                             id: currentTheme,
-                            name: themeItem.name,
                             quantity: 1
                         });
                     }
@@ -118,7 +117,7 @@ module.exports = class Use extends Command {
                 await Users.updateOne(
                     { userId },
                     {
-                        $addToSet: { equip: { id: themeItem.id, name: themeItem.name, quantity: 1 } },
+                        $addToSet: { equip: { id: themeItem.id, quantity: 1 } },
                         $set: {
                             'preferences.theme': themeItem.id,
                             inventory: user.inventory
@@ -173,7 +172,6 @@ module.exports = class Use extends Command {
                     } else {
                         user.inventory.push({
                             id: equippedWallpaper.id,
-                            name: equippedWallpaper.name,
                             quantity: 1
                         });
                     }
@@ -190,7 +188,7 @@ module.exports = class Use extends Command {
                 await Users.updateOne(
                     { userId },
                     {
-                        $addToSet: { equip: { id: wallpaperItem.id, name: wallpaperItem.name, quantity: 1 } },
+                        $addToSet: { equip: { id: wallpaperItem.id, quantity: 1 } },
                         $set: { inventory: user.inventory }
                     }
                 );
@@ -242,7 +240,6 @@ module.exports = class Use extends Command {
                     } else {
                         user.inventory.push({
                             id: equippedColor.id,
-                            name: equippedColor.name,
                             quantity: 1
                         });
                     }
@@ -259,7 +256,7 @@ module.exports = class Use extends Command {
                 await Users.updateOne(
                     { userId },
                     {
-                        $addToSet: { equip: { id: colorItem.id, name: colorItem.name, quantity: 1 } },
+                        $addToSet: { equip: { id: colorItem.id, quantity: 1 } },
                         $set: { inventory: user.inventory }
                     }
                 );
