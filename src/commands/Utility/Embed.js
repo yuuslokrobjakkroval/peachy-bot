@@ -73,7 +73,7 @@ module.exports = class Embed extends Command {
             : args[0];
         const title = titleOptions.find(option => option.value === titleStr) || titleStr;
         const description = ctx.isInteraction
-            ? ctx.interaction.options.getInteger("description")
+            ? ctx.interaction.options.getString("description")
             : args[1];
 
         let imageURL;
