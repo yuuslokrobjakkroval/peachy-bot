@@ -105,7 +105,7 @@ module.exports = class Buy extends Command {
         ctx,
         buyMessages.notEnoughCoins
           .replace("%{coinEmote}", emoji.coin)
-          .replace("%{neededCoins}", itemInfo.price.buy - coin)
+          .replace("%{neededCoins}", client.utils.formatNumber(itemInfo.price.buy - coin))
           .replace("%{itemEmote}", itemInfo.emoji)
           .replace("%{itemName}", itemInfo.name),
         color
