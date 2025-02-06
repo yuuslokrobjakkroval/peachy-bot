@@ -7,7 +7,7 @@ module.exports = class Deposit extends Command {
     super(client, {
       name: "deposit",
       description: {
-        content: "𝑫𝒆𝒑𝒐𝒔𝒊𝒕 𝒄𝒖𝒓𝒓𝒆𝒏𝒄𝒚 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
+        content: "𝑫𝒆𝒑𝒐𝒔𝒊𝒕 𝒄𝒖𝒓𝒓𝒆𝒏𝒄𝒚 𝒄𝒐𝒊𝒏𝒆𝒔 𝒕𝒐 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
         examples: ["𝒅𝒆𝒑𝒐𝒔𝒊𝒕 100"],
         usage: "𝒅𝒆𝒑𝒐𝒔𝒊𝒕 <𝒂𝒎𝒐𝒖𝒏𝒕>",
       },
@@ -32,125 +32,102 @@ module.exports = class Deposit extends Command {
     });
   }
 
-  run(client, ctx, args, color, emoji, language) {
+  async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const depositMessages = language.locales.get(language.defaultLocale)?.bankMessages?.depositMessages;
 
-    client.utils.getUser(ctx.author.id).then((user) => {
+    try {
+      const user = await client.utils.getUser(ctx.author.id);
       if (!user) {
         return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
       }
 
-        if (user.work.rob) {
-          const cooldownTime = 2 * 60 * 1000;
-          client.utils
-            .checkCooldown(ctx.author.id, "rob", cooldownTime)
-            .then(async (isCooldownExpired) => {
-              if (!isCooldownExpired) {
-                client.utils
-                  .getCooldown(ctx.author.id, "rob")
-                  .then((lastCooldownTimestamp) => {
-                    const remainingTime = Math.ceil(
-                      (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000
-                    );
-                    const duration = moment.duration(remainingTime, "seconds");
-                    const minutes = Math.floor(duration.asMinutes());
-                    const seconds = Math.floor(duration.asSeconds()) % 60;
+      if (user.work.rob) {
+        const cooldownTime = 2 * 60 * 1000;
+        const isCooldownExpired = await client.utils.checkCooldown(ctx.author.id, "rob", cooldownTime);
+        if (!isCooldownExpired) {
+          const lastCooldownTimestamp = await client.utils.getCooldown(ctx.author.id, "rob");
+          const remainingTime = Math.ceil((lastCooldownTimestamp + cooldownTime - Date.now()) / 1000);
+          const duration = moment.duration(remainingTime, "seconds");
+          const minutes = Math.floor(duration.asMinutes());
+          const seconds = Math.floor(duration.asSeconds()) % 60;
 
-                    const cooldownMessage = depositMessages.cooldown
-                      .replace("%{minutes}", minutes)
-                      .replace("%{seconds}", seconds);
-                    const cooldownEmbed = client.embed().setColor(color.danger).setDescription(cooldownMessage);
-                    return ctx.sendMessage({ embeds: [cooldownEmbed] });
-                  });
-              }
-            });
-        } else if (
-          user.validation.isKlaKlouk ||
-          user.validation.isMultiTransfer
-        ) {
-          const activeCommand = user.validation.isKlaKlouk
-            ? "𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌"
+          const cooldownMessage = depositMessages.cooldown
+              .replace("%{minutes}", minutes)
+              .replace("%{seconds}", seconds);
+          const cooldownEmbed = client.embed().setColor(color.danger).setDescription(cooldownMessage);
+          return ctx.sendMessage({ embeds: [cooldownEmbed] });
+        }
+      } else if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
+        const activeCommand = user.validation.isKlaKlouk
+            ? "𝑲𝒍𝒂 𝑲𝒌𝒍𝒐𝒖𝒌"
             : "𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓";
-          return client.utils.sendErrorMessage(client, ctx, `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒔𝒕𝒂𝒓𝒕𝒆𝒅 𝒕𝒉𝒆 ${activeCommand} 𝒆𝒗𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.`, color);
-        } else {
-          const { coin } = user.balance;
-          if (coin < 1) {
-            return client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
-          }
+        return client.utils.sendErrorMessage(client, ctx, `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒔𝒕𝒂𝒓𝒕𝒆𝒅 𝒕𝒉𝒆 ${activeCommand} 𝒆𝒗𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.`, color);
+      } else {
+        const { coin } = user.balance;
+        if (coin < 1) {
+          return client.utils.sendErrorMessage(client, ctx, depositMessages.zeroBalance, color);
+        }
 
-          let amount = ctx.isInteraction
-              ? ctx.interaction.options.getString("amount")
-              : args[0] || 1;
-          if (amount.toString().startsWith("-")) {
-            return ctx.sendMessage({
-              embeds: [
-                client
-                    .embed()
-                    .setColor(color.danger)
-                    .setDescription(depositMessages.invalidAmount),
-              ],
-            });
-          }
-
-          amount = client.utils.formatBalance(client, ctx, color, coin, amount, depositMessages.invalidAmount);
-          if (typeof amount === "object") return;
-
-          if (isNaN(amount) || amount <= 0) {
-            return ctx.sendMessage({
-              embeds: [
-                client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount),
-              ],
-            });
-          }
-
-          const baseCoins = Math.min(amount, coin);
-
-          if (baseCoins > coin) {
-            return client.utils.sendErrorMessage(client, ctx, depositMessages.tooHigh, color);
-          }
-
-          user.balance.coin -= parseInt(baseCoins);
-          user.balance.bank += parseInt(baseCoins);
-
-          user.save().then(() => {
-            const embed = client.embed()
-                .setColor(color.main)
-                .setDescription(
-                    generalMessages.title
-                        .replace("%{mainLeft}", emoji.mainLeft)
-                        .replace("%{title}", "𝐃𝐄𝐏𝐎𝐒𝐈𝐓")
-                        .replace("%{mainRight}", emoji.mainRight) +
-                    depositMessages.success
-                        .replace("%{mainLeft}", emoji.mainLeft)
-                        .replace("%{mainRight}", emoji.mainRight)
-                        .replace(
-                            "%{amount}",
-                            client.utils.formatNumber(baseCoins)
-                        )
-                        .replace("%{coinEmote}", emoji.coin)
-                )
-                .setImage(globalGif.banner.depositWithdraw)
-                .setFooter({
-                  text:
-                      generalMessages.requestedBy.replace(
-                          "%{username}",
-                          ctx.author.displayName
-                      ) || `Requested by ${ctx.author.displayName}`,
-                  iconURL: ctx.author.displayAvatarURL(),
-                });
-
-            return ctx.sendMessage({embeds: [embed]});
-          }).catch((error) => {
-            console.error("Error saving user data:", error);
-            client.utils.sendErrorMessage(client, ctx, generalMessages.saveError, color
-            );
+        let amount = ctx.isInteraction
+            ? ctx.interaction.options.getString("amount")
+            : args[0] || 1;
+        if (amount.toString().startsWith("-")) {
+          return ctx.sendMessage({
+            embeds: [
+              client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount),
+            ],
           });
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-        client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
-      });
+
+        amount = client.utils.formatBalance(client, ctx, color, coin, amount, depositMessages.invalidAmount);
+        if (typeof amount === "object") return;
+
+        if (isNaN(amount) || amount <= 0) {
+          return ctx.sendMessage({
+            embeds: [
+              client.embed().setColor(color.danger).setDescription(depositMessages.invalidAmount),
+            ],
+          });
+        }
+
+        const baseCoins = Math.min(amount, coin);
+
+        if (baseCoins > coin) {
+          return client.utils.sendErrorMessage(client, ctx, depositMessages.tooHigh, color);
+        }
+
+        user.balance.coin -= parseInt(baseCoins);
+        user.balance.bank += parseInt(baseCoins);
+
+        await user.save();
+
+        const embed = client.embed()
+            .setColor(color.main)
+            .setDescription(
+                generalMessages.title
+                    .replace("%{mainLeft}", emoji.mainLeft)
+                    .replace("%{title}", "𝐃𝐄𝐏𝐎𝐒𝐈𝐓")
+                    .replace("%{mainRight}", emoji.mainRight) +
+                depositMessages.success
+                    .replace("%{mainLeft}", emoji.mainLeft)
+                    .replace("%{mainRight}", emoji.mainRight)
+                    .replace("%{amount}", client.utils.formatNumber(baseCoins))
+                    .replace("%{coinEmote}", emoji.coin)
+            )
+            .setImage(globalGif.banner.depositWithdraw)
+            .setFooter({
+              text:
+                  generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) ||
+                  `Requested by ${ctx.author.displayName}`,
+              iconURL: ctx.author.displayAvatarURL(),
+            });
+
+        return ctx.sendMessage({ embeds: [embed] });
+      }
+    } catch (error) {
+      console.error("Error processing deposit command:", error);
+      client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+    }
   }
 };

@@ -161,6 +161,8 @@ module.exports = {
         springBear: '<:BEARMAIN:1330471681843789845>',
         fantasy: '<:FANMAIN:1332163174824149066>',
 
+        cozySummer: '<:CSMAIN:1337040471264071680>',
+
         // SUPPORTER
         spiderMan: '<:SPMAIN:1307343653848485921>',
         cucumber: '<:CUMPROFILE:1308067665264513084>',

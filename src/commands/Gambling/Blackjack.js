@@ -33,138 +33,87 @@ module.exports = class Cmd extends Command {
       ],
     });
   }
-  run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-    const blackjackMessages = language.locales.get(language.defaultLocale)
-      ?.gamblingMessages?.blackjackMessages;
+
+  async run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const blackjackMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.blackjackMessages;
 
     const interaction = ctx.isInteraction ? ctx.interaction : null;
     const userId = ctx.author.id;
 
-    client.utils
-      .getUser(userId)
-      .then((user) => {
-        if (!user) {
-          return client.utils.sendErrorMessage(
-            client,
-            ctx,
-            generalMessages.userNotFound,
-            color
-          );
-        }
+    try {
+      const user = await client.utils.getUser(userId);
+      if (!user) {
+        return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
+      }
 
-        if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
-          const activeCommand = user.validation.isKlaKlouk
-            ? "𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌"
-            : "𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓";
-          return client.utils.sendErrorMessage(
+      if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
+        const activeCommand = user.validation.isKlaKlouk ? "𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌" : "𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓";
+        return client.utils.sendErrorMessage(
             client,
             ctx,
             `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒔𝒕𝒂𝒓𝒕𝒆𝒅 𝒕𝒉𝒆 ${activeCommand} 𝒆𝒗𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.`,
             color
-          );
-        }
+        );
+      }
 
-        if (activeGames.has(ctx.author.id)) {
-          return client.utils.sendErrorMessage(
-            client,
-            ctx,
-            generalMessages.alreadyInGame,
-            color
-          );
-        }
+      if (activeGames.has(ctx.author.id)) {
+        return client.utils.sendErrorMessage(client, ctx, generalMessages.alreadyInGame, color);
+      }
 
-        const { coin, blackjack, bank } = user.balance;
+      const { coin, blackjack, bank } = user.balance;
 
-        if (coin < 1) {
-          return client.utils.sendErrorMessage(
-            client,
-            ctx,
-            generalMessages.zeroBalance,
-            color
-          );
-        }
+      if (coin < 1) {
+        return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
+      }
 
-        let amount = ctx.isInteraction
-          ? interaction.options.getString("amount") || 1
-          : args[0] || 1;
+      let amount = ctx.isInteraction ? interaction.options.getString("amount") || 1 : args[0] || 1;
 
-        if (amount.toString().startsWith("-")) {
-          return ctx.sendMessage({
-            embeds: [
-              client
+      if (amount.toString().startsWith("-")) {
+        return ctx.sendMessage({
+          embeds: [
+            client
                 .embed()
                 .setColor(color.danger)
                 .setDescription(generalMessages.invalidAmount),
-            ],
-          });
-        }
+          ],
+        });
+      }
 
-        if (
+      if (
           isNaN(amount) ||
           amount <= 0 ||
           amount.toString().includes(".") ||
           amount.toString().includes(",")
-        ) {
-          const amountMap = { all: coin, half: Math.ceil(coin / 2) };
-          if (amount in amountMap) {
-            amount = amountMap[amount];
-          } else {
-            return client.utils.sendErrorMessage(
-              client,
-              ctx,
-              generalMessages.invalidAmount,
-              color
-            );
-          }
+      ) {
+        const amountMap = { all: coin, half: Math.ceil(coin / 2) };
+        if (amount in amountMap) {
+          amount = amountMap[amount];
+        } else {
+          return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
         }
+      }
 
-        const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
+      const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
 
-        user.balance.coin = coin - baseCoins;
-        user.balance.blackjack = blackjack + baseCoins;
-        user.balance.bank = bank;
-        user
-          .save()
-          .catch((err) => console.error("Error saving user data:", err));
+      user.balance.coin = coin - baseCoins;
+      user.balance.blackjack = blackjack + baseCoins;
+      user.balance.bank = bank;
+      await user.save();  // Await the user save operation
 
-        activeGames.set(ctx.author.id, true);
+      activeGames.set(ctx.author.id, true);
 
-        if (interaction) interaction.deferReply();
+      if (interaction) await interaction.deferReply();
 
-        initBlackjack(
-          ctx,
-          client,
-          color,
-          emoji,
-          baseCoins,
-          generalMessages,
-          blackjackMessages
-        );
-      })
-      .catch((err) => {
-        console.error("Error fetching user data:", err);
-        client.utils.sendErrorMessage(
-          client,
-          ctx,
-          generalMessages.userFetchError,
-          color
-        );
-      });
+      await initBlackjack(client, ctx, color, emoji, baseCoins, generalMessages, blackjackMessages);
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+      client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+    }
   }
 };
 
-function initBlackjack(
-  ctx,
-  client,
-  color,
-  emoji,
-  bet,
-  generalMessages,
-  blackjackMessages
-) {
+function initBlackjack(client, ctx, color, emoji, bet, generalMessages, blackjackMessages) {
   let tdeck = deck.slice(0);
   let player = [
     bjUtil.randCard(client, tdeck, "f"),

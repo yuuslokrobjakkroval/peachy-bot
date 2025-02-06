@@ -41,14 +41,16 @@ module.exports = class Coinflip extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const coinflipMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.coinflipMessages;
-        client.utils.getUser(ctx.author.id).then(user => {
+
+        try {
+            const user = await client.utils.getUser(ctx.author.id);
             const { coin, bank, coinflip } = user.balance;
 
             if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
-                const activeCommand = user.validation.isKlaKlouk ? '𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌' : '𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓';
+                const activeCommand = user.validation.isKlaKlouk ? '𝑲𝒍𝒂 𝑲𝒌𝒐𝒖𝒌' : '𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓';
                 return client.utils.sendErrorMessage(
                     client,
                     ctx,
@@ -72,7 +74,7 @@ module.exports = class Coinflip extends Command {
             }
 
             if (isNaN(amount) || amount <= 0 || amount.toString().includes('.') || amount.toString().includes(',')) {
-                const amountMap = {all: coin, half: Math.ceil(coin / 2)};
+                const amountMap = { all: coin, half: Math.ceil(coin / 2) };
                 if (amount in amountMap) {
                     amount = amountMap[amount];
                 } else {
@@ -113,45 +115,45 @@ module.exports = class Coinflip extends Command {
                 .setFooter({
                     text: generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName),
                     iconURL: ctx.author.displayAvatarURL(),
-                })
+                });
 
-            ctx.sendDeferMessage({embeds: [flipEmbed]});
+            await ctx.sendDeferMessage({ embeds: [flipEmbed] });
 
             user.balance.coin = win ? coin + baseCoins : coin - baseCoins;
             user.balance.coinflip = coinflip + baseCoins;
             user.balance.bank = bank;
 
-            user.save().then(() => {
-                // ===================================== > Result < ===================================== \\
-                setTimeout(function () {
-                    const resultCoin = win ? baseCoins * 2 : baseCoins;
-                    const resultEmbed = client.embed()
-                        .setColor(color.main)
-                        .setThumbnail(client.utils.emojiToImage(win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.goma : emoji.coinFlip.peach)))
-                        .setDescription(
-                            generalMessages.title
-                                .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{title}', coinflipMessages.title)
-                                .replace('%{mainRight}', emoji.mainRight) +
-                            coinflipMessages.result
-                                .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                                .replace('%{coinEmote}', emoji.coin)
-                                .replace('%{choice}', choice === 'p' ? '𝑷𝒆𝒂𝒄𝒉' : '𝑮𝒐𝒎𝒂')
-                                .replace('%{result}', win ? '𝒘𝒐𝒏' : '𝒍𝒐𝒔𝒕')
-                                .replace('%{resultCoin}', client.utils.formatNumber(resultCoin))
-                                .replace('%{coinEmote}', emoji.coin)
-                        )
-                        .setFooter({
-                            text: generalMessages.gameOver.replace('%{user}', ctx.author.displayName),
-                            iconURL: ctx.author.displayAvatarURL(),
-                        })
+            await user.save();
 
-                    ctx.editMessage({embeds: [resultEmbed]});
-                }, 2000);
-            })
-        }).catch(error => {
-                console.error('Error processing command:', error);
-                return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
-            });
+            // ===================================== > Result < ===================================== \\
+            setTimeout(function () {
+                const resultCoin = win ? baseCoins * 2 : baseCoins;
+                const resultEmbed = client.embed()
+                    .setColor(color.main)
+                    .setThumbnail(client.utils.emojiToImage(win ? (choice === 'p' ? emoji.coinFlip.peach : emoji.coinFlip.goma) : (choice === 'p' ? emoji.coinFlip.goma : emoji.coinFlip.peach)))
+                    .setDescription(
+                        generalMessages.title
+                            .replace('%{mainLeft}', emoji.mainLeft)
+                            .replace('%{title}', coinflipMessages.title)
+                            .replace('%{mainRight}', emoji.mainRight) +
+                        coinflipMessages.result
+                            .replace('%{coin}', client.utils.formatNumber(baseCoins))
+                            .replace('%{coinEmote}', emoji.coin)
+                            .replace('%{choice}', choice === 'p' ? '𝑷𝒆𝒂𝒄𝒉' : '𝑮𝒐𝒎𝒂')
+                            .replace('%{result}', win ? '𝒘𝒐𝒏' : '𝒍𝒐𝒔𝒕')
+                            .replace('%{resultCoin}', client.utils.formatNumber(resultCoin))
+                            .replace('%{coinEmote}', emoji.coin)
+                    )
+                    .setFooter({
+                        text: generalMessages.gameOver.replace('%{user}', ctx.author.displayName),
+                        iconURL: ctx.author.displayAvatarURL(),
+                    });
+
+                ctx.editMessage({ embeds: [resultEmbed] });
+            }, 2000);
+        } catch (error) {
+            console.error('Error processing command:', error);
+            return client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+        }
     }
 };

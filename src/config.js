@@ -366,6 +366,21 @@ const nithGojo = {
   },
 };
 
+// Cozy Summer ( ST15 )
+const cozySummer = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0x9DC08B,
+    none: 0x2b2d31,
+  },
+};
+
 // YUNA FOR SUPPORTER ( ST1801 )
 const yuna = {
   color: {
@@ -535,6 +550,8 @@ module.exports = {
   cucumberCool,
   cappuccinoCharm,
   nithGojo,
+  cozySummer, // ST15
+
   yuna,
   yunayuna,
   quirkyQuackers,

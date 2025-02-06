@@ -1360,8 +1360,7 @@ module.exports = [
       {
         id: "st01",
         name: "Celestial Grace",
-        description:
-          "A divine theme that bathes your embed in heavenly whites and golds, with ethereal emojis to match.",
+        description: "Elevate your embed with divine whites and golds.",
         type: "special theme",
         able: {
           use: true,
@@ -1376,8 +1375,7 @@ module.exports = [
       {
         id: "st02",
         name: "Sakura Serenity",
-        description:
-          "Immerse your embed in the soft, tranquil beauty of cherry blossoms with delicate pinks and gentle whites. Embrace a peaceful atmosphere with serene sakura emojis to enhance your design.",
+        description: "Embrace tranquil cherry blossoms in soft pinks.",
         type: "special theme",
         able: {
           use: true,
@@ -1392,8 +1390,7 @@ module.exports = [
       {
         id: "st03",
         name: "Buzzing Bliss",
-        description:
-          "Bring the buzz to your embed with the vibrant energy of bees and golden honeycombs. Adorn your design with warm yellows and black accents, featuring cheerful bee emojis to spread positivity and sweetness.",
+        description: "Bring cheerful bees and honeycomb energy to life.",
         type: "special theme",
         able: {
           use: true,
@@ -1408,8 +1405,7 @@ module.exports = [
       {
         id: "st04",
         name: "Froggy Fun",
-        description:
-          "Unleash your playful side with this lively theme featuring vibrant oranges and subtle whites. The adorable fox emoji adds a dash of wild fun to your style!",
+        description: "Add playful froggy charm with vibrant oranges!",
         type: "special theme",
         able: {
           use: true,
@@ -1424,8 +1420,7 @@ module.exports = [
       {
         id: "st05",
         name: "ASleepy Peach",
-        description:
-          "Bask in the soft and sweet charm of 'ASleepy Peach'! This theme blends soothing pastel tones with adorable icons like peaches, blossoms, and desserts, bringing a sense of calm and warmth to your day. Perfect for those who adore cozy vibes and a sprinkle of sweetness.",
+        description: "Embrace calm vibes with the sweet, cozy ASleepy Peach!",
         type: "special theme",
         able: {
           use: true,
@@ -1440,8 +1435,7 @@ module.exports = [
       {
         id: "st06",
         name: "Magical Forest",
-        description:
-          "Step into the enchanting world of the 'Magical Forest'! This theme surrounds you with lush greenery, twinkling fireflies, and mystical creatures, creating a serene and whimsical escape into nature's hidden wonders.",
+        description: "Explore the enchanting Magical Forest filled with wonders!",
         type: "special theme",
         able: {
           use: true,
@@ -1456,8 +1450,7 @@ module.exports = [
       {
         id: "st07",
         name: "Matcha Latte",
-        description:
-          "Indulge in the soothing charm of 'Matcha Latte'! This theme blends earthy green tones with creamy accents, evoking the calm and cozy feeling of sipping a warm matcha drink on a peaceful afternoon.",
+        description: "Relax with the calming charm of the Matcha Latte theme!",
         type: "special theme",
         able: {
           use: true,
@@ -1472,8 +1465,7 @@ module.exports = [
       {
         id: "st08",
         name: "Dark Academia",
-        description:
-          "Immerse yourself in the intellectual allure of 'Dark Academia'! This theme weaves deep green tones with muted, vintage-inspired accents, evoking the ambiance of candlelit libraries, classic literature, and autumnal afternoons spent in thoughtful study.",
+        description: "Embrace the intellectual allure of the Dark Academia theme!",
         type: "special theme",
         able: {
           use: true,
@@ -1489,8 +1481,7 @@ module.exports = [
       {
         id: "st09",
         name: "Spring Bear",
-        description:
-          "Celebrate the charm of springtime with the delightful Spring Bear! This theme exudes warmth and joy, capturing the playful energy of blooming flowers, sunny days, and the cheerful spirit of a cuddly bear. Perfect for those who love the gentle embrace of nature's renewal, it’s a heartwarming way to brighten your day and spread smiles all around!",
+        description: "Embrace spring’s charm with the joyful Spring Bear theme!",
         type: "special theme",
         able: {
           use: true,
@@ -1505,8 +1496,7 @@ module.exports = [
       {
         id: "st10",
         name: "Fantasy RPG",
-        description:
-          "Step into a world of magic and adventure with the Fantasy RPG theme! This immersive setting brings to life the thrill of epic quests, mythical creatures, and heroic tales. Perfect for those who dream of wielding swords, casting spells, and exploring enchanted lands, it captures the spirit of adventure and endless possibilities. Let the Fantasy RPG theme transport you to a realm where your imagination knows no bounds!",
+        description: "Embark on epic quests in a magical world of adventure!",
         type: "special theme",
         able: {
           use: true,
@@ -1515,6 +1505,21 @@ module.exports = [
         },
         quantity: 1,
         emoji: emoji.specialTheme.fantasy,
+        available: ["use"],
+        price: { buy: 4e7, sell: 35e6 },
+      },
+      {
+        id: "st15",
+        name: "Cozy Summer",
+        description: "Relax and unwind with the warm vibes of Cozy Summer.",
+        type: "special theme",
+        able: {
+          use: true,
+          gift: true,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.cozySummer,
         available: ["use"],
         price: { buy: 4e7, sell: 35e6 },
       },
