@@ -75,7 +75,7 @@ module.exports = {
     slots: {
         cat: '<:CSICECREAM:1337046424851845130>',
         coffee: '<:CSDRINK:1337046426047348778>',
-        heart: '<:CSCAKE:1337046423887282289>',
+        heart: '<:CSCAKE:1337054650393690173>',
         cake: '<:CSMILK:1337046447996014663>',
         milk: '<:CSFRIUT:1337046457135534134>',
         peachy: '<:CSROYAL:1337046466631434330>',

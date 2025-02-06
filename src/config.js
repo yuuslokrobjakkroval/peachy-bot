@@ -376,7 +376,7 @@ const cozySummer = {
     blue: 0x4cc9fe,
     pink: 0xe3a1ad,
     warning: 0xffa500,
-    main: 0x9DC08B,
+    main: 0xDDEB9D,
     none: 0x2b2d31,
   },
 };
