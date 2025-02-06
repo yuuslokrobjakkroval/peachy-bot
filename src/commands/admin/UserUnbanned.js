@@ -16,7 +16,7 @@ module.exports = class BanUser extends Command {
       permissions: {
         dev: true,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: ["BanMembers"],
+        user: [""],
       },
       slashCommand: false,
       options: [],

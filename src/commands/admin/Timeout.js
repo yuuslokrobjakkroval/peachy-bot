@@ -17,7 +17,7 @@ module.exports = class Timeout extends Command {
       permissions: {
         dev: true,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: ["ManageMessages"],
+        user: [""],
       },
       slashCommand: false,
       options: [],

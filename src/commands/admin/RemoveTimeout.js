@@ -16,7 +16,7 @@ module.exports = class RemoveTimeout extends Command {
       permissions: {
         dev: true,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: ["ManageMessages"], // Modify permissions as needed
+        user: [""], // Modify permissions as needed
       },
       slashCommand: false,
       options: [],

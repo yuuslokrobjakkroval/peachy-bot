@@ -19,7 +19,7 @@ module.exports = class BlacklistUser extends Command {
       permissions: {
         dev: true,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: ["BanMembers"],
+        user: [""],
       },
       slashCommand: false,
       options: [],

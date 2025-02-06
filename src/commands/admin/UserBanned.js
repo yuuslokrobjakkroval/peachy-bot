@@ -16,7 +16,7 @@ module.exports = class BanUser extends Command {
       permissions: {
         dev: true,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: ["BanMembers"],
+        user: [""],
       },
       slashCommand: false,
       options: [],
@@ -24,9 +24,7 @@ module.exports = class BanUser extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
     if (args.length < 1) {
       return await ctx.sendMessage({
@@ -48,12 +46,7 @@ module.exports = class BanUser extends Command {
         args[0];
 
     if (!mention) {
-      return client.util.sendErrorMessage(
-        client,
-        ctx,
-        generalMessages.noUserMentioned,
-        color
-      );
+      return client.util.sendErrorMessage(client, ctx, generalMessages.noUserMentioned, color);
     }
 
     const userId = typeof mention === "string" ? mention : mention.id;
@@ -73,10 +66,7 @@ module.exports = class BanUser extends Command {
     if (isBanned) {
       return await ctx.sendMessage({
         embeds: [
-          client
-            .embed()
-            .setColor(color.danger)
-            .setDescription(`${mention} is already banned.`),
+          client.embed().setColor(color.danger).setDescription(`${mention} is already banned.`),
         ],
       });
     } else {
