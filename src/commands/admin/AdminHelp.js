@@ -1,5 +1,6 @@
 const Command = require("../../structures/Command.js");
 const { StringSelectMenuBuilder } = require("discord.js");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class AdminHelp extends Command {
     constructor(client) {
@@ -54,7 +55,7 @@ module.exports = class AdminHelp extends Command {
                     .setDescription(
                         generalMessages.title
                             .replace("%{mainLeft}", emoji.mainLeft)
-                            .replace("%{title}", "𝐀𝐃𝐌𝐈𝐍 𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
+                            .replace("%{title}", "𝐀𝐃𝐌𝐈𝐍")
                             .replace("%{mainRight}", emoji.mainRight) +
                         `${helpMessages.description} ***${prefix}adminhelp [command]***\n` +
                         `${helpMessages.examples} ***${prefix}adminhelp ban***\n\n` +
@@ -116,7 +117,7 @@ module.exports = class AdminHelp extends Command {
                         ? Array.from(categoryCommands.values())
                             .map(
                                 (cmd) =>
-                                    `+ ${cmd.name}\n - ${cmd.description.examples}`
+                                    `- ${cmd.name}\n${globalEmoji.border.right} ${cmd.description.examples}`
                             ) // Limit description to 100 chars
                             .join("\n")
                         : "𝑵𝒐 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.";
@@ -127,7 +128,7 @@ module.exports = class AdminHelp extends Command {
                     .setDescription(
                         generalMessages.title
                             .replace("%{mainLeft}", emoji.mainLeft)
-                            .replace("%{title}", "𝐀𝐃𝐌𝐈𝐍 𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
+                            .replace("%{title}", "𝐀𝐃𝐌𝐈𝐍")
                             .replace("%{mainRight}", emoji.mainRight) +
                         `${helpMessages.description} ***${prefix}adminhelp [command]***\n` +
                         `${helpMessages.examples} ***${prefix}adminhelp ban***\n\n` +
