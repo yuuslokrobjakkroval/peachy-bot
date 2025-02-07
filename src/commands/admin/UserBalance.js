@@ -7,7 +7,7 @@ module.exports = class UserBalance extends Command {
         super(client, {
             name: 'userbalance',
             description: {
-                content: 'Displays a user\'s balance and daily transfer/receive limits.',
+                content: `'Displays a user's balance'`,
                 examples: ['ubal @user'],
                 usage: 'ubal <@user>',
             },
