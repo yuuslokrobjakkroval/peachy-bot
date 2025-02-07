@@ -134,7 +134,7 @@ module.exports = class Help extends Command {
       // Collector for Category Selection
       const collector = replyMessage.createMessageComponentCollector({
         filter: (interaction) => interaction.user.id === ctx.author.id,
-        time: 60000,
+        time: 3000000,
       });
 
       collector.on("collect", async (interaction) => {

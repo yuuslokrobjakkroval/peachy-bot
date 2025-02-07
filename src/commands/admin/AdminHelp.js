@@ -102,7 +102,7 @@ module.exports = class AdminHelp extends Command {
             // Collector for Category Selection
             const collector = replyMessage.createMessageComponentCollector({
                 filter: (interaction) => interaction.user.id === ctx.author.id,
-                time: 60000,
+                time: 3000000,
             });
 
             collector.on("collect", async (interaction) => {
@@ -116,7 +116,7 @@ module.exports = class AdminHelp extends Command {
                         ? Array.from(categoryCommands.values())
                             .map(
                                 (cmd) =>
-                                    `- ${cmd.name}\n${cmd.description.content}`
+                                    `- ${cmd.name} || - ${cmd.description.examples}`
                             ) // Limit description to 100 chars
                             .join("\n")
                         : "𝑵𝒐 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.";
