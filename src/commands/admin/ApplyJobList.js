@@ -8,7 +8,7 @@ module.exports = class ApplyJobList extends Command {
       description: {
         content:
           "List all users with pending job applications grouped by position.",
-        examples: ["applyjoblist", "ajl"],
+        examples: ["applyjoblist"],
         usage: "applyjoblist",
       },
       category: "work",

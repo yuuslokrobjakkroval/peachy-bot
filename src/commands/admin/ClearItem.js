@@ -7,7 +7,7 @@ module.exports = class ClearItem extends Command {
             name: 'clearitem',
             description: {
                 content: 'Clear item from user.',
-                examples: ['clearitem @user 100'],
+                examples: ['clearitem @user'],
                 usage: 'clearitem <user> <amount>',
             },
             category: 'dev',

@@ -8,7 +8,7 @@ module.exports = class Timeout extends Command {
       name: "timeout",
       description: {
         content: "Set a timeout for a user.",
-        examples: ["timeout @user 5min", "timeout @user 10min"],
+        examples: ["timeout @user 5min"],
         usage: "timeout <user> <duration>",
       },
       category: "admin",
