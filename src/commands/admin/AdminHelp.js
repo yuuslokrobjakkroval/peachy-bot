@@ -43,9 +43,7 @@ module.exports = class AdminHelp extends Command {
         const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
         const prefix = client.config.prefix;
         const adminCategory = ["admin", "dev", "guild"];
-
-        // Filter only admin commands
-        const commands = client.commands.filter((cmd) => adminCategory.includes(cmd.category));
+        const commands = client.commands.filter((cmd) => adminCategory.includes(cmd.category.toLowerCase()));
         const selectedItemIndex = null;
 
         if (!args[0]) {
