@@ -5,17 +5,17 @@ module.exports = class ResetProfile extends Command {
     super(client, {
       name: "resetprofile",
       description: {
-        content: "Resets the bot's avatar, banner, username, and status.",
-        examples: ["resetprofile"],
-        usage: "resetprofile",
+        content: "𝑹𝒆𝒔𝒆𝒕𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒂𝒗𝒂𝒕𝒂𝒓, 𝒃𝒂𝒏𝒏𝒆𝒓, 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆, 𝒂𝒏𝒅 𝒔𝒕𝒂𝒕𝒖𝒔.",
+        examples: ["𝒓𝒆𝒔𝒆𝒕𝒑𝒓𝒐𝒇𝒊𝒍𝒆"],
+        usage: "𝒓𝒆𝒔𝒆𝒕𝒑𝒓𝒐𝒇𝒊𝒍𝒆",
       },
       category: "utility",
       aliases: ["resetbot"],
       cooldown: 10,
       args: false,
       permissions: {
-        dev: true,
-        client: ["SendMessages", "ViewChannel"],
+        dev: true, // Only bot developers can use this command
+        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
         user: [],
       },
       slashCommand: true,
@@ -23,17 +23,45 @@ module.exports = class ResetProfile extends Command {
     });
   }
 
-  async run(client, ctx, args, color) {
+  async run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const resetMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.resetMessages;
+
+    if (!ctx.isBotDeveloper) {
+      return client.utils.sendErrorMessage(client, ctx, "Only bot developers can reset the bot's profile.", color);
+    }
+
+    if (ctx.isInteraction) {
+      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
+    } else {
+      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
+    }
+
     try {
       await client.user.setAvatar(null); // Reset avatar
-      await client.user.setBanner(null); // Reset banner (requires Nitro)
-      await client.user.setUsername(client.user.username); // Refresh username
+      await client.user.setBanner(null); // Reset banner (Nitro required)
       client.user.setPresence({ status: "online", activities: [] }); // Reset status
 
-      return ctx.reply("✅ Bot profile has been reset to default.");
+      const embed = client.embed()
+        .setColor(color.main)
+        .setDescription(
+          generalMessages.title
+            .replace('%{mainLeft}', emoji.mainLeft)
+            .replace('%{title}', "𝐁𝐎𝐓 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐑𝐄𝐒𝐄𝐓")
+            .replace('%{mainRight}', emoji.mainRight)
+        )
+        .setImage(client.user.displayAvatarURL({ dynamic: true, extension: "png", size: 1024 }))
+        .setFooter({
+          text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        })
+        .setTimestamp();
+
+      return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
+
     } catch (error) {
       console.error("Failed to reset bot profile:", error);
-      return client.utils.sendErrorMessage(client, ctx, "Failed to reset bot profile. Make sure the bot has Nitro for banner reset.", color);
+      return client.utils.sendErrorMessage(client, ctx, "Failed to reset bot profile. Ensure the bot has Nitro for banner reset.", color);
     }
   }
 };
