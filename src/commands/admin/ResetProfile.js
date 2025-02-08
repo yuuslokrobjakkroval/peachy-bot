@@ -27,10 +27,6 @@ module.exports = class ResetProfile extends Command {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const resetMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.resetMessages;
 
-    if (!ctx.isBotDeveloper) {
-      return client.utils.sendErrorMessage(client, ctx, "Only bot developers can reset the bot's profile.", color);
-    }
-
     if (ctx.isInteraction) {
       await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
     } else {
