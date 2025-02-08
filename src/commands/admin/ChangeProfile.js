@@ -5,22 +5,16 @@ module.exports = class ChangeProfile extends Command {
     super(client, {
       name: "changeprofile",
       description: {
-        content: "Changes the bot's profile picture using an attachment.",
-        examples: ["changeprofile (attach an image)"],
-        usage: "changeprofile (attach an image)",
+        content: "𝑪𝒉𝒂𝒏𝒈𝒆𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒑𝒊𝒄𝒕𝒖𝒓𝒆.",
+        examples: ["𝒄𝒉𝒂𝒏𝒈𝒆𝒑𝒓𝒐𝒇𝒊𝒍𝒆 (attach an image)"],
+        usage: "𝒄𝒉𝒂𝒏𝒈𝒆𝒑𝒓𝒐𝒇𝒊𝒍𝒆 (attach an image)",
       },
-      category: "utility",
+      category: "admin",
       aliases: ["setavatar", "botavatar"],
       cooldown: 5,
       args: false,
-      player: {
-        voice: false,
-        dj: false,
-        active: false,
-        djPerm: null,
-      },
       permissions: {
-        dev: true, // Only bot developers can use this command
+        dev: true, // Only bot developers can use this
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
         user: [],
       },
@@ -29,7 +23,7 @@ module.exports = class ChangeProfile extends Command {
         {
           name: "image",
           type: 11, // ATTACHMENT input
-          description: "Upload an image for the bot's new profile picture",
+          description: "Upload an image for the bot's profile picture",
           required: true,
         },
       ],
@@ -39,12 +33,12 @@ module.exports = class ChangeProfile extends Command {
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const profileMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.profileMessages;
-
-    if (!ctx.isBotDeveloper) {
-      return client.utils.sendErrorMessage(client, ctx, "Only bot developers can change the bot's profile picture.", color);
+    if (ctx.isInteraction) {
+      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
+    } else {
+      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
     }
 
-    // Get the attachment from interaction or message
     const imageAttachment = ctx.isInteraction 
       ? ctx.interaction.options.getAttachment("image") 
       : ctx.message.attachments.first();
@@ -53,28 +47,24 @@ module.exports = class ChangeProfile extends Command {
       return client.utils.sendErrorMessage(client, ctx, "Please attach an image.", color);
     }
 
-    const imageUrl = imageAttachment.url;
-
     try {
-      await client.user.setAvatar(imageUrl);
+      await client.user.setAvatar(imageAttachment.url);
 
       const embed = client.embed()
         .setColor(color.main)
-        .setDescription(`✅ Successfully changed the bot's profile picture!`)
-        .setImage(imageUrl)
+        .setDescription("✅ 𝐁𝐎𝐓 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐏𝐈𝐂𝐓𝐔𝐑𝐄 𝐂𝐇𝐀𝐍𝐆𝐄𝐃!")
+        .setImage(imageAttachment.url)
         .setFooter({
           text: `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
 
-      return ctx.isInteraction 
-        ? await ctx.interaction.reply({ embeds: [embed] }) 
-        : await ctx.sendMessage({ embeds: [embed] });
+      return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
 
     } catch (error) {
       console.error("Failed to change bot's avatar:", error);
-      return client.utils.sendErrorMessage(client, ctx, "Failed to update the bot's profile picture. Make sure the image is valid.", color);
+      return client.utils.sendErrorMessage(client, ctx, "Failed to update the bot's profile picture.", color);
     }
   }
 };
