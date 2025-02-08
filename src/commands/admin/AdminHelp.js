@@ -117,7 +117,7 @@ module.exports = class AdminHelp extends Command {
                         ? Array.from(categoryCommands.values())
                             .map(
                                 (cmd) =>
-                                    `- ${cmd.name}\n${globalEmoji.border.right} ${cmd.description.examples}`
+                                    `${globalEmoji.border.right} ${cmd.description.examples}`
                             ) // Limit description to 100 chars
                             .join("\n")
                         : "𝑵𝒐 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.";
