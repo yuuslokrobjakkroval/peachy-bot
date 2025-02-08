@@ -5,22 +5,16 @@ module.exports = class ChangeBanner extends Command {
     super(client, {
       name: "changebanner",
       description: {
-        content: "Changes the bot's profile banner using an attachment.",
-        examples: ["changebanner (attach an image)"],
-        usage: "changebanner (attach an image)",
+        content: "𝑪𝒉𝒂𝒏𝒈𝒆𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒃𝒂𝒏𝒏𝒆𝒓.",
+        examples: ["𝒄𝒉𝒂𝒏𝒈𝒆𝒃𝒂𝒏𝒏𝒆𝒓 (attach an image)"],
+        usage: "𝒄𝒉𝒂𝒏𝒈𝒆𝒃𝒂𝒏𝒏𝒆𝒓 (attach an image)",
       },
       category: "utility",
       aliases: ["setbanner", "botbanner"],
       cooldown: 5,
       args: false,
-      player: {
-        voice: false,
-        dj: false,
-        active: false,
-        djPerm: null,
-      },
       permissions: {
-        dev: true, // Only bot developers can use this command
+        dev: true,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
         user: [],
       },
@@ -28,8 +22,8 @@ module.exports = class ChangeBanner extends Command {
       options: [
         {
           name: "image",
-          type: 11, // ATTACHMENT input
-          description: "Upload an image for the bot's new profile banner",
+          type: 11,
+          description: "Upload an image for the bot's profile banner",
           required: true,
         },
       ],
@@ -37,14 +31,6 @@ module.exports = class ChangeBanner extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const bannerMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.bannerMessages;
-
-    if (!ctx.isBotDeveloper) {
-      return client.utils.sendErrorMessage(client, ctx, "Only bot developers can change the bot's banner.", color);
-    }
-
-    // Get the attachment from interaction or message
     const imageAttachment = ctx.isInteraction 
       ? ctx.interaction.options.getAttachment("image") 
       : ctx.message.attachments.first();
@@ -53,28 +39,24 @@ module.exports = class ChangeBanner extends Command {
       return client.utils.sendErrorMessage(client, ctx, "Please attach an image.", color);
     }
 
-    const imageUrl = imageAttachment.url;
-
     try {
-      await client.user.setBanner(imageUrl);
+      await client.user.setBanner(imageAttachment.url);
 
       const embed = client.embed()
         .setColor(color.main)
-        .setDescription(`✅ Successfully changed the bot's profile banner!`)
-        .setImage(imageUrl)
+        .setDescription("✅ 𝐁𝐎𝐓 𝐁𝐀𝐍𝐍𝐄𝐑 𝐂𝐇𝐀𝐍𝐆𝐄𝐃!")
+        .setImage(imageAttachment.url)
         .setFooter({
           text: `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
 
-      return ctx.isInteraction 
-        ? await ctx.interaction.reply({ embeds: [embed] }) 
-        : await ctx.sendMessage({ embeds: [embed] });
+      return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
 
     } catch (error) {
       console.error("Failed to change bot's banner:", error);
-      return client.utils.sendErrorMessage(client, ctx, "Failed to update the bot's profile banner. Make sure the image is valid and your bot has Nitro.", color);
+      return client.utils.sendErrorMessage(client, ctx, "Failed to update the bot's profile banner. Ensure the bot has Nitro.", color);
     }
   }
 };
