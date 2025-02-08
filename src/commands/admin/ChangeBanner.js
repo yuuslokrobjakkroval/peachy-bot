@@ -9,7 +9,7 @@ module.exports = class ChangeBanner extends Command {
         examples: ["𝒄𝒉𝒂𝒏𝒈𝒆𝒃𝒂𝒏𝒏𝒆𝒓 (attach an image)"],
         usage: "𝒄𝒉𝒂𝒏𝒈𝒆𝒃𝒂𝒏𝒏𝒆𝒓 (attach an image)",
       },
-      category: "utility",
+      category: "admin",
       aliases: ["setbanner", "botbanner"],
       cooldown: 5,
       args: false,
