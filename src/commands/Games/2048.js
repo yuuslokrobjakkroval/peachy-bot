@@ -57,10 +57,11 @@ module.exports = class TwoZeroFourEight extends Command {
             return ctx.sendMessage("❌ 𝒀𝒐𝒖 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒗𝒆 𝒂𝒏 𝒐𝒏𝒈𝒐𝒊𝒏𝒈 𝒈𝒂𝒎𝒆! 𝑭𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒔𝒕𝒂𝒓𝒕𝒊𝒏𝒈 𝒂 𝒏𝒆𝒘 𝒐𝒏𝒆.");
         }
 
-        activeGames.set(ctx.author.id, this);
-        this.score = 0;
-        this.placeNewRandomTile();
-        const attachment = await this.getImage();
+        const gameInstance = new TwoZeroFourEight(client);
+        activeGames.set(ctx.author.id, gameInstance);
+        gameInstance.score = 0;
+        gameInstance.placeNewRandomTile();
+        const attachment = await gameInstance.getImage();
 
         const embed = client.embed()
             .setColor(color.main)
@@ -80,7 +81,7 @@ module.exports = class TwoZeroFourEight extends Command {
         const left = client.utils.emojiButton("left", emojis.left, 2);
         const down = client.utils.emojiButton("down", emojis.down, 2);
         const right = client.utils.emojiButton("right", emojis.right, 2);
-        const stop = client.utils.labelButton("stop", "⛔ Stop", 4); // Red button
+        const stop = client.utils.emojiButton("stop", "⛔", 4); // Red button
 
         const dis1 = client.utils.labelButton("dis1", '\u200b', 2, true);
         const dis2 = client.utils.labelButton("dis2", '\u200b', 2, true);
@@ -101,36 +102,36 @@ module.exports = class TwoZeroFourEight extends Command {
                 return interaction.reply({
                     content: 'You are not allowed to use buttons for this message!',
                     flags: true
-                })
+                });
             }
 
             await interaction.deferUpdate().catch(console.error); // Defer first
 
             if (interaction.customId === 'stop') {
                 collector.stop('stopped'); // Stop game manually
-                return this.gameOver(client, ctx, msg, color, emoji, generalMessages);
+                return gameInstance.gameOver(client, ctx, msg, color, emoji, generalMessages);
             }
 
             try {
                 let moved = false;
-                this.mergedPos = [];
+                gameInstance.mergedPos = [];
                 if (interaction.customId === 'up') {
-                    moved = this.shiftUp()
+                    moved = gameInstance.shiftUp();
                 } else if (interaction.customId === 'left') {
-                    moved = this.shiftLeft()
+                    moved = gameInstance.shiftLeft();
                 } else if (interaction.customId === 'down') {
-                    moved = this.shiftDown()
+                    moved = gameInstance.shiftDown();
                 } else if (interaction.customId === 'right') {
-                    moved = this.shiftRight()
+                    moved = gameInstance.shiftRight();
                 }
 
-                if (moved) this.placeNewRandomTile();
+                if (moved) gameInstance.placeNewRandomTile();
 
-                if (this.isBoardFull() && this.possibleMoves() === 0) {
-                    collector.stop()
-                    return this.gameOver(client, ctx, msg, color, emoji, generalMessages);
+                if (gameInstance.isBoardFull() && gameInstance.possibleMoves() === 0) {
+                    collector.stop();
+                    return gameInstance.gameOver(client, ctx, msg, color, emoji, generalMessages);
                 } else {
-                    const attachment = await this.getImage();
+                    const attachment = await gameInstance.getImage();
                     const editEmbed = client.embed()
                         .setColor(color.main)
                         .setDescription(
@@ -145,18 +146,18 @@ module.exports = class TwoZeroFourEight extends Command {
                             iconURL: ctx.author.displayAvatarURL(),
                         });
 
-                    msg.edit({ embeds: [editEmbed], components: msg.components, files: [attachment] })
+                    msg.edit({ embeds: [editEmbed], components: msg.components, files: [attachment] });
                 }
             } catch (error) {
                 console.error('Error deferring interaction:', error);
                 // Handle the error accordingly
             }
-        })
+        });
 
         collector.on('end', async (_, r) => {
             activeGames.delete(ctx.author.id);
-            if (r === 'idle') await this.gameOver(client, ctx, msg, color, emoji, generalMessages)
-        })
+            if (r === 'idle') await gameInstance.gameOver(client, ctx, msg, color, emoji, generalMessages);
+        });
     }
 
     async getImage() {
