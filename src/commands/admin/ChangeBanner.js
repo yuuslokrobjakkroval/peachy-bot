@@ -47,7 +47,7 @@ module.exports = class ChangeBanner extends Command {
     }
 
     try {
-      await client.user.setAvatar(imageAttachment.url);
+      await client.user.setBanner(imageAttachment.url);
 
       const embed = client.embed()
           .setColor(color.main)
