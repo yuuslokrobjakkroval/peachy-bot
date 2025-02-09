@@ -32,15 +32,14 @@ module.exports = class ChangeProfile extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const profileMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.profileMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
     } else {
       await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
     }
 
-    const imageAttachment = ctx.isInteraction 
-      ? ctx.interaction.options.getAttachment("image") 
+    const imageAttachment = ctx.isInteraction
+      ? ctx.interaction.options.getAttachment("image")
       : ctx.message.attachments.first();
 
     if (!imageAttachment) {
@@ -52,7 +51,12 @@ module.exports = class ChangeProfile extends Command {
 
       const embed = client.embed()
         .setColor(color.main)
-        .setDescription("✅ 𝐁𝐎𝐓 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐏𝐈𝐂𝐓𝐔𝐑𝐄 𝐂𝐇𝐀𝐍𝐆𝐄𝐃!")
+        .setDescription(
+            generalMessages.title
+                .replace('%{mainLeft}', emoji.mainLeft)
+                .replace('%{title}', "𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐂𝐇𝐀𝐍𝐆𝐄𝐃!")
+                .replace('%{mainRight}', emoji.mainRight)
+        )
         .setImage(imageAttachment.url)
         .setFooter({
           text: `Requested by ${ctx.author.displayName}`,

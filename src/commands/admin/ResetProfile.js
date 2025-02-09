@@ -5,7 +5,7 @@ module.exports = class ResetProfile extends Command {
     super(client, {
       name: "resetprofile",
       description: {
-        content: "𝑹𝒆𝒔𝒆𝒕𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒂𝒗𝒂𝒕𝒂𝒓, 𝒃𝒂𝒏𝒏𝒆𝒓, 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆, 𝒂𝒏𝒅 𝒔𝒕𝒂𝒕𝒖𝒔.",
+        content: "𝑹𝒆𝒔𝒆𝒕𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒂𝒗𝒂𝒕𝒂𝒓 𝒂𝒏𝒅 𝒃𝒂𝒏𝒏𝒆𝒓.",
         examples: ["𝒓𝒆𝒔𝒆𝒕𝒑𝒓𝒐𝒇𝒊𝒍𝒆"],
         usage: "𝒓𝒆𝒔𝒆𝒕𝒑𝒓𝒐𝒇𝒊𝒍𝒆",
       },
@@ -25,7 +25,6 @@ module.exports = class ResetProfile extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const resetMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.resetMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
@@ -35,15 +34,14 @@ module.exports = class ResetProfile extends Command {
 
     try {
       await client.user.setAvatar(null); // Reset avatar
-      await client.user.setBanner(null); // Reset banner (Nitro required)
-      client.user.setPresence({ status: "online", activities: [] }); // Reset status
+      await client.user.setBanner(null); // Reset banner ()
 
       const embed = client.embed()
         .setColor(color.main)
         .setDescription(
           generalMessages.title
             .replace('%{mainLeft}', emoji.mainLeft)
-            .replace('%{title}', "𝐁𝐎𝐓 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐑𝐄𝐒𝐄𝐓")
+            .replace('%{title}', "𝐏𝐅 𝐑𝐄𝐒𝐄𝐓")
             .replace('%{mainRight}', emoji.mainRight)
         )
         .setImage(client.user.displayAvatarURL({ dynamic: true, extension: "png", size: 1024 }))
