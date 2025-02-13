@@ -29,18 +29,6 @@ module.exports = class KlaKlouk extends Command {
                     type: 3,
                     required: true,
                 },
-                // {
-                //     name: 'player',
-                //     description: 'The amount you want to play together.',
-                //     type: 4,
-                //     required: false,
-                // },
-                // {
-                //     name: "user",
-                //     description: "The user to get for reset game",
-                //     type: 6,
-                //     required: false,
-                // },
             ],
         });
     }
@@ -76,20 +64,7 @@ module.exports = class KlaKlouk extends Command {
                 }
 
                 const betCoins = parseInt(Math.min(amount, coin, maxAmount));
-                // let player = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
-
-                // if (player > 1) {
-                //     const startEmbed = client.embed()
-                //         .setColor(color.main)
-                //         .setDescription(
-                //             generalMessages.title
-                //                 .replace('%{mainLeft}', emoji.mainLeft)
-                //                 .replace('%{title}', klaKloukMessages.title)
-                //                 .replace('%{mainRight}', emoji.mainRight) +
-                //             klaKloukMessages.waiting.replace('%{player}', ctx.author.displayName))
-                // } else {
                 return kkUtil.klakloukStarting(client, ctx, color, emoji, user, coin, betCoins, generalMessages, klaKloukMessages)
-                // }
             })
         } catch (error) {
             console.error(error);

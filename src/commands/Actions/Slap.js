@@ -7,8 +7,8 @@ module.exports = class Slap extends Command {
             name: 'slap',
             description: {
                 content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒑𝒍𝒂𝒚𝒇𝒖𝒍 𝒔𝒍𝒂𝒑 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
-                examples: ['𝒔𝒍𝒂𝒑 @𝑼𝒔𝒆𝒓'],
-                usage: '𝒔𝒍𝒂𝒑 @𝑼𝒔𝒆𝒓',
+                examples: ['slap @User'],
+                usage: 'slap @User',
             },
             category: 'actions',
             aliases: ['smack'],
@@ -31,48 +31,53 @@ module.exports = class Slap extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
-        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const slapMessages = language.locales.get(language.defaultLocale)?.actionMessages?.slapMessages;
-        const errorMessages = slapMessages.errors;
+    async run(client, ctx, args, color, emoji, language) {
+        try {
+            const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+            const slapMessages = language.locales.get(language.defaultLocale)?.actionMessages?.slapMessages;
+            const errorMessages = slapMessages?.errors || {};
 
-        const target = ctx.isInteraction
-            ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
+            // Fetch the target user
+            const target = ctx.isInteraction
+                ? ctx.interaction.options.getUser('user')
+                : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
-        // Error handling if no user is mentioned or the user slaps themselves
-        if (!target || target.id === ctx.author.id) {
-            let errorMessage = '';
-            if (!target) errorMessage += errorMessages.noUser; // "You need to mention a user to slap."
-            if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfSlap; // "You cannot slap yourself."
+            // Error handling: No target or self-slap
+            if (!target || target.id === ctx.author.id) {
+                let errorMessage = '';
+                if (!target) errorMessage += errorMessages.noUser || "You need to mention a user to slap.";
+                if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfSlap || "You cannot slap yourself.";
 
-            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+                return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            }
+
+            const randomEmoji = client.utils.getRandomElement(
+                emoji.actions?.slaps || globalEmoji.actions.slaps
+            );
+
+            // Create the embed message
+            const embed = client.embed()
+                .setColor(color.main)
+                .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is valid
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐒𝐋𝐀𝐏")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    slapMessages.description
+                        .replace('%{displayName}', ctx.author.displayName)
+                        .replace('%{target}', target.username) // Fixed username reference
+                )
+                .setFooter({
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            // Send the embed message
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Failed to send slap message:', error);
+            await client.utils.sendErrorMessage(client, ctx, "An error occurred while executing the command.", color);
         }
-
-        const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.slaps ? emoji.actions.slaps : globalEmoji.actions.slaps);
-
-        // Create the embed message for slapping
-        const embed = client.embed()
-            .setColor(color.main)
-            .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is a valid URL or attachment
-            .setDescription(
-                generalMessages.title
-                    .replace('%{mainLeft}', emoji.mainLeft)
-                    .replace('%{title}', "𝐒𝐋𝐀𝐏")
-                    .replace('%{mainRight}', emoji.mainRight) +
-                slapMessages.description
-                    .replace('%{displayName}', ctx.author.displayName)
-                    .replace('%{target}', target.displayName))
-            .setFooter({
-                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                iconURL: ctx.author.displayAvatarURL(),
-            });
-
-        // Send the embed message and handle any errors
-        ctx.sendMessage({ embeds: [embed] })
-            .catch(error => {
-                console.error('Failed to fetch slap GIF:', error);
-                client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color); // "Something went wrong while fetching the slap GIF."
-            });
     }
 };

@@ -6,10 +6,9 @@ module.exports = class UpdatePaymentStatus extends Command {
     super(client, {
       name: "userverify",
       description: {
-        content:
-          "Update a user's verification status, reset, or clear the verification.",
+        content: "Update a user's verification",
         examples: [
-          "userverify <userId> <paid|unpaid|clear>",
+          "userverify @user paid",
           "userverify <userId> reset",
         ],
         usage: "userverify <userId> <paid|unpaid|reset|clear>",

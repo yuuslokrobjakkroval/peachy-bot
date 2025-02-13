@@ -135,20 +135,6 @@ module.exports = class UserInfo extends Command {
           inline: false,
         },
         {
-          name: `📜 ****𝑳𝒊𝒔𝒕 𝑹𝒐𝒍𝒆𝒔****`,
-          value: `*[${guildMember?.roles.cache.size - 1 || 0}]* ${
-            globalEmoji.arrow
-          } ${
-            guildMember?.roles.cache
-              .filter((role) => role.id !== ctx.guild.id)
-              .map((role) => role)
-              .join(", ") ||
-            userInfoMessages?.noRoles ||
-            "𝑵𝒐𝒏𝒆"
-          }`,
-          inline: false,
-        },
-        {
           name: "📅 ****𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑨𝒕****",
           value: `${globalEmoji.arrow} *${Math.floor(
             (Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365)

@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
 const Users = require("../../schemas/user");
 const globalEmoji = require("../../utils/Emoji");
 

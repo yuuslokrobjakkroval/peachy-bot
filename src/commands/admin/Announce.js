@@ -7,7 +7,7 @@ module.exports = class Announce extends Command {
             name: "announce",
             description: {
                 content: "Send an announcement and mention @everyone or a specific role.",
-                examples: ["announce Important update!", "announce Important update! role:@Members 🤍"],
+                examples: ["announce Important update!"],
                 usage: "announce <message> [role]",
             },
             category: "dev",

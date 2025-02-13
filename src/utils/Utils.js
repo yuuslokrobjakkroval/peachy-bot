@@ -555,18 +555,20 @@ module.exports = class Utils {
       .setURL(`${link}`);
   }
 
-  static labelButton(id, label, style) {
+  static labelButton(id, label, style, disabled = false) {
     return new ButtonBuilder()
       .setCustomId(`${id}`)
       .setLabel(`${label}`)
-      .setStyle(style);
+      .setStyle(style)
+      .setDisabled(disabled);
   }
 
-  static emojiButton(id, emoji, style) {
+  static emojiButton(id, emoji, style, disabled = false) {
     return new ButtonBuilder()
       .setCustomId(`${id}`)
       .setEmoji(`${emoji}`)
-      .setStyle(style);
+      .setStyle(style)
+      .setDisabled(disabled);
   }
 
   static fullOptionButton(id, emoji, label, style, disabled = false) {

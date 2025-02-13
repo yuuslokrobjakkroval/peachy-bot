@@ -7,7 +7,7 @@ module.exports = class ClearMoney extends Command {
             name: 'clearmoney',
             description: {
                 content: 'Clear coin from user.',
-                examples: ['clearmoney @user 100'],
+                examples: ['clearmoney @user'],
                 usage: 'clearmoney <user> <amount>',
             },
             category: 'dev',

@@ -31,47 +31,51 @@ module.exports = class Bite extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
-        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const biteMessages = language.locales.get(language.defaultLocale)?.actionMessages?.biteMessages;
-        const errorMessages = biteMessages.errors;
+    async run(client, ctx, args, color, emoji, language) {
+        try {
+            const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+            const biteMessages = language.locales.get(language.defaultLocale)?.actionMessages?.biteMessages;
+            const errorMessages = biteMessages.errors;
 
-        const target = ctx.isInteraction
-            ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
+            const target = ctx.isInteraction
+                ? ctx.interaction.options.getUser('user')
+                : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
-        // Error handling if no user is mentioned or the user bites themselves
-        if (!target || target.id === ctx.author.id) {
-            let errorMessage = '';
-            if (!target) errorMessage += errorMessages.noUser;
-            if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfBite;
+            // Error handling if no user is mentioned or the user bites themselves
+            if (!target || target.id === ctx.author.id) {
+                let errorMessage = '';
+                if (!target) errorMessage += errorMessages.noUser;
+                if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfBite;
 
-            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+                return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            }
+
+            const randomEmoji = client.utils.getRandomElement(
+                emoji.actions?.bites || globalEmoji.actions.bites
+            );
+
+            // Create the embed message for biting
+            const embed = client.embed()
+                .setColor(color.main)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐁𝐈𝐓𝐄")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    biteMessages.description
+                        .replace('%{displayName}', ctx.author.displayName)
+                        .replace('%{target}', target.displayName)
+                )
+                .setFooter({
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Failed to send bite message:', error);
+            await client.utils.sendErrorMessage(client, ctx, "An error occurred while executing the command.", color);
         }
-
-        const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.bites ? emoji.actions.bites : globalEmoji.actions.bites);
-
-        // Create the embed message for biting
-        const embed = client.embed()
-            .setColor(color.main)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription(
-                generalMessages.title
-                    .replace('%{mainLeft}', emoji.mainLeft)
-                    .replace('%{title}', "𝐁𝐈𝐓𝐄")
-                    .replace('%{mainRight}', emoji.mainRight) +
-                biteMessages.description
-                    .replace('%{displayName}', ctx.author.displayName)
-                    .replace('%{target}', target.displayName))
-            .setFooter({
-                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                iconURL: ctx.author.displayAvatarURL(),
-            });
-
-        ctx.sendMessage({ embeds: [embed] })
-            .catch(error => {
-                console.error('Failed to fetch bite GIF:', error);
-                client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color);
-            });
     }
 };

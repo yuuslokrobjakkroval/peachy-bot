@@ -8,7 +8,7 @@ module.exports = class Timeout extends Command {
       name: "timeout",
       description: {
         content: "Set a timeout for a user.",
-        examples: ["timeout @user 5min", "timeout @user 10min"],
+        examples: ["timeout @user 5min"],
         usage: "timeout <user> <duration>",
       },
       category: "admin",
@@ -17,7 +17,7 @@ module.exports = class Timeout extends Command {
       permissions: {
         dev: true,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: ["ManageMessages"],
+        user: [""],
       },
       slashCommand: false,
       options: [],
@@ -25,9 +25,7 @@ module.exports = class Timeout extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user")
       : ctx.message.mentions.members.first() ||

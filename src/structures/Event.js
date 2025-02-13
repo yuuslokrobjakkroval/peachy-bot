@@ -6,8 +6,7 @@ module.exports = class Event {
         this.one = options.one || false;
         this.fileName = file.split('.')[0];
     }
-    run(..._args) {
-        return Promise.resolve();
+    async run(..._args) {
+        return await Promise.resolve();
     }
 };
-

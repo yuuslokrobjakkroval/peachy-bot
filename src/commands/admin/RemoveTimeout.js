@@ -11,12 +11,12 @@ module.exports = class RemoveTimeout extends Command {
         usage: "removetimeout <user>",
       },
       category: "admin",
-      aliases: ["untimeout"],
+      aliases: ["untimeout", 'rto'],
       args: true,
       permissions: {
         dev: true,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: ["ManageMessages"], // Modify permissions as needed
+        user: [""], // Modify permissions as needed
       },
       slashCommand: false,
       options: [],

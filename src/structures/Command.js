@@ -12,6 +12,12 @@ module.exports = class Command {
         this.aliases = options.aliases || [];
         this.cooldown = options.cooldown || 3;
         this.args = options.args || false;
+        this.player = {
+            voice: options.player ? options.player.voice || false : false,
+            dj: options.player ? options.player.dj || false : false,
+            active: options.player ? options.player.active || false : false,
+            djPerm: options.player ? options.player.djPerm || null : null,
+        };
         this.permissions = {
             dev: options.permissions ? options.permissions.dev || false : false,
             staff: options.permissions ? options.permissions.staff || false : false,
@@ -23,7 +29,7 @@ module.exports = class Command {
         this.category = options.category || 'general';
     }
 
-    run(_client, _message, _args) {
-        return Promise.resolve();
+    async run(_client, _message, _args) {
+        return await Promise.resolve();
     }
 }

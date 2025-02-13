@@ -43,11 +43,8 @@ module.exports = class Buy extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-    const buyMessages = language.locales.get(language.defaultLocale)
-      ?.inventoryMessages?.buyMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const buyMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.buyMessages;
 
     // Fetch the user data
     const user = await Users.findOne({ userId: ctx.author.id });
@@ -55,11 +52,7 @@ module.exports = class Buy extends Command {
     // Ensure the user has coins
     const { coin, bank } = user.balance;
     if (coin < 1) {
-      return await client.utils.sendErrorMessage(
-        client,
-        ctx,
-        generalMessages.zeroBalance,
-        color
+      return await client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color
       );
     }
 
@@ -73,12 +66,7 @@ module.exports = class Buy extends Command {
 
     // If item not found, send error message
     if (!itemInfo) {
-      return await client.utils.sendErrorMessage(
-        client,
-        ctx,
-        buyMessages.invalidItem.replace("%{itemId}", args.join(" ")),
-        color
-      );
+      return await client.utils.sendErrorMessage(client, ctx, buyMessages.invalidItem.replace("%{itemId}", args.join(" ")), color);
     }
 
     // Check if the item is a theme and the user already owns it
@@ -88,12 +76,12 @@ module.exports = class Buy extends Command {
       );
       if (ringExists) {
         return await client.utils.sendErrorMessage(
-          client,
-          ctx,
-          buyMessages.themeAlreadyOwned
-            .replace("{{itemEmote}}", itemInfo.emoji)
-            .replace("{{itemName}}", itemInfo.name),
-          color
+            client,
+            ctx,
+            buyMessages.themeAlreadyOwned
+                .replace("%{itemEmote}", itemInfo.emoji)
+                .replace("%{itemName}", itemInfo.name),
+            color
         );
       }
     }
@@ -104,8 +92,8 @@ module.exports = class Buy extends Command {
         client,
         ctx,
         buyMessages.itemCannotBeBought
-          .replace("{{itemEmote}}", itemInfo.emoji)
-          .replace("{{itemName}}", itemInfo.name),
+          .replace("%{itemEmote}", itemInfo.emoji)
+          .replace("%{itemName}", itemInfo.name),
         color
       );
     }
@@ -116,10 +104,10 @@ module.exports = class Buy extends Command {
         client,
         ctx,
         buyMessages.notEnoughCoins
-          .replace("{{coinEmote}}", emoji.coin)
-          .replace("{{neededCoins}}", itemInfo.price.buy - coin)
-          .replace("{{itemEmote}}", itemInfo.emoji)
-          .replace("{{itemName}}", itemInfo.name),
+          .replace("%{coinEmote}", emoji.coin)
+          .replace("%{neededCoins}", client.utils.formatNumber(itemInfo.price.buy - coin))
+          .replace("%{itemEmote}", itemInfo.emoji)
+          .replace("%{itemName}", itemInfo.name),
         color
       );
     }
@@ -167,15 +155,12 @@ module.exports = class Buy extends Command {
       .setColor(color.main)
       .setDescription(
         buyMessages.description
-          .replace(
-            "{{afford}}",
-            afford ? buyMessages.success : buyMessages.partial
-          )
-          .replace("{{itemEmote}}", itemInfo.emoji)
-          .replace("{{itemName}}", itemInfo.name)
-          .replace("{{coinEmote}}", emoji.coin)
-          .replace("{{totalPrice}}", client.utils.formatNumber(totalPrice))
-          .replace("{{amountToBuy}}", amountToBuy)
+          .replace("%{afford}", afford ? buyMessages.success : buyMessages.partial)
+          .replace("%{itemEmote}", itemInfo.emoji)
+          .replace("%{itemName}", itemInfo.name)
+          .replace("%{coinEmote}", emoji.coin)
+          .replace("%{totalPrice}", client.utils.formatNumber(totalPrice))
+          .replace("%{amountToBuy}", amountToBuy)
       );
 
     // Update user's inventory and balance
@@ -203,7 +188,6 @@ module.exports = class Buy extends Command {
           $push: {
             inventory: {
               id: itemId,
-              name: itemInfo.name,
               quantity: amountToBuy,
             },
           },

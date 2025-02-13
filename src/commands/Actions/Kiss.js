@@ -31,45 +31,49 @@ module.exports = class Kiss extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
-        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const kissMessages = language.locales.get(language.defaultLocale)?.actionMessages?.kissMessages;
-        const errorMessages = kissMessages.errors;
+    async run(client, ctx, args, color, emoji, language) {
+        try {
+            const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+            const kissMessages = language.locales.get(language.defaultLocale)?.actionMessages?.kissMessages;
+            const errorMessages = kissMessages.errors;
 
-        const target = ctx.isInteraction
-            ? ctx.interaction.options.getUser('user')
-            : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
+            const target = ctx.isInteraction
+                ? ctx.interaction.options.getUser('user')
+                : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]);
 
-        if (!target || target.id === ctx.author.id) {
-            let errorMessage = '';
-            if (!target) errorMessage += errorMessages.noUser;
-            if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfKiss;
+            if (!target || target.id === ctx.author.id) {
+                let errorMessage = '';
+                if (!target) errorMessage += errorMessages.noUser;
+                if (target && target.id === ctx.author.id) errorMessage += errorMessages.selfKiss;
 
-            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+                return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+            }
+
+            const randomEmoji = client.utils.getRandomElement(
+                emoji.actions?.kisses || globalEmoji.actions.kisses
+            );
+
+            const embed = client.embed()
+                .setColor(color.main)
+                .setImage(client.utils.emojiToImage(randomEmoji))
+                .setDescription(
+                    generalMessages.title
+                        .replace('%{mainLeft}', emoji.mainLeft)
+                        .replace('%{title}', "𝐊𝐈𝐒𝐒")
+                        .replace('%{mainRight}', emoji.mainRight) +
+                    kissMessages.description
+                        .replace('%{displayName}', ctx.author.displayName)
+                        .replace('%{target}', target.displayName)
+                )
+                .setFooter({
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            await ctx.sendMessage({ embeds: [embed] });
+        } catch (error) {
+            console.error('Failed to send kiss message:', error);
+            await client.utils.sendErrorMessage(client, ctx, "An error occurred while executing the command.", color);
         }
-
-        const randomEmoji = client.utils.getRandomElement(emoji.actions && emoji.actions.kisses ? emoji.actions.kisses : globalEmoji.actions.kisses);
-
-        const embed = client.embed()
-            .setColor(color.main)
-            .setImage(client.utils.emojiToImage(randomEmoji))
-            .setDescription(
-                generalMessages.title
-                    .replace('%{mainLeft}', emoji.mainLeft)
-                    .replace('%{title}', "𝐊𝐈𝐒𝐒")
-                    .replace('%{mainRight}', emoji.mainRight) +
-                kissMessages.description
-                    .replace('%{displayName}', ctx.author.displayName)
-                    .replace('%{target}', target.displayName))
-            .setFooter({
-                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                iconURL: ctx.author.displayAvatarURL(),
-            });
-
-        ctx.sendMessage({ embeds: [embed] })
-            .catch(error => {
-                console.error('Failed to fetch kiss GIF:', error);
-                client.utils.sendErrorMessage(client, ctx, errorMessages.fetchFail, color); // "Something went wrong while fetching the kiss GIF."
-            });
     }
 };

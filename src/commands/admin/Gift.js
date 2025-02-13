@@ -11,7 +11,7 @@ module.exports = class Gift extends Command {
       name: "gift",
       description: {
         content: "Send a random gift from the Mystery Box.",
-        examples: ["gift common 3", "gift common 3 #channel"],
+        examples: ["gift common 3"],
         usage: "gift <type> <amount> [channel]",
       },
       category: "utility",
