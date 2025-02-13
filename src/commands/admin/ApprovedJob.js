@@ -7,8 +7,8 @@ module.exports = class ApprovedJob extends Command {
             name: 'approvedjob',
             description: {
                 content: 'Approve or reject a user\'s job application.',
-                examples: ['approvedjob <userId> approved', 'approvedjob <userId> rejected <reason>'],
-                usage: 'approvedjob <userId> <approved|rejected> [reason]',
+                examples: ['approvedjob <userId> approved'],
+                usage: 'approvedjob <userId> <approved>',
             },
             category: 'developer',
             aliases: ['aj'],
