@@ -174,8 +174,6 @@ module.exports = class Ability {
                             );
 
                             const inviter = invite.inviter;
-                            console.log(inviter, member.guild.id);
-
                             const trackingChannel = member.guild.channels.cache.get(channel);
                             if (trackingChannel) {
                                 if (isEmbed) {
