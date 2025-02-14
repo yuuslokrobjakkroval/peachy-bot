@@ -1,5 +1,6 @@
 const { AttachmentBuilder } = require('discord.js');
 const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
+const moment = require("moment");
 const WelcomeSchema = require("../schemas/welcomeMessages");
 const SendMessageSchema = require("../schemas/sendMessage");
 const AutoResponseSchema = require("../schemas/response");
@@ -8,7 +9,8 @@ const InviteSchema = require("../schemas/inviteTracker");
 const InviteTrackerSchema = require("../schemas/inviteTrackerMessages");
 const JoinRolesSchema = require("../schemas/joinRoles");
 const GoodByeMessagesSchema = require("../schemas/goodByeMessages");
-const moment = require("moment");
+const globalConfig = require("../utils/Config");
+const globalEmoji = require("../utils/Emoji");
 
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Roman.otf', 'Kelvinch-Roman');
 GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-Bold.otf', 'Kelvinch-Bold');
@@ -16,34 +18,47 @@ GlobalFonts.registerFromPath('./src/data/fonts/Kelvinch-BoldItalic.otf', 'Kelvin
 
 module.exports = class Ability {
     static async syncInvites(client) {
-        const allGuilds = client.guilds.cache;
-        for (const [guildId, guild] of allGuilds) {
-            try {
-                const invites = await guild.invites.fetch();
+        try {
+            const allGuilds = client.guilds.cache;
 
-                for (const invite of invites.values()) {
-                    const data = {
-                        guildId: guild.id,
-                        guildName: guild.name,
-                        inviteCode: invite.code,
-                        uses: invite.uses,
-                        userId: [],
-                        inviterId: invite.inviter?.id || 'Unknown',
-                        inviterTag: invite.inviter?.tag || 'Unknown',
-                    };
+            for (const [guildId, guild] of allGuilds) {
+                try {
+                    // Check if the guild has invite tracking enabled
+                    const inviteTracker = await InviteTrackerSchema.findOne({ id: guild.id, isActive: true });
+                    if (!inviteTracker) continue; // Skip guilds without active invite tracking
 
-                    await InviteSchema.updateOne(
-                        { inviteCode: invite.code },
-                        { $set: data },
-                        { upsert: true }
+                    // Fetch invites for the guild
+                    const invites = await guild.invites.fetch();
+
+                    // Sync invites to the database
+                    await Promise.all(
+                        invites.map(async (invite) => {
+                            const data = {
+                                guildId: guild.id,
+                                guildName: guild.name,
+                                inviteCode: invite.code,
+                                uses: invite.uses,
+                                userId: [],
+                                inviterId: invite.inviter?.id || 'Unknown',
+                                inviterTag: invite.inviter?.tag || 'Unknown',
+                            };
+
+                            await InviteSchema.updateOne(
+                                { inviteCode: invite.code },
+                                { $set: data },
+                                { upsert: true }
+                            );
+                        })
                     );
-                }
-            } catch (error) {
-                if (error.code === 50013) {
+                } catch (error) {
+                    if (error.code === 50013) {
+                        continue;
+                    }
                     continue;
                 }
-                continue;
             }
+        } catch (error) {
+            console.error("Error in syncInvites function:", error);
         }
     }
 
@@ -159,6 +174,8 @@ module.exports = class Ability {
                             );
 
                             const inviter = invite.inviter;
+                            console.log(inviter, member.guild.id);
+
                             const trackingChannel = member.guild.channels.cache.get(channel);
                             if (trackingChannel) {
                                 if (isEmbed) {
@@ -176,8 +193,26 @@ module.exports = class Ability {
                                         files: files ? [files] : [],
                                     });
                                 }
-                            }
 
+                                if (member.guild.id === globalConfig.guildId) {
+                                    client.utils.getUser({ userId: inviter?.id }).then(async (user) => {
+                                        user.balance.coin += 300000;
+                                        await user.save(); // Ensure user data is saved before proceeding
+
+                                        await new Promise(resolve => setTimeout(resolve, 2000)); // Sleep for 2 seconds
+
+                                        const inviterMention = `<@${inviter?.id}>`;
+
+                                        const giftEmbed = client.embed()
+                                            .setColor(globalConfig.color.main)
+                                            .setDescription(`# ${globalEmoji.giveaway.gift} 𝐆𝐈𝐅𝐓 𝐅𝐎𝐑 𝐈𝐍𝐕𝐈𝐓𝐄𝐑 ${globalEmoji.giveaway.gift}\n${inviterMention}, 𝑻𝒉𝒂𝒏𝒌𝒔 𝒇𝒐𝒓 𝒊𝒏𝒗𝒊𝒕𝒊𝒏𝒈 𝒂 𝒏𝒆𝒘 𝒎𝒆𝒎𝒃𝒆𝒓 𝒕𝒐 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓! 𝑾𝒆 𝒂𝒑𝒑𝒓𝒆𝒄𝒊𝒂𝒕𝒆 𝒚𝒐𝒖𝒓 𝒉𝒆𝒍𝒑 𝒊𝒏 𝒈𝒓𝒐𝒘𝒊𝒏𝒈 𝒐𝒖𝒓 𝒄𝒐𝒎𝒎𝒖𝒏𝒊𝒕𝒚!`)
+                                            .setFooter({ iconURL: client.utils.emojiToImage(globalEmoji.timestamp) })
+                                            .setTimestamp();
+
+                                        trackingChannel.send({ embeds: [giftEmbed] });
+                                    });
+                                }
+                            }
                             break;
                         }
                     }

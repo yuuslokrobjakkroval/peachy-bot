@@ -8,6 +8,7 @@ module.exports = {
     },
     congratulation: '<a:congratulation:1287438960477474957>',
     thankYou: '<a:PTY:1294514862390644782>',
+    timestamp: '<:TIMESTAMP:1339925743777353780>',
     buyMeCafe: '<:BUYMEACOFFEE:1306174972489764894>',
 
     tictactoe: {
@@ -293,6 +294,7 @@ module.exports = {
 
     giveaway: {
         participants: '<:emoji_56:1207319081552707644>',
+        gift: '<:GIFT:1339925723603013704>'
     },
     // gambling: {
     //     win: {

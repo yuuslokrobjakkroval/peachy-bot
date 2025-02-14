@@ -36,11 +36,11 @@ module.exports = class AllGuildLeave extends Command {
 
         // Check if there's any guild to leave
         if (guilds.size === 0) {
-            return client.utils.sendSuccessMessage(client, ctx, 'No guilds to leave.', color);
+            return client.utils.sendErrorMessage(client, ctx, 'No guilds to leave.', color);
         }
 
         // Send a processing message
-        await client.utils.sendSuccessMessage(client, ctx, `Leaving ${guilds.size} guild(s)...`, color);
+        await ctx.sendMessage(client, ctx, `Leaving ${guilds.size} guild(s)...`, color);
 
         let leftGuilds = [];
 
@@ -60,6 +60,6 @@ module.exports = class AllGuildLeave extends Command {
             : 'No guilds were left.';
 
         // Send final confirmation message
-        return client.utils.sendSuccessMessage(client, ctx, leaveMessage, color);
+        return ctx.sendMessage(client, ctx, leaveMessage, color);
     }
 };
