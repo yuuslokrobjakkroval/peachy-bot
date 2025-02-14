@@ -195,7 +195,12 @@ module.exports = class Ability {
                                 }
 
                                 if (member.guild.id === globalConfig.guildId) {
-                                    client.utils.getUser({ userId: inviter?.id }).then(async (user) => {
+                                    client.utils.getUser(inviter?.id).then(async (user) => {
+                                        if (!user) {
+                                            console.error(`User not found in database: ${inviter?.id}`);
+                                            return;
+                                        }
+
                                         user.balance.coin += 300000;
                                         await user.save(); // Ensure user data is saved before proceeding
 
