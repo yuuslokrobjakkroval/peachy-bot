@@ -18,7 +18,7 @@ module.exports = class KickInactiveMembers extends Command {
                 dev: true,
                 staff: true,
                 client: ['KickMembers'],
-                user: ['KickMembers'],
+                user: [''],
             },
             slashCommand: false,
             options: [],
