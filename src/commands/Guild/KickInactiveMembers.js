@@ -18,7 +18,7 @@ module.exports = class KickInactiveMembers extends Command {
                 dev: true,
                 staff: true,
                 client: ['KickMembers'],
-                user: ['KickMembers'],
+                user: [''],
             },
             slashCommand: false,
             options: [],
@@ -26,6 +26,9 @@ module.exports = class KickInactiveMembers extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+         // Allow only user with ID 966688007493140591
+        if (ctx.author.id !== '966688007493140591') return;
+        
         // Ensure the command is used in the configured guild
         const guild = client.guilds.cache.get(globalConfig.guildId);
         if (!guild) {
