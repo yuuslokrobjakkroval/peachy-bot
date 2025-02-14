@@ -313,7 +313,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.strawberry,
     available: ["sell"],
-    price: { buy: 35e6, sell: 3e6 },
+    price: { buy: 35e5, sell: 3e6 },
   },
   {
     id: "sm04",

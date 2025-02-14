@@ -5,7 +5,7 @@ module.exports = class AllGuildLeave extends Command {
         super(client, {
             name: 'allguildleave',
             description: {
-                content: 'Leave all guilds',
+                content: 'Leave all guilds except a specific one',
                 examples: ['allguildleave'],
                 usage: 'allguildleave',
             },
@@ -25,28 +25,41 @@ module.exports = class AllGuildLeave extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        // check owner bot
+        // Allow only user with ID 966688007493140591
         if (ctx.author.id !== '966688007493140591') return;
 
-        // Fetch all guilds the bot is in
-        const guilds = client.guilds.cache;
+        // Guild ID to exclude
+        const excludedGuildId = '1271685844700233738';
 
-        // Check if the bot is in any guilds
+        // Fetch all guilds the bot is in
+        const guilds = client.guilds.cache.filter(guild => guild.id !== excludedGuildId);
+
+        // Check if there's any guild to leave
         if (guilds.size === 0) {
-            return client.utils.sendSuccessMessage(client, ctx, 'The bot is not in any guilds.', color);
+            return client.utils.sendSuccessMessage(client, ctx, 'No guilds to leave.', color);
         }
 
-        // Loop through each guild and leave
-        for (const [id, guild] of guilds) {
+        // Send a processing message
+        await client.utils.sendSuccessMessage(client, ctx, `Leaving ${guilds.size} guild(s)...`, color);
+
+        let leftGuilds = [];
+
+        // Leave each guild
+        for (const guild of guilds.values()) {
             try {
                 await guild.leave();
-                console.log(`Left guild: ${guild.name} (${guild.id})`);
+                leftGuilds.push(`- ${guild.name} (${guild.id})`);
             } catch (error) {
                 console.error(`Failed to leave guild: ${guild.name} (${guild.id})`, error);
             }
         }
 
-        // Send a success message
-        return client.utils.sendSuccessMessage(client, ctx, 'Left all guilds successfully.', color);
+        // Format the list of left guilds
+        const leaveMessage = leftGuilds.length > 0
+            ? `Left the following guilds:\n${leftGuilds.join('\n')}`
+            : 'No guilds were left.';
+
+        // Send final confirmation message
+        return client.utils.sendSuccessMessage(client, ctx, leaveMessage, color);
     }
 };
