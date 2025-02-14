@@ -1,5 +1,6 @@
 module.exports = {
     // GLOBAL
+    coin: '<:COIN:1281821085209460797>',
     romdoul: '<:ROMDOUL:1311003066719535135>',
     main: {
         signature: '<:MAIN:1281847051860054016>',

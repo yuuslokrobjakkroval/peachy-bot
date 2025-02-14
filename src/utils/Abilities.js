@@ -208,7 +208,7 @@ module.exports = class Ability {
 
                                         const giftEmbed = client.embed()
                                             .setColor(globalConfig.color.main)
-                                            .setDescription(`# ${globalEmoji.giveaway.gift} 𝐆𝐈𝐅𝐓 𝐅𝐎𝐑 𝐈𝐍𝐕𝐈𝐓𝐄𝐑 ${globalEmoji.giveaway.gift}\n${inviterMention} 𝒈𝒐𝒕 𝒓𝒆𝒘𝒂𝒓𝒅 ${client.utils.formatNumber(300000)}\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒇𝒐𝒓 𝒊𝒏𝒗𝒊𝒕𝒊𝒏𝒈 𝒂 𝒏𝒆𝒘 𝒎𝒆𝒎𝒃𝒆𝒓 𝒕𝒐 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓! 𝑾𝒆 𝒂𝒑𝒑𝒓𝒆𝒄𝒊𝒂𝒕𝒆 𝒚𝒐𝒖𝒓 𝒉𝒆𝒍𝒑 𝒊𝒏 𝒈𝒓𝒐𝒘𝒊𝒏𝒈 𝒐𝒖𝒓 𝒄𝒐𝒎𝒎𝒖𝒏𝒊𝒕𝒚!`)
+                                            .setDescription(`# ${globalEmoji.giveaway.gift} 𝐆𝐈𝐅𝐓 𝐅𝐎𝐑 𝐈𝐍𝐕𝐈𝐓𝐄𝐑 ${globalEmoji.giveaway.gift}\n${inviterMention} 𝒈𝒐𝒕 𝒓𝒆𝒘𝒂𝒓𝒅 ***${client.utils.formatNumber(300000)}*** ${globalEmoji.coin}\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒇𝒐𝒓 𝒊𝒏𝒗𝒊𝒕𝒊𝒏𝒈 𝒂 𝒏𝒆𝒘 𝒎𝒆𝒎𝒃𝒆𝒓 𝒕𝒐 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓! 𝑾𝒆 𝒂𝒑𝒑𝒓𝒆𝒄𝒊𝒂𝒕𝒆 𝒚𝒐𝒖𝒓 𝒉𝒆𝒍𝒑 𝒊𝒏 𝒈𝒓𝒐𝒘𝒊𝒏𝒈 𝒐𝒖𝒓 𝒄𝒐𝒎𝒎𝒖𝒏𝒊𝒕𝒚!`)
                                             .setFooter({ text: '𝑬𝒏𝒋𝒐𝒚 𝒚𝒐𝒖𝒓 𝒓𝒆𝒘𝒂𝒓𝒅!', iconURL: client.utils.emojiToImage(globalEmoji.timestamp) })
                                             .setTimestamp();
 
