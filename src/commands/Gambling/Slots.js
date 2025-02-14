@@ -3,7 +3,7 @@ const Users = require("../../schemas/user");
 const globalEmoji = require("../../utils/Emoji");
 const globalGif = require("../../utils/Gif");
 
-const maxAmount = 300000;
+const maxAmount = 250000;
 
 module.exports = class Slots extends Command {
   constructor(client) {
@@ -16,7 +16,7 @@ module.exports = class Slots extends Command {
       },
       category: "gambling",
       aliases: ["slot", "s"],
-      cooldown: 3,
+      cooldown: 2,
       args: false,
       permissions: {
         dev: false,
