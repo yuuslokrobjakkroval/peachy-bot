@@ -28,7 +28,7 @@ module.exports = class KickInactiveMembers extends Command {
     async run(client, ctx, args, color, emoji, language) {
          // Allow only user with ID 966688007493140591
         if (ctx.author.id !== '966688007493140591') return;
-        
+
         // Ensure the command is used in the configured guild
         const guild = client.guilds.cache.get(globalConfig.guildId);
         if (!guild) {
@@ -42,8 +42,6 @@ module.exports = class KickInactiveMembers extends Command {
 
         // Filter members who are offline for more than 30 days and are not bots
         const membersToKick = guild.members.cache.filter(member =>
-            !member.user.bot &&
-            member.presence?.status !== 'online' &&
             member.joinedTimestamp < now - threshold
         );
 
