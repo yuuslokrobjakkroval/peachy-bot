@@ -46,11 +46,11 @@ module.exports = class KickInactiveMembers extends Command {
         );
 
         if (membersToKick.size === 0) {
-            return client.utils.sendSuccessMessage(client, ctx, 'No inactive members to kick.', color);
+            return client.utils.sendErrorMessage(client, ctx, 'No inactive members to kick.', color);
         }
 
         // Send processing message
-        await client.utils.sendSuccessMessage(client, ctx, `Kicking ${membersToKick.size} inactive member(s)...`, color);
+        await  ctx.sendMessage(`Kicking ${membersToKick.size} inactive member(s)...`);
 
         let kickedMembers = [];
         for (const member of membersToKick.values()) {
@@ -68,6 +68,6 @@ module.exports = class KickInactiveMembers extends Command {
 ${kickedMembers.join('\n')}`
             : 'No members were kicked.';
 
-        return client.utils.sendSuccessMessage(client, ctx, kickMessage, color);
+        return ctx.sendMessage(kickMessage);
     }
 };

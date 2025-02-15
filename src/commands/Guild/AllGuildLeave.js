@@ -40,7 +40,7 @@ module.exports = class AllGuildLeave extends Command {
         }
 
         // Send a processing message
-        await ctx.sendMessage(client, ctx, `Leaving ${guilds.size} guild(s)...`, color);
+        await ctx.sendMessage(`Leaving ${guilds.size} guild(s)...`);
 
         let leftGuilds = [];
 
@@ -60,6 +60,6 @@ module.exports = class AllGuildLeave extends Command {
             : 'No guilds were left.';
 
         // Send final confirmation message
-        return ctx.sendMessage(client, ctx, leaveMessage, color);
+        return ctx.sendMessage(leaveMessage);
     }
 };

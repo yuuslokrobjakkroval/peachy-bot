@@ -54,7 +54,7 @@ module.exports = class KickMember extends Command {
         // Attempt to kick the member
         try {
             await member.kick('Kicked by command');
-            return client.utils.sendSuccessMessage(client, ctx, `Successfully kicked ${member.user.tag} (${member.id}).`, color);
+            return  ctx.sendMessage(`Successfully kicked ${member.user.tag} (${member.id}).`);
         } catch (error) {
             console.error(`Failed to kick member: ${member.user.tag} (${member.id})`, error);
             return client.utils.sendErrorMessage(client, ctx, 'Failed to kick the member.', color);
