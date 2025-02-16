@@ -196,7 +196,8 @@ const userSchema = new Schema({
         lastLogin: { type: Date, default: Date.now },
         totalMessagesSent: { type: Number, default: 0 }
     },
-    achievements: { type: [AchievementsSchema], default: [] }
+    achievements: { type: [AchievementsSchema], default: [] },
+    isDailyClaim: { type: Boolean, default: false },
 }, { timestamps: { createdAt: true, updatedAt: true } });
 
 module.exports = model('user', userSchema);

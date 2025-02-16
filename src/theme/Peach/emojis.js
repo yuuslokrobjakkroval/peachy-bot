@@ -48,8 +48,8 @@ module.exports = {
         mainRight: '<:INVENTORIGHT:1287624805742542868>',
     },
     heart: '<a:RELATIONSHIPHEART:1272015898676301834>',
-    
-    
+
+
 
     time: {
         clock: '`⏰`',
@@ -71,7 +71,7 @@ module.exports = {
         seven: '<:SILVERRANK:1282976779547709483>',
         eight: '<:BRONZERANK:1282977459658035210>',
     },
-    
+
     help: {
         actions: '<a:PEACHACTION:1282953188349182016>',
         bank: '<:PEACHBANK:1290531776514494494>',
@@ -176,4 +176,3 @@ module.exports = {
         deny: '<a:PEACHNO:1287428497459118293>',
     },
 };
-
