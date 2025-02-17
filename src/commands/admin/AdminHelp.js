@@ -22,7 +22,7 @@ module.exports = class AdminHelp extends Command {
                 djPerm: null,
             },
             permissions: {
-                dev: false,
+                dev: true,
                 client: ["SendMessages", "ViewChannel", "EmbedLinks"],
                 user: [],
             },
@@ -43,7 +43,7 @@ module.exports = class AdminHelp extends Command {
         const helpMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages;
         const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
         const prefix = client.config.prefix;
-        const adminCategory = ["admin", "dev", "guild"];
+        const adminCategory = ["admin", "developer", "guild"];
         const commands = client.commands.filter((cmd) => adminCategory.includes(cmd.category.toLowerCase()));
         const selectedItemIndex = null;
 
