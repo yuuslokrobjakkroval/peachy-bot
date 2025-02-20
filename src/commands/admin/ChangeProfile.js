@@ -51,10 +51,11 @@ module.exports = class ChangeProfile extends Command {
 
       const embed = client.embed()
         .setColor(color.main)
+        .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
         .setDescription(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
-                .replace('%{title}', "𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐂𝐇𝐀𝐍𝐆𝐄𝐃!")
+                .replace('%{title}', "𝐏𝐑𝐎𝐅𝐈𝐋𝐄 !")
                 .replace('%{mainRight}', emoji.mainRight)
         )
         .setImage(imageAttachment.url)

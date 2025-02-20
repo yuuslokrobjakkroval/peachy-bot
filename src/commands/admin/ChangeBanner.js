@@ -51,11 +51,11 @@ module.exports = class ChangeBanner extends Command {
 
       const embed = client.embed()
           .setColor(color.main)
-          .setDescription("𝐁𝐀𝐍𝐍𝐄𝐑 𝐂𝐇𝐀𝐍𝐆𝐄𝐃!")
+          .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
           .setDescription(
               generalMessages.title
                   .replace('%{mainLeft}', emoji.mainLeft)
-                  .replace('%{title}', "𝐁𝐀𝐍𝐍𝐄𝐑 𝐂𝐇𝐀𝐍𝐆𝐄𝐃!")
+                  .replace('%{title}', "𝐁𝐀𝐍𝐍𝐄𝐑 !")
                   .replace('%{mainRight}', emoji.mainRight)
           )
           .setImage(imageAttachment.url)

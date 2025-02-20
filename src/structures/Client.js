@@ -162,7 +162,7 @@ module.exports = class PeachyClient extends Client {
               this.config.guildId ?? ""
             );
       try {
-        const rest = new REST({ version: "9" }).setToken(
+        const rest = new REST({ version: "10" }).setToken(
           this.config.token ?? ""
         );
         await rest.put(applicationCommands, { body: this.body });
