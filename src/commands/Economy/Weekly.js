@@ -1,8 +1,8 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
+const chance = require("chance").Chance();
 const moment = require("moment-timezone");
 const globalGif = require("../../utils/Gif");
-const chance = require("chance").Chance();
 
 module.exports = class Weekly extends Command {
     constructor(client) {
