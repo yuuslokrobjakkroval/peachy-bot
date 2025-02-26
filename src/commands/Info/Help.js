@@ -38,15 +38,10 @@ module.exports = class Help extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-    const helpMessages = language.locales.get(language.defaultLocale)
-      ?.informationMessages?.helpMessages;
-    const categoriesMessages = language.locales.get(language.defaultLocale)
-      ?.informationMessages?.helpMessages?.categoriesMessages;
-    const directoriesMessages = language.locales.get(language.defaultLocale)
-      ?.informationMessages?.helpMessages?.directoriesMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const helpMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages;
+    const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
+    const directoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.directoriesMessages;
     const prefix = client.config.prefix;
     const adminCategory = ["admin", "dev", "guild"];
     let categories = [
@@ -75,8 +70,13 @@ module.exports = class Help extends Command {
 
     if (!args[0]) {
       const messageOptions = () => {
-        const helpEmbed = client
-          .embed()
+        const totalCommands = categories.reduce((sum, category) => {
+          const categoryCommands = commands.filter(
+              (cmd) => cmd.category.toLowerCase() === category.toLowerCase()
+          );
+          return sum + categoryCommands.size;
+        }, 0);
+        const helpEmbed = client.embed()
           .setColor(color.main)
           .setDescription(
             generalMessages.title
@@ -89,9 +89,7 @@ module.exports = class Help extends Command {
           )
           .addFields([
             {
-              name: `${
-                emoji.help.category ? emoji.help.category : "📚"
-              } __𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐄𝐒__`,
+              name: `${emoji.help.category ? emoji.help.category : "📚"} __𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐄𝐒__`,
               value: categories
                 .map(
                   (category) =>
@@ -105,7 +103,7 @@ module.exports = class Help extends Command {
           ])
           .setImage(client.config.links.banner)
           .setFooter({
-            text: helpMessages.footer,
+            text: `${helpMessages.footer} <=> ${totalCommands} 𝑪𝒐𝒎𝒎𝒂𝒏𝒅𝒔.`,
             iconURL: client.user.displayAvatarURL(),
           });
 
@@ -155,8 +153,7 @@ module.exports = class Help extends Command {
                 .join("\n")
             : "𝑵𝒐 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.";
 
-        const selectedEmbed = client
-          .embed()
+        const selectedEmbed = client.embed()
           .setColor(color.main)
           .setDescription(
             generalMessages.title
@@ -182,7 +179,7 @@ module.exports = class Help extends Command {
           ])
           .setImage(client.config.links.banner)
           .setFooter({
-            text: helpMessages.footer,
+            text: `${helpMessages.footer} <=> ${categoryCommands.size} 𝑪𝒐𝒎𝒎𝒂𝒏𝒅𝒔.`,
             iconURL: client.user.displayAvatarURL(),
           });
 
