@@ -35,8 +35,6 @@ module.exports = class UserInfo extends Command {
     const generalMessages = language.locales.get(
       language.defaultLocale
     )?.generalMessages;
-    const userInfoMessages = language.locales.get(language.defaultLocale)
-      ?.utilityMessages?.userInfoMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
@@ -94,61 +92,57 @@ module.exports = class UserInfo extends Command {
       )
       .addFields([
         {
-          name: `🆔 ****𝑰𝑫****`,
-          value: `${globalEmoji.arrow} *${user.id}*`,
+          name: `🆔 𝑰𝑫`,
+          value: `${globalEmoji.arrow} ***${user.id}***`,
           inline: false,
         },
         {
-          name: `📛 ****𝑵𝒂𝒎𝒆****`,
-          value: `${globalEmoji.arrow} *${user.displayName}* (*${user.username}*)`,
+          name: `📛 𝑵𝒂𝒎𝒆`,
+          value: `${globalEmoji.arrow} ***${user.displayName}*** (***${user.username}***)`,
           inline: false,
         },
         {
-          name: `🙋 ****𝑱𝒐𝒊𝒏𝒆𝒅 ${guild.name} 𝒂𝒕****`,
-          value: `*${globalEmoji.arrow} ${
+          name: `🙋 𝑱𝒐𝒊𝒏𝒆𝒅 ${guild.name} 𝒂𝒕`,
+          value: `***${globalEmoji.arrow} ${
             guildMember?.joinedTimestamp
               ? `${Math.floor(
                   (Date.now() - guildMember.joinedTimestamp) /
                     (1000 * 60 * 60 * 24)
                 )} 𝒅𝒂𝒚𝒔 𝒂𝒈𝒐`
               : "N/A"
-          }*`,
+          }***`,
           inline: false,
         },
         {
-          name: `🤖 ****𝑩𝒐𝒕****`,
-          value: `${globalEmoji.arrow} *${user.bot ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}*`,
+          name: `🤖 𝑩𝒐𝒕`,
+          value: `${globalEmoji.arrow} ***${user.bot ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"}***`,
           inline: false,
         },
         {
-          name: `🚀 ****𝑩𝒐𝒐𝒔𝒕𝒆𝒅 𝒕𝒉𝒊𝒔 𝒔𝒆𝒓𝒗𝒆𝒓****`,
-          value: `${globalEmoji.arrow} *${
+          name: `🚀 𝑩𝒐𝒐𝒔𝒕𝒆𝒅 𝒕𝒉𝒊𝒔 𝒔𝒆𝒓𝒗𝒆𝒓`,
+          value: `${globalEmoji.arrow} ***${
             guildMember?.premiumSince ? "𝑻𝒓𝒖𝒆" : "𝑭𝒂𝒍𝒔𝒆"
-          }*`,
+          }***`,
           inline: false,
         },
         {
-          name: `⭐ ****𝑻𝒐𝒑 𝒓𝒐𝒍𝒆****`,
-          value: `${globalEmoji.arrow} *${
+          name: `⭐ 𝑻𝒐𝒑 𝒓𝒐𝒍𝒆`,
+          value: `${globalEmoji.arrow} ***${
             guildMember?.roles.highest.name || "𝑵𝒐𝒏𝒆"
-          }*`,
+          }***`,
           inline: false,
         },
         {
-          name: "📅 ****𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑨𝒕****",
-          value: `${globalEmoji.arrow} *${Math.floor(
+          name: "📅 𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑨𝒕",
+          value: `${globalEmoji.arrow} ***${Math.floor(
             (Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365)
-          )}* 𝒚𝒆𝒂𝒓𝒔 𝒂𝒈𝒐`,
+          )}*** 𝒚𝒆𝒂𝒓𝒔 𝒂𝒈𝒐`,
           inline: false,
         },
       ])
       .setImage(bannerURL)
       .setFooter({
-        text:
-          generalMessages.requestedBy.replace(
-            "%{username}",
-            ctx.author.displayName
-          ) || `Requested by ${ctx.author.displayName}`,
+        text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })
       .setTimestamp();
