@@ -1,989 +1,814 @@
 {
   "generalMessages": {
     "title": "# %{mainLeft} %{title} %{mainRight}\n",
-    "search": "𝑺𝒆𝒂𝒓𝒄𝒉𝒊𝒏𝒈 %{loading}",
-    "permissionsClientError": "𝑰 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒆𝒏𝒐𝒖𝒈𝒉 𝒑𝒆𝒓𝒎𝒊𝒔𝒔𝒊𝒐𝒏𝒔 𝒕𝒐 𝒆𝒙𝒆𝒄𝒖𝒕𝒆 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.",
-    "permissionsUserError": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒆𝒏𝒐𝒖𝒈𝒉 𝒑𝒆𝒓𝒎𝒊𝒔𝒔𝒊𝒐𝒏𝒔 𝒕𝒐 𝒖𝒔𝒆 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.",
-    "argumentsMissingTitle": "𝑴𝒊𝒔𝒔𝒊𝒏𝒈 𝑨𝒓𝒈𝒖𝒎𝒆𝒏𝒕𝒔",
-    "argumentsMissingDescription": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒕𝒉𝒆 𝒓𝒆𝒒𝒖𝒊𝒓𝒆𝒅 𝒂𝒓𝒈𝒖𝒎𝒆𝒏𝒕𝒔 𝒇𝒐𝒓 𝒕𝒉𝒆 *{commandName}* 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.",
-    "usageHeader": "𝑼𝒔𝒂𝒈𝒆",
-    "examplesHeader": "𝑬𝒙𝒂𝒎𝒑𝒍𝒆𝒔",
-    "syntaxInstructions": "𝑺𝒚𝒏𝒕𝒂𝒙: [] = 𝒐𝒑𝒕𝒊𝒐𝒏𝒂𝒍, <> = 𝒓𝒆𝒒𝒖𝒊𝒓𝒆𝒅",
-    "noEveryoneOrHereError": "𝒀𝒐𝒖 𝒄𝒂𝒏'𝒕 𝒖𝒔𝒆 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒘𝒊𝒕𝒉 𝒆𝒗𝒆𝒓𝒚𝒐𝒏𝒆 𝒐𝒓 𝒉𝒆𝒓𝒆.",
-    "invalidAmount": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒆𝒏𝒕𝒆𝒓 𝒂 𝒑𝒐𝒔𝒊𝒕𝒊𝒗𝒆 𝒊𝒏𝒕𝒆𝒈𝒆𝒓 𝒗𝒂𝒍𝒖𝒆.",
-    "invalidItem": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 𝒘𝒊𝒕𝒉 𝑰𝑫 *%{itemId} 𝒘𝒂𝒔 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒉𝒆𝒄𝒌 𝒕𝒉𝒆 𝒔𝒉𝒐𝒑 𝒇𝒐𝒓 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒊𝒕𝒆𝒎𝒔.",
-    "invalidQuantity": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒒𝒖𝒂𝒏𝒕𝒊𝒕𝒚 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅.",
-    "zeroBalance": "𝒀𝒐𝒖𝒓 𝒃𝒂𝒍𝒂𝒏𝒄𝒆 𝒊𝒔 𝒛𝒆𝒓𝒐. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒆𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒔 𝒃𝒆𝒇𝒐𝒓𝒆 𝒕𝒓𝒚𝒊𝒏𝒈 𝒂𝒈𝒂𝒊𝒏.",
-    "alreadyInGame": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒊𝒏 𝒂 𝒈𝒂𝒎𝒆. 𝒑𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒈𝒂𝒎𝒆 𝒃𝒆𝒇𝒐𝒓𝒆 𝒔𝒕𝒂𝒓𝒕𝒊𝒏𝒈 𝒂 𝒏𝒆𝒘 𝒐𝒏𝒆.",
-    "pleaseStartAgain": "%{user}, 𝒑𝒍𝒆𝒂𝒔𝒆 𝒔𝒕𝒂𝒓𝒕 𝒂𝒈𝒂𝒊𝒏",
-    "gameStart": "%{user}, 𝑮𝒐𝒐𝒅 𝒍𝒖𝒄𝒌!",
-    "gameInProgress": "%{user}, 𝒀𝒐𝒖𝒓 𝒈𝒂𝒎𝒆 𝒊𝒔 𝒊𝒏 𝒑𝒓𝒐𝒈𝒓𝒆𝒔𝒔!",
-    "reply": "𝑹𝒆𝒑𝒍𝒚 𝒕𝒐 %{user}",
-    "gameOver": "%{user}, 𝒀𝒐𝒖𝒓 𝒈𝒂𝒎𝒆 𝒊𝒔 𝒐𝒗𝒆𝒓.",
-    "userNotFound": "𝑼𝒔𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒅𝒂𝒕𝒂𝒃𝒂𝒔𝒆.",
-    "saveError": "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒔𝒂𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓.",
-    "noUserMentioned": "𝑵𝒐 𝒖𝒔𝒆𝒓 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅, 𝒑𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒔𝒐𝒎𝒆𝒐𝒏𝒆.",
-    "botTransfer": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒂 𝒃𝒐𝒕. 𝒑𝒍𝒆𝒂𝒔𝒆 𝒄𝒉𝒐𝒐𝒔𝒆 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓𝒔.",
-    "botMention": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒃𝒐𝒕 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅. 𝒑𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓𝒔.",
-    "botAction": "𝑨𝒄𝒕𝒊𝒐𝒏𝒔 𝒊𝒏𝒗𝒐𝒍𝒗𝒊𝒏𝒈 𝒃𝒐𝒕𝒔 𝒂𝒓𝒆 𝒏𝒐𝒕 𝒂𝒍𝒍𝒐𝒘𝒆𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒘𝒊𝒕𝒉 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓𝒔.",
-    "databaseUpdate": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒖𝒑𝒅𝒂𝒕𝒊𝒏𝒈 𝒕𝒉𝒆 𝒅𝒂𝒕𝒂𝒃𝒂𝒔𝒆.",
-    "userFetchError": "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓.",
-    "notForYou": "𝑻𝒉𝒊𝒔 𝒂𝒄𝒕𝒊𝒐𝒏 𝒊𝒔 𝒏𝒐𝒕 𝒇𝒐𝒓 𝒚𝒐𝒖.",
-    "supportButton": "𝑪𝒍𝒊𝒄𝒌 𝒇𝒐𝒓 𝒔𝒖𝒑𝒑𝒐𝒓𝒕",
-    "inviteButton": "𝑰𝒗𝒊𝒕𝒆 𝒎𝒆!",
-    "voteButton": "𝑽𝒐𝒕𝒆 𝒇𝒐𝒓 𝒎𝒆",
-    "requestedBy": "𝑹𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝑩𝒚 %{username}",
-    "copyRight": "© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐏𝐄𝐀𝐂𝐇𝐘"
+    "search": "Searching %{loading}",
+    "permissionsClientError": "I don't have enough permissions to execute this command.",
+    "permissionsUserError": "You don't have enough permissions to use this command.",
+    "argumentsMissingTitle": "Missing Arguments",
+    "argumentsMissingDescription": "Please provide the required arguments for the *{commandName}* command.",
+    "usageHeader": "Usage",
+    "examplesHeader": "Examples",
+    "syntaxInstructions": "Syntax: [] = optional, <> = required",
+    "noEveryoneOrHereError": "You can't use this command with everyone or here.",
+    "invalidAmount": "Invalid amount. Please enter a positive integer value.",
+    "invalidItem": "The item with ID *%{itemId}* was not found. Please check the shop for available items.",
+    "invalidQuantity": "Invalid quantity specified.",
+    "zeroBalance": "Your balance is zero. Please earn some coins before trying again.",
+    "alreadyInGame": "You are already in a game. Please finish your current game before starting a new one.",
+    "pleaseStartAgain": "%{user}, please start again",
+    "gameStart": "%{user}, Good luck!",
+    "gameInProgress": "%{user}, Your game is in progress!",
+    "reply": "Reply to %{user}",
+    "gameOver": "%{user}, Your game is over.",
+    "userNotFound": "User not found in database.",
+    "saveError": "An error occurred while saving your data. Please try again later.",
+    "noUserMentioned": "No user mentioned, please mention someone.",
+    "botTransfer": "You cannot transfer coins to a bot. Please choose valid users.",
+    "botMention": "You cannot mention a bot in this command. Please mention valid users.",
+    "botAction": "Actions involving bots are not allowed. Please try with valid users.",
+    "databaseUpdate": "There was an error updating the database.",
+    "userFetchError": "An error occurred while retrieving your data. Please try again later.",
+    "notForYou": "This action is not for you.",
+    "supportButton": "Click for support",
+    "inviteButton": "Invite me!",
+    "voteButton": "Vote for me",
+    "requestedBy": "Requested By %{username}",
+    "copyRight": "(c) Copyright By PEACHY"
   },
   "actionMessages": {
     "biteMessages": {
-      "description": "*%{displayName}* 𝒑𝒍𝒂𝒚𝒇𝒖𝒍𝒍𝒚 𝒃𝒊𝒕𝒊𝒏𝒈 *%{target}*",
+      "description": "*%{displayName}* playfully biting *%{target}*",
       "errors": {
-        "noUser": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒃𝒊𝒕𝒆.",
-        "selfBite": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒃𝒊𝒕𝒆 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-        "fetchFail": "𝑺𝒐𝒎𝒆𝒕𝒉𝒊𝒏𝒈 𝒘𝒆𝒏𝒕 𝒘𝒓𝒐𝒏𝒈 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+        "noUser": "You need to mention a user to bite.",
+        "selfBite": "You cannot bite yourself.",
+        "fetchFail": "Something went wrong while retrieving your data. Please try again later."
       }
     },
     "hugMessages": {
-      "description": "*%{displayName}* 𝒈𝒊𝒗𝒊𝒏𝒈 𝒂 𝒘𝒂𝒓𝒎 𝒉𝒖𝒈 𝒕𝒐 *%{target}*",
+      "description": "*%{displayName}* giving a warm hug to *%{target}*",
       "errors": {
-        "noUser": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒉𝒖𝒈.",
-        "selfHug": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒉𝒖𝒈 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-        "fetchFail": "𝑺𝒐𝒎𝒆𝒕𝒉𝒊𝒏𝒈 𝒘𝒆𝒏𝒕 𝒘𝒓𝒐𝒏𝒈 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+        "noUser": "You need to mention a user to hug.",
+        "selfHug": "You cannot hug yourself.",
+        "fetchFail": "Something went wrong while retrieving your data. Please try again later."
       }
     },
     "killMessages": {
-      "description": "*%{displayName}* 𝒘𝒂𝒏𝒏𝒂 𝒌𝒊𝒍𝒍 *%{target}*",
+      "description": "*%{displayName}* wanna kill *%{target}*",
       "errors": {
-        "noUser": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒕𝒂𝒓𝒈𝒆𝒕.",
-        "selfKill": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒕𝒂𝒓𝒈𝒆𝒕 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-        "fetchFail": "𝑺𝒐𝒎𝒆𝒕𝒉𝒊𝒏𝒈 𝒘𝒆𝒏𝒕 𝒘𝒓𝒐𝒏𝒈 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+        "noUser": "You need to mention a user to target.",
+        "selfKill": "You cannot target yourself.",
+        "fetchFail": "Something went wrong while retrieving your data. Please try again later."
       }
     },
     "kissMessages": {
-      "description": "*%{displayName}* 𝒈𝒊𝒗𝒊𝒏𝒈 𝒂 𝒄𝒖𝒕𝒆 𝒌𝒊𝒔𝒔 𝒕𝒐 *%{target}*",
+      "description": "*%{displayName}* giving a cute kiss to *%{target}*",
       "errors": {
-        "noUser": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒌𝒊𝒔𝒔.",
-        "selfKiss": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒌𝒊𝒔𝒔 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-        "fetchFail": "𝑺𝒐𝒎𝒆𝒕𝒉𝒊𝒏𝒈 𝒘𝒆𝒏𝒕 𝒘𝒓𝒐𝒏𝒈 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+        "noUser": "You need to mention a user to kiss.",
+        "selfKiss": "You cannot kiss yourself.",
+        "fetchFail": "Something went wrong while retrieving your data. Please try again later."
       }
     },
     "loungMessages": {
-      "description": "*%{displayName}* 𝒕𝒓𝒚𝒊𝒏𝒈 𝒕𝒐 𝒓𝒆𝒍𝒂𝒙 𝒘𝒊𝒕𝒉 *%{target}*",
+      "description": "*%{displayName}* trying to relax with *%{target}*",
       "errors": {
-        "noUser": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒓𝒆𝒍𝒂𝒙 𝒘𝒊𝒕𝒉.",
-        "selfLounge": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒓𝒆𝒍𝒂𝒙 𝒘𝒊𝒕𝒉 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-        "fetchFail": "𝑺𝒐𝒎𝒆𝒕𝒉𝒊𝒏𝒈 𝒘𝒆𝒏𝒕 𝒘𝒓𝒐𝒏𝒈 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+        "noUser": "You need to mention a user to relax with.",
+        "selfLounge": "You cannot relax with yourself.",
+        "fetchFail": "Something went wrong while retrieving your data. Please try again later."
       }
     },
     "punchMessages": {
-      "description": "*%{displayName}* 𝒕𝒉𝒓𝒐𝒘𝒊𝒏𝒈 𝒂 𝒑𝒍𝒂𝒚𝒇𝒖𝒍 𝒑𝒖𝒏𝒄𝒉 𝒂𝒕 *%{target}*",
+      "description": "*%{displayName}* throwing a playful punch at *%{target}*",
       "errors": {
-        "noUser": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒑𝒖𝒏𝒄𝒉.",
-        "selfPunch": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒑𝒖𝒏𝒄𝒉 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-        "fetchFail": "𝑺𝒐𝒎𝒆𝒕𝒉𝒊𝒏𝒈 𝒘𝒆𝒏𝒕 𝒘𝒓𝒐𝒏𝒈 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+        "noUser": "You need to mention a user to punch.",
+        "selfPunch": "You cannot punch yourself.",
+        "fetchFail": "Something went wrong while retrieving your data. Please try again later."
       }
     },
     "slapMessages": {
-      "description": "*%{displayName}* 𝒑𝒍𝒂𝒚𝒇𝒖𝒍𝒍𝒚 𝒔𝒍𝒂𝒑𝒊𝒏𝒈 *%{target}*",
+      "description": "*%{displayName}* playfully slapping *%{target}*",
       "errors": {
-        "noUser": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒔𝒍𝒂𝒑.",
-        "selfSlap": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒔𝒍𝒂𝒑 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-        "fetchFail": "𝑺𝒐𝒎𝒆𝒕𝒉𝒊𝒏𝒈 𝒘𝒆𝒏𝒕 𝒘𝒓𝒐𝒏𝒈 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+        "noUser": "You need to mention a user to slap.",
+        "selfSlap": "You cannot slap yourself.",
+        "fetchFail": "Something went wrong while retrieving your data. Please try again later."
       }
     }
   },
   "bankMessages": {
     "depositMessages": {
-      "zeroBalance": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒂𝒏𝒚 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒅𝒆𝒑𝒐𝒔𝒊𝒕.",
-      "invalidAmount": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒆𝒏𝒕𝒆𝒓 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒏𝒖𝒎𝒃𝒆𝒓 𝒐𝒓 𝒖𝒔𝒆 `𝒂𝒍𝒍` 𝒐𝒓 `𝒉𝒂𝒍𝒇`.",
-      "tooHigh": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒅𝒆𝒑𝒐𝒔𝒊𝒕 𝒎𝒐𝒓𝒆 𝒕𝒉𝒂𝒏 𝒘𝒉𝒂𝒕 𝒚𝒐𝒖 𝒉𝒂𝒗𝒆 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒄𝒐𝒊𝒏.",
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒅𝒆𝒑𝒐𝒔𝒊𝒕𝒆𝒅 ***%{amount}*** %{coinEmote} 𝒕𝒐 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-      "cooldown": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒓𝒐𝒃𝒃𝒆𝒅 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒖𝒔𝒆𝒓,\n𝒔𝒐 𝒚𝒐𝒖 𝒄𝒂𝒏’𝒕 𝒅𝒆𝒑𝒐𝒔𝒊𝒕 𝒄𝒐𝒊𝒏𝒔 𝒊𝒏𝒕𝒐 𝒕𝒉𝒆 𝒃𝒂𝒏𝒌 𝒓𝒊𝒈𝒉𝒕 𝒏𝒐𝒘.\n𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒊𝒏 ***%{minutes}*** 𝒎𝒊𝒏𝒖𝒕𝒆𝒔, 𝒂𝒏𝒅 ***%{seconds}*** 𝒔𝒆𝒄𝒐𝒏𝒅𝒔."
+      "zeroBalance": "You don't have any coins to deposit.",
+      "invalidAmount": "Invalid amount. Please enter a valid number or use `all` or `half`.",
+      "tooHigh": "You cannot deposit more than what you have in your coin.",
+      "success": "You have deposited ***%{amount}*** %{coinEmote} to your bank.",
+      "cooldown": "You have robbed another user,\nso you can't deposit coins into the bank right now.\nPlease try again in ***%{minutes}*** minutes, and ***%{seconds}*** seconds."
     },
     "multiTransferMessages": {
-      "noValidUsers": "𝑵𝒐 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓𝒔 𝒕𝒐 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒄𝒐𝒊𝒏𝒔.",
-      "invalidAmount": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓𝒔 𝒂𝒏𝒅 𝒂𝒎𝒐𝒖𝒏𝒕𝒔 𝒇𝒐𝒓 𝒆𝒂𝒄𝒉 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓.",
-      "insufficientBalanceForAll": "𝒀𝒐𝒖 𝒅𝒐 𝒏𝒐𝒕 𝒉𝒂𝒗𝒆 𝒆𝒏𝒐𝒖𝒈𝒉 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒑𝒂𝒚. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒂𝒅𝒋𝒖𝒔𝒕 𝒚𝒐𝒖𝒓 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒂𝒎𝒐𝒖𝒏𝒕.",
-      "confirm": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒂𝒃𝒐𝒖𝒕 𝒕𝒐 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 ***%{amount}*** %{emoji} 𝒕𝒐 𝒕𝒉𝒆 𝒇𝒐𝒍𝒍𝒐𝒘𝒊𝒏𝒈 𝒖𝒔𝒆𝒓𝒔: %{userList}. 𝑪𝒐𝒏𝒇𝒊𝒓𝒎?",
-      "cancel": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒄𝒂𝒏𝒄𝒆𝒍𝒆𝒅 𝒕𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏. 𝑵𝒐 𝒄𝒐𝒊𝒏𝒔 𝒉𝒂𝒗𝒆 𝒃𝒆𝒆𝒏 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓𝒓𝒆𝒅.",
-      "timeout": "𝑻𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏 𝒉𝒂𝒔 𝒕𝒊𝒎𝒆𝒅 𝒐𝒖𝒕 𝒅𝒖𝒆 𝒕𝒐 𝒊𝒏𝒂𝒄𝒕𝒊𝒗𝒊𝒕𝒚. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏.",
-      "success": "𝑺𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓𝒓𝒆𝒅 ***%{amount}*** %{emoji} 𝒕𝒐 %{userCount} 𝒖𝒔𝒆𝒓𝒔.\n𝑬𝒂𝒄𝒉 𝒖𝒔𝒆𝒓 𝒓𝒆𝒄𝒆𝒊𝒗𝒆𝒅 %{individualAmount} %{emoji}.",
-      "tooSmallAmount": "𝑻𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒂𝒎𝒐𝒖𝒏𝒕 𝒊𝒔 𝒕𝒐𝒐 𝒔𝒎𝒂𝒍𝒍 𝒕𝒐 𝒔𝒑𝒍𝒊𝒕 𝒂𝒎𝒐𝒏𝒈 𝒕𝒉𝒆 𝒓𝒆𝒄𝒊𝒑𝒊𝒆𝒏𝒕𝒔."
-    },
-    "angPavMessages": {
-      "selfTransfer": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒈𝒊𝒗𝒆 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-      "botTransfer": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒈𝒊𝒗𝒆 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒕𝒉𝒆 𝒃𝒐𝒕.",
-      "pendingTransfer": "𝒀𝒐𝒖 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒗𝒆 𝒂 𝒑𝒆𝒏𝒅𝒊𝒏𝒈 𝑨𝒏𝒈𝒑𝒂𝒗. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒐𝒏𝒇𝒊𝒓𝒎 𝒐𝒓 𝒄𝒂𝒏𝒄𝒆𝒍 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒔𝒕𝒂𝒓𝒕𝒊𝒏𝒈 𝒂 𝒏𝒆𝒘 𝒐𝒏𝒆.",
-      "invalidAmount": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓 𝒂𝒏𝒅 𝒂𝒎𝒐𝒖𝒏𝒕.",
-      "noUser": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓.",
-      "balanceNotExist": "𝒀𝒐𝒖𝒓 𝒃𝒂𝒍𝒂𝒏𝒄𝒆 𝒓𝒆𝒄𝒐𝒓𝒅 𝒅𝒐𝒆𝒔 𝒏𝒐𝒕 𝒆𝒙𝒊𝒔𝒕.",
-      "insufficientBalance": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅 𝒐𝒓 𝒊𝒏𝒔𝒖𝒇𝒇𝒊𝒄𝒊𝒆𝒏𝒕 𝒃𝒂𝒍𝒂𝒏𝒄𝒆.",
-      "zeroBalance": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒏𝒐 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒈𝒊𝒗𝒆.",
-      "confirm": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒂𝒃𝒐𝒖𝒕 𝒕𝒐 𝒈𝒊𝒗𝒆 ***%{amount}*** %{emoji} 𝒕𝒐 %{user}. 𝑪𝒐𝒏𝒇𝒊𝒓𝒎?",
-      "success": "***%{user}*** 𝒉𝒂𝒗𝒆 𝒈𝒊𝒗𝒆𝒏 𝒂𝒏𝒈𝒑𝒂𝒗 ***%{amount}*** %{emoji} 𝒕𝒐 𝒚𝒐𝒖.",
-      "cancel": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒄𝒂𝒏𝒄𝒆𝒍𝒆𝒅 𝒕𝒉𝒆 𝑨𝒏𝒈𝒑𝒂𝒗. 𝑵𝒐 𝒄𝒐𝒊𝒏𝒔 𝒉𝒂𝒗𝒆 𝒃𝒆𝒆𝒏 𝒈𝒊𝒗𝒆𝒏.",
-      "timeout": "𝑻𝒉𝒆 𝑨𝒏𝒈𝒑𝒂𝒗 𝒉𝒂𝒔 𝒕𝒊𝒎𝒆𝒅 𝒐𝒖𝒕 𝒅𝒖𝒆 𝒕𝒐 𝒊𝒏𝒂𝒄𝒕𝒊𝒗𝒊𝒕𝒚. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏.",
-      "timeoutAction": "𝑰𝒇 𝒚𝒐𝒖 𝒘𝒂𝒏𝒕 𝒕𝒐 𝒎𝒂𝒌𝒆 𝒂 𝑨𝒏𝒈𝒑𝒂𝒗, 𝒑𝒍𝒆𝒂𝒔𝒆 𝒓𝒆-𝒊𝒏𝒊𝒕𝒊𝒂𝒕𝒆 𝒕𝒉𝒆 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.",
-      "amountTooHigh": "𝑻𝒉𝒆 𝒂𝒎𝒐𝒖𝒏𝒕 𝒆𝒙𝒄𝒆𝒆𝒅𝒔 𝒚𝒐𝒖𝒓 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒃𝒂𝒍𝒂𝒏𝒄𝒆.",
-      "tooFrequent": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒈𝒊𝒗𝒊𝒏𝒈 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐𝒐 𝒇𝒓𝒆𝒒𝒖𝒆𝒏𝒕𝒍𝒚. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕 𝒂 𝒎𝒐𝒎𝒆𝒏𝒕.",
-      "limitExceeded": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒆𝒙𝒄𝒆𝒆𝒅𝒆𝒅 𝒕𝒉𝒆 𝒎𝒂𝒙𝒊𝒎𝒖𝒎 𝑨𝒏𝒈𝒑𝒂𝒗 𝒍𝒊𝒎𝒊𝒕.",
-      "insufficientFunds": "𝒀𝒐𝒖 𝒅𝒐 𝒏𝒐𝒕 𝒉𝒂𝒗𝒆 𝒆𝒏𝒐𝒖𝒈𝒉 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒄𝒐𝒎𝒑𝒍𝒆𝒕𝒆 𝒕𝒉𝒊𝒔 𝑨𝒏𝒈𝒑𝒂𝒗.",
-      "invalidUser": "𝑻𝒉𝒆 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅 𝒖𝒔𝒆𝒓 𝒊𝒔 𝒏𝒐𝒕 𝒗𝒂𝒍𝒊𝒅 𝒐𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "confirmPrompt": "𝑪𝒐𝒏𝒇𝒊𝒓𝒎 𝒕𝒉𝒆 𝑨𝒏𝒈𝒑𝒂𝒗 𝒃𝒚 𝒄𝒍𝒊𝒄𝒌𝒊𝒏𝒈 𝒕𝒉𝒆 𝒃𝒖𝒕𝒕𝒐𝒏 𝒃𝒆𝒍𝒐𝒘.",
-      "expire": "𝑨𝒏𝒈𝒑𝒂𝒗 𝑬𝒙𝒑𝒊𝒓𝒆𝒅."
+      "noValidUsers": "No valid users to transfer coins.",
+      "invalidAmount": "Please mention valid users and amounts for each transfer.",
+      "insufficientBalanceForAll": "You do not have enough coins to pay. Please adjust your transfer amount.",
+      "confirm": "You are about to transfer ***%{amount}*** %{emoji} to the following users: %{userList}. Confirm?",
+      "cancel": "You have canceled the transaction. No coins have been transferred.",
+      "timeout": "The transaction has timed out due to inactivity. Please try again.",
+      "success": "Successfully transferred ***%{amount}*** %{emoji} to %{userCount} users.\nEach user received %{individualAmount} %{emoji}.",
+      "tooSmallAmount": "The transfer amount is too small to split among the recipients."
     },
     "transferMessages": {
-      "selfTransfer": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-      "botTransfer": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒕𝒉𝒆 𝒃𝒐𝒕.",
-      "pendingTransfer": "𝒀𝒐𝒖 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒗𝒆 𝒂 𝒑𝒆𝒏𝒅𝒊𝒏𝒈 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒐𝒏𝒇𝒊𝒓𝒎 𝒐𝒓 𝒄𝒂𝒏𝒄𝒆𝒍 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒔𝒕𝒂𝒓𝒕𝒊𝒏𝒈 𝒂 𝒏𝒆𝒘 𝒐𝒏𝒆.",
-      "invalidAmount": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓 𝒂𝒏𝒅 𝒂𝒎𝒐𝒖𝒏𝒕.",
-      "noUser": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓.",
-      "balanceNotExist": "𝒀𝒐𝒖𝒓 𝒃𝒂𝒍𝒂𝒏𝒄𝒆 𝒓𝒆𝒄𝒐𝒓𝒅 𝒅𝒐𝒆𝒔 𝒏𝒐𝒕 𝒆𝒙𝒊𝒔𝒕.",
-      "insufficientBalance": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅 𝒐𝒓 𝒊𝒏𝒔𝒖𝒇𝒇𝒊𝒄𝒊𝒆𝒏𝒕 𝒃𝒂𝒍𝒂𝒏𝒄𝒆.",
-      "zeroBalance": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒏𝒐 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓.",
-      "confirm": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒂𝒃𝒐𝒖𝒕 𝒕𝒐 𝒈𝒊𝒗𝒆 ***%{amount}*** %{emoji} 𝒕𝒐 %{user}. 𝑪𝒐𝒏𝒇𝒊𝒓𝒎?",
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒈𝒊𝒗𝒆𝒏 ***%{amount}*** %{emoji} 𝒕𝒐 %{user}.",
-      "cancel": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒄𝒂𝒏𝒄𝒆𝒍𝒆𝒅 𝒕𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏. 𝑵𝒐 𝒄𝒐𝒊𝒏𝒔 𝒉𝒂𝒗𝒆 𝒃𝒆𝒆𝒏 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓𝒓𝒆𝒅.",
-      "timeout": "𝑻𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏 𝒉𝒂𝒔 𝒕𝒊𝒎𝒆𝒅 𝒐𝒖𝒕 𝒅𝒖𝒆 𝒕𝒐 𝒊𝒏𝒂𝒄𝒕𝒊𝒗𝒊𝒕𝒚. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏.",
-      "timeoutAction": "𝑰𝒇 𝒚𝒐𝒖 𝒘𝒂𝒏𝒕 𝒕𝒐 𝒎𝒂𝒌𝒆 𝒂 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓, 𝒑𝒍𝒆𝒂𝒔𝒆 𝒓𝒆-𝒊𝒏𝒊𝒕𝒊𝒂𝒕𝒆 𝒕𝒉𝒆 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.",
-      "amountTooHigh": "𝑻𝒉𝒆 𝒂𝒎𝒐𝒖𝒏𝒕 𝒆𝒙𝒄𝒆𝒆𝒅𝒔 𝒚𝒐𝒖𝒓 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒃𝒂𝒍𝒂𝒏𝒄𝒆.",
-      "tooFrequent": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓𝒓𝒊𝒏𝒈 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐𝒐 𝒇𝒓𝒆𝒒𝒖𝒆𝒏𝒕𝒍𝒚. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕 𝒂 𝒎𝒐𝒎𝒆𝒏𝒕.",
-      "limitExceeded": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒆𝒙𝒄𝒆𝒆𝒅𝒆𝒅 𝒕𝒉𝒆 𝒎𝒂𝒙𝒊𝒎𝒖𝒎 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒍𝒊𝒎𝒊𝒕.",
-      "insufficientFunds": "𝒀𝒐𝒖 𝒅𝒐 𝒏𝒐𝒕 𝒉𝒂𝒗𝒆 𝒆𝒏𝒐𝒖𝒈𝒉 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒄𝒐𝒎𝒑𝒍𝒆𝒕𝒆 𝒕𝒉𝒊𝒔 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓.",
-      "invalidUser": "𝑻𝒉𝒆 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅 𝒖𝒔𝒆𝒓 𝒊𝒔 𝒏𝒐𝒕 𝒗𝒂𝒍𝒊𝒅 𝒐𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "confirmPrompt": "𝑪𝒐𝒏𝒇𝒊𝒓𝒎 𝒕𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒃𝒚 𝒄𝒍𝒊𝒄𝒌𝒊𝒏𝒈 𝒕𝒉𝒆 𝒃𝒖𝒕𝒕𝒐𝒏 𝒃𝒆𝒍𝒐𝒘.",
-      "expire": "𝑻𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏 𝑬𝒙𝒑𝒊𝒓𝒆𝒅."
+      "selfTransfer": "You cannot transfer coins to yourself.",
+      "botTransfer": "You cannot transfer coins to the bot.",
+      "pendingTransfer": "You already have a pending transfer. Please confirm or cancel it before starting a new one.",
+      "invalidAmount": "Please mention a valid user and amount.",
+      "noUser": "Please mention a valid user.",
+      "balanceNotExist": "Your balance record does not exist.",
+      "insufficientBalance": "Invalid amount specified or insufficient balance.",
+      "zeroBalance": "You have no coins to transfer.",
+      "confirm": "You are about to give ***%{amount}*** %{emoji} to %{user}. Confirm?",
+      "success": "You have given ***%{amount}*** %{emoji} to %{user}.",
+      "cancel": "You have canceled the transaction. No coins have been transferred.",
+      "timeout": "The transaction has timed out due to inactivity. Please try again.",
+      "timeoutAction": "If you want to make a transfer, please re-initiate the command.",
+      "amountTooHigh": "The amount exceeds your available balance.",
+      "tooFrequent": "You are transferring coins too frequently. Please wait a moment.",
+      "limitExceeded": "You have exceeded the maximum transfer limit.",
+      "insufficientFunds": "You do not have enough coins to complete this transfer.",
+      "invalidUser": "The specified user is not valid or not found.",
+      "confirmPrompt": "Confirm the transfer by clicking the button below.",
+      "expire": "Transaction Expired."
     },
     "withdrawMessages": {
-      "zeroBalance": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒏𝒐 𝒄𝒐𝒊𝒏𝒔 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-      "invalidAmount": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕 𝒕𝒐 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘. 𝒀𝒐𝒖 𝒄𝒂𝒏 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 '𝒂𝒍𝒍', '𝒉𝒂𝒍𝒇', 𝒐𝒓 𝒂 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒄 𝒏𝒖𝒎𝒃𝒆𝒓.",
-      "tooHigh": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 𝒎𝒐𝒓𝒆 𝒕𝒉𝒂𝒏 𝒘𝒉𝒂𝒕 𝒚𝒐𝒖 𝒉𝒂𝒗𝒆 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘𝒏 ***%{amount}*** %{coinEmote} 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘𝒂𝒍 𝒓𝒆𝒒𝒖𝒆𝒔𝒕.",
-      "cooldown": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒓𝒐𝒃𝒃𝒆𝒅 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒖𝒔𝒆𝒓,\n𝒔𝒐 𝒚𝒐𝒖 𝒄𝒂𝒏’𝒕 𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 𝒄𝒐𝒊𝒏𝒔 𝒊𝒏𝒕𝒐 𝒕𝒉𝒆 𝒃𝒂𝒏𝒌 𝒓𝒊𝒈𝒉𝒕 𝒏𝒐𝒘.\n𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒊𝒏 ***%{minutes}*** 𝒎𝒊𝒏𝒖𝒕𝒆𝒔, 𝒂𝒏𝒅 ***%{seconds}*** 𝒔𝒆𝒄𝒐𝒏𝒅𝒔."
+      "zeroBalance": "You have no coins in your bank.",
+      "invalidAmount": "Please provide a valid amount to withdraw. You can withdraw 'all', 'half', or a specific number.",
+      "tooHigh": "You cannot withdraw more than what you have in your bank.",
+      "success": "You have withdrawn ***%{amount}*** %{coinEmote} from your bank.",
+      "error": "There was an error processing your withdrawal request.",
+      "cooldown": "You have robbed another user,\nso you can't withdraw coins into the bank right now.\nPlease try again in ***%{minutes}*** minutes, and ***%{seconds}*** seconds."
     }
   },
   "economyMessages": {
     "balanceMessages": {
-      "description": "%{coinEmote} : ***%{coin}*** 𝒄𝒐𝒊𝒏𝒔\n%{bankEmote} : ***%{bank}*** 𝒄𝒐𝒊𝒏𝒔"
+      "description": "%{coinEmote} : ***%{coin}*** coins\n%{bankEmote} : ***%{bank}*** coins"
     },
     "dailyMessages": {
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒄𝒍𝒂𝒊𝒎𝒆𝒅 𝒚𝒐𝒖𝒓 𝒅𝒂𝒊𝒍𝒚 𝒓𝒆𝒘𝒂𝒓𝒅 𝒐𝒇 %{coinEmote} ***+%{coin}*** 𝒄𝒐𝒊𝒏𝒔 𝒂𝒏𝒅 %{expEmote} ***+%{exp} 𝒙𝒑***\n%{bonusMessage}",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒊𝒍𝒚 𝒄𝒍𝒂𝒊𝒎.",
-      "cooldown": "𝑫𝒂𝒊𝒍𝒚 𝒓𝒆𝒘𝒂𝒓𝒅 𝒊𝒔 𝒐𝒏 𝒄𝒐𝒐𝒍𝒅𝒐𝒘𝒏!\n𝑻𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒂𝒇𝒕𝒆𝒓 ***%{time}***."
+      "success": "You have claimed your daily reward of %{coinEmote} ***+%{coin}*** coins and %{expEmote} ***+%{exp} xp***\n%{bonusMessage}",
+      "error": "There was an error processing your daily claim.",
+      "cooldown": "Daily reward is on cooldown!\nTry again after ***%{time}***."
     },
     "gomaMessages": {
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒆𝒂𝒓𝒏𝒆𝒅 %{coinEmote} ***+%{coin}*** 𝒄𝒐𝒊𝒏𝒔 𝒂𝒏𝒅 %{expEmote} ***+%{exp}*** 𝒙𝒑\n%{bonusMessage}",
-      "cooldown": "𝑮𝒐𝒎𝒂 𝒊𝒔 𝒐𝒏 𝒄𝒐𝒐𝒍𝒅𝒐𝒘𝒏!\n𝑻𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒂𝒇𝒕𝒆𝒓 ***%{minutes}𝒎𝒊𝒏𝒔 𝒂𝒏𝒅 %{seconds}𝒔𝒆𝒄𝒔***."
+      "success": "You have earned %{coinEmote} ***+%{coin}*** coins and %{expEmote} ***+%{exp}*** xp\n%{bonusMessage}",
+      "cooldown": "Goma is on cooldown!\nTry again after ***%{minutes}mins and %{seconds}secs***."
     },
     "peachMessages": {
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒆𝒂𝒓𝒏𝒆𝒅 %{coinEmote} ***+%{coin}*** 𝒄𝒐𝒊𝒏𝒔 𝒂𝒏𝒅 %{expEmote} ***+%{exp}*** 𝒙𝒑\n%{bonusMessage}",
-      "cooldown": "𝑷𝒆𝒂𝒄𝒉 𝒊𝒔 𝒐𝒏 𝒄𝒐𝒐𝒍𝒅𝒐𝒘𝒏!\n𝑻𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒂𝒇𝒕𝒆𝒓 ***%{minutes}***𝒎𝒊𝒏𝒔 𝒂𝒏𝒅 ***%{seconds}***𝒔𝒆𝒄𝒔."
+      "success": "You have earned %{coinEmote} ***+%{coin}*** coins and %{expEmote} ***+%{exp}*** xp\n%{bonusMessage}",
+      "cooldown": "Peach is on cooldown!\nTry again after ***%{minutes}***mins and ***%{seconds}***secs."
     },
     "rankingMessages": {
-      "notFound": "𝑵𝒐 𝒐𝒏𝒆 𝒉𝒂𝒔 𝒈𝒂𝒊𝒏𝒆𝒅 𝒍𝒆𝒂𝒅𝒆𝒓𝒃𝒐𝒂𝒓𝒅 𝒚𝒆𝒕.",
-      "invalidType": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒍𝒆𝒂𝒅𝒆𝒓𝒃𝒐𝒂𝒓𝒅 𝒕𝒚𝒑𝒆.",
-      "top": "𝐋𝐄𝐀𝐃𝐄𝐑𝐁𝐎𝐀𝐑𝐃",
-      "balance": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇 𝐂𝐎𝐈𝐍𝐒",
-      "peach": "𝐓𝐎𝐏 𝐏𝐄𝐀𝐂𝐇 𝐂𝐋𝐀𝐈𝐌",
-      "goma": "𝐓𝐎𝐏 𝐆𝐎𝐌𝐀 𝐂𝐋𝐀𝐈𝐌",
-      "slots": "𝐓𝐎𝐏 𝐒𝐋𝐎𝐓𝐒",
-      "blackjack": "𝐓𝐎𝐏 𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊𝐒",
-      "coinflip": "𝐓𝐎𝐏 𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
-      "klaklouk": "𝐓𝐎𝐏 𝐊𝐋𝐀𝐊𝐋𝐎𝐔𝐊"
+      "notFound": "No one has gained leaderboard yet.",
+      "invalidType": "Invalid leaderboard type.",
+      "top": "LEADERBOARD",
+      "balance": "TOP PEACH COINS",
+      "peach": "TOP PEACH CLAIM",
+      "goma": "TOP GOMA CLAIM",
+      "slots": "TOP SLOTS",
+      "blackjack": "TOP BLACKJACKS",
+      "coinflip": "TOP COINFLIP",
+      "klaklouk": "TOP KLAKLOUK"
     },
     "weeklyMessages": {
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒄𝒍𝒂𝒊𝒎𝒆𝒅 𝒚𝒐𝒖𝒓 𝒘𝒆𝒆𝒌𝒍𝒚 𝒓𝒆𝒘𝒂𝒓𝒅 𝒐𝒇 %{coinEmote} ***+%{coin}*** 𝒄𝒐𝒊𝒏𝒔 𝒂𝒏𝒅 %{expEmote} ***+%{exp}*** 𝒙𝒑\n%{bonusMessage}",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒘𝒆𝒆𝒌𝒍𝒚 𝒄𝒍𝒂𝒊𝒎.",
+      "success": "You have claimed your weekly reward of %{coinEmote} ***+%{coin}*** coins and %{expEmote} ***+%{exp}*** xp\n%{bonusMessage}",
+      "error": "There was an error processing your weekly claim.",
       "cooldown": {
-        "multipleDays": "𝑾𝒆𝒆𝒌𝒍𝒚 𝒊𝒔 𝒐𝒏 𝒄𝒐𝒐𝒍𝒅𝒐𝒘𝒏!\n𝑻𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒂𝒇𝒕𝒆𝒓 ***%{days} 𝒂𝒏𝒅 %{hours}***, ***%{minutes}***, 𝒂𝒏𝒅 ***%{seconds}***.",
-        "singleDay": "𝑾𝒆𝒆𝒌𝒍𝒚 𝒊𝒔 𝒐𝒏 𝒄𝒐𝒐𝒍𝒅𝒐𝒘𝒏!\n𝑻𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒂𝒇𝒕𝒆𝒓 ***%{days}***, ***%{hours}***, ***%{minutes}***, 𝒂𝒏𝒅 ***%{seconds}***.",
-        "noDays": "𝑾𝒆𝒆𝒌𝒍𝒚 𝒊𝒔 𝒐𝒏 𝒄𝒐𝒐𝒍𝒅𝒐𝒘𝒏!\n𝑻𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒂𝒇𝒕𝒆𝒓 ***%{hours}***, ***%{minutes}***, 𝒂𝒏𝒅 ***%{seconds}***."
+        "multipleDays": "Weekly is on cooldown!\nTry again after ***%{days} and %{hours}***, ***%{minutes}***, and ***%{seconds}***.",
+        "singleDay": "Weekly is on cooldown!\nTry again after ***%{days}***, ***%{hours}***, ***%{minutes}***, and ***%{seconds}***.",
+        "noDays": "Weekly is on cooldown!\nTry again after ***%{hours}***, ***%{minutes}***, and ***%{seconds}***."
       }
     }
   },
   "emoteMessages": {
     "angryMessages": {
-      "description": "***%{user}*** 𝒔𝒉𝒐𝒘𝒔 𝒐𝒇𝒇 𝒕𝒉𝒆𝒊𝒓 𝒂𝒏𝒈𝒓𝒊𝒆𝒔𝒕 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒂𝒏𝒈𝒓𝒚 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** shows off their angriest expression!",
+      "error": "There was an error processing your angry emote."
     },
     "cryMessages": {
-      "description": "***%{user}*** 𝒊𝒔 𝒄𝒓𝒚𝒊𝒏𝒈!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒄𝒓𝒚𝒊𝒏𝒈 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** is crying!",
+      "error": "There was an error processing your crying emote."
     },
     "cuteMessages": {
-      "description": "***%{user}*** 𝒔𝒉𝒐𝒘𝒔 𝒐𝒇𝒇 𝒕𝒉𝒆𝒊𝒓 𝒄𝒖𝒕𝒆𝒔𝒕 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒄𝒖𝒕𝒆 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** shows off their cutest expression!",
+      "error": "There was an error processing your cute emote."
     },
     "danceMessages": {
-      "description": "***%{user}*** 𝒔𝒉𝒐𝒘𝒔 𝒐𝒇𝒇 𝒔𝒐𝒎𝒆 𝒊𝒎𝒑𝒓𝒆𝒔𝒔𝒊𝒗𝒆 𝒅𝒂𝒏𝒄𝒆 𝒎𝒐𝒗𝒆𝒔!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒏𝒄𝒆 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** shows off some impressive dance moves!",
+      "error": "There was an error processing your dance emote."
     },
     "exerciseMessages": {
-      "description": "***%{user}*** 𝒊𝒔 𝒈𝒆𝒕𝒕𝒊𝒏𝒈 𝒎𝒐𝒗𝒊𝒏𝒈 𝒂𝒏𝒅 𝒔𝒕𝒂𝒚𝒊𝒏𝒈 𝒇𝒊𝒕!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒆𝒙𝒆𝒓𝒄𝒊𝒔𝒆 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** is getting moving and staying fit!",
+      "error": "There was an error processing your exercise emote."
     },
     "happyMessages": {
-      "description": "***%{user}*** 𝒊𝒔 𝒔𝒑𝒓𝒆𝒂𝒅𝒊𝒏𝒈 𝒋𝒐𝒚 𝒂𝒏𝒅 𝒉𝒂𝒑𝒑𝒊𝒏𝒆𝒔𝒔!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒉𝒂𝒑𝒑𝒚 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** is spreading joy and happiness!",
+      "error": "There was an error processing your happy emote."
     },
     "laughMessages": {
-      "description": "***%{user}*** 𝒔𝒉𝒂𝒓𝒆𝒔 𝒂 𝒉𝒆𝒂𝒓𝒕𝒚 𝒍𝒂𝒖𝒈𝒉!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒍𝒂𝒖𝒈𝒉 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** shares a hearty laugh!",
+      "error": "There was an error processing your laugh emote."
     },
     "makeupMessages": {
-      "description": "***%{user}*** 𝒂𝒑𝒑𝒍𝒊𝒆𝒔 𝒔𝒐𝒎𝒆 𝒇𝒂𝒃𝒖𝒍𝒐𝒖𝒔 𝒎𝒂𝒌𝒆𝒖𝒑 𝒂𝒏𝒅 𝒔𝒉𝒊𝒏𝒆𝒔 𝒃𝒓𝒊𝒈𝒉𝒕!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒎𝒂𝒌𝒆𝒖𝒑 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** applies some fabulous makeup and shines bright!",
+      "error": "There was an error processing your makeup emote."
     },
     "eatMessages": {
-      "description": "***%{user}*** 𝒊𝒔 𝒆𝒏𝒋𝒐𝒚𝒊𝒏𝒈 𝒔𝒐𝒎𝒆 𝒅𝒆𝒍𝒊𝒄𝒊𝒐𝒖𝒔 𝒇𝒐𝒐𝒅!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒆𝒂𝒕 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** is enjoying some delicious food!",
+      "error": "There was an error processing your eat emote."
     },
     "playGameMessages": {
-      "description": "***%{user}*** 𝒊𝒔 𝒈𝒆𝒕𝒕𝒊𝒏𝒈 𝒓𝒆𝒂𝒅𝒚 𝒕𝒐 𝒑𝒍𝒂𝒚!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒑𝒍𝒂𝒚 𝒈𝒂𝒎𝒆 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** is getting ready to play!",
+      "error": "There was an error processing your play game emote."
     },
     "roarMessages": {
-      "description": "***%{user}*** 𝒍𝒆𝒕𝒔 𝒐𝒖𝒕 𝒂 𝒎𝒊𝒈𝒉𝒕𝒚 𝒓𝒐𝒂𝒓!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒓𝒐𝒂𝒓 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** lets out a mighty roar!",
+      "error": "There was an error processing your roar emote."
     },
     "runMessages": {
-      "description": "***%{user}*** 𝒕𝒂𝒌𝒆𝒔 𝒐𝒇𝒇 𝒊𝒏 𝒂 𝒎𝒊𝒈𝒉𝒕𝒚 𝒓𝒖𝒏!",
-      "error": "𝑺𝒐𝒎𝒆𝒕𝒉𝒊𝒏𝒈 𝒘𝒆𝒏𝒕 𝒘𝒓𝒐𝒏𝒈 𝒘𝒉𝒊𝒍𝒆 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒓𝒖𝒏 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** takes off in a mighty run!",
+      "error": "Something went wrong while processing your run emote."
     },
     "sadMessages": {
-      "description": "***%{user}*** 𝒊𝒔 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒏𝒈 𝒔𝒂𝒅𝒏𝒆𝒔𝒔.",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒔𝒂𝒅 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** is expressing sadness.",
+      "error": "There was an error processing your sad emote."
     },
     "scareMessages": {
-      "title": "𝑺𝒄𝒂𝒓𝒆𝒅!",
-      "description": "***%{user}*** 𝒔𝒉𝒐𝒘𝒔 𝒕𝒉𝒆𝒊𝒓 𝒔𝒄𝒂𝒓𝒆𝒅 𝒔𝒊𝒅𝒆!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒔𝒄𝒂𝒓𝒆 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** shows their scared side!",
+      "error": "There was an error processing your scare emote."
     },
     "showerMessages": {
-      "description": "***%{user}*** 𝒊𝒔 𝒆𝒏𝒋𝒐𝒚𝒊𝒏𝒈 𝒂 𝒓𝒆𝒇𝒓𝒆𝒔𝒉𝒊𝒏𝒈 𝒔𝒉𝒐𝒘𝒆𝒓!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒔𝒉𝒐𝒘𝒆𝒓 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** is enjoying a refreshing shower!",
+      "error": "There was an error processing your shower emote."
     },
     "shyMessages": {
-      "description": "***%{user}*** 𝒔𝒉𝒐𝒘𝒔 𝒐𝒇𝒇 𝒕𝒉𝒆𝒊𝒓 𝒔𝒉𝒚 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏!",
-      "error": "𝑻𝒉𝒆𝒓𝒆 𝒘𝒂𝒔 𝒂𝒏 𝒆𝒓𝒓𝒐𝒓 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒔𝒉𝒚 𝒆𝒎𝒐𝒕𝒆."
+      "description": "***%{user}*** shows off their shy expression!",
+      "error": "There was an error processing your shy emote."
     }
   },
   "funMessage": {
     "wallpaper": {
-      "selectCategory": "𝑺𝒆𝒍𝒆𝒄𝒕 𝒂 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚...",
-      "selectWallpaper": "𝑺𝒆𝒍𝒆𝒄𝒕 𝒂 𝒘𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓...",
-      "noWallpapers": "𝑵𝒐 𝒘𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓𝒔 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.",
-      "wallpaperNotFound": "𝑾𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "wallpaperDetailsTitle": "𝑾𝑨𝑳𝑳𝑷𝑨𝑷𝑬𝑹 𝑫𝑬𝑻𝑨𝑰𝑳𝑺",
-      "DetailsTitle": "𝐖𝐀𝐋𝐋𝐏𝐀𝐏𝐄𝐑 𝐃𝐄𝐓𝐀𝐈𝐋",
-      "descriptionLabel": "𝑫𝒆𝒔𝒄𝒓𝒊𝒑𝒕𝒊𝒐𝒏",
-      "categoryLabel": "𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒚"
+      "selectCategory": "Select a category...",
+      "selectWallpaper": "Select a wallpaper...",
+      "noWallpapers": "No wallpapers available in this category.",
+      "wallpaperNotFound": "Wallpaper not found.",
+      "wallpaperDetailsTitle": "WALLPAPER DETAILS",
+      "DetailsTitle": "WALLPAPER DETAIL",
+      "descriptionLabel": "Description",
+      "categoryLabel": "Category"
     },
     "postMessages": {
-      "noUserPosts": "𝑵𝒐 𝒑𝒐𝒔𝒕𝒔 𝒇𝒐𝒖𝒏𝒅 𝒇𝒐𝒓 𝒚𝒐𝒖.",
-      "noMessageProvided": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒎𝒆𝒔𝒔𝒂𝒈𝒆 𝒕𝒐 𝒑𝒐𝒔𝒕."
+      "noUserPosts": "No posts found for you.",
+      "noMessageProvided": "Please provide a message to post."
     }
   },
   "gamblingMessages": {
     "blackjackMessages": {
-      "title": "𝐁𝐋𝐀𝐂𝐊𝐉𝐀𝐂𝐊",
-      "dealer": "𝐃𝐄𝐀𝐋𝐄𝐑",
-      "hit": "𝑯𝒊𝒕",
-      "stand": "𝑺𝒕𝒂𝒏𝒅",
-      "bet": "𝒀𝒐𝒖 𝒃𝒆𝒕 ***%{coin}*** %{coinEmote}",
-      "won": "𝒀𝒐𝒖 𝒘𝒐𝒏 ***%{coin}*** %{coinEmote}",
-      "lost": "𝒀𝒐𝒖 𝒍𝒐𝒔𝒕 ***%{coin}*** %{coinEmote}",
-      "bothBust": "𝒀𝒐𝒖 𝒃𝒐𝒕𝒉 𝒃𝒖𝒔𝒕!",
-      "tied": "𝒀𝒐𝒖 𝒕𝒊𝒆𝒅!",
-      "winnerInfo": "𝑻𝒉𝒆 𝒘𝒊𝒏𝒏𝒆𝒓 𝒊𝒔 𝒕𝒉𝒆 𝒐𝒏𝒆 𝒘𝒉𝒐'𝒔 𝒄𝒍𝒐𝒔𝒆𝒔𝒕 𝒕𝒐 21."
+      "title": "BLACKJACK",
+      "dealer": "DEALER",
+      "hit": "Hit",
+      "stand": "Stand",
+      "bet": "You bet ***%{coin}*** %{coinEmote}",
+      "won": "You won ***%{coin}*** %{coinEmote}",
+      "lost": "You lost ***%{coin}*** %{coinEmote}",
+      "bothBust": "You both bust!",
+      "tied": "You tied!",
+      "winnerInfo": "The winner is the one who's closest to 21."
     },
     "slotMessages": {
-      "title": "𝐒𝐋𝐎𝐓𝐒",
-      "bet": "𝒀𝒐𝒖 𝒃𝒆𝒕 ***%{coin}*** %{coinEmote}",
-      "won": "𝒀𝒐𝒖 𝒘𝒐𝒏 ***%{coin}*** %{coinEmote}",
-      "lost": "𝒀𝒐𝒖 𝒍𝒐𝒔𝒕 ***%{coin}*** %{coinEmote}"
+      "title": "SLOTS",
+      "bet": "You bet ***%{coin}*** %{coinEmote}",
+      "won": "You won ***%{coin}*** %{coinEmote}",
+      "lost": "You lost ***%{coin}*** %{coinEmote}"
     },
     "coinflipMessages": {
-      "title": "𝐂𝐎𝐈𝐍𝐅𝐋𝐈𝐏",
-      "description": "𝒀𝒐𝒖 𝒔𝒑𝒆𝒏𝒕 ***%{coin}*** %{coinEmote}\n𝒄𝒉𝒐𝒐𝒔𝒆 ***%{choice}***",
-      "invalidChoice": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒄𝒉𝒐𝒊𝒄𝒆: 𝒆𝒊𝒕𝒉𝒆𝒓 𝒑𝒆𝒂𝒄𝒉 = '𝒑' 𝒐𝒓 𝒈𝒐𝒎𝒂 = '𝒈'.",
-      "result": "𝒀𝒐𝒖 𝒔𝒑𝒆𝒏𝒕 ***%{coin}*** %{coinEmote}\n𝒇𝒐𝒓 𝒄𝒉𝒐𝒐𝒔𝒆 ***%{choice}***\n𝒀𝒐𝒖 %{result} ***%{resultCoin}*** %{coinEmote}"
+      "title": "COINFLIP",
+      "description": "You spent ***%{coin}*** %{coinEmote}\nchoose ***%{choice}***",
+      "invalidChoice": "Please provide a valid choice: either peach = 'p' or goma = 'g'.",
+      "result": "You spent ***%{coin}*** %{coinEmote}\nfor choose ***%{choice}***\nYou %{result} ***%{resultCoin}*** %{coinEmote}"
     },
     "klaKloukMessages": {
-      "title": "𝐊𝐋𝐀 𝐊𝐋𝐎𝐔𝐊",
-      "startGame": "🎮 𝑳𝒆𝒕'𝒔 𝑷𝒍𝒂𝒚!\n𝑷𝒍𝒂𝒄𝒆 𝒚𝒐𝒖𝒓 𝒃𝒆𝒕𝒔 𝒃𝒚 𝒔𝒆𝒍𝒆𝒄𝒕𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒆𝒔𝒊𝒓𝒆𝒅 𝒂𝒏𝒊𝒎𝒂𝒍𝒔.\n𝑬𝒂𝒄𝒉 𝒔𝒆𝒍𝒆𝒄𝒕𝒊𝒐𝒏 𝒄𝒐𝒔𝒕𝒔 ***%{betCoin}*** %{coinEmote}.\n𝒀𝒐𝒖 𝒄𝒂𝒏 𝒔𝒆𝒍𝒆𝒄𝒕 𝒎𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝒐𝒑𝒕𝒊𝒐𝒏𝒔,\n𝒃𝒖𝒕 𝒆𝒏𝒔𝒖𝒓𝒆 𝒚𝒐𝒖 𝒉𝒂𝒗𝒆 𝒆𝒏𝒐𝒖𝒈𝒉 𝒄𝒐𝒊𝒏𝒔!\n𝑾𝒉𝒆𝒏 𝒚𝒐𝒖'𝒓𝒆 𝒓𝒆𝒂𝒅𝒚, 𝒑𝒓𝒆𝒔𝒔 𝒕𝒉𝒆 ***𝑺𝒕𝒂𝒓𝒕*** 𝒃𝒖𝒕𝒕𝒐𝒏.",
-      "cancel": "𝑪𝒂𝒏𝒄𝒆𝒍",
-      "clear": "𝑪𝒍𝒆𝒂𝒓",
-      "start": "𝑺𝒕𝒂𝒓𝒕",
-      "selected": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒄𝒉𝒐𝒐𝒔𝒆 %{selectedButton} 𝒇𝒐𝒓 𝒃𝒆𝒕 𝒆𝒂𝒄𝒉 𝒐𝒇 𝒃𝒖𝒕𝒕𝒐𝒏 𝒇𝒐𝒓 ***%{betCoin}*** %{coinEmote}\n𝒕𝒐𝒕𝒂𝒍 ***%{totalCoin}*** %{coinEmote}",
-      "notSelected": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆𝒏'𝒕 𝒄𝒉𝒐𝒔𝒆𝒏 𝒂 𝒃𝒖𝒕𝒕𝒐𝒏 𝒇𝒐𝒓 𝒚𝒐𝒖𝒓 𝒃𝒆𝒕. 𝒀𝒐𝒖 𝒄𝒂𝒏'𝒕 𝒔𝒕𝒂𝒓𝒕 𝒕𝒉𝒆 𝒈𝒂𝒎𝒆.",
-      "notEnoughCoins": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒆𝒏𝒐𝒖𝒈𝒉 𝒄𝒐𝒊𝒏𝒔! 𝒀𝒐𝒖 𝒄𝒖𝒓𝒓𝒆𝒏𝒕𝒍𝒚 𝒉𝒂𝒗𝒆 ***%{coin}*** %{coinEmote}, 𝒃𝒖𝒕 𝒚𝒐𝒖 𝒏𝒆𝒆𝒅 𝒂𝒕 𝒍𝒆𝒂𝒔𝒕 ***%{needed}*** %{coinEmote} 𝒕𝒐 𝒎𝒂𝒌𝒆 𝒕𝒉𝒊𝒔 𝒔𝒆𝒍𝒆𝒄𝒕𝒊𝒐𝒏."
+      "title": "KLA KLOUK",
+      "startGame": "Let's Play!\nPlace your bets by selecting your desired animals.\nEach selection costs ***%{betCoin}*** %{coinEmote}.\nYou can select multiple options,\nbut ensure you have enough coins!\nWhen you're ready, press the ***Start*** button.",
+      "cancel": "Cancel",
+      "clear": "Clear",
+      "start": "Start",
+      "selected": "You have choose %{selectedButton} for bet each of button for ***%{betCoin}*** %{coinEmote}\ntotal ***%{totalCoin}*** %{coinEmote}",
+      "notSelected": "You haven't chosen a button for your bet. You can't start the game.",
+      "notEnoughCoins": "You don't have enough coins! You currently have ***%{coin}*** %{coinEmote}, but you need at least ***%{needed}*** %{coinEmote} to make this selection."
     }
   },
   "gameMessages": {
     "guessNumberMessages": {
       "insufficientBalance": {
-        "description": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒂𝒕 𝒍𝒆𝒂𝒔𝒕 1000 %{coinEmote} 𝒕𝒐 𝒑𝒍𝒂𝒚 𝒕𝒉𝒆 𝑮𝒖𝒆𝒔𝒔 𝒕𝒉𝒆 𝑵𝒖𝒎𝒃𝒆𝒓 𝒈𝒂𝒎𝒆. 𝒀𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒃𝒂𝒍𝒂𝒏𝒄𝒆 𝒊𝒔"
+        "description": "You need at least 1000 %{coinEmote} to play the Guess the Number game. Your current balance is"
       },
-      "description": "𝑰 𝒉𝒂𝒗𝒆 𝒑𝒊𝒄𝒌𝒆𝒅 𝒂 𝒏𝒖𝒎𝒃𝒆𝒓 𝒃𝒆𝒕𝒘𝒆𝒆𝒏 1 𝒂𝒏𝒅 100. 𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 3 𝒉𝒆𝒂𝒓𝒕𝒔. 𝑹𝒆𝒂𝒄𝒕 𝒘𝒊𝒕𝒉 𝒕𝒉𝒆 𝒏𝒖𝒎𝒃𝒆𝒓 𝒚𝒐𝒖 𝒈𝒖𝒆𝒔𝒔 𝒐𝒓 𝒕𝒚𝒑𝒆 𝒚𝒐𝒖𝒓 𝒈𝒖𝒆𝒔𝒔 𝒊𝒏 𝒕𝒉𝒆 𝒄𝒉𝒂𝒕!",
+      "description": "I have picked a number between 1 and 100. You have 3 hearts. React with the number you guess or type your guess in the chat!",
       "correct": {
-        "description": "𝑪𝒐𝒏𝒈𝒓𝒂𝒕𝒖𝒍𝒂𝒕𝒊𝒐𝒏𝒔"
+        "description": "Congratulations"
       },
       "incorrect": {
-        "description": "❌ 𝑰𝒏𝒄𝒐𝒓𝒓𝒆𝒄𝒕! 𝒀𝒐𝒖 𝒉𝒂𝒗𝒆"
+        "description": "Incorrect! You have"
       },
       "hint": {
-        "bigger": "𝑻𝒉𝒆 𝒏𝒖𝒎𝒃𝒆𝒓 𝒊𝒔 𝒃𝒊𝒈𝒈𝒆𝒓 𝒕𝒉𝒂𝒏 𝒚𝒐𝒖𝒓 𝒈𝒖𝒆𝒔𝒔.",
-        "smaller": "𝑻𝒉𝒆 𝒏𝒖𝒎𝒃𝒆𝒓 𝒊𝒔 𝒔𝒎𝒂𝒍𝒍𝒆𝒓 𝒕𝒉𝒂𝒏 𝒚𝒐𝒖𝒓 𝒈𝒖𝒆𝒔𝒔.",
-        "range": "𝑯𝒆𝒓𝒆'𝒔 𝒂 𝒉𝒊𝒏𝒕: 𝑻𝒉𝒆 𝒏𝒖𝒎𝒃𝒆𝒓 𝒊𝒔 𝒃𝒆𝒕𝒘𝒆𝒆𝒏"
+        "bigger": "The number is bigger than your guess.",
+        "smaller": "The number is smaller than your guess.",
+        "range": "Here's a hint: The number is between"
       },
       "gameOver": {
-        "description": "💔 𝒀𝒐𝒖'𝒗𝒆 𝒓𝒖𝒏 𝒐𝒖𝒕 𝒐𝒇 𝒉𝒆𝒂𝒓𝒕𝒔! 𝑻𝒉𝒆 𝒄𝒐𝒓𝒓𝒆𝒄𝒕 𝒏𝒖𝒎𝒃𝒆𝒓 𝒘𝒂𝒔"
+        "description": "You've run out of hearts! The correct number was"
       },
       "timeout": {
-        "description": "⏳ 𝑻𝒊𝒎𝒆 𝒊𝒔 𝒖𝒑! 𝒀𝒐𝒖 𝒅𝒊𝒅𝒏'𝒕 𝒈𝒖𝒆𝒔𝒔 𝒕𝒉𝒆 𝒏𝒖𝒎𝒃𝒆𝒓 𝒊𝒏 𝒕𝒊𝒎𝒆."
+        "description": "Time is up! You didn't guess the number in time."
       }
-    },
-    "ticTacToeMessages": {
-      "invalidOpponent": "❌ 𝒀𝒐𝒖 𝒄𝒂𝒏'𝒕 𝒑𝒍𝒂𝒚 𝑻𝒊𝒄-𝑻𝒂𝒄-𝑻𝒐𝒆 𝑤𝒊𝒕𝒉 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇 𝒐𝒓 𝒂 𝒃𝒐𝒕.\n𝒑𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂𝒏 𝒐𝒑𝒑𝒐𝒏𝒆𝒏𝒕.",
-      "startGame": "🎮 𝑺𝒕𝒂𝒓𝒕𝒊𝒏𝒈 𝑻𝒊𝒄-𝑻𝒂𝒄-𝑻𝒐𝒆 𝒈𝒂𝒎𝒆!\n***%{player}*** (%{playerEmote}) 𝒗𝒔 ***%{opponent}*** (%{opponentEmote}) 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒇𝒊𝒓𝒔𝒕 𝒕𝒖𝒓𝒏.",
-      "confirmGame": "🔔 𝑺𝒑𝒍𝒆𝒂𝒔𝒆 𝒄𝒐𝒏𝒇𝒊𝒓𝒎 𝒊𝒇 𝒚𝒐𝒖 𝒘𝒊𝒍𝒍 𝒑𝒍𝒂𝒚 𝒏𝒐𝒘 𝒘𝒊𝒕𝒉 ***%{opponent}***.\n𝑰𝒇 𝒚𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒘𝒊𝒍𝒍 𝒃𝒆 𝒂𝒃𝒍𝒆 𝒕𝒐 𝒑𝒍𝒂𝒚!",
-      "confirmButton": "✅ 𝒀𝒆𝒔, 𝑰 𝒘𝒊𝒍𝒍 𝒑𝒍𝒂𝒚",
-      "denyButton": "❌ 𝑵𝒐, 𝑰'𝒎 𝒏𝒐𝒕 𝒓𝒆𝒂𝒅𝒚",
-      "opponentDenied": "❌ 𝑻𝒉𝒆 𝒐𝒑𝒑𝒐𝒏𝒆𝒏𝒕 𝒅𝒊𝒆𝒅 𝒐𝒓 𝒅𝒆𝒏𝒊𝒆𝒅 𝒕𝒉𝒆 𝒈𝒂𝒎𝒆!",
-      "nextTurn": "➡️ 𝑰𝒕'𝒔 𝒏𝒐𝒘 𝑽𝒖𝒓 𝒕𝒖𝒓𝒏, 𝒉𝒐𝒘 𝒘𝒊𝒍𝒍 𝒚𝒐𝒖 𝒈𝒐?\n𝑪𝒍𝒊𝒄𝒌 𝒂𝒏𝒚 𝒐𝒇 𝒕𝒉𝒆 𝒓𝒆𝒎𝒂𝒊𝒏𝒊𝒏𝒈 𝒔𝒍𝒐𝒕𝒔 𝒕𝒐 𝒎𝒂𝒌𝒆 𝒚𝒐𝒖𝒓 𝒎𝒐𝒗𝒆.",
-      "invalidMove": "❌ 𝑻𝒉𝒂𝒕 𝒑𝒍𝒂𝒄𝒆 𝒊𝒔 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒕𝒂𝒌𝒆𝒏!\n𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒖𝒕 𝒚𝒐𝒖𝒓 𝒎𝒐𝒗𝒆 𝒊𝒏 𝒂𝒏 𝒆𝒎𝒑𝒕𝒚 𝒔𝒍𝒐𝒕.",
-      "win": "🎉 𝑪𝒐𝒏𝒈𝒓𝒂𝒕𝒖𝒍𝒂𝒕𝒊𝒐𝒏𝒔, ***%{winner}*** 𝒃𝒆𝒏𝒂𝒎𝒆 𝑻𝒊𝒄-𝑻𝒂𝒄-𝑻𝒐𝒆 𝒉𝒐𝒓𝒐𝒓𝒐𝒓!",
-      "draw": "⏸️ 𝑮𝒂𝒎𝒆 𝑰𝒔 𝒂 𝒅𝒓𝒂𝒘, 𝒏𝒐𝒃𝒐𝒅𝒚 𝒘𝒐𝒏 𝒕𝒉𝒊𝒔 𝒐𝒗𝒆𝒓!",
-      "timeout": "⏳ 𝑻𝒊𝒎𝒆 𝒊𝒔 𝒖𝒑! 𝒀𝒐𝒖 𝒅𝒊𝒅𝒏'𝒕 𝒎𝒂𝒌𝒆 𝒂 𝒎𝒐𝒗𝒆 𝒊𝒏 𝒕𝒊𝒎𝒆."
-    },
-    "twenty48Messages": {
-      "startGame": "🎮 𝑺𝒕𝒂𝒓𝒕𝒊𝒏𝒈 𝟸𝟶𝟺𝟾 𝒈𝒂𝒎𝒆!\n𝑺𝒍𝒊𝒅𝒆 𝒕𝒉𝒆 𝒕𝒊𝒍𝒆𝒔 𝒕𝒐 𝒎𝒆𝒓𝒈𝒆 𝒕𝒉𝒆𝒎 𝒂𝒏𝒅 𝒓𝒆𝒂𝒄𝒉 𝒕𝒉𝒆 𝒏𝒖𝒎𝒃𝒆𝒓 𝟸𝟶𝟺𝟾!",
-      "move": "➡️ 𝑴𝒐𝒗𝒆 𝒕𝒉𝒆 𝒕𝒊𝒍𝒆𝒔 𝒖𝒑, 𝒅𝒐𝒘𝒏, 𝒍𝒆𝒇𝒕, 𝒐𝒓 𝒓𝒊𝒈𝒉𝒕 𝒕𝒐 𝒄𝒐𝒎𝒃𝒊𝒏𝒆 𝒂𝒏𝒅 𝒔𝒄𝒐𝒓𝒆 𝒉𝒊𝒈𝒉!",
-      "invalidMove": "❌ 𝑵𝒐 𝒗𝒂𝒍𝒊𝒅 𝒎𝒐𝒗𝒆𝒔 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒅𝒊𝒓𝒆𝒄𝒕𝒊𝒐𝒏! 𝑻𝒓𝒚 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒘𝒂𝒚.",
-      "merge": "🔢 𝑻𝒊𝒍𝒆𝒔 𝒎𝒆𝒓𝒈𝒆𝒅! 𝑵𝒆𝒘 𝒕𝒊𝒍𝒆𝒔 𝒂𝒑𝒑𝒆𝒂𝒓𝒆𝒅.",
-      "gameOver": "⏹️ 𝑮𝑨𝑴𝑬 𝑶𝑽𝑬𝑹! 𝑵𝒐 𝒎𝒐𝒓𝒆 𝒗𝒂𝒍𝒊𝒅 𝒎𝒐𝒗𝒆𝒔.\n𝑻𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒕𝒐 𝒃𝒆𝒂𝒕 𝒚𝒐𝒖𝒓 𝒔𝒄𝒐𝒓𝒆!",
-      "win": "🎉 𝑨𝒎𝒂𝒛𝒊𝒏𝒈! 𝒀𝒐𝒖 𝒓𝒆𝒂𝒄𝒉𝒆𝒅 𝟸𝟶𝟺𝟾! 𝑪𝒂𝒏 𝒚𝒐𝒖 𝒈𝒐 𝒇𝒖𝒓𝒕𝒉𝒆𝒓?",
-      "timeout": "⏳ 𝑻𝒊𝒎𝒆'𝒔 𝒖𝒑! 𝒀𝒐𝒖 𝒕𝒐𝒐𝒌 𝒕𝒐𝒐 𝒍𝒐𝒏𝒈 𝒕𝒐 𝒎𝒂𝒌𝒆 𝒂 𝒎𝒐𝒗𝒆."
     }
   },
   "informationMessages": {
-    "feedbackMessages": {
-      "title": "𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊",
-      "thankYou": "𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒚𝒐𝒖𝒓 𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌, %{userName}!\n𝑾𝒆 𝒂𝒑𝒑𝒓𝒆𝒄𝒊𝒂𝒕𝒆 𝒚𝒐𝒖𝒓 𝒊𝒏𝒑𝒖𝒕. 𝒀𝒐𝒖𝒓 𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌 𝒉𝒆𝒍𝒑𝒔 𝒖𝒔 𝒊𝒎𝒑𝒓𝒐𝒗𝒆 𝒕𝒉𝒆 𝒃𝒐𝒕.",
-      "fields": {
-        "rating": "𝒀𝒐𝒖𝒓 𝑹𝒂𝒕𝒊𝒏𝒈:",
-        "feedback": "𝒀𝒐𝒖𝒓 𝑭𝒆𝒆𝒅𝒃𝒂𝒄𝒌:"
-      },
-      "footer": "𝑾𝒆 𝒗𝒂𝒍𝒖𝒆 𝒚𝒐𝒖𝒓 𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌! 𝑰𝒇 𝒚𝒐𝒖'𝒅 𝒍𝒊𝒌𝒆 𝒕𝒐 𝒔𝒖𝒃𝒎𝒊𝒕 𝒎𝒐𝒓𝒆 𝒔𝒖𝒈𝒈𝒆𝒔𝒕𝒊𝒐𝒏𝒔,\n𝒇𝒆𝒆𝒍 𝒇𝒓𝒆𝒆 𝒕𝒐 𝒔𝒆𝒏𝒅 𝒕𝒉𝒆𝒎 𝒐𝒖𝒓 𝒘𝒂𝒚.",
-      "noFeedbackProvided": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌. 𝑭𝒆𝒆𝒍 𝒇𝒓𝒆𝒆 𝒕𝒐 𝒔𝒆𝒏𝒅 𝒕𝒉𝒆𝒎 𝒐𝒖𝒓 𝒘𝒂𝒚.",
-      "ratingOutOfBounds": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒓𝒂𝒕𝒊𝒏𝒈 𝒃𝒆𝒕𝒘𝒆𝒆𝒏 ***1*** 𝒂𝒏𝒅 ***10***.",
-      "invalidRatingFormat": "𝑻𝒉𝒆 𝒓𝒂𝒕𝒊𝒏𝒈 𝒎𝒖𝒔𝒕 𝒃𝒆 𝒊𝒏 𝒕𝒉𝒆 𝒇𝒐𝒓𝒎𝒂𝒕 ***x/10*** (𝒆.𝒈., `7/10`)."
-    },
     "helpMessages": {
-      "description": "𝑯𝒆𝒓𝒆 𝒂𝒓𝒆 𝒕𝒉𝒆 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆:",
-      "note": "𝑵𝒐𝒕𝒆: 𝑺𝒐𝒎𝒆 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒎𝒂𝒚 𝒅𝒊𝒔𝒑𝒍𝒂𝒚 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆𝒔 𝒊𝒏 𝒍𝒊𝒔𝒕𝒔 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒆𝒅 𝒃𝒚 𝒕𝒉𝒆 𝒃𝒐𝒕.",
-      "footer": "© 𝐂𝐨𝐩𝐲𝐫𝐢𝐠𝐡𝐭 𝐁𝐲 𝐏𝐄𝐀𝐂𝐇𝐘",
-      "supportButton": "𝑪𝒍𝒊𝒄𝒌 𝒇𝒐𝒓 𝒔𝒖𝒑𝒑𝒐𝒓𝒕",
-      "commandNotFound": "𝑪𝒐𝒎𝒎𝒂𝒏𝒅 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅:",
-      "title": "𝑯𝒆𝒍𝒑 𝒇𝒐𝒓 𝒄𝒐𝒎𝒎𝒂𝒏𝒅",
-      "category": "𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒚",
-      "aliases": "𝑨𝒍𝒊𝒂𝒔𝒆𝒔:",
-      "cooldown": "𝑪𝒐𝒐𝒍𝒅𝒐𝒘𝒏",
-      "permissions": "𝑩𝒐𝒕 𝑷𝒆𝒓𝒎𝒊𝒔𝒔𝒊𝒐𝒏𝒔:",
-      "examples": "𝑬𝒙𝒂𝒎𝒑𝒍𝒆(𝒔):",
+      "description": "Here are the commands available:",
+      "note": "Note: Some commands may display usernames in lists retrieved by the bot.",
+      "footer": "(c) Copyright By PEACHY",
+      "supportButton": "Click for support",
+      "commandNotFound": "Command not found:",
+      "title": "Help for command",
+      "category": "Category",
+      "aliases": "Aliases:",
+      "cooldown": "Cooldown",
+      "permissions": "Bot Permissions:",
+      "examples": "Example(s):",
       "categoriesMessages": {
-        "actions": "𝐀𝐂𝐓𝐈𝐎𝐍𝐒",
-        "bank": "𝐁𝐀𝐍𝐊",
-        "work": "𝐖𝐎𝐑𝐊",
-        "rank": "𝐑𝐀𝐍𝐊",
-        "economy": "𝐄𝐂𝐎𝐍𝐎𝐌𝐘",
-        "inventory": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
-        "fun": "𝐅𝐔𝐍",
-        "games": "𝐆𝐀𝐌𝐄𝐒",
-        "gambling": "𝐆𝐀𝐌𝐁𝐋𝐈𝐍𝐆",
-        "giveaways": "𝐆𝐈𝐕𝐄𝐀𝐖𝐀𝐘𝐒",
-        "profile": "𝐏𝐑𝐎𝐅𝐈𝐋𝐄",
-        "relationship": "𝐑𝐄𝐋𝐀𝐓𝐈𝐎𝐍𝐒𝐇𝐈𝐏",
-        "social": "𝐒𝐎𝐂𝐈𝐀𝐋𝐒",
-        "emotes": "𝐄𝐌𝐎𝐓𝐄𝐒",
-        "utility": "𝐔𝐓𝐈𝐋𝐈𝐓𝐘",
-        "info": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍"
+        "actions": "ACTIONS",
+        "bank": "BANK",
+        "work": "WORK",
+        "rank": "RANK",
+        "economy": "ECONOMY",
+        "inventory": "INVENTORY",
+        "fun": "FUN",
+        "games": "GAMES",
+        "gambling": "GAMBLING",
+        "giveaways": "GIVEAWAYS",
+        "profile": "PROFILE",
+        "relationship": "RELATIONSHIP",
+        "social": "SOCIALS",
+        "emotes": "EMOTES",
+        "utility": "UTILITY",
+        "info": "INFORMATION"
       },
       "directoriesMessages": {
-        "bite": "𝒃𝒊𝒕𝒆",
-        "hug": "𝒉𝒖𝒈",
-        "kiss": "𝒌𝒊𝒔𝒔",
-        "kill": "𝒌𝒊𝒍𝒍",
-        "punch": "𝒑𝒖𝒏𝒄𝒉",
-        "loung": "𝒍𝒐𝒖𝒏𝒈",
-        "slap": "𝒔𝒍𝒂𝒑",
-        "balance": "𝒃𝒂𝒍𝒂𝒏𝒄𝒆",
-        "daily": "𝒅𝒂𝒊𝒍𝒚",
-        "deposit": "𝒅𝒆𝒑𝒐𝒔𝒊𝒕",
-        "goma": "𝒈𝒐𝒎𝒂",
-        "peach": "𝒑𝒆𝒂𝒄𝒉",
-        "ranking": "𝒓𝒂𝒏𝒌𝒊𝒏𝒈",
-        "leaderboard": "𝒍𝒆𝒂𝒅𝒆𝒓𝒃𝒐𝒂𝒓𝒅",
-        "transfer": "𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓",
-        "angpav": "𝒂𝒏𝒈𝒑𝒂𝒗",
-        "multitransfer": "𝒎𝒖𝒍𝒕𝒊𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓",
-        "weekly": "𝒘𝒆𝒆𝒌𝒍𝒚",
-        "applyjob": "𝒂𝒑𝒑𝒍𝒚𝒋𝒐𝒃",
-        "police": "𝒑𝒐𝒍𝒊𝒄𝒆",
-        "position": "𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏",
-        "resignjob": "𝒓𝒆𝒔𝒊𝒈𝒏𝒋𝒐𝒃",
-        "rob": "𝒓𝒐𝒃",
-        "student": "𝒔𝒕𝒖𝒅𝒆𝒏𝒕",
-        "withdraw": "𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘",
-        "buy": "𝒃𝒖𝒚",
-        "drink": "𝒅𝒓𝒊𝒏𝒌",
-        "eat": "𝒆𝒂𝒕",
-        "giveitem": "𝒈𝒊𝒗𝒆𝒊𝒕𝒆𝒎",
-        "inventory": "𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚",
-        "sell": "𝒔𝒆𝒍𝒍",
-        "shop": "𝒔𝒉𝒐𝒑",
-        "shopinfo": "𝒔𝒉𝒐𝒑𝒊𝒏𝒇𝒐",
-        "use": "𝒖𝒔𝒆",
-        "color": "𝒄𝒐𝒍𝒐𝒓",
-        "wallpaper": "𝒘𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓",
-        "guessnumber": "𝒈𝒖𝒆𝒔𝒔𝒏𝒖𝒎𝒃𝒆𝒓",
-        "tictactoe": "𝒕𝒊𝒄𝒕𝒂𝒄𝒕𝒐𝒆",
-        "2048": "2048",
-        "snake": "𝒔𝒏𝒂𝒌𝒆",
-        "guess": "𝒈𝒖𝒆𝒔𝒔",
-        "post": "𝒑𝒐𝒔𝒕",
-        "status": "𝒔𝒕𝒂𝒕𝒖𝒔",
-        "blackjack": "𝒃𝒍𝒂𝒄𝒌𝒋𝒂𝒄𝒌",
-        "coinflip": "𝒄𝒐𝒊𝒏𝒇𝒍𝒊𝒑",
-        "slots": "𝒔𝒍𝒐𝒕𝒔",
-        "klaklouk": "𝒌𝒍𝒂𝒌𝒍𝒐𝒖𝒌",
-        "bio": "𝒃𝒊𝒐",
-        "birthday": "𝒃𝒊𝒓𝒕𝒉𝒅𝒂𝒚",
-        "gender": "𝒈𝒆𝒏𝒅𝒆𝒓",
-        "level": "𝒍𝒆𝒗𝒆𝒍",
-        "profile": "𝒑𝒓𝒐𝒇𝒊𝒍𝒆",
-        "username": "𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆",
-        "giveaway": "𝒈𝒊𝒗𝒆𝒂𝒘𝒂𝒚",
-        "giveawayshopitem": "𝒈𝒊𝒗𝒆𝒂𝒘𝒂𝒚𝒔𝒉𝒐𝒑𝒊𝒕𝒆𝒎",
-        "reroll": "𝒓𝒆𝒓𝒐𝒍𝒍",
-        "relationship": "𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑",
-        "partner": "𝒑𝒂𝒓𝒕𝒏𝒆𝒓",
-        "brother": "𝒃𝒓𝒐𝒕𝒉𝒆𝒓",
-        "sister": "𝒔𝒊𝒔𝒕𝒆𝒓",
-        "confidant": "𝒄𝒐𝒏𝒇𝒊𝒅𝒂𝒏𝒕",
-        "bestie": "𝒃𝒆𝒔𝒕𝒊𝒆",
-        "facebook": "𝒇𝒂𝒄𝒆𝒃𝒐𝒐𝒌",
-        "instagram": "𝒊𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎",
-        "socials": "𝒔𝒐𝒄𝒊𝒂𝒍𝒔",
-        "tiktok": "𝒕𝒊𝒌𝒕𝒐𝒌",
-        "angry": "𝒂𝒏𝒈𝒓𝒚",
-        "cry": "𝒄𝒓𝒚",
-        "cute": "𝒄𝒖𝒕𝒆",
-        "dance": "𝒅𝒂𝒏𝒄𝒆",
-        "exercise": "𝒆𝒙𝒆𝒓𝒄𝒊𝒔𝒆",
-        "happy": "𝒉𝒂𝒑𝒑𝒚",
-        "laugh": "𝒍𝒂𝒖𝒈𝒉",
-        "run": "𝒓𝒖𝒏",
-        "makeup": "𝒎𝒂𝒌𝒆𝒖𝒑",
-        "nham": "𝒏𝒉𝒂𝒎",
-        "playgame": "𝒑𝒍𝒂𝒚𝒈𝒂𝒎𝒆",
-        "roar": "𝒓𝒐𝒂𝒓",
-        "sad": "𝒔𝒂𝒅",
-        "scare": "𝒔𝒄𝒂𝒓𝒆",
-        "shower": "𝒔𝒉𝒐𝒘𝒆𝒓",
-        "shy": "𝒔𝒉𝒚",
-        "avatar": "𝒂𝒗𝒂𝒕𝒂𝒓",
-        "banner": "𝒃𝒂𝒏𝒏𝒆𝒓",
-        "emoji": "𝒆𝒎𝒐𝒋𝒊",
-        "invites": "𝒊𝒏𝒗𝒊𝒕𝒆𝒔",
-        "language": "𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆",
-        "messages": "𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔",
-        "qr": "𝒒𝒓",
-        "serverinfo": "𝒔𝒆𝒓𝒗𝒆𝒓𝒊𝒏𝒇𝒐",
-        "sticker": "𝒔𝒕𝒊𝒄𝒌𝒆𝒓",
-        "theme": "𝒕𝒉𝒆𝒎𝒆",
-        "userinfo": "𝒖𝒔𝒆𝒓𝒊𝒏𝒇𝒐",
-        "clear": "𝒄𝒍𝒆𝒂𝒓",
-        "verify": "𝒗𝒆𝒓𝒊𝒇𝒚",
-        "feedback": "𝒇𝒆𝒆𝒅𝒃𝒂𝒄𝒌",
-        "help": "𝒉𝒆𝒍𝒑",
-        "info": "𝒊𝒏𝒇𝒐",
-        "invite": "𝒊𝒏𝒗𝒊𝒕𝒆",
-        "ping": "𝒑𝒊𝒏𝒈",
-        "privacy": "𝒑𝒓𝒊𝒗𝒂𝒄𝒚",
-        "register": "𝒓𝒆𝒈𝒊𝒔𝒕𝒆𝒓",
-        "rules": "𝒓𝒖𝒍𝒆𝒔",
-        "stats": "𝒔𝒕𝒂𝒕𝒔"
+        "bite": "bite",
+        "hug": "hug",
+        "kiss": "kiss",
+        "kill": "kill",
+        "punch": "punch",
+        "loung": "loung",
+        "slap": "slap",
+        "balance": "balance",
+        "daily": "daily",
+        "deposit": "deposit",
+        "goma": "goma",
+        "peach": "peach",
+        "ranking": "ranking",
+        "leaderboard": "leaderboard",
+        "transfer": "transfer",
+        "multitransfer": "multitransfer",
+        "withdraw": "withdraw",
+        "buy": "buy",
+        "drink": "drink",
+        "eat": "eat",
+        "giveitem": "giveitem",
+        "inventory": "inventory",
+        "sell": "sell",
+        "shop": "shop",
+        "shopinfo": "shopinfo",
+        "use": "use",
+        "color": "color",
+        "wallpaper": "wallpaper",
+        "guessnumber": "guessnumber",
+        "guess": "guess",
+        "post": "post",
+        "status": "status",
+        "blackjack": "blackjack",
+        "coinflip": "coinflip",
+        "slots": "slots",
+        "klaklouk": "klaklouk",
+        "bio": "bio",
+        "birthday": "birthday",
+        "gender": "gender",
+        "level": "level",
+        "profile": "profile",
+        "username": "username",
+        "giveaway": "giveaway",
+        "giveawayshopitem": "giveawayshopitem",
+        "reroll": "reroll",
+        "relationship": "relationship",
+        "partner": "partner",
+        "brother": "brother",
+        "sister": "sister",
+        "confidant": "confidant",
+        "bestie": "bestie",
+        "angry": "angry",
+        "cry": "cry",
+        "cute": "cute",
+        "dance": "dance",
+        "exercise": "exercise",
+        "happy": "happy",
+        "laugh": "laugh",
+        "run": "run",
+        "makeup": "makeup",
+        "nham": "nham",
+        "playgame": "playgame",
+        "roar": "roar",
+        "sad": "sad",
+        "scare": "scare",
+        "shower": "shower",
+        "shy": "shy",
+        "avatar": "avatar",
+        "banner": "banner",
+        "emoji": "emoji",
+        "invites": "invites",
+        "language": "language",
+        "messages": "messages",
+        "qr": "qr",
+        "serverinfo": "serverinfo",
+        "theme": "theme",
+        "userinfo": "userinfo",
+        "clear": "clear",
+        "verify": "verify",
+        "feedback": "feedback",
+        "help": "help",
+        "info": "info",
+        "invite": "invite",
+        "ping": "ping",
+        "privacy": "privacy",
+        "register": "register",
+        "rules": "rules",
+        "stats": "stats"
       }
     },
     "infoMessages": {
-      "title": "𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍!",
-      "description": "𝒊𝒔 𝒚𝒐𝒖𝒓 𝒎𝒖𝒍𝒕𝒊-𝒑𝒖𝒓𝒑𝒐𝒔𝒆 𝑫𝒊𝒔𝒄𝒐𝒓𝒅 𝒃𝒐𝒕 𝒅𝒆𝒔𝒊𝒈𝒏𝒆𝒅 𝒇𝒐𝒓 𝒇𝒖𝒏, 𝒆𝒏𝒕𝒆𝒓𝒕𝒂𝒊𝒏𝒎𝒆𝒏𝒕, 𝒂𝒏𝒅 𝒖𝒕𝒊𝒍𝒊𝒕𝒚. 𝑾𝒊𝒕𝒉 𝒇𝒆𝒂𝒕𝒖𝒓𝒆𝒔, 𝒕𝒓𝒚 𝒚𝒐𝒖𝒓 𝒍𝒖𝒄𝒌 𝒂𝒕 𝒈𝒂𝒎𝒃𝒍𝒊𝒏𝒈, 𝒑𝒍𝒂𝒚 𝒎𝒊𝒏𝒊-𝒈𝒂𝒎𝒆𝒔, 𝒂𝒏𝒅 𝒎𝒖𝒄𝒉 𝒎𝒐𝒓𝒆!",
+      "title": "INFORMATION!",
+      "description": "is your multi-purpose Discord bot designed for fun, entertainment, and utility. With features, try your luck at gambling, play mini-games, and much more!",
       "developer": {
-        "title": "𝐃𝐄𝐕",
-        "value": "𝐏𝐄𝐀𝐂𝐇𝐘 𝐓𝐄𝐀𝐌"
+        "title": "DEV",
+        "value": "PEACHY TEAM"
       },
       "dashboard": {
-        "title": "𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃"
+        "title": "DASHBOARD"
       },
       "facebook": {
-        "title": "𝐅𝐀𝐂𝐄𝐁𝐎𝐎𝐊"
+        "title": "FACEBOOK"
       },
-      "footer": "𝑯𝒂𝒗𝒊𝒏𝒈 𝒂𝒏𝒚 𝒊𝒔𝒔𝒖𝒆𝒔, 𝒏𝒆𝒆𝒅 𝒉𝒆𝒍𝒑, 𝒐𝒓 𝒘𝒂𝒏𝒕 𝒕𝒐 𝒓𝒆𝒑𝒐𝒓𝒕 𝒃𝒖𝒈𝒔? 𝑪𝒍𝒊𝒄𝒌𝒊𝒏𝒈 𝒕𝒉𝒆 𝒍𝒊𝒏𝒌 𝒃𝒆𝒍𝒐𝒘",
+      "footer": "Having any issues, need help, or want to report bugs? Clicking the link below",
       "supportButton": {
-        "label": "𝑪𝒍𝒊𝒄𝒌 𝒇𝒐𝒓 𝒔𝒖𝒑𝒑𝒐𝒓𝒕"
+        "label": "Click for support"
       }
     },
     "privacyMessages": {
-      "title": "𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘",
-      "description": "𝒀𝒐𝒖𝒓 𝒑𝒓𝒊𝒗𝒂𝒄𝒚 𝒊𝒔 𝒊𝒎𝒑𝒐𝒓𝒕𝒂𝒏𝒕 𝒕𝒐 𝒖𝒔. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒓𝒆𝒂𝒅 𝒐𝒖𝒓 𝒑𝒓𝒊𝒗𝒂𝒄𝒚 𝒑𝒐𝒍𝒊𝒄𝒚 𝒃𝒆𝒍𝒐𝒘:",
+      "title": "PRIVACY POLICY",
+      "description": "Your privacy is important to us. Please read our privacy policy below:",
       "policies": [
         {
-          "name": "𝟏. 𝐃𝐀𝐓𝐀 𝐂𝐎𝐋𝐋𝐄𝐂𝐓𝐈𝐎𝐍",
-          "value": "𝑾𝒆 𝒄𝒐𝒍𝒍𝒆𝒄𝒕 𝒐𝒏𝒍𝒚 𝒕𝒉𝒆 𝒏𝒆𝒄𝒆𝒔𝒔𝒂𝒓𝒚 𝒅𝒂𝒕𝒂 𝒕𝒐 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂𝒏𝒅 𝒊𝒎𝒑𝒓𝒐𝒗𝒆 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒇𝒖𝒏𝒄𝒕𝒊𝒐𝒏𝒂𝒍𝒊𝒕𝒚. 𝑻𝒉𝒊𝒔 𝒎𝒂𝒚 𝒊𝒏𝒄𝒍𝒖𝒅𝒆 𝒖𝒔𝒆𝒓 𝑰𝑫𝒔, 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔, 𝒂𝒏𝒅 𝒔𝒆𝒓𝒗𝒆𝒓 𝒊𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏."
+          "name": "1. DATA COLLECTION",
+          "value": "We collect only the necessary data to provide and improve the bot's functionality. This may include user IDs, messages, and server information."
         },
         {
-          "name": "𝟐. 𝐃𝐀𝐓𝐀 𝐔𝐒𝐀𝐆𝐄",
-          "value": "𝑻𝒉𝒆 𝒄𝒐𝒍𝒍𝒆𝒄𝒕𝒆𝒅 𝒅𝒂𝒕𝒂 𝒊𝒔 𝒖𝒔𝒆𝒅 𝒆𝒙𝒄𝒍𝒖𝒔𝒊𝒗𝒆𝒍𝒚 𝒇𝒐𝒓 𝒃𝒐𝒕 𝒐𝒑𝒆𝒓𝒂𝒕𝒊𝒐𝒏𝒔 𝒂𝒏𝒅 𝒊𝒔 𝒏𝒐𝒕 𝒔𝒉𝒂𝒓𝒆𝒅 𝒘𝒊𝒕𝒉 𝒕𝒉𝒊𝒓𝒅 𝒑𝒂𝒓𝒕𝒊𝒆𝒔."
+          "name": "2. DATA USAGE",
+          "value": "The collected data is used exclusively for bot operations and is not shared with third parties."
         },
         {
-          "name": "𝟑. 𝐃𝐀𝐓𝐀 𝐑𝐄𝐓𝐄𝐍𝐓𝐈𝐎𝐍",
-          "value": "𝑫𝒂𝒕𝒂 𝒊𝒔 𝒓𝒆𝒕𝒂𝒊𝒏𝒆𝒅 𝒐𝒏𝒍𝒚 𝒂𝒔 𝒍𝒐𝒏𝒈 𝒂𝒔 𝒏𝒆𝒄𝒆𝒔𝒔𝒂𝒓𝒚 𝒕𝒐 𝒇𝒖𝒍𝒇𝒊𝒍𝒍 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒑𝒖𝒓𝒑𝒐𝒔𝒆𝒔 𝒐𝒓 𝒂𝒔 𝒓𝒆𝒒𝒖𝒊𝒓𝒆𝒅 𝒃𝒚 𝒍𝒂𝒘."
+          "name": "3. DATA RETENTION",
+          "value": "Data is retained only as long as necessary to fulfill the bot's purposes or as required by law."
         },
         {
-          "name": "𝟒. 𝐔𝐒𝐄𝐑 𝐑𝐈𝐆𝐇𝐓𝐒",
-          "value": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒕𝒉𝒆 𝒓𝒊𝒈𝒉𝒕 𝒕𝒐 𝒓𝒆𝒒𝒖𝒆𝒔𝒕 𝒅𝒂𝒕𝒂 𝒅𝒆𝒍𝒆𝒕𝒊𝒐𝒏 𝒐𝒓 𝒐𝒃𝒕𝒂𝒊𝒏 𝒂 𝒄𝒐𝒑𝒚 𝒐𝒇 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂 𝒂𝒕 𝒂𝒏𝒚 𝒕𝒊𝒎𝒆. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒐𝒏𝒕𝒂𝒄𝒕 𝒕𝒉𝒆 𝒃𝒐𝒕 𝒐𝒘𝒏𝒆𝒓 𝒇𝒐𝒓 𝒔𝒖𝒄𝒉 𝒓𝒆𝒒𝒖𝒆𝒔𝒕𝒔."
+          "name": "4. USER RIGHTS",
+          "value": "You have the right to request data deletion or obtain a copy of your data at any time. Please contact the bot owner for such requests."
         },
         {
-          "name": "𝟓. 𝐂𝐇𝐀𝐍𝐆𝐄𝐒 𝐓𝐎 𝐏𝐎𝐋𝐈𝐂𝐘",
-          "value": "𝑾𝒆 𝒎𝒂𝒚 𝒖𝒑𝒅𝒂𝒕𝒆 𝒕𝒉𝒊𝒔 𝒑𝒓𝒊𝒗𝒂𝒄𝒚 𝒑𝒐𝒍𝒊𝒄𝒚 𝒂𝒔 𝒏𝒆𝒆𝒅𝒆𝒅. 𝑪𝒐𝒏𝒕𝒊𝒏𝒖𝒆𝒅 𝒖𝒔𝒆 𝒐𝒇 𝒕𝒉𝒆 𝒃𝒐𝒕 𝒄𝒐𝒏𝒔𝒕𝒊𝒕𝒖𝒕𝒆𝒔 𝒂𝒄𝒄𝒆𝒑𝒕𝒂𝒏𝒄𝒆 𝒐𝒇 𝒂𝒏𝒚 𝒄𝒉𝒂𝒏𝒈𝒆𝒔."
+          "name": "5. CHANGES TO POLICY",
+          "value": "We may update this privacy policy as needed. Continued use of the bot constitutes acceptance of any changes."
         }
       ],
-      "footer": "𝑭𝒐𝒓 𝒎𝒐𝒓𝒆 𝒅𝒆𝒕𝒂𝒊𝒍𝒔, 𝒄𝒐𝒏𝒕𝒂𝒄𝒕 𝒕𝒉𝒆 𝒃𝒐𝒕 𝒐𝒘𝒏𝒆𝒓."
+      "footer": "For more details, contact the bot owner."
     },
     "registerMessages": {
-      "alreadyRegistered": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒓𝒆𝒈𝒊𝒔𝒕𝒆𝒓𝒆𝒅. 𝑰𝒇 𝒚𝒐𝒖 𝒏𝒆𝒆𝒅 𝒂𝒔𝒔𝒊𝒔𝒕𝒂𝒏𝒄𝒆, 𝒑𝒍𝒆𝒂𝒔𝒆 𝒄𝒐𝒏𝒕𝒂𝒄𝒕 𝒂𝒏 𝒂𝒅𝒎𝒊𝒏.",
-      "registrationSuccessful": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒃𝒆𝒆𝒏 𝒔𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒓𝒆𝒈𝒊𝒔𝒕𝒆𝒓𝒆𝒅, %{username}! 𝒀𝒐𝒖 𝒄𝒂𝒏 𝒏𝒐𝒘 𝒔𝒕𝒂𝒓𝒕 𝒖𝒔𝒊𝒏𝒈 𝒂𝒍𝒍 𝒇𝒆𝒂𝒕𝒖𝒓𝒆𝒔 𝒐𝒇 𝒕𝒉𝒆 𝒃𝒐𝒕.",
-      "titleAlreadyRegistered": "𝐀𝐋𝐑𝐄𝐀𝐃𝐘 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐄𝐃",
-      "titleRegistrationSuccessful": "𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐀𝐓𝐈𝐎𝐍 𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋",
-      "footer": "𝑰𝒇 𝒚𝒐𝒖 𝒏𝒆𝒆𝒅 𝒉𝒆𝒍𝒑 𝒐𝒓 𝒉𝒂𝒗𝒆 𝒒𝒖𝒆𝒔𝒕𝒊𝒐𝒏𝒔, 𝒖𝒔𝒆 𝒕𝒉𝒆 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒃𝒆𝒍𝒐𝒘."
+      "alreadyRegistered": "You are already registered. If you need assistance, please contact an admin.",
+      "registrationSuccessful": "You have been successfully registered, %{username}! You can now start using all features of the bot.",
+      "titleAlreadyRegistered": "ALREADY REGISTERED",
+      "titleRegistrationSuccessful": "REGISTRATION SUCCESSFUL",
+      "footer": "If you need help or have questions, use the commands below."
     },
     "rulesMessages": {
-      "title": "𝐑𝐔𝐋𝐄𝐒",
-      "description": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒓𝒆𝒂𝒅 𝒂𝒏𝒅 𝒇𝒐𝒍𝒍𝒐𝒘 𝒕𝒉𝒆 𝒓𝒖𝒍𝒆𝒔 𝒃𝒆𝒍𝒐𝒘 𝒕𝒐 𝒆𝒏𝒔𝒖𝒓𝒆 𝒂 𝒔𝒎𝒐𝒐𝒕𝒉 𝒂𝒏𝒅 𝒆𝒏𝒋𝒐𝒚𝒂𝒃𝒍𝒆 𝒆𝒙𝒑𝒆𝒓𝒊𝒆𝒏𝒄𝒆 𝒇𝒐𝒓 𝒆𝒗𝒆𝒓𝒚𝒐𝒏𝒆:",
+      "title": "RULES",
+      "description": "Please read and follow the rules below to ensure a smooth and enjoyable experience for everyone:",
       "rules": [
         {
-          "name": "𝟏. 𝑹𝒆𝒔𝒑𝒆𝒄𝒕 𝑶𝒕𝒉𝒆𝒓𝒔",
-          "value": "𝑻𝒓𝒆𝒂𝒕 𝒆𝒗𝒆𝒓𝒚𝒐𝒏𝒆 𝒘𝒊𝒕𝒉 𝒓𝒆𝒔𝒑𝒆𝒄𝒕. 𝑯𝒂𝒓𝒂𝒔𝒔𝒎𝒆𝒏𝒕, 𝒂𝒃𝒖𝒔𝒆, 𝒂𝒏𝒅 𝒉𝒂𝒕𝒆 𝒔𝒑𝒆𝒆𝒄𝒉 𝒂𝒓𝒆 𝒏𝒐𝒕 𝒕𝒐𝒍𝒆𝒓𝒂𝒕𝒆𝒅."
+          "name": "1. Respect Others",
+          "value": "Treat everyone with respect. Harassment, abuse, and hate speech are not tolerated."
         },
         {
-          "name": "𝟐. 𝑵𝒐 𝑺𝒑𝒂𝒎𝒎𝒊𝒏𝒈",
-          "value": "𝑨𝒗𝒐𝒊𝒅 𝒔𝒑𝒂𝒎𝒎𝒊𝒏𝒈 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒐𝒓 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔 𝒊𝒏 𝒄𝒉𝒂𝒕. 𝑰𝒕 𝒅𝒊𝒔𝒓𝒖𝒑𝒕𝒔 𝒕𝒉𝒆 𝒆𝒙𝒑𝒆𝒓𝒊𝒆𝒏𝒄𝒆 𝒇𝒐𝒓 𝒐𝒕𝒉𝒆𝒓𝒔."
+          "name": "2. No Spamming",
+          "value": "Avoid spamming commands or messages in chat. It disrupts the experience for others."
         },
         {
-          "name": "𝟑. 𝑭𝒐𝒍𝒍𝒐𝒘 𝒕𝒉𝒆 𝑺𝒆𝒓𝒗𝒆𝒓 𝑹𝒖𝒍𝒆𝒔",
-          "value": "𝑰𝒏 𝒂𝒅𝒅𝒊𝒕𝒊𝒐𝒏 𝒕𝒐 𝒕𝒉𝒆𝒔𝒆 𝒃𝒐𝒕-𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒄 𝒓𝒖𝒍𝒆𝒔, 𝒆𝒏𝒔𝒖𝒓𝒆 𝒚𝒐𝒖 𝒂𝒍𝒔𝒐 𝒇𝒐𝒍𝒍𝒐𝒘 𝒕𝒉𝒆 𝒓𝒖𝒍𝒆𝒔 𝒐𝒇 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓 𝒚𝒐𝒖'𝒓𝒆 𝒊𝒏."
+          "name": "3. Follow the Server Rules",
+          "value": "In addition to these bot-specific rules, ensure you also follow the rules of the server you're in."
         },
         {
-          "name": "𝟒. 𝑨𝒑𝒑𝒓𝒐𝒑𝒓𝒊𝒂𝒕𝒆 𝑪𝒐𝒏𝒕𝒆𝒏𝒕",
-          "value": "𝑬𝒏𝒔𝒖𝒓𝒆 𝒕𝒉𝒂𝒕 𝒂𝒍𝒍 𝒄𝒐𝒏𝒕𝒆𝒏𝒕 𝒔𝒉𝒂𝒓𝒆𝒅 𝒐𝒓 𝒈𝒆𝒏𝒆𝒓𝒂𝒕𝒆𝒅 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒆 𝒃𝒐𝒕 𝒊𝒔 𝒂𝒑𝒑𝒓𝒐𝒑𝒓𝒊𝒂𝒕𝒆 𝒂𝒏𝒅 𝒂𝒅𝒉𝒆𝒓𝒆𝒔 𝒕𝒐 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓'𝒔 𝒈𝒖𝒊𝒅𝒆𝒍𝒊𝒏𝒆𝒔."
+          "name": "4. Appropriate Content",
+          "value": "Ensure that all content shared or generated using the bot is appropriate and adheres to the server's guidelines."
         },
         {
-          "name": "𝟓. 𝑹𝒆𝒑𝒐𝒓𝒕 𝑰𝒔𝒔𝒖𝒆𝒔",
-          "value": "𝑰𝒇 𝒚𝒐𝒖 𝒆𝒏𝒄𝒐𝒖𝒏𝒕𝒆𝒓 𝒂𝒏𝒚 𝒊𝒔𝒔𝒖𝒆𝒔 𝒐𝒓 𝒃𝒖𝒈𝒔 𝒘𝒊𝒕𝒉 𝒕𝒉𝒆 𝒃𝒐𝒕, 𝒓𝒆𝒑𝒐𝒓𝒕 𝒕𝒉𝒆𝒎 𝒕𝒐 𝒕𝒉𝒆 𝒃𝒐𝒕 𝒐𝒘𝒏𝒆𝒓 𝒐𝒓 𝒎𝒐𝒅𝒆𝒓𝒂𝒕𝒐𝒓𝒔."
+          "name": "5. Report Issues",
+          "value": "If you encounter any issues or bugs with the bot, report them to the bot owner or moderators."
         }
       ],
-      "footer": "𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒖𝒔𝒊𝒏𝒈 %{botName}!"
+      "footer": "Thank you for using %{botName}!"
     },
     "statsMessages": {
-      "title": "𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒",
-      "description": "𝑯𝒆𝒓𝒆 𝒂𝒓𝒆 𝒔𝒐𝒎𝒆 𝒊𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏:",
+      "title": "STATISTICS",
+      "description": "Here are some information:",
       "fields": {
-        "servers": "𝑺𝑬𝑹𝑽𝑬𝑹𝑺 {arrow} {guildCount}",
-        "users": "𝑼𝑺𝑬𝑹𝑺 {arrow} {userCount}",
-        "channels": "𝑪𝑯𝑨𝑵𝑵𝑬𝑳𝑺 {arrow} {channelCount}",
-        "uptime": "𝑼𝑷𝑻𝑰𝑴𝑬 {arrow} ***{days}*** 𝒅𝒂𝒚 ***{hours}*** 𝒉𝒐𝒖𝒓 ***{minutes}*** 𝒎𝒊𝒏𝒖𝒕𝒆𝒔"
+        "servers": "SERVERS {arrow} {guildCount}",
+        "users": "USERS {arrow} {userCount}",
+        "channels": "CHANNELS {arrow} {channelCount}",
+        "uptime": "UPTIME {arrow} ***{days}*** day ***{hours}*** hour ***{minutes}*** minutes"
       },
-      "footer": "𝑭𝒐𝒓 𝒎𝒐𝒓𝒆 𝒊𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏, 𝒄𝒍𝒊𝒄𝒌 𝒕𝒉𝒆 𝒃𝒖𝒕𝒕𝒐𝒏𝒔 𝒃𝒆𝒍𝒐𝒘."
+      "footer": "For more information, click the buttons below."
     }
   },
   "inventoryMessages": {
     "buyMessages": {
-      "invalidItem": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 𝒘𝒊𝒕𝒉 𝑰𝑫 *%{itemId}* 𝒘𝒂𝒔 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒉𝒆𝒄𝒌 𝒕𝒉𝒆 𝒔𝒉𝒐𝒑 𝒇𝒐𝒓 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒊𝒕𝒆𝒎𝒔.",
-      "themeAlreadyOwned": "𝒀𝒐𝒖 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒐𝒘𝒏 𝒕𝒉𝒆 𝒕𝒉𝒆𝒎𝒆 ***%{itemName}*** %{itemEmote}. 𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒃𝒖𝒚 𝒊𝒕 𝒂𝒈𝒂𝒊𝒏.",
-      "itemCannotBeBought": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 ***%{itemName}*** %{itemEmote} 𝒊𝒔 𝒏𝒐𝒕 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒇𝒐𝒓 𝒑𝒖𝒓𝒄𝒉𝒂𝒔𝒆.",
-      "notEnoughCoins": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 %{neededCoins} %{coinEmote} 𝒎𝒐𝒓𝒆 𝒕𝒐 𝒃𝒖𝒚 %{itemEmote} ***%{itemName}***.",
-      "success": "𝒔𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒑𝒖𝒓𝒄𝒉𝒂𝒔𝒆𝒅",
-      "partial": "𝒃𝒖𝒕 𝒚𝒐𝒖 𝒄𝒐𝒖𝒍𝒅 𝒐𝒏𝒍𝒚 𝒂𝒇𝒇𝒐𝒓𝒅",
-      "description": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 %{afford} %{itemEmote} ***%{itemName}*** 𝒇𝒐𝒓 ***%{totalPrice}*** %{coinEmote}.\n𝒀𝒐𝒖 𝒃𝒐𝒖𝒈𝒉𝒕 ***%{amountToBuy}*** 𝒊𝒕𝒆𝒎𝒔.",
-      "zeroBalance": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒏𝒐 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒎𝒂𝒌𝒆 𝒂 𝒑𝒖𝒓𝒄𝒉𝒂𝒔𝒆. 𝑬𝒂𝒓𝒏 𝒄𝒐𝒊𝒏𝒔 𝒇𝒊𝒓𝒔𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒃𝒖𝒚𝒊𝒏𝒈 𝒊𝒕𝒆𝒎𝒔."
+      "invalidItem": "The item with ID *%{itemId}* was not found. Please check the shop for available items.",
+      "themeAlreadyOwned": "You already own the theme ***%{itemName}*** %{itemEmote}. You cannot buy it again.",
+      "itemCannotBeBought": "The item ***%{itemName}*** %{itemEmote} is not available for purchase.",
+      "notEnoughCoins": "You need %{neededCoins} %{coinEmote} more to buy %{itemEmote} ***%{itemName}***.",
+      "success": "successfully purchased",
+      "partial": "but you could only afford",
+      "description": "You have %{afford} %{itemEmote} ***%{itemName}*** for ***%{totalPrice}*** %{coinEmote}.\nYou bought ***%{amountToBuy}*** items.",
+      "zeroBalance": "You have no coins to make a purchase. Earn coins first before buying items."
     },
     "drinkMessages": {
-      "emptyInventory": "𝒀𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚 𝒊𝒔 𝒆𝒎𝒑𝒕𝒚.",
-      "itemNotFound": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 𝒘𝒊𝒕𝒉 𝑰𝑫 `%{itemId}` 𝒘𝒂𝒔 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒉𝒆𝒄𝒌 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "cannotDrinkFood": "𝒀𝒐𝒖 𝒄𝒂𝒏'𝒕 𝒅𝒓𝒊𝒏𝒌 %{itemEmote} ***%{itemName}***. 𝑰𝒕'𝒔 𝒇𝒐𝒐𝒅!",
-      "notDrinkable": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 𝒚𝒐𝒖 𝒔𝒆𝒍𝒆𝒄𝒕𝒆𝒅 𝒊𝒔 𝒏𝒐𝒕 𝒅𝒓𝒊𝒏𝒌𝒂𝒃𝒍𝒆.",
-      "noDrinkItem": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒕𝒉𝒊𝒔 𝒅𝒓𝒊𝒏𝒌 𝒊𝒕𝒆𝒎 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "invalidAmount": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒆𝒏𝒕𝒆𝒓 𝒂 𝒑𝒐𝒔𝒊𝒕𝒊𝒗𝒆 𝒊𝒏𝒕𝒆𝒈𝒆𝒓 𝒗𝒂𝒍𝒖𝒆.",
-      "success": "𝒀𝒐𝒖 𝒅𝒓𝒂𝒏𝒌 %{itemEmote} ***𝒙%{itemAmount}*** %{itemName} 𝒂𝒏𝒅 𝒈𝒂𝒊𝒏𝒆𝒅 ***%{xpGained} 𝒙𝒑***."
+      "emptyInventory": "Your inventory is empty.",
+      "itemNotFound": "The item with ID `%{itemId}` was not found. Please check your inventory.",
+      "cannotDrinkFood": "You can't drink %{itemEmote} ***%{itemName}***. It's food!",
+      "notDrinkable": "The item you selected is not drinkable.",
+      "noDrinkItem": "You don't have this drink item in your inventory.",
+      "invalidAmount": "Invalid amount. Please enter a positive integer value.",
+      "success": "You drank %{itemEmote} ***x%{itemAmount}*** %{itemName} and gained ***%{xpGained} xp***."
     },
     "eatMessages": {
-      "emptyInventory": "𝒀𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚 𝒊𝒔 𝒆𝒎𝒑𝒕𝒚.",
-      "itemNotFound": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 𝒘𝒊𝒕𝒉 𝑰𝑫 `%{itemId}` 𝒘𝒂𝒔 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒉𝒆𝒄𝒌 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "cannotEatDrink": "𝒀𝒐𝒖 𝒄𝒂𝒏'𝒕 𝒆𝒂𝒕 %{itemEmote} ***%{itemName}***. 𝑰𝒕'𝒔 𝒂 𝒅𝒓𝒊𝒏𝒌!",
-      "notEdible": "𝑻𝒉𝒊𝒔 𝒊𝒕𝒆𝒎 𝒊𝒔 𝒏𝒐𝒕 𝒆𝒅𝒊𝒃𝒍𝒆.",
-      "noFoodItem": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒕𝒉𝒊𝒔 𝒇𝒐𝒐𝒅 𝒊𝒕𝒆𝒎 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "invalidAmount": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒆𝒏𝒕𝒆𝒓 𝒂 𝒑𝒐𝒔𝒊𝒕𝒊𝒗𝒆 𝒊𝒏𝒕𝒆𝒈𝒆𝒓 𝒗𝒂𝒍𝒖𝒆.",
-      "success": "𝒀𝒐𝒖 𝒂𝒕𝒆 %{itemEmote} ***𝒙%{itemAmount}*** %{itemName} 𝒂𝒏𝒅 𝒈𝒂𝒊𝒏𝒆𝒅 ***%{xpGained} 𝒙𝒑***."
+      "emptyInventory": "Your inventory is empty.",
+      "itemNotFound": "The item with ID `%{itemId}` was not found. Please check your inventory.",
+      "cannotEatDrink": "You can't eat %{itemEmote} ***%{itemName}***. It's a drink!",
+      "notEdible": "This item is not edible.",
+      "noFoodItem": "You don't have this food item in your inventory.",
+      "invalidAmount": "Invalid amount. Please enter a positive integer value.",
+      "success": "You ate %{itemEmote} ***x%{itemAmount}*** %{itemName} and gained ***%{xpGained} xp***."
     },
     "giveItemMessages": {
-      "emptyInventory": "𝒀𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚 𝒊𝒔 𝒆𝒎𝒑𝒕𝒚.",
-      "noUser": "𝑵𝒐 𝒖𝒔𝒆𝒓 𝒘𝒂𝒔 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒐𝒓 𝒇𝒐𝒖𝒏𝒅.",
-      "mentionToBot": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒈𝒊𝒗𝒆 𝒊𝒕𝒆𝒎𝒔 𝒕𝒐 𝒂 𝒃𝒐𝒕.",
-      "mentionToSelf": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒈𝒊𝒗𝒆 𝒊𝒕𝒆𝒎𝒔 𝒕𝒐 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-      "itemNotFound": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 𝒘𝒊𝒕𝒉 𝑰𝑫 `{{itemId}}` 𝒘𝒂𝒔 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅!",
-      "noItemInInventory": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 {{itemEmote}} ***{{itemName}}*** 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "itemNotGiftable": "{{itemEmote}} ***{{itemName}}*** 𝒄𝒂𝒏𝒏𝒐𝒕 𝒃𝒆 𝒈𝒊𝒗𝒆𝒏.",
-      "invalidAmount": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒂𝒎𝒐𝒖𝒏𝒕 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅.",
-      "confirmationTitle": "𝑮𝒊𝒗𝒆 𝑰𝒕𝒆𝒎 - {{author}}",
-      "confirmationDescription": "{{author}}, 𝒔𝒆𝒍𝒆𝒄𝒕 ***𝑨𝒄𝒄𝒆𝒑𝒕*** 𝒕𝒐 𝒑𝒓𝒐𝒄𝒆𝒆𝒅 𝒘𝒊𝒕𝒉 𝒕𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏 𝒐𝒓 ***𝑪𝒂𝒏𝒄𝒆𝒍*** 𝒕𝒐 𝒅𝒆𝒄𝒍𝒊𝒏𝒆.",
-      "sentItem": "𝑺𝒆𝒏𝒕 𝒊𝒕𝒆𝒎",
-      "receivedItem": "𝑹𝒆𝒄𝒆𝒊𝒗𝒆𝒅 𝒊𝒕𝒆𝒎",
-      "transactionSuccess": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒄𝒄𝒆𝒑𝒕𝒆𝒅 𝒕𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏. {{itemEmote}} ***`𝒙{{itemAmount}}`*** {{itemName}} 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓𝒓𝒆𝒅 𝒕𝒐 ***{{target}}***.",
-      "transactionCancelled": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒄𝒂𝒏𝒄𝒆𝒍𝒆𝒅 𝒕𝒉𝒆 𝒕𝒓𝒂𝒏𝒔𝒂𝒄𝒕𝒊𝒐𝒏. 𝑵𝒐 𝒊𝒕𝒆𝒎𝒔 𝒉𝒂𝒗𝒆 𝒃𝒆𝒆𝒏 𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓𝒓𝒆𝒅."
+      "emptyInventory": "Your inventory is empty.",
+      "noUser": "No user was mentioned or found.",
+      "mentionToBot": "You cannot give items to a bot.",
+      "mentionToSelf": "You cannot give items to yourself.",
+      "itemNotFound": "The item with ID `{{itemId}}` was not found!",
+      "noItemInInventory": "You don't have {{itemEmote}} ***{{itemName}}*** in your inventory.",
+      "itemNotGiftable": "{{itemEmote}} ***{{itemName}}*** cannot be given.",
+      "invalidAmount": "Invalid amount specified.",
+      "confirmationTitle": "Give Item - {{author}}",
+      "confirmationDescription": "{{author}}, select ***Accept*** to proceed with the transaction or ***Cancel*** to decline.",
+      "sentItem": "Sent item",
+      "receivedItem": "Received item",
+      "transactionSuccess": "You have accepted the transaction. {{itemEmote}} ***`x{{itemAmount}}`*** {{itemName}} has been transferred to ***{{target}}***.",
+      "transactionCancelled": "You have canceled the transaction. No items have been transferred."
     },
     "invMessages": {
-      "noInventory": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒂𝒏𝒚 𝒊𝒕𝒆𝒎𝒔 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "emptyInventoryFieldName": "𝑰𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚",
-      "emptyInventoryFieldValue": "𝒀𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚 𝒊𝒔 𝒄𝒖𝒓𝒓𝒆𝒏𝒕𝒍𝒚 𝒆𝒎𝒑𝒕𝒚.",
-      "inventoryNet": "𝑰𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚 𝑵𝒆𝒕",
-      "inventoryTitle": "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘",
-      "footerText": "𝑹𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝒃𝒚 {user}",
-      "error": "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚."
+      "noInventory": "You don't have any items in your inventory.",
+      "emptyInventoryFieldName": "Inventory",
+      "emptyInventoryFieldValue": "Your inventory is currently empty.",
+      "inventoryNet": "Inventory Net",
+      "inventoryTitle": "INVENTORY",
+      "footerText": "Requested by {user}",
+      "error": "An error occurred while retrieving your inventory."
     },
     "sellMessages": {
-      "inventoryEmpty": "𝒀𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚 𝒊𝒔 𝒆𝒎𝒑𝒕𝒚.",
-      "itemNotOwned": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 ***{item}*** 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "itemNotSellable": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 ***{item}*** 𝒊𝒔 𝒏𝒐𝒕 𝒔𝒆𝒍𝒍𝒂𝒃𝒍𝒆!",
-      "itemNotFound": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 𝒘𝒊𝒕𝒉 𝒊𝒅 ***{item}*** 𝒄𝒐𝒖𝒍𝒅𝒏'𝒕 𝒃𝒆 𝒇𝒐𝒖𝒏𝒅!",
-      "sellSuccess": "𝒀𝒐𝒖 𝒔𝒐𝒍𝒅 ***{quantity}*** ***{item}*** 𝒇𝒐𝒓 ***{price}*** 𝒄𝒐𝒊𝒏𝒔.",
-      "noSellableItems": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒂𝒏𝒚 𝒔𝒆𝒍𝒍𝒂𝒃𝒍𝒆 𝒊𝒕𝒆𝒎𝒔 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "cancelled": "𝑺𝒆𝒍𝒍 𝒄𝒂𝒏𝒄𝒆𝒍𝒆𝒅.",
-      "acceptSell": "𝒀𝒐𝒖 𝒔𝒐𝒍𝒅 𝒚𝒐𝒖𝒓 𝒊𝒕𝒆𝒎𝒔 𝒇𝒐𝒓 ***{price}*** 𝒄𝒐𝒊𝒏𝒔.",
-      "invalidQuantity": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒒𝒖𝒂𝒏𝒕𝒊𝒕𝒚 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅.",
-      "sellError": "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒑𝒓𝒐𝒄𝒆𝒔𝒔𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒔𝒆𝒍𝒍 𝒓𝒆𝒒𝒖𝒆𝒔𝒕.",
-      "itemSold": "𝒀𝒐𝒖 𝒔𝒐𝒍𝒅 {emoji} ***{quantity}*** {item} 𝒇𝒐𝒓 {coinEmoji} ***{price}*** 𝒄𝒐𝒊𝒏𝒔."
+      "inventoryEmpty": "Your inventory is empty.",
+      "itemNotOwned": "You don't have ***{item}*** in your inventory.",
+      "itemNotSellable": "The item ***{item}*** is not sellable!",
+      "itemNotFound": "The item with id ***{item}*** couldn't be found!",
+      "sellSuccess": "You sold ***{quantity}*** ***{item}*** for ***{price}*** coins.",
+      "noSellableItems": "You don't have any sellable items in your inventory.",
+      "cancelled": "Sell canceled.",
+      "acceptSell": "You sold your items for ***{price}*** coins.",
+      "invalidQuantity": "Invalid quantity specified.",
+      "sellError": "An error occurred while processing your sell request.",
+      "itemSold": "You sold {emoji} ***{quantity}*** {item} for {coinEmoji} ***{price}*** coins."
     },
     "shopMessages": {
-      "shopTitle": "𝐒𝐇𝐎𝐏",
-      "requestedBy": "𝑹𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝑩𝒚 %{user}",
-      "unknownItemId": "𝑼𝒏𝒌𝒏𝒐𝒘𝒏 𝑰𝑫",
-      "unnamedItem": "𝑼𝒏𝒏𝒂𝒎𝒆𝒅 𝑰𝒕𝒆𝒎",
-      "selectCategoryPlaceholder": "𝑺𝒆𝒍𝒆𝒄𝒕 𝒂 𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒚",
-      "selectItemPlaceholder": "𝑺𝒆𝒍𝒆𝒄𝒕 𝒂𝒏 𝑰𝒕𝒆𝒎",
-      "itemDetail": "𝐈𝐓𝐄𝐌 𝐃𝐄𝐓𝐀𝐈𝐋",
-      "noDescription": "𝑵𝒐 𝒅𝒆𝒔𝒄𝒓𝒊𝒑𝒕𝒊𝒐𝒏 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆",
-      "unknownType": "𝑼𝒏𝒌𝒏𝒐𝒘𝒏 𝑻𝒚𝒑𝒆"
+      "shopTitle": "SHOP",
+      "requestedBy": "Requested By %{user}",
+      "unknownItemId": "Unknown ID",
+      "unnamedItem": "Unnamed Item",
+      "selectCategoryPlaceholder": "Select a Category",
+      "selectItemPlaceholder": "Select an Item",
+      "itemDetail": "ITEM DETAIL",
+      "noDescription": "No description available",
+      "unknownType": "Unknown Type"
     },
     "shopInfoMessages": {
-      "itemNotFound": "𝑰𝒕𝒆𝒎 𝒘𝒊𝒕𝒉 𝑰𝑫 `{id}` 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "noItemsAvailable": "𝑵𝒐 𝒊𝒕𝒆𝒎𝒔 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒊𝒏 𝒕𝒉𝒆 𝒔𝒉𝒐𝒑.",
-      "noAdditionalCommands": "𝑵𝒐 𝒂𝒅𝒅𝒊𝒕𝒊𝒐𝒏𝒂𝒍 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒇𝒐𝒓 𝒕𝒉𝒊𝒔 𝒊𝒕𝒆𝒎.",
-      "itemDetailsHeader": "𝑰𝒕𝒆𝒎 𝑫𝒆𝒕𝒂𝒊𝒍𝒔",
-      "itemLimit": "𝑳𝒊𝒎𝒊𝒕",
-      "itemPrice": "𝑷𝒓𝒊𝒄𝒆",
-      "itemSellPrice": "𝑺𝒆𝒍𝒍 𝑷𝒓𝒊𝒄𝒆",
-      "itemDescription": "𝑫𝒆𝒔𝒄𝒓𝒊𝒑𝒕𝒊𝒐𝒏",
-      "shopItemListHeader": "𝑯𝒆𝒓𝒆 𝒊𝒔 𝒕𝒉𝒆 𝒍𝒊𝒔𝒕 𝒐𝒇 𝒂𝒍𝒍 𝒊𝒕𝒆𝒎𝒔 𝒔𝒐𝒓𝒕𝒆𝒅 𝒃𝒚 𝒕𝒚𝒑𝒆:",
-      "itemListFooter": "𝑼𝒔𝒆 `shopinfo <id>` 𝒕𝒐 𝒈𝒆𝒕 𝒎𝒐𝒓𝒆 𝒅𝒆𝒕𝒂𝒊𝒍𝒔 𝒂𝒃𝒐𝒖𝒕 𝒂𝒏 𝒊𝒕𝒆𝒎."
+      "itemNotFound": "Item with ID `{id}` not found.",
+      "noItemsAvailable": "No items available in the shop.",
+      "noAdditionalCommands": "No additional commands available for this item.",
+      "itemDetailsHeader": "Item Details",
+      "itemLimit": "Limit",
+      "itemPrice": "Price",
+      "itemSellPrice": "Sell Price",
+      "itemDescription": "Description",
+      "shopItemListHeader": "Here is the list of all items sorted by type:",
+      "itemListFooter": "Use `shopinfo <id>` to get more details about an item."
     },
     "useMessages": {
-      "themeID": "𝑻𝒉𝒆𝒎𝒆 𝒘𝒊𝒕𝒉 𝑰𝑫 *%{itemId}* 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "notOwned": "𝒀𝒐𝒖 𝒅𝒐 𝒏𝒐𝒕 𝒐𝒘𝒏 𝒕𝒉𝒆 𝒕𝒉𝒆𝒎𝒆 %{itemName}.",
-      "notInInventory": "𝑻𝒉𝒆 𝒊𝒕𝒆𝒎 *%{itemId}* 𝒊𝒔 𝒏𝒐𝒕 𝒊𝒏 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.",
-      "unavailable": "𝑻𝒉𝒆 𝒕𝒉𝒆𝒎𝒆 *%{itemName}* 𝒊𝒔 𝒏𝒐𝒕 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒇𝒐𝒓 𝒖𝒔𝒆.",
-      "applied": "𝑺𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒂𝒑𝒑𝒍𝒊𝒆𝒅 𝒕𝒉𝒆 %{type} %{itemEmote} ***%{itemName}***!",
-      "alreadyEquipped": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒖𝒔𝒊𝒏𝒈 %{itemEmote} ***%{itemName}***."
+      "themeID": "Theme with ID *%{itemId}* not found.",
+      "notOwned": "You do not own the theme %{itemName}.",
+      "notInInventory": "The item *%{itemId}* is not in your inventory.",
+      "unavailable": "The theme *%{itemName}* is not available for use.",
+      "applied": "Successfully applied the %{type} %{itemEmote} ***%{itemName}***!",
+      "alreadyEquipped": "You are already using %{itemEmote} ***%{itemName}***."
     }
   },
   "profileMessages": {
     "bioMessages": {
-      "usage": "𝑼𝒔𝒂𝒈𝒆:",
-      "resetSuccess": "𝑻𝒉𝒆 𝒃𝒊𝒐 𝒇𝒐𝒓 𝒚𝒐𝒖 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒓𝒆𝒔𝒆𝒕.",
-      "noBio": "𝑵𝒐 𝒃𝒊𝒐 𝒘𝒓𝒊𝒕𝒕𝒆𝒏.",
-      "provideText": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒃𝒊𝒐 𝒕𝒆𝒙𝒕 𝒐𝒓 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒔𝒖𝒃𝒄𝒐𝒎𝒎𝒂𝒏𝒅.",
-      "tooLong": "𝑻𝒉𝒆 𝒃𝒊𝒐 𝒄𝒂𝒏𝒏𝒐𝒕 𝒃𝒆 𝒍𝒐𝒏𝒈𝒆𝒓 𝒕𝒉𝒂𝒏 200 𝒄𝒉𝒂𝒓𝒂𝒄𝒕𝒆𝒓𝒔.",
-      "setSuccess": "𝑻𝒉𝒆 𝒃𝒊𝒐 𝒇𝒐𝒓 𝒚𝒐𝒖 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕."
+      "usage": "Usage:",
+      "resetSuccess": "The bio for you has been reset.",
+      "noBio": "No bio written.",
+      "provideText": "Please provide a bio text or a valid subcommand.",
+      "tooLong": "The bio cannot be longer than 200 characters.",
+      "setSuccess": "The bio for you has been set."
     },
     "bdMessages": {
-      "resetSuccess": "𝒀𝒐𝒖𝒓 𝒃𝒊𝒓𝒕𝒉𝒅𝒂𝒚 𝒂𝒏𝒅 𝒛𝒐𝒅𝒊𝒂𝒄 𝒔𝒊𝒈𝒏 𝒉𝒂𝒗𝒆 𝒃𝒆𝒆𝒏 𝒓𝒆𝒔𝒆𝒕.",
-      "noBirthday": "𝑵𝒐 𝒃𝒊𝒓𝒕𝒉𝒅𝒂𝒚 𝒔𝒆𝒕.",
-      "noZodiac": "𝑵𝒐 𝒛𝒐𝒅𝒊𝒂𝒄 𝒔𝒊𝒈𝒏 𝒔𝒆𝒕.",
-      "provideDate": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒅𝒂𝒕𝒆 𝒇𝒐𝒓 𝒚𝒐𝒖𝒓 𝒃𝒊𝒓𝒕𝒉𝒅𝒂𝒚 𝒐𝒓 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒔𝒖𝒃𝒄𝒐𝒎𝒎𝒂𝒏𝒅.",
-      "invalidDate": "𝑻𝒉𝒆 𝒅𝒂𝒕𝒆 𝒎𝒖𝒔𝒕 𝒃𝒆 𝒊𝒏 𝒐𝒏𝒆 𝒐𝒇 𝒕𝒉𝒆 𝒔𝒖𝒑𝒑𝒐𝒓𝒕𝒆𝒅 𝒇𝒐𝒓𝒎𝒂𝒕𝒔:",
-      "setSuccess": "𝒀𝒐𝒖𝒓 𝒃𝒊𝒓𝒕𝒉𝒅𝒂𝒚 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕 𝒕𝒐",
-      "zodiacSuccess": "𝒀𝒐𝒖𝒓 𝒛𝒐𝒅𝒊𝒂𝒄 𝒔𝒊𝒈𝒏 𝒊𝒔"
+      "resetSuccess": "Your birthday and zodiac sign have been reset.",
+      "noBirthday": "No birthday set.",
+      "noZodiac": "No zodiac sign set.",
+      "provideDate": "Please provide a valid date for your birthday or a valid subcommand.",
+      "invalidDate": "The date must be in one of the supported formats:",
+      "setSuccess": "Your birthday has been set to",
+      "zodiacSuccess": "Your zodiac sign is"
     },
     "genderMessages": {
-      "usage": "𝑼𝒔𝒂𝒈𝒆",
-      "resetSuccess": "𝒀𝒐𝒖𝒓 𝒈𝒆𝒏𝒅𝒆𝒓 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒓𝒆𝒔𝒆𝒕.",
-      "setSuccess": "𝒀𝒐𝒖𝒓 𝒈𝒆𝒏𝒅𝒆𝒓 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕 𝒕𝒐",
-      "current": "𝒀𝒐𝒖𝒓 𝒈𝒆𝒏𝒅𝒆𝒓 𝒊𝒔 𝒔𝒆𝒕 𝒕𝒐",
-      "notSpecified": "𝒀𝒐𝒖𝒓 𝒈𝒆𝒏𝒅𝒆𝒓 𝒊𝒔 𝒏𝒐𝒕 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅."
+      "usage": "Usage",
+      "resetSuccess": "Your gender has been reset.",
+      "setSuccess": "Your gender has been set to",
+      "current": "Your gender is set to",
+      "notSpecified": "Your gender is not specified."
     },
     "levelMessages": {
-      "generating": "𝑮𝒆𝒏𝒆𝒓𝒂𝒕𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒍𝒆𝒗𝒆𝒍...",
-      "userNotFound": "𝑼𝒔𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "levelText": "𝑳𝒆𝒗𝒆𝒍:",
-      "xpText": "𝑿𝑷:",
-      "error": "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒇𝒆𝒕𝒄𝒉𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒍𝒆𝒗𝒆𝒍."
+      "generating": "Generating your level...",
+      "userNotFound": "User not found.",
+      "levelText": "Level:",
+      "xpText": "XP:",
+      "error": "An error occurred while fetching your level."
     },
     "pfMessages": {
-      "loading": "𝑳𝒐𝒂𝒅𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒑𝒓𝒐𝒇𝒊𝒍𝒆...",
-      "userNotFound": "𝑼𝒔𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "privateProfile": "𝑻𝒉𝒊𝒔 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒊𝒔 𝒑𝒓𝒊𝒗𝒂𝒕𝒆.",
-      "defaultBio": "𝑻𝒉𝒊𝒔 𝒖𝒔𝒆𝒓 𝒉𝒂𝒔 𝒏𝒐𝒕 𝒔𝒆𝒕 𝒂 𝒃𝒊𝒐.",
-      "defaultBirthday": "𝑻𝒉𝒊𝒔 𝒖𝒔𝒆𝒓 𝒉𝒂𝒔 𝒏𝒐𝒕 𝒔𝒆𝒕 𝒂 𝒃𝒊𝒓𝒕𝒉𝒅𝒂𝒚.",
-      "genderText": "𝑮𝒆𝒏𝒅𝒆𝒓:",
-      "zodiacSignText": "𝒁𝒐𝒅𝒊𝒂𝒄 𝑺𝒊𝒈𝒏:",
-      "error": "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒓𝒆𝒕𝒓𝒊𝒆𝒗𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒅𝒂𝒕𝒂. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓.",
+      "loading": "Loading your profile...",
+      "userNotFound": "User not found.",
+      "privateProfile": "This profile is private.",
+      "defaultBio": "This user has not set a bio.",
+      "defaultBirthday": "This user has not set a birthday.",
+      "genderText": "Gender:",
+      "zodiacSignText": "Zodiac Sign:",
+      "error": "An error occurred while retrieving your data. Please try again later.",
       "socialMediaLinks": {
         "facebook": {
-          "notSet": "𝑻𝒉𝒊𝒔 𝒖𝒔𝒆𝒓 𝒉𝒂𝒔 𝒏𝒐𝒕 𝒔𝒆𝒕 𝒂 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝒍𝒊𝒏𝒌.",
-          "linkText": "𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌: [{name}]({link})"
+          "notSet": "This user has not set a Facebook link.",
+          "linkText": "Facebook: [{name}]({link})"
         },
         "instagram": {
-          "notSet": "𝑻𝒉𝒊𝒔 𝒖𝒔𝒆𝒓 𝒉𝒂𝒔 𝒏𝒐𝒕 𝒔𝒆𝒕 𝒂𝒏 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝒍𝒊𝒏𝒌.",
-          "linkText": "𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎: [{name}]({link})"
+          "notSet": "This user has not set an Instagram link.",
+          "linkText": "Instagram: [{name}]({link})"
         },
         "tiktok": {
-          "notSet": "𝑻𝒉𝒊𝒔 𝒖𝒔𝒆𝒓 𝒉𝒂𝒔 𝒏𝒐𝒕 𝒔𝒆𝒕 𝒂 𝑻𝒊𝒌𝒕𝒐𝒌 𝒍𝒊𝒏𝒌.",
-          "linkText": "𝑻𝒊𝒌𝒕𝒐𝒌: [{name}]({link})"
+          "notSet": "This user has not set a Tiktok link.",
+          "linkText": "Tiktok: [{name}]({link})"
         }
       },
-      "reactionSessionEnded": "𝑻𝒉𝒆 𝒓𝒆𝒂𝒄𝒕𝒊𝒐𝒏 𝒔𝒆𝒔𝒔𝒊𝒐𝒏 𝒉𝒂𝒔 𝒆𝒏𝒅𝒆𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒖𝒔𝒆 𝒕𝒉𝒆 𝒄𝒐𝒎𝒎𝒂𝒏𝒅 𝒂𝒈𝒂𝒊𝒏 𝒕𝒐 𝒗𝒊𝒆𝒘 𝒕𝒉𝒆 𝒑𝒓𝒐𝒇𝒊𝒍𝒆."
+      "reactionSessionEnded": "The reaction session has ended. Please use the command again to view the profile."
     },
     "userNameMessages": {
-      "name": "𝒀𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆 𝒊𝒔: ***%{username}***",
-      "noUsername": "𝑵𝒐 𝑼𝒔𝒆𝒓𝒏𝒂𝒎𝒆.",
-      "success": "𝒀𝒐𝒖𝒓 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕 𝒕𝒐: ***%{username}***",
+      "name": "Your current username is: ***%{username}***",
+      "noUsername": "No Username.",
+      "success": "Your username has been set to: ***%{username}***",
       "error": {
-        "long": "𝑻𝒉𝒆 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆 𝒄𝒂𝒏𝒏𝒐𝒕 𝒃𝒆 𝒍𝒐𝒏𝒈𝒆𝒓 𝒕𝒉𝒂𝒏 40 𝒄𝒉𝒂𝒓𝒂𝒄𝒕𝒆𝒓𝒔.",
-        "empty": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆."
+        "long": "The username cannot be longer than 40 characters.",
+        "empty": "Please provide a username."
       },
-      "reset": "𝒀𝒐𝒖𝒓 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒓𝒆𝒔𝒆𝒕 𝒕𝒐 𝒕𝒉𝒆 𝒅𝒆𝒇𝒂𝒖𝒍𝒕."
+      "reset": "Your username has been reset to the default."
     }
   },
   "relationshipMessages": {
     "success": {
-      "add": "𝑺𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒂𝒅𝒅𝒆𝒅 ***%{target}*** 𝒕𝒐 𝒚𝒐𝒖𝒓 𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑.",
-      "remove": "𝑺𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒓𝒆𝒎𝒐𝒗𝒆𝒅 ***%{target}*** 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑."
+      "add": "Successfully added ***%{target}*** to your relationship.",
+      "remove": "Successfully removed ***%{target}*** from your relationship."
     },
     "error": {
-      "selfMentioned": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒕𝒐 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇.",
-      "userNotMentioned": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒎𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑.",
-      "notRegistered": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒏𝒐𝒕 𝒓𝒆𝒈𝒊𝒔𝒕𝒆𝒓𝒆𝒅 𝒊𝒏 𝒕𝒉𝒆 𝒅𝒂𝒕𝒂𝒃𝒂𝒔𝒆.",
-      "targetNotRegistered": "𝑻𝒉𝒆 𝒖𝒔𝒆𝒓 𝒚𝒐𝒖 𝒂𝒓𝒆 𝒕𝒓𝒚𝒊𝒏𝒈 𝒕𝒐 𝒎𝒐𝒅𝒊𝒇𝒚 𝒊𝒔 𝒏𝒐𝒕 𝒓𝒆𝒈𝒊𝒔𝒕𝒆𝒓𝒆𝒅.",
-      "invalidType": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑 𝒕𝒚𝒑𝒆 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅.",
+      "selfMentioned": "You cannot mention to yourself.",
+      "userNotMentioned": "Please mention a user to manage your relationship.",
+      "notRegistered": "You are not registered in the database.",
+      "targetNotRegistered": "The user you are trying to modify is not registered.",
+      "invalidType": "Invalid relationship type specified.",
       "partner": {
         "error": {
-          "alreadyExists": "𝒀𝒐𝒖 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒗𝒆 𝒂 𝒑𝒂𝒓𝒕𝒏𝒆𝒓.",
-          "notFound": "𝑻𝒉𝒊𝒔 𝒖𝒔𝒆𝒓 𝒊𝒔 𝒏𝒐𝒕 𝒍𝒊𝒔𝒕𝒆𝒅 𝒂𝒔 𝒚𝒐𝒖𝒓 𝒑𝒂𝒓𝒕𝒏𝒆𝒓."
+          "alreadyExists": "You already have a partner.",
+          "notFound": "This user is not listed as your partner."
         }
       }
     }
   },
-  "socialMessages": {
-    "fbMessages": {
-      "userNotFound": "𝑼𝒔𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "settingsTitle": "𝑭𝒂𝒄𝒆𝒃𝒐𝑜𝒌 𝑺𝒆𝒕𝒕𝒊𝒏𝒈𝒔",
-      "invalidName": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝒏𝒂𝒎𝒆 (𝒖𝒑 𝒕𝒐 21 𝒄𝒉𝒂𝒓𝒂𝒄𝒕𝒆𝒓𝒔).",
-      "nameUpdated": "𝒀𝒐𝒖𝒓 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝒏𝒂𝒎𝒆 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕.",
-      "newName": "𝑵𝒆𝒘 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝑵𝒂𝒎𝒆",
-      "linkUpdated": "𝒀𝒐𝒖𝒓 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝒍𝒊𝒏𝒌 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕.",
-      "newLink": "𝑵𝒆𝒘 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝑳𝒊𝒏𝒌",
-      "invalidLink": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝒍𝒊𝒏𝒌.",
-      "helpTitle": "𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝑪𝒐𝒎𝒎𝒂𝒏𝒅 𝑯𝒆𝒍𝒑",
-      "helpDescription": "𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝒅𝒆𝒕𝒂𝒊𝒍𝒔 𝒘𝒊𝒕𝒉 𝒕𝒉𝒆 𝒇𝒐𝒍𝒍𝒐𝒘𝒊𝒏𝒈 𝒔𝒖𝒃𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔:",
-      "showDetails": "𝑺𝒉𝒐𝒘 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝑫𝒆𝒕𝒂𝒊𝒍𝒔",
-      "setName": "𝑺𝒆𝒕 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝑵𝒂𝒎𝒆",
-      "setLink": "𝑺𝒆𝒕 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝑳𝒊𝒏𝒌",
-      "commandHelp": "𝑪𝒐𝒎𝒎𝒂𝒏𝒅 𝑯𝒆𝒍𝒑",
-      "notSet": "𝑵𝒐𝒕 𝒔𝒆𝒕"
-    },
-    "igMessages": {
-      "userNotFound": "𝑼𝒔𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "settingsTitle": "𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝑺𝒆𝒕𝒕𝒊𝒏𝒈𝒔",
-      "invalidName": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝒏𝒂𝒎𝒆 (𝒖𝒑 𝒕𝒐 21 𝒄𝒉𝒂𝒓𝒂𝒄𝒕𝒆𝒓𝒔).",
-      "nameUpdated": "𝒀𝒐𝒖𝒓 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝒏𝒂𝒎𝒆 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕.",
-      "newName": "𝑵𝒆𝒘 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝑵𝒂𝒎𝒆",
-      "linkUpdated": "𝒀𝒐𝒖𝒓 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝒍𝒊𝒏𝒌 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕.",
-      "newLink": "𝑵𝒆𝒘 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝑳𝒊𝒏𝒌",
-      "invalidLink": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝒍𝒊𝒏𝒌.",
-      "helpTitle": "𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝑪𝒐𝒎𝒎𝒂𝒏𝒅 𝑯𝒆𝒍𝒑",
-      "helpDescription": "𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝒅𝒆𝒕𝒂𝒊𝒍𝒔 𝒘𝒊𝒕𝒉 𝒕𝒉𝒆 𝒇𝒐𝒍𝒍𝒐𝒘𝒊𝒏𝒈 𝒔𝒖𝒃𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔:",
-      "showDetails": "𝑺𝒉𝒐𝒘 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝑫𝒆𝒕𝒂𝒊𝒍𝒔",
-      "setName": "𝑺𝒆𝒕 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝑵𝒂𝒎𝒆",
-      "setLink": "𝑺𝒆𝒕 𝑰𝒏𝒔𝒕𝒂𝒈𝒓𝒂𝒎 𝑳𝒊𝒏𝒌",
-      "commandHelp": "𝑪𝒐𝒎𝒎𝒂𝒏𝒅 𝑯𝒆𝒍𝒑",
-      "notSet": "𝑵𝒐𝒕 𝒔𝒆𝒕"
-    },
-    "ttMessages": {
-      "userNotFound": "𝑼𝒔𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "settingsTitle": "𝑻𝒊𝒌𝑻𝒐𝒌 𝑺𝒆𝒕𝒕𝒊𝒏𝒈𝒔",
-      "invalidName": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝑻𝒊𝒌𝑻𝒐𝒌 𝒏𝒂𝒎𝒆 (𝒖𝒑 𝒕𝒐 21 𝒄𝒉𝒂𝒓𝒂𝒄𝒕𝒆𝒓𝒔).",
-      "nameUpdated": "𝒀𝒐𝒖𝒓 𝑻𝒊𝒌𝑻𝒐𝒌 𝒏𝒂𝒎𝒆 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕.",
-      "newName": "𝑵𝒆𝒘 𝑻𝒊𝒌𝑻𝒐𝒌 𝑵𝒂𝒎𝒆",
-      "linkUpdated": "𝒀𝒐𝒖𝒓 𝑻𝒊𝒌𝑻𝒐𝒌 𝒍𝒊𝒏𝒌 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕.",
-      "newLink": "𝑵𝒆𝒘 𝑻𝒊𝒌𝑻𝒐𝒌 𝑳𝒊𝒏𝒌",
-      "invalidLink": "𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝑻𝒊𝒌𝑻𝒐𝒌 𝒍𝒊𝒏𝒌.",
-      "helpTitle": "𝑻𝒊𝒌𝑻𝒐𝒌 𝑪𝒐𝒎𝒎𝒂𝒏𝒅 𝑯𝒆𝒍𝒑",
-      "helpDescription": "𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝑻𝒊𝒌𝑻𝒐𝒌 𝒅𝒆𝒕𝒂𝒊𝒍𝒔 𝒘𝒊𝒕𝒉 𝒕𝒉𝒆 𝒇𝒐𝒍𝒍𝒐𝒘𝒊𝒏𝒈 𝒔𝒖𝒃𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔:",
-      "showDetails": "𝑺𝒉𝒐𝒘 𝑻𝒊𝒌𝑻𝒐𝒌 𝑫𝒆𝒕𝒂𝒊𝒍𝒔",
-      "setName": "𝑺𝒆𝒕 𝑻𝒊𝒌𝑻𝒐𝒌 𝑵𝒂𝒎𝒆",
-      "setLink": "𝑺𝒆𝒕 𝑻𝒊𝒌𝑻𝒐𝒌 𝑳𝒊𝒏𝒌",
-      "commandHelp": "𝑪𝒐𝒎𝒎𝒂𝒏𝒅 𝑯𝒆𝒍𝒑",
-      "notSet": "𝑵𝒐𝒕 𝒔𝒆𝒕"
-    },
-    "smMessages": {
-      "userNotFound": "𝑼𝒔𝒆𝒓 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅.",
-      "title": "📱 𝑺𝒐𝒄𝒊𝒂𝒍 𝑴𝒆𝒅𝒊𝒂 𝑷𝒓𝒐𝒇𝒊𝒍𝒆𝒔",
-      "notSet": "𝑵𝒐𝒕 𝒔𝒆𝒕"
-    }
-  },
   "utilityMessages": {
     "avatarMessages": {
-      "noUserMentioned": "𝑵𝒐 𝒖𝒔𝒆𝒓 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅, 𝒑𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒔𝒐𝒎𝒆𝒐𝒏𝒆 𝒕𝒐 𝒗𝒊𝒆𝒘 𝒕𝒉𝒆𝒊𝒓 𝒂𝒗𝒂𝒕𝒂𝒓."
+      "noUserMentioned": "No user mentioned, please mention someone to view their avatar."
     },
     "bannerMessages": {
-      "noUserMentioned": "𝑵𝒐 𝒖𝒔𝒆𝒓 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏 𝒂 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒈𝒆𝒕 𝒕𝒉𝒆𝒊𝒓 𝒃𝒂𝒏𝒏𝒆𝒓.",
-      "noBannerFound": "𝑻𝒉𝒊𝒔 𝒖𝒔𝒆𝒓 𝒅𝒐𝒆𝒔 𝒏𝒐𝒕 𝒉𝒂𝒗𝒆 𝒂 𝒃𝒂𝒏𝒏𝒆𝒓 𝒔𝒆𝒕.",
-      "error": "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒇𝒆𝒕𝒄𝒉𝒊𝒏𝒈 𝒕𝒉𝒆 𝒃𝒂𝒏𝒏𝒆𝒓. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+      "noUserMentioned": "No user mentioned. Please mention a user to get their banner.",
+      "noBannerFound": "This user does not have a banner set.",
+      "error": "An error occurred while fetching the banner. Please try again later."
     },
     "emojiMessages": {
-      "emojiDescription": "𝑯𝒆𝒓𝒆 𝒊𝒔 𝒕𝒉𝒆 𝒊𝒎𝒂𝒈𝒆 𝒐𝒇 𝒕𝒉𝒆 𝒆𝒎𝒐𝒋𝒊:",
-      "invalidEmoji": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒆𝒎𝒐𝒋𝒊 𝒑𝒓𝒐𝒗𝒊𝒅𝒆𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒄𝒖𝒔𝒕𝒐𝒎 𝒆𝒎𝒐𝒋𝒊."
+      "emojiDescription": "Here is the image of the emoji:",
+      "invalidEmoji": "Invalid emoji provided. Please provide a valid custom emoji."
     },
     "iconMessages": {
-      "noIconAvailable": "𝑻𝒉𝒊𝒔 𝒔𝒆𝒓𝒗𝒆𝒓 𝒅𝒐𝒆𝒔 𝒏𝒐𝒕 𝒉𝒂𝒗𝒆 𝒂𝒏 𝒊𝒄𝒐𝒏 𝒔𝒆𝒕.",
-      "error": "𝑨𝒏 𝒆𝒓𝒓𝒐𝒓 𝒐𝒄𝒄𝒖𝒓𝒓𝒆𝒅 𝒘𝒉𝒊𝒍𝒆 𝒇𝒆𝒕𝒄𝒉𝒊𝒏𝒈 𝒕𝒉𝒆 𝒊𝒄𝒐𝒏. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓."
+      "noIconAvailable": "This server does not have an icon set.",
+      "error": "An error occurred while fetching the icon. Please try again later."
     },
     "languageMessages": {
-      "title": "𝑳𝑨𝑵𝑮𝑼𝑨𝑮𝑬 𝑺𝑬𝑻𝑻𝑰𝑵𝑮𝑺",
-      "languageSetTitle": "𝑳𝑨𝑵𝑮𝑼𝑨𝑮𝑬",
-      "languageSetDescription": "𝒀𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕 𝒕𝒐 ***%{language}***.",
-      "helpTitle": "𝑳𝑨𝑵𝑮𝑼𝑨𝑮𝑬 𝑯𝑬𝑳𝑷",
-      "helpDescription": "𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒔𝒆𝒕𝒕𝒊𝒏𝒈𝒔.",
-      "examples": "𝑬𝒙𝒂𝒎𝒑𝒍𝒆𝒔",
-      "exampleCommands": "• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒆𝒏\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒌𝒉\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒄𝒏\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒘\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒋𝒑\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒌𝒓\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒇𝒓\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒗𝒏\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒍𝒐",
-      "usage": "𝑼𝒔𝒂𝒈𝒆",
-      "usageCommands": "• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 - 𝑺𝒉𝒐𝒘𝒔 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒆𝒏 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑬𝒏𝒈𝒍𝒊𝒔𝒉\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒌𝒉 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑲𝒉𝒎𝒆𝒓\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒄𝒏 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑪𝒉𝒊𝒏𝒆𝒔𝒆 (𝑪𝑵)\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒘 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑪𝒉𝒊𝒏𝒆𝒔𝒆 (𝑻𝑾)\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒋𝒑 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑱𝒂𝒑𝒂𝒏𝒆𝒔𝒆\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒌𝒓 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑲𝒐𝒓𝒆𝒂𝒏\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒇𝒓 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑭𝒓𝒆𝒏𝒄𝒉\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒗𝒏 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑽𝒊𝒆𝒕𝒏𝒂𝒎𝒆𝒔𝒆\n• 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒍𝒐 - 𝑺𝒆𝒕𝒔 𝒚𝒐𝒖𝒓 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒕𝒐 𝑳𝒂𝒐",
-      "currentLanguageTitle": "𝑳𝑨𝑵𝑮𝑼𝑨𝑮𝑬",
-      "currentLanguageDescription": "𝒀𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒍𝒂𝒏𝒈𝒖𝒂𝒈𝒆 𝒊𝒔 ***%{language}***.",
-      "requestedBy": "𝑹𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝒃𝒚 %{username}"
+      "title": "LANGUAGE SETTINGS",
+      "languageSetTitle": "LANGUAGE",
+      "languageSetDescription": "Your language has been set to ***%{language}***.",
+      "helpTitle": "LANGUAGE HELP",
+      "helpDescription": "Manage your language settings.",
+      "examples": "Examples",
+      "exampleCommands": "• language\n• language en\n• language kh\n• language cn\n• language tw\n• language jp\n• language kr\n• language fr\n• language vn\n• language lo",
+      "usage": "Usage",
+      "usageCommands": "• language - Shows your current language\n• language en - Sets your language to English\n• language kh - Sets your language to Khmer\n• language cn - Sets your language to Chinese (CN)\n• language tw - Sets your language to Chinese (TW)\n• language jp - Sets your language to Japanese\n• language kr - Sets your language to Korean\n• language fr - Sets your language to French\n• language vn - Sets your language to Vietnamese\n• language lo - Sets your language to Lao",
+      "currentLanguageTitle": "LANGUAGE",
+      "currentLanguageDescription": "Your current language is ***%{language}***.",
+      "requestedBy": "Requested by %{username}"
     },
     "qrMessages": {
-      "title": "𝑸𝑹 𝑪𝒐𝒅𝒆 𝒇𝒐𝒓 %{currency}",
-      "description": "𝑯𝒆𝒓𝒆 𝒊𝒔 𝒕𝒉𝒆 𝑸𝑹 𝒄𝒐𝒅𝒆 𝒇𝒐𝒓 %{currency}:",
-      "invalidOption": "𝑰𝒏𝒗𝒂𝒍𝒊𝒅 𝒐𝒑𝒕𝒊𝒐𝒏! 𝑷𝒍𝒆𝒂𝒔𝒆 𝒖𝒔𝒆 '𝒌𝒉' 𝒐𝒓 '𝒖𝒔𝒅'."
+      "title": "QR Code for %{currency}",
+      "description": "Here is the QR code for %{currency}:",
+      "invalidOption": "Invalid option! Please use 'kh' or 'usd'."
     },
     "serverInfoMessages": {
-      "name": "𝑵𝒂𝒎𝒆",
-      "id": "𝑺𝒆𝒓𝒗𝒆𝒓 𝑰𝑫",
-      "owner": "𝑶𝒘𝒏𝒆𝒓",
-      "members": "𝑴𝒆𝒎𝒃𝒆𝒓𝒔",
-      "roles": "𝑹𝒐𝒍𝒆𝒔",
-      "created": "𝑪𝒓𝒆𝒂𝒕𝒆𝒅 𝑶𝒏"
-    },
-    "stickerMessages": {
-      "invalidSticker": "𝑻𝒉𝒆 𝒑𝒓𝒐𝒗𝒊𝒅𝒆𝒅 𝒔𝒕𝒊𝒄𝒌𝒆𝒓 𝒊𝒔 𝒏𝒐𝒕 𝒗𝒂𝒍𝒊𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒘𝒊𝒕𝒉 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒔𝒕𝒊𝒄𝒌𝒆𝒓 𝒇𝒓𝒐𝒎 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓.",
-      "stickerDescription": "𝑯𝒆𝒓𝒆 𝒊𝒔 𝒕𝒉𝒆 𝒊𝒎𝒂𝒈𝒆 𝒐𝒇 𝒕𝒉𝒆 𝒔𝒆𝒍𝒆𝒄𝒕𝒆𝒅 𝒔𝒕𝒊𝒄𝒌𝒆𝒓:"
+      "name": "Name",
+      "id": "Server ID",
+      "owner": "Owner",
+      "members": "Members",
+      "roles": "Roles",
+      "created": "Created On"
     },
     "themeMessages": {
-      "setThemeMessage": "𝒀𝒐𝒖𝒓 𝒕𝒉𝒆𝒎𝒆 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒔𝒆𝒕 𝒕𝒐 ***%{theme}***.",
-      "currentThemeMessage": "𝒀𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒕𝒉𝒆𝒎𝒆 𝒊𝒔 ***%{theme}***.",
-      "helpTitle": "𝑻𝒉𝒆𝒎𝒆 𝑯𝒆𝒍𝒑",
-      "helpDescription": "𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝒕𝒉𝒆𝒎𝒆 𝒔𝒆𝒕𝒕𝒊𝒏𝒈𝒔.",
-      "examplesLabel": "𝑬𝒙𝒂𝒎𝒑𝒍𝒆𝒔",
-      "usageLabel": "𝑼𝒔𝒂𝒈𝒆"
+      "setThemeMessage": "Your theme has been set to ***%{theme}***.",
+      "currentThemeMessage": "Your current theme is ***%{theme}***.",
+      "helpTitle": "Theme Help",
+      "helpDescription": "Manage your theme settings.",
+      "examplesLabel": "Examples",
+      "usageLabel": "Usage"
     },
     "userInfoMessages": {
-      "username": "𝑼𝒔𝒆𝒓𝒏𝒂𝒎𝒆",
-      "userId": "𝑼𝒔𝒆𝒓 𝑰𝑫",
-      "joinedServer": "𝑱𝒐𝒊𝒏𝒆𝒅 𝑺𝒆𝒓𝒗𝒆𝒓",
-      "accountCreated": "𝑨𝒄𝒄𝒐𝒖𝒏𝒕 𝑪𝒓𝒆𝒂𝒕𝒆𝒅",
-      "roles": "𝑹𝒐𝒍𝒆𝒔",
-      "noRoles": "𝑵𝒐𝒏𝒆"
+      "username": "Username",
+      "userId": "User ID",
+      "joinedServer": "Joined Server",
+      "accountCreated": "Account Created",
+      "roles": "Roles",
+      "noRoles": "None"
     },
     "verifyMessages": {
-      "noAccount": "𝒀𝒐𝒖 𝒅𝒐 𝒏𝒐𝒕 𝒉𝒂𝒗𝒆 𝒂𝒏 𝒂𝒄𝒄𝒐𝒖𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒓𝒆𝒈𝒊𝒔𝒕𝒆𝒓 𝒇𝒊𝒓𝒔𝒕.",
-      "alreadyVerified": "𝒀𝒐𝒖 𝒂𝒓𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒗𝒆𝒓𝒊𝒇𝒊𝒆𝒅.",
-      "confirmButtonLabel": "𝑪𝒐𝒏𝒇𝒊𝒓𝒎",
-      "cancelButtonLabel": "𝑪𝒂𝒏𝒄𝒆𝒍",
-      "title": "𝑽𝒆𝒓𝒊𝒇𝒚 𝑨𝒄𝒄𝒐𝒖𝒏𝒕",
-      "confirmationMessage": "𝑨𝒓𝒆 𝒚𝒐𝒖 𝒔𝒖𝒓𝒆 𝒚𝒐𝒖 𝒘𝒂𝒏𝒕 𝒕𝒐 𝒗𝒆𝒓𝒊𝒇𝒚 𝒘𝒊𝒕𝒉 ***𝑷𝑬𝑨𝑪𝑯𝒀***?",
-      "paymentInfo": "𝑻𝒐 𝒗𝒆𝒓𝒊𝒇𝒚, 𝒚𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒑𝒂𝒚 ***$0.99/𝒎𝒐𝒏𝒕𝒉***.",
-      "benefitsTitle": "***𝑩𝒆𝒏𝒆𝒇𝒊𝒕𝒔***",
-      "benefits": "• 𝑹𝒐𝒍𝒆 𝒗𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝒊𝒏 𝒐𝒖𝒓 𝒔𝒆𝒓𝒗𝒆𝒓\n• 𝑮𝒆𝒕 𝒂𝒏 𝒆𝒎𝒐𝒋𝒊 𝒘𝒉𝒊𝒍𝒆 𝒑𝒍𝒂𝒚𝒊𝒏𝒈 𝒕𝒉𝒆 𝒃𝒐𝒕\n• 𝑨𝒅𝒅 20% 𝒕𝒐 𝒂𝒍𝒍 𝒓𝒆𝒘𝒂𝒓𝒅𝒔 𝒘𝒉𝒆𝒏 𝒄𝒍𝒂𝒊𝒎𝒊𝒏𝒈",
-      "requestedBy": "𝑹𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝑩𝒚",
-      "verificationRequest": "𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝑹𝒆𝒒𝒖𝒆𝒔𝒕",
-      "verificationMessage": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒓𝒆𝒒𝒖𝒆𝒔𝒕𝒆𝒅 𝒕𝒐 𝒗𝒆𝒓𝒊𝒇𝒚 𝒘𝒊𝒕𝒉 PEACHY.",
-      "clickToSubmit": "𝑪𝒍𝒊𝒄𝒌 𝑩𝒖𝒕𝒕𝒐𝒏 𝑺𝒖𝒃𝒎𝒊𝒕 𝒇𝒐𝒓 𝒗𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝒄𝒐𝒅𝒆",
-      "waitingMessage": "𝑰𝒇 𝒚𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒑𝒂𝒊𝒅, 𝒑𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕 𝒂 𝒎𝒐𝒎𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒔𝒆𝒏𝒅 𝒂𝒏 𝒊𝒎𝒂𝒈𝒆 𝒕𝒐 <@966688007493140591>",
-      "submitButtonLabel": "𝑺𝒖𝒃𝒎𝒊𝒕",
-      "thankYou": "𝑻𝒉𝒂𝒏𝒌 𝒀𝒐𝒖!",
-      "modalTitle": "𝑰𝒏𝒑𝒖𝒕 𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝑪𝒐𝒅𝒆",
-      "inputLabel": "𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝑪𝒐𝒅𝒆:",
-      "inputPlaceholder": "𝑬𝒏𝒕𝒆𝒓 𝒚𝒐𝒖𝒓 𝒗𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝒄𝒐𝒅𝒆 𝒉𝒆𝒓𝒆",
-      "verificationSuccess": "𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒔𝒖𝒑𝒑𝒐𝒓𝒕𝒊𝒏𝒈 𝒂𝒏𝒅 𝒗𝒆𝒓𝒊𝒇𝒚𝒊𝒏𝒈 𝒘𝒊𝒕𝒉 𝑷𝑬𝑨𝑪𝑯𝒀!",
-      "verificationSuccessTitle": "𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝑺𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍",
-      "thankYouForVerifying": "𝑻𝒉𝒂𝒏𝒌 𝒚𝒐𝒖 𝒇𝒐𝒓 𝒔𝒖𝒑𝒑𝒐𝒓𝒕𝒊𝒏𝒈 𝒂𝒏𝒅 𝒗𝒆𝒓𝒊𝒇𝒚𝒊𝒏𝒈!",
-      "verificationComplete": "𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝒄𝒐𝒎𝒑𝒍𝒆𝒕𝒆.",
-      "verificationFailed": "𝑽𝒆𝒓𝒊𝒇𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝒇𝒂𝒊𝒍𝒆𝒅 𝒐𝒓 𝒕𝒉𝒆 𝒄𝒐𝒅𝒆 𝒊𝒔 𝒊𝒏𝒄𝒐𝒓𝒓𝒆𝒄𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏.",
-      "noResponseReceived": "𝑵𝒐 𝒓𝒆𝒔𝒑𝒐𝒏𝒔𝒆 𝒓𝒆𝒄𝒆𝒊𝒗𝒆𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏."
-    }
-  },
-  "workMessages": {
-    "applyJobMessages": {
-      "invalidPosition": "𝑻𝒉𝒊𝒔 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏 𝒊𝒔 𝒊𝒏𝒗𝒶𝒍𝒊𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒉𝒐𝒐𝒔𝒆 𝒂 𝒗𝒶𝒍𝒊𝒅 𝒋𝒐𝒃 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏.",
-      "alreadyApplied": "𝒀𝒐𝒖 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒉𝒂𝒗𝒆 𝒂𝒏 𝒂𝒄𝒕𝒊𝒗𝒆 𝒂𝒑𝒑𝒍𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝒐𝒓 𝒋𝒐𝒃.\n𝒀𝒐𝒖 𝒄𝒂𝒏'𝒕 𝒂𝒑𝒑𝒍𝒚 𝒇𝒐𝒓 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒋𝒐𝒃 𝒓𝒊𝒈𝒉𝒕 𝒏𝒐𝒘.",
-      "jobUnavailable": "𝑻𝒉𝒊𝒔 𝒋𝒐𝒃 𝒊𝒔 𝒄𝒖𝒓𝒓𝒆𝒏𝒕𝒍𝒚 𝒖𝒏𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒄𝒉𝒐𝒐𝒔𝒆 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏 𝒐𝒓 𝒕𝒓𝒚 𝒂𝒈𝒂𝒊𝒏 𝒍𝒂𝒕𝒆𝒓.",
-      "jobNotFound": "𝑱𝒐𝒃 𝒏𝒐𝒕 𝒇𝒐𝒖𝒏𝒅. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒂𝒑𝒑𝒍𝒚 𝒇𝒐𝒓 𝒂 𝒋𝒐𝒃 𝒇𝒊𝒓𝒔𝒕.",
-      "autoApproved": "𝒀𝒐𝒖𝒓 𝒂𝒑𝒑𝒍𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝒇𝒐𝒓 𝒕𝒉𝒆 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏 𝒐𝒇 ***%{position}*** 𝒉𝒂𝒔 𝒃𝒆𝒆𝒏 𝒂𝒖𝒕𝒐-𝒂𝒑𝒑𝒓𝒐𝒗𝒆𝒅 𝒂𝒔 𝒐𝒇 ***%{approvedDate}***. 𝑾𝒆𝒍𝒄𝒐𝒎𝒆 𝒂𝒃𝒐𝒂𝒓𝒅!",
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒔𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒂𝒑𝒑𝒍𝒊𝒆𝒅 𝒇𝒐𝒓 𝒕𝒉𝒆 ***%{position}*** 𝒋𝒐𝒃! 𝒀𝒐𝒖𝒓 𝒂𝒑𝒑𝒍𝒊𝒄𝒂𝒕𝒊𝒐𝒏 𝒅𝒂𝒕𝒆 𝒊𝒔 ***%{applyDate}***."
-    },
-    "positionMessages": {
-      "applyingJob": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒑𝒑𝒍𝒊𝒆𝒅 𝒕𝒐 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏: ***%{position}*** 𝒃𝒖𝒕 𝒏𝒐𝒕 𝒚𝒆𝒕 𝒂𝒑𝒑𝒓𝒐𝒗𝒆𝒅.\n𝒑𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕.",
-      "noJob": "𝒀𝒐𝒖 𝒅𝒐𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒂 𝒋𝒐𝒃 𝒚𝒆𝒕. 𝑨𝒑𝒑𝒍𝒚 𝒇𝒐𝒓 𝒐𝒏𝒆 𝒇𝒊𝒓𝒔𝒕 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒆 `applyjob` 𝒄𝒐𝒎𝒎𝒂𝒏𝒙."
-    },
-    "studentMessages": {
-      "cooldown": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒘𝒂𝒊𝒕 *%{hours}*𝒉 *%{minutes}*𝒎 *%{seconds}*𝒔 𝒃𝒆𝒇𝒐𝒓𝒆 𝒄𝒍𝒂𝒊𝒎𝒊𝒏𝒈 𝒚𝒐𝒖𝒓 𝒔𝒕𝒖𝒅𝒆𝒏𝒕 𝒓𝒆𝒘𝒂𝒓𝒅 𝒂𝒈𝒂𝒊𝒏!",
-      "success": "%{coinEmote} 𝒀𝒐𝒖 𝒆𝒂𝒓𝒏𝒆𝒅 ***+%{coin}*** 𝒄𝒐𝒊𝒏𝒔!\n%{expEmote} 𝒀𝒐𝒖 𝒈𝒂𝒊𝒏𝒆𝒅 ***+%{exp}*** 𝒆𝒙𝒑𝒆𝒓𝒊𝒆𝒏𝒄𝒆!"
-    },
-    "robMessages": {
-      "invalidTarget": "𝒀𝒐𝒖 𝒎𝒖𝒔𝒕 𝒔𝒑𝒆𝒄𝒊𝒇𝒚 𝒂 𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓 𝒕𝒐 𝒓𝒐𝒃!",
-      "cannotRobAsPolice": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒓𝒐𝒃 𝒐𝒕𝒉𝒆𝒓𝒔 𝒘𝒉𝒊𝒍𝒆 𝒚𝒐𝒖 𝒂𝒓𝒆 𝒂 𝒑𝒐𝒍𝒊𝒄𝒆 𝒐𝒇𝒇𝒊𝒄𝒆𝒓!",
-      "protectedByPolice": "𝒀𝒐𝒖 𝒄𝒂𝒏'𝒕 𝒓𝒐𝒃 *%{victim}*, 𝒕𝒉𝒆𝒚 𝒂𝒓𝒆 𝒑𝒓𝒐𝒕𝒆𝒄𝒕𝒆𝒅 𝒃𝒚 𝒕𝒉𝒆 𝒑𝒐𝒍𝒊𝒄𝒆!",
-      "notEnoughCoins": "*%{victim}* 𝒅𝒐𝒆𝒔𝒏'𝒕 𝒉𝒂𝒗𝒆 𝒆𝒏𝒐𝒖𝒈𝒉 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒃𝒆 𝒘𝒐𝒓𝒕𝒉 𝒓𝒐𝒃𝒃𝒊𝒏𝒈.",
-      "cooldown": "𝒀𝒐𝒖 𝒏𝒆𝒆𝒅 𝒕𝒐 𝒘𝒂𝒊𝒕 *%{minutes}* 𝒎𝒊𝒏𝒖𝒕𝒆𝒔 𝒂𝒏𝒅 *%{seconds}* 𝒔𝒆𝒄𝒐𝒏𝒅𝒔 𝒃𝒆𝒇𝒐𝒓𝒆 𝒚𝒐𝒖 𝒄𝒂𝒏 𝒂𝒕𝒕𝒆𝒎𝒑𝒕 𝒕𝒐 𝒓𝒐𝒃 𝒂𝒈𝒂𝒊𝒏.",
-      "failed": "𝒀𝒐𝒖 𝒇𝒂𝒊𝒍𝒆𝒅 𝒕𝒐 𝒓𝒐𝒃 *%{victim}* 𝒂𝒏𝒅 𝒍𝒐𝒔𝒕 *%{penalty}* 𝒄𝒐𝒊𝒏𝒔 𝒂𝒔 𝒂 𝒑𝒆𝒏𝒂𝒍𝒕𝒚.",
-      "success": "𝒀𝒐𝒖 𝒔𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒓𝒐𝒃𝒃𝒆𝒅 ***%{victim}*** 𝒂𝒏𝒅 𝒔𝒕𝒐𝒍𝒆 ***%{stolenAmount}*** 𝒄𝒐𝒊𝒏𝒔!"
-    },
-    "policeMessages": {
-      "invalidTarget": "𝒀𝒐𝒖 𝒄𝒂𝒏𝒏𝒐𝒕 𝒄𝒂𝒕𝒄𝒉 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇 𝒐𝒓 𝒂𝒏 𝒊𝒏𝒗𝒂𝒍𝒊𝒅 𝒖𝒔𝒆𝒓.",
-      "notPolice": "𝑶𝒏𝒍𝒚 𝒖𝒔𝒆𝒓𝒔 𝒘𝒊𝒕𝒉 𝒕𝒉𝒆 '𝒑𝒐𝒍𝒊𝒄𝒆' 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏 𝒄𝒂𝒏 𝒄𝒂𝒕𝒄𝒉 𝒕𝒉𝒊𝒆𝒗𝒆𝒔.",
-      "noRobberyToCatch": "𝑻𝒉𝒊𝒔 𝒖𝒔𝒆𝒓 𝒉𝒂𝒔 𝒏𝒐𝒕 𝒓𝒐𝒃𝒃𝒆𝒅 𝒂𝒏𝒚𝒐𝒏𝒆 𝒓𝒆𝒄𝒆𝒏𝒕𝒍𝒚.",
-      "success": "𝑺𝒖𝒄𝒄𝒆𝒔𝒔! 𝒀𝒐𝒖 𝒄𝒂𝒖𝒈𝒉𝒕 ***%{thief}*** 𝒂𝒏𝒅 𝒔𝒆𝒊𝒛𝒆𝒅 ***%{stolenAmount}*** 𝒄𝒐𝒊𝒏𝒔.\n𝒀𝒐𝒖 𝒓𝒆𝒄𝒆𝒊𝒗𝒆 ***%{policeReward}*** 𝒄𝒐𝒊𝒏𝒔 𝒂𝒔 𝒂 𝒓𝒆𝒘𝒂𝒓𝒅.",
-      "failed": "𝒀𝒐𝒖 𝒇𝒂𝒊𝒍𝒆𝒅 𝒕𝒐 𝒄𝒂𝒕𝒄𝒉 ***%{thief}*** 𝒂𝒏𝒅 𝒉𝒂𝒗𝒆 𝒃𝒆𝒆𝒏 𝒑𝒆𝒏𝒂𝒍𝒊𝒛𝒆𝒅. 𝒀𝒐𝒖 𝒍𝒐𝒔𝒆 ***%{penalty}*** 𝒄𝒐𝒊𝒏𝒔.",
-      "cooldown": "𝒀𝒐𝒖 𝒎𝒖𝒔𝒕 𝒘𝒂𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒂𝒕𝒕𝒆𝒎𝒑𝒕𝒊𝒏𝒈 𝒕𝒐 𝒄𝒂𝒕𝒄𝒉 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒕𝒉𝒊𝒆𝒇."
-    },
-    "resignJobMessages": {
-      "noJobToResign": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒏𝒐𝒕 𝒂𝒑𝒑𝒍𝒊𝒆𝒅 𝒇𝒐𝒓 𝒂𝒏𝒚 𝒋𝒐𝒃 𝒚𝒆𝒕, 𝒔𝒐 𝒕𝒉𝒆𝒓𝒆'𝒔 𝒏𝒐𝒕𝒉𝒊𝒏𝒈 𝒕𝒐 𝒓𝒆𝒔𝒊𝒈𝒏 𝒇𝒓𝒐𝒎.",
-      "success": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒔𝒖𝒄𝒄𝒆𝒔𝒔𝒇𝒖𝒍𝒍𝒚 𝒓𝒆𝒔𝒊𝒈𝒏𝒆𝒅 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒋𝒐𝒃. 𝒀𝒐𝒖 𝒂𝒓𝒆 𝒏𝒐 𝒍𝒐𝒏𝒈𝒆𝒓 𝒂𝒔𝒔𝒐𝒄𝒊𝒂𝒕𝒆𝒅 𝒘𝒊𝒕𝒉 𝒂𝒏𝒚 𝒋𝒐𝒃 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏.",
-      "alreadyResigned": "𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒓𝒆𝒔𝒊𝒈𝒏𝒆𝒅 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒋𝒐𝒃, 𝒐𝒓 𝒚𝒐𝒖 𝒉𝒂𝒗𝒆𝒏'𝒕 𝒃𝒆𝒆𝒏 𝒂𝒑𝒑𝒓𝒐𝒗𝒆𝒅 𝒚𝒆𝒕."
+      "noAccount": "You do not have an account. Please register first.",
+      "alreadyVerified": "You are already verified.",
+      "confirmButtonLabel": "Confirm",
+      "cancelButtonLabel": "Cancel",
+      "title": "Verify Account",
+      "confirmationMessage": "Are you sure you want to verify with ***PEACHY***?",
+      "paymentInfo": "To verify, you need to pay ***$0.99/month***.",
+      "benefitsTitle": "***Benefits***",
+      "benefits": "• Role verification in our server\n• Get an emoji while playing the bot\n• Add 20% to all rewards when claiming",
+      "requestedBy": "Requested By",
+      "verificationRequest": "Verification Request",
+      "verificationMessage": "You have requested to verify with PEACHY.",
+      "clickToSubmit": "Click Button Submit for verification code",
+      "waitingMessage": "If you have already paid, please wait a moment. Please send an image to <@966688007493140591>",
+      "submitButtonLabel": "Submit",
+      "thankYou": "Thank You!",
+      "modalTitle": "Input Verification Code",
+      "inputLabel": "Verification Code:",
+      "inputPlaceholder": "Enter your verification code here",
+      "verificationSuccess": "Thank you for supporting and verifying with PEACHY!",
+      "verificationSuccessTitle": "Verification Successful",
+      "thankYouForVerifying": "Thank you for supporting and verifying!",
+      "verificationComplete": "Verification complete.",
+      "verificationFailed": "Verification failed or the code is incorrect. Please try again.",
+      "noResponseReceived": "No response received. Please try again."
     }
   }
 }
