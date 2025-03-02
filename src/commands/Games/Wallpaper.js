@@ -15,9 +15,9 @@ module.exports = class Wallpaper extends Command {
         examples: ["wallpaper"],
         usage: "wallpaper",
       },
-      cooldown: 5,
-      category: "fun",
+      category: "games",
       aliases: ["wp"],
+      cooldown: 5,
       args: false,
       permissions: {
         dev: false,

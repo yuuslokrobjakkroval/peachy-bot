@@ -10,7 +10,7 @@ module.exports = class Post extends Command {
                 examples: ['post Hello, world!'],
                 usage: 'post <message>',
             },
-            category: 'fun',
+            category: 'games',
             aliases: ['message'],
             cooldown: 5,
             args: true,

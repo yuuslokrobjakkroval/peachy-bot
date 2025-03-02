@@ -10,7 +10,7 @@ module.exports = class Ship extends Command {
                 examples: ['guess @user1 @user2'],
                 usage: 'guess <user1> <user2>',
             },
-            category: 'fun',
+            category: 'games',
             aliases: [],
             cooldown: 5,
             args: true,

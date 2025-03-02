@@ -49,7 +49,6 @@ module.exports = class Help extends Command {
       "bank",
       "economy",
       "emotes",
-      "fun",
       "gambling",
       "games",
       "giveaways",
@@ -60,7 +59,6 @@ module.exports = class Help extends Command {
       "social",
       "relationship",
       "utility",
-      "work",
     ];
     const commands = client.commands.filter(
       (cmd) => !adminCategory.includes(cmd.category)

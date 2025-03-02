@@ -23,44 +23,20 @@ const emojis = require("../emojis");
 const emojiPeach = require("../theme/Peach/emojis");
 const emojiGoma = require("../theme/Goma/emojis");
 
-// NORMAL
-const emojiOcean = require("../theme/OceanBreeze/emojis");
-const emojiHalloween = require("../theme/Halloween/emojis");
-const emojiHalloweenNew = require("../theme/Halloween/emojisNew");
-const emojiChristmas = require("../theme/Christmas/emojis");
-const emojiFestiveFrost = require("../theme/FestiveFrost/emojis");
-const emojiMysticRealm = require("../theme/MySticRealm/emojis");
-const emojiLunaLegend = require("../theme/LunarLegends/emojis");
-
-// SPECIAL
+// THEME
 const emojiHeaven = require("../theme/CelestialGrace/emojis");
 const emojiSakura = require("../theme/SakuraSerenity/emojis");
-const emojiBee = require("../theme/BuzzingBliss/emojis");
 const emojiFroggy = require("../theme/Froggy/emojis");
-const emojiSleepyPeach = require("../theme/ASleepyPeach/emojis");
 const emojiMagicalForest = require("../theme/MagicalForest/emojis");
 const emojiMatchaLatte = require("../theme/Matchalatte/emojis");
 const emojiDarkAcademia = require("../theme/DarkAcademia/emojis");
 const emojiSpringBear = require("../theme/SpringBear/emojis");
 const emojiFantasy = require("../theme/FantasyRpg/emojis");
-const emojiCozySummer = require("../theme/CozySummer/emojis");
 
 // SUPPORT
-const emojiSpiderMan = require("../theme/SpiderMan/emojis");
-const emojiCucumber = require("../theme/Cucumber/emojis");
-const emojiCappuccino = require("../theme/Cappuccino/emojis");
-const emojiNithGojo = require("../theme/NithGoJo/emojis");
-const emojiQuirkyQuackers = require("../theme/QuirkyQuackers/emojis");
 const emojiKeoYuu = require("../theme/KeoYuu/emojis");
-const emojiYuna = require("../theme/Yuna/emojis");
-const emojiYunaYuna = require("../theme/YunaYuna/emojis");
-const emojiGhastlyGrins = require("../theme/GhastlyGrins/emojis");
 const emojiLoveBunnie = require("../theme/LoveBunnie/emojis");
-const emojiSeaCoral = require("../theme/SeaCoral/emojis");
-
-// SELL
 const emojiEnchantedCatLake = require("../theme/EnchantedCatLake/emojis");
-const emojiYuyuzu = require("../theme/Yuyuzu/emojis");
 
 const Logger = require("./Logger");
 
@@ -243,136 +219,52 @@ module.exports = class PeachyClient extends Client {
 
         if (user && user.preferences && user.preferences.theme) {
           switch (user.preferences.theme) {
-            // NORMAL
-            case "t01":
-              color = themeConfig.oceanBreeze.color;
-              emoji = emojiOcean;
-              break;
-            case "t02":
-            case "halloween":
-              color = themeConfig.frightFest.color;
-              emoji = emojiHalloween;
-              break;
-            case "t03":
-              color = themeConfig.booBash.color;
-              emoji = emojiHalloweenNew;
-              break;
-            case "t04":
-              color = themeConfig.jingleJolly.color;
-              emoji = emojiChristmas;
-              break;
-            case "t05":
-              color = themeConfig.frightFest.color;
-              emoji = emojiFestiveFrost;
-              break;
-            case "t06":
-              color = themeConfig.mysticRealm.color;
-              emoji = emojiMysticRealm;
-              break;
-            case "t07":
-              color = themeConfig.lunaLegend.color;
-              emoji = emojiLunaLegend;
-              break;
-
             // SPECIAL
-            case "st01":
+            case "t01":
               color = themeConfig.celestialGrace.color;
               emoji = emojiHeaven;
               break;
-            case "st02":
+            case "t02":
               color = themeConfig.sakuraSerenity.color;
               emoji = emojiSakura;
               break;
-            case "st03":
-              color = themeConfig.buzzingBliss.color;
-              emoji = emojiBee;
-              break;
-            case "st04":
+            case "t03":
               color = themeConfig.froggyFun.color;
               emoji = emojiFroggy;
               break;
-            case "st05":
-              color = themeConfig.aSleepyPeach.color;
-              emoji = emojiSleepyPeach;
-              break;
-            case "st06":
+            case "t04":
               color = themeConfig.magicalForest.color;
               emoji = emojiMagicalForest;
               break;
-            case "st07":
+            case "t05":
               color = themeConfig.matchaLatte.color;
               emoji = emojiMatchaLatte;
               break;
-            case "st08":
+            case "t06":
               color = themeConfig.darkAcademia.color;
               emoji = emojiDarkAcademia;
               break;
-            case "st09":
+            case "t07":
               color = themeConfig.springBear.color;
               emoji = emojiSpringBear;
               break;
-            case "st10":
+            case "t08":
               color = themeConfig.fantasyRpg.color;
               emoji = emojiFantasy;
               break;
-            // SUPPORT
-            case "st11":
-              color = themeConfig.spiderMan.color;
-              emoji = emojiSpiderMan;
-              break;
-            case "st12":
-              color = themeConfig.cucumberCool.color;
-              emoji = emojiCucumber;
-              break;
-            case "st13":
-              color = themeConfig.cappuccinoCharm.color;
-              emoji = emojiCappuccino;
-              break;
-            case "st14":
-              color = themeConfig.nithGojo.color;
-              emoji = emojiNithGojo;
-              break;
-            case "st15":
-              color = themeConfig.cozySummer.color;
-              emoji = emojiCozySummer;
-              break;
-            case "st99":
-              color = themeConfig.quirkyQuackers.color;
-              emoji = emojiQuirkyQuackers;
-              break;
-            case "st2707":
-              color = themeConfig.keoyuu.color;
-              emoji = emojiKeoYuu;
-              break;
-            case "st1801":
-              color = themeConfig.yuna.color;
-              emoji = emojiYuna;
-              break;
-            case "st0118":
-              color = themeConfig.yunayuna.color;
-              emoji = emojiYunaYuna;
-              break;
-            case "st168":
-              color = themeConfig.ghastlyGrins.color;
-              emoji = emojiGhastlyGrins;
-              break;
+           
+            
             case "st272":
               color = themeConfig.loveBunnie.color;
               emoji = emojiLoveBunnie;
               break;
-            case "st2111":
-              color = themeConfig.seaCoral.color;
-              emoji = emojiSeaCoral;
-              break;
-
-            // SELL
             case "st1111":
               color = themeConfig.enchantedCatLake.color;
               emoji = emojiEnchantedCatLake;
               break;
-            case "st2601":
-              color = themeConfig.yuyuzu.color;
-              emoji = emojiYuyuzu;
+            case "st2707":
+              color = themeConfig.keoyuu.color;
+              emoji = emojiKeoYuu;
               break;
 
             case "peach":
