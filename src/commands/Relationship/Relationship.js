@@ -1,19 +1,11 @@
 const { Command } = require("../../structures");
+const { fontRegister } = require("../../utils/Font");
 const { AttachmentBuilder } = require("discord.js");
-const { createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas");
+const { createCanvas, loadImage } = require("@napi-rs/canvas");
 
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-Roman.otf",
-  "Kelvinch-Roman"
-);
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-Bold.otf",
-  "Kelvinch-Bold"
-);
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-BoldItalic.otf",
-  "Kelvinch-SemiBoldItalic"
-);
+await fontRegister('./src/data/fonts/Kelvinch-Roman.otf', "Kelvinch-Roman");
+await fontRegister('./src/data/fonts/Kelvinch-Bold.otf', "Kelvinch-Bold");
+await fontRegister('./src/data/fonts/Kelvinch-BoldItalic.otf', "Kelvinch-SemiBoldItalic");
 
 module.exports = class Profile extends Command {
   constructor(client) {

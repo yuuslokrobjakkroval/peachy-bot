@@ -435,8 +435,13 @@ module.exports = class MessageCreate extends Event {
                 this.client.users
                   .fetch(user?.userId)
                   .then((userInfo) => {
-                    if (!user.username || user.username !== userInfo.displayName) {
-                      user.username = userInfo ? userInfo.displayName : userInfo.username;
+                    if (
+                      !user.username ||
+                      user.username !== userInfo.displayName
+                    ) {
+                      user.username = userInfo
+                        ? userInfo.displayName
+                        : userInfo.username;
                       if (!user.isSaving) {
                         user.isSaving = true; // Flag to indicate a save operation is in progress
                         user
@@ -485,7 +490,8 @@ module.exports = class MessageCreate extends Event {
               }
 
               if (command.args && !args.length) {
-                const embed = this.client.embed()
+                const embed = this.client
+                  .embed()
                   .setColor(color.danger)
                   .setTitle("Missing Arguments")
                   .setDescription(
@@ -620,7 +626,14 @@ module.exports = class MessageCreate extends Event {
                 });
               }
 
-              await this.client.utils.getValidationUser(this.client, message, user, color, emoji, command);
+              await this.client.utils.getValidationUser(
+                this.client,
+                message,
+                user,
+                color,
+                emoji,
+                command
+              );
 
               const balanceCommands = [
                 "balance",
@@ -639,9 +652,13 @@ module.exports = class MessageCreate extends Event {
                 "klaklouk",
               ];
               const gameCommands = [
+                "2048",
                 "guessnumber",
+                "snake",
+                "tictactoe",
                 "post",
                 "guess",
+                "feedback",
                 "wallpaper",
               ];
               const mineCommands = [
@@ -696,7 +713,8 @@ module.exports = class MessageCreate extends Event {
 
                 const channel = this.client.channels.cache.get(logChannelId);
                 if (channel && channel.isTextBased()) {
-                  const embed = this.client.embed()
+                  const embed = this.client
+                    .embed()
                     .setColor(color.success)
                     .setTitle(
                       `Command - ${this.client.utils.formatCapitalize(

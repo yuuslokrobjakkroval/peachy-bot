@@ -139,6 +139,21 @@ const mysticRealm = {
   },
 };
 
+// Luna Legend ( T07 )
+const lunaLegend = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xbe3144,
+    none: 0x2b2d31,
+  },
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------- //
 
 // Celestial Grace ( ST01 )
@@ -201,6 +216,20 @@ const froggyFun = {
   },
 };
 
+// ASleepy Peach ( ST05 )
+const aSleepyPeach = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xf29f58,
+    none: 0x2b2d31,
+  },
+};
 
 // Magical Forest ( ST06 )
 const magicalForest = {
@@ -277,6 +306,126 @@ const fantasyRpg = {
   },
 };
 
+// SPIDER MAN FOR ANGKOR PARIS ( ST11 )
+const spiderMan = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xff2929,
+    none: 0x2b2d31,
+  },
+};
+
+// CUCUMBER FOR SUPPORTER ( ST12 )
+const cucumberCool = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0x9edf9c,
+    none: 0x2b2d31,
+  },
+};
+
+// CAPPUCCINO FOR SUPPORTER ( ST13 )
+const cappuccinoCharm = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xb6a28e,
+    none: 0x2b2d31,
+  },
+};
+
+// CAPPUCCINO V2 FOR SUPPORTER ( ST14 )
+const nithGojo = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0x564a94,
+    none: 0x2b2d31,
+  },
+};
+
+// Cozy Summer ( ST15 )
+const cozySummer = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xDDEB9D,
+    none: 0x2b2d31,
+  },
+};
+
+// YUNA FOR SUPPORTER ( ST1801 )
+const yuna = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xffcce1,
+    none: 0x2b2d31,
+  },
+};
+
+// YUNA V2 FOR SUPPORTER ( ST0118 )
+const yunayuna = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0x4c585b,
+    none: 0x2b2d31,
+  },
+};
+
+// BABE OWNER FOR LOVE ( ST99 )
+const quirkyQuackers = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xf5f0cd,
+    none: 0x2b2d31,
+  },
+};
+
 // OWNER FOR ANNIVERSARY ( ST2707 )
 const keoyuu = {
   color: {
@@ -307,6 +456,36 @@ const loveBunnie = {
   },
 };
 
+// PHY FOR SUPPORTER ( ST168 )
+const ghastlyGrins = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xa294f9,
+    none: 0x2b2d31,
+  },
+};
+
+// REACH FOR SUPPORTER ( ST2111 )
+const seaCoral = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0x577bc1,
+    none: 0x2b2d31,
+  },
+};
+
 // FOR SALE ( ST1111 )
 const enchantedCatLake = {
   color: {
@@ -318,6 +497,21 @@ const enchantedCatLake = {
     pink: 0xe3a1ad,
     warning: 0xffa500,
     main: 0x9f8383,
+    none: 0x2b2d31,
+  },
+};
+
+// FOR SALE ( ST2601 )
+const yuyuzu = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xFCC6FF,
     none: 0x2b2d31,
   },
 };
@@ -352,8 +546,18 @@ module.exports = {
 
   // ---------- //
   // SUPPORTER THEME
+  spiderMan,
+  cucumberCool,
+  cappuccinoCharm,
+  nithGojo,
+  cozySummer, // ST15
+
+  yuna,
+  yunayuna,
+  quirkyQuackers,
   keoyuu,
   loveBunnie,
+  ghastlyGrins,
   seaCoral,
 
   // ---------- //
