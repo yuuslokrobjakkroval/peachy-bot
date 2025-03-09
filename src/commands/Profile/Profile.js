@@ -1,16 +1,24 @@
 const { Command } = require("../../structures");
 const { AttachmentBuilder } = require("discord.js");
-const { createCanvas, loadImage } = require("@napi-rs/canvas");
+const { createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas");
 const ShopItems = require("../../assets/inventory/ShopItems");
 const moment = require("moment");
-const { fontRegister } = require("../../utils/Font");
 const inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Wallpapers = inventory.filter((value) => value.type === "wallpaper");
 const Colors = inventory.filter((value) => value.type === "color");
 
-await fontRegister('./src/data/fonts/Kelvinch-Roman.otf', "Kelvinch-Roman");
-await fontRegister('./src/data/fonts/Kelvinch-Bold.otf', "Kelvinch-Bold");
-await fontRegister('./src/data/fonts/Kelvinch-BoldItalic.otf', "Kelvinch-SemiBoldItalic");
+GlobalFonts.registerFromPath(
+    "./src/data/fonts/Kelvinch-Roman.otf",
+    "Kelvinch-Roman"
+);
+GlobalFonts.registerFromPath(
+    "./src/data/fonts/Kelvinch-Bold.otf",
+    "Kelvinch-Bold"
+);
+GlobalFonts.registerFromPath(
+    "./src/data/fonts/Graffierz Poison Shadow.otf",
+    "Graffierz Poison Shadow"
+);
 
 const defaultBanner = "https://i.imgur.com/8rZFeWI.jpg";
 const chinaNewYearBanner = "https://i.imgur.com/RmfP9ie.png";
@@ -455,7 +463,7 @@ module.exports = class Profile extends Command {
         ? backgroundColor.text
         : client.utils.formatColor(color.dark);
     context.textAlign = "center";
-    context.font = "28px Kelvinch-SemiBoldItalic, Arial";
+    context.font = "28px Graffierz Poison Shadow, Arial";
     context.fillText(
         !!userInfo?.relationship?.partner?.userId ? "Taken" : "Single",
         1070,
