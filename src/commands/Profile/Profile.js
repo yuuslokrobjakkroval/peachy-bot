@@ -8,11 +8,11 @@ const Wallpapers = inventory.filter((value) => value.type === "wallpaper");
 const Colors = inventory.filter((value) => value.type === "color");
 
 GlobalFonts.registerFromPath(
-    "./src/data/fonts/Fast Blaze.otf",
+    "./src/data/fonts/Kelvinch-Roman.otf",
     "Kelvinch-Roman"
 );
 GlobalFonts.registerFromPath(
-    "./src/data/fonts/MochitaDisplay.ttf",
+    "./src/data/fonts/Kelvinch-Bold.otf",
     "Kelvinch-Bold"
 );
 GlobalFonts.registerFromPath(
@@ -459,9 +459,7 @@ module.exports = class Profile extends Command {
         12,
         backgroundColor ? backgroundColor.primary : "#F7D8DF"
     );
-    context.fillStyle = backgroundColor
-        ? backgroundColor.text
-        : client.utils.formatColor(color.dark);
+    context.fillStyle = client.utils.formatColor(color.dark);
     context.textAlign = "center";
     context.font = "28px Graffierz Poison Shadow, Arial";
     context.fillText(
