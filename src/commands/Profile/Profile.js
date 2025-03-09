@@ -8,11 +8,11 @@ const Wallpapers = inventory.filter((value) => value.type === "wallpaper");
 const Colors = inventory.filter((value) => value.type === "color");
 
 GlobalFonts.registerFromPath(
-    "./src/data/fonts/MochitaDisplay.ttf",
+    "./src/data/fonts/Fast Blaze.otf",
     "Kelvinch-Roman"
 );
 GlobalFonts.registerFromPath(
-    "./src/data/fonts/Bubble Horns.otf",
+    "./src/data/fonts/MochitaDisplay.ttf",
     "Kelvinch-Bold"
 );
 GlobalFonts.registerFromPath(
