@@ -45,7 +45,7 @@ module.exports = class SprayDraw extends Command {
             }
 
             // Limit message length to 12 characters
-            if (message.length > 12) {
+            if (message.length > 16) {
                 return client.utils.sendErrorMessage(client, ctx, "Message must be 12 characters or less!", color, 2 * 60 * 60);
             }
 
