@@ -77,9 +77,10 @@ module.exports = class SprayDraw extends Command {
             }
 
             // Spray paint effect with dynamic font and random colors
+            const randomColor = ['#854836', '#EC7FA9', '#B17F59', '#66D2CE', '#E50046', '#FDB7EA', '#B7B1F2', '#AA60C8']
             for (let i = 0; i < 3; i++) {
-                context.font = `bold italic 36px Graffierz Poison Shadow`;
-                context.fillStyle = '#854836';
+                context.font = `bold italic 28px Graffierz Poison Shadow`;
+                context.fillStyle = client.utils.getRandomElement(randomColor);
 
                 // Center the text horizontally
                 const textMetrics = context.measureText(message);
