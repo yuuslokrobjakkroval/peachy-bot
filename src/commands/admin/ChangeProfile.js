@@ -51,7 +51,6 @@ module.exports = class ChangeProfile extends Command {
 
       const embed = client.embed()
         .setColor(color.main)
-        .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
         .setDescription(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
@@ -59,10 +58,6 @@ module.exports = class ChangeProfile extends Command {
                 .replace('%{mainRight}', emoji.mainRight)
         )
         .setImage(imageAttachment.url)
-        .setFooter({
-          text: `Requested by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        })
         .setTimestamp();
 
       return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
