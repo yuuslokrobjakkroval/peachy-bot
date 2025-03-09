@@ -45,9 +45,8 @@ module.exports = class SprayDraw extends Command {
             }
 
             // Limit message length to 16 characters
-            const textOnly = message;
-            if (textOnly.length > 16) {
-                return client.utils.sendErrorMessage(client, ctx, "Message must be 16 characters or less (excluding emoji)!", color);
+            if (message.length > 16) {
+                return client.utils.sendErrorMessage(client, ctx, "Message must be 16 characters !", color);
             }
 
             // Create canvas
@@ -85,7 +84,7 @@ module.exports = class SprayDraw extends Command {
                 context.textAlign = "center";
                 const xPosition = width / 2;
                 const yPosition = height / 2 + 12;
-                context.fillText(textOnly, xPosition, yPosition);
+                context.fillText(message, xPosition, yPosition);
             }
 
             // Convert to buffer
@@ -93,7 +92,7 @@ module.exports = class SprayDraw extends Command {
             // Send the result
             const attachment = {
                 attachment: buffer,
-                name: `spraydraw-${ctx.author.id}.png`
+                name: `spraydraw-${ctx.author.username}.png`
             };
 
             ctx.isInteraction
