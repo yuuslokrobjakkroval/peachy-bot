@@ -85,7 +85,7 @@ module.exports = class SprayDraw extends Command {
                 const textMetrics = context.measureText(message);
                 const textWidth = textMetrics.width;
                 const xPosition = (width - textWidth) / 2;
-                const yPosition = height / 2 + 20;
+                const yPosition = height / 2 + 12;
 
                 context.fillText(message, xPosition, yPosition);
             }
