@@ -45,7 +45,7 @@ module.exports = class SprayDraw extends Command {
             }
 
             // Limit message length to 16 characters
-            const textOnly = message.replace(/<:.+?:\d+>/g, '').trim();
+            const textOnly = message;
             if (textOnly.length > 16) {
                 return client.utils.sendErrorMessage(client, ctx, "Message must be 16 characters or less (excluding emoji)!", color);
             }
