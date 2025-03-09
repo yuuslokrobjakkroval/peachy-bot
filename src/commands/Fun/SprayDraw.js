@@ -39,14 +39,15 @@ module.exports = class SprayDraw extends Command {
                 await ctx.sendDeferMessage("Spraying your message...");
             }
 
-            let message = ctx.options?.getString('message') || args.join(' ');
+            let message = ctx.options?.getString('message') || args[0];
             if (!message) {
-                return client.utils.sendErrorMessage(client, ctx, "Please provide a message to spray paint!", color, 2 * 60 * 60);
+                return client.utils.sendErrorMessage(client, ctx, "Please provide a message to spray paint!", color);
             }
 
-            // Limit message length to 12 characters
-            if (message.length > 16) {
-                return client.utils.sendErrorMessage(client, ctx, "Message must be 12 characters or less!", color, 2 * 60 * 60);
+            // Limit message length to 16 characters
+            const textOnly = message.replace(/<:.+?:\d+>/g, '').trim();
+            if (textOnly.length > 16) {
+                return client.utils.sendErrorMessage(client, ctx, "Message must be 16 characters or less (excluding emoji)!", color);
             }
 
             // Create canvas
@@ -77,18 +78,14 @@ module.exports = class SprayDraw extends Command {
             }
 
             // Spray paint effect with dynamic font and random colors
-            const randomColor = ['#854836', '#EC7FA9', '#B17F59', '#66D2CE', '#E50046', '#FDB7EA', '#B7B1F2', '#AA60C8']
+            const randomColor = ['#854836', '#B17F59', '#E50046']
             for (let i = 0; i < 3; i++) {
                 context.font = `bold italic 28px Graffierz Poison Shadow`;
                 context.fillStyle = client.utils.getRandomElement(randomColor);
-
-                // Center the text horizontally
-                const textMetrics = context.measureText(message);
-                const textWidth = textMetrics.width;
-                const xPosition = (width - textWidth) / 2;
+                context.textAlign = "center";
+                const xPosition = width / 2;
                 const yPosition = height / 2 + 12;
-
-                context.fillText(message, xPosition, yPosition);
+                context.fillText(textOnly, xPosition, yPosition);
             }
 
             // Convert to buffer
