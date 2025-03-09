@@ -11,7 +11,7 @@ module.exports = class SprayDraw extends Command {
                 usage: 'spraydraw <message>',
             },
             category: 'fun',
-            aliases: ['spray', 'draw', 'd'],
+            aliases: ['spray', 'draw'],
             cooldown: 5,
             args: true,
             permissions: {
@@ -44,9 +44,9 @@ module.exports = class SprayDraw extends Command {
                 return client.utils.sendErrorMessage(client, ctx, "Please provide a message to spray paint!", color, 2 * 60 * 60);
             }
 
-            // Limit message length to 10 characters
-            if (message.length > 10) {
-                return client.utils.sendErrorMessage(client, ctx, "Message must be 10 characters or less!", color, 2 * 60 * 60);
+            // Limit message length to 12 characters
+            if (message.length > 12) {
+                return client.utils.sendErrorMessage(client, ctx, "Message must be 12 characters or less!", color, 2 * 60 * 60);
             }
 
             // Create canvas
@@ -103,7 +103,9 @@ module.exports = class SprayDraw extends Command {
                 : await ctx.editMessage({ content: '', files: [attachment] });
 
         } catch (error) {
-            await client.utils.sendErrorMessage(client, ctx, 'An error occurred while creating your spray drawing. Please try again later.');
+            ctx.isInteraction
+                ? await ctx.interaction.editReply({ content: 'An error occurred while creating your spray drawing. Please try again later.' })
+                : await ctx.editMessage({ content: 'An error occurred while creating your spray drawing. Please try again later.' });
             console.error(error);
         }
     }
