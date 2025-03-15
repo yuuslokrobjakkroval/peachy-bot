@@ -89,7 +89,7 @@ module.exports = class Help extends Command {
           )
           .addFields([
             {
-              name: `${emoji.help.category ? emoji.help.category : "📚"} __𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐄𝐒__`,
+              name: `${emoji.help.category ? emoji.help.category : "📚"} __CATEGORIES__`,
               value: categories
                 .map(
                   (category) =>
@@ -103,7 +103,7 @@ module.exports = class Help extends Command {
           ])
           .setImage(client.config.links.banner)
           .setFooter({
-            text: `${helpMessages.footer} <=> ${totalCommands} 𝑪𝒐𝒎𝒎𝒂𝒏𝒅𝒔.`,
+            text: `${helpMessages.footer} have ${totalCommands} commands`,
             iconURL: client.user.displayAvatarURL(),
           });
 

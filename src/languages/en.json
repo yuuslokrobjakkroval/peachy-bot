@@ -33,7 +33,7 @@
     "inviteButton": "Invite me!",
     "voteButton": "Vote for me",
     "requestedBy": "Requested By %{username}",
-    "copyRight": "(c) Copyright By PEACHY"
+    "copyRight": "© Copyright By PEACHY"
   },
   "actionMessages": {
     "biteMessages": {
@@ -98,17 +98,17 @@
       "zeroBalance": "You don't have any coins to deposit.",
       "invalidAmount": "Invalid amount. Please enter a valid number or use `all` or `half`.",
       "tooHigh": "You cannot deposit more than what you have in your coin.",
-      "success": "You have deposited ***%{amount}*** %{coinEmote} to your bank.",
-      "cooldown": "You have robbed another user,\nso you can't deposit coins into the bank right now.\nPlease try again in ***%{minutes}*** minutes, and ***%{seconds}*** seconds."
+      "success": "You have deposited **%{amount}** %{coinEmote} to your bank.",
+      "cooldown": "You have robbed another user,\nso you can't deposit coins into the bank right now.\nPlease try again in **%{minutes}** minutes, and **%{seconds}** seconds."
     },
     "multiTransferMessages": {
       "noValidUsers": "No valid users to transfer coins.",
       "invalidAmount": "Please mention valid users and amounts for each transfer.",
       "insufficientBalanceForAll": "You do not have enough coins to pay. Please adjust your transfer amount.",
-      "confirm": "You are about to transfer ***%{amount}*** %{emoji} to the following users: %{userList}. Confirm?",
+      "confirm": "You are about to transfer **%{amount}** %{emoji} to the following users: %{userList}. Confirm?",
       "cancel": "You have canceled the transaction. No coins have been transferred.",
       "timeout": "The transaction has timed out due to inactivity. Please try again.",
-      "success": "Successfully transferred ***%{amount}*** %{emoji} to %{userCount} users.\nEach user received %{individualAmount} %{emoji}.",
+      "success": "Successfully transferred **%{amount}** %{emoji} to %{userCount} users.\nEach user received %{individualAmount} %{emoji}.",
       "tooSmallAmount": "The transfer amount is too small to split among the recipients."
     },
     "transferMessages": {
@@ -120,8 +120,8 @@
       "balanceNotExist": "Your balance record does not exist.",
       "insufficientBalance": "Invalid amount specified or insufficient balance.",
       "zeroBalance": "You have no coins to transfer.",
-      "confirm": "You are about to give ***%{amount}*** %{emoji} to %{user}. Confirm?",
-      "success": "You have given ***%{amount}*** %{emoji} to %{user}.",
+      "confirm": "You are about to give **%{amount}** %{emoji} to %{user}. Confirm?",
+      "success": "You have given **%{amount}** %{emoji} to %{user}.",
       "cancel": "You have canceled the transaction. No coins have been transferred.",
       "timeout": "The transaction has timed out due to inactivity. Please try again.",
       "timeoutAction": "If you want to make a transfer, please re-initiate the command.",
@@ -137,27 +137,27 @@
       "zeroBalance": "You have no coins in your bank.",
       "invalidAmount": "Please provide a valid amount to withdraw. You can withdraw 'all', 'half', or a specific number.",
       "tooHigh": "You cannot withdraw more than what you have in your bank.",
-      "success": "You have withdrawn ***%{amount}*** %{coinEmote} from your bank.",
+      "success": "You have withdrawn **%{amount}** %{coinEmote} from your bank.",
       "error": "There was an error processing your withdrawal request.",
-      "cooldown": "You have robbed another user,\nso you can't withdraw coins into the bank right now.\nPlease try again in ***%{minutes}*** minutes, and ***%{seconds}*** seconds."
+      "cooldown": "You have robbed another user,\nso you can't withdraw coins into the bank right now.\nPlease try again in **%{minutes}** minutes, and **%{seconds}** seconds."
     }
   },
   "economyMessages": {
     "balanceMessages": {
-      "description": "%{coinEmote} : ***%{coin}*** coins\n%{bankEmote} : ***%{bank}*** coins"
+      "description": "%{coinEmote} : **%{coin}** coins\n%{bankEmote} : **%{bank}** coins"
     },
     "dailyMessages": {
-      "success": "You have claimed your daily reward of %{coinEmote} ***+%{coin}*** coins and %{expEmote} ***+%{exp} xp***\n%{bonusMessage}",
+      "success": "You have claimed your daily reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp} xp**\n%{bonusMessage}",
       "error": "There was an error processing your daily claim.",
-      "cooldown": "Daily reward is on cooldown!\nTry again after ***%{time}***."
+      "cooldown": "Daily reward is on cooldown!\nTry again after **%{time}**."
     },
     "gomaMessages": {
-      "success": "You have earned %{coinEmote} ***+%{coin}*** coins and %{expEmote} ***+%{exp}*** xp\n%{bonusMessage}",
-      "cooldown": "Goma is on cooldown!\nTry again after ***%{minutes}mins and %{seconds}secs***."
+      "success": "You have earned %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
+      "cooldown": "Goma is on cooldown!\nTry again after **%{minutes}mins and %{seconds}secs**."
     },
     "peachMessages": {
-      "success": "You have earned %{coinEmote} ***+%{coin}*** coins and %{expEmote} ***+%{exp}*** xp\n%{bonusMessage}",
-      "cooldown": "Peach is on cooldown!\nTry again after ***%{minutes}***mins and ***%{seconds}***secs."
+      "success": "You have earned %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
+      "cooldown": "Peach is on cooldown!\nTry again after **%{minutes}**mins and **%{seconds}**secs."
     },
     "rankingMessages": {
       "notFound": "No one has gained leaderboard yet.",
@@ -172,78 +172,78 @@
       "klaklouk": "TOP KLAKLOUK"
     },
     "weeklyMessages": {
-      "success": "You have claimed your weekly reward of %{coinEmote} ***+%{coin}*** coins and %{expEmote} ***+%{exp}*** xp\n%{bonusMessage}",
+      "success": "You have claimed your weekly reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
       "error": "There was an error processing your weekly claim.",
       "cooldown": {
-        "multipleDays": "Weekly is on cooldown!\nTry again after ***%{days} and %{hours}***, ***%{minutes}***, and ***%{seconds}***.",
-        "singleDay": "Weekly is on cooldown!\nTry again after ***%{days}***, ***%{hours}***, ***%{minutes}***, and ***%{seconds}***.",
-        "noDays": "Weekly is on cooldown!\nTry again after ***%{hours}***, ***%{minutes}***, and ***%{seconds}***."
+        "multipleDays": "Weekly is on cooldown!\nTry again after **%{days} and %{hours}**, **%{minutes}**, and **%{seconds}**.",
+        "singleDay": "Weekly is on cooldown!\nTry again after **%{days}**, **%{hours}**, **%{minutes}**, and **%{seconds}**.",
+        "noDays": "Weekly is on cooldown!\nTry again after **%{hours}**, **%{minutes}**, and **%{seconds}**."
       }
     }
   },
   "emoteMessages": {
     "angryMessages": {
-      "description": "***%{user}*** shows off their angriest expression!",
+      "description": "**%{user}** shows off their angriest expression!",
       "error": "There was an error processing your angry emote."
     },
     "cryMessages": {
-      "description": "***%{user}*** is crying!",
+      "description": "**%{user}** is crying!",
       "error": "There was an error processing your crying emote."
     },
     "cuteMessages": {
-      "description": "***%{user}*** shows off their cutest expression!",
+      "description": "**%{user}** shows off their cutest expression!",
       "error": "There was an error processing your cute emote."
     },
     "danceMessages": {
-      "description": "***%{user}*** shows off some impressive dance moves!",
+      "description": "**%{user}** shows off some impressive dance moves!",
       "error": "There was an error processing your dance emote."
     },
     "exerciseMessages": {
-      "description": "***%{user}*** is getting moving and staying fit!",
+      "description": "**%{user}** is getting moving and staying fit!",
       "error": "There was an error processing your exercise emote."
     },
     "happyMessages": {
-      "description": "***%{user}*** is spreading joy and happiness!",
+      "description": "**%{user}** is spreading joy and happiness!",
       "error": "There was an error processing your happy emote."
     },
     "laughMessages": {
-      "description": "***%{user}*** shares a hearty laugh!",
+      "description": "**%{user}** shares a hearty laugh!",
       "error": "There was an error processing your laugh emote."
     },
     "makeupMessages": {
-      "description": "***%{user}*** applies some fabulous makeup and shines bright!",
+      "description": "**%{user}** applies some fabulous makeup and shines bright!",
       "error": "There was an error processing your makeup emote."
     },
     "eatMessages": {
-      "description": "***%{user}*** is enjoying some delicious food!",
+      "description": "**%{user}** is enjoying some delicious food!",
       "error": "There was an error processing your eat emote."
     },
     "playGameMessages": {
-      "description": "***%{user}*** is getting ready to play!",
+      "description": "**%{user}** is getting ready to play!",
       "error": "There was an error processing your play game emote."
     },
     "roarMessages": {
-      "description": "***%{user}*** lets out a mighty roar!",
+      "description": "**%{user}** lets out a mighty roar!",
       "error": "There was an error processing your roar emote."
     },
     "runMessages": {
-      "description": "***%{user}*** takes off in a mighty run!",
+      "description": "**%{user}** takes off in a mighty run!",
       "error": "Something went wrong while processing your run emote."
     },
     "sadMessages": {
-      "description": "***%{user}*** is expressing sadness.",
+      "description": "**%{user}** is expressing sadness.",
       "error": "There was an error processing your sad emote."
     },
     "scareMessages": {
-      "description": "***%{user}*** shows their scared side!",
+      "description": "**%{user}** shows their scared side!",
       "error": "There was an error processing your scare emote."
     },
     "showerMessages": {
-      "description": "***%{user}*** is enjoying a refreshing shower!",
+      "description": "**%{user}** is enjoying a refreshing shower!",
       "error": "There was an error processing your shower emote."
     },
     "shyMessages": {
-      "description": "***%{user}*** shows off their shy expression!",
+      "description": "**%{user}** shows off their shy expression!",
       "error": "There was an error processing your shy emote."
     }
   },
@@ -269,34 +269,34 @@
       "dealer": "DEALER",
       "hit": "Hit",
       "stand": "Stand",
-      "bet": "You bet ***%{coin}*** %{coinEmote}",
-      "won": "You won ***%{coin}*** %{coinEmote}",
-      "lost": "You lost ***%{coin}*** %{coinEmote}",
+      "bet": "You bet **%{coin}** %{coinEmote}",
+      "won": "You won **%{coin}** %{coinEmote}",
+      "lost": "You lost **%{coin}** %{coinEmote}",
       "bothBust": "You both bust!",
       "tied": "You tied!",
       "winnerInfo": "The winner is the one who's closest to 21."
     },
     "slotMessages": {
       "title": "SLOTS",
-      "bet": "You bet ***%{coin}*** %{coinEmote}",
-      "won": "You won ***%{coin}*** %{coinEmote}",
-      "lost": "You lost ***%{coin}*** %{coinEmote}"
+      "bet": "You bet **%{coin}** %{coinEmote}",
+      "won": "You won **%{coin}** %{coinEmote}",
+      "lost": "You lost **%{coin}** %{coinEmote}"
     },
     "coinflipMessages": {
       "title": "COINFLIP",
-      "description": "You spent ***%{coin}*** %{coinEmote}\nchoose ***%{choice}***",
+      "description": "You spent **%{coin}** %{coinEmote}\nchoose **%{choice}**",
       "invalidChoice": "Please provide a valid choice: either peach = 'p' or goma = 'g'.",
-      "result": "You spent ***%{coin}*** %{coinEmote}\nfor choose ***%{choice}***\nYou %{result} ***%{resultCoin}*** %{coinEmote}"
+      "result": "You spent **%{coin}** %{coinEmote}\nfor choose **%{choice}**\nYou %{result} **%{resultCoin}** %{coinEmote}"
     },
     "klaKloukMessages": {
       "title": "KLA KLOUK",
-      "startGame": "Let's Play!\nPlace your bets by selecting your desired animals.\nEach selection costs ***%{betCoin}*** %{coinEmote}.\nYou can select multiple options,\nbut ensure you have enough coins!\nWhen you're ready, press the ***Start*** button.",
+      "startGame": "Let's Play!\nPlace your bets by selecting your desired animals.\nEach selection costs **%{betCoin}** %{coinEmote}.\nYou can select multiple options,\nbut ensure you have enough coins!\nWhen you're ready, press the **Start** button.",
       "cancel": "Cancel",
       "clear": "Clear",
       "start": "Start",
-      "selected": "You have choose %{selectedButton} for bet each of button for ***%{betCoin}*** %{coinEmote}\ntotal ***%{totalCoin}*** %{coinEmote}",
+      "selected": "You have choose %{selectedButton} for bet each of button for **%{betCoin}** %{coinEmote}\ntotal **%{totalCoin}** %{coinEmote}",
       "notSelected": "You haven't chosen a button for your bet. You can't start the game.",
-      "notEnoughCoins": "You don't have enough coins! You currently have ***%{coin}*** %{coinEmote}, but you need at least ***%{needed}*** %{coinEmote} to make this selection."
+      "notEnoughCoins": "You don't have enough coins! You currently have **%{coin}** %{coinEmote}, but you need at least **%{needed}** %{coinEmote} to make this selection."
     }
   },
   "gameMessages": {
@@ -328,7 +328,7 @@
     "helpMessages": {
       "description": "Here are the commands available:",
       "note": "Note: Some commands may display usernames in lists retrieved by the bot.",
-      "footer": "(c) Copyright By PEACHY",
+      "footer": "© Copyright By PEACHY",
       "supportButton": "Click for support",
       "commandNotFound": "Command not found:",
       "title": "Help for command",
@@ -442,7 +442,7 @@
         "servers": "SERVERS {arrow} {guildCount}",
         "users": "USERS {arrow} {userCount}",
         "channels": "CHANNELS {arrow} {channelCount}",
-        "uptime": "UPTIME {arrow} ***{days}*** day ***{hours}*** hour ***{minutes}*** minutes"
+        "uptime": "UPTIME {arrow} **{days}** day **{hours}** hour **{minutes}** minutes"
       },
       "footer": "For more information, click the buttons below."
     }
@@ -450,31 +450,31 @@
   "inventoryMessages": {
     "buyMessages": {
       "invalidItem": "The item with ID *%{itemId}* was not found. Please check the shop for available items.",
-      "themeAlreadyOwned": "You already own the theme ***%{itemName}*** %{itemEmote}. You cannot buy it again.",
-      "itemCannotBeBought": "The item ***%{itemName}*** %{itemEmote} is not available for purchase.",
-      "notEnoughCoins": "You need %{neededCoins} %{coinEmote} more to buy %{itemEmote} ***%{itemName}***.",
+      "themeAlreadyOwned": "You already own the theme **%{itemName}** %{itemEmote}. You cannot buy it again.",
+      "itemCannotBeBought": "The item **%{itemName}** %{itemEmote} is not available for purchase.",
+      "notEnoughCoins": "You need %{neededCoins} %{coinEmote} more to buy %{itemEmote} **%{itemName}**.",
       "success": "successfully purchased",
       "partial": "but you could only afford",
-      "description": "You have %{afford} %{itemEmote} ***%{itemName}*** for ***%{totalPrice}*** %{coinEmote}.\nYou bought ***%{amountToBuy}*** items.",
+      "description": "You have %{afford} %{itemEmote} **%{itemName}** for **%{totalPrice}** %{coinEmote}.\nYou bought **%{amountToBuy}** items.",
       "zeroBalance": "You have no coins to make a purchase. Earn coins first before buying items."
     },
     "drinkMessages": {
       "emptyInventory": "Your inventory is empty.",
       "itemNotFound": "The item with ID `%{itemId}` was not found. Please check your inventory.",
-      "cannotDrinkFood": "You can't drink %{itemEmote} ***%{itemName}***. It's food!",
+      "cannotDrinkFood": "You can't drink %{itemEmote} **%{itemName}**. It's food!",
       "notDrinkable": "The item you selected is not drinkable.",
       "noDrinkItem": "You don't have this drink item in your inventory.",
       "invalidAmount": "Invalid amount. Please enter a positive integer value.",
-      "success": "You drank %{itemEmote} ***x%{itemAmount}*** %{itemName} and gained ***%{xpGained} xp***."
+      "success": "You drank %{itemEmote} **x%{itemAmount}** %{itemName} and gained **%{xpGained} xp**."
     },
     "eatMessages": {
       "emptyInventory": "Your inventory is empty.",
       "itemNotFound": "The item with ID `%{itemId}` was not found. Please check your inventory.",
-      "cannotEatDrink": "You can't eat %{itemEmote} ***%{itemName}***. It's a drink!",
+      "cannotEatDrink": "You can't eat %{itemEmote} **%{itemName}**. It's a drink!",
       "notEdible": "This item is not edible.",
       "noFoodItem": "You don't have this food item in your inventory.",
       "invalidAmount": "Invalid amount. Please enter a positive integer value.",
-      "success": "You ate %{itemEmote} ***x%{itemAmount}*** %{itemName} and gained ***%{xpGained} xp***."
+      "success": "You ate %{itemEmote} **x%{itemAmount}** %{itemName} and gained **%{xpGained} xp**."
     },
     "giveItemMessages": {
       "emptyInventory": "Your inventory is empty.",
@@ -482,14 +482,14 @@
       "mentionToBot": "You cannot give items to a bot.",
       "mentionToSelf": "You cannot give items to yourself.",
       "itemNotFound": "The item with ID `{{itemId}}` was not found!",
-      "noItemInInventory": "You don't have {{itemEmote}} ***{{itemName}}*** in your inventory.",
-      "itemNotGiftable": "{{itemEmote}} ***{{itemName}}*** cannot be given.",
+      "noItemInInventory": "You don't have {{itemEmote}} **{{itemName}}** in your inventory.",
+      "itemNotGiftable": "{{itemEmote}} **{{itemName}}** cannot be given.",
       "invalidAmount": "Invalid amount specified.",
       "confirmationTitle": "Give Item - {{author}}",
-      "confirmationDescription": "{{author}}, select ***Accept*** to proceed with the transaction or ***Cancel*** to decline.",
+      "confirmationDescription": "{{author}}, select **Accept** to proceed with the transaction or **Cancel** to decline.",
       "sentItem": "Sent item",
       "receivedItem": "Received item",
-      "transactionSuccess": "You have accepted the transaction. {{itemEmote}} ***`x{{itemAmount}}`*** {{itemName}} has been transferred to ***{{target}}***.",
+      "transactionSuccess": "You have accepted the transaction. {{itemEmote}} **`x{{itemAmount}}`** {{itemName}} has been transferred to **{{target}}**.",
       "transactionCancelled": "You have canceled the transaction. No items have been transferred."
     },
     "invMessages": {
@@ -503,16 +503,16 @@
     },
     "sellMessages": {
       "inventoryEmpty": "Your inventory is empty.",
-      "itemNotOwned": "You don't have ***{item}*** in your inventory.",
-      "itemNotSellable": "The item ***{item}*** is not sellable!",
-      "itemNotFound": "The item with id ***{item}*** couldn't be found!",
-      "sellSuccess": "You sold ***{quantity}*** ***{item}*** for ***{price}*** coins.",
+      "itemNotOwned": "You don't have **{item}** in your inventory.",
+      "itemNotSellable": "The item **{item}** is not sellable!",
+      "itemNotFound": "The item with id **{item}** couldn't be found!",
+      "sellSuccess": "You sold **{quantity}** **{item}** for **{price}** coins.",
       "noSellableItems": "You don't have any sellable items in your inventory.",
       "cancelled": "Sell canceled.",
-      "acceptSell": "You sold your items for ***{price}*** coins.",
+      "acceptSell": "You sold your items for **{price}** coins.",
       "invalidQuantity": "Invalid quantity specified.",
       "sellError": "An error occurred while processing your sell request.",
-      "itemSold": "You sold {emoji} ***{quantity}*** {item} for {coinEmoji} ***{price}*** coins."
+      "itemSold": "You sold {emoji} **{quantity}** {item} for {coinEmoji} **{price}** coins."
     },
     "shopMessages": {
       "shopTitle": "SHOP",
@@ -542,8 +542,8 @@
       "notOwned": "You do not own the theme %{itemName}.",
       "notInInventory": "The item *%{itemId}* is not in your inventory.",
       "unavailable": "The theme *%{itemName}* is not available for use.",
-      "applied": "Successfully applied the %{type} %{itemEmote} ***%{itemName}***!",
-      "alreadyEquipped": "You are already using %{itemEmote} ***%{itemName}***."
+      "applied": "Successfully applied the %{type} %{itemEmote} **%{itemName}**!",
+      "alreadyEquipped": "You are already using %{itemEmote} **%{itemName}**."
     }
   },
   "profileMessages": {
@@ -604,9 +604,9 @@
       "reactionSessionEnded": "The reaction session has ended. Please use the command again to view the profile."
     },
     "userNameMessages": {
-      "name": "Your current username is: ***%{username}***",
+      "name": "Your current username is: **%{username}**",
       "noUsername": "No Username.",
-      "success": "Your username has been set to: ***%{username}***",
+      "success": "Your username has been set to: **%{username}**",
       "error": {
         "long": "The username cannot be longer than 40 characters.",
         "empty": "Please provide a username."
@@ -616,8 +616,8 @@
   },
   "relationshipMessages": {
     "success": {
-      "add": "Successfully added ***%{target}*** to your relationship.",
-      "remove": "Successfully removed ***%{target}*** from your relationship."
+      "add": "Successfully added **%{target}** to your relationship.",
+      "remove": "Successfully removed **%{target}** from your relationship."
     },
     "error": {
       "selfMentioned": "You cannot mention to yourself.",
@@ -711,7 +711,7 @@
     "languageMessages": {
       "title": "LANGUAGE SETTINGS",
       "languageSetTitle": "LANGUAGE",
-      "languageSetDescription": "Your language has been set to ***%{language}***.",
+      "languageSetDescription": "Your language has been set to **%{language}**.",
       "helpTitle": "LANGUAGE HELP",
       "helpDescription": "Manage your language settings.",
       "examples": "Examples",
@@ -719,7 +719,7 @@
       "usage": "Usage",
       "usageCommands": "• language - Shows your current language\n• language en - Sets your language to English\n• language kh - Sets your language to Khmer\n• language cn - Sets your language to Chinese (CN)\n• language tw - Sets your language to Chinese (TW)\n• language jp - Sets your language to Japanese\n• language kr - Sets your language to Korean\n• language fr - Sets your language to French\n• language vn - Sets your language to Vietnamese\n• language lo - Sets your language to Lao",
       "currentLanguageTitle": "LANGUAGE",
-      "currentLanguageDescription": "Your current language is ***%{language}***.",
+      "currentLanguageDescription": "Your current language is **%{language}**.",
       "requestedBy": "Requested by %{username}"
     },
     "qrMessages": {
@@ -736,8 +736,8 @@
       "created": "Created On"
     },
     "themeMessages": {
-      "setThemeMessage": "Your theme has been set to ***%{theme}***.",
-      "currentThemeMessage": "Your current theme is ***%{theme}***.",
+      "setThemeMessage": "Your theme has been set to **%{theme}**.",
+      "currentThemeMessage": "Your current theme is **%{theme}**.",
       "helpTitle": "Theme Help",
       "helpDescription": "Manage your theme settings.",
       "examplesLabel": "Examples",
@@ -757,9 +757,9 @@
       "confirmButtonLabel": "Confirm",
       "cancelButtonLabel": "Cancel",
       "title": "Verify Account",
-      "confirmationMessage": "Are you sure you want to verify with ***PEACHY***?",
-      "paymentInfo": "To verify, you need to pay ***$0.99/month***.",
-      "benefitsTitle": "***Benefits***",
+      "confirmationMessage": "Are you sure you want to verify with **PEACHY**?",
+      "paymentInfo": "To verify, you need to pay **$0.99/month**.",
+      "benefitsTitle": "**Benefits**",
       "benefits": "• Role verification in our server\n• Get an emoji while playing the bot\n• Add 20% to all rewards when claiming",
       "requestedBy": "Requested By",
       "verificationRequest": "Verification Request",
@@ -785,16 +785,16 @@
       "alreadyApplied": "You already have an active application or job.\nYou can't apply for another job right now.",
       "jobUnavailable": "This job is currently unavailable. Please choose another position or try again later.",
       "jobNotFound": "Job not found. Please apply for a job first.",
-      "autoApproved": "Your application for the position of ***%{position}*** has been auto-approved as of ***%{approvedDate}***. Welcome aboard!",
-      "success": "You have successfully applied for the ***%{position}*** job! Your application date is ***%{applyDate}***."
+      "autoApproved": "Your application for the position of **%{position}** has been auto-approved as of **%{approvedDate}**. Welcome aboard!",
+      "success": "You have successfully applied for the **%{position}** job! Your application date is **%{applyDate}**."
     },
     "positionMessages": {
-      "applyingJob": "You have applied to position: ***%{position}*** but not yet approved.\nplease wait.",
+      "applyingJob": "You have applied to position: **%{position}** but not yet approved.\nplease wait.",
       "noJob": "You don't have a job yet. Apply for one first using the `applyjob` command."
     },
     "studentMessages": {
       "cooldown": "You need to wait *%{hours}*h *%{minutes}*m *%{seconds}*s before claiming your student reward again!",
-      "success": "%{coinEmote} You earned ***+%{coin}*** coins!\n%{expEmote} You gained ***+%{exp}*** experience!"
+      "success": "%{coinEmote} You earned **+%{coin}** coins!\n%{expEmote} You gained **+%{exp}** experience!"
     },
     "robMessages": {
       "invalidTarget": "You must specify a valid user to rob!",
@@ -803,14 +803,14 @@
       "notEnoughCoins": "*%{victim}* doesn't have enough coins to be worth robbing.",
       "cooldown": "You need to wait *%{minutes}* minutes and *%{seconds}* seconds before you can attempt to rob again.",
       "failed": "You failed to rob *%{victim}* and lost *%{penalty}* coins as a penalty.",
-      "success": "You successfully robbed ***%{victim}*** and stole ***%{stolenAmount}*** coins!"
+      "success": "You successfully robbed **%{victim}** and stole **%{stolenAmount}** coins!"
     },
     "policeMessages": {
       "invalidTarget": "You cannot catch yourself or an invalid user.",
       "notPolice": "Only users with the 'police' position can catch thieves.",
       "noRobberyToCatch": "This user has not robbed anyone recently.",
-      "success": "Success! You caught ***%{thief}*** and seized ***%{stolenAmount}*** coins.\nYou receive ***%{policeReward}*** coins as a reward.",
-      "failed": "You failed to catch ***%{thief}*** and have been penalized. You lose ***%{penalty}*** coins.",
+      "success": "Success! You caught **%{thief}** and seized **%{stolenAmount}** coins.\nYou receive **%{policeReward}** coins as a reward.",
+      "failed": "You failed to catch **%{thief}** and have been penalized. You lose **%{penalty}** coins.",
       "cooldown": "You must wait before attempting to catch another thief."
     },
     "resignJobMessages": {
