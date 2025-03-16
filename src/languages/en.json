@@ -37,7 +37,7 @@
   },
   "actionMessages": {
     "biteMessages": {
-      "description": "*%{displayName}* playfully biting *%{target}*",
+      "description": "**%{displayName}** playfully biting **%{target}**",
       "errors": {
         "noUser": "You need to mention a user to bite.",
         "selfBite": "You cannot bite yourself.",
@@ -45,7 +45,7 @@
       }
     },
     "hugMessages": {
-      "description": "*%{displayName}* giving a warm hug to *%{target}*",
+      "description": "**%{displayName}** giving a warm hug to **%{target}**",
       "errors": {
         "noUser": "You need to mention a user to hug.",
         "selfHug": "You cannot hug yourself.",
@@ -53,7 +53,7 @@
       }
     },
     "killMessages": {
-      "description": "*%{displayName}* wanna kill *%{target}*",
+      "description": "**%{displayName}** wanna kill **%{target}**",
       "errors": {
         "noUser": "You need to mention a user to target.",
         "selfKill": "You cannot target yourself.",
@@ -61,7 +61,7 @@
       }
     },
     "kissMessages": {
-      "description": "*%{displayName}* giving a cute kiss to *%{target}*",
+      "description": "**%{displayName}** giving a cute kiss to **%{target}**",
       "errors": {
         "noUser": "You need to mention a user to kiss.",
         "selfKiss": "You cannot kiss yourself.",
@@ -69,7 +69,7 @@
       }
     },
     "loungMessages": {
-      "description": "*%{displayName}* trying to relax with *%{target}*",
+      "description": "**%{displayName}** trying to relax with **%{target}**",
       "errors": {
         "noUser": "You need to mention a user to relax with.",
         "selfLounge": "You cannot relax with yourself.",
@@ -77,7 +77,7 @@
       }
     },
     "punchMessages": {
-      "description": "*%{displayName}* throwing a playful punch at *%{target}*",
+      "description": "**%{displayName}** throwing a playful punch at **%{target}**",
       "errors": {
         "noUser": "You need to mention a user to punch.",
         "selfPunch": "You cannot punch yourself.",
@@ -85,7 +85,7 @@
       }
     },
     "slapMessages": {
-      "description": "*%{displayName}* playfully slapping *%{target}*",
+      "description": "**%{displayName}** playfully slapping **%{target}**",
       "errors": {
         "noUser": "You need to mention a user to slap.",
         "selfSlap": "You cannot slap yourself.",
