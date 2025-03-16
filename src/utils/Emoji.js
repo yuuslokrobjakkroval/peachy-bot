@@ -15,40 +15,31 @@ module.exports = {
 
     ping: '<a:PING:1342748399669088256>',
 
-    congratulation: '<a:congratulation:1287438960477474957>',
-    thankYou: '<a:PTY:1294514862390644782>',
+    congratulation: '<a:CONGRATULATIONS:1350683778418475059>',
+    peachCongratulation: '<a:PEACHCONGRATULATIONS:1350683524252041299>',
+    gomaCongratulation: '<a:GOMACONGRATULATIONS:1350683530035859597>',
+    thankYou: '<a:PTY:1350683938925973535>',
     timestamp: '<:TIMESTAMP:1339925743777353780>',
-    buyMeCafe: '<:BUYMEACOFFEE:1306174972489764894>',
+    buyMeCafe: '<:BUYMEACOFFEE:1350663153759031387>',
 
-    tictactoe: {
-        milk: '<:DOSKO:1333297383236173825>',
-        peach: '<:SPEACH:1295967154897682543>',
-        goma: '<:SGOMA:1295967162841825324>',
-    },
     // OPTION
     option: {
-        mvp: '<:MVP:1294514862390644782>',
-        win: '<:W_:1330164104983347261>',
-        lose: '<:L_:1330164117839020045>',
-        yes: '<:YES:1330164333950537728>',
-        no: '<:NO:1330164530847813663>',
-        okay: '<:OKAY:1294514862390644782>',
-        doIt: '<:DOIT:1330169555107975218>',
-        ban: '<:BAN:1330164131763982438>',
-        wfu: '<:WFU:1330164146766876732>',
-        knife: '<:KNIFE:1330164640382189609>',
+        mvp: '<:MVP:1350682882389311488>',
+        win: '<:W_:1350682846901178368>',
+        lose: '<:L_:1350682858359885858>',
+        yes: '<:YES:1350683168545706064>',
+        no: '<:NO:1350683140783341671>',
+        okay: '<:OK:1350682773328756837>',
+        doIt: '<:DOIT:1350682811123892257>',
+        ban: '<:BAN:1350683019006185567>',
+        wfu: '<:WFU:1350683078984466452>',
+        knife: '<:KNIFE:1350682649785532436>',
     },
 
-
     // VERIFY
-    normal: '<:NORMAL:1294270096109211658>',
     arrow: '<a:ARROW:1350663329018023946>',
-    hiring: '<:HIRING:1311502310051942510>',
-
-
-
-
-    verify: '<:VERIFY:1294514114856615947>',
+    hiring: '<:HIRING:1350682485104574474>',
+    verify: '<:ANGELPEACH:1350684271182086154>',
 
     // SHOP
     // WALLPAPER
@@ -92,9 +83,9 @@ module.exports = {
 
     // FOOD
     food: {
-        bun: '<:f01:1302197238252048414>',
-        brownDonut: '<:f02:1302197268287328336>',
-        chocolateCake: '<:f03:1302197277334700072>'
+        bun: '<:f01:1350688879849767042>',
+        brownDonut: '<:f02:1350688906286333972>',
+        chocolateCake: '<:f03:1350688928671203438>'
     },
 
     // DRINK
@@ -214,15 +205,13 @@ module.exports = {
     pinkHeartMilk: '<:MPINKHEART:1342748120693477470>',
 
     color: {
-      black: '<:p01:1303229834679418881>',
-      blue: '<:p02:1303230055186432000>',
-      green: '<:p03:1303230062480457778>',
-      grey: '<:p04:1303230070126542888>',
-      orange: '<:p05:1303230075985989675>',
-      pink: '<:p06:1303230084332654612>',
-      purple: '<:p07:1303230092188585995>',
-      red: '<:p08:1303230101449740318>',
-      yellow: '<:p09:1303230111817924720>',
+      cyan: '<a:CYYAN:1350679754352889897>',
+      green: '<a:GREEN:1350679760757456959>',
+      orange: '<a:ORANGE:1350680350912811109>',
+      red: '<a:RED:1350679767929716819>',
+      pink: '<a:PINK:1350679776632766624>',
+      purple: '<a:PURPLE:1350679784153284778>',
+      yellow: '<a:YELLOW:1350680480558612530>',
     },
 
     // IMPORTANT
@@ -233,16 +222,15 @@ module.exports = {
 
     // DUTCH MILK
     dutchMilk: {
-        sassy: '<:SASSY:1319693302928244871>',
-        starix: '<:STARIX:1319693309613969488>',
-        nuna: '<:NUNA:1319693294711738438>',
-        mojito: '<:MOJITO:1319693286038048900>',
-        jucy: '<:JUCY:1319693279364911115>',
-        crawling: '<:CRAWLING:1319693271961833472>',
-        caratty: '<:CARATTY:1319693264911073391>',
-        berry: '<:BERRY:1319693258506637424>',
+        sassy: '<:SASSY:1350685572494135326>',
+        starix: '<:STARIX:1350685604857385001>',
+        nuna: '<:NUNA:1342747379559960627>',
+        mojito: '<:MOJITO:1342747372630966302>',
+        jucy: '<:JUCY:1342747365534077008>',
+        crawling: '<:CRAWLING:1342747358244503552>',
+        caratty: '<:CARATTY:1342747349256110130>',
+        berry: '<:BERRY:1342747341001719880>',
     },
-
     // COUNTRY FLAG
     countryFlag: {
         en: '<:US:1342748215967219742>',
@@ -261,7 +249,6 @@ module.exports = {
         lo: '<:LO:1342748286875992106>',
         ms: '<:MS:1342748296795394130>',
     },
-
     inviteTracker: {
       inviteBy: '<a:RAINBOW:1350664635866546266>',
       inviteCode: '<:PIN:1350663290031833140>',
@@ -269,7 +256,6 @@ module.exports = {
       inviteMember: '<:PEACHMEMBER:1350663226668617809>',
       memberCreated: '<a:DISCORDICON:1350663962022121493>',
     },
-
     channel: {
         announce: '<:ANNOUNCE:1350663200940490915>',
         rule: '<a:RULES:1350663238538494034>',
@@ -290,7 +276,6 @@ module.exports = {
         bottomMiddle: '<a:BOTTOMMIDDLE:1350663945698017331>',
         bottomRight: '<a:BOTTOMRIGHT:1350663299334934641>',
     },
-
     position: {
       police: '<a:POLICE:1350665263632351313>',
       peachPolice: '<:PEACHPOLICE:1350665275896365207>',
@@ -305,12 +290,27 @@ module.exports = {
       peachRob: '<:PEACHROB:1350669557634695269>',
       gomaRob: '<:GOMAROB:1350669568192024689>',
     },
-
     giveaway: {
         participants: '<:emoji_56:1207319081552707644>',
         gift: '<:GIFT:1350666242578710629>'
     },
-
+    supporter: {
+        one: '<:BMLEVEL1:1350684736053313566>',
+        two: '<:BMLEVEL2:1350684743443681290>',
+        three: '<:BMLEVEL3:1350684750234259506>',
+        four: '<:BMLEVEL4:1350684761135382648>',
+        five: '<:BMLEVEL5:1350684769461207070>',
+        six: '<:BMLEVEL6:1350684775744274574>',
+        seven: '<:BMLEVEL7:1350684784015446026>',
+        eight: '<:BMLEVEL8:1350684792873680928>',
+        nine: '<:BMLEVEL9:1350684813023121408>',
+        ten: '<:BMLEVEL10:1350684822670020713>',
+        eleven: '<:BMLEVEL11:1350684832811974688>',
+        twelve: '<:BMLEVEL12:1350684843863703562>',
+        thirteen: '<:BMLEVEL13:1350684851073712169>',
+        fourteen: '<:BMLEVEL14:1350684858711801866>',
+        fifteen: '<:BMLEVEL15:1350684871768543252>',
+    },
     actions: {
         bites: [
             '<a:PBITE1:1350669956924182620>',
