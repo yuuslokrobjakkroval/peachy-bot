@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const globalGif = require("../../utils/Gif");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class QRCode extends Command {
     constructor(client) {
@@ -40,11 +41,10 @@ module.exports = class QRCode extends Command {
         const qrMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.qrMessages; // Access qrMessages
 
         if (ctx.isInteraction) {
-            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
+            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         } else {
-            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
+            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         }
-
 
         const currency = ctx.isInteraction
             ? ctx.interaction.options.getString('currency')

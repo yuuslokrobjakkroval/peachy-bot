@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Icon extends Command {
   constructor(client) {
@@ -34,9 +35,9 @@ module.exports = class Icon extends Command {
     const iconMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.iconMessages;
 
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
+      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
     } else {
-      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
+      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
     }
 
     const guild = ctx.guild;

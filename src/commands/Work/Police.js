@@ -85,7 +85,7 @@ module.exports = class CatchThief extends Command {
             await Promise.all([police.save(), thief.save()]);
 
             // Send success message
-            const policeEmoji = [globalEmoji.peachPolice, globalEmoji.gomaPolice];
+            const policeEmoji = [globalEmoji.position.peachPolice, globalEmoji.position.gomaPolice];
             const randomPolice = client.utils.getRandomElement(policeEmoji);
             const successEmbed = client.embed()
                 .setColor(color.main)

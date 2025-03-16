@@ -6,7 +6,7 @@ module.exports = class Ping extends Command {
     super(client, {
       name: "ping",
       description: {
-        content: "𝑺𝒉𝒐𝒘𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒑𝒊𝒏𝒈",
+        content: "Shows the bot's ping",
         examples: ["ping"],
         usage: "ping",
       },
@@ -31,13 +31,11 @@ module.exports = class Ping extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(emoji.searching);
+      await ctx.interaction.reply(globalEmoji.searching);
     } else {
-      await ctx.sendDeferMessage(emoji.searching);
+      await ctx.sendDeferMessage(globalEmoji.searching);
     }
 
     let randomNumber = Math.floor(Math.random() * (30 - 15 + 1)) + 15;

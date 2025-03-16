@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const InviteTrackerSchema = require("../../schemas/inviteTracker");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class CheckInvites extends Command {
   constructor(client) {
@@ -38,11 +39,11 @@ module.exports = class CheckInvites extends Command {
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", emoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", emoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     }
 

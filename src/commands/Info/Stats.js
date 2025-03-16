@@ -30,9 +30,9 @@ module.exports = class Stats extends Command {
         const statsMessages = language.locales.get(language.defaultLocale)?.informationMessages?.statsMessages;
 
         if (ctx.isInteraction) {
-            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
+            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         } else {
-            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
+            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         }
 
         const users = await Users.find();

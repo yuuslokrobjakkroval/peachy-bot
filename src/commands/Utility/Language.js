@@ -1,6 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
-const emojiGlobal = require("../../utils/Emoji");
+const globalEmoji = require("../../utils/Emoji");
 
 const languageNames = {
   en: "English",
@@ -47,8 +47,7 @@ module.exports = class Language extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const languageMessages = language.locales.get(language.defaultLocale)
-      ?.utilityMessages?.languageMessages;
+    const languageMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.languageMessages;
 
     const subCommand = ctx.isInteraction
       ? ctx.interaction.options.getSubcommand()
@@ -72,24 +71,15 @@ module.exports = class Language extends Command {
           )
           .setThumbnail(
             client.utils.emojiToImage(
-              emojiGlobal.countryFlag[convertSubCommand]
+                globalEmoji.countryFlag[convertSubCommand]
             )
           )
           .setDescription(
-            languageMessages?.languageSetDescription.replace(
-              "%{language}",
-              client.utils.formatCapitalize(selectedLang)
-            ) ||
-              `Your language has been set to ****${client.utils.formatCapitalize(
-                selectedLang
-              )}****.`
+            languageMessages?.languageSetDescription.replace("%{language}", client.utils.formatCapitalize(selectedLang)) ||
+              `Your language has been set to ****${client.utils.formatCapitalize(selectedLang)}****.`
           )
           .setFooter({
-            text:
-              languageMessages?.requestedBy.replace(
-                "%{username}",
-                ctx.author.displayName
-              ) || `Request By ${ctx.author.displayName}`,
+            text: languageMessages?.requestedBy.replace("%{username}", ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
 
@@ -150,21 +140,11 @@ module.exports = class Language extends Command {
           .setThumbnail(
             client.utils.emojiToImage(emojiGlobal.countryFlag[currentLanguage])
           )
-          .setDescription(
-            languageMessages?.currentLanguageDescription.replace(
-              "%{language}",
-              client.utils.formatCapitalize(formatLanguage)
-            ) ||
-              `Your current language is ****${client.utils.formatCapitalize(
-                formatLanguage
-              )}****.`
+          .setDescription(languageMessages?.currentLanguageDescription.replace("%{language}", client.utils.formatCapitalize(formatLanguage)) ||
+              `Your current language is ****${client.utils.formatCapitalize(formatLanguage)}****.`
           )
           .setFooter({
-            text:
-              languageMessages?.requestedBy.replace(
-                "%{username}",
-                ctx.author.displayName
-              ) || `Request By ${ctx.author.displayName}`,
+            text: languageMessages?.requestedBy.replace("%{username}", ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
 

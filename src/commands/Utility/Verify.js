@@ -1,12 +1,5 @@
 const { Command } = require("../../structures/index.js");
-const {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-} = require("discord.js");
+const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
 const Users = require("../../schemas/user");
 const globalGif = require("../../utils/Gif");
 const globalEmoji = require("../../utils/Emoji");
@@ -34,8 +27,7 @@ module.exports = class Verify extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const verifyMessages = language.locales.get(language.defaultLocale)
-      ?.utilityMessages?.verifyMessages;
+    const verifyMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.verifyMessages;
 
     const user = await Users.findOne({ userId: ctx.author.id });
 

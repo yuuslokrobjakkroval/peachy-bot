@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Emoji extends Command {
     constructor(client) {
@@ -35,9 +36,9 @@ module.exports = class Emoji extends Command {
         const emojiMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.emojiMessages;
 
         if (ctx.isInteraction) {
-            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
+            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         } else {
-            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
+            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         }
 
         const emojiInput = ctx.isInteraction ? ctx.interaction.options.getString("emoji") : args[0];

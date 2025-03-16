@@ -127,7 +127,7 @@ module.exports = class Rob extends Command {
                     client.utils.updateCooldown(ctx.author.id, this.name.toLowerCase(), cooldownTime);
 
                     // Send success message
-                    const robEmoji = [globalEmoji.peachRob, globalEmoji.gomaRob];
+                    const robEmoji = [globalEmoji.position.peachRob, globalEmoji.position.gomaRob];
                     const randomRob = client.utils.getRandomElement(robEmoji);
 
                     const successEmbed = client.embed()

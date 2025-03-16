@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Avatar extends Command {
   constructor(client) {
@@ -40,9 +41,9 @@ module.exports = class Avatar extends Command {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', emoji.searching));
+      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
     } else {
-      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', emoji.searching));
+      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
     }
 
     const mention = ctx.isInteraction
