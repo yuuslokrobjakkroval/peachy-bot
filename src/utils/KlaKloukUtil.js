@@ -2,15 +2,15 @@ const { AttachmentBuilder } = require("discord.js");
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
 
 const kkEmoji = {
-  lion: "<:KKLION:1314104873704230932>",
-  angpav: "<:KKANGPAV:1314104882390896711>",
-  tiger: "<:KKTIGER:1314104892272545822>",
-  cow: "<:KKCOW:1314104900933648404>",
-  crab: "<:KKCRAB:1314104909695680602>",
-  trey: "<:KKFISH:1314104949067612220>",
-  clear: "<:CLEAR:1314218233284395049>",
-  cancel: "<:CANCEL:1314217717217234964>",
-  start: "<a:START:1314216911734571111>",
+  lion: "<:LION:1342746164134674462>",
+  angpav: "<:ANGPAV:1342746180332814346>",
+  tiger: "<:KLA:1342746195331911721>",
+  cow: "<:COW:1342746208938098720>",
+  crab: "<:CRAB:1342746218144595979>",
+  trey: "<:FISH:1342746226608574525>",
+  clear: "<:CLEAR:1342748925341470811>",
+  cancel: "<:CANCEL:1342748932534702141>",
+  start: "<a:START:1342748948825243699>",
 };
 
 const kkGif = {
@@ -26,7 +26,7 @@ const kkImage = {
   angpav: "https://i.imgur.com/h2eqBAU.png", // tick
   tiger: "https://i.imgur.com/EaIw3tM.png", // tick
   cow: "https://i.imgur.com/07gO3iy.png", // tick
-  crab: "https://i.imgur.com/Pi3Xjna.png",
+  crab: "https://i.imgur.com/Pi3Xjna.png", // tick
   trey: "https://i.imgur.com/dGzUdmn.png", // tick
 };
 
