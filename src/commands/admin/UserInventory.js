@@ -146,11 +146,11 @@ module.exports = class UserInventory extends Command {
         .embed()
         .setColor(color.main)
         .setDescription(
-          `## ${emoji.inventory.mainLeft} ${
+          `## ${emoji.mainLeft} ${
             invMessages.inventoryTitle || "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘"
-          } ${emoji.inventory.mainRight}`
+          } ${emoji.mainRight}`
         )
-        .setThumbnail(client.utils.emojiToImage(emoji.inventory.main))
+        .setThumbnail(client.utils.emojiToImage(emoji.main))
         .addFields(embedFields)
         .setFooter({
           text:

@@ -30,8 +30,7 @@ module.exports = class Inventory extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const invMessages = language.locales.get(language.defaultLocale)
-      ?.inventoryMessages?.invMessages;
+    const invMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.invMessages;
 
     try {
       client.utils.getUser(ctx.author.id).then((user) => {
@@ -139,11 +138,11 @@ module.exports = class Inventory extends Command {
           .embed()
           .setColor(color.main)
           .setDescription(
-            `## ${emoji.inventory.mainLeft} ${
+            `## ${emoji.mainLeft} ${
               invMessages.inventoryTitle || "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘"
-            } ${emoji.inventory.mainRight}`
+            } ${emoji.mainRight}`
           )
-          .setThumbnail(client.utils.emojiToImage(emoji.inventory.main))
+          .setThumbnail(client.utils.emojiToImage(emoji.main))
           .addFields(embedFields)
           .setFooter({
             text:
