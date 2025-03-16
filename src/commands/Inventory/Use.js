@@ -44,7 +44,7 @@ module.exports = class Use extends Command {
         try {
             const user = await client.utils.getUser(userId);
             const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString().toLowerCase() : args[0].toLowerCase();
-            // const themeItem = Themes.concat(ImportantItems).find(item => item.id === itemId);
+            const themeItem = Themes.concat(ImportantItems).find(item => item.id === itemId);
             const wallpaperItem = Wallpapers.concat(ImportantItems).find(item => item.id === itemId);
             const colorItem = Colors.concat(ImportantItems).find(item => item.id === itemId);
             const inventoryItem = user.inventory.find(item => item.id === itemId);
@@ -58,84 +58,86 @@ module.exports = class Use extends Command {
                 );
             }
 
-            // if (themeItem) {
-            //     if (!themeItem.able.use) {
-            //         return await client.utils.sendErrorMessage(
-            //             client,
-            //             ctx,
-            //             useMessages?.unavailable.replace('%{itemEmote}', themeItem.emoji).replace('%{itemName}', themeItem.name),
-            //             color
-            //         );
-            //     }
-            //
-            //     const currentTheme = user.preferences?.theme;
-            //     if (currentTheme === themeItem.id) {
-            //         return await client.utils.sendErrorMessage(
-            //             client,
-            //             ctx,
-            //             useMessages?.alreadyEquipped.replace('%{itemEmote}', themeItem.emoji).replace('%{itemName}', themeItem.name),
-            //             color
-            //         );
-            //     }
-            //
-            //     if (currentTheme) {
-            //         await Users.updateOne(
-            //             { userId },
-            //             { $set: { 'preferences.theme': null } }
-            //         );
-            //
-            //         const existingInventoryItem = user.inventory.find(item => item.id === currentTheme);
-            //         if (existingInventoryItem) {
-            //             existingInventoryItem.quantity += 1;
-            //         } else {
-            //             user.inventory.push({
-            //                 id: currentTheme,
-            //                 quantity: 1
-            //             });
-            //         }
-            //     }
-            //
-            //     const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
-            //
-            //     if (inventoryItemIndex > -1) {
-            //         if (user.inventory[inventoryItemIndex].quantity > 1) {
-            //             user.inventory[inventoryItemIndex].quantity -= 1;
-            //         } else {
-            //             user.inventory.splice(inventoryItemIndex, 1);
-            //         }
-            //     }
-            //
-            //     const equippedTheme = user.equip.find(equippedItem => equippedItem.id.startsWith('t') || equippedItem.id.startsWith('st'));
-            //
-            //     if (equippedTheme) {
-            //         await Users.updateOne(
-            //             { userId },
-            //             { $pull: { equip: { id: equippedTheme.id } } }
-            //         );
-            //     }
-            //
-            //     await Users.updateOne(
-            //         { userId },
-            //         {
-            //             $addToSet: { equip: { id: themeItem.id, quantity: 1 } },
-            //             $set: {
-            //                 'preferences.theme': themeItem.id,
-            //                 inventory: user.inventory
-            //             }
-            //         }
-            //     );
-            //
-            //     const embed = client.embed()
-            //         .setColor(color.main)
-            //         .setDescription(
-            //             useMessages?.applied
-            //                 .replace('%{type}', '𝒕𝒉𝒆𝒎𝒆')
-            //                 .replace('%{itemEmote}', themeItem.emoji)
-            //                 .replace('%{itemName}', themeItem.name)
-            //         );
-            //
-            //     return await ctx.sendMessage({ embeds: [embed] });
-            // }
+            if (themeItem) {
+                const embed = client.embed().setColor(color.main).setDescription('Theme កំពុងធ្វើការជួលជុល');
+                return ctx.sendMessage({ embeds: [embed] });
+                // if (!themeItem.able.use) {
+                //     return await client.utils.sendErrorMessage(
+                //         client,
+                //         ctx,
+                //         useMessages?.unavailable.replace('%{itemEmote}', themeItem.emoji).replace('%{itemName}', themeItem.name),
+                //         color
+                //     );
+                // }
+                //
+                // const currentTheme = user.preferences?.theme;
+                // if (currentTheme === themeItem.id) {
+                //     return await client.utils.sendErrorMessage(
+                //         client,
+                //         ctx,
+                //         useMessages?.alreadyEquipped.replace('%{itemEmote}', themeItem.emoji).replace('%{itemName}', themeItem.name),
+                //         color
+                //     );
+                // }
+                //
+                // if (currentTheme) {
+                //     await Users.updateOne(
+                //         { userId },
+                //         { $set: { 'preferences.theme': null } }
+                //     );
+                //
+                //     const existingInventoryItem = user.inventory.find(item => item.id === currentTheme);
+                //     if (existingInventoryItem) {
+                //         existingInventoryItem.quantity += 1;
+                //     } else {
+                //         user.inventory.push({
+                //             id: currentTheme,
+                //             quantity: 1
+                //         });
+                //     }
+                // }
+                //
+                // const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
+                //
+                // if (inventoryItemIndex > -1) {
+                //     if (user.inventory[inventoryItemIndex].quantity > 1) {
+                //         user.inventory[inventoryItemIndex].quantity -= 1;
+                //     } else {
+                //         user.inventory.splice(inventoryItemIndex, 1);
+                //     }
+                // }
+                //
+                // const equippedTheme = user.equip.find(equippedItem => equippedItem.id.startsWith('t') || equippedItem.id.startsWith('st'));
+                //
+                // if (equippedTheme) {
+                //     await Users.updateOne(
+                //         { userId },
+                //         { $pull: { equip: { id: equippedTheme.id } } }
+                //     );
+                // }
+                //
+                // await Users.updateOne(
+                //     { userId },
+                //     {
+                //         $addToSet: { equip: { id: themeItem.id, quantity: 1 } },
+                //         $set: {
+                //             'preferences.theme': themeItem.id,
+                //             inventory: user.inventory
+                //         }
+                //     }
+                // );
+                //
+                // const embed = client.embed()
+                //     .setColor(color.main)
+                //     .setDescription(
+                //         useMessages?.applied
+                //             .replace('%{type}', '𝒕𝒉𝒆𝒎𝒆')
+                //             .replace('%{itemEmote}', themeItem.emoji)
+                //             .replace('%{itemName}', themeItem.name)
+                //     );
+                //
+                // return await ctx.sendMessage({ embeds: [embed] });
+            }
 
             if (wallpaperItem) {
                 if (!wallpaperItem.able.use) {
