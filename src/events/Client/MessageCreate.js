@@ -521,104 +521,23 @@ module.exports = class MessageCreate extends Event {
                 this.client.cooldown.set(cmd, new Collection());
               }
 
-              // const now = Date.now();
-              // const timestamps = this.client.cooldown.get(cmd);
-              // const cooldownAmount = Math.floor(command.cooldown || 5) * 1000;
-              // if (!timestamps.has(message.author.id)) {
-              //   timestamps.set(message.author.id, now);
-              //   setTimeout(
-              //     () => timestamps.delete(message.author.id),
-              //     cooldownAmount
-              //   );
-              // } else {
-              //   const expirationTime =
-              //     timestamps.get(message.author.id) + cooldownAmount;
-              //   const timeLeft = (expirationTime - now) / 1000;
-              //   if (now < expirationTime && timeLeft > 0.9) {
-              //     return message.reply({
-              //       content: `Please wait \`${timeLeft.toFixed(
-              //         1
-              //       )}\` more second(s) before reusing the ****${cmd}**** command.`,
-              //     });
-              //   }
-              //   timestamps.set(message.author.id, now);
-              //   setTimeout(
-              //     () => timestamps.delete(message.author.id),
-              //     cooldownAmount
-              //   );
-              // }
-
-              // Cooldown Logic with Real-Time Embed
+              const now = Date.now();
               const timestamps = this.client.cooldown.get(cmd);
               const cooldownAmount = Math.floor(command.cooldown || 5) * 1000;
-
-              const nowCooldown = Date.now();
-              if (timestamps.has(message.author.id)) {
+              if (!timestamps.has(message.author.id)) {
+                timestamps.set(message.author.id, now);
+                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+              } else {
                 const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-                const timeLeft = (expirationTime - nowCooldown) / 1000;
-
-                if (nowCooldown < expirationTime && timeLeft > 0.9) {
-                  const cooldownEmbed = this.client
-                      .embed()
-                      .setColor(color.danger)
-                      .setTitle('𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐎𝐍 𝐂𝐎𝐎𝐋𝐃𝐎𝐖𝐍')
-                      .setDescription(`𝑷𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕 ***${timeLeft.toFixed(1)}*** 𝒔𝒆𝒄𝒐𝒏𝒅𝒔 𝒕𝒐 𝒖𝒔𝒆 ***${prefix + this.client.utils.formatCapitalize(cmd)}*** 𝒂𝒈𝒂𝒊𝒏.`)
-                      .setFooter({ text: '𝑪𝒐𝒐𝒍𝒅𝒐𝒘𝒏 𝒘𝒊𝒍𝒍 𝒆𝒙𝒑𝒊𝒓𝒆 𝒔𝒐𝒐𝒏...' })
-                      .setTimestamp();
-
-                  const cooldownMessage = await message.reply({ embeds: [cooldownEmbed] });
-
-                  const updateInterval = setInterval(async () => {
-                    const remaining = (expirationTime - Date.now()) / 1000;
-                    if (remaining <= 0) {
-                      clearInterval(updateInterval);
-                      const expiredEmbed = this.client
-                          .embed()
-                          .setColor(color.success)
-                          .setTitle('𝐂𝐎𝐎𝐋𝐃𝐎𝐖𝐍 𝐄𝐗𝐏𝐈𝐑𝐄𝐃')
-                          .setDescription(`𝒀𝒐𝒖 𝒄𝒂𝒏 𝒏𝒐𝒘 𝒖𝒔𝒆 ***${prefix + this.client.utils.formatCapitalize(cmd)}*** 𝒂𝒈𝒂𝒊𝒏!`)
-                          .setFooter({ text: '𝑹𝒆𝒂𝒅𝒚 𝒕𝒐 𝒈𝒐!' })
-                          .setTimestamp();
-
-                      try {
-                        await cooldownMessage.edit({ embeds: [expiredEmbed] });
-                        // Delete the message after 3 second (3000ms)
-                        setTimeout(async () => {
-                          try {
-                            await cooldownMessage.delete();
-                          } catch (deleteError) {
-                            console.error('Failed to delete cooldown message:', deleteError);
-                          }
-                          // Also clean up the timestamp
-                          timestamps.delete(message.author.id);
-                        }, 3000);
-                      } catch (error) {
-                        console.error('Failed to update cooldown embed:', error);
-                      }
-                      return;
-                    }
-
-                    const updatedEmbed = this.client
-                        .embed()
-                        .setColor(color.danger)
-                        .setTitle('𝐂𝐎𝐌𝐌𝐀𝐍𝐃 𝐎𝐍 𝐂𝐎𝐎𝐋𝐃𝐎𝐖𝐍')
-                        .setDescription(`𝑷𝒍𝒆𝒂𝒔𝒆 𝒘𝒂𝒊𝒕 ***${remaining.toFixed(1)}*** 𝒔𝒆𝒄𝒐𝒏𝒅𝒔 𝒕𝒐 𝒖𝒔𝒆 ***${prefix + this.client.utils.formatCapitalize(cmd)}*** 𝒂𝒈𝒂𝒊𝒏.`)
-                        .setTimestamp();
-                    try {
-                      await cooldownMessage.edit({ embeds: [updatedEmbed] });
-                    } catch (error) {
-                      console.error('Failed to update cooldown embed:', error);
-                      clearInterval(updateInterval);
-                    }
-                  }, 1000);
-
-                  return; // Stop execution if on cooldown
+                const timeLeft = (expirationTime - now) / 1000;
+                if (now < expirationTime && timeLeft > 0.9) {
+                  return message.reply({
+                    content: `Please wait \`${timeLeft.toFixed(1)}\` more second(s) before reusing the **${cmd}** command.`,
+                  });
                 }
+                timestamps.set(message.author.id, now);
+                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
               }
-
-              // Set new cooldown
-              timestamps.set(message.author.id, nowCooldown);
-              setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
               if (args.includes("@everyone") || args.includes("@here")) {
                 return message.reply({
