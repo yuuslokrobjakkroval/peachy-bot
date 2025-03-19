@@ -184,7 +184,7 @@ async function klakloukStarting(
       else {
         await int.reply({
           flags: 64,
-          content: `This button is controlled by ****${ctx.author.displayName}****!`,
+          content: `This button is controlled by **${ctx.author.displayName}**!`,
         });
         return false;
       }
@@ -348,11 +348,11 @@ async function klakloukStarting(
                   `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
                   `## ${selectedButton
                     .map((id) => kkEmoji[id])
-                    .join(" `|` ")}\n\n\n𝑩𝒆𝒕 ***${client.utils.formatNumber(
+                    .join(" `|` ")}\n\n\n𝑩𝒆𝒕 **${client.utils.formatNumber(
                     totalBet
-                  )}*** ${emoji.coin}\n𝑾𝒐𝒏 ***${client.utils.formatNumber(
+                  )}** ${emoji.coin}\n𝑾𝒐𝒏 **${client.utils.formatNumber(
                     winCash
-                  )}*** ${emoji.coin}`
+                  )}** ${emoji.coin}`
               )
               .setImage("attachment://result.png")
               .setFooter({
@@ -385,11 +385,11 @@ async function klakloukStarting(
                   `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
                   `## ${selectedButton
                     .map((id) => kkEmoji[id])
-                    .join(" `|` ")}\n\n\n𝑩𝒆𝒕 ***${client.utils.formatNumber(
+                    .join(" `|` ")}\n\n\n𝑩𝒆𝒕 **${client.utils.formatNumber(
                     totalBet
-                  )}*** ${emoji.coin}\n𝑳𝒐𝒔𝒕 ***${client.utils.formatNumber(
+                  )}** ${emoji.coin}\n𝑳𝒐𝒔𝒕 **${client.utils.formatNumber(
                     totalBet
-                  )}*** ${emoji.coin}`
+                  )}** ${emoji.coin}`
               )
               .setImage("attachment://result.png")
               .setFooter({

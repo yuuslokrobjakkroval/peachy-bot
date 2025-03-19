@@ -67,7 +67,7 @@ module.exports = class RemoveTimeout extends Command {
           .embed()
           .setColor(color.success)
           .setDescription(
-            `Successfully removed timeout from ****${mention}****.`
+            `Successfully removed timeout from **${mention}**.`
           ),
       ],
     });

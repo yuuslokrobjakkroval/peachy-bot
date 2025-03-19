@@ -4,6 +4,7 @@ const ShopItems = require("../../assets/inventory/ShopItems.js");
 const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const moreItems = ShopItems.flatMap((shop) => shop.inventory);
 const allItems = moreItems.concat(ImportantItems);
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class AddItem extends Command {
   constructor(client) {
@@ -35,9 +36,7 @@ module.exports = class AddItem extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user") || ctx.author // Default to the author if no user is provided
       : ctx.message.mentions.members.first() ||
@@ -124,7 +123,7 @@ module.exports = class AddItem extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${emoji.tick} Added ${itemInfo.emoji} ****x${baseQuantity}**** ${itemInfo.id} to ${mention}.`
+        `${globalEmoji.result.tick} Added ${itemInfo.emoji} **x${baseQuantity}** ${itemInfo.id} to ${mention}.`
       );
 
     return ctx.sendMessage({ embeds: [embed] });

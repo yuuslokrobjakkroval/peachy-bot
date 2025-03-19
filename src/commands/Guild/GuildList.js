@@ -26,7 +26,7 @@ module.exports = class GuildList extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const guilds = client.guilds.cache.map(
-      (g) => `Name : ****${g.name}****\nID : ****${g.id}****`
+      (g) => `Name : **${g.name}**\nID : **${g.id}**`
     );
     let chunks = client.utils.chunk(guilds, 10);
     if (chunks.length === 0) chunks = 1;

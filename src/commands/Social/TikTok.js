@@ -211,13 +211,13 @@ module.exports = class TikTok extends Command {
         embed
           .setColor(color.main)
           .setDescription(
-            `****${emoji.social.tiktok} : ${
+            `**${emoji.social.tiktok} : ${
               ttName && ttLink
                 ? `[${ttName}](${ttLink})`
                 : ttName
                 ? ttName
                 : ttMessages?.notSet || "Not set"
-            }****`
+            }**`
           );
 
         await ctx.sendMessage({ embeds: [embed] });

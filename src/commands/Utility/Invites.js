@@ -81,7 +81,7 @@ module.exports = class CheckInvites extends Command {
           (invite) => invite.inviterId === mention.id
         );
         const inviteMessage = userInvite
-          ? `You currently have ****${userInvite.totalUses}**** invites`
+          ? `You currently have **${userInvite.totalUses}** invites`
           : "No invite data available for you.";
 
         const embed = client

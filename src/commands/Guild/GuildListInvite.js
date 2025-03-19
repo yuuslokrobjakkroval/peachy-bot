@@ -56,7 +56,7 @@ module.exports = class GuildListInvite extends Command {
             reason: "Listing server invites",
           });
           guildInviteData.push(
-            `****${guild.name}****\n****LINK****: ${invite.url}`
+            `**${guild.name}**\n**LINK**: ${invite.url}`
           );
         } catch (error) {
           console.error(

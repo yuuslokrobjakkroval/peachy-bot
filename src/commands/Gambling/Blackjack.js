@@ -204,7 +204,7 @@ function blackjack(
                   else {
                     await int.reply({
                       flags: 64,
-                      content: `This button is controlled by ****${ctx.author.displayName}****!`,
+                      content: `This button is controlled by **${ctx.author.displayName}**!`,
                     });
                     return false;
                   }
@@ -260,7 +260,7 @@ function blackjack(
                       .replace("%{mainLeft}", emoji.mainLeft)
                       .replace("%{title}", blackjackMessages.title)
                       .replace("%{mainRight}", emoji.mainRight) +
-                      `⏳ ****Time is up**** !!! You didn't click the button in time.`
+                      `⏳ **Time is up** !!! You didn't click the button in time.`
                   )
                   .setFooter({
                     text: `${ctx.author.displayName}, ${generalMessages.pleaseStartAgain}`,

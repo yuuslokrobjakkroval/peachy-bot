@@ -62,11 +62,11 @@ module.exports = class Ranking extends Command {
     const leaderboardList = users.slice(0, 100).map((user, index) => {
       const position = index + 1;
       const emojiRank = client.utils.emojiRank(emoji, position);
-      return `****${emojiRank} ${position}. ${
+      return `**${emojiRank} ${position}. ${
         user.username || "Unknown"
-      }****\n***${client.utils.formatNumber(
+      }**\n**${client.utils.formatNumber(
         user.total ?? 0
-      )}*** ${client.utils.typeRanking(type, emoji)}`;
+      )}** ${client.utils.typeRanking(type, emoji)}`;
     });
 
     const chunks = client.utils.chunk(leaderboardList, 10);

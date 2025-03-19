@@ -88,7 +88,7 @@ module.exports = class Weekly extends Command {
 
             let bonusMessage = "";
             if (bonusCoins > 0 || bonusExp > 0) {
-                bonusMessage = `\n****+30% Bonus****\n${emoji.coin}: ****+${client.utils.formatNumber(bonusCoins)}**** coins\n${emoji.exp} ****+${client.utils.formatNumber(bonusExp)}**** xp`;
+                bonusMessage = `\n**+30% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
             }
 
             const embed = this.createSuccessEmbed(

@@ -43,9 +43,9 @@ module.exports = class ApplyJobList extends Command {
         const position = user.work.position || "Unspecified";
         if (!acc[position]) acc[position] = [];
         acc[position].push(
-          `****ID****: ${user.userId}\n****Name****: ${
+          `**ID**: ${user.userId}\n**Name**: ${
             user.username || "Unknown"
-          }\n****Approved Date****: ${new Date(
+          }\n**Approved Date**: ${new Date(
             user.work.approvedDate
           ).toLocaleDateString()}\n`
         );
@@ -61,7 +61,7 @@ module.exports = class ApplyJobList extends Command {
             .embed()
             .setColor(color.main)
             .setTitle(
-              `****Position****: ${
+              `**Position**: ${
                 position === "it"
                   ? "IT"
                   : client.utils.formatCapitalize(position)

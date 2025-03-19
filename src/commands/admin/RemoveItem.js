@@ -4,6 +4,7 @@ const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
 const moreItems = ShopItems.flatMap((shop) => shop.inventory);
 const allItems = moreItems.concat(ImportantItems);
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class RemoveItem extends Command {
   constructor(client) {
@@ -83,7 +84,7 @@ module.exports = class RemoveItem extends Command {
         .embed()
         .setColor(color.main)
         .setDescription(
-          `${emoji.tick} Removed ${itemInfo.emoji} ****x${baseQuantity}**** ${itemInfo.id} from ${mention.displayName}'s inventory.`
+          `${globalEmoji.result.tick} Removed ${itemInfo.emoji} **x${baseQuantity}** ${itemInfo.id} from ${mention.displayName}'s inventory.`
         );
 
       return await ctx.sendMessage({ embeds: [embed] });

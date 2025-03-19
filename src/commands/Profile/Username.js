@@ -60,7 +60,7 @@ module.exports = class Username extends Command {
                 .replace("%{title}", "𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄")
                 .replace("%{mainRight}", emoji.mainRight) +
                 userNameMessages.help.usage +
-                "\n\n****Examples:****\n" +
+                "\n\n**Examples:**\n" +
                 userNameMessages.help.examples
                   .map((example) => `\`${example}\``)
                   .join("\n")

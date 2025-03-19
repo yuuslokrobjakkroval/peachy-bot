@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class BanUser extends Command {
   constructor(client) {
@@ -86,7 +87,7 @@ module.exports = class BanUser extends Command {
         .embed()
         .setColor(color.main)
         .setDescription(
-          `${emoji.banned} Banned ****${mention}**** for: \`${reason}\``
+          `${globalEmoji.option.banner} Banned **${mention}** for: \`${reason}\``
         );
 
       return await ctx.sendMessage({ embeds: [embed] });

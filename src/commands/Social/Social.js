@@ -62,13 +62,13 @@ module.exports = class Socials extends Command {
     const ttName = user.social.tiktok.name || smMessages?.notSet || "Not set";
     const ttLink = user.social.tiktok.link || "";
 
-    const socialDescription = `****${emoji.social.facebook} : ${
+    const socialDescription = `**${emoji.social.facebook} : ${
       fbName && fbLink ? `[${fbName}](${fbLink})` : fbName
-    }****\n\n****${emoji.social.instagram} : ${
+    }**\n\n**${emoji.social.instagram} : ${
       igName && igLink ? `[${igName}](${igLink})` : igName
-    }****\n\n****${emoji.social.tiktok} : ${
+    }**\n\n**${emoji.social.tiktok} : ${
       ttName && ttLink ? `[${ttName}](${ttLink})` : ttName
-    }****\n`;
+    }**\n`;
 
     const embed = client
       .embed()

@@ -73,8 +73,8 @@ module.exports = class Gender extends Command {
       case "help": {
         embed.setDescription(
           `${
-            genderMessages?.usage || "****Usage:****"
-          } \`gender <male || female || reset || help>\`\n\n****Examples:****\n\`gender male\`\n\`gender female\`\n\`gender reset\`\n\`gender help\``
+            genderMessages?.usage || "**Usage:**"
+          } \`gender <male || female || reset || help>\`\n\n**Examples:**\n\`gender male\`\n\`gender female\`\n\`gender reset\`\n\`gender help\``
         );
 
         await ctx.sendMessage({ embeds: [embed] });

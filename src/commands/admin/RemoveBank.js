@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class RemoveBank extends Command {
   constructor(client) {
@@ -78,9 +79,9 @@ module.exports = class RemoveBank extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${emoji.tick} Removed ****${client.utils.formatNumber(
+        `${globalEmoji.result.tick} Removed **${client.utils.formatNumber(
           baseAmount
-        )}**** ${emoji.coin} from ${mention}'s bank balance.`
+        )}** ${emoji.coin} from ${mention}'s bank balance.`
       );
 
     await Users.updateOne(

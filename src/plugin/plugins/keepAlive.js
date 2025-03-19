@@ -4,7 +4,7 @@ const KeepAlive = {
   name: "keep-alive",
   version: "1.0.0",
   author: "KYUU",
-  /****
+  /**
    *
    * @param {PeachyClient} client
    */

@@ -56,9 +56,9 @@ module.exports = class Inventory extends Command {
               const type = itemInfo.type;
               itemList[type] = itemList[type] || [];
               itemList[type].push(
-                `\`${itemInfo.id}\` ${itemInfo.emoji} ****${
+                `\`${itemInfo.id}\` ${itemInfo.emoji} **${
                   item.quantity
-                }**** ${
+                }** ${
                   itemInfo.name
                     ? itemInfo.name
                     : client.utils.toNameCase(itemInfo.id)
@@ -117,7 +117,7 @@ module.exports = class Inventory extends Command {
         const embedFields = [
           {
             name: invMessages.inventoryNet || "Inventory Net",
-            value: `****\`${client.utils.formatNumber(totalWorth)}\`**** ${
+            value: `**\`${client.utils.formatNumber(totalWorth)}\`** ${
               emoji.coin
             }`,
             inline: false,

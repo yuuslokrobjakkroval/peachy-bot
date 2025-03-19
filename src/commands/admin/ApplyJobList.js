@@ -45,9 +45,9 @@ module.exports = class ApplyJobList extends Command {
         const position = user.work.position || "Unspecified";
         if (!acc[position]) acc[position] = [];
         acc[position].push(
-          `****ID:**** ${user.userId}\n****Name:**** ${
+          `**ID:** ${user.userId}\n**Name:** ${
             user.username || "Unknown"
-          }\n****Applied Date:**** ${new Date(
+          }\n**Applied Date:** ${new Date(
             user.work.applyDate
           ).toLocaleDateString()}\n`
         );

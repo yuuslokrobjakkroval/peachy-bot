@@ -118,13 +118,13 @@ module.exports = class Reroll extends Command {
           newWinners.length
             ? `${newWinners
                 .map((id) => `<@${id}>`)
-                .join(", ")}! You have won ****${client.utils.formatNumber(
+                .join(", ")}! You have won **${client.utils.formatNumber(
                 giveaway.prize
-              )}**** ${emoji.coin} ${emoji.congratulation}` +
+              )}** ${emoji.coin} ${emoji.congratulation}` +
                 `\n\nto reroll the giveaway again, please use\n\`${globalConfig.prefix.toLowerCase()}reroll ${messageId}\``
-            : `No one entered the giveaway for ****\`${client.utils.formatNumber(
+            : `No one entered the giveaway for **\`${client.utils.formatNumber(
                 giveaway.prize
-              )}\`****!`
+              )}\`**!`
         )
         .setFooter({
           text: `Rerolled by ${ctx.author.displayName}`,
@@ -162,13 +162,13 @@ module.exports = class Reroll extends Command {
             ? `# Congratulations ${emoji.congratulation}` +
                 `${newWinners
                   .map((user) => `<@${user}>`)
-                  .join(", ")}! You have won ****${
+                  .join(", ")}! You have won **${
                   itemInfo.name
-                } \`${client.utils.formatNumber(giveaway.amount)}\`****` +
+                } \`${client.utils.formatNumber(giveaway.amount)}\`**` +
                 `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll item ${messageId}\``
             : `No one entered the giveaway for ${
                 itemInfo.name
-              } ****\`${client.utils.formatNumber(giveaway.amount)}\`**** ${
+              } **\`${client.utils.formatNumber(giveaway.amount)}\`** ${
                 itemInfo.emoji
               }!`
         )

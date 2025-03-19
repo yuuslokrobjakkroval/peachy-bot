@@ -128,7 +128,7 @@ module.exports = class Timeout extends Command {
         client
           .embed()
           .setColor(color.main)
-          .setDescription(`Timed out ****${mention}**** for \`${duration}\`.`),
+          .setDescription(`Timed out **${mention}** for \`${duration}\`.`),
       ],
     });
 

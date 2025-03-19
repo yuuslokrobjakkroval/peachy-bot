@@ -69,7 +69,7 @@ module.exports = class Blacklist extends Command {
 
     return await ctx.sendMessage({
       embeds: [
-        client.embed().setColor(color.main).setDescription(`${emoji.tick} Blacklisted ****Successfully****.`),
+        client.embed().setColor(color.main).setDescription(`${emoji.tick} Blacklisted **Successfully**.`),
       ],
     });
   }

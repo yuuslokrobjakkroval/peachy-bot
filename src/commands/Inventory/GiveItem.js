@@ -167,14 +167,14 @@ module.exports = class GiveItem extends Command {
           name: giveItemMessages.sentItem,
           value: `${
             itemInfo.emoji
-          } ****\`${itemAmount.toLocaleString()}\`**** ${itemInfo.name}`,
+          } **\`${itemAmount.toLocaleString()}\`** ${itemInfo.name}`,
           inline: true,
         },
         {
           name: giveItemMessages.receivedItem,
           value: `${
             itemInfo.emoji
-          } ****\`${itemAmount.toLocaleString()}\`**** ${itemInfo.name}`,
+          } **\`${itemAmount.toLocaleString()}\`** ${itemInfo.name}`,
           inline: true,
         },
       ]);
@@ -254,15 +254,15 @@ module.exports = class GiveItem extends Command {
           if (!hasItems)
             errorMessage += `You don't have ${itemInfo.emoji} \`${
               itemInfo.id
-            }\` ****${client.utils.formatCapitalize(
+            }\` **${client.utils.formatCapitalize(
               itemInfo.name
-            )}**** in your inventory.`;
+            )}** in your inventory.`;
           if (!itemInfo.able.gift)
             errorMessage += `The item ${itemInfo.emoji} \`${
               itemInfo.id
-            }\` ****${client.utils.formatCapitalize(
+            }\` **${client.utils.formatCapitalize(
               itemInfo.name
-            )}**** is not giveable!`;
+            )}** is not giveable!`;
           return await client.utils.sendErrorMessage(
             client,
             ctx,

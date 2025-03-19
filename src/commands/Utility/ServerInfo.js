@@ -88,17 +88,17 @@ module.exports = class ServerInfo extends Command {
       .addFields([
         {
           name: `🆔 𝑰𝑫`,
-          value: `${globalEmoji.arrow} ***${guild.id}***`,
+          value: `${globalEmoji.arrow} **${guild.id}**`,
           inline: false,
         },
         {
           name: `📛 𝑵𝒂𝒎𝒆`,
-          value: `${globalEmoji.arrow} ***${guild.name}***`,
+          value: `${globalEmoji.arrow} **${guild.name}**`,
           inline: false,
         },
         {
           name: `👑 𝑶𝒘𝒏𝒆𝒓`,
-          value: `${globalEmoji.arrow} ***<@${guild.ownerId}>***`,
+          value: `${globalEmoji.arrow} **<@${guild.ownerId}>**`,
           inline: false,
         },
         {
@@ -110,40 +110,40 @@ module.exports = class ServerInfo extends Command {
         },
         {
           name: "📊 𝑪𝒉𝒂𝒏𝒏𝒆𝒍",
-          value: `𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒊𝒆𝒔 ${globalEmoji.arrow} ***${
+          value: `𝑪𝒂𝒕𝒆𝒈𝒐𝒓𝒊𝒆𝒔 ${globalEmoji.arrow} **${
             guild.channels.cache.filter((ch) => ch.type === 4).size
-          }***\n𝑻𝒆𝒙𝒕 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔 ${globalEmoji.arrow} ***${
+          }**\n𝑻𝒆𝒙𝒕 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔 ${globalEmoji.arrow} **${
             guild.channels.cache.filter((ch) => ch.type === 0).size
-          }***\n𝑽𝒐𝒊𝒄𝒆 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔 ${globalEmoji.arrow} ***${
+          }**\n𝑽𝒐𝒊𝒄𝒆 𝒄𝒉𝒂𝒏𝒏𝒆𝒍𝒔 ${globalEmoji.arrow} **${
             guild.channels.cache.filter((ch) => ch.type === 2).size
-          }***`,
+          }**`,
           inline: false,
         },
         {
           name: "🧍 𝑴𝒆𝒎𝒃𝒆𝒓 𝑺𝒕𝒂𝒕𝒖𝒔",
-          value: `𝑶𝒏𝒍𝒊𝒏𝒆 ${globalEmoji.arrow} ***${onlineCount}*** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n𝑰𝒅𝒍𝒆 ${globalEmoji.arrow} ***${idleCount}*** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n𝑫𝒐 𝑵𝒐𝒕 𝑫𝒊𝒔𝒕𝒖𝒓𝒃 ${globalEmoji.arrow} ***${dndCount}*** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n𝑶𝒇𝒇𝒍𝒊𝒏𝒆 ${globalEmoji.arrow} ***${offlineCount}*** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`,
+          value: `𝑶𝒏𝒍𝒊𝒏𝒆 ${globalEmoji.arrow} **${onlineCount}** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n𝑰𝒅𝒍𝒆 ${globalEmoji.arrow} **${idleCount}** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n𝑫𝒐 𝑵𝒐𝒕 𝑫𝒊𝒔𝒕𝒖𝒓𝒃 ${globalEmoji.arrow} **${dndCount}** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n𝑶𝒇𝒇𝒍𝒊𝒏𝒆 ${globalEmoji.arrow} **${offlineCount}** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`,
           inline: false,
         },
         {
           name: "📅 𝑶𝒇𝒇𝒍𝒊𝒏𝒆 𝑴𝒆𝒎𝒃𝒆𝒓𝒔",
-          value: `7 𝑫𝒂𝒚𝒔 ${globalEmoji.arrow} ***${offline7Days}*** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n30 𝑫𝒂𝒚𝒔 ${globalEmoji.arrow} ***${offline30Days}*** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`,
+          value: `7 𝑫𝒂𝒚𝒔 ${globalEmoji.arrow} **${offline7Days}** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔\n30 𝑫𝒂𝒚𝒔 ${globalEmoji.arrow} **${offline30Days}** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`,
           inline: false,
         },
         {
           name: "🚀 𝑩𝒐𝒐𝒔𝒕 𝑰𝒏𝒇𝒐",
-          value: `𝑩𝒐𝒐𝒔𝒕𝒔 ${globalEmoji.arrow} ***${
+          value: `𝑩𝒐𝒐𝒔𝒕𝒔 ${globalEmoji.arrow} **${
             guild.premiumSubscriptionCount || 0
-          }***\n𝑩𝒐𝒐𝒔𝒕 𝒍𝒆𝒗𝒆𝒍 ${globalEmoji.arrow} ***${guild.premiumTier}***`,
+          }**\n𝑩𝒐𝒐𝒔𝒕 𝒍𝒆𝒗𝒆𝒍 ${globalEmoji.arrow} **${guild.premiumTier}**`,
           inline: false,
         },
         {
           name: "🎭 𝑹𝒐𝒍𝒆𝒔 𝒂𝒏𝒅 𝑬𝒎𝒐𝒋𝒊",
-          value: `𝑹𝒐𝒍𝒆𝒔 ${globalEmoji.arrow} ***${guild.roles.cache.size}***\n𝑬𝒎𝒐𝒋𝒊 ${globalEmoji.arrow} ***${guild.emojis.cache.size}***\n𝑺𝒕𝒊𝒄𝒌𝒆𝒓 ${globalEmoji.arrow} ***${guild.stickers.cache.size}***`,
+          value: `𝑹𝒐𝒍𝒆𝒔 ${globalEmoji.arrow} **${guild.roles.cache.size}**\n𝑬𝒎𝒐𝒋𝒊 ${globalEmoji.arrow} **${guild.emojis.cache.size}**\n𝑺𝒕𝒊𝒄𝒌𝒆𝒓 ${globalEmoji.arrow} **${guild.stickers.cache.size}**`,
           inline: false,
         },
         {
           name: "👥 𝑻𝒐𝒕𝒂𝒍 𝑴𝒆𝒎𝒃𝒆𝒓𝒔",
-          value: `${globalEmoji.arrow} ***${guild.memberCount}*** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`,
+          value: `${globalEmoji.arrow} **${guild.memberCount}** 𝒎𝒆𝒎𝒃𝒆𝒓𝒔`,
           inline: false,
         },
         {

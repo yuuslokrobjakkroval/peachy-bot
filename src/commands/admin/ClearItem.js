@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class ClearItem extends Command {
     constructor(client) {
@@ -32,7 +33,7 @@ module.exports = class ClearItem extends Command {
         const embed = client
             .embed()
             .setColor(color.main)
-            .setDescription(`${emoji.tick} Cleared all item in ${user} inventory.`);
+            .setDescription(`${globalEmoji.result.tick} Cleared all item in ${user} inventory.`);
 
         await Users.updateOne({ userId: user.id }, { $set: { inventory: [] } }).exec();
 

@@ -3,7 +3,7 @@ const color = require("../../utils/Color");
 module.exports = [
   {
     name: "FOOD",
-    description: `Food items to earn XP!\n****・**** \`pbuy {id}\` to buy an item`,
+    description: `Food items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
     type: "food",
     inventory: [
       {
@@ -58,7 +58,7 @@ module.exports = [
   },
   // {
   //   name: "DRINK",
-  //   description: `Drink items to earn XP!\n****・**** \`pbuy {id}\` to buy an item`,
+  //   description: `Drink items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
   //   type: "drink",
   //   inventory: [
   //     {
@@ -369,7 +369,7 @@ module.exports = [
   // },
   // {
   //   name: "CAKE",
-  //   description: `Eat items to earn XP!\n****・**** \`pbuy {id}\` to buy an item`,
+  //   description: `Eat items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
   //   type: "cake",
   //   inventory: [
   //     {
@@ -648,7 +648,7 @@ module.exports = [
   // },
   {
     name: "Couple",
-    description: `Ring items to connection your relationship!\n****・**** \`pbuy {id}\` to buy an item`,
+    description: `Ring items to connection your relationship!\n**・** \`pbuy {id}\` to buy an item`,
     type: "ring",
     inventory: [
       {
@@ -687,7 +687,7 @@ module.exports = [
   },
   {
     name: "DUTCH MILK",
-    description: `Buy Dutch Milk for exchange your coin!\n****・**** \`pbuy {id}\` to buy an item`,
+    description: `Buy Dutch Milk for exchange your coin!\n**・** \`pbuy {id}\` to buy an item`,
     type: "dutchmilk",
     inventory: [
       {
@@ -814,7 +814,7 @@ module.exports = [
   },
   {
     name: "Milk",
-    description: `Buy Milk for exchange your coin!\n****・**** \`pbuy {id}\` to buy an item`,
+    description: `Buy Milk for exchange your coin!\n**・** \`pbuy {id}\` to buy an item`,
     type: "milk",
     inventory: [
       {
@@ -1091,7 +1091,7 @@ module.exports = [
   },
   {
     name: "COLOR",
-    description: `Collect items to add color to your inventory!\n****・**** \`pbuy {id}\` to buy an item`,
+    description: `Collect items to add color to your inventory!\n**・** \`pbuy {id}\` to buy an item`,
     type: "color",
     inventory: [
       {
@@ -1211,7 +1211,7 @@ module.exports = [
   {
     name: "WALLPAPER",
     description:
-      "Collect wallpapers to use with your profile!\n****・**** `pbuy {id}` to buy an item\n****・**** Some items may be used or gifted.",
+      "Collect wallpapers to use with your profile!\n**・** `pbuy {id}` to buy an item\n**・** Some items may be used or gifted.",
     type: "wallpaper",
     inventory: [
       {
@@ -1592,7 +1592,7 @@ module.exports = [
   },
   {
     name: "THEME",
-    description: `Themes to customize your embed color and emoji!\n****・**** \`pbuy {id}\` to buy a theme for customization.`,
+    description: `Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
     type: "theme",
     inventory: [
       // {
@@ -1726,7 +1726,7 @@ module.exports = [
   },
   {
     name: "SPECIAL THEME",
-    description: `Special Themes to customize your embed color and emoji!\n****・**** \`pbuy {id}\` to buy a theme for customization.`,
+    description: `Special Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
     type: "special theme",
     inventory: [
       {

@@ -226,9 +226,9 @@ module.exports = class Utils {
                 new EmbedBuilder()
                   .setColor("Blue")
                   .setDescription(
-                    `<@${id}> cooldown ****<t:${Math.floor(
+                    `<@${id}> cooldown **<t:${Math.floor(
                       cooldownEnd.getTime() / 1000
-                    )}:R>****`
+                    )}:R>**`
                   ),
               ],
             })
@@ -254,9 +254,9 @@ module.exports = class Utils {
               new EmbedBuilder()
                 .setColor("Blue")
                 .setDescription(
-                  `<@${id}> cooldown ****<t:${Math.floor(
+                  `<@${id}> cooldown **<t:${Math.floor(
                     cooldownEnd.getTime() / 1000
-                  )}:R>****`
+                  )}:R>**`
                 ),
             ],
           })
@@ -1238,18 +1238,18 @@ module.exports = class Utils {
             winnerIdArray.length
               ? `Congratulations ${emoji.congratulation}\n${winnerIdArray
                   .map((user) => `<@${user}>`)
-                  .join(", ")} ! You have won ****${client.utils.formatNumber(
+                  .join(", ")} ! You have won **${client.utils.formatNumber(
                   data.prize
-                )}**** ${emoji.coin} ${
+                )}** ${emoji.coin} ${
                   autopay
                     ? ``
                     : `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll ${
                         message.id
                       }\``
                 }`
-              : `No one entered the giveaway for ****\`${client.utils.formatNumber(
+              : `No one entered the giveaway for **\`${client.utils.formatNumber(
                   data.prize
-                )}\`****!`
+                )}\`**!`
           )
           .setFooter({
             text: "Better luck next time!",
@@ -1267,11 +1267,11 @@ module.exports = class Utils {
                 .embed()
                 .setColor(color.main)
                 .setDescription(
-                  `****${
+                  `**${
                     client.user.username
-                  }**** has awarded ****${client.utils.formatNumber(
+                  }** has awarded **${client.utils.formatNumber(
                     data.prize
-                  )}**** ${emoji.coin} to <@${winner}>.`
+                  )}** ${emoji.coin} to <@${winner}>.`
                 ),
             ],
           });
@@ -1369,9 +1369,9 @@ module.exports = class Utils {
               ? `Congratulations ${emoji.congratulation}` +
                   `${winnerIdArray
                     .map((user) => `<@${user}>`)
-                    .join(", ")} ! You have won ****${
+                    .join(", ")} ! You have won **${
                     itemInfo.name
-                  } \`${client.utils.formatNumber(data.amount)}\`****` +
+                  } \`${client.utils.formatNumber(data.amount)}\`**` +
                   (autoAdd
                     ? ``
                     : `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll item ${
@@ -1379,7 +1379,7 @@ module.exports = class Utils {
                       }\``)
               : `No one entered the giveaway for ${
                   itemInfo.name
-                } ****\`${client.utils.formatNumber(data.amount)}\`**** ${
+                } **\`${client.utils.formatNumber(data.amount)}\`** ${
                   itemInfo.emoji
                 }!`
           )
@@ -1415,7 +1415,7 @@ module.exports = class Utils {
                   .embed()
                   .setColor(color.main)
                   .setDescription(
-                    `****${client.user.displayName}**** has added ****${itemInfo.name} ${itemInfo.emoji} \`${data.amount}\`**** to <@${winner}>'s inventory.`
+                    `**${client.user.displayName}** has added **${itemInfo.name} ${itemInfo.emoji} \`${data.amount}\`** to <@${winner}>'s inventory.`
                   ),
               ],
             });

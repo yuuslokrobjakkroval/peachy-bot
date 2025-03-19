@@ -102,7 +102,7 @@ module.exports = [
     id: "st2707",
     name: "KEOYUU",
     description:
-      "This theme is a gift for our anniversary 6month, I love you ***#KEOYUU***",
+      "This theme is a gift for our anniversary 6month, I love you **#KEOYUU**",
     type: "special theme",
     able: {
       use: true,

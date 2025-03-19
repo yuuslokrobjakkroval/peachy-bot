@@ -50,7 +50,7 @@ module.exports = class Ping extends Command {
     const embed = client
       .embed()
       .setColor(color.main)
-      .setDescription(`# ****${emoji.mainLeft} PING ${emoji.mainRight}****`)
+      .setDescription(`# **${emoji.mainLeft} PING ${emoji.mainRight}**`)
       .setThumbnail(client.utils.emojiToImage(emoji.main))
       .addFields([
         {

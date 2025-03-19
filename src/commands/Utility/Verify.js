@@ -74,13 +74,13 @@ module.exports = class Verify extends Command {
       .setDescription(
         `${
           verifyMessages?.confirmationMessage ||
-          "Are you sure you want to verify with ****PEACHY****?"
+          "Are you sure you want to verify with **PEACHY**?"
         }\n\n` +
           `${
             verifyMessages?.paymentInfo ||
-            "To verify, you need to pay ****$0.99/month****."
+            "To verify, you need to pay **$0.99/month**."
           }\n\n` +
-          `${verifyMessages?.benefitsTitle || "****Benefits****"}\n` +
+          `${verifyMessages?.benefitsTitle || "**Benefits**"}\n` +
           `${
             verifyMessages?.benefits ||
             "• Role verification in our server\n• Get an emoji while playing the bot\n• Add 20% to all rewards when claiming"

@@ -188,7 +188,7 @@ module.exports = class Start extends Command {
     const giveawayEmbed = client
       .embed()
       .setColor(color.main)
-      .setTitle(`****${client.utils.formatNumber(prize)}**** ${emoji.coin}`)
+      .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
       .setDescription(
         `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
       );

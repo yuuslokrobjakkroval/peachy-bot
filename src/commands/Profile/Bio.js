@@ -61,8 +61,8 @@ module.exports = class Bio extends Command {
           .setColor(color.main)
           .setDescription(
             `${
-              bioMessages?.usage || "****Usage:****"
-            } \`bio <text || reset || show || help>\`\n\n****Examples:****\n\`bio I love coding\`\n\`bio reset\`\n\`bio show\`\n\`bio help\``
+              bioMessages?.usage || "**Usage:**"
+            } \`bio <text || reset || show || help>\`\n\n**Examples:**\n\`bio I love coding\`\n\`bio reset\`\n\`bio show\`\n\`bio help\``
           );
 
         await ctx.sendMessage({ embeds: [embed] });

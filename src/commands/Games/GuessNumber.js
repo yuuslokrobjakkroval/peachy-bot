@@ -132,7 +132,7 @@ module.exports = class GuessNumber extends Command {
                     guessNumberMessages.correct.description
                   } ${client.utils.getRandomElement(
                     congratulations
-                  )} !!!\nYou guessed the number correctly: ****${numberToGuess}****.\nYou've earned ${client.utils.formatNumber(
+                  )} !!!\nYou guessed the number correctly: **${numberToGuess}**.\nYou've earned ${client.utils.formatNumber(
                     coinEarned
                   )} ${emoji.coin} and ${xpEarned} XP.`
               )
@@ -163,7 +163,7 @@ module.exports = class GuessNumber extends Command {
               const rangeSize = Math.floor(Math.random() * 16) + 5;
               const minRange = Math.max(1, numberToGuess - rangeSize);
               const maxRange = Math.min(100, numberToGuess + rangeSize);
-              hint = `${guessNumberMessages.hint.range} ****${minRange}**** and ****${maxRange}****.`;
+              hint = `${guessNumberMessages.hint.range} **${minRange}** and **${maxRange}**.`;
             }
 
             resultEmbed = client
@@ -174,7 +174,7 @@ module.exports = class GuessNumber extends Command {
                   .replace("%{mainLeft}", emoji.mainLeft)
                   .replace("%{title}", "𝐖𝐑𝐎𝐍𝐆 𝐀𝐍𝐒𝐖𝐄𝐑")
                   .replace("%{mainRight}", emoji.mainRight) +
-                  `${guessNumberMessages.incorrect.description} ****${hearts}**** hearts left. ${hint}`
+                  `${guessNumberMessages.incorrect.description} **${hearts}** hearts left. ${hint}`
               )
               .setFooter({
                 text: generalMessages.reply.replace(
@@ -194,7 +194,7 @@ module.exports = class GuessNumber extends Command {
                   .replace("%{mainLeft}", emoji.mainLeft)
                   .replace("%{title}", "𝐆𝐀𝐌𝐄 𝐎𝐕𝐄𝐑")
                   .replace("%{mainRight}", emoji.mainRight) +
-                  `${guessNumberMessages.gameOver.description} ****${numberToGuess}****.`
+                  `${guessNumberMessages.gameOver.description} **${numberToGuess}**.`
               )
               .setFooter({
                 text: generalMessages.gameOver.replace(

@@ -104,11 +104,11 @@ module.exports = class ReAutopay extends Command {
                 .embed()
                 .setColor(color.main)
                 .setDescription(
-                  `****${
+                  `**${
                     client.user.username
-                  }**** has given ****\`${client.utils.formatNumber(
+                  }** has given **\`${client.utils.formatNumber(
                     giveaway.prize
-                  )}\`**** ${emoji.coin} to <@${winnerId}>.`
+                  )}\`** ${emoji.coin} to <@${winnerId}>.`
                 ),
             ],
           });

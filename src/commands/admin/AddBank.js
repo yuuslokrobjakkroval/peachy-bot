@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class AddBank extends Command {
   constructor(client) {
@@ -91,7 +92,7 @@ module.exports = class AddBank extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${emoji.tick} Added ****${client.utils.formatNumber(baseCoins)}**** ${
+        `${globalEmoji.result.tick} Added **${client.utils.formatNumber(baseCoins)}** ${
           emoji.coin
         } to ${mention}'s bank balance.`
       );

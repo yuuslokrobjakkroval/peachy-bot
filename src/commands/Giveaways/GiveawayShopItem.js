@@ -179,9 +179,9 @@ module.exports = class GiveawayShopItem extends Command {
       .embed()
       .setColor(color.main)
       .setTitle(
-        `****ID: \`${item.id}\`\n${item.name} ${client.utils.formatNumber(
+        `**ID: \`${item.id}\`\n${item.name} ${client.utils.formatNumber(
           amount
-        )}****`
+        )}**`
       )
       .setThumbnail(client.utils.emojiToImage(item.emoji))
       .setDescription(

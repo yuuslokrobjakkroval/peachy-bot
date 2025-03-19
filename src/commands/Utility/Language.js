@@ -76,7 +76,7 @@ module.exports = class Language extends Command {
           )
           .setDescription(
             languageMessages?.languageSetDescription.replace("%{language}", client.utils.formatCapitalize(selectedLang)) ||
-              `Your language has been set to ****${client.utils.formatCapitalize(selectedLang)}****.`
+              `Your language has been set to **${client.utils.formatCapitalize(selectedLang)}**.`
           )
           .setFooter({
             text: languageMessages?.requestedBy.replace("%{username}", ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
@@ -141,7 +141,7 @@ module.exports = class Language extends Command {
             client.utils.emojiToImage(emojiGlobal.countryFlag[currentLanguage])
           )
           .setDescription(languageMessages?.currentLanguageDescription.replace("%{language}", client.utils.formatCapitalize(formatLanguage)) ||
-              `Your current language is ****${client.utils.formatCapitalize(formatLanguage)}****.`
+              `Your current language is **${client.utils.formatCapitalize(formatLanguage)}**.`
           )
           .setFooter({
             text: languageMessages?.requestedBy.replace("%{username}", ctx.author.displayName) || `Request By ${ctx.author.displayName}`,

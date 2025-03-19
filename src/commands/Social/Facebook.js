@@ -212,13 +212,13 @@ module.exports = class Facebook extends Command {
         embed
           .setColor(color.main)
           .setDescription(
-            `****${emoji.social.facebook} : ${
+            `**${emoji.social.facebook} : ${
               fbName && fbLink
                 ? `[${fbName}](${fbLink})`
                 : fbName
                 ? fbName
                 : fbMessages?.notSet || "Not set"
-            }****`
+            }**`
           );
 
         await ctx.sendMessage({ embeds: [embed] });

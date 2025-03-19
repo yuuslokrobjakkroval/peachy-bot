@@ -45,7 +45,7 @@ module.exports = class ListAutoResponse extends Command {
     // Map autoresponse entries to include ID, Trigger, and Response
     const triggers = responseDoc.autoresponse.map(
       (r) =>
-        `ID: ****${r.id}****\nTrigger: ****${r.trigger}****\nResponse: ****${r.response}****`
+        `ID: **${r.id}**\nTrigger: **${r.trigger}**\nResponse: **${r.response}**`
     );
 
     // Chunk the response list into pages of 10 entries each

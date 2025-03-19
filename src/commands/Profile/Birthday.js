@@ -78,12 +78,12 @@ module.exports = class Birthday extends Command {
         // Show help
         embed.addFields([
           {
-            name: "****Usage :****",
+            name: "**Usage :**",
             value: `\`\`\`birthday <date || reset || help>\n\`\`\``,
             inline: false,
           },
           {
-            name: "****Examples :****",
+            name: "**Examples :**",
             value: `\`\`\`birthday 20-03\nbirthday reset\nbirthday help\n\`\`\``,
             inline: false,
           },
@@ -113,13 +113,13 @@ module.exports = class Birthday extends Command {
         // If no arguments, show birthday and zodiac sign
         if (!args.length) {
           const birthdayMessage = user.profile.birthday
-            ? `Your birthday is ****\`${user.profile.birthday}\`****.\n`
+            ? `Your birthday is **\`${user.profile.birthday}\`**.\n`
             : bdMessages?.noBirthday || "No birthday set.";
 
           const zodiacMessage = user.profile.zodiacSign
-            ? `Your zodiac sign is ****\`${client.utils.formatCapitalize(
+            ? `Your zodiac sign is **\`${client.utils.formatCapitalize(
                 user.profile.zodiacSign
-              )}\`****.\n`
+              )}\`**.\n`
             : bdMessages?.noZodiac || "No zodiac sign set.";
 
           embed.setDescription(`${birthdayMessage}\n${zodiacMessage}`);
@@ -177,11 +177,11 @@ module.exports = class Birthday extends Command {
             .setDescription(
               `${
                 bdMessages?.setSuccess || "Your birthday has been set to"
-              }\n****\`${formattedDate}\`****\n${
+              }\n**\`${formattedDate}\`**\n${
                 bdMessages?.zodiacSuccess || "Your zodiac sign is"
-              }\n****\`${client.utils.formatCapitalize(
+              }\n**\`${client.utils.formatCapitalize(
                 zodiacSign.sign
-              )}\`**** ${zodiacSign.emoji}.`
+              )}\`** ${zodiacSign.emoji}.`
             );
 
           await Users.updateOne(

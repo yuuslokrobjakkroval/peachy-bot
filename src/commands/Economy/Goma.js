@@ -87,7 +87,7 @@ module.exports = class Goma extends Command {
 
             let bonusMessage = "";
             if (bonusCoins > 0 || bonusExp > 0) {
-                bonusMessage = `\n****+40% Bonus****\n${emoji.coin}: ****+${client.utils.formatNumber(bonusCoins)}**** coins\n${emoji.exp} ****+${client.utils.formatNumber(bonusExp)}**** xp`;
+                bonusMessage = `\n**+40% Bonus**\n${emoji.coin}: **+${client.utils.formatNumber(bonusCoins)}** coins\n${emoji.exp} **+${client.utils.formatNumber(bonusExp)}** xp`;
             }
 
             const successEmbed = client.embed()

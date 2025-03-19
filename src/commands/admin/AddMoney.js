@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class AddMoney extends Command {
   constructor(client) {
@@ -24,9 +25,7 @@ module.exports = class AddMoney extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user") || ctx.author
       : ctx.message.mentions.members.first() ||
@@ -91,7 +90,7 @@ module.exports = class AddMoney extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${emoji.tick} Added ****${client.utils.formatNumber(baseCoins)}**** ${
+        `${globalEmoji.result.tick} Added **${client.utils.formatNumber(baseCoins)}** ${
           emoji.coin
         } to ${mention} balance.`
       );

@@ -93,9 +93,9 @@ module.exports = class Position extends Command {
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", "𝐏𝐎𝐒𝐈𝐓𝐈𝐎𝐍")
           .replace("%{mainRight}", emoji.mainRight) +
-          `You are currently working as a ****${
+          `You are currently working as a **${
             position === "it" ? "IT" : position
-          }****.`
+          }**.`
       )
       .setFooter({
         text: generalMessages.requestedBy.replace(

@@ -138,9 +138,9 @@ module.exports = class UpdatePaymentStatus extends Command {
             .embed()
             .setColor(color.success)
             .setDescription(
-              `Successfully updated payment status to ****${client.utils.formatCapitalize(
+              `Successfully updated payment status to **${client.utils.formatCapitalize(
                 status
-              )}**** for user <@${userId}>.`
+              )}** for user <@${userId}>.`
             ),
         ],
       });

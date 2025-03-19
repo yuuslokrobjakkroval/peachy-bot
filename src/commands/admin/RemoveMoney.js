@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class RemoveMoney extends Command {
   constructor(client) {
@@ -80,9 +81,9 @@ module.exports = class RemoveMoney extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${emoji.tick} Removed ****${client.utils.formatNumber(
+        `${globalEmoji.result.tick} Removed **${client.utils.formatNumber(
           baseCoins
-        )}**** ${emoji.coin} to ${mention} balance.`
+        )}** ${emoji.coin} to ${mention} balance.`
       );
 
     await Promise.all([

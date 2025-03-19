@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Unblacklist extends Command {
   constructor(client) {
@@ -56,7 +57,7 @@ module.exports = class Unblacklist extends Command {
 
     return await ctx.sendMessage({
       embeds: [
-        client.embed().setColor(color.success).setDescription(`${emoji.tick} Un-blacklisted ****Successfully****.`),
+        client.embed().setColor(color.success).setDescription(`${globalEmoji.result.tick} Un-blacklisted Successfully.`),
       ],
     });
   }

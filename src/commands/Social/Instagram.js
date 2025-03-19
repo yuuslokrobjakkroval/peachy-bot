@@ -212,13 +212,13 @@ module.exports = class Instagram extends Command {
         embed
           .setColor(color.main)
           .setDescription(
-            `****${emoji.social.instagram} : ${
+            `**${emoji.social.instagram} : ${
               igName && igLink
                 ? `[${igName}](${igLink})`
                 : igName
                 ? igName
                 : igMessages?.notSet || "Not set"
-            }****`
+            }**`
           );
 
         await ctx.sendMessage({ embeds: [embed] });

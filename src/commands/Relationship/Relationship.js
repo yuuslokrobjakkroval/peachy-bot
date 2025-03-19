@@ -149,8 +149,8 @@ module.exports = class Profile extends Command {
     const embed = client
       .embed()
       .setColor(color.main)
-      .setTitle(`****${emoji.mainLeft} 𝐑𝐄𝐋𝐀𝐓𝐈𝐎𝐍𝐒𝐇𝐈𝐏 ${emoji.mainRight}****`)
-      .setDescription("****Generating...****")
+      .setTitle(`**${emoji.mainLeft} 𝐑𝐄𝐋𝐀𝐓𝐈𝐎𝐍𝐒𝐇𝐈𝐏 ${emoji.mainRight}**`)
+      .setDescription("**Generating...**")
       .setImage("https://i.imgur.com/ygbvn3G.gif");
     return await ctx.sendDeferMessage({
       embeds: [embed],

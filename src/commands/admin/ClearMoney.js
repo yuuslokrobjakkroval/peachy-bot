@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class ClearMoney extends Command {
     constructor(client) {
@@ -32,7 +33,7 @@ module.exports = class ClearMoney extends Command {
         const embed = client
             .embed()
             .setColor(color.main)
-            .setDescription(`${emoji.tick} Cleared all money from ${user}'s balance.`);
+            .setDescription(`${globalEmoji.result.tick} Cleared all money from ${user}'s balance.`);
 
         try {
             await Users.updateOne(

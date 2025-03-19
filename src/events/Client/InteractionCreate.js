@@ -74,7 +74,7 @@ module.exports = class InteractionCreate extends Event {
                   .setDescription(
                     `You are in timeout for: \`${
                       user.verification.timeout.reason || "No reason provided"
-                    }\`.\nTimeout ends in ****${timeString}****.`
+                    }\`.\nTimeout ends in **${timeString}**.`
                   ),
               ],
             });
@@ -88,8 +88,8 @@ module.exports = class InteractionCreate extends Event {
               .setTitle(`Heyoo! ${interaction.user.displayName}`)
               .setDescription(
                 `My Name is ${this.client.user.displayName}.\n` +
-                  `My prefix for this server is ****\`${prefix}\`****.\n\n` +
-                  `Do you need help? please use ****\`${prefix}help\`****!!!`
+                  `My prefix for this server is **\`${prefix}\`**.\n\n` +
+                  `Do you need help? please use **\`${prefix}help\`**!!!`
               )
               .setImage(globalGif.mentionBot)
               .setFooter({
@@ -134,7 +134,7 @@ module.exports = class InteractionCreate extends Event {
             ) {
               return await interaction.member
                 .send({
-                  content: `I don't have ****\`SendMessages\`**** permission in \`${interaction.guild.name}\`\nchannel: <#${interaction.channelId}>`,
+                  content: `I don't have **\`SendMessages\`** permission in \`${interaction.guild.name}\`\nchannel: <#${interaction.channelId}>`,
                 })
                 .catch(() => {});
             }
@@ -145,7 +145,7 @@ module.exports = class InteractionCreate extends Event {
               )
             ) {
               return await interaction.reply({
-                content: "I don't have ****`EmbedLinks`**** permission.",
+                content: "I don't have **`EmbedLinks`** permission.",
               });
             }
 
@@ -196,9 +196,9 @@ module.exports = class InteractionCreate extends Event {
                 return await interaction.reply({
                   content: `Please wait \`${timeLeft.toFixed(
                     1
-                  )}\` more second(s) before reusing the ****${
+                  )}\` more second(s) before reusing the **${
                     interaction.commandName
-                  }**** command.`,
+                  }** command.`,
                 });
               }
             }
@@ -301,7 +301,7 @@ module.exports = class InteractionCreate extends Event {
                 .addFields([
                   {
                     name: "Author",
-                    value: `****Name:**** ${interaction.user.username}\n****Id:**** ${interaction.user.id}\n****Channel:**** ${interaction.channel.name}`,
+                    value: `**Name:** ${interaction.user.username}\n**Id:** ${interaction.user.id}\n**Channel:** ${interaction.channel.name}`,
                     inline: true,
                   },
                   {
@@ -709,7 +709,7 @@ module.exports = class InteractionCreate extends Event {
                     console.error(`Unable to fetch member with ID: ${id}`, err);
                     return null; // Skip this participant if they are not found
                   }
-                  return `${index + 1}. <@${id}> (****1**** entry)`;
+                  return `${index + 1}. <@${id}> (**1** entry)`;
                 })
               );
 
@@ -722,11 +722,11 @@ module.exports = class InteractionCreate extends Event {
                 .setTitle("Giveaway Participants")
                 .setColor(color.main)
                 .setDescription(
-                  `These are the members who participated in the giveaway of ****${this.client.utils.formatNumber(
+                  `These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
                     data.prize
-                  )}****:\n\n${validParticipants.join(
+                  )}**:\n\n${validParticipants.join(
                     "\n"
-                  )}\n\nTotal Participants: ****${validParticipants.length}****`
+                  )}\n\nTotal Participants: **${validParticipants.length}**`
                 );
 
               await interaction.reply({ embeds: [embed], flags: 64 });
@@ -916,7 +916,7 @@ module.exports = class InteractionCreate extends Event {
                     console.error(`Unable to fetch member with ID: ${id}`, err);
                     return null; // Skip this participant if they are not found
                   }
-                  return `${index + 1}. <@${id}> (****1**** entry)`;
+                  return `${index + 1}. <@${id}> (**1** entry)`;
                 })
               );
 
@@ -929,11 +929,11 @@ module.exports = class InteractionCreate extends Event {
                 .setTitle("Giveaway Shop Item Participants")
                 .setColor(color.main)
                 .setDescription(
-                  `These are the members who participated in the giveaway of ****${this.client.utils.formatNumber(
+                  `These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
                     data.amount
-                  )}****:\n\n${validParticipants.join(
+                  )}**:\n\n${validParticipants.join(
                     "\n"
-                  )}\n\nTotal Participants: ****${validParticipants.length}****`
+                  )}\n\nTotal Participants: **${validParticipants.length}**`
                 );
 
               await interaction.reply({ embeds: [embed], flags: 64 });

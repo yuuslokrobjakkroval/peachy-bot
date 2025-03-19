@@ -43,7 +43,7 @@ module.exports = class CheckUserApply extends Command {
     // Prepare a list of users and the job positions they applied for
     const userList = users.map((user) => {
       const job = user.work.position || "Not Assigned";
-      return `****${user.username}**** (${user.userId}) - Job: ****${job}**** - Status: ****${user.work.status}****`;
+      return `**${user.username}** (${user.userId}) - Job: **${job}** - Status: **${user.work.status}**`;
     });
 
     // Split the list into chunks for pagination (max 10 users per page)

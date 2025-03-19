@@ -23,6 +23,11 @@ module.exports = {
     buyMeCafe: '<:BUYMEACOFFEE:1350663153759031387>',
 
     // OPTION
+    result: {
+        tick: '<:YES:1350683168545706064>',
+        deny: '<:NO:1350683140783341671>',
+    },
+
     option: {
         mvp: '<:MVP:1350682882389311488>',
         win: '<:W_:1350682846901178368>',

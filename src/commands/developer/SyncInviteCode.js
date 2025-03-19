@@ -91,18 +91,18 @@ module.exports = class SyncInvites extends Command {
         // Prepare a result message for the current guild
         const result =
           removedCount > 0
-            ? `****${guild.name}**** - Removed ****${removedCount}**** outdated invite code(s), synchronized successfully.`
-            : `****${guild.name}**** - Synchronized successfully, no outdated invite codes.`;
+            ? `**${guild.name}** - Removed **${removedCount}** outdated invite code(s), synchronized successfully.`
+            : `**${guild.name}** - Synchronized successfully, no outdated invite codes.`;
 
         resultMessages.push(result);
       } catch (error) {
         if (error.code === 50013) {
           resultMessages.push(
-            `****${guild.name}**** - Insufficient permissions to fetch invites.`
+            `**${guild.name}** - Insufficient permissions to fetch invites.`
           );
         } else {
           resultMessages.push(
-            `****${guild.name}**** - An error occurred during synchronization.`
+            `**${guild.name}** - An error occurred during synchronization.`
           );
         }
       }

@@ -78,7 +78,7 @@ module.exports = class AddAutoResponse extends Command {
               .embed()
               .setColor(color.main)
               .setDescription(
-                `${emoji.tick} Successfully added a new autoresponse trigger ****\`${trigger}\`**** with response ****\`${response}\`**** to this guild.`
+                `${emoji.tick} Successfully added a new autoresponse trigger **\`${trigger}\`** with response **\`${response}\`** to this guild.`
               );
 
             ctx.sendMessage({ embeds: [embed] });

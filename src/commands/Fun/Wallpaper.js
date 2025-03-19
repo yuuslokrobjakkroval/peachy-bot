@@ -49,7 +49,7 @@ module.exports = class Wallpaper extends Command {
       const wallpaperList = currentItems
         .map(
           (wallpaper, index) =>
-            `${index + 1}. ${wallpaper.emoji} ****${wallpaper.name}****`
+            `${index + 1}. ${wallpaper.emoji} **${wallpaper.name}**`
         )
         .join("\n\n");
 
@@ -113,7 +113,7 @@ async function paginateWallpapers(
       const wallpaperList = currentItems
         .map(
           (wallpaper, index) =>
-            `${index + 1}. ${wallpaper.emoji} ****${wallpaper.name}****`
+            `${index + 1}. ${wallpaper.emoji} **${wallpaper.name}**`
         )
         .join("\n\n");
 
@@ -210,11 +210,11 @@ async function paginateWallpapers(
       ) // Localized title
       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
       .setDescription(
-        `****ID : ${selectedWallpaper.id}**** \n****${
+        `**ID : ${selectedWallpaper.id}** \n**${
           wallpaper.descriptionLabel
-        } : **** ${selectedWallpaper.description}\n****${
+        } : ** ${selectedWallpaper.description}\n**${
           wallpaper.categoryLabel
-        } : **** ${client.utils.formatCapitalize(selectedWallpaper.type)}`
+        } : ** ${client.utils.formatCapitalize(selectedWallpaper.type)}`
       )
       .setImage(selectedWallpaper.image);
 

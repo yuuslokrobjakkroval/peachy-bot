@@ -56,7 +56,7 @@ module.exports = class Shop extends Command {
       const itemList = currentItems
         .map(
           (item) =>
-            `****${item.id}**** ${item.emoji} ${
+            `**${item.id}** ${item.emoji} ${
               item.name
             } - ${client.utils.formatString(item.price.buy)} ${emoji.coin}`
         )
@@ -211,11 +211,11 @@ async function paginate(
           : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
       )
       .setDescription(
-        `****ID:**** \`${item.id}\`\n****Description:**** ${
+        `**ID:** \`${item.id}\`\n**Description:** ${
           item.description
-        }\n****Price:****  ${client.utils.formatString(item.price.buy)} ${
+        }\n**Price:**  ${client.utils.formatString(item.price.buy)} ${
           emoji.coin
-        }\n****Type:**** ${client.utils.formatCapitalize(item.type)}`
+        }\n**Type:** ${client.utils.formatCapitalize(item.type)}`
       )
       .setImage(item.image)
       .setFooter({

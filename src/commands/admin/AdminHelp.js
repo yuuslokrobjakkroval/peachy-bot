@@ -57,8 +57,8 @@ module.exports = class AdminHelp extends Command {
                             .replace("%{mainLeft}", emoji.mainLeft)
                             .replace("%{title}", "𝐀𝐃𝐌𝐈𝐍")
                             .replace("%{mainRight}", emoji.mainRight) +
-                        `${helpMessages.description} ***${prefix}adminhelp [command]***\n` +
-                        `${helpMessages.examples} ***${prefix}adminhelp ban***\n\n` +
+                        `${helpMessages.description} **${prefix}adminhelp [command]**\n` +
+                        `${helpMessages.examples} **${prefix}adminhelp ban**\n\n` +
                         `${helpMessages.note}`
                     )
                     .addFields([
@@ -130,8 +130,8 @@ module.exports = class AdminHelp extends Command {
                             .replace("%{mainLeft}", emoji.mainLeft)
                             .replace("%{title}", "𝐀𝐃𝐌𝐈𝐍")
                             .replace("%{mainRight}", emoji.mainRight) +
-                        `${helpMessages.description} ***${prefix}adminhelp [command]***\n` +
-                        `${helpMessages.examples} ***${prefix}adminhelp ban***\n\n` +
+                        `${helpMessages.description} **${prefix}adminhelp [command]**\n` +
+                        `${helpMessages.examples} **${prefix}adminhelp ban**\n\n` +
                         `${helpMessages.note}`
                     )
                     .addFields([

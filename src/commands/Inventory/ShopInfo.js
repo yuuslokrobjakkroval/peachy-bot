@@ -85,22 +85,22 @@ module.exports = class ShopInfo extends Command {
       switch (item.type) {
         case "food":
           categorizedItems.Food.push(
-            `****ID:**** \`${item.id}\`\n****Name:**** ${item.name} ${item.emoji}`
+            `**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`
           );
           break;
         case "drink":
           categorizedItems.Drink.push(
-            `****ID:**** \`${item.id}\`\n****Name:**** ${item.name} ${item.emoji}`
+            `**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`
           );
           break;
         case "theme":
           categorizedItems.Theme.push(
-            `****ID:**** \`${item.id}\`\n****Name:**** ${item.name} ${item.emoji}`
+            `**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`
           );
           break;
         case "milk":
           categorizedItems.Milk.push(
-            `****ID:**** \`${item.id}\`\n****Name:**** ${item.name} ${item.emoji}`
+            `**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`
           );
           break;
         default:
@@ -135,16 +135,16 @@ module.exports = class ShopInfo extends Command {
     let helpCommand;
     switch (item.type) {
       case "food":
-        helpCommand = `${item.description}\n****・**** \`pbuy ${item.id}\`\n****・**** \`peat ${item.id}\``;
+        helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`peat ${item.id}\``;
         break;
       case "drink":
-        helpCommand = `${item.description}\n****・**** \`pbuy ${item.id}\`\n****・**** \`pdrink ${item.id}\``;
+        helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`pdrink ${item.id}\``;
         break;
       case "theme":
-        helpCommand = `${item.description}\n****・**** \`pbuy ${item.id}\`\n****・**** \`puse ${item.id}\``;
+        helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`puse ${item.id}\``;
         break;
       case "milk":
-        helpCommand = `${item.description}\n****・**** \`pbuy ${item.id}\`\n****・**** \`psell ${item.id}\``;
+        helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`psell ${item.id}\``;
         break;
       default:
         helpCommand = shopInfoMessages.noAdditionalCommands; // Fallback for unrecognized types

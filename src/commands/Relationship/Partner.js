@@ -192,7 +192,7 @@ module.exports = class Partner extends Command {
       .setTitle(`💍 Partner Request`)
       .setDescription(
         `${ctx.author.displayName} is asking you to become their partner!\n` +
-          `You have the complementary ring ****(${mentionRing.id.toUpperCase()})**** to match theirs.\n` +
+          `You have the complementary ring **(${mentionRing.id.toUpperCase()})** to match theirs.\n` +
           `Do you accept this partnership?`
       )
       .setImage(globalGif.banner.partner)
@@ -250,35 +250,35 @@ module.exports = class Partner extends Command {
           await Promise.all([user.save(), mention.save()]);
 
           await msg.edit({
-            content: `🎉 ****${ctx.author.displayName}**** and ****${target.displayName}**** are now partners! 💍`,
+            content: `🎉 **${ctx.author.displayName}** and **${target.displayName}** are now partners! 💍`,
             embeds: [],
             components: [],
           });
           await int.deferUpdate();
         } else {
           await int.reply({
-            content: `This button for ****${target.displayName}****!`,
+            content: `This button for **${target.displayName}**!`,
             flags: 64,
           });
         }
       } else {
         if (int.user.id === target.id) {
           await msg.edit({
-            content: `❌ ****${target.displayName}**** declined the partnership request.`,
+            content: `❌ **${target.displayName}** declined the partnership request.`,
             embeds: [],
             components: [],
           });
           await int.deferUpdate();
         } else if (int.user.id === ctx.author.id) {
           await msg.edit({
-            content: `❌ the partnership request have declined by ****${ctx.author.displayName}**** .`,
+            content: `❌ the partnership request have declined by **${ctx.author.displayName}** .`,
             embeds: [],
             components: [],
           });
           await int.deferUpdate();
         } else {
           await int.reply({
-            content: `This button for ${ctx.author.displayName} and ****${target.displayName}****!`,
+            content: `This button for ${ctx.author.displayName} and **${target.displayName}**!`,
             flags: 64,
           });
         }
@@ -287,7 +287,7 @@ module.exports = class Partner extends Command {
 
     collector.on("end", async () => {
       await msg.edit({
-        content: `⌛ ****${target.displayName}**** did not respond in time. Request cancelled.`,
+        content: `⌛ **${target.displayName}** did not respond in time. Request cancelled.`,
         embeds: [],
         components: [],
       });

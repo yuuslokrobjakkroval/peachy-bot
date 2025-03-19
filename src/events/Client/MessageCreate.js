@@ -61,7 +61,7 @@ module.exports = class MessageCreate extends Event {
             .setDescription(
               `You are in timeout for: \`${
                 user.verification.timeout.reason || "No reason provided"
-              }\`.\nTimeout ends in ****${timeString}****.`
+              }\`.\nTimeout ends in **${timeString}**.`
             );
 
           return message.channel.send({ embeds: [embed] });
@@ -75,8 +75,8 @@ module.exports = class MessageCreate extends Event {
             .setTitle(`Heyoo! ${message.author.displayName}`)
             .setDescription(
               `My Name is ${this.client.user.displayName}.\n` +
-                `My prefix for this server is ****\`${prefix}\`****.\n\n` +
-                `Do you need help? please use ****\`${prefix}help\`****!!!`
+                `My prefix for this server is **\`${prefix}\`**.\n\n` +
+                `Do you need help? please use **\`${prefix}help\`**!!!`
             )
             .setImage(globalGif.mentionBot)
             .setFooter({
@@ -137,7 +137,7 @@ module.exports = class MessageCreate extends Event {
                   ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
                 )
                 .setDescription(
-                  `It seems like you haven’t registered yet.\nPlease Click ****Register**** !!!\nFor read ****Rules and Privacy Policy****\nTo start using the bot and earning rewards!`
+                  `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`
                 )
                 .setImage(globalGif.peachy);
 
@@ -189,12 +189,12 @@ module.exports = class MessageCreate extends Event {
                           )
                           .setDescription(
                             `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
-                              `****Rules and Guidelines****\n\n` +
-                              `1. ****Respect Everyone****: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
-                              `2. ****No Automation or Cheating****: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
-                              `3. ****Avoid Spamming****: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
-                              `4. ****Be Courteous****: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
-                              `5. ****Follow Discord’s Rules****: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
+                              `**Rules and Guidelines**\n\n` +
+                              `1. **Respect Everyone**: Treat everyone with kindness and respect. Scamming or deceiving others, especially through trade commands, will result in the complete reset of your balance and inventory.\n\n` +
+                              `2. **No Automation or Cheating**: The use of scripts, bots, or any form of automation to exploit PEACHY's features is strictly prohibited. Violations will lead to a permanent blacklist.\n\n` +
+                              `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
+                              `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
+                              `5. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
                               `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/BJT4h55hbg). We're here to help!`
                           );
 
@@ -236,29 +236,29 @@ module.exports = class MessageCreate extends Event {
                             `${emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${emoji.mainRight}`
                           )
                           .setDescription(
-                            `****Introduction****\n` +
+                            `**Introduction**\n` +
                               `PEACHY is dedicated to ensuring your privacy and security while you enjoy our interactive features. This Privacy Policy details the types of information we collect, how we use it, and the steps we take to protect it.\n\n` +
-                              `****Information Collection****\n` +
+                              `**Information Collection**\n` +
                               `We gather the following information to enhance your experience:\n` +
-                              `• ****User IDs****: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
-                              `• ****Messages****: Used to process your commands, manage game states, and provide customized responses.\n` +
-                              `• ****Server Information****: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
-                              `****Data Usage****\n` +
+                              `• **User IDs**: Essential for identifying users and saving preferences across games, interactions, and relationship statuses.\n` +
+                              `• **Messages**: Used to process your commands, manage game states, and provide customized responses.\n` +
+                              `• **Server Information**: Collected to personalize bot features like custom emojis, game settings, and interaction styles.\n\n` +
+                              `**Data Usage**\n` +
                               `We utilize your data to:\n` +
                               `• Execute commands, interactions, and maintain game progression.\n` +
                               `• Personalize features, from relationship tracking to game difficulty, based on your preferences.\n` +
                               `• Enhance the security and smooth operation of PEACHY, ensuring a seamless user experience.\n\n` +
-                              `****Data Sharing****\n` +
+                              `**Data Sharing**\n` +
                               `Your data is safe with us. We do not share your information with third parties, unless legally required.\n\n` +
-                              `****Data Security****\n` +
+                              `**Data Security**\n` +
                               `We implement stringent technical and organizational measures to safeguard your data from unauthorized access, alteration, or misuse.\n\n` +
-                              `****User Rights****\n` +
+                              `**User Rights**\n` +
                               `You have the right to:\n` +
                               `• Access the data we hold about you.\n` +
                               `• Request the correction or deletion of your data if it's inaccurate or no longer needed.\n\n` +
-                              `****Policy Updates****\n` +
+                              `**Policy Updates**\n` +
                               `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
-                              `****Contact Information****\n` +
+                              `**Contact Information**\n` +
                               `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
                           );
 
@@ -372,7 +372,7 @@ module.exports = class MessageCreate extends Event {
                       });
                     } else if (int.customId === "cancel") {
                       const commandList = `
-****Commands You Can Use:****
+**Commands You Can Use:**
 - \`${this.client.config.prefix}register\` - Register for a feature or service.
 - \`${this.client.config.prefix}info\` - Get information about the bot.
 - \`${this.client.config.prefix}help\` - List all available commands.
@@ -640,7 +640,7 @@ module.exports = class MessageCreate extends Event {
                     .addFields([
                       {
                         name: "Author",
-                        value: `****ID:**** ${message.author.id}\n****Name:**** ${message.author.displayName}\n****Channel:**** ${message.channel.name}`,
+                        value: `**ID:** ${message.author.id}\n**Name:** ${message.author.displayName}\n**Channel:** ${message.channel.name}`,
                         inline: true,
                       },
                       {
