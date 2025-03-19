@@ -9,10 +9,10 @@ module.exports = class Start extends Command {
       name: "giveaway",
       description: {
         content:
-          "𝑺𝒕𝒂𝒓𝒕 𝒂 𝒈𝒊𝒗𝒆𝒂𝒘𝒂𝒚 𝒘𝒊𝒕𝒉 𝒂 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅 𝒅𝒖𝒓𝒂𝒕𝒊𝒐𝒏, 𝒏𝒖𝒎𝒃𝒆𝒓 𝒐𝒇 𝒘𝒊𝒏𝒏𝒆𝒓𝒔, 𝒂𝒏𝒅 𝒑𝒓𝒊𝒛𝒆.",
+            "Start a giveaway with a specified duration, number of winners, and prize.",
         examples: ["giveaway 1h 2 1000 true"],
         usage:
-          "giveaway <duration> <winners> <prize> <autopay> <image> <thumbnail>",
+            "giveaway <duration> <winners> <prize> <autopay> <image> <thumbnail>",
       },
       category: "giveaway",
       aliases: [],
@@ -57,7 +57,7 @@ module.exports = class Start extends Command {
         {
           name: "autopay",
           description:
-            "Automatically pay the winners after the giveaway ends. (Owner/Staff Only)",
+              "Automatically pay the winners after the giveaway ends. (Owner/Staff Only)",
           type: 3,
           required: false,
         },
@@ -67,7 +67,7 @@ module.exports = class Start extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+        language.defaultLocale
     )?.generalMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.deferReply();
@@ -91,31 +91,31 @@ module.exports = class Start extends Command {
 
     // Fetch arguments for giveaway
     const durationStr = ctx.isInteraction
-      ? ctx.interaction.options.getString("duration")
-      : args[0];
+        ? ctx.interaction.options.getString("duration")
+        : args[0];
     const winnersStr = ctx.isInteraction
-      ? ctx.interaction.options.getInteger("winners")
-      : args[1];
+        ? ctx.interaction.options.getInteger("winners")
+        : args[1];
     let prize = ctx.isInteraction
-      ? ctx.interaction.options.getString("prize")
-      : args[2];
+        ? ctx.interaction.options.getString("prize")
+        : args[2];
     const image = ctx.isInteraction
-      ? ctx.interaction.options.getAttachment("image")
-      : args[3];
+        ? ctx.interaction.options.getAttachment("image")
+        : args[3];
     const thumbnail = ctx.isInteraction
-      ? ctx.interaction.options.getAttachment("thumbnail")
-      : args[4];
+        ? ctx.interaction.options.getAttachment("thumbnail")
+        : args[4];
     const autoPay = ctx.isInteraction
-      ? ctx.interaction.options.getString("autopay")
-      : args[5];
+        ? ctx.interaction.options.getString("autopay")
+        : args[5];
 
     if (autoPay && !isOwner) {
       return ctx.isInteraction
-        ? ctx.interaction.editReply({
+          ? ctx.interaction.editReply({
             content: "Only the bot owner can enable autopay for giveaways.",
             flags: 64,
           })
-        : ctx.editMessage({
+          : ctx.editMessage({
             content: "Only the bot owner can enable autopay for giveaways.",
             flags: 64,
           });
@@ -127,15 +127,15 @@ module.exports = class Start extends Command {
       const replyMessage = {
         embeds: [
           client
-            .embed()
-            .setAuthor({
-              name: client.user.displayName,
-              iconURL: client.user.displayAvatarURL(),
-            })
-            .setColor(color.danger)
-            .setDescription(
-              "Invalid input. Please ensure the duration, number of winners, and prize are correctly provided."
-            ),
+              .embed()
+              .setAuthor({
+                name: client.user.displayName,
+                iconURL: client.user.displayAvatarURL(),
+              })
+              .setColor(color.danger)
+              .setDescription(
+                  "Invalid input. Please ensure the duration, number of winners, and prize are correctly provided."
+              ),
         ],
       };
       if (ctx.isInteraction) {
@@ -153,18 +153,18 @@ module.exports = class Start extends Command {
       return ctx.sendMessage({
         embeds: [
           client
-            .embed()
-            .setColor(color.danger)
-            .setDescription(generalMessages.invalidAmount),
+              .embed()
+              .setColor(color.danger)
+              .setDescription(generalMessages.invalidAmount),
         ],
       });
     }
 
     if (
-      isNaN(prize) ||
-      prize <= 0 ||
-      prize.toString().includes(".") ||
-      prize.toString().includes(",")
+        isNaN(prize) ||
+        prize <= 0 ||
+        prize.toString().includes(".") ||
+        prize.toString().includes(",")
     ) {
       const multipliers = {
         k: 1000,
@@ -178,53 +178,53 @@ module.exports = class Start extends Command {
         const number = parseInt(prize);
         prize = number * (multipliers[unit] || 1);
       } else if (
-        prize.toString().includes(".") ||
-        prize.toString().includes(",")
+          prize.toString().includes(".") ||
+          prize.toString().includes(",")
       ) {
         prize = parseInt(prize.replace(/,/g, ""));
       }
     }
 
     const giveawayEmbed = client
-      .embed()
-      .setColor(color.main)
-      .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
-      .setDescription(
-        `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
-      );
+        .embed()
+        .setColor(color.main)
+        .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
+        .setDescription(
+            `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
+        );
 
     if (image) giveawayEmbed.setImage(image.url);
     if (thumbnail) giveawayEmbed.setThumbnail(thumbnail.url);
 
     const joinButton = client.utils.fullOptionButton(
-      "giveaway-join",
-      emoji.main,
-      "0",
-      1,
-      false
+        "giveaway-join",
+        emoji.main,
+        "0",
+        1,
+        false
     );
     const participantsButton = client.utils.fullOptionButton(
-      "giveaway-participants",
-      "",
-      "Participants",
-      2,
-      false
+        "giveaway-participants",
+        "",
+        "Participants",
+        2,
+        false
     );
     const buttonRow = client.utils.createButtonRow(
-      joinButton,
-      participantsButton
+        joinButton,
+        participantsButton
     );
 
     let giveawayMessage;
     try {
       giveawayMessage = ctx.isInteraction
-        ? await ctx.interaction.editReply({
+          ? await ctx.interaction.editReply({
             content: "",
             embeds: [giveawayEmbed],
             components: [buttonRow],
             fetchReply: true,
           })
-        : await ctx.editMessage({
+          : await ctx.editMessage({
             content: "",
             embeds: [giveawayEmbed],
             components: [buttonRow],
@@ -234,8 +234,8 @@ module.exports = class Start extends Command {
       console.error(err);
       const response = "There was an error sending the giveaway message.";
       return ctx.isInteraction
-        ? await ctx.interaction.editReply({ content: response })
-        : await ctx.editMessage({ content: response });
+          ? await ctx.interaction.editReply({ content: response })
+          : await ctx.editMessage({ content: response });
     }
 
     await GiveawaySchema.create({

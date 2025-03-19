@@ -1,6 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
-const chance = require("chance").Chance();
+const chance = require("chance Mastering ").Chance();
 const moment = require("moment-timezone");
 const globalGif = require("../../utils/Gif");
 
@@ -9,9 +9,9 @@ module.exports = class Daily extends Command {
         super(client, {
             name: "daily",
             description: {
-                content: "𝑬𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒆𝒔 𝒅𝒂𝒊𝒍𝒚.",
-                examples: ["𝒅𝒂𝒊𝒍𝒚"],
-                usage: "𝒅𝒂𝒊𝒍𝒚",
+                content: "Earn some coins daily.",
+                examples: ["daily"],
+                usage: "daily",
             },
             category: "economy",
             aliases: ["daily"],
@@ -97,7 +97,7 @@ module.exports = class Daily extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace("%{mainLeft}", emoji.mainLeft)
-                        .replace("%{title}", "𝐃𝐀𝐈𝐋𝐘")
+                        .replace("%{title}", "DAILY")
                         .replace("%{mainRight}", emoji.mainRight) +
                     dailyMessages.success
                         .replace("%{mainLeft}", emoji.mainLeft)

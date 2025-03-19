@@ -6,7 +6,7 @@ module.exports = class Dance extends Command {
         super(client, {
             name: 'dance',
             description: {
-                content: '𝑺𝒉𝒐𝒘𝒔 𝒐𝒇𝒇 𝒔𝒐𝒎𝒆 𝒅𝒂𝒏𝒄𝒆 𝒎𝒐𝒗𝒆𝒔!',
+                content: 'Shows off some dance moves!',
                 examples: ['dance'],
                 usage: 'dance',
             },
@@ -24,7 +24,7 @@ module.exports = class Dance extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const danceMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.danceMessages;
         const errorMessages = danceMessages.errors;
@@ -40,7 +40,7 @@ module.exports = class Dance extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', '𝐃𝐀𝐍𝐂𝐄')
+                        .replace('%{title}', 'DANCE')
                         .replace('%{mainRight}', emoji.mainRight) +
                     danceMessages.description.replace('%{user}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji))
@@ -50,12 +50,12 @@ module.exports = class Dance extends Command {
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
-            // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            // Send the embed message and return the result
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('An error occurred in the Dance command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

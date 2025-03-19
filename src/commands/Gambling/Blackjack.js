@@ -9,7 +9,7 @@ module.exports = class Cmd extends Command {
     super(client, {
       name: "blackjack",
       description: {
-        content: "𝑩𝒆𝒕 𝒂𝒏 𝒂𝒎𝒐𝒖𝒏𝒕 𝒂𝒏𝒅 𝒕𝒓𝒚 𝒕𝒐 𝒈𝒆𝒕 𝒄𝒍𝒐𝒔𝒆𝒓 𝒕𝒐 21.",
+        content: "Bet an amount and try to get closer to 21",
         examples: ["blackjack 100"],
         usage: "blackjack <amount>",
       },
@@ -48,11 +48,11 @@ module.exports = class Cmd extends Command {
       }
 
       if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
-        const activeCommand = user.validation.isKlaKlouk ? "𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌" : "𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓";
+        const activeCommand = user.validation.isKlaKlouk ? "Kla Klouk" : "Multiple Transfer";
         return client.utils.sendErrorMessage(
             client,
             ctx,
-            `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒔𝒕𝒂𝒓𝒕𝒆𝒅 𝒕𝒉𝒆 ${activeCommand} 𝒆𝒗𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.`,
+            `You have already started the ${activeCommand} event. Please finish it before using this command.`,
             color
         );
       }

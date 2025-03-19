@@ -9,9 +9,9 @@ module.exports = class Weekly extends Command {
         super(client, {
             name: "weekly",
             description: {
-                content: "𝑬𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒆𝒔 𝒘𝒆𝒆𝒌𝒍𝒚.",
-                examples: ["𝒘𝒆𝒆𝒌𝒍𝒚"],
-                usage: "𝒘𝒆𝒆𝒌𝒍𝒚",
+                content: "Earn some coins weekly.",
+                examples: ["weekly"],
+                usage: "weekly",
             },
             category: "economy",
             aliases: ["week"],
@@ -164,7 +164,7 @@ module.exports = class Weekly extends Command {
             .setDescription(
                 generalMessages.title
                     .replace("%{mainLeft}", emoji.mainLeft)
-                    .replace("%{title}", "𝐖𝐄𝐄𝐊𝐋𝐘")
+                    .replace("%{title}", "WEEKLY")
                     .replace("%{mainRight}", emoji.mainRight) +
                 weeklyMessages.success
                     .replace("%{coin}", client.utils.formatNumber(totalCoins))

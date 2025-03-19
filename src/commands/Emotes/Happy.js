@@ -6,7 +6,7 @@ module.exports = class Happy extends Command {
         super(client, {
             name: 'happy',
             description: {
-                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒉𝒂𝒑𝒑𝒊𝒏𝒆𝒔𝒔!',
+                content: 'Show off a feeling of happiness!',
                 examples: ['happy'],
                 usage: 'happy',
             },
@@ -24,7 +24,7 @@ module.exports = class Happy extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const happyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.happyMessages;
         const errorMessages = happyMessages.errors;
@@ -40,7 +40,7 @@ module.exports = class Happy extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', '𝐇𝐀𝐏𝐏𝐘')
+                        .replace('%{title}', 'HAPPY')
                         .replace('%{mainRight}', emoji.mainRight) +
                     happyMessages.description.replace('%{user}', ctx.author.displayName)
                 )
@@ -52,11 +52,11 @@ module.exports = class Happy extends Command {
                 });
 
             // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('An error occurred in the Happy command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

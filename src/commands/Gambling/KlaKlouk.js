@@ -8,7 +8,7 @@ module.exports = class KlaKlouk extends Command {
         super(client, {
             name: 'klaklouk',
             description: {
-                content: '𝑷𝒍𝒂𝒚 𝒕𝒉𝒆 𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌 𝒈𝒂𝒎𝒆 𝒂𝒏𝒅 𝒔𝒆𝒆 𝒊𝒇 𝒚𝒐𝒖 𝒄𝒂𝒏 𝒘𝒊𝒏!',
+                content: 'Play the KlaKlouk game and see if you can win!',
                 examples: ['kk 1000'],
                 usage: 'kk <amount>',
             },

@@ -7,9 +7,9 @@ module.exports = class Transfer extends Command {
         super(client, {
             name: "transfer",
             description: {
-                content: "𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒂𝒏𝒐𝒕𝒉𝒆𝒓 𝒖𝒔𝒆𝒓.",
-                examples: ["𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 @𝒖𝒔𝒆𝒓 100", "𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒂𝒍𝒍"],
-                usage: "𝒕𝒓𝒂𝒏𝒔𝒇𝒆𝒓 <𝒖𝒔𝒆𝒓> [𝒂𝒎𝒐𝒖𝒏𝒕]",
+                content: "Transfer coins to another user.",
+                examples: ["transfer @user 100", "transfer all"],
+                usage: "transfer <user> [amount]",
             },
             category: "bank",
             aliases: ["pay", "give", "oy", "t"],
@@ -65,11 +65,11 @@ module.exports = class Transfer extends Command {
 
         // Handle Kla Klouk or Multi Transfer validation
         if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
-            const activeCommand = user.validation.isKlaKlouk ? '𝑲𝒍𝒂 𝑲𝒍𝒐𝒖𝒌' : '𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓';
+            const activeCommand = user.validation.isKlaKlouk ? 'Kla Klouk' : 'Multiple Transfer';
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒔𝒕𝒂𝒓𝒕𝒆𝒅 𝒕𝒉𝒆 ${activeCommand} 𝒆𝒗𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.`,
+                `You have already started the ${activeCommand} event. Please finish it before using this command.`,
                 color
             );
         }
@@ -100,7 +100,7 @@ module.exports = class Transfer extends Command {
             .setDescription(
                 generalMessages.title
                     .replace('%{mainLeft}', emoji.mainLeft)
-                    .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
+                    .replace('%{title}', "TRANSACTION")
                     .replace('%{mainRight}', emoji.mainRight) +
                 transferMessages.confirm
                     .replace('%{amount}', client.utils.formatNumber(amount))
@@ -140,7 +140,7 @@ module.exports = class Transfer extends Command {
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
+                                .replace('%{title}', "TRANSACTION")
                                 .replace('%{mainRight}', emoji.mainRight) +
                             transferMessages.success
                                 .replace('%{amount}', client.utils.formatNumber(amount))
@@ -174,7 +174,7 @@ module.exports = class Transfer extends Command {
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{title}', "𝐓𝐑𝐀𝐍𝐒𝐀𝐂𝐓𝐈𝐎𝐍")
+                                .replace('%{title}', "TRANSACTION")
                                 .replace('%{mainRight}', emoji.mainRight) +
                             transferMessages.cancel
                         )

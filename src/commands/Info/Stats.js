@@ -7,7 +7,7 @@ module.exports = class Stats extends Command {
         super(client, {
             name: 'stats',
             description: {
-                content: '𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒔𝒕𝒂𝒕𝒊𝒔𝒕𝒊𝒄𝒔 𝒂𝒃𝒐𝒖𝒕 𝒕𝒉𝒆 𝒃𝒐𝒕.',
+                content: 'Displays statistics about the bot.',
                 examples: ['stats'],
                 usage: 'stats',
             },

@@ -6,7 +6,7 @@ module.exports = class Emoji extends Command {
         super(client, {
             name: "emoji",
             description: {
-                content: "𝑮𝒆𝒏𝒆𝒓𝒂𝒕𝒆 𝒂𝒏 𝒆𝒎𝒐𝒋𝒊 𝒊𝒎𝒂𝒈𝒆 𝒇𝒓𝒐𝒎 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓",
+                content: "Generate an emoji image from the server",
                 examples: ["emoji :emoji:"],
                 usage: "emoji <emoji>",
             },
@@ -53,7 +53,7 @@ module.exports = class Emoji extends Command {
             .setDescription(
                 generalMessages.title
                     .replace('%{mainLeft}', emoji.mainLeft)
-                    .replace('%{title}', "𝐄𝐌𝐎𝐉𝐈 𝐈𝐌𝐀𝐆𝐄")
+                    .replace('%{title}', "EMOJI IMAGE")
                     .replace('%{mainRight}', emoji.mainRight) +
                 emojiMessages?.emojiDescription || "Here is the image of the emoji:"
             )

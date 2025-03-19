@@ -6,7 +6,7 @@ module.exports = class Exercise extends Command {
         super(client, {
             name: 'exercise',
             description: {
-                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒆𝒙𝒆𝒓𝒄𝒊𝒔𝒊𝒏𝒈!',
+                content: 'Show off a feeling of exercising!',
                 examples: ['exercise'],
                 usage: 'exercise',
             },
@@ -24,7 +24,7 @@ module.exports = class Exercise extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const exerciseMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.exerciseMessages;
         const errorMessages = exerciseMessages.errors;
@@ -40,7 +40,7 @@ module.exports = class Exercise extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', '𝐄𝐗𝐄𝐑𝐂𝐈𝐒𝐄')
+                        .replace('%{title}', 'EXERCISE')
                         .replace('%{mainRight}', emoji.mainRight) +
                     exerciseMessages.description.replace('%{user}', ctx.author.displayName)
                 )
@@ -52,11 +52,11 @@ module.exports = class Exercise extends Command {
                 });
 
             // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('An error occurred in the Exercise command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

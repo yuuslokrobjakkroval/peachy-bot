@@ -6,7 +6,7 @@ module.exports = class Avatar extends Command {
     super(client, {
       name: "avatar",
       description: {
-        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒂 𝒖𝒔𝒆𝒓'𝒔 𝒂𝒗𝒂𝒕𝒂𝒓",
+        content: "Displays a user's avatar",
         examples: ["avatar @User"],
         usage: "avatar [@User]",
       },
@@ -60,7 +60,7 @@ module.exports = class Avatar extends Command {
         .setDescription(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
-                .replace('%{title}', `𝐀𝐕𝐀𝐓𝐀𝐑`)
+                .replace('%{title}', `AVATAR`)
                 .replace('%{mainRight}', emoji.mainRight)
         )
         .setImage(mention.displayAvatarURL({ dynamic: true, extension: "png", size: 1024 }))

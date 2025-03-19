@@ -6,7 +6,7 @@ module.exports = class Scare extends Command {
         super(client, {
             name: 'scare',
             description: {
-                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒃𝒆𝒊𝒏𝒈 𝒔𝒄𝒂𝒓𝒆𝒅!',
+                content: 'Show off a feeling of being scared!',
                 examples: ['scare'],
                 usage: 'scare',
             },
@@ -24,7 +24,7 @@ module.exports = class Scare extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const scareMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.scareMessages;
         const errorMessages = scareMessages.errors;
@@ -41,7 +41,7 @@ module.exports = class Scare extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐒𝐂𝐀𝐑𝐄")  // Use "SCARE" as the title in description
+                        .replace('%{title}', 'SCARE')  // Use "SCARE" as the title in description
                         .replace('%{mainRight}', emoji.mainRight) +
                     scareMessages.description.replace('%{user}', ctx.author.displayName) // Replace user in description
                 )
@@ -53,11 +53,11 @@ module.exports = class Scare extends Command {
                 });
 
             // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('Error processing scare command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
         }
     }
 };

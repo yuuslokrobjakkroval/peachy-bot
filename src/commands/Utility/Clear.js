@@ -5,7 +5,7 @@ module.exports = class Clear extends Command {
         super(client, {
             name: "clear",
             description: {
-                content: "𝑪𝒍𝒆𝒂𝒓 𝒂 𝒔𝒑𝒆𝒄𝒊𝒇𝒊𝒆𝒅 𝒏𝒖𝒎𝒃𝒆𝒓 𝒐𝒇 𝒎𝒆𝒔𝒔𝒂𝒈𝒆𝒔",
+                content: "Clear a specified number of messages",
                 examples: ["clear 10", "clear 250"],
                 usage: "clear <number>",
             },
@@ -77,7 +77,7 @@ module.exports = class Clear extends Command {
         if (ctx.isInteraction) {
             await ctx.interaction.editReply({ content: `Deleted ${messagesDeleted} messages.` });
         } else {
-            ctx.sendMessage({ content: `Deleted ${messagesDeleted} messages.`, flags: 64 });
+            await ctx.sendMessage({ content: `Deleted ${messagesDeleted} messages.`, flags: 64 });
         }
     }
 };

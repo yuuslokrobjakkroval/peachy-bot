@@ -6,7 +6,7 @@ module.exports = class Info extends Command {
     super(client, {
       name: "info",
       description: {
-        content: "𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏 𝒂𝒃𝒐𝒖𝒕 𝒕𝒉𝒆 𝒃𝒐𝒕 𝒂𝒏𝒅 𝒊𝒕𝒔 𝒇𝒆𝒂𝒕𝒖𝒓𝒆𝒔",
+        content: "Information about the bot and its features",
         examples: ["info"],
         usage: "info",
       },
@@ -56,12 +56,12 @@ module.exports = class Info extends Command {
           },
           {
             name: infoMessages.dashboard.title,
-            value: `[𝐏𝐄𝐀𝐂𝐇𝐘](${client.config.links.dashboard})`,
+            value: `[PEACHY](${client.config.links.dashboard})`,
             inline: false,
           },
           {
             name: infoMessages.facebook.title,
-            value: `[𝐏𝐄𝐀𝐂𝐇 𝐀𝐍𝐃 𝐆𝐎𝐌𝐀](${client.config.links.facebook})`,
+            value: `[PEACH AND GOMA](${client.config.links.facebook})`,
             inline: false,
           },
         ])

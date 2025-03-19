@@ -6,7 +6,7 @@ module.exports = class Ship extends Command {
         super(client, {
             name: 'guess',
             description: {
-                content: '𝑮𝒖𝒆𝒔𝒔 𝒕𝒉𝒆 𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑 𝒃𝒆𝒕𝒘𝒆𝒆𝒏 𝒕𝒘𝒐 𝒖𝒔𝒆𝒓𝒔.',
+                content: 'Guess the relationship between two users.',
                 examples: ['guess @user1 @user2'],
                 usage: 'guess <user1> <user2>',
             },

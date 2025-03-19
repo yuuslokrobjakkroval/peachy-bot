@@ -6,7 +6,7 @@ module.exports = class Angry extends Command {
         super(client, {
             name: 'angry',
             description: {
-                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒚𝒐𝒖𝒓 𝒂𝒏𝒈𝒓𝒊𝒆𝒔𝒕 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏!',
+                content: 'Show off your angriest expression!',
                 examples: ['angry'],
                 usage: 'angry',
             },
@@ -24,7 +24,7 @@ module.exports = class Angry extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const angryMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.angryMessages;
         const errorMessages = angryMessages.errors;
@@ -36,7 +36,7 @@ module.exports = class Angry extends Command {
                 .setColor(color.main)
                 .setDescription(generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐀𝐍𝐆𝐑𝐘")
+                        .replace('%{title}', "ANGRY")
                         .replace('%{mainRight}', emoji.mainRight) +
                     angryMessages.description.replace('%{user}', ctx.author.displayName))
                 .setImage(client.utils.emojiToImage(randomEmoji))
@@ -45,10 +45,10 @@ module.exports = class Angry extends Command {
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
-            ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('An error occurred in the Angry command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

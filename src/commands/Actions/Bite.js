@@ -6,9 +6,9 @@ module.exports = class Bite extends Command {
         super(client, {
             name: 'bite',
             description: {
-                content: '𝑷𝒍𝒂𝒚𝒇𝒖𝒍𝒍𝒚 𝒃𝒊𝒕𝒆𝒔 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
-                examples: ['𝒃𝒊𝒕𝒆 @𝑼𝒔𝒆𝒓'],
-                usage: '𝒃𝒊𝒕𝒆 @𝑼𝒔𝒆𝒓',
+                content: 'Playfully bites the mentioned user.',
+                examples: ['bite @User'],
+                usage: 'bite @User',
             },
             category: 'actions',
             aliases: [],
@@ -61,7 +61,7 @@ module.exports = class Bite extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐁𝐈𝐓𝐄")
+                        .replace('%{title}', "BITE")
                         .replace('%{mainRight}', emoji.mainRight) +
                     biteMessages.description
                         .replace('%{displayName}', ctx.author.displayName)

@@ -6,7 +6,7 @@ module.exports = class Shy extends Command {
         super(client, {
             name: 'shy',
             description: {
-                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒂 𝒔𝒉𝒚 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏 𝒘𝒊𝒕𝒉 𝒂 𝒄𝒖𝒕𝒆 𝒂𝒏𝒊𝒎𝒂𝒕𝒊𝒐𝒏!',
+                content: 'Show off a shy expression with a cute animation!',
                 examples: ['shy'],
                 usage: 'shy',
             },
@@ -24,7 +24,7 @@ module.exports = class Shy extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const shyMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.shyMessages;
         const errorMessages = shyMessages.errors;
@@ -41,7 +41,7 @@ module.exports = class Shy extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐒𝐇𝐘")  // Use "SHY" as the title in description
+                        .replace('%{title}', 'SHY')  // Use "SHY" as the title in description
                         .replace('%{mainRight}', emoji.mainRight) +
                     shyMessages.description.replace('%{user}', ctx.author.displayName) // Replace user in description
                 )
@@ -53,11 +53,11 @@ module.exports = class Shy extends Command {
                 });
 
             // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('Error processing shy command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
         }
     }
 };

@@ -7,7 +7,7 @@ module.exports = class QRCode extends Command {
         super(client, {
             name: "qr",
             description: {
-                content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚 𝒕𝒉𝒆 𝑸𝑹 𝒄𝒐𝒅𝒆 𝒇𝒐𝒓 𝑲𝑯𝑹 𝒐𝒓 𝑼𝑺𝑫",
+                content: "Display the QR code for KHR or USD",
                 examples: ["qr kh", "qr usd"],
                 usage: "qr <kh|usd>",
             },

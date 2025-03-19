@@ -6,7 +6,7 @@ module.exports = class Punch extends Command {
         super(client, {
             name: 'punch',
             description: {
-                content: '𝑻𝒉𝒓𝒐𝒘𝒔 𝒂 𝒑𝒍𝒂𝒚𝒇𝒖𝒍 𝒑𝒖𝒏𝒄𝒉 𝒂𝒕 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                content: 'Throws a playful punch at the mentioned user.',
                 examples: ['punch @User'],
                 usage: 'punch @User',
             },
@@ -58,15 +58,15 @@ module.exports = class Punch extends Command {
             // Create the embed message
             const embed = client.embed()
                 .setColor(color.main)
-                .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is valid
+                .setImage(client.utils.emojiToImage(randomEmoji))
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐏𝐔𝐍𝐂𝐇")
+                        .replace('%{title}', "PUNCH")
                         .replace('%{mainRight}', emoji.mainRight) +
                     punchMessages.description
                         .replace('%{displayName}', ctx.author.displayName)
-                        .replace('%{target}', target.username) // Fixed username reference
+                        .replace('%{target}', target.displayName)
                 )
                 .setFooter({
                     text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,

@@ -6,7 +6,7 @@ module.exports = class Sad extends Command {
         super(client, {
             name: 'sad',
             description: {
-                content: '𝑬𝒙𝒑𝒓𝒆𝒔𝒔 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒔𝒂𝒅𝒏𝒆𝒔𝒔.',
+                content: 'Express a feeling of sadness.',
                 examples: ['sad'],
                 usage: 'sad',
             },
@@ -24,7 +24,7 @@ module.exports = class Sad extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const sadMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.sadMessages;
         const errorMessages = sadMessages.errors;
@@ -41,7 +41,7 @@ module.exports = class Sad extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐒𝐀𝐃")
+                        .replace('%{title}', 'SAD')
                         .replace('%{mainRight}', emoji.mainRight) +
                     sadMessages.description.replace('%{user}', ctx.author.displayName)
                 )
@@ -53,11 +53,11 @@ module.exports = class Sad extends Command {
                 });
 
             // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('Error processing sad command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color); // Use localized error message
         }
     }
 };

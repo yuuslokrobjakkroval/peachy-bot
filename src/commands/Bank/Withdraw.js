@@ -7,9 +7,9 @@ module.exports = class Withdraw extends Command {
     super(client, {
       name: "withdraw",
       description: {
-        content: "𝑾𝒊𝒕𝒉𝒅𝒓𝒂𝒘 𝒄𝒖𝒓𝒓𝒆𝒏𝒄𝒚 𝒄𝒐𝒊𝒏𝒆𝒔 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-        examples: ["𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 100"],
-        usage: "𝒘𝒊𝒕𝒉𝒅𝒓𝒂𝒘 <𝒂𝒎𝒐𝒖𝒏𝒕>",
+        content: "Withdraw currency coins from your bank.",
+        examples: ["withdraw 100"],
+        usage: "withdraw <amount>",
       },
       category: "bank",
       aliases: ["dokluy", "with", "dok"],
@@ -61,9 +61,9 @@ module.exports = class Withdraw extends Command {
         }
       } else if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
         const activeCommand = user.validation.isKlaKlouk
-            ? "𝑲𝒍𝒂 𝑲𝒌𝒍𝒐𝒖𝒌"
-            : "𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓";
-        return client.utils.sendErrorMessage(client, ctx, `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒔𝒕𝒂𝒓𝒕𝒆𝒅 𝒕𝒉𝒆 ${activeCommand} 𝒆𝒗𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.`, color);
+            ? "Kla Klouk"
+            : "Multiple Transfer";
+        return client.utils.sendErrorMessage(client, ctx, `You have already started the ${activeCommand} event. Please finish it before using this command.`, color);
       } else {
         const { bank } = user.balance;
 
@@ -110,7 +110,7 @@ module.exports = class Withdraw extends Command {
             .setDescription(
                 generalMessages.title
                     .replace("%{mainLeft}", emoji.mainLeft)
-                    .replace("%{title}", "𝐖𝐈𝐓𝐇𝐃𝐑𝐀𝐖")
+                    .replace("%{title}", "WITHDRAW")
                     .replace("%{mainRight}", emoji.mainRight) +
                 withdrawMessages.success
                     .replace("%{amount}", client.utils.formatNumber(baseCoins))

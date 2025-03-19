@@ -7,9 +7,9 @@ module.exports = class Deposit extends Command {
     super(client, {
       name: "deposit",
       description: {
-        content: "𝑫𝒆𝒑𝒐𝒔𝒊𝒕 𝒄𝒖𝒓𝒓𝒆𝒏𝒄𝒚 𝒄𝒐𝒊𝒏𝒆𝒔 𝒕𝒐 𝒚𝒐𝒖𝒓 𝒃𝒂𝒏𝒌.",
-        examples: ["𝒅𝒆𝒑𝒐𝒔𝒊𝒕 100"],
-        usage: "𝒅𝒆𝒑𝒐𝒔𝒊𝒕 <𝒂𝒎𝒐𝒖𝒏𝒕>",
+        content: "Deposit currency coins to your bank.",
+        examples: ["deposit 100"],
+        usage: "deposit <amount>",
       },
       category: "bank",
       aliases: ["dakluy", "dak", "dep"],
@@ -60,9 +60,9 @@ module.exports = class Deposit extends Command {
         }
       } else if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
         const activeCommand = user.validation.isKlaKlouk
-            ? "𝑲𝒍𝒂 𝑲𝒌𝒍𝒐𝒖𝒌"
-            : "𝑴𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓";
-        return client.utils.sendErrorMessage(client, ctx, `𝒀𝒐𝒖 𝒉𝒂𝒗𝒆 𝒂𝒍𝒓𝒆𝒂𝒅𝒚 𝒔𝒕𝒂𝒓𝒕𝒆𝒅 𝒕𝒉𝒆 ${activeCommand} 𝒆𝒗𝒆𝒏𝒕. 𝑷𝒍𝒆𝒂𝒔𝒆 𝒇𝒊𝒏𝒊𝒔𝒉 𝒊𝒕 𝒃𝒆𝒇𝒐𝒓𝒆 𝒖𝒔𝒊𝒏𝒈 𝒕𝒉𝒊𝒔 𝒄𝒐𝒎𝒎𝒂𝒏𝒅.`, color);
+            ? "Kla Klouk"
+            : "Multiple Transfer";
+        return client.utils.sendErrorMessage(client, ctx, `You have already started the ${activeCommand} event. Please finish it before using this command.`, color);
       } else {
         const { coin } = user.balance;
         if (coin < 1) {
@@ -107,7 +107,7 @@ module.exports = class Deposit extends Command {
             .setDescription(
                 generalMessages.title
                     .replace("%{mainLeft}", emoji.mainLeft)
-                    .replace("%{title}", "𝐃𝐄𝐏𝐎𝐒𝐈𝐓")
+                    .replace("%{title}", "DEPOSIT")
                     .replace("%{mainRight}", emoji.mainRight) +
                 depositMessages.success
                     .replace("%{mainLeft}", emoji.mainLeft)

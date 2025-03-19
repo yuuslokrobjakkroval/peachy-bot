@@ -6,7 +6,7 @@ module.exports = class Theme extends Command {
         super(client, {
             name: 'theme',
             description: {
-                content: '𝑻𝒐𝒈𝒈𝒍𝒆 𝒃𝒆𝒕𝒘𝒆𝒆𝒏 𝒑𝒆𝒂𝒄𝒉, 𝒈𝒐𝒎𝒂, 𝒂𝒏𝒅 𝒏𝒐𝒓𝒎𝒂𝒍 𝒕𝒉𝒆𝒎𝒆𝒔 𝒐𝒓 𝒗𝒊𝒆𝒘 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒕𝒉𝒆𝒎𝒆 𝒔𝒆𝒕𝒕𝒊𝒏𝒈.',
+                content: 'Toggle between peach, goma, and normal themes or view your current theme setting.',
                 examples: [
                     'theme show - Shows your current theme.',
                     'theme normal - Sets your theme to normal.',
@@ -88,7 +88,7 @@ module.exports = class Theme extends Command {
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆")
+                                .replace('%{title}', "THEME SETTING")
                                 .replace('%{mainRight}', emoji.mainRight) +
                             themeMessages?.setThemeMessage.replace('%{theme}', client.utils.formatCapitalize(convertSubCommand))
                         )
@@ -98,7 +98,7 @@ module.exports = class Theme extends Command {
                             iconURL: ctx.author.displayAvatarURL(),
                         });
 
-                    ctx.sendMessage({ embeds: [embed] });
+                    await ctx.sendMessage({ embeds: [embed] });
                     break;
                 }
 
@@ -109,7 +109,7 @@ module.exports = class Theme extends Command {
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐇𝐄𝐋𝐏")
+                                .replace('%{title}', "THEME HELP")
                                 .replace('%{mainRight}', emoji.mainRight) +
                             themeMessages?.helpDescription
                         )
@@ -121,7 +121,7 @@ module.exports = class Theme extends Command {
                             text: themeMessages?.footer.replace('%{user}', ctx.author.displayName) || `Request By ${ctx.author.displayName}`,
                             iconURL: ctx.author.displayAvatarURL(),
                         });
-                    ctx.sendMessage({ embeds: [embed] });
+                    await ctx.sendMessage({ embeds: [embed] });
                     break;
                 }
 
@@ -134,7 +134,7 @@ module.exports = class Theme extends Command {
                         .setDescription(
                             generalMessages.title
                                 .replace('%{mainLeft}', emoji.mainLeft)
-                                .replace('%{title}', "𝐓𝐇𝐄𝐌𝐄 𝐒𝐄𝐓𝐓𝐈𝐍𝐆")
+                                .replace('%{title}', "THEME SETTING")
                                 .replace('%{mainRight}', emoji.mainRight) +
                             themeMessages?.currentThemeMessage.replace('%{theme}', client.utils.formatCapitalize(currentTheme))
                         )
@@ -144,13 +144,13 @@ module.exports = class Theme extends Command {
                             iconURL: ctx.author.displayAvatarURL(),
                         });
 
-                    ctx.sendMessage({ embeds: [embed] });
+                    await ctx.sendMessage({ embeds: [embed] });
                     break;
                 }
             }
         } catch (err) {
             console.error(`Error fetching or updating user data: ${err}`);
-            ctx.sendMessage({
+            return ctx.sendMessage({
                 content: generalMessages?.userFetchError || 'An error occurred. Please try again later.',
             });
         }

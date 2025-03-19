@@ -6,7 +6,7 @@ module.exports = class Banner extends Command {
         super(client, {
             name: "banner",
             description: {
-                content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒂 𝒖𝒔𝒆𝒓'𝒔 𝒃𝒂𝒏𝒏𝒆𝒓",
+                content: "Displays a user's banner",
                 examples: ["banner @User"],
                 usage: "banner [@User]",
             },
@@ -62,7 +62,7 @@ module.exports = class Banner extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', `𝐁𝐀𝐍𝐍𝐄𝐑`)
+                        .replace('%{title}', `BANNER`)
                         .replace('%{mainRight}', emoji.mainRight)
                 )
                 .setImage(bannerURL)

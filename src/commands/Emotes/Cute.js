@@ -6,7 +6,7 @@ module.exports = class Cute extends Command {
         super(client, {
             name: 'cute',
             description: {
-                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒚𝒐𝒖𝒓 𝒄𝒖𝒕𝒆𝒔𝒕 𝒆𝒙𝒑𝒓𝒆𝒔𝒔𝒊𝒐𝒏!',
+                content: 'Show off your cutest expression!',
                 examples: ['cute'],
                 usage: 'cute',
             },
@@ -24,7 +24,7 @@ module.exports = class Cute extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const cuteMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cuteMessages;
         const errorMessages = cuteMessages.errors;
@@ -40,9 +40,10 @@ module.exports = class Cute extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', '𝐂𝐔𝐓𝐄')
+                        .replace('%{title}', 'CUTE')
                         .replace('%{mainRight}', emoji.mainRight) +
-                    cuteMessages.description.replace('%{user}', ctx.author.displayName))
+                    cuteMessages.description.replace('%{user}', ctx.author.displayName)
+                )
                 .setImage(client.utils.emojiToImage(randomEmoji))
                 .setFooter({
                     text: generalMessages.requestedBy
@@ -50,11 +51,12 @@ module.exports = class Cute extends Command {
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
-            // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            // Send the embed message with await
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('An error occurred in the Cute command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            // Add await and return for error handling
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

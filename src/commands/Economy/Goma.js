@@ -8,9 +8,9 @@ module.exports = class Goma extends Command {
         super(client, {
             name: "goma",
             description: {
-                content: "𝑬𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒆𝒔 𝒃𝒚 𝒃𝒆𝒊𝒏𝒈 𝒈𝒐𝒎𝒂.",
-                examples: ["𝒈𝒐𝒎𝒂"],
-                usage: "𝒈𝒐𝒎𝒂",
+                content: "Earn some coins by being goma.",
+                examples: ["goma"],
+                usage: "goma",
             },
             category: "economy",
             aliases: ["g"],
@@ -95,7 +95,7 @@ module.exports = class Goma extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace("%{mainLeft}", emoji.mainLeft)
-                        .replace("%{title}", "𝐆𝐎𝐌𝐀")
+                        .replace("%{title}", "GOMA")
                         .replace("%{mainRight}", emoji.mainRight) +
                     gomaMessages.success
                         .replace("%{coinEmote}", emoji.coin)

@@ -6,7 +6,7 @@ module.exports = class Post extends Command {
         super(client, {
             name: 'status',
             description: {
-                content: '𝑪𝒉𝒆𝒄𝒌 𝒕𝒉𝒆 𝒖𝒔𝒆𝒓 𝒔𝒕𝒂𝒕𝒖𝒔',
+                content: 'Check the user status',
                 examples: ['status @user'],
                 usage: 'status <user>',
             },

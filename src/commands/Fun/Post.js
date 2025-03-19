@@ -6,7 +6,7 @@ module.exports = class Post extends Command {
         super(client, {
             name: 'post',
             description: {
-                content: '𝑷𝒐𝒔𝒕 𝒂𝒏𝒚 𝒕𝒆𝒙𝒕 𝒐𝒓 𝒎𝒆𝒔𝒔𝒂𝒈𝒆 !',
+                content: 'Post any text or message!',
                 examples: ['post Hello, world!'],
                 usage: 'post <message>',
             },

@@ -6,7 +6,7 @@ module.exports = class Makeup extends Command {
         super(client, {
             name: 'makeup',
             description: {
-                content: '𝑺𝒉𝒐𝒘 𝒐𝒇𝒇 𝒔𝒐𝒎𝒆 𝒎𝒂𝒌𝒆𝒖𝒑!',
+                content: 'Show off some makeup!',
                 examples: ['makeup'],
                 usage: 'makeup',
             },
@@ -40,7 +40,7 @@ module.exports = class Makeup extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐌𝐀𝐊𝐄𝐔𝐏")
+                        .replace('%{title}', 'MAKEUP')
                         .replace('%{mainRight}', emoji.mainRight) +
                     makeupMessages.description.replace('%{user}', ctx.author.displayName)
                 )
@@ -52,11 +52,11 @@ module.exports = class Makeup extends Command {
                 });
 
             // Send the embed message
-            await ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('An error occurred in the Makeup command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

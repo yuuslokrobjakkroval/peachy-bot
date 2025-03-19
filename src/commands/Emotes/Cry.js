@@ -6,7 +6,7 @@ module.exports = class Cry extends Command {
         super(client, {
             name: 'cry',
             description: {
-                content: '𝑬𝒙𝒑𝒓𝒆𝒔𝒔 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒄𝒓𝒚𝒊𝒏𝒈.',
+                content: 'Express a feeling of crying.',
                 examples: ['cry'],
                 usage: 'cry',
             },
@@ -24,7 +24,7 @@ module.exports = class Cry extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const cryMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.cryMessages;
         const errorMessages = cryMessages.errors;
@@ -36,12 +36,14 @@ module.exports = class Cry extends Command {
 
             // Constructing the embed with title, description, and image
             const embed = client.embed()
-                .setColor(color.main).setDescription(
+                .setColor(color.main)
+                .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', '𝐂𝐑𝐘')
+                        .replace('%{title}', 'CRY')
                         .replace('%{mainRight}', emoji.mainRight) +
-                    cryMessages.description.replace('%{user}', ctx.author.displayName))
+                    cryMessages.description.replace('%{user}', ctx.author.displayName)
+                )
                 .setImage(client.utils.emojiToImage(randomEmoji))
                 .setFooter({
                     text: generalMessages.requestedBy
@@ -49,11 +51,12 @@ module.exports = class Cry extends Command {
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
-            // Send the embed to the channel
-            ctx.sendMessage({ embeds: [embed] });
+            // Send the embed to the channel with await
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             console.error('An error occurred in the Cry command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            // Add await and return for error message
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

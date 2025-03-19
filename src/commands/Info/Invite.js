@@ -5,7 +5,7 @@ module.exports = class Invite extends Command {
     super(client, {
       name: "invite",
       description: {
-        content: "𝑺𝒆𝒏𝒅𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒊𝒏𝒗𝒊𝒕𝒆 𝒍𝒊𝒏𝒌",
+        content: "Sends the bot's invite link",
         examples: ["invite"],
         usage: "invite",
       },
@@ -34,10 +34,10 @@ module.exports = class Invite extends Command {
     const clientId = process.env.CLIENT_ID;
     if (!clientId) {
       console.error(
-        "Client ID not found in environment variables, cannot generate invite link."
+          "Client ID not found in environment variables, cannot generate invite link."
       );
       return await ctx.sendMessage(
-        "Sorry, my invite link is not available at this time. Please tell the bot developer to check their console."
+          "Sorry, my invite link is not available at this time. Please tell the bot developer to check their console."
       );
     }
 

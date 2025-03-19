@@ -12,7 +12,7 @@ module.exports = class Reroll extends Command {
     super(client, {
       name: "reroll",
       description: {
-        content: "𝑹𝒆𝒓𝒐𝒍𝒍 𝒕𝒉𝒆 𝒈𝒊𝒗𝒆𝒂𝒘𝒂𝒚 𝒕𝒐 𝒑𝒊𝒄𝒌 𝒏𝒆𝒘 𝒘𝒊𝒏𝒏𝒆𝒓𝒔.",
+        content: "Reroll the giveaway to pick new winners.",
         examples: ["reroll messageId"],
         usage: "reroll <messageId>",
       },
@@ -40,26 +40,26 @@ module.exports = class Reroll extends Command {
     const member = await ctx.guild.members.fetch(ctx.author.id);
     const isOwner = globalConfig.owners.includes(ctx.author.id);
     const isAdmin = member.permissions.has(
-      PermissionsBitField.Flags.Administrator
+        PermissionsBitField.Flags.Administrator
     );
 
     if (!isOwner && !isAdmin) {
       return ctx.isInteraction
-        ? ctx.interaction.reply({
+          ? ctx.interaction.reply({
             content:
-              "Only the bot owner, server owner, and administrators can use this giveaway.",
+                "Only the bot owner, server owner, and administrators can use this giveaway.",
             flags: 64,
           })
-        : ctx.sendMessage({
+          : ctx.sendMessage({
             content:
-              "Only the bot owner, server owner, and administrators can use this giveaway.",
+                "Only the bot owner, server owner, and administrators can use this giveaway.",
             flags: 64,
           });
     }
 
     const messageId = ctx.isInteraction
-      ? ctx.interaction.options.getString("messageid")
-      : args[0];
+        ? ctx.interaction.options.getString("messageid")
+        : args[0];
     if (!messageId) {
       return ctx.sendMessage({
         content: "Please provide a message ID for the giveaway to reroll.",
@@ -67,8 +67,8 @@ module.exports = class Reroll extends Command {
     }
 
     const giveaway =
-      (await GiveawaySchema.findOne({ messageId })) ||
-      (await GiveawayShopItemSchema.findOne({ messageId }));
+        (await GiveawaySchema.findOne({ messageId })) ||
+        (await GiveawayShopItemSchema.findOne({ messageId }));
 
     if (!giveaway) {
       return ctx.sendMessage({
@@ -85,15 +85,15 @@ module.exports = class Reroll extends Command {
     if (giveaway.retryAutopay) {
       return ctx.sendMessage({
         content:
-          "This giveaway has retry autopay enabled and cannot be rerolled.",
+            "This giveaway has retry autopay enabled and cannot be rerolled.",
       });
     }
 
     // Select new winners
     const newWinners = this.selectNewWinners(
-      giveaway.entered,
-      giveaway.winners,
-      giveaway.winnerId
+        giveaway.entered,
+        giveaway.winners,
+        giveaway.winnerId
     );
     if (newWinners.length === 0) {
       return ctx.sendMessage({
@@ -111,72 +111,72 @@ module.exports = class Reroll extends Command {
     if (giveaway instanceof GiveawaySchema) {
       // If giveaway is from GiveawaySchema, handle currency prize
       const rerollEmbed = client
-        .embed()
-        .setColor(color.main)
-        .setTitle(`${emoji.mainLeft} Congratulations ${emoji.mainRight}`)
-        .setDescription(
-          newWinners.length
-            ? `${newWinners
-                .map((id) => `<@${id}>`)
-                .join(", ")}! You have won **${client.utils.formatNumber(
-                giveaway.prize
-              )}** ${emoji.coin} ${emoji.congratulation}` +
-                `\n\nto reroll the giveaway again, please use\n\`${globalConfig.prefix.toLowerCase()}reroll ${messageId}\``
-            : `No one entered the giveaway for **\`${client.utils.formatNumber(
-                giveaway.prize
-              )}\`**!`
-        )
-        .setFooter({
-          text: `Rerolled by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        })
-        .setTimestamp();
+          .embed()
+          .setColor(color.main)
+          .setTitle(`${emoji.mainLeft} Congratulations ${emoji.mainRight}`)
+          .setDescription(
+              newWinners.length
+                  ? `${newWinners
+                      .map((id) => `<@${id}>`)
+                      .join(", ")}! You have won **${client.utils.formatNumber(
+                      giveaway.prize
+                  )}** ${emoji.coin} ${emoji.congratulation}` +
+                  `\n\nto reroll the giveaway again, please use\n\`${globalConfig.prefix.toLowerCase()}reroll ${messageId}\``
+                  : `No one entered the giveaway for **\`${client.utils.formatNumber(
+                      giveaway.prize
+                  )}\`**!`
+          )
+          .setFooter({
+            text: `Rerolled by ${ctx.author.displayName}`,
+            iconURL: ctx.author.displayAvatarURL(),
+          })
+          .setTimestamp();
 
       return ctx.sendMessage({ embeds: [rerollEmbed] });
     } else if (giveaway instanceof GiveawayShopItemSchema) {
       // If giveaway is from GiveawayShopItemSchema, handle item prize
       const category = items
-        .concat(importantItems)
-        .filter((c) => c.type === giveaway.type);
+          .concat(importantItems)
+          .filter((c) => c.type === giveaway.type);
       if (!category) {
         console.error(`Invalid item type specified for giveaway.`);
         return;
       }
 
       const itemInfo = category.find(
-        (i) => i.id.toLowerCase() === giveaway.itemId.toLowerCase()
+          (i) => i.id.toLowerCase() === giveaway.itemId.toLowerCase()
       );
       if (!itemInfo) {
         console.error(
-          `No item found with ID ${giveaway.itemId} in category ${giveaway.type}.`
+            `No item found with ID ${giveaway.itemId} in category ${giveaway.type}.`
         );
         return;
       }
 
       const rerollEmbed = client
-        .embed()
-        .setColor(color.main)
-        .setTitle(`${emoji.mainLeft} Congratulations ${emoji.mainRight}`)
-        .setDescription(
-          newWinners.length
-            ? `# Congratulations ${emoji.congratulation}` +
-                `${newWinners
-                  .map((user) => `<@${user}>`)
-                  .join(", ")}! You have won **${
-                  itemInfo.name
-                } \`${client.utils.formatNumber(giveaway.amount)}\`**` +
-                `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll item ${messageId}\``
-            : `No one entered the giveaway for ${
-                itemInfo.name
-              } **\`${client.utils.formatNumber(giveaway.amount)}\`** ${
-                itemInfo.emoji
-              }!`
-        )
-        .setFooter({
-          text: `Rerolled by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        })
-        .setTimestamp();
+          .embed()
+          .setColor(color.main)
+          .setTitle(`${emoji.mainLeft} Congratulations ${emoji.mainRight}`)
+          .setDescription(
+              newWinners.length
+                  ? `# Congratulations ${emoji.congratulation}` +
+                  `${newWinners
+                      .map((user) => `<@${user}>`)
+                      .join(", ")}! You have won **${
+                      itemInfo.name
+                  } \`${client.utils.formatNumber(giveaway.amount)}\`**` +
+                  `\n\nto reroll the giveaway, please use\n\`${globalConfig.prefix.toLowerCase()}reroll item ${messageId}\``
+                  : `No one entered the giveaway for ${
+                      itemInfo.name
+                  } **\`${client.utils.formatNumber(giveaway.amount)}\`** ${
+                      itemInfo.emoji
+                  }!`
+          )
+          .setFooter({
+            text: `Rerolled by ${ctx.author.displayName}`,
+            iconURL: ctx.author.displayAvatarURL(),
+          })
+          .setTimestamp();
 
       return ctx.sendMessage({ embeds: [rerollEmbed] });
     }

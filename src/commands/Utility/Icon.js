@@ -6,9 +6,9 @@ module.exports = class Icon extends Command {
     super(client, {
       name: "icon",
       description: {
-        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓'𝒔 𝒊𝒄𝒐𝒏",
-        examples: ["𝒊𝒄𝒐𝒏"],
-        usage: "𝒊𝒄𝒐𝒏",
+        content: "Displays the server's icon",
+        examples: ["icon"],
+        usage: "icon",
       },
       category: "utility",
       aliases: ["servericon", "guildicon"],
@@ -43,7 +43,7 @@ module.exports = class Icon extends Command {
     const guild = ctx.guild;
 
     if (!guild.icon) {
-      const errorMessage = iconMessages?.noIconAvailable || "This server has no icon.";
+      const errorMessage = iconMessages?.noIcon.noIconAvailable || "This server has no icon.";
       return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
     }
 
@@ -52,7 +52,7 @@ module.exports = class Icon extends Command {
         .setDescription(
             generalMessages.title
                 .replace('%{mainLeft}', emoji.mainLeft)
-                .replace('%{title}', `𝐒𝐄𝐑𝐕𝐄𝐑 𝐈𝐂𝐎𝐍`)
+                .replace('%{title}', `SERVER ICON`)
                 .replace('%{mainRight}', emoji.mainRight)
         )
         .setImage(guild.iconURL({ dynamic: true, extension: "png", size: 1024 }))

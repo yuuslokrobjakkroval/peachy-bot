@@ -6,9 +6,9 @@ module.exports = class Kill extends Command {
         super(client, {
             name: 'kill',
             description: {
-                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒄𝒖𝒕𝒆 𝒌𝒊𝒍𝒍 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
-                examples: ['𝒌𝒊𝒍𝒍 @𝑼𝒔𝒆𝒓'],
-                usage: '𝒌𝒊𝒍𝒍 @𝑼𝒔𝒆𝒓',
+                content: 'Sends a cute kill to the mentioned user.',
+                examples: ['kill @User'],
+                usage: 'kill @User',
             },
             category: 'actions',
             aliases: [],
@@ -60,7 +60,7 @@ module.exports = class Kill extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐊𝐈𝐋𝐋")
+                        .replace('%{title}', "KILL")
                         .replace('%{mainRight}', emoji.mainRight) +
                     killMessages.description
                         .replace('%{displayName}', ctx.author.displayName)

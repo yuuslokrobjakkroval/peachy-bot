@@ -6,7 +6,7 @@ module.exports = class Loung extends Command {
         super(client, {
             name: 'loung',
             description: {
-                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒄𝒖𝒕𝒆 𝒆𝒎𝒐𝒋𝒊 𝒍𝒐𝒖𝒏𝒈 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                content: 'Sends a cute emoji loung to the mentioned user.',
                 examples: ['loung @User'],
                 usage: 'loung @User',
             },
@@ -59,7 +59,7 @@ module.exports = class Loung extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐋𝐎𝐔𝐍𝐆")
+                        .replace('%{title}', "LOUNG")
                         .replace('%{mainRight}', emoji.mainRight) +
                     loungMessages.description
                         .replace('%{displayName}', ctx.author.displayName)

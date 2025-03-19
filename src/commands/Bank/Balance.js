@@ -6,9 +6,9 @@ module.exports = class Balance extends Command {
         super(client, {
             name: 'balance',
             description: {
-                content: '𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒚𝒐𝒖𝒓 𝒃𝒂𝒍𝒂𝒏𝒄𝒆',
-                examples: ['𝒃𝒂𝒍𝒂𝒏𝒄𝒆'],
-                usage: '𝒃𝒂𝒍𝒂𝒏𝒄𝒆',
+                content: 'Displays your balance',
+                examples: ['balance'],
+                usage: 'balance',
             },
             category: 'bank',
             aliases: ['bal', 'money', 'cash'],
@@ -42,7 +42,7 @@ module.exports = class Balance extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐁𝐀𝐋𝐀𝐍𝐂𝐄")
+                        .replace('%{title}', "BALANCE")
                         .replace('%{mainRight}', emoji.mainRight) +
                     balanceMessages.description
                         .replace('%{coinEmote}', emoji.coin)

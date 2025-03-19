@@ -6,7 +6,7 @@ module.exports = class Kiss extends Command {
         super(client, {
             name: 'kiss',
             description: {
-                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒄𝒖𝒕𝒆 𝒌𝒊𝒔𝒔 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                content: 'Sends a cute kiss to the mentioned user.',
                 examples: ['kiss @user'],
                 usage: 'kiss <user>',
             },
@@ -59,7 +59,7 @@ module.exports = class Kiss extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐊𝐈𝐒𝐒")
+                        .replace('%{title}', "KISS")
                         .replace('%{mainRight}', emoji.mainRight) +
                     kissMessages.description
                         .replace('%{displayName}', ctx.author.displayName)

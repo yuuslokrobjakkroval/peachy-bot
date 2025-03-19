@@ -7,7 +7,7 @@ module.exports = class CheckInvites extends Command {
     super(client, {
       name: "invites",
       description: {
-        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒕𝒉𝒆 𝒕𝒐𝒕𝒂𝒍 𝒏𝒖𝒎𝒃𝒆𝒓 𝒐𝒇 𝒖𝒔𝒆𝒔 𝒇𝒐𝒓 𝒂𝒍𝒍 𝒊𝒏𝒗𝒊𝒕𝒆𝒔.",
+        content: "Displays the total number of uses for all invites.",
         examples: ["invites"],
         usage: "invites",
       },
@@ -33,25 +33,17 @@ module.exports = class CheckInvites extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
-      );
+      await ctx.interaction.reply(generalMessages.search.replace("%{loading}", globalEmoji.searching));
     } else {
-      await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
-      );
+      await ctx.sendDeferMessage(generalMessages.search.replace("%{loading}", globalEmoji.searching));
     }
 
     const mention = ctx.isInteraction
-      ? ctx.interaction.options.getUser("user")
-      : ctx.message.mentions.users.first() ||
-        ctx.guild.members.cache.get(args[0]) ||
-        ctx.author;
+        ? ctx.interaction.options.getUser("user")
+        : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
 
     const guildId = ctx.guild.id;
     const userId = mention.id;
@@ -76,45 +68,45 @@ module.exports = class CheckInvites extends Command {
         },
       },
     ])
-      .then(async (getInvites) => {
-        const userInvite = getInvites.find(
-          (invite) => invite.inviterId === mention.id
-        );
-        const inviteMessage = userInvite
-          ? `You currently have **${userInvite.totalUses}** invites`
-          : "No invite data available for you.";
+        .then(async (getInvites) => {
+          const userInvite = getInvites.find(
+              (invite) => invite.inviterId === mention.id
+          );
+          const inviteMessage = userInvite
+              ? `You currently have **${userInvite.totalUses}** invites`
+              : "No invite data available for you.";
 
-        const embed = client
-          .embed()
-          .setColor(color.main)
-          .setDescription(
-            generalMessages.title
-              .replace("%{mainLeft}", emoji.mainLeft)
-              .replace("%{title}", "𝐈𝐍𝐕𝐈𝐓𝐄𝐒")
-              .replace("%{mainRight}", emoji.mainRight) + inviteMessage
-          )
-          .setFooter({
-            text:
-              generalMessages.requestedBy.replace(
-                "%{username}",
-                ctx.author.displayName
-              ) || `Requested by ${ctx.author.displayName}`,
-            iconURL: ctx.author.displayAvatarURL(),
-          })
-          .setTimestamp();
+          const embed = client
+              .embed()
+              .setColor(color.main)
+              .setDescription(
+                  generalMessages.title
+                      .replace("%{mainLeft}", emoji.mainLeft)
+                      .replace("%{title}", "INVITES")
+                      .replace("%{mainRight}", emoji.mainRight) + inviteMessage
+              )
+              .setFooter({
+                text:
+                    generalMessages.requestedBy.replace(
+                        "%{username}",
+                        ctx.author.displayName
+                    ) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+              })
+              .setTimestamp();
 
-        return ctx.isInteraction
-          ? await ctx.interaction.editReply({ content: "", embeds: [embed] })
-          : await ctx.editMessage({ content: "", embeds: [embed] });
-      })
-      .catch((err) => {
-        console.error(err);
-        client.utils.sendErrorMessage(
-          client,
-          ctx,
-          "An error occurred while fetching your invite data.",
-          color
-        );
-      });
+          return ctx.isInteraction
+              ? await ctx.interaction.editReply({ content: "", embeds: [embed] })
+              : await ctx.editMessage({ content: "", embeds: [embed] });
+        })
+        .catch((err) => {
+          console.error(err);
+          client.utils.sendErrorMessage(
+              client,
+              ctx,
+              "An error occurred while fetching your invite data.",
+              color
+          );
+        });
   }
 };

@@ -6,7 +6,7 @@ module.exports = class Register extends Command {
         super(client, {
             name: 'register',
             description: {
-                content: '𝑹𝒆𝒈𝒊𝒔𝒕𝒆𝒓 𝒚𝒐𝒖𝒓𝒔𝒆𝒍𝒇 𝒕𝒐 𝒔𝒕𝒂𝒓𝒕 𝒖𝒔𝒊𝒏𝒈 𝒃𝒐𝒕 𝒇𝒆𝒂𝒕𝒖𝒓𝒆𝒔.',
+                content: 'Register yourself to start using bot features.',
                 examples: ['register'],
                 usage: 'register',
             },

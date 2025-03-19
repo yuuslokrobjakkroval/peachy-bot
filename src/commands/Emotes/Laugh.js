@@ -6,7 +6,7 @@ module.exports = class Laugh extends Command {
         super(client, {
             name: 'laugh',
             description: {
-                content: '𝑬𝒙𝒑𝒓𝒆𝒔𝒔 𝒂 𝒇𝒆𝒆𝒍𝒊𝒏𝒈 𝒐𝒇 𝒍𝒂𝒖𝒈𝒉𝒕𝒆𝒓.',
+                content: 'Express a feeling of laughter.',
                 examples: ['laugh'],
                 usage: 'laugh',
             },
@@ -24,7 +24,7 @@ module.exports = class Laugh extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const laughMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.laughMessages;
         const errorMessages = laughMessages.errors;
@@ -40,7 +40,7 @@ module.exports = class Laugh extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', '𝐋𝐀𝐔𝐆𝐇')
+                        .replace('%{title}', 'LAUGH')
                         .replace('%{mainRight}', emoji.mainRight) +
                     laughMessages.description.replace('%{user}', ctx.author.displayName)
                 )
@@ -52,11 +52,11 @@ module.exports = class Laugh extends Command {
                 });
 
             // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('An error occurred in the Laugh command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

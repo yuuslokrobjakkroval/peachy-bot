@@ -6,7 +6,7 @@ module.exports = class MultiTransfer extends Command {
         super(client, {
             name: "multitransfer",
             description: {
-                content: "𝑻𝒓𝒂𝒏𝒔𝒇𝒆𝒓 𝒄𝒐𝒊𝒏𝒔 𝒕𝒐 𝒎𝒖𝒍𝒕𝒊𝒑𝒍𝒆 𝒖𝒔𝒆𝒓𝒔 𝒂𝒕 𝒐𝒏𝒄𝒆.",
+                content: "Transfer coins to multiple users at once.",
                 examples: ["mpay @user1 @user2 100000", "mpay @user1 @user2 100k"],
                 usage: "mpay <user(s)> <amount>",
             },

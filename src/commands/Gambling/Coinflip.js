@@ -110,7 +110,7 @@ module.exports = class Coinflip extends Command {
                     coinflipMessages.description
                         .replace('%{coinEmote}', emoji.coin)
                         .replace('%{coin}', client.utils.formatNumber(baseCoins))
-                        .replace('%{choice}', choice === 'p' ? '𝑷𝒆𝒂𝒄𝒉' : '𝑮𝒐𝒎𝒂')
+                        .replace('%{choice}', choice === 'p' ? 'Peach' : 'Goma')
                 )
                 .setFooter({
                     text: generalMessages.gameInProgress.replace('%{user}', ctx.author.displayName),
@@ -139,8 +139,8 @@ module.exports = class Coinflip extends Command {
                         coinflipMessages.result
                             .replace('%{coin}', client.utils.formatNumber(baseCoins))
                             .replace('%{coinEmote}', emoji.coin)
-                            .replace('%{choice}', choice === 'p' ? '𝑷𝒆𝒂𝒄𝒉' : '𝑮𝒐𝒎𝒂')
-                            .replace('%{result}', win ? '𝒘𝒐𝒏' : '𝒍𝒐𝒔𝒕')
+                            .replace('%{choice}', choice === 'p' ? 'Peach' : 'Goma')
+                            .replace('%{result}', win ? 'won' : 'lost')
                             .replace('%{resultCoin}', client.utils.formatNumber(resultCoin))
                             .replace('%{coinEmote}', emoji.coin)
                     )

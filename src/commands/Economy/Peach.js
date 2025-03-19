@@ -8,9 +8,9 @@ module.exports = class Peachy extends Command {
         super(client, {
             name: "peach",
             description: {
-                content: "𝑬𝒂𝒓𝒏 𝒔𝒐𝒎𝒆 𝒄𝒐𝒊𝒏𝒆𝒔 𝒃𝒚 𝒃𝒆𝒊𝒏𝒈 𝒑𝒆𝒂𝒄𝒉.",
-                examples: ["𝒑𝒆𝒂𝒄𝒉"],
-                usage: "𝒑𝒆𝒂𝒄𝒉",
+                content: "Earn some coins by being peach.",
+                examples: ["peach"],
+                usage: "peach",
             },
             category: "economy",
             aliases: ["each", "p"],
@@ -96,7 +96,7 @@ module.exports = class Peachy extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace("%{mainLeft}", emoji.mainLeft)
-                        .replace("%{title}", "𝐏𝐄𝐀𝐂𝐇")
+                        .replace("%{title}", "PEACH")
                         .replace("%{mainRight}", emoji.mainRight) +
                     peachMessages.success
                         .replace("%{coinEmote}", emoji.coin)

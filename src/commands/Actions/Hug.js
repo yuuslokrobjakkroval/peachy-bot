@@ -6,9 +6,9 @@ module.exports = class Hug extends Command {
         super(client, {
             name: 'hug',
             description: {
-                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒄𝒖𝒕𝒆 𝒉𝒖𝒈 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
-                examples: ['𝒉𝒖𝒈 @𝒖𝒔𝒆𝒓'],
-                usage: '𝒉𝒖𝒈 @𝒖𝒔𝒆𝒓',
+                content: 'Sends a cute hug to the mentioned user.',
+                examples: ['hug @user'],
+                usage: 'hug @user',
             },
             category: 'actions',
             aliases: [],
@@ -60,7 +60,7 @@ module.exports = class Hug extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐇𝐔𝐆")
+                        .replace('%{title}', "HUG")
                         .replace('%{mainRight}', emoji.mainRight) +
                     hugMessages.description
                         .replace('%{displayName}', ctx.author.displayName)

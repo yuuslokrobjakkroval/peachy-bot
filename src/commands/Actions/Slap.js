@@ -6,7 +6,7 @@ module.exports = class Slap extends Command {
         super(client, {
             name: 'slap',
             description: {
-                content: '𝑺𝒆𝒏𝒅𝒔 𝒂 𝒑𝒍𝒂𝒚𝒇𝒖𝒍 𝒔𝒍𝒂𝒑 𝒕𝒐 𝒕𝒉𝒆 𝒎𝒆𝒏𝒕𝒊𝒐𝒏𝒆𝒅 𝒖𝒔𝒆𝒓.',
+                content: 'Sends a playful slap to the mentioned user.',
                 examples: ['slap @User'],
                 usage: 'slap @User',
             },
@@ -58,15 +58,15 @@ module.exports = class Slap extends Command {
             // Create the embed message
             const embed = client.embed()
                 .setColor(color.main)
-                .setImage(client.utils.emojiToImage(randomEmoji)) // Ensure the image is valid
+                .setImage(client.utils.emojiToImage(randomEmoji))
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐒𝐋𝐀𝐏")
+                        .replace('%{title}', "SLAP")
                         .replace('%{mainRight}', emoji.mainRight) +
                     slapMessages.description
                         .replace('%{displayName}', ctx.author.displayName)
-                        .replace('%{target}', target.username) // Fixed username reference
+                        .replace('%{target}', target.displayName)
                 )
                 .setFooter({
                     text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,

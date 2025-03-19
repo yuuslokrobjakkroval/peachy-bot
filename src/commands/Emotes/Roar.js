@@ -6,7 +6,7 @@ module.exports = class Roar extends Command {
         super(client, {
             name: 'roar',
             description: {
-                content: '𝑳𝒆𝒕 𝒐𝒖𝒕 𝒂 𝒎𝒊𝒈𝒉𝒕𝒚 𝒓𝒐𝒂𝒓!',
+                content: 'Let out a mighty roar!',
                 examples: ['roar'],
                 usage: 'roar',
             },
@@ -24,7 +24,7 @@ module.exports = class Roar extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const roarMessages = language.locales.get(language.defaultLocale)?.emoteMessages?.roarMessages;
         const errorMessages = roarMessages.errors;
@@ -41,7 +41,7 @@ module.exports = class Roar extends Command {
                 .setDescription(
                     generalMessages.title
                         .replace('%{mainLeft}', emoji.mainLeft)
-                        .replace('%{title}', "𝐑𝐀𝐎𝐑")
+                        .replace('%{title}', 'ROAR')
                         .replace('%{mainRight}', emoji.mainRight) +
                     roarMessages.description.replace('%{user}', ctx.author.displayName)
                 )
@@ -53,11 +53,11 @@ module.exports = class Roar extends Command {
                 });
 
             // Send the embed message
-            ctx.sendMessage({ embeds: [embed] });
+            return await ctx.sendMessage({ embeds: [embed] });
         } catch (error) {
             // Error handling for any unexpected errors
             console.error('Error processing roar command:', error);
-            client.utils.sendErrorMessage(client, ctx, errorMessages, color);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessages, color);
         }
     }
 };

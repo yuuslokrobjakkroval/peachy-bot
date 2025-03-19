@@ -12,13 +12,13 @@ module.exports = class GiveawayShopItem extends Command {
       name: "giveawayshopitem",
       description: {
         content:
-          "𝑺𝒕𝒂𝒓𝒕 𝒂 𝒔𝒉𝒐𝒑 𝒊𝒕𝒆𝒎 𝒈𝒊𝒗𝒆𝒂𝒘𝒂𝒚 𝒇𝒐𝒓 𝒇𝒐𝒐𝒅, 𝒅𝒓𝒊𝒏𝒌, 𝒐𝒓 𝒕𝒉𝒆𝒎𝒆𝒔, 𝒎𝒊𝒍𝒌, 𝒓𝒊𝒏𝒈 𝒊𝒏 𝒕𝒉𝒆 𝒔𝒉𝒐𝒑.",
+            "Start a shop item giveaway for food, drink, or themes, milk, ring in the shop.",
         examples: [
           "giveawayshopitem 1h 1 food f01 5 true",
           "giveawayshopitem 2h 3 drink d01 false @User #channel",
         ],
         usage:
-          "giveawayshopitem <duration> <winners> <type> <itemID> <amount> <image> <thumbnail> <autoadd> [host] [channel]",
+            "giveawayshopitem <duration> <winners> <type> <itemID> <amount> <image> <thumbnail> <autoadd> [host] [channel]",
       },
       category: "giveaway",
       args: true,
@@ -84,63 +84,63 @@ module.exports = class GiveawayShopItem extends Command {
 
     const isOwner = globalConfig.owners.includes(ctx.author.id);
     const durationStr = ctx.isInteraction
-      ? ctx.interaction.options.getString("duration")
-      : args[0];
+        ? ctx.interaction.options.getString("duration")
+        : args[0];
     const winnersStr = ctx.isInteraction
-      ? ctx.interaction.options.getInteger("winners")
-      : args[1];
+        ? ctx.interaction.options.getInteger("winners")
+        : args[1];
     const type = ctx.isInteraction
-      ? ctx.interaction.options.getString("type")
-      : args[2];
+        ? ctx.interaction.options.getString("type")
+        : args[2];
     const itemID = ctx.isInteraction
-      ? ctx.interaction.options.getString("itemid")
-      : args[3];
+        ? ctx.interaction.options.getString("itemid")
+        : args[3];
     const amount = ctx.isInteraction
-      ? ctx.interaction.options.getInteger("amount")
-      : args[4];
+        ? ctx.interaction.options.getInteger("amount")
+        : args[4];
     const image = ctx.isInteraction
-      ? ctx.interaction.options.getAttachment("image")
-      : args[5];
+        ? ctx.interaction.options.getAttachment("image")
+        : args[5];
     const autoAdd = ctx.isInteraction
-      ? ctx.interaction.options.getString("autoadd")
-      : args[6];
+        ? ctx.interaction.options.getString("autoadd")
+        : args[6];
 
     if (autoAdd && !isOwner) {
       return ctx.isInteraction
-        ? ctx.interaction.editReply({
+          ? ctx.interaction.editReply({
             content: "Only the bot owner can enable auto add for giveaways.",
             flags: 64,
           })
-        : ctx.editMessage({
+          : ctx.editMessage({
             content: "Only the bot owner can enable auto add for giveaways.",
             flags: 64,
           });
     }
 
     const category = items
-      .concat(importantItems)
-      .filter((c) => c.type === type);
+        .concat(importantItems)
+        .filter((c) => c.type === type);
     if (!category)
       return ctx.isInteraction
-        ? await ctx.interaction.editReply({
+          ? await ctx.interaction.editReply({
             content: "Invalid item type specified.",
             fetchReply: true,
           })
-        : await ctx.editMessage({
+          : await ctx.editMessage({
             content: "Invalid item type specified.",
             fetchReply: true,
           });
 
     const item = category.find(
-      (i) => i.id.toLowerCase() === itemID.toLowerCase()
+        (i) => i.id.toLowerCase() === itemID.toLowerCase()
     );
     if (!item)
       return ctx.isInteraction
-        ? await ctx.interaction.editReply({
+          ? await ctx.interaction.editReply({
             content: `No item found with ID ${itemID} in category ${type}.`,
             fetchReply: true,
           })
-        : await ctx.editMessage({
+          : await ctx.editMessage({
             content: `No item found with ID ${itemID} in category ${type}.`,
             fetchReply: true,
           });
@@ -153,15 +153,15 @@ module.exports = class GiveawayShopItem extends Command {
       const replyMessage = {
         embeds: [
           client
-            .embed()
-            .setAuthor({
-              name: client.user.displayName,
-              iconURL: client.user.displayAvatarURL(),
-            })
-            .setColor(color.danger)
-            .setDescription(
-              "Invalid input. Please ensure the duration, number of winners, amount, and prize are correctly provided."
-            ),
+              .embed()
+              .setAuthor({
+                name: client.user.displayName,
+                iconURL: client.user.displayAvatarURL(),
+              })
+              .setColor(color.danger)
+              .setDescription(
+                  "Invalid input. Please ensure the duration, number of winners, amount, and prize are correctly provided."
+              ),
         ],
       };
       if (ctx.isInteraction) {
@@ -176,51 +176,51 @@ module.exports = class GiveawayShopItem extends Command {
     const formattedDuration = Math.floor(endTime / 1000);
 
     const giveawayEmbed = client
-      .embed()
-      .setColor(color.main)
-      .setTitle(
-        `**ID: \`${item.id}\`\n${item.name} ${client.utils.formatNumber(
-          amount
-        )}**`
-      )
-      .setThumbnail(client.utils.emojiToImage(item.emoji))
-      .setDescription(
-        `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
-      );
+        .embed()
+        .setColor(color.main)
+        .setTitle(
+            `**ID: \`${item.id}\`\n${item.name} ${client.utils.formatNumber(
+                amount
+            )}**`
+        )
+        .setThumbnail(client.utils.emojiToImage(item.emoji))
+        .setDescription(
+            `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
+        );
 
     if (image) giveawayEmbed.setImage(image.url);
 
     const joinButton = client.utils.fullOptionButton(
-      "giveawayshopitem-join",
-      emoji.main,
-      "0",
-      1,
-      false
+        "giveawayshopitem-join",
+        emoji.main,
+        "0",
+        1,
+        false
     );
     const participantsButton = client.utils.fullOptionButton(
-      "giveawayshopitem-participants",
-      "",
-      "Participants",
-      2,
-      false
+        "giveawayshopitem-participants",
+        "",
+        "Participants",
+        2,
+        false
     );
 
     const buttonRow = client.utils.createButtonRow(
-      joinButton,
-      participantsButton
+        joinButton,
+        participantsButton
     );
 
     // After sending the giveaway message
     let giveawayMessage;
     try {
       giveawayMessage = ctx.isInteraction
-        ? await ctx.interaction.editReply({
+          ? await ctx.interaction.editReply({
             content: "",
             embeds: [giveawayEmbed],
             components: [buttonRow],
             fetchReply: true,
           })
-        : await ctx.editMessage({
+          : await ctx.editMessage({
             content: "",
             embeds: [giveawayEmbed],
             components: [buttonRow],
@@ -230,8 +230,8 @@ module.exports = class GiveawayShopItem extends Command {
       console.error(err);
       const response = "There was an error sending the giveaway message.";
       return ctx.isInteraction
-        ? ctx.interaction.editReply({ content: response })
-        : ctx.editMessage({ content: response });
+          ? ctx.interaction.editReply({ content: response })
+          : ctx.editMessage({ content: response });
     }
 
     await GiveawayShopItemSchema.create({

@@ -6,7 +6,7 @@ module.exports = class Help extends Command {
     super(client, {
       name: "help",
       description: {
-        content: "𝑫𝒊𝒔𝒑𝒍𝒂𝒚𝒔 𝒕𝒉𝒆 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒐𝒇 𝒕𝒉𝒆 𝒃𝒐𝒕",
+        content: "Displays the commands of the bot",
         examples: ["help"],
         usage: "help",
       },
@@ -63,7 +63,7 @@ module.exports = class Help extends Command {
       "work",
     ];
     const commands = client.commands.filter(
-      (cmd) => !adminCategory.includes(cmd.category)
+        (cmd) => !adminCategory.includes(cmd.category)
     );
     const selectedItemIndex = null;
     // Message Options
@@ -77,35 +77,35 @@ module.exports = class Help extends Command {
           return sum + categoryCommands.size;
         }, 0);
         const helpEmbed = client.embed()
-          .setColor(color.main)
-          .setDescription(
-            generalMessages.title
-              .replace("%{mainLeft}", emoji.mainLeft)
-              .replace("%{title}", "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
-              .replace("%{mainRight}", emoji.mainRight) +
-              `${helpMessages.description} **${prefix}help [command]**\n` +
-              `${helpMessages.examples} **${prefix}help balance**\n\n` +
-              `${helpMessages.note}`
-          )
-          .addFields([
-            {
-              name: `${emoji.help.category ? emoji.help.category : "📚"} __CATEGORIES__`,
-              value: categories
-                .map(
-                  (category) =>
-                    `- ${emoji.help[category.toLowerCase()] || ""} ${
-                      categoriesMessages[category.toLowerCase()] || category
-                    }`
-                )
-                .join("\n"),
-              inline: false,
-            },
-          ])
-          .setImage(client.config.links.banner)
-          .setFooter({
-            text: `${helpMessages.footer} have ${totalCommands} commands`,
-            iconURL: client.user.displayAvatarURL(),
-          });
+            .setColor(color.main)
+            .setDescription(
+                generalMessages.title
+                    .replace("%{mainLeft}", emoji.mainLeft)
+                    .replace("%{title}", "HELP COMMANDS")
+                    .replace("%{mainRight}", emoji.mainRight) +
+                `${helpMessages.description} **${prefix}help [command]**\n` +
+                `${helpMessages.examples} **${prefix}help balance**\n\n` +
+                `${helpMessages.note}`
+            )
+            .addFields([
+              {
+                name: `${emoji.help.category ? emoji.help.category : "📚"} __CATEGORIES__`,
+                value: categories
+                    .map(
+                        (category) =>
+                            `- ${emoji.help[category.toLowerCase()] || ""} ${
+                                categoriesMessages[category.toLowerCase()] || category
+                            }`
+                    )
+                    .join("\n"),
+                inline: false,
+              },
+            ])
+            .setImage(client.config.links.banner)
+            .setFooter({
+              text: `${helpMessages.footer} have ${totalCommands} commands`,
+              iconURL: client.user.displayAvatarURL(),
+            });
 
         const categoryOptions = categories.map((category) => ({
           emoji: `${emoji.help[category.toLowerCase()] || ""}`,
@@ -115,9 +115,9 @@ module.exports = class Help extends Command {
         }));
 
         const categorySelectButton = new StringSelectMenuBuilder()
-          .setCustomId("category_select")
-          .setPlaceholder("Select a category")
-          .addOptions(categoryOptions);
+            .setCustomId("category_select")
+            .setPlaceholder("Select a category")
+            .addOptions(categoryOptions);
 
         const row = client.utils.createButtonRow(categorySelectButton);
 
@@ -126,8 +126,8 @@ module.exports = class Help extends Command {
 
       // Send Help Message
       const replyMessage = await (ctx.isInteraction
-        ? ctx.interaction.reply({ ...messageOptions(), fetchReply: true })
-        : ctx.channel.send({ ...messageOptions(), fetchReply: true }));
+          ? ctx.interaction.reply({ ...messageOptions(), fetchReply: true })
+          : ctx.channel.send({ ...messageOptions(), fetchReply: true }));
 
       // Collector for Category Selection
       const collector = replyMessage.createMessageComponentCollector({
@@ -138,45 +138,45 @@ module.exports = class Help extends Command {
       collector.on("collect", async (interaction) => {
         const selectedCategory = interaction.values[0];
         const categoryCommands = commands.filter(
-          (cmd) => cmd.category.toLowerCase() === selectedCategory.toLowerCase()
+            (cmd) => cmd.category.toLowerCase() === selectedCategory.toLowerCase()
         );
 
         const commandNames =
-          categoryCommands.size > 0
-            ? Array.from(categoryCommands.values())
-                .map((cmd) => `- ${cmd.name}\n${cmd.description.content}`) // Limit description to 100 chars
-                .join("\n")
-            : "𝑵𝒐 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.";
+            categoryCommands.size > 0
+                ? Array.from(categoryCommands.values())
+                    .map((cmd) => `- ${cmd.name}\n${cmd.description.content}`) // Limit description to 100 chars
+                    .join("\n")
+                : "No commands found in this category.";
 
         const selectedEmbed = client.embed()
-          .setColor(color.main)
-          .setDescription(
-            generalMessages.title
-              .replace("%{mainLeft}", emoji.mainLeft)
-              .replace("%{title}", "𝐇𝐄𝐋𝐏 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒")
-              .replace("%{mainRight}", emoji.mainRight) +
-              `${helpMessages.description} **${prefix}help [command]**\n` +
-              `${helpMessages.examples} **${prefix}help balance**\n\n` +
-              `${helpMessages.note}`
-          )
-          .addFields([
-            {
-              name: `${emoji.help[selectedCategory.toLowerCase()] || ""} ${
-                categoriesMessages[selectedCategory.toLowerCase()] ||
-                selectedCategory
-              }`,
-              value:
-                commandNames.length > 1024
-                  ? commandNames.slice(0, 1021) + "..."
-                  : commandNames,
-              inline: false,
-            },
-          ])
-          .setImage(client.config.links.banner)
-          .setFooter({
-            text: `${helpMessages.footer} <=> ${categoryCommands.size} 𝑪𝒐𝒎𝒎𝒂𝒏𝒅𝒔.`,
-            iconURL: client.user.displayAvatarURL(),
-          });
+            .setColor(color.main)
+            .setDescription(
+                generalMessages.title
+                    .replace("%{mainLeft}", emoji.mainLeft)
+                    .replace("%{title}", "HELP COMMANDS")
+                    .replace("%{mainRight}", emoji.mainRight) +
+                `${helpMessages.description} **${prefix}help [command]**\n` +
+                `${helpMessages.examples} **${prefix}help balance**\n\n` +
+                `${helpMessages.note}`
+            )
+            .addFields([
+              {
+                name: `${emoji.help[selectedCategory.toLowerCase()] || ""} ${
+                    categoriesMessages[selectedCategory.toLowerCase()] ||
+                    selectedCategory
+                }`,
+                value:
+                    commandNames.length > 1024
+                        ? commandNames.slice(0, 1021) + "..."
+                        : commandNames,
+                inline: false,
+              },
+            ])
+            .setImage(client.config.links.banner)
+            .setFooter({
+              text: `${helpMessages.footer} <=> ${categoryCommands.size} Commands.`,
+              iconURL: client.user.displayAvatarURL(),
+            });
 
         const categoryOptions = categories.map((category) => ({
           emoji: `${emoji.help[category.toLowerCase()] || ""}`,
@@ -186,9 +186,9 @@ module.exports = class Help extends Command {
         }));
 
         const categorySelectMenu = new StringSelectMenuBuilder()
-          .setCustomId("category_select")
-          .setPlaceholder("Select a category")
-          .addOptions(categoryOptions);
+            .setCustomId("category_select")
+            .setPlaceholder("Select a category")
+            .addOptions(categoryOptions);
 
         const row = client.utils.createButtonRow(categorySelectMenu);
 
@@ -207,50 +207,50 @@ module.exports = class Help extends Command {
         return ctx.sendMessage({
           embeds: [
             client
-              .embed()
-              .setColor(color.danger)
-              .setDescription(`${helpMessages.commandNotFound} \`${args[0]}\``),
+                .embed()
+                .setColor(color.danger)
+                .setDescription(`${helpMessages.commandNotFound} \`${args[0]}\``),
           ],
         });
 
       const helpEmbed = client
-        .embed()
-        .setColor(color.main)
-        .setTitle(`${helpMessages.title} - ${command.name}`)
-        .setDescription(command.description.content)
-        .addFields([
-          {
-            name: `${helpMessages.category}`,
-            value: `${command.category}`,
-            inline: false,
-          },
-          {
-            name: `${helpMessages.aliases}`,
-            value: `${command.aliases
-              .map((alias) => `\`${alias}\``)
-              .join(", ")}`,
-            inline: false,
-          },
-          {
-            name: `${helpMessages.cooldown}`,
-            value: `\`[${client.utils.formatTime(command.cooldown)}]\``,
-            inline: false,
-          },
-          {
-            name: `${helpMessages.permissions}`,
-            value: `${command.permissions.client
-              .map((perm) => `\`${perm}\``)
-              .join(", ")}`,
-            inline: false,
-          },
-          {
-            name: `${helpMessages.examples}`,
-            value: `\`\`\`arm\n${command.description.examples
-              .map((example) => `${prefix.prefix}${example}`)
-              .join("\n")}\n\`\`\``,
-            inline: false,
-          },
-        ]);
+          .embed()
+          .setColor(color.main)
+          .setTitle(`${helpMessages.title} - ${command.name}`)
+          .setDescription(command.description.content)
+          .addFields([
+            {
+              name: `${helpMessages.category}`,
+              value: `${command.category}`,
+              inline: false,
+            },
+            {
+              name: `${helpMessages.aliases}`,
+              value: `${command.aliases
+                  .map((alias) => `\`${alias}\``)
+                  .join(", ")}`,
+              inline: false,
+            },
+            {
+              name: `${helpMessages.cooldown}`,
+              value: `\`[${client.utils.formatTime(command.cooldown)}]\``,
+              inline: false,
+            },
+            {
+              name: `${helpMessages.permissions}`,
+              value: `${command.permissions.client
+                  .map((perm) => `\`${perm}\``)
+                  .join(", ")}`,
+              inline: false,
+            },
+            {
+              name: `${helpMessages.examples}`,
+              value: `\`\`\`arm\n${command.description.examples
+                  .map((example) => `${prefix.prefix}${example}`)
+                  .join("\n")}\n\`\`\``,
+              inline: false,
+            },
+          ]);
       await ctx.sendMessage({ embeds: [helpEmbed] });
     }
   }
