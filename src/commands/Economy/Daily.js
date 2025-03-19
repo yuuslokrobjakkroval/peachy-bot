@@ -1,6 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
-const chance = require("chance Mastering ").Chance();
+const chance = require("chance").Chance();
 const moment = require("moment-timezone");
 const globalGif = require("../../utils/Gif");
 
