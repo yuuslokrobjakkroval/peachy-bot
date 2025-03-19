@@ -14,12 +14,9 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-    this.client
-      .setColorBasedOnTheme(message.author.id)
+    this.client.setColorBasedOnTheme(message.author.id)
       .then(async ({ user, color, emoji, language }) => {
-        const generalMessages = language.locales.get(
-          language.defaultLocale
-        )?.generalMessages;
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const prefix = this.client.config.prefix;
         this.client.utils.getCheckingUser(
           this.client,
@@ -59,8 +56,7 @@ module.exports = class MessageCreate extends Event {
             timeString += `${seconds} sec${seconds > 1 ? "s" : ""}`;
           }
 
-          const embed = this.client
-            .embed()
+          const embed = this.client.embed()
             .setColor(color.danger)
             .setDescription(
               `You are in timeout for: \`${
