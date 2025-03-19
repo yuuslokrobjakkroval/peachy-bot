@@ -174,7 +174,7 @@ module.exports = class Help extends Command {
             ])
             .setImage(client.config.links.banner)
             .setFooter({
-              text: `${helpMessages.footer} <=> ${categoryCommands.size} Commands.`,
+              text: `${helpMessages.footer} => ${categoryCommands.size} Commands.`,
               iconURL: client.user.displayAvatarURL(),
             });
 
