@@ -8,7 +8,7 @@ module.exports = class Drink extends Command {
         super(client, {
             name: 'drink',
             description: {
-                content: '𝑫𝒓𝒊𝒏𝒌 𝒂𝒏 𝒊𝒕𝒆𝒎 𝒕𝒐 𝒈𝒂𝒊𝒏 𝑿𝑷.',
+                content: 'Drink an item to gain XP.',
                 examples: ['drink tembo 1'],
                 usage: 'drink <item> <amount>',
             },
@@ -39,42 +39,44 @@ module.exports = class Drink extends Command {
         });
     }
 
-    run(client, ctx, args, color, emoji, language) {
+    async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const drinkMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.drinkMessages;
         const authorId = ctx.author.id;
 
-        client.utils.getUser(authorId).then(user => {
+        try {
+            const user = await client.utils.getUser(authorId);
+
             if (!user || user.inventory.length === 0) {
-                return client.utils.sendErrorMessage(client, ctx, drinkMessages.emptyInventory, color);
+                return await client.utils.sendErrorMessage(client, ctx, drinkMessages.emptyInventory, color);
             }
 
             const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString() : args[0];
             const itemInfo = AllItems.find(({ id }) => id.toLowerCase() === itemId.toLowerCase());
 
             if (!itemInfo) {
-                return client.utils.sendErrorMessage(client, ctx, drinkMessages.itemNotFound.replace('%{itemId}', itemId), color);
+                return await client.utils.sendErrorMessage(client, ctx, drinkMessages.itemNotFound.replace('%{itemId}', itemId), color);
             }
 
             if (itemInfo.type === 'food') {
-                return client.utils.sendErrorMessage(client, ctx, drinkMessages.cannotDrinkFood
+                return await client.utils.sendErrorMessage(client, ctx, drinkMessages.cannotDrinkFood
                     .replace('%{itemEmote}', itemInfo.emoji)
                     .replace('%{itemName}', itemInfo.name), color);
             }
 
             if (itemInfo.type !== 'drink') {
-                return client.utils.sendErrorMessage(client, ctx, drinkMessages.notDrinkable, color);
+                return await client.utils.sendErrorMessage(client, ctx, drinkMessages.notDrinkable, color);
             }
 
             const hasItems = user.inventory.find(item => item.id === itemId);
 
             if (!itemInfo || !hasItems) {
-                return client.utils.sendErrorMessage(client, ctx, drinkMessages.noDrinkItem, color);
+                return await client.utils.sendErrorMessage(client, ctx, drinkMessages.noDrinkItem, color);
             }
 
             let amount = ctx.isInteraction ? ctx.interaction.options.data[1]?.value || 1 : args[1] || 1;
             if (isNaN(amount) || amount <= 0 || amount.toString().includes('.')) {
-                return client.utils.sendErrorMessage(client, ctx, drinkMessages.invalidAmount, color);
+                return await client.utils.sendErrorMessage(client, ctx, drinkMessages.invalidAmount, color);
             }
 
             const itemAmount = parseInt(Math.min(amount, hasItems.quantity));
@@ -97,30 +99,27 @@ module.exports = class Drink extends Command {
                 user.inventory = user.inventory.filter(item => item.id !== itemId);
             }
 
-            user.save().then(() => {
-                const embed = client
-                    .embed()
-                    .setColor(color.main)
-                    .setDescription(
-                        drinkMessages.success
-                            .replace('%{itemEmote}', itemInfo.emoji)
-                            .replace('%{itemAmount}', itemAmount)
-                            .replace('%{itemName}', itemInfo.name)
-                            .replace('%{xpGained}', xpGained)
-                    )
-                    .setFooter({
-                        text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-                        iconURL: ctx.author.displayAvatarURL(),
-                    });
+            await user.save();
 
-                ctx.sendMessage({ embeds: [embed] });
-            }).catch(err => {
-                console.error('Error saving user data:', err);
-                client.utils.sendErrorMessage(client, ctx, generalMessages.error, color);
-            });
-        }).catch(err => {
-            console.error('Error fetching user data:', err);
-            client.utils.sendErrorMessage(client, ctx, generalMessages.error, color);
-        });
+            const embed = client.embed()
+                .setColor(color.main)
+                .setDescription(
+                    drinkMessages.success
+                        .replace('%{itemEmote}', itemInfo.emoji)
+                        .replace('%{itemAmount}', itemAmount)
+                        .replace('%{itemName}', itemInfo.name)
+                        .replace('%{xpGained}', xpGained)
+                )
+                .setFooter({
+                    text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+
+            return await ctx.sendMessage({ embeds: [embed] });
+
+        } catch (err) {
+            console.error('Error in drink command:', err);
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.error, color);
+        }
     }
 };

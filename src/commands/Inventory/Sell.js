@@ -10,7 +10,7 @@ module.exports = class Sell extends Command {
         super(client, {
             name: 'sell',
             description: {
-                content: '𝑺𝒆𝒍𝒍 𝒂𝒏 𝒊𝒕𝒆𝒎 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒊𝒏𝒗𝒆𝒏𝒕𝒐𝒓𝒚.',
+                content: 'Sell an item from your inventory.',
                 examples: ['sell coal', 'sell all'],
                 usage: 'sell <item_id>',
             },
@@ -32,40 +32,42 @@ module.exports = class Sell extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        const sellMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.sellMessages; // Reference sellMessages
+        const sellMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.sellMessages;
 
         try {
             const user = await Users.findOne({ userId: ctx.author.id });
             if (!user || !user.inventory || user.inventory.length === 0) {
-                return client.utils.sendErrorMessage(client, ctx, sellMessages.inventoryEmpty, color); // Use sellMessages
+                return await client.utils.sendErrorMessage(client, ctx, sellMessages.inventoryEmpty, color);
             }
 
             const itemId = ctx.isInteraction ? ctx.interaction.options.getString('items') : args[0];
             const itemInfo = AllItems.find(item => item.id === itemId);
             const hasItems = user.inventory.find(item => item.id === itemId);
 
-            if (itemInfo) return this.sellSingleItem(client, ctx, user, args, itemInfo, hasItems, color, emoji, sellMessages); // Use sellMessages
+            if (itemInfo) {
+                return await this.sellSingleItem(client, ctx, user, args, itemInfo, hasItems, color, emoji, sellMessages);
+            }
 
-            return client.utils.sendErrorMessage(client, ctx, sellMessages.itemNotFound.replace('%{item}', itemId), color); // Dynamic message
+            return await client.utils.sendErrorMessage(client, ctx, sellMessages.itemNotFound.replace('%{item}', itemId), color);
         } catch (error) {
             console.error('Error in Sell command:', error);
-            await client.utils.sendErrorMessage(client, ctx, sellMessages.sellError, color); // Use sellMessages for error handling
+            return await client.utils.sendErrorMessage(client, ctx, sellMessages.sellError, color);
         }
     }
 
     async sellSingleItem(client, ctx, user, args, itemInfo, hasItems, color, emoji, sellMessages) {
         if (!hasItems || itemInfo.price.sell === 0) {
             const errorMessage = !hasItems
-                ? sellMessages.itemNotOwned.replace('%{item}', itemInfo.name)  // Dynamic error
-                : sellMessages.itemNotSellable.replace('%{item}', itemInfo.name);  // Use sellMessages for not sellable
-            return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
+                ? sellMessages.itemNotOwned.replace('%{item}', itemInfo.name)
+                : sellMessages.itemNotSellable.replace('%{item}', itemInfo.name);
+            return await client.utils.sendErrorMessage(client, ctx, errorMessage, color);
         }
 
         let quantity = ctx.isInteraction ? ctx.interaction.options.getString('amount') || 1 : args[1] || 1;
         quantity = this.parseQuantity(quantity, hasItems.quantity);
 
         if (quantity === null) {
-            return client.utils.sendErrorMessage(client, ctx, sellMessages.invalidQuantity, color); // Use sellMessages for invalid quantity
+            return await client.utils.sendErrorMessage(client, ctx, sellMessages.invalidQuantity, color);
         }
 
         const totalSalePrice = itemInfo.price.sell * quantity;
@@ -87,16 +89,18 @@ module.exports = class Sell extends Command {
             );
         }
 
-        return ctx.sendMessage({
+        return await ctx.sendMessage({
             embeds: [
-                client.embed().setColor(color.main).setDescription(
-                    sellMessages.itemSold
-                        .replace('{emoji}', itemInfo.emoji)
-                        .replace('{quantity}', quantity)
-                        .replace('{item}', itemInfo.name)
-                        .replace('{coinEmoji}', emoji.coin)
-                        .replace('{price}', client.utils.formatNumber(totalSalePrice))
-                )
+                client.embed()
+                    .setColor(color.main)
+                    .setDescription(
+                        sellMessages.itemSold
+                            .replace('{emoji}', itemInfo.emoji)
+                            .replace('{quantity}', quantity)
+                            .replace('{item}', itemInfo.name)
+                            .replace('{coinEmoji}', emoji.coin)
+                            .replace('{price}', client.utils.formatNumber(totalSalePrice))
+                    )
             ]
         });
     }

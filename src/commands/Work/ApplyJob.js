@@ -6,7 +6,7 @@ module.exports = class ApplyJob extends Command {
         super(client, {
             name: 'applyjob',
             description: {
-                content: '𝑨𝒑𝒑𝒍𝒚 𝒇𝒐𝒓 𝒂 𝒋𝒐𝒃 𝒘𝒊𝒕𝒉 𝒐𝒏𝒆 𝒐𝒇 𝒕𝒉𝒆 𝒇𝒊𝒗𝒆 𝒂𝒗𝒂𝒊𝒍𝒂𝒃𝒍𝒆 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏𝒔.',
+                content: 'Apply for a job with one of the five available positions.',
                 examples: ['applyjob Police', 'applyjob IT', 'applyjob Doctor', 'applyjob Teacher', 'applyjob Engineer'],
                 usage: 'applyjob <position>',
             },
@@ -19,7 +19,7 @@ module.exports = class ApplyJob extends Command {
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: true, // Enabling slash command
+            slashCommand: true,
             options: [
                 {
                     name: 'position',
@@ -51,20 +51,20 @@ module.exports = class ApplyJob extends Command {
             ? normalizePosition(ctx.interaction.options.getString('position'))
             : normalizePosition(args[0]);
 
-        // Validate position
-        if (!validPositions.includes(position)) {
-            return client.utils.sendErrorMessage(client, ctx, applyJobMessages.invalidPosition, color);
-        }
-
         try {
+            // Validate position
+            if (!validPositions.includes(position)) {
+                return await client.utils.sendErrorMessage(client, ctx, applyJobMessages.invalidPosition, color);
+            }
+
             const user = await Users.findOne({ userId: ctx.author.id });
             if (!user) {
-                return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
+                return await client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
             // Prevent duplicate applications
             if (['awaiting', 'approved'].includes(user.work.status)) {
-                return client.utils.sendErrorMessage(client, ctx, applyJobMessages.alreadyApplied, color);
+                return await client.utils.sendErrorMessage(client, ctx, applyJobMessages.alreadyApplied, color);
             }
 
             // Set work details
@@ -85,8 +85,8 @@ module.exports = class ApplyJob extends Command {
                 .setColor(color.main)
                 .setThumbnail(client.utils.emojiToImage(client.utils.emojiPosition(position)))
                 .setDescription(
-                    `${generalMessages.title.replace('%{mainLeft}', emoji.mainLeft).replace('%{title}', '𝐀𝐏𝐏𝐋𝐘 𝐉𝐎𝐁').replace('%{mainRight}', emoji.mainRight)}
-                ${position === 'student'
+                    `${generalMessages.title.replace('%{mainLeft}', emoji.mainLeft).replace('%{title}', 'APPLY JOB').replace('%{mainRight}', emoji.mainRight)}
+                    ${position === 'student'
                         ? applyJobMessages.autoApproved
                             .replace('%{position}', client.utils.formatCapitalize('Student'))
                             .replace('%{approvedDate}', new Date(user.work.approvedDate).toLocaleDateString())
@@ -100,11 +100,11 @@ module.exports = class ApplyJob extends Command {
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
-            return ctx.sendMessage({ embeds: [successEmbed] });
+            return await ctx.sendMessage({ embeds: [successEmbed] });
 
         } catch (error) {
-            console.error(error);
-            return client.utils.sendErrorMessage(client, ctx, generalMessages.internalError, color);
+            console.error('Error in ApplyJob command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.internalError, color);
         }
     }
 };

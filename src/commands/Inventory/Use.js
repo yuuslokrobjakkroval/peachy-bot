@@ -12,7 +12,7 @@ module.exports = class Use extends Command {
         super(client, {
             name: 'use',
             description: {
-                content: '𝑼𝒔𝒆 𝒂 𝒕𝒉𝒆𝒎𝒆, 𝒘𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓, 𝒐𝒓 𝒄𝒐𝒍𝒐𝒓 𝒊𝒕𝒆𝒎 𝒕𝒐 𝒄𝒖𝒔𝒕𝒐𝒎𝒊𝒛𝒆 𝒚𝒐𝒖𝒓 𝒑𝒓𝒐𝒇𝒊𝒍𝒆.',
+                content: 'Use a theme, wallpaper, or color item to customize your profile.',
                 examples: ['use t01', 'use w01'],
                 usage: 'use <itemId>',
             },
@@ -96,7 +96,6 @@ module.exports = class Use extends Command {
                 }
 
                 const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
-
                 if (inventoryItemIndex > -1) {
                     if (user.inventory[inventoryItemIndex].quantity > 1) {
                         user.inventory[inventoryItemIndex].quantity -= 1;
@@ -106,7 +105,6 @@ module.exports = class Use extends Command {
                 }
 
                 const equippedTheme = user.equip.find(equippedItem => equippedItem.id.startsWith('t') || equippedItem.id.startsWith('st'));
-
                 if (equippedTheme) {
                     await Users.updateOne(
                         { userId },
@@ -129,7 +127,7 @@ module.exports = class Use extends Command {
                     .setColor(color.main)
                     .setDescription(
                         useMessages?.applied
-                            .replace('%{type}', '𝒕𝒉𝒆𝒎𝒆')
+                            .replace('%{type}', 'theme')
                             .replace('%{itemEmote}', themeItem.emoji)
                             .replace('%{itemName}', themeItem.name)
                     );
@@ -142,13 +140,12 @@ module.exports = class Use extends Command {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.unavailable.replace('%{itemName}', wallpaperItem.name),
+                        useMessages?.unavailable.replace('%{itemEmote}', wallpaperItem.emoji).replace('%{itemName}', wallpaperItem.name),
                         color
                     );
                 }
 
                 const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
-
                 if (equippedWallpaper && equippedWallpaper.id === wallpaperItem.id) {
                     return await client.utils.sendErrorMessage(
                         client,
@@ -159,7 +156,6 @@ module.exports = class Use extends Command {
                 }
 
                 const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
-
                 if (equippedWallpaper) {
                     await Users.updateOne(
                         { userId },
@@ -197,7 +193,7 @@ module.exports = class Use extends Command {
                     .setColor(color.main)
                     .setDescription(
                         useMessages?.applied
-                            .replace('%{type}', '𝒘𝒂𝒍𝒍𝒑𝒂𝒑𝒆𝒓')
+                            .replace('%{type}', 'wallpaper')
                             .replace('%{itemEmote}', wallpaperItem.emoji)
                             .replace('%{itemName}', wallpaperItem.name)
                     );
@@ -210,13 +206,12 @@ module.exports = class Use extends Command {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.unavailable.replace('%{itemName}', colorItem.name),
+                        useMessages?.unavailable.replace('%{itemEmote}', colorItem.emoji).replace('%{itemName}', colorItem.name),
                         color
                     );
                 }
 
                 const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('p'));
-
                 if (equippedColor && equippedColor.id === colorItem.id) {
                     return await client.utils.sendErrorMessage(
                         client,
@@ -227,7 +222,6 @@ module.exports = class Use extends Command {
                 }
 
                 const inventoryItemIndex = user.inventory.findIndex(invItem => invItem.id === itemId);
-
                 if (equippedColor) {
                     await Users.updateOne(
                         { userId },
@@ -265,7 +259,7 @@ module.exports = class Use extends Command {
                     .setColor(color.main)
                     .setDescription(
                         useMessages?.applied
-                            .replace('%{type}', '𝒄𝒐𝒍𝒐𝒓')
+                            .replace('%{type}', 'color')
                             .replace('%{itemEmote}', colorItem.emoji)
                             .replace('%{itemName}', colorItem.name)
                     );

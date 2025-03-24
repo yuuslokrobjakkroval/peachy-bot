@@ -6,7 +6,7 @@ module.exports = class ResignJob extends Command {
         super(client, {
             name: 'resignjob',
             description: {
-                content: '𝑹𝒆𝒔𝒊𝒈𝒏 𝒇𝒓𝒐𝒎 𝒚𝒐𝒖𝒓 𝒄𝒖𝒓𝒓𝒆𝒏𝒕 𝒋𝒐𝒃 𝒑𝒐𝒔𝒊𝒕𝒊𝒐𝒏.',
+                content: 'Resign from your current job position.',
                 examples: ['resignjob'],
                 usage: 'resignjob',
             },
@@ -19,7 +19,7 @@ module.exports = class ResignJob extends Command {
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: true, // Enabling slash command
+            slashCommand: true,
         });
     }
 
@@ -30,12 +30,12 @@ module.exports = class ResignJob extends Command {
         try {
             const user = await Users.findOne({ userId: ctx.author.id });
             if (!user) {
-                return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
+                return await client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
             }
 
             // Check if the user has a job
             if (user.work.status === 'not applied') {
-                return client.utils.sendErrorMessage(client, ctx, resignJobMessages.noJobToResign, color);
+                return await client.utils.sendErrorMessage(client, ctx, resignJobMessages.noJobToResign, color);
             }
 
             // Resign from the job
@@ -51,7 +51,7 @@ module.exports = class ResignJob extends Command {
                 .setColor(color.main)
                 .setThumbnail(client.utils.emojiToImage(client.utils.emojiPosition(user.work.position)))
                 .setDescription(
-                    `${generalMessages.title.replace('%{mainLeft}', emoji.mainLeft).replace('%{title}', '𝐑𝐄𝐒𝐈𝐆𝐍 𝐉𝐎𝐁').replace('%{mainRight}', emoji.mainRight)}
+                    `${generalMessages.title.replace('%{mainLeft}', emoji.mainLeft).replace('%{title}', 'RESIGN JOB').replace('%{mainRight}', emoji.mainRight)}
                     ${resignJobMessages.success.replace('%{username}', ctx.author.displayName)}`
                 )
                 .setFooter({
@@ -59,11 +59,11 @@ module.exports = class ResignJob extends Command {
                     iconURL: ctx.author.displayAvatarURL(),
                 });
 
-            return ctx.sendMessage({ embeds: [successEmbed] });
+            return await ctx.sendMessage({ embeds: [successEmbed] });
 
         } catch (error) {
-            console.error(error);
-            return client.utils.sendErrorMessage(client, ctx, generalMessages.internalError, color);
+            console.error('Error in ResignJob command:', error);
+            return await client.utils.sendErrorMessage(client, ctx, generalMessages.internalError, color);
         }
     }
 };
