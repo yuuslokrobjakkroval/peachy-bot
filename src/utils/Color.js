@@ -1,42 +1,42 @@
 module.exports = {
     default: {
-        primary: '#00FFD1',    // Vibrant teal (more electric than original)
-        secondary: '#5B7BFF',  // Richer blue with better contrast
-        text: '#FFFFFF',      // Kept white for clarity
+        primary: '#00FFD1',    // Vibrant teal (unchanged)
+        secondary: '#E0E0E0',  // White-gray
+        text: '#424242',      // Dark gray
     },
     cyan: {
-        primary: '#B0F6FF',   // Brighter, more energetic cyan
-        secondary: '#70CFFF', // Complementary cyan-blue shade
-        text: '#0F1419',      // Slightly darker text for better contrast
+        primary: '#B0F6FF',   // Brighter, energetic cyan (unchanged)
+        secondary: '#E0E0E0',  // White-gray
+        text: '#424242',      // Dark gray
     },
     green: {
-        primary: '#2ECC71',   // Emerald green - modern and vibrant
-        secondary: '#27AE60', // Deep forest green complement
-        text: '#FFFFFF',      // White works well here
+        primary: '#2ECC71',   // Emerald green (unchanged)
+        secondary: '#E0E0E0',  // White-gray
+        text: '#424242',      // Dark gray
     },
     orange: {
-        primary: '#FF9F43',   // Warm, energetic orange
-        secondary: '#FF7416', // Punchy secondary orange
-        text: '#1C2526',      // Dark charcoal for contrast
+        primary: '#FF9F43',   // Warm, energetic orange (unchanged)
+        secondary: '#E0E0E0',  // White-gray
+        text: '#424242',      // Dark gray
     },
     pink: {
-        primary: '#FF87CA',   // Bold, modern pink
-        secondary: '#FF5EB3', // Vibrant magenta complement
-        text: '#1F0A44',      // Deep purple text for sophistication
+        primary: '#FF87CA',   // Bold, modern pink (unchanged)
+        secondary: '#E0E0E0',  // White-gray
+        text: '#424242',      // Dark gray
     },
     purple: {
-        primary: '#9B59B6',   // Rich amethyst purple
-        secondary: '#8E44AD', // Deeper plum shade
-        text: '#F4ECF7',      // Light lavender text for contrast
+        primary: '#9B59B6',   // Rich amethyst purple (unchanged)
+        secondary: '#E0E0E0',  // White-gray
+        text: '#424242',      // Dark gray
     },
     red: {
-        primary: '#FF3E4D',   // Striking crimson
-        secondary: '#E82534', // Deep ruby complement
-        text: '#FFFFFF',      // White remains best choice
+        primary: '#FF3E4D',   // Striking crimson (unchanged)
+        secondary: '#E0E0E0',  // White-gray
+        text: '#424242',      // Dark gray
     },
     yellow: {
-        primary: '#FFFF66',   // Bright, cheerful yellow
-        secondary: '#FFC107', // Warm amber accent
-        text: '#212121',      // Dark gray for maximum readability
+        primary: '#FFFF66',   // Bright, cheerful yellow (unchanged)
+        secondary: '#E0E0E0',  // White-gray
+        text: '#424242',      // Dark gray
     },
 };
