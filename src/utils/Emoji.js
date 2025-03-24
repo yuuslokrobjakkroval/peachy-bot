@@ -185,8 +185,8 @@ module.exports = {
         seaCoral: '<:SEASLAY:1350668737711181896>',
 
         // SELL
-        enchantedCatLake: '<:ENCHANTECATMAIN:1332400320831295622>',
-        yuyuzu: '<:YUYUZUMAIN:1332947491586314311>',
+        enchantedCatLake: '<:ENCHANTEDMALE:1353727486797807687>',
+        yuyuzu: '<:YUYUZUMAIN:1353730318716113026>',
     },
 
     // EXCHANGE

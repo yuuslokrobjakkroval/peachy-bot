@@ -647,7 +647,7 @@ module.exports = [
   //   ],
   // },
   {
-    name: "Couple",
+    name: "COUPLE",
     description: `Ring items to connection your relationship!\n**・** \`pbuy {id}\` to buy an item`,
     type: "ring",
     inventory: [
@@ -813,7 +813,7 @@ module.exports = [
     ],
   },
   {
-    name: "Milk",
+    name: "MILK",
     description: `Buy Milk for exchange your coin!\n**・** \`pbuy {id}\` to buy an item`,
     type: "milk",
     inventory: [

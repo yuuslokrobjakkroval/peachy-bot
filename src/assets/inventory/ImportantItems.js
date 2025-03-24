@@ -1,6 +1,5 @@
 const emoji = require("../../utils/Emoji");
 module.exports = [
-
   {
     id: "sm01",
     name: "Banana Milk Tea",

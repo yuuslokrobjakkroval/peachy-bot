@@ -1,5 +1,5 @@
 module.exports = {
-    coin: '<:NORMALCOIN:1342777023952851026>',
+    coin: '<:KYCOIN:1353729943577821265>',
     bank: '<:KYBANK:1350691180102287370>',
     exp: '<:KYEXP:1350691993743003689>',
     main: '<:KYMAIN:1350668570895454289>',
@@ -58,9 +58,9 @@ module.exports = {
         spin: '<a:KYSLOT:1350692205534249052>',
     },
     coinFlip: {
-        peach: '<:PEACHCOIN:1342776344374677526>',
-        goma: '<:GOMACOIN:1342776352725794908>',
-        flip: '<a:COINFLIP:1342776075876302880>',
+        peach: '<:KYPEACH:1353730039023271967>',
+        goma: '<:KYGOMA:1353729914192531466>',
+        flip: '<a:KYCOINFLIP:1353729891681570956>',
     },
     zodiac: {
         capricorn: '<:CAPRICORN:1342746953611608064>',
