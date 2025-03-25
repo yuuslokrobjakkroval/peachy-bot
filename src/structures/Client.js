@@ -307,10 +307,10 @@ module.exports = class PeachyClient extends Client {
             //   color = themeConfig.darkAcademia.color;
             //   emoji = emojiDarkAcademia;
             //   break;
-            // case "st09":
-            //   color = themeConfig.springBear.color;
-            //   emoji = emojiSpringBear;
-            //   break;
+            case "st09":
+              color = themeConfig.springBear.color;
+              emoji = emojiSpringBear;
+              break;
             // case "st10":
             //   color = themeConfig.fantasyRpg.color;
             //   emoji = emojiFantasy;
