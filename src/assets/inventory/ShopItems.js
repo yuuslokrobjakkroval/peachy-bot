@@ -1595,21 +1595,6 @@ module.exports = [
     description: `Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
     type: "theme",
     inventory: [
-      // {
-      //     id: 't01',
-      //     name: 'Mystic Charm',
-      //     description: 'An enchanting theme that transforms your embed color to soft purples and pinks, with magical icons like hourglasses, crystals, and cute charms.',
-      //     type: 'theme',
-      //     able: {
-      //         use: true,
-      //         gift: false,
-      //         multiple: false,
-      //     },
-      //     quantity: 1,
-      //     emoji: emoji.theme.mysticCharm,
-      //     available: ['use'],
-      //     price: { buy: 15e6, sell: 13e6 },
-      // },
       {
         id: "t01",
         name: "Ocean Breeze",
@@ -1690,38 +1675,6 @@ module.exports = [
         available: ["use"],
         price: { buy: 15e6, sell: 13e6 },
       },
-      {
-        id: "t06",
-        name: "Mystic Realms",
-        description:
-          "Immerse yourself in the enchanting world of Mystic Realms! This theme captures the essence of heroic quests, magical artifacts, and mythical creatures. Perfect for adventurers who dream of exploring ancient ruins, casting powerful spells, and unlocking legendary treasures, it brings the excitement of fantasy to life. Step into a realm where every moment holds the promise of adventure!",
-        type: "theme",
-        able: {
-          use: true,
-          gift: false,
-          multiple: false,
-        },
-        quantity: 1,
-        emoji: emoji.theme.mystic,
-        available: ["use"],
-        price: { buy: 2e7, sell: 18e6 },
-      },
-      {
-        id: "t07",
-        name: "Lunar Legends",
-        description:
-            "Celebrate the vibrant spirit of the Lunar New Year with Lunar Legends! This theme brings to life the energy of festive parades, glowing lanterns, and the mystical charm of the zodiac. Perfect for those who cherish traditions, seek fortune, and embrace the joy of a fresh beginning, it creates a magical atmosphere of unity and prosperity. Step into a world where every moment shines with the promise of new opportunities and timeless celebration!",
-        type: "theme",
-        able: {
-          "use": true,
-          "gift": false,
-          "multiple": false
-        },
-        quantity: 1,
-        emoji: emoji.theme.lunar,
-        available: ["use"],
-        price: { buy: 2e7, sell: 18e6 }
-      }
     ],
   },
   {
@@ -1834,21 +1787,6 @@ module.exports = [
         available: ["use"],
         price: { buy: 4e7, sell: 35e6 },
       },
-      {
-        id: "st08",
-        name: "Dark Academia",
-        description: "Embrace the intellectual allure of the Dark Academia theme!",
-        type: "special theme",
-        able: {
-          use: true,
-          gift: true,
-          multiple: false,
-        },
-        quantity: 1,
-        emoji: emoji.specialTheme.darkAcademia,
-        available: ["use"],
-        price: { buy: 4e7, sell: 35e6 },
-      },
       // For FEBRUARY
       {
         id: "st09",
@@ -1862,36 +1800,6 @@ module.exports = [
         },
         quantity: 1,
         emoji: emoji.specialTheme.springBear,
-        available: ["use"],
-        price: { buy: 4e7, sell: 35e6 },
-      },
-      {
-        id: "st10",
-        name: "Fantasy RPG",
-        description: "Embark on epic quests in a magical world of adventure!",
-        type: "special theme",
-        able: {
-          use: true,
-          gift: true,
-          multiple: false,
-        },
-        quantity: 1,
-        emoji: emoji.specialTheme.fantasy,
-        available: ["use"],
-        price: { buy: 4e7, sell: 35e6 },
-      },
-      {
-        id: "st15",
-        name: "Cozy Summer",
-        description: "Relax and unwind with the warm vibes of Cozy Summer.",
-        type: "special theme",
-        able: {
-          use: true,
-          gift: true,
-          multiple: false,
-        },
-        quantity: 1,
-        emoji: emoji.specialTheme.cozySummer,
         available: ["use"],
         price: { buy: 4e7, sell: 35e6 },
       },

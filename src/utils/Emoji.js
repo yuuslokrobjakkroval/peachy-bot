@@ -154,8 +154,6 @@ module.exports = {
         halloweenNew: '<:H2MAIN:1350666886425346109>',
         jingleJolly: '<:CMAIN:1342794896754606091>',
         festiveFrost: '<:CHMAIN:1342797329123508224>',
-        mystic: '<:STRAWBDRAGON:1350667132626796564>',
-        lunar: '<:LNYMAIN:1350667198909251704>',
     },
     specialTheme: {
         // SPECIAL
@@ -166,23 +164,13 @@ module.exports = {
         asleepypeach: '<:ASMAIN:1344485825660063885>',
         magicalForest: '<:MFMAIN:1350667582067310735>',
         matchaLatte: '<:MLMAIN:1350667675830849577>',
-        darkAcademia: '<:DARKMAIN:1327987106387202160>', // NONE
         springBear: '<:BEARMAIN:1350667843926102067>',
-        fantasy: '<:FANMAIN:1350667917519228971>',
-        cozySummer: '<:CSMAIN:1350667985303502878>',
 
         // SUPPORTER
-        spiderMan: '<:SPMAIN:1307343653848485921>', // NONE
-        cucumber: '<:CUMPROFILE:1350668124508258334>',
-        cappuccino: '<:CAFEMAIN:1344531341106216971>',
-        nithGojo: '<:JUJUSTUKAISEN:1350668360060239924>',
-        yuna: '<:YUNAMAIN:1317117650131746816>',
-        yunayuna: '<:YV2MAIN:1350668441153175593>', // NONE
         duckling: '<:DMAIN:1350668515857793026>',
         keoyuu: '<:KYMAIN:1350668570895454289>',
         loveBunnie: '<:LBMAIN:1350668628885897278>',
         ghastlyGrins: '<:PHYYYMAIN:1350668688625500210>',
-        seaCoral: '<:SEASLAY:1350668737711181896>',
 
         // SELL
         enchantedCatLake: '<:ENCHANTEDMALE:1353727486797807687>',

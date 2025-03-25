@@ -61,8 +61,6 @@ module.exports = [
     price: { buy: 55e5, sell: 5e6 },
   },
 
-
-
   // BOOSTER
   {
     id: "st272",
@@ -114,108 +112,6 @@ module.exports = [
     price: { buy: 1e10, sell: 15e6 },
   },
 
-  // KAMBO
-  {
-    id: "st11",
-    name: "Spider Man",
-    description:
-      "Swing into action with a theme inspired by the iconic web-slinger, Spider Man! Embrace the striking reds and blues, accented with black web patterns, and feature a signature spider emoji for that heroic touch.",
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.spiderMan,
-    available: ["use"],
-    price: { buy: 1e10, sell: 35e6 },
-  },
-
-  // CUMBER
-  {
-    id: "st12",
-    name: "Cucumber Cool",
-    description:
-      "Refresh your day with a theme inspired by the crisp and cool vibes of cucumbers! Enjoy soothing greens with subtle white accents and a playful cucumber slice emoji for that fresh, garden-fresh touch.",
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.cucumber,
-    available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
-  },
-
-  // CAPPUCCINO
-  {
-    id: "st13",
-    name: "Cappuccino Charm",
-    description:
-      "Bask in the cozy vibes of a warm cappuccino. Enjoy a palette of soft browns and creamy whites, accented with a frothy cappuccino cup emoji for that perfect café-inspired charm.",
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.cappuccino,
-    available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
-  },
-  {
-    id: "st14",
-    name: "Nith Gojo",
-    description:
-      "Bask in the cozy vibes of a warm cappuccino. Enjoy a palette of soft browns and creamy whites, accented with a frothy cappuccino cup emoji for that perfect café-inspired charm.",
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.nithGojo,
-    available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
-  },
-
-  // YUNA
-  {
-    id: "st1801",
-    name: `Yuna's Radiance`,
-    description: `Step into the serene beauty of Yuna's Radiance! With an aura of grace and a touch of elegance, this theme captures the essence of a bright and inspiring soul. Embrace the warmth and positivity of a world where every moment reflects Yuna's calm strength and radiant charm, bringing light and joy to those around her.`,
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.yuna,
-    available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
-  },
-  {
-    id: "st0118",
-    name: `Yuna Yuna`,
-    description: `Step into the serene beauty of Yuna's Radiance! With an aura of grace and a touch of elegance, this theme captures the essence of a bright and inspiring soul. Embrace the warmth and positivity of a world where every moment reflects Yuna's calm strength and radiant charm, bringing light and joy to those around her.`,
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.yunayuna,
-    available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
-  },
-
   // PHY
   {
     id: "st168",
@@ -234,23 +130,6 @@ module.exports = [
     price: { buy: 1e10, sell: 15e6 },
   },
 
-  // REACH
-  {
-    id: "st2111",
-    name: "Sea Coral",
-    description:
-      "Immerse yourself in the tranquil beauty of Sea Coral, where oceanic blues and delicate coral hues create a soothing, underwater escape. Perfect for those drawn to the peaceful elegance of the sea.",
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.seaCoral,
-    available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
-  },
 
   // SELL
   {
