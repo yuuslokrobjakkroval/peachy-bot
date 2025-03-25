@@ -55,7 +55,7 @@ module.exports = class AdminHelp extends Command {
                     .setDescription(
                         generalMessages.title
                             .replace("%{mainLeft}", emoji.mainLeft)
-                            .replace("%{title}", "𝐀𝐃𝐌𝐈𝐍")
+                            .replace("%{title}", "ADMIN")
                             .replace("%{mainRight}", emoji.mainRight) +
                         `${helpMessages.description} **${prefix}adminhelp [command]**\n` +
                         `${helpMessages.examples} **${prefix}adminhelp ban**\n\n` +
@@ -67,7 +67,7 @@ module.exports = class AdminHelp extends Command {
                             value: adminCategory
                                 .map(
                                     (category) =>
-                                        `- ${categoriesMessages[category.toLowerCase()] || category}`
+                                        `- ${client.utils.formatCapitalize(categoriesMessages[category.toLowerCase()] || category)}`
                                 )
                                 .join("\n"),
                             inline: false,
@@ -117,18 +117,17 @@ module.exports = class AdminHelp extends Command {
                         ? Array.from(categoryCommands.values())
                             .map(
                                 (cmd) =>
-                                    `${globalEmoji.border.right} ${cmd.description.examples}`
+                                    `- ${client.utils.formatCapitalize(cmd.name)}\n${cmd.description.examples}`
                             ) // Limit description to 100 chars
                             .join("\n")
-                        : "𝑵𝒐 𝒄𝒐𝒎𝒎𝒂𝒏𝒅𝒔 𝒇𝒐𝒖𝒏𝒅 𝒊𝒏 𝒕𝒉𝒊𝒔 𝒄𝒂𝒕𝒆𝒈𝒐𝒓𝒚.";
+                        : "No Commands found in this category.";
 
-                const selectedEmbed = client
-                    .embed()
+                const selectedEmbed = client.embed()
                     .setColor(color.main)
                     .setDescription(
                         generalMessages.title
                             .replace("%{mainLeft}", emoji.mainLeft)
-                            .replace("%{title}", "𝐀𝐃𝐌𝐈𝐍")
+                            .replace("%{title}", "ADMIN")
                             .replace("%{mainRight}", emoji.mainRight) +
                         `${helpMessages.description} **${prefix}adminhelp [command]**\n` +
                         `${helpMessages.examples} **${prefix}adminhelp ban**\n\n` +

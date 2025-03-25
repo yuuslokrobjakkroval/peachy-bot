@@ -41,7 +41,6 @@ module.exports = class Help extends Command {
     const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const helpMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages;
     const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
-    const directoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.directoriesMessages;
     const prefix = client.config.prefix;
     const adminCategory = ["admin", "dev", "guild"];
     let categories = [
