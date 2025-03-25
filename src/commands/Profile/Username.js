@@ -6,7 +6,7 @@ module.exports = class Username extends Command {
     super(client, {
       name: "username",
       description: {
-        content: "𝑺𝒆𝒕, 𝒓𝒆𝒔𝒆𝒕, 𝒉𝒆𝒍𝒑, 𝒐𝒓 𝒔𝒉𝒐𝒘𝒔 𝒚𝒐𝒖𝒓 𝒖𝒔𝒆𝒓𝒏𝒂𝒎𝒆.",
+        content: "Set your username.",
         examples: ["username peachy", "username reset", "username help"],
         usage: "username <text || reset || help>",
       },
@@ -37,11 +37,8 @@ module.exports = class Username extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-    const userNameMessages = language.locales.get(language.defaultLocale)
-      ?.profileMessages?.userNameMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const userNameMessages = language.locales.get(language.defaultLocale)?.profileMessages?.userNameMessages;
 
     client.utils.getUser(ctx.author.id).then((user) => {
       const embed = client.embed();

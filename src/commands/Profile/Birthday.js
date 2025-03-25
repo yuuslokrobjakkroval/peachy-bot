@@ -7,8 +7,7 @@ module.exports = class Birthday extends Command {
     super(client, {
       name: "birthday",
       description: {
-        content:
-          "𝑺𝒆𝒕, 𝒓𝒆𝒔𝒆𝒕 𝒐𝒓 𝒑𝒓𝒐𝒗𝒊𝒅𝒆 𝒉𝒆𝒍𝒑 𝒇𝒐𝒓 𝒚𝒐𝒖𝒓 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒃𝒊𝒓𝒕𝒉𝒅𝒂𝒚 𝒂𝒏𝒅 𝒛𝒐𝒅𝒊𝒂𝒄 𝒔𝒊𝒈𝒏.",
+        content: "Set your profile birthday and zodiac sign.",
         examples: ["birthday 20-01", "birthday reset", "birthday help"],
         usage: "birthday <date || reset || help>",
       },

@@ -6,7 +6,7 @@ module.exports = class TikTok extends Command {
     super(client, {
       name: "tiktok",
       description: {
-        content: `𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝑻𝒊𝒌𝑻𝒐𝒌 𝒅𝒆𝒕𝒂𝒊𝒍𝒔 𝒐𝒏 𝒚𝒐𝒖𝒓 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒄𝒂𝒓𝒅 𝒐𝒓 𝒗𝒊𝒆𝒘 𝒔𝒐𝒎𝒆𝒐𝒏𝒆 𝒆𝒍𝒔𝒆'𝒔 𝒑𝒓𝒐𝒇𝒊𝒍𝒆.`,
+        content: `Manage your TikTok profile.`,
         examples: [
           "tiktok - Shows your current TikTok details.",
           "tiktok @mention - Shows the TikTok details of the mentioned user.",

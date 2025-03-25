@@ -20,7 +20,7 @@ module.exports = class Profile extends Command {
     super(client, {
       name: "relationship",
       description: {
-        content: "𝑺𝒉𝒐𝒘𝒔 𝒕𝒉𝒆 𝒓𝒆𝒍𝒂𝒕𝒊𝒐𝒏𝒔𝒉𝒊𝒑 𝒃𝒆𝒕𝒘𝒆𝒆𝒏 𝒚𝒐𝒖 𝒂𝒏𝒅 𝒚𝒐𝒖𝒓 𝒑𝒂𝒓𝒕𝒏𝒆𝒓",
+        content: "Shows the relationship between you and your partner",
         examples: ["profile @user"],
         usage: "profile <user>",
       },

@@ -6,7 +6,7 @@ module.exports = class Socials extends Command {
     super(client, {
       name: "socials",
       description: {
-        content: "𝑺𝒉𝒐𝒘 𝒔𝒐𝒄𝒊𝒂𝒍 𝒎𝒆𝒅𝒊𝒂 𝒑𝒓𝒐𝒇𝒊𝒍𝒆𝒔.",
+        content: "Show social media profiles",
         examples: ["socials - Shows your current social media profiles."],
         usage: "socials",
       },

@@ -6,7 +6,7 @@ module.exports = class Facebook extends Command {
     super(client, {
       name: "facebook",
       description: {
-        content: `𝑴𝒂𝒏𝒂𝒈𝒆 𝒚𝒐𝒖𝒓 𝑭𝒂𝒄𝒆𝒃𝒐𝒐𝒌 𝒅𝒆𝒕𝒂𝒊𝒍𝒔 𝒐𝒏 𝒚𝒐𝒖𝒓 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒄𝒂𝒓𝒅 𝒐𝒓 𝒗𝒊𝒆𝒘 𝒔𝒐𝒎𝒆𝒐𝒏𝒆 𝒆𝒍𝒔𝒆'𝒔 𝒑𝒓𝒐𝒇𝒊𝒍𝒆.`,
+        content: `Manage your Facebook profile.`,
         examples: [
           "facebook - Shows your current Facebook details.",
           "facebook @mention - Shows the Facebook details of the mentioned user.",
