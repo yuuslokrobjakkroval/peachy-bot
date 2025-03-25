@@ -117,7 +117,7 @@ module.exports = class AdminHelp extends Command {
                         ? Array.from(categoryCommands.values())
                             .map(
                                 (cmd) =>
-                                    `- ${client.utils.formatCapitalize(cmd.name)}\n${cmd.description.examples}`
+                                    `- ${client.utils.formatCapitalize(cmd.name)}\n${client.utils.formatCapitalize(cmd.description.examples)}`
                             ) // Limit description to 100 chars
                             .join("\n")
                         : "No Commands found in this category.";
@@ -135,7 +135,7 @@ module.exports = class AdminHelp extends Command {
                     )
                     .addFields([
                         {
-                            name: `${categoriesMessages[selectedCategory.toLowerCase()] || selectedCategory}`,
+                            name: `${client.utils.formatCapitalize(categoriesMessages[selectedCategory.toLowerCase()] || selectedCategory)}`,
                             value:
                                 commandNames.length > 1024
                                     ? commandNames.slice(0, 1021) + "..."
@@ -150,7 +150,7 @@ module.exports = class AdminHelp extends Command {
                     });
 
                 const categoryOptions = adminCategory.map((category) => ({
-                    label: `${categoriesMessages[category.toLowerCase()] || category}`,
+                    label: `${client.utils.formatCapitalize(categoriesMessages[category.toLowerCase()] || category)}`,
                     value: category.toLowerCase(),
                     default: category.toLowerCase() === selectedCategory.toLowerCase(),
                 }));
