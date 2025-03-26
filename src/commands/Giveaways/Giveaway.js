@@ -66,9 +66,7 @@ module.exports = class Start extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-        language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.deferReply();
     } else {

@@ -26,6 +26,7 @@
     "@discordjs/builders": "^1.8.2",
     "@hammerhq/localization": "^2.2.0",
     "@napi-rs/canvas": "^0.1.56",
+    "axios": "^1.8.4",
     "canvacord": "^6.0.2",
     "canvafy": "^7.1.0",
     "chance": "^1.1.12",
