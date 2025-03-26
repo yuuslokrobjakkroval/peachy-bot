@@ -82,9 +82,9 @@ module.exports = class Clear extends Command {
             // Send or edit response
             const response = `Deleted ${messagesDeleted} messages.`;
             if (ctx.isInteraction) {
-                await ctx.interaction.editReply({ content: response });
+                await ctx.interaction.editReply({ content: response, flags: 64 });
             } else {
-                await ctx.sendMessage({ content: response, flags: 64 });
+                await ctx.sendMessage({ content: response });
             }
         } catch (err) {
             console.error("Error during message deletion:", err);
