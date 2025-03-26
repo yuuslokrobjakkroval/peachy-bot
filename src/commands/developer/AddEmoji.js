@@ -62,7 +62,7 @@ module.exports = class AddEmoji extends Command {
                 image: body.emoji,
             }, {
                 headers: {
-                    'Authorization': `Bearer ${globalConfig.token}`,
+                    'Authorization': `Bot ${globalConfig.token}`,
                     'content-type': 'application/json',
                 }
             }).catch((err) => {});
