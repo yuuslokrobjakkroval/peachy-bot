@@ -57,7 +57,7 @@ module.exports = class AddEmoji extends Command {
                 name: name,
                 emoji: `data:image/jpeg;base64,${base64Image}`,
             }
-            const response = await axios.post(`https://discord.com/api/v10/application/${globalConfig.clientId}/emoji`, {
+            const response = await axios.post(`https://discord.com/api/v10/application/${globalConfig.clientId}/emojis`, {
                 name: body.name,
                 image: body.emoji,
             }, {
