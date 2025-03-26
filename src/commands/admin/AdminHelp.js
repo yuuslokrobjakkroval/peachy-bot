@@ -117,7 +117,7 @@ module.exports = class AdminHelp extends Command {
                         ? Array.from(categoryCommands.values())
                             .map(
                                 (cmd) =>
-                                    `- ${client.utils.formatCapitalize(cmd.name)}\n${client.utils.formatCapitalize(cmd.description.examples)}`
+                                    `- ${client.utils.formatCapitalize(cmd.name)}\n${cmd.description.examples}`
                             ) // Limit description to 100 chars
                             .join("\n")
                         : "No Commands found in this category.";

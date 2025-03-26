@@ -402,13 +402,12 @@ module.exports = class MessageCreate extends Event {
                   });
 
                   collector.on("end", async () => {
-                    const timeoutEmbed = this.client
-                      .embed()
+                    const timeoutEmbed = this.client.embed()
                       .setColor(color.warning)
                       .setDescription(
                         generalMessages.title
                           .replace("%{mainLeft}", emoji.mainLeft)
-                          .replace("%{title}", "𝐓𝐈𝐌𝐄 𝐈𝐒 𝐔𝐏")
+                          .replace("%{title}", "TIME IS UP")
                           .replace("%{mainRight}", emoji.mainRight) +
                           "⏳ Time is up! You didn't register."
                       )
