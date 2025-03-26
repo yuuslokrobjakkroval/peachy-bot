@@ -49,9 +49,14 @@ module.exports = class Clear extends Command {
             return ctx.sendMessage("Please provide a valid number between 1 and 1000.");
         }
 
-        // Defer the interaction to prevent timeout
+        // Handle interaction deferral
         if (ctx.isInteraction) {
-            await ctx.interaction.deferReply({ flags: 64 }).catch(err => console.error(err));
+            try {
+                await ctx.interaction.deferReply({ ephemeral: true }); // Use ephemeral: true instead of flags: 64 for clarity
+            } catch (err) {
+                console.error("Failed to defer reply:", err);
+                return; // Exit if deferral fails
+            }
         }
 
         let messagesDeleted = 0;
@@ -64,20 +69,31 @@ module.exports = class Clear extends Command {
         }
 
         // Loop through until all messages are deleted
-        while (numberMessageDelete > 0) {
-            const deleteAmount = numberMessageDelete > 100 ? 100 : numberMessageDelete; // Determine if we should delete 100 or less
-            const deletedCount = await deleteBatch(deleteAmount);
+        try {
+            while (numberMessageDelete > 0) {
+                const deleteAmount = Math.min(numberMessageDelete, 100); // Use Math.min for clarity
+                const deletedCount = await deleteBatch(deleteAmount);
 
-            if (deletedCount === 0) break; // Break if there are no more messages to delete
+                if (deletedCount === 0) break; // Break if no more messages to delete
 
-            numberMessageDelete -= deleteAmount; // Reduce the number of messages left to delete
-        }
+                numberMessageDelete -= deleteAmount;
+            }
 
-        // Edit the deferred reply with the final count
-        if (ctx.isInteraction) {
-            await ctx.interaction.editReply({ content: `Deleted ${messagesDeleted} messages.` });
-        } else {
-            await ctx.sendMessage({ content: `Deleted ${messagesDeleted} messages.`, flags: 64 });
+            // Send or edit response
+            const response = `Deleted ${messagesDeleted} messages.`;
+            if (ctx.isInteraction) {
+                await ctx.interaction.editReply({ content: response });
+            } else {
+                await ctx.sendMessage({ content: response, flags: 64 });
+            }
+        } catch (err) {
+            console.error("Error during message deletion:", err);
+            const errorResponse = "An error occurred while deleting messages.";
+            if (ctx.isInteraction) {
+                await ctx.interaction.editReply({ content: errorResponse }).catch(() => {});
+            } else {
+                await ctx.sendMessage({ content: errorResponse, flags: 64 });
+            }
         }
     }
 };
