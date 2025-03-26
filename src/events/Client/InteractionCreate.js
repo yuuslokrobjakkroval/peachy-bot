@@ -325,12 +325,7 @@ module.exports = class InteractionCreate extends Event {
                 .send({ embeds: [embed] })
                 .catch(() => console.error("Error sending log message"));
             }
-
-            if (!globalConfig.production && interaction.guild.id === '1354018322202492960') {
-              command.run(this.client, ctx, ctx.args, color, emoji, language);
-            } else {
-              command.run(this.client, ctx, ctx.args, color, emoji, language);
-            }
+              return command.run(this.client, ctx, ctx.args, color, emoji, language);
           } catch (error) {
             console.error(
               `Error handling command ${interaction.commandName}:`,

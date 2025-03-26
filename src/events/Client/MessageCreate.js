@@ -2,6 +2,7 @@ const { Collection } = require("discord.js");
 const { Context, Event } = require("../../structures/index.js");
 const BotLog = require("../../utils/BotLog.js");
 const Users = require("../../schemas/user");
+const globalConfig = require("../../utils/Config");
 const globalGif = require("../../utils/Gif");
 const globalEmoji = require("../../utils/Emoji");
 
@@ -18,14 +19,7 @@ module.exports = class MessageCreate extends Event {
       .then(async ({ user, color, emoji, language }) => {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const prefix = this.client.config.prefix;
-        this.client.utils.getCheckingUser(
-          this.client,
-          message,
-          user,
-          color,
-          emoji,
-          prefix
-        );
+        this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
 
         if (user?.verification?.isBanned) {
           return;
@@ -540,70 +534,15 @@ module.exports = class MessageCreate extends Event {
                 });
               }
 
-              await this.client.utils.getValidationUser(
-                this.client,
-                message,
-                user,
-                color,
-                emoji,
-                command
-              );
+              await this.client.utils.getValidationUser(this.client, message, user, color, emoji, command);
 
-              const balanceCommands = [
-                "balance",
-                "deposit",
-                "withdraw",
-                "multitransfer",
-                "transfer",
-                "angpav",
-                "buy",
-                "sell",
-              ];
-              const gamblingCommands = [
-                "slots",
-                "blackjack",
-                "coinflip",
-                "klaklouk",
-              ];
-              const gameCommands = [
-                "2048",
-                "guessnumber",
-                "snake",
-                "tictactoe",
-                "post",
-                "guess",
-                "feedback",
-                "wallpaper",
-              ];
-              const mineCommands = [
-                "eat",
-                "drink",
-                "shop",
-                "inventory",
-                "giveitem",
-              ];
-              const utilityCommands = [
-                "avatar",
-                "emoji",
-                "language",
-                "qr",
-                "serverinfo",
-                "theme",
-                "userinfo",
-                "verify",
-              ];
-              const giveawaysCommands = [
-                "giveaway",
-                "giveawayshopitem",
-                "reroll",
-              ];
-              const workCommands = [
-                "applyjob",
-                "police",
-                "position",
-                "rob",
-                "student",
-              ];
+              const balanceCommands = ["balance", "deposit", "withdraw", "multitransfer", "transfer", "angpav", "buy", "sell"];
+              const gamblingCommands = ["slots", "blackjack", "coinflip", "klaklouk"];
+              const gameCommands = ["guessnumber", "post", "guess", "wallpaper"];
+              const mineCommands = ["eat", "drink", "shop", "inventory", "giveitem"];
+              const utilityCommands = ["avatar", "emoji", "language", "qr", "serverinfo", "theme", "userinfo", "verify"];
+              const giveawaysCommands = ["giveaway", "giveawayshopitem", "reroll"];
+              const workCommands = ["applyjob", "police", "position", "rob", "student"];
 
               try {
                 let logChannelId;
@@ -658,21 +597,13 @@ module.exports = class MessageCreate extends Event {
                       }),
                     })
                     .setTimestamp();
-                  channel
-                    .send({ embeds: [embed] })
-                    .catch(() => console.error("Error sending log message"));
+                  channel.send({ embeds: [embed] }).catch(() => console.error("Error sending log message"));
                 }
-                command.run(this.client, ctx, ctx.args, color, emoji, language);
+                  return command.run(this.client, ctx, ctx.args, color, emoji, language);
               } catch (error) {
                 console.error("Error executing command:", error);
-                BotLog.send(
-                  this.client,
-                  `An error occurred: \`${error.message}\``,
-                  "error"
-                );
-                message.reply({
-                  content: `An error occurred: \`${error.message}\``,
-                });
+                BotLog.send(this.client, `An error occurred: \`${error.message}\``, "error" );
+                message.reply({content: `An error occurred: \`${error.message}\`` });
               }
             }
           }
