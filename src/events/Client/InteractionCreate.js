@@ -17,6 +17,7 @@ const GiveawaySchema = require("../../schemas/giveaway");
 const GiveawayShopItemSchema = require("../../schemas/giveawayShopItem");
 const globalGif = require("../../utils/Gif");
 const globalEmoji = require("../../utils/Emoji");
+const globalConfig = require("../../utils/Config");
 
 module.exports = class InteractionCreate extends Event {
   constructor(client, file) {
@@ -325,7 +326,11 @@ module.exports = class InteractionCreate extends Event {
                 .catch(() => console.error("Error sending log message"));
             }
 
-            command.run(this.client, ctx, ctx.args, color, emoji, language);
+            if (!globalConfig.production && interaction.guild.id === '1354018322202492960') {
+              command.run(this.client, ctx, ctx.args, color, emoji, language);
+            } else {
+              command.run(this.client, ctx, ctx.args, color, emoji, language);
+            }
           } catch (error) {
             console.error(
               `Error handling command ${interaction.commandName}:`,

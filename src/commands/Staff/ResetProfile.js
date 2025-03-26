@@ -9,7 +9,7 @@ module.exports = class ResetProfile extends Command {
         examples: ["𝒓𝒆𝒔𝒆𝒕𝒑𝒓𝒐𝒇𝒊𝒍𝒆"],
         usage: "𝒓𝒆𝒔𝒆𝒕𝒑𝒓𝒐𝒇𝒊𝒍𝒆",
       },
-      category: "admin",
+      category: "staff",
       aliases: ["resetbot"],
       cooldown: 10,
       args: false,

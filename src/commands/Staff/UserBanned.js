@@ -11,7 +11,7 @@ module.exports = class BanUser extends Command {
         examples: ["ban @user spamming"],
         usage: "ban <user> [reason]",
       },
-      category: "admin",
+      category: "staff",
       aliases: ["b"],
       args: true,
       permissions: {

@@ -13,7 +13,7 @@ module.exports = class UpdatePaymentStatus extends Command {
         ],
         usage: "userverify <userId> <paid|unpaid|reset|clear>",
       },
-      category: "developer",
+      category: "staff",
       aliases: ["uv"],
       args: true,
       permissions: {

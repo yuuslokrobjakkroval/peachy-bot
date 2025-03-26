@@ -10,7 +10,7 @@ module.exports = class CheckUserApply extends Command {
         examples: ["checkuserapply"],
         usage: "checkuserapply",
       },
-      category: "developer",
+      category: "company",
       aliases: ["checkapply", "ca"],
       cooldown: 3,
       args: false,

@@ -4,14 +4,15 @@ const User = require("../../schemas/user");
 module.exports = class ApplyJobList extends Command {
   constructor(client) {
     super(client, {
-      name: "joblist",
+      name: "applyjoblist",
       description: {
-        content: "List all users with job grouped by position.",
-        examples: ["joblist", "jl"],
-        usage: "joblist",
+        content:
+          "List all users with pending job applications grouped by position.",
+        examples: ["applyjoblist"],
+        usage: "applyjoblist",
       },
-      category: "work",
-      aliases: ["jl"],
+      category: "company",
+      aliases: ["ajl"],
       cooldown: 3,
       args: false,
       permissions: {
@@ -27,13 +28,14 @@ module.exports = class ApplyJobList extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     try {
-      const users = await User.find({ "work.status": "approved" });
+      // Fetch users with pending job applications
+      const users = await User.find({ "work.status": "awaiting" });
 
       if (users.length === 0) {
         return client.utils.sendErrorMessage(
           client,
           ctx,
-          "No users apply for job.",
+          "No users with pending job applications.",
           color
         );
       }
@@ -43,10 +45,10 @@ module.exports = class ApplyJobList extends Command {
         const position = user.work.position || "Unspecified";
         if (!acc[position]) acc[position] = [];
         acc[position].push(
-          `**ID**: ${user.userId}\n**Name**: ${
+          `**ID:** ${user.userId}\n**Name:** ${
             user.username || "Unknown"
-          }\n**Approved Date**: ${new Date(
-            user.work.approvedDate
+          }\n**Applied Date:** ${new Date(
+            user.work.applyDate
           ).toLocaleDateString()}\n`
         );
         return acc;
@@ -61,7 +63,7 @@ module.exports = class ApplyJobList extends Command {
             .embed()
             .setColor(color.main)
             .setTitle(
-              `**Position**: ${
+              `Apply For: ${
                 position === "it"
                   ? "IT"
                   : client.utils.formatCapitalize(position)

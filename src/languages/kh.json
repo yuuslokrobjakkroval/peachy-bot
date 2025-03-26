@@ -352,21 +352,27 @@
       "examples": "ឧទាហរណ៍:",
       "categoriesMessages": {
         "actions": "ACTIONS",
+        "admin": "ADMIN",
         "bank": "BANK",
-        "work": "WORK",
-        "rank": "RANK",
+        "company": "COMPANY",
+        "develop": "DEVELOP",
         "economy": "ECONOMY",
-        "inventory": "INVENTORY",
+        "emotes": "EMOTES",
         "fun": "FUN",
-        "games": "GAMES",
         "gambling": "GAMBLING",
+        "games": "GAMES",
         "giveaways": "GIVEAWAYS",
+        "guild": "SERVER",
+        "owner": "OWNER",
+        "info": "INFORMATION",
+        "inventory": "INVENTORY",
         "profile": "PROFILE",
+        "rank": "RANK",
         "relationship": "RELATIONSHIP",
         "social": "SOCIALS",
-        "emotes": "EMOTES",
+        "staff": "STAFF",
         "utility": "UTILITY",
-        "info": "INFORMATION"
+        "work": "WORK"
       }
     },
     "infoMessages": {

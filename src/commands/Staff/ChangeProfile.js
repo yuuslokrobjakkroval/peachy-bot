@@ -9,7 +9,7 @@ module.exports = class ChangeProfile extends Command {
         examples: ["𝒄𝒉𝒂𝒏𝒈𝒆𝒑𝒓𝒐𝒇𝒊𝒍𝒆 (attach an image)"],
         usage: "𝒄𝒉𝒂𝒏𝒈𝒆𝒑𝒓𝒐𝒇𝒊𝒍𝒆 (attach an image)",
       },
-      category: "admin",
+      category: "staff",
       aliases: ["setavatar", "botavatar"],
       cooldown: 5,
       args: false,

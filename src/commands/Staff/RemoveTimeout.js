@@ -10,7 +10,7 @@ module.exports = class RemoveTimeout extends Command {
         examples: ["removetimeout @user"],
         usage: "removetimeout <user>",
       },
-      category: "admin",
+      category: "staff",
       aliases: ["untimeout", 'rto'],
       args: true,
       permissions: {

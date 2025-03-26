@@ -10,7 +10,7 @@ module.exports = class Blacklist extends Command {
         examples: ["blacklist @user"],
         usage: "blacklist <user>",
       },
-      category: "admin",
+      category: "staff",
       aliases: ["bl"],
       args: true,
       permissions: {

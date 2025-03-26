@@ -10,7 +10,7 @@ module.exports = class ApprovedJob extends Command {
                 examples: ['approvedjob <userId> approved'],
                 usage: 'approvedjob <userId> <approved>',
             },
-            category: 'developer',
+            category: 'company',
             aliases: ['aj'],
             args: true,
             permissions: {

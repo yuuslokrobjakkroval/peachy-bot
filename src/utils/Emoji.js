@@ -1,12 +1,12 @@
 module.exports = {
     // GLOBAL
+    coin: '<:NORMALCOIN:1342777023952851026>',
     discordApp: '<a:DISCORDICON:1350663962022121493>',
     romdoul: '<:ROMDOUL:1350655957293596692>',
 
     searching: '<a:SEARCHING:1350655304072826890>',
     loading: '<a:LOADING:1350655786837348453>',
 
-    coin: '<:COIN:1281821085209460797>',
     main: {
         signature: '<:MAIN:1281847051860054016>',
         left: '<:PEACH:1301021708962234400>',

@@ -11,7 +11,7 @@ module.exports = class Unblacklist extends Command {
         examples: ["unblacklist @user"],
         usage: "unblacklist <user>",
       },
-      category: "admin",
+      category: "staff",
       aliases: ["ubl"],
       args: true,
       permissions: {

@@ -1,6 +1,5 @@
 const Command = require("../../structures/Command.js");
 const { StringSelectMenuBuilder } = require("discord.js");
-const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class AdminHelp extends Command {
     constructor(client) {
@@ -43,7 +42,7 @@ module.exports = class AdminHelp extends Command {
         const helpMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages;
         const categoriesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.helpMessages?.categoriesMessages;
         const prefix = client.config.prefix;
-        const adminCategory = ["admin", "developer", "guild"];
+        const adminCategory = ["admin", "company", "developer", "guild", "owner", "staff"];
         const commands = client.commands.filter((cmd) => adminCategory.includes(cmd.category.toLowerCase()));
         const selectedItemIndex = null;
 

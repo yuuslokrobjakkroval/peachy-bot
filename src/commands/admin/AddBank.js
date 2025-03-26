@@ -25,9 +25,7 @@ module.exports = class AddBank extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user")
       : ctx.message.mentions.members.first() ||

@@ -11,7 +11,7 @@ module.exports = class Timeout extends Command {
         examples: ["timeout @user 5min"],
         usage: "timeout <user> <duration>",
       },
-      category: "admin",
+      category: "staff",
       aliases: ["to", "mute"],
       args: true,
       permissions: {

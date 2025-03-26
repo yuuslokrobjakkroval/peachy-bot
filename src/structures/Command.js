@@ -19,6 +19,7 @@ module.exports = class Command {
             djPerm: options.player ? options.player.djPerm || null : null,
         };
         this.permissions = {
+            owner: options.owner ? options.permissions.owner || false : false,
             dev: options.permissions ? options.permissions.dev || false : false,
             staff: options.permissions ? options.permissions.staff || false : false,
             client: options.permissions ? options.permissions.client || [] : ['SendMessages', 'ViewChannel', 'EmbedLinks'],
