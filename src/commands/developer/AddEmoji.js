@@ -67,7 +67,7 @@ module.exports = class AddEmoji extends Command {
                 }
             }).catch((err) => {});
 
-            if (response.status === 200) {
+            if (response) {
                 ctx.isInteraction
                     ? await ctx.interaction.editReply({
                         content: `<:${response.data.name}:${response.data.id}> I have create a brand new app emoji.\nCopy \`<:${response.data.name}:${response.data.id}>\` into your code to use it`,
