@@ -13,13 +13,13 @@ module.exports = class AddEmoji extends Command {
             },
             category: 'developer',
             aliases: ['ae'],
-            args: false,
+            args: true,
             permissions: {
                 dev: true,
                 client: ['SendMessages', 'ViewChannel', 'EmbedLinks'],
                 user: [],
             },
-            slashCommand: false,
+            slashCommand: true,
             options: [
                 {
                     name: "emoji",
