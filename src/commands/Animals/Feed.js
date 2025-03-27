@@ -8,8 +8,7 @@ module.exports = class Feed extends Command {
     super(client, {
       name: "feed",
       description: {
-        content:
-          "Feed a pet in your zoo to help it grow! Usage: feed <pet id> [quantity]",
+        content: "Feed a pet in your zoo to help it grow!",
         examples: ["feed bubbles", "feed bubbles 3"],
         usage: "feed <pet id> [quantity]",
       },

@@ -8,6 +8,7 @@ module.exports = {
   help: {
     category: '📚',
     actions: '<:YUYUZUACTIONS:1353730263825252423>',
+    animals: '<:EGG:1354825084598095952>',
     bank: '<:YUYUZUBANK:1353730266107220118>',
     economy: '<:YUYUZUECONOMY:1353730274550218794>',
     emotes: '<:YUYUZUEMOTES:1353730278203326474>',

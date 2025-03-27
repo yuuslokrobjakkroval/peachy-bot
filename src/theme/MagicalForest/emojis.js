@@ -8,6 +8,7 @@ module.exports = {
     help: {
         category: '📚',
         actions: '<:MFACTIONS:1354076776388759562>',
+        animals: '<:EGG:1354825084598095952>',
         bank: '<:MFBANK:1354076817425829909>',
         economy: '<:MFECONOMY:1354076828029157447>',
         emotes: '<:MFEMOTES:1354076831740985446>',

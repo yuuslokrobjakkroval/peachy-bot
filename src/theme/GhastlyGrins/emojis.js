@@ -8,6 +8,7 @@ module.exports = {
     help: {
         category: '📚',
         actions: '<:PHYACTIONS:1353739492862857236>',
+        animals: '<:EGG:1354825084598095952>',
         bank: '<:PHYBANK:1353739500530176000>',
         economy: '<:KYECONOMY:1350691204563734551>',
         emotes: '<:PHYEMOTES:1353739515126353920>',

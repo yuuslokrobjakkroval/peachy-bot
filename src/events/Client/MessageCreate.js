@@ -23,18 +23,9 @@ module.exports = class MessageCreate extends Event {
     this.client
       .setColorBasedOnTheme(message.author.id)
       .then(async ({ user, color, emoji, language }) => {
-        const generalMessages = language.locales.get(
-          language.defaultLocale
-        )?.generalMessages;
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const prefix = this.client.config.prefix;
-        this.client.utils.getCheckingUser(
-          this.client,
-          message,
-          user,
-          color,
-          emoji,
-          prefix
-        );
+        this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
 
         if (user?.verification?.isBanned) {
           return;

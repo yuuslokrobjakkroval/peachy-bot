@@ -8,7 +8,7 @@ module.exports = class SellPet extends Command {
     super(client, {
       name: "sellpet",
       description: {
-        content: "Sell a pet from your zoo for coins! Usage: sellpet <pet id>",
+        content: "Sell a pet from your zoo for coins!",
         examples: ["sellpet bubbles"],
         usage: "sellpet <pet id>",
       },

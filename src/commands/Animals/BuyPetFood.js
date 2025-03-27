@@ -6,7 +6,7 @@ module.exports = class BuyPetFood extends Command {
     super(client, {
       name: "buypetfood",
       description: {
-        content: "Buy pet food to feed your pets! Usage: buypetfood <quantity>",
+        content: "Buy pet food to feed your pets!",
         examples: ["buypetfood 5"],
         usage: "buypetfood <quantity>",
       },

@@ -8,6 +8,7 @@ module.exports = {
     help: {
         category: '📚',
         actions: '<:KYACTIONS:1350691168157040651>',
+        animals: '<:EGG:1354825084598095952>',
         bank: '<:PEACHBANK:1354073843412766720>',
         economy: '<:PEACHCOIN:1342776344374677526>',
         emotes: '<:KYEMOTES:1350691214709489694>',

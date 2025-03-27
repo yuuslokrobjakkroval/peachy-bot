@@ -8,6 +8,7 @@ module.exports = {
     help: {
         category: '📚',
         actions: '<:HEAVENACTIONS:1353731730573627472>',
+        animals: '<:EGG:1354825084598095952>',
         bank: '<:HEAVENBANK:1353731736718151771>',
         economy: '<:HEAVENECONOMY:1353731739922595891>',
         emotes: '<:HEAVENEMOTES:1353731743315923035>',
