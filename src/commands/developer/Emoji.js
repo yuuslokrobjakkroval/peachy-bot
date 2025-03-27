@@ -2,7 +2,7 @@ const { Command } = require("../../structures");
 const axios = require("axios");
 const globalConfig = require("../../utils/Config");
 
-module.exports = class AddEmoji extends Command {
+module.exports = class Emoji extends Command {
   constructor(client) {
     super(client, {
       name: "emoji",
@@ -63,7 +63,9 @@ module.exports = class AddEmoji extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
         generalMessages.search.replace("%{loading}", globalEmoji.searching)
