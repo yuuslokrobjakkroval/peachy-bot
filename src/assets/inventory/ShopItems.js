@@ -655,7 +655,7 @@ module.exports = [
         id: "fp01",
         name: "Apple",
         description: "Fed your pet to earn XP and upgrade level",
-        type: "food",
+        type: "petfood",
         able: {
           use: true,
           gift: false,
@@ -671,7 +671,7 @@ module.exports = [
         id: "fp02",
         name: "Orange",
         description: "Fed your pet to earn XP and upgrade level",
-        type: "food",
+        type: "petfood",
         able: {
           use: true,
           gift: false,
@@ -687,7 +687,7 @@ module.exports = [
         id: "fp03",
         name: "Watermelon",
         description: "Fed your pet to earn XP and upgrade level",
-        type: "food",
+        type: "petfood",
         able: {
           use: true,
           gift: false,
@@ -703,7 +703,7 @@ module.exports = [
         id: "fp04",
         name: "Cherry",
         description: "Fed your pet to earn XP and upgrade level",
-        type: "food",
+        type: "petfood",
         able: {
           use: true,
           gift: false,
@@ -719,7 +719,7 @@ module.exports = [
         id: "fp05",
         name: "Strawberry",
         description: "Fed your pet to earn XP and upgrade level",
-        type: "food",
+        type: "petfood",
         able: {
           use: true,
           gift: false,

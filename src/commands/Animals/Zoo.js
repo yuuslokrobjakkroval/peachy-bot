@@ -58,8 +58,7 @@ module.exports = class Zoo extends Command {
       }
 
       // Create a description of the user's zoo
-      const zooDescription = user.zoo
-        .map((pet, index) => {
+      const zooDescription = user.zoo.map((pet, index) => {
           const petData = petList.find((p) => p.id === pet.id);
           const currentEmoji = petData.emoji[pet.level];
           return (
