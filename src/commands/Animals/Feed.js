@@ -75,9 +75,9 @@ module.exports = class Feed extends Command {
       }
 
       // Get the pet ID and quantity from arguments
-      const petId = args[0].toLowerCase();
-      const foodpet = args[1].toLowerCase(); // Default to 1 if no quantity specified
-      const quantity = args[2] ? parseInt(args[2]) : 1; // Default to 1 if no quantity specified
+      const petId = ctx.isInteraction ? ctx.interaction.options.getString("pet") : args[0];
+      const foodId = ctx.isInteraction ? ctx.interaction.options.getString("food") : args[1];
+      const quantity = ctx.isInteraction ? ctx.interaction.options.getInteger("quantity") : args[2] || 1;  // Default to 1 if no quantity specified
 
       if (isNaN(quantity) || quantity < 1) {
         const embed = client
@@ -119,7 +119,7 @@ module.exports = class Feed extends Command {
       }
 
       // Check if the user has enough food
-      const foodItem = AllItems.find((item) => item.id === foodpet);
+      const foodItem = AllItems.find((item) => item.id === foodId);
       if (!foodItem || foodItem.quantity < quantity) {
         const embed = client.embed()
           .setColor(color.danger)
