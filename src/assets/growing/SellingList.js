@@ -38,4 +38,4 @@ const sellingList = {
   },
 };
 
-export default sellingList;
+module.exports = sellingList;

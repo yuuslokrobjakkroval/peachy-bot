@@ -81,7 +81,7 @@ module.exports = class BuyPetFood extends Command {
       }
 
       // Calculate the cost (10 coins per pet food item)
-      const costPerPetFood = 10;
+      const costPerPetFood = 1000;
       const totalCost = quantity * costPerPetFood;
 
       if (user.balance.coin < totalCost) {

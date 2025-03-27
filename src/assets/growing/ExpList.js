@@ -12,4 +12,4 @@ const expList = {
   10: 2250, // Need 2250 EXP to reach Level 10 (max level)
 };
 
-export default expList;
+module.exports = expList;

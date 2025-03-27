@@ -8,9 +8,10 @@ module.exports = class Feed extends Command {
     super(client, {
       name: "feed",
       description: {
-        content: "Feed a pet in your zoo to help it grow! Usage: feed <pet id>",
-        examples: ["feed bubbles"],
-        usage: "feed <pet id>",
+        content:
+          "Feed a pet in your zoo to help it grow! Usage: feed <pet id> [quantity]",
+        examples: ["feed bubbles", "feed bubbles 3"],
+        usage: "feed <pet id> [quantity]",
       },
       category: "animals",
       aliases: ["f"],
@@ -25,10 +26,15 @@ module.exports = class Feed extends Command {
       options: [
         {
           name: "pet",
-          description:
-            "The ID of the pet to feed (use 'zoo' to see your pets).",
-          type: 3, // String (since pet ID is a string like "bubbles")
+          description: "The ID of the pet to feed (use 'zoo' to see your pets)",
+          type: 3, // String
           required: true,
+        },
+        {
+          name: "quantity",
+          description: "Amount of food to feed (default: 1)",
+          type: 4, // Integer
+          required: false,
         },
       ],
     });
@@ -65,8 +71,20 @@ module.exports = class Feed extends Command {
         return ctx.sendMessage({ embeds: [embed] });
       }
 
-      // Get the pet ID from the arguments
+      // Get the pet ID and quantity from arguments
       const petId = args[0].toLowerCase();
+      const quantity = args[1] ? parseInt(args[1]) : 1; // Default to 1 if no quantity specified
+
+      if (isNaN(quantity) || quantity < 1) {
+        const embed = client
+          .embed()
+          .setColor(color.danger)
+          .setDescription(
+            "Please provide a valid positive number for quantity!"
+          );
+        return ctx.sendMessage({ embeds: [embed] });
+      }
+
       const petIndex = user.zoo.findIndex((p) => p.id.toLowerCase() === petId);
       if (petIndex === -1) {
         const embed = client
@@ -97,31 +115,41 @@ module.exports = class Feed extends Command {
         return ctx.sendMessage({ embeds: [embed] });
       }
 
-      // Check if the user has food
-      const foodItem = user.inventory.find((item) => item.id === "food");
-      if (!foodItem || foodItem.quantity <= 0) {
+      // Check if the user has enough food
+      const foodItem = user.inventory.find((item) => item.id === "petfood");
+      if (!foodItem || foodItem.quantity < quantity) {
         const embed = client
           .embed()
           .setColor(color.danger)
           .setDescription(
             animalMessages?.feed?.noFood ||
-              "You’re out of food! Buy more with `buyfood`."
+              `You don’t have enough food! You need ${quantity} but have ${
+                foodItem?.quantity || 0
+              }. Buy more with \`buyfood\`.`
           );
         return ctx.sendMessage({ embeds: [embed] });
       }
 
       // Feed the pet
-      foodItem.quantity -= 1;
-      pet.levelXp += 10; // Each feeding gives 10 EXP
+      foodItem.quantity -= quantity;
+      let totalXpGained = 0;
+
+      // Generate random XP between 8-10 for each food unit
+      for (let i = 0; i < quantity; i++) {
+        totalXpGained += Math.floor(Math.random() * 3) + 8; // Random number between 8-10
+      }
+
+      pet.levelXp += totalXpGained;
       pet.lastXpGain = Date.now();
 
       // Check for level up
       let leveledUp = false;
+      let previousLevel = pet.level;
       for (let level = 1; level <= 10; level++) {
         if (pet.levelXp >= expList[level] && pet.level < level) {
           pet.level = level;
           leveledUp = true;
-          if (pet.level === 10) break; // Stop at Level 10
+          if (pet.level === 10) break;
         }
       }
 
@@ -149,17 +177,23 @@ module.exports = class Feed extends Command {
               ? animalMessages?.feed?.levelUp
                   ?.replace("%{petName}", petData.name)
                   ?.replace("%{level}", pet.level)
-                  ?.replace("%{emoji}", petData.emoji[pet.level]) ||
-                `\nYou fed your **${petData.name}**! It leveled up to Level ${
+                  ?.replace("%{emoji}", petData.emoji[pet.level]) +
+                  `\nFed ${quantity} food for ${totalXpGained} EXP!` ||
+                `\nYou fed your **${
+                  petData.name
+                }** ${quantity} food for ${totalXpGained} EXP! It leveled up to Level ${
                   pet.level
                 }! ${petData.emoji[pet.level]}`
               : animalMessages?.feed?.success
                   ?.replace("%{petName}", petData.name)
                   ?.replace("%{exp}", pet.levelXp)
-                  ?.replace("%{emoji}", petData.emoji[pet.level]) ||
-                `\nYou fed your **${petData.name}**! It now has ${
+                  ?.replace("%{emoji}", petData.emoji[pet.level]) +
+                  `\nFed ${quantity} food for ${totalXpGained} EXP!` ||
+                `\nYou fed your **${
+                  petData.name
+                }** ${quantity} food for ${totalXpGained} EXP! Current EXP: ${
                   pet.levelXp
-                } EXP. ${petData.emoji[pet.level]}`)
+                }. ${petData.emoji[pet.level]}`)
         )
         .setFooter({
           text:

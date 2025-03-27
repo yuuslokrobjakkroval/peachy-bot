@@ -10,7 +10,7 @@ const AnimalSchema = new Schema({
 });
 
 // SoldPetSchema
-const SoldPetSchema = new mongoose.Schema({
+const SoldPetSchema = new Schema({
   id: { type: String, required: true }, // e.g., "bubbles"
   level: { type: Number, required: true }, // Level at the time of sale
   soldAt: { type: Date, default: Date.now }, // Timestamp of when the pet was sold

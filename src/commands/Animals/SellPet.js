@@ -82,8 +82,8 @@ module.exports = class SellPet extends Command {
       const pet = user.zoo[petIndex];
       const petData = petList.find((p) => p.id === pet.id);
 
-      // Check if the pet is at max level (Level 10)
-      if (pet.level < 10) {
+      // Check if the pet is at max level (Level 5)
+      if (pet.level < 5) {
         const embed = client
           .embed()
           .setColor(color.danger)
@@ -92,7 +92,7 @@ module.exports = class SellPet extends Command {
               "%{petName}",
               petData.name
             ) ||
-              `Your **${petData.name}** needs to be Level 10 to sell! Keep feeding it.`
+              `Your **${petData.name}** needs to be Level > 5 to sell! Keep feeding it.`
           );
         return ctx.sendMessage({ embeds: [embed] });
       }

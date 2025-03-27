@@ -1,7 +1,7 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
 const petList = require("../../assets/growing/Pet");
-const sellingList = require("../../assets/growing/SellingList").default;
+const sellingList = require("../../assets/growing/SellingList");
 
 module.exports = class PetStats extends Command {
   constructor(client) {
@@ -65,13 +65,8 @@ module.exports = class PetStats extends Command {
               .map((pet, index) => {
                 const petData = petList.find((p) => p.id === pet.id);
                 const petName = petData ? petData.name : pet.id;
-                const petColor = petData
-                  ? sellingList.nameToColor[petData.name]
-                  : "Unknown";
                 const currentEmoji = petData ? petData.emoji[pet.level] : "❓";
-                return `**${
-                  index + 1
-                }. ${petName}** (${petColor}) ${currentEmoji}\nID: \`${
+                return `**${index + 1}. ${petName}** ${currentEmoji}\nID: \`${
                   pet.id
                 }\`\nLevel: ${pet.level}`;
               })

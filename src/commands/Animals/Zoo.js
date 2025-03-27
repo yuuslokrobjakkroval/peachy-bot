@@ -1,7 +1,6 @@
 const { Command } = require("../../structures/index.js");
-const Users = require("../../schemas/user");
 const petList = require("../../assets/growing/Pet");
-const sellingList = require("../../assets/growing/SellingList").default;
+const sellingList = require("../../assets/growing/SellingList");
 const expList = require("../../assets/growing/ExpList");
 
 module.exports = class Zoo extends Command {
@@ -63,11 +62,8 @@ module.exports = class Zoo extends Command {
         .map((pet, index) => {
           const petData = petList.find((p) => p.id === pet.id);
           const currentEmoji = petData.emoji[pet.level];
-          const petColor = sellingList.nameToColor[petData.name];
           return (
-            `**${index + 1}. ${
-              petData.name
-            }** (${petColor}) ${currentEmoji}\n` +
+            `**${index + 1}. ${petData.name}** ${currentEmoji}\n` +
             `ID: \`${pet.id}\`\n` +
             `Level: ${pet.level}\n` +
             `EXP: ${pet.levelXp}/${expList[pet.level + 1] || "MAX"}\n`

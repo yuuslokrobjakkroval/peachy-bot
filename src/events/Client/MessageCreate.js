@@ -623,11 +623,17 @@ module.exports = class MessageCreate extends Event {
 
               try {
                 let logChannelId;
-                if (workCommands.includes(command.name)) {
+                if (["animals"].includes(command.category.toLowerCase())) {
+                  logChannelId = this.client.config.logChannelId[8];
+                } else if (["work"].includes(command.category.toLowerCase())) {
                   logChannelId = this.client.config.logChannelId[7];
-                } else if (giveawaysCommands.includes(command.name)) {
+                } else if (
+                  ["giveaway"].includes(command.category.toLowerCase())
+                ) {
                   logChannelId = this.client.config.logChannelId[6];
-                } else if (utilityCommands.includes(command.name)) {
+                } else if (
+                  ["utility"].includes(command.category.toLowerCase())
+                ) {
                   logChannelId = this.client.config.logChannelId[5];
                 } else if (mineCommands.includes(command.name)) {
                   logChannelId = this.client.config.logChannelId[4];

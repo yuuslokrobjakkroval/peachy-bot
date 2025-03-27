@@ -33,6 +33,7 @@ const channel = {
   logGiveaways: "1299316476083441675",
   logUtility: "1293964183913758790",
   logWork: "1311522502484426772",
+  logAnimal: "1354804021063450730",
 };
 
 const logChannelId = [
@@ -44,6 +45,7 @@ const logChannelId = [
   channel.logUtility,
   channel.logGiveaways,
   channel.logWork,
+  channel.logAnimal,
 ];
 
 module.exports = {
