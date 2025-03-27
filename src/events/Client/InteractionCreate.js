@@ -25,11 +25,11 @@ module.exports = class InteractionCreate extends Event {
   }
 
   async run(interaction) {
-    if (interaction.user.bot || !interaction.guild) return;
-    if (globalConfig.production) {
-      if (interaction.guild.id === "1354018322202492960") return;
-    } else {
+    if (interaction.user.bot) return;
+    if (globalConfig.env === "DEV") {
       if (interaction.guild.id !== "1354018322202492960") return;
+    } else {
+      if (interaction.guild.id === "1354018322202492960") return;
     }
     this.client
       .setColorBasedOnTheme(interaction.user.id)
