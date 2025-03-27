@@ -1,7 +1,7 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
 const petList = require("../../assets/growing/Pet");
-const sellingList = require("../../assets/growing/SellingList").default;
+const sellingList = require("../../assets/growing/SellingList");
 
 module.exports = class SellPet extends Command {
   constructor(client) {
