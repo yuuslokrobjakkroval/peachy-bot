@@ -26,6 +26,11 @@ module.exports = class InteractionCreate extends Event {
 
   async run(interaction) {
     if (interaction.user.bot || !interaction.guild) return;
+    if (globalConfig.production) {
+      if (interaction.guild.id === "1354018322202492960") return;
+    } else {
+      if (interaction.guild.id !== "1354018322202492960") return;
+    }
     this.client
       .setColorBasedOnTheme(interaction.user.id)
       .then(async ({ user, color, emoji, language }) => {
@@ -325,7 +330,14 @@ module.exports = class InteractionCreate extends Event {
                 .send({ embeds: [embed] })
                 .catch(() => console.error("Error sending log message"));
             }
-              return command.run(this.client, ctx, ctx.args, color, emoji, language);
+            return command.run(
+              this.client,
+              ctx,
+              ctx.args,
+              color,
+              emoji,
+              language
+            );
           } catch (error) {
             console.error(
               `Error handling command ${interaction.commandName}:`,

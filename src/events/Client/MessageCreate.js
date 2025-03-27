@@ -15,11 +15,26 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || !message.guild) return;
-    this.client.setColorBasedOnTheme(message.author.id)
+    if (globalConfig.env === "DEV") {
+      if (message.guild.id !== "1354018322202492960") return;
+    } else {
+      if (message.guild.id === "1354018322202492960") return;
+    }
+    this.client
+      .setColorBasedOnTheme(message.author.id)
       .then(async ({ user, color, emoji, language }) => {
-        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+        const generalMessages = language.locales.get(
+          language.defaultLocale
+        )?.generalMessages;
         const prefix = this.client.config.prefix;
-        this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
+        this.client.utils.getCheckingUser(
+          this.client,
+          message,
+          user,
+          color,
+          emoji,
+          prefix
+        );
 
         if (user?.verification?.isBanned) {
           return;
@@ -50,7 +65,8 @@ module.exports = class MessageCreate extends Event {
             timeString += `${seconds} sec${seconds > 1 ? "s" : ""}`;
           }
 
-          const embed = this.client.embed()
+          const embed = this.client
+            .embed()
             .setColor(color.danger)
             .setDescription(
               `You are in timeout for: \`${
@@ -396,7 +412,8 @@ module.exports = class MessageCreate extends Event {
                   });
 
                   collector.on("end", async () => {
-                    const timeoutEmbed = this.client.embed()
+                    const timeoutEmbed = this.client
+                      .embed()
                       .setColor(color.warning)
                       .setDescription(
                         generalMessages.title
@@ -515,17 +532,26 @@ module.exports = class MessageCreate extends Event {
               const cooldownAmount = Math.floor(command.cooldown || 5) * 1000;
               if (!timestamps.has(message.author.id)) {
                 timestamps.set(message.author.id, now);
-                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+                setTimeout(
+                  () => timestamps.delete(message.author.id),
+                  cooldownAmount
+                );
               } else {
-                const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+                const expirationTime =
+                  timestamps.get(message.author.id) + cooldownAmount;
                 const timeLeft = (expirationTime - now) / 1000;
                 if (now < expirationTime && timeLeft > 0.9) {
                   return message.reply({
-                    content: `Please wait \`${timeLeft.toFixed(1)}\` more second(s) before reusing the **${cmd}** command.`,
+                    content: `Please wait \`${timeLeft.toFixed(
+                      1
+                    )}\` more second(s) before reusing the **${cmd}** command.`,
                   });
                 }
                 timestamps.set(message.author.id, now);
-                setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+                setTimeout(
+                  () => timestamps.delete(message.author.id),
+                  cooldownAmount
+                );
               }
 
               if (args.includes("@everyone") || args.includes("@here")) {
@@ -534,15 +560,66 @@ module.exports = class MessageCreate extends Event {
                 });
               }
 
-              await this.client.utils.getValidationUser(this.client, message, user, color, emoji, command);
+              await this.client.utils.getValidationUser(
+                this.client,
+                message,
+                user,
+                color,
+                emoji,
+                command
+              );
 
-              const balanceCommands = ["balance", "deposit", "withdraw", "multitransfer", "transfer", "angpav", "buy", "sell"];
-              const gamblingCommands = ["slots", "blackjack", "coinflip", "klaklouk"];
-              const gameCommands = ["guessnumber", "post", "guess", "wallpaper"];
-              const mineCommands = ["eat", "drink", "shop", "inventory", "giveitem"];
-              const utilityCommands = ["avatar", "emoji", "language", "qr", "serverinfo", "theme", "userinfo", "verify"];
-              const giveawaysCommands = ["giveaway", "giveawayshopitem", "reroll"];
-              const workCommands = ["applyjob", "police", "position", "rob", "student"];
+              const balanceCommands = [
+                "balance",
+                "deposit",
+                "withdraw",
+                "multitransfer",
+                "transfer",
+                "angpav",
+                "buy",
+                "sell",
+              ];
+              const gamblingCommands = [
+                "slots",
+                "blackjack",
+                "coinflip",
+                "klaklouk",
+              ];
+              const gameCommands = [
+                "guessnumber",
+                "post",
+                "guess",
+                "wallpaper",
+              ];
+              const mineCommands = [
+                "eat",
+                "drink",
+                "shop",
+                "inventory",
+                "giveitem",
+              ];
+              const utilityCommands = [
+                "avatar",
+                "emoji",
+                "language",
+                "qr",
+                "serverinfo",
+                "theme",
+                "userinfo",
+                "verify",
+              ];
+              const giveawaysCommands = [
+                "giveaway",
+                "giveawayshopitem",
+                "reroll",
+              ];
+              const workCommands = [
+                "applyjob",
+                "police",
+                "position",
+                "rob",
+                "student",
+              ];
 
               try {
                 let logChannelId;
@@ -597,13 +674,28 @@ module.exports = class MessageCreate extends Event {
                       }),
                     })
                     .setTimestamp();
-                  channel.send({ embeds: [embed] }).catch(() => console.error("Error sending log message"));
+                  channel
+                    .send({ embeds: [embed] })
+                    .catch(() => console.error("Error sending log message"));
                 }
-                  return command.run(this.client, ctx, ctx.args, color, emoji, language);
+                return command.run(
+                  this.client,
+                  ctx,
+                  ctx.args,
+                  color,
+                  emoji,
+                  language
+                );
               } catch (error) {
                 console.error("Error executing command:", error);
-                BotLog.send(this.client, `An error occurred: \`${error.message}\``, "error" );
-                message.reply({content: `An error occurred: \`${error.message}\`` });
+                BotLog.send(
+                  this.client,
+                  `An error occurred: \`${error.message}\``,
+                  "error"
+                );
+                message.reply({
+                  content: `An error occurred: \`${error.message}\``,
+                });
               }
             }
           }
