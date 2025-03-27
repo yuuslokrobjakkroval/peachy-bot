@@ -168,23 +168,12 @@ module.exports = class SellPet extends Command {
             (generalMessages?.title
               ?.replace("%{mainLeft}", emoji.mainLeft)
               ?.replace("%{title}", "SELL PET")
-              ?.replace("%{mainRight}", emoji.mainRight) ||
-              "✨ **SELL PET** ✨") +
+              ?.replace("%{mainRight}", emoji.mainRight)) +
               (animalMessages?.sellpet?.success
-                ?.replace("%{color}", sellingList.nameToColor[petData.name])
                 ?.replace("%{petName}", petData.name)
                 ?.replace("%{coins}", client.utils.formatNumber(sellPrice))
-                ?.replace(
-                  "%{totalCoins}",
-                  client.utils.formatNumber(user.balance.coin)
-                ) ||
-                `\nYou sold your ${sellingList.nameToColor[petData.name]} **${
-                  petData.name
-                }** for **${client.utils.formatNumber(
-                  sellPrice
-                )}** coins!\nYou now have **${client.utils.formatNumber(
-                  user.balance.coin
-                )}** coins.`)
+                ?.replace("%{totalCoins}", client.utils.formatNumber(user.balance.coin))
+              )
           )
           .setFooter({
             text:
