@@ -8,6 +8,7 @@ module.exports = {
     help: {
         category: '<:BEARCATEGORY:1354075522987982922>',
         actions: '<:BACTIONS:1354075516151529575>',
+        animals: '<:EGG:1354825084598095952>',
         bank: '<:BEARBANK:1354075518303211631>',
         economy: '<:BEARECONOMY:1354075530236006421>',
         emotes: '<:BEAREMOTES:1354075534224527450>',

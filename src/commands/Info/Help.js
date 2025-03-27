@@ -114,14 +114,16 @@ module.exports = class Help extends Command {
           default: selectedItemIndex === category.toLowerCase(), // Only true if matched
         }));
 
-        const categorySelectButton = new StringSelectMenuBuilder()
-            .setCustomId("category_select")
-            .setPlaceholder("Select a category")
-            .addOptions(categoryOptions);
+        console.log(categoryOptions)
 
-        const row = client.utils.createButtonRow(categorySelectButton);
-
-        return { embeds: [helpEmbed], components: [row] };
+        // const categorySelectButton = new StringSelectMenuBuilder()
+        //     .setCustomId("category_select")
+        //     .setPlaceholder("Select a category")
+        //     .addOptions(categoryOptions);
+        //
+        // const row = client.utils.createButtonRow(categorySelectButton);
+        //
+        // return { embeds: [helpEmbed], components: [row] };
       };
 
       // Send Help Message
