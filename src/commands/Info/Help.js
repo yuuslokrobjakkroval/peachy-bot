@@ -111,19 +111,17 @@ module.exports = class Help extends Command {
           emoji: `${emoji.help[category.toLowerCase()] || ""}`,
           label: `${categoriesMessages[category.toLowerCase()] || category}`,
           value: category.toLowerCase(),
-          default: selectedItemIndex === category.toLowerCase(), // Only true if matched
+          default: selectedItemIndex === category.toLowerCase(),
         }));
 
-        console.log(categoryOptions)
+        const categorySelectButton = new StringSelectMenuBuilder()
+            .setCustomId("category_select")
+            .setPlaceholder("Select a category")
+            .addOptions(categoryOptions);
 
-        // const categorySelectButton = new StringSelectMenuBuilder()
-        //     .setCustomId("category_select")
-        //     .setPlaceholder("Select a category")
-        //     .addOptions(categoryOptions);
-        //
-        // const row = client.utils.createButtonRow(categorySelectButton);
-        //
-        // return { embeds: [helpEmbed], components: [row] };
+        const row = client.utils.createButtonRow(categorySelectButton);
+
+        return { embeds: [helpEmbed], components: [row] };
       };
 
       // Send Help Message
