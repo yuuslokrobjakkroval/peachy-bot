@@ -824,5 +824,36 @@
       "success": "You have successfully resigned from your current job. You are no longer associated with any job position.",
       "alreadyResigned": "You have already resigned from your job, or you haven't been approved yet."
     }
+  },
+  "animalMessages": {
+    "catch": {
+      "cooldown": "Please wait %{minutes}m %{seconds}s before catching another egg!",
+      "zooFull": "Your zoo is full! You can only have 10 pets at a time. Sell a pet with `sellpet <pet id>` to make space.",
+      "allPetsOwned": "You already own one of each pet type! Sell a pet with `sellpet <pet id>` to catch a new one.",
+      "success": "\nYou caught a **%{petName}** egg! %{emoji}\nIt has been added to your zoo."
+    },
+    "zoo": {
+      "empty": "You don’t have any pets in your zoo yet! Use `catch` to catch an egg.",
+      "full": "Your zoo is full! Sell a pet to catch more.\n"
+    },
+    "feed": {
+      "invalidPet": "Please specify a valid pet ID! Use `zoo` to see your pets.",
+      "noFood": "You’re out of food! Buy more with `buyfood`.",
+      "maxLevel": "Your **%{petName}** is already at the maximum level (Level 10)! You can sell it with `sellpet %{petId}`.",
+      "success": "\nYou fed your **%{petName}**! It now has %{exp} EXP. %{emoji}",
+      "levelUp": "\nYou fed your **%{petName}**! It leveled up to Level %{level}! %{emoji}"
+    },
+    "sellpet": {
+      "invalidPet": "Please specify a valid pet ID! Use `zoo` to see your pets.",
+      "notMaxLevel": "Your **%{petName}** needs to be Level 10 to sell! Keep feeding it.",
+      "confirm": "Are you sure you want to sell your %{color} **%{petName}** for **%{coins}** coins? Reply with \"yes\" to confirm.",
+      "timeout": "You did not confirm in time. The sale has been canceled.",
+      "success": "\nYou sold your %{color} **%{petName}** for **%{coins}** coins!\nYou now have **${client.utils.formatNumber(user.balance.coin)}** coins."
+    },
+    "buyfood": {
+      "invalidQuantity": "Please specify a valid quantity to buy!",
+      "notEnoughCoins": "You don’t have enough coins! You need **%{totalCost}** coins, but you only have **%{balance}**.",
+      "success": "\nYou bought **%{quantity}** food item(s) for **%{totalCost}** coins!\nYou now have **%{balance}** coins."
+    }
   }
 }
