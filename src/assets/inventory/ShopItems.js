@@ -649,7 +649,7 @@ module.exports = [
   {
     name: "FOOD FOR PET",
     description: `Food for pet items to earn XP with your pet!\n**・** \`pbuy {id}\` to buy an item`,
-    type: "food",
+    type: "petfood",
     inventory: [
       {
         id: "fp01",
