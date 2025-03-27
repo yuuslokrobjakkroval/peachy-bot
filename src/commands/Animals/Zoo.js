@@ -63,7 +63,7 @@ module.exports = class Zoo extends Command {
           const petData = petList.find((p) => p.id === pet.id);
           const currentEmoji = petData.emoji[pet.level];
           return (
-            `**${index + 1}. ${petData.name}** ${currentEmoji}\n` +
+            `**${index + 1}**. ${petData.name} ${currentEmoji}\n` +
             `ID: \`${pet.id}\`\n` +
             `Level: ${pet.level}\n` +
             `EXP: ${pet.levelXp}/${expList[pet.level + 1] || "MAX"}\n`
