@@ -16,7 +16,6 @@ const petList = [
     id: "bubbles",
     name: "Bubbles",
     emoji: [
-      "", // Level 0 (not used)
       bubbles.lvl1,
       bubbles.lvl2,
       bubbles.lvl3,
@@ -33,7 +32,6 @@ const petList = [
     id: "ash",
     name: "Ash",
     emoji: [
-      "", // Level 0 (not used)
       ash.lvl1,
       ash.lvl2,
       ash.lvl3,
@@ -50,7 +48,6 @@ const petList = [
     id: "skye",
     name: "Skye",
     emoji: [
-      "", // Level 0 (not used)
       skye.lvl1,
       skye.lvl2,
       skye.lvl3,
@@ -67,7 +64,6 @@ const petList = [
     id: "blossom",
     name: "Blossom",
     emoji: [
-      "", // Level 0 (not used)
       blossom.lvl1,
       blossom.lvl2,
       blossom.lvl3,
@@ -84,7 +80,6 @@ const petList = [
     id: "coco",
     name: "Coco",
     emoji: [
-      "", // Level 0 (not used)
       coco.lvl1,
       coco.lvl2,
       coco.lvl3,
@@ -101,7 +96,6 @@ const petList = [
     id: "tangerine",
     name: "Tangerine",
     emoji: [
-      "", // Level 0 (not used)
       tangerine.lvl1,
       tangerine.lvl2,
       tangerine.lvl3,
@@ -118,7 +112,6 @@ const petList = [
     id: "misty",
     name: "Misty",
     emoji: [
-      "", // Level 0 (not used)
       misty.lvl1,
       misty.lvl2,
       misty.lvl3,
@@ -135,7 +128,6 @@ const petList = [
     id: "plum",
     name: "Plum",
     emoji: [
-      "", // Level 0 (not used)
       plum.lvl1,
       plum.lvl2,
       plum.lvl3,
@@ -152,7 +144,6 @@ const petList = [
     id: "vivi",
     name: "Vivi",
     emoji: [
-      "", // Level 0 (not used)
       vivi.lvl1,
       vivi.lvl2,
       vivi.lvl3,
@@ -169,7 +160,6 @@ const petList = [
     id: "limey",
     name: "Limey",
     emoji: [
-      "", // Level 0 (not used)
       limey.lvl1,
       limey.lvl2,
       limey.lvl3,

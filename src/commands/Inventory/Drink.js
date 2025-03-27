@@ -1,5 +1,4 @@
 const { Command } = require('../../structures/index.js');
-const Users = require('../../schemas/user');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
 const AllItems = ShopItems.flatMap(shop => shop.inventory);
 

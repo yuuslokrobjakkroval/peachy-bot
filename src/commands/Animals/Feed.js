@@ -2,6 +2,8 @@ const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
 const petList = require("../../assets/growing/Pet");
 const expList = require("../../assets/growing/ExpList");
+const ShopItems = require('../../assets/inventory/ShopItems.js');
+const AllItems = ShopItems.flatMap(shop => shop.inventory);
 
 module.exports = class Feed extends Command {
   constructor(client) {
@@ -30,6 +32,12 @@ module.exports = class Feed extends Command {
           required: true,
         },
         {
+          name: "food",
+          description: "The ID of the pet food to feed your pets",
+          type: 3, // String
+          required: true,
+        },
+        {
           name: "quantity",
           description: "Amount of food to feed (default: 1)",
           type: 4, // Integer
@@ -40,12 +48,8 @@ module.exports = class Feed extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-    const animalMessages = language.locales.get(
-      language.defaultLocale
-    )?.animalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const animalMessages = language.locales.get(language.defaultLocale)?.animalMessages;
 
     try {
       // Get user data
@@ -72,7 +76,8 @@ module.exports = class Feed extends Command {
 
       // Get the pet ID and quantity from arguments
       const petId = args[0].toLowerCase();
-      const quantity = args[1] ? parseInt(args[1]) : 1; // Default to 1 if no quantity specified
+      const foodpet = args[1].toLowerCase(); // Default to 1 if no quantity specified
+      const quantity = args[2] ? parseInt(args[2]) : 1; // Default to 1 if no quantity specified
 
       if (isNaN(quantity) || quantity < 1) {
         const embed = client
@@ -101,8 +106,7 @@ module.exports = class Feed extends Command {
 
       // Check if the pet is already at max level
       if (pet.level >= 10) {
-        const embed = client
-          .embed()
+        const embed = client.embed()
           .setColor(color.danger)
           .setDescription(
             animalMessages?.feed?.maxLevel?.replace(
@@ -115,16 +119,15 @@ module.exports = class Feed extends Command {
       }
 
       // Check if the user has enough food
-      const foodItem = user.inventory.find((item) => item.id === "petfood");
+      const foodItem = AllItems.find((item) => item.id === foodpet);
       if (!foodItem || foodItem.quantity < quantity) {
-        const embed = client
-          .embed()
+        const embed = client.embed()
           .setColor(color.danger)
           .setDescription(
             animalMessages?.feed?.noFood ||
               `You don’t have enough food! You need ${quantity} but have ${
                 foodItem?.quantity || 0
-              }. Buy more with \`buyfood\`.`
+              }. Buy more with \`shop\` to buy food for pet.`
           );
         return ctx.sendMessage({ embeds: [embed] });
       }
@@ -135,7 +138,8 @@ module.exports = class Feed extends Command {
 
       // Generate random XP between 8-10 for each food unit
       for (let i = 0; i < quantity; i++) {
-        totalXpGained += Math.floor(Math.random() * 3) + 8; // Random number between 8-10
+        const randomXp = Math.floor(Math.random() * 3) + 8; // Random number between 8-10
+        totalXpGained += foodItem.xp + randomXp; // Base XP + random XP
       }
 
       pet.levelXp += totalXpGained;
@@ -187,7 +191,7 @@ module.exports = class Feed extends Command {
                   ?.replace("%{petName}", petData.name)
                   ?.replace("%{exp}", pet.levelXp)
                   ?.replace("%{emoji}", petData.emoji[pet.level]) +
-                  `\nFed ${quantity} food for ${totalXpGained} EXP!` ||
+                  `\nFed ${foodItem.emoji} ${quantity} food for ${totalXpGained} EXP!` ||
                 `\nYou fed your **${
                   petData.name
                 }** ${quantity} food for ${totalXpGained} EXP! Current EXP: ${
