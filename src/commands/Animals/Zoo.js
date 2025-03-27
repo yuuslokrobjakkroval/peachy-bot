@@ -1,6 +1,5 @@
 const { Command } = require("../../structures/index.js");
 const petList = require("../../assets/growing/Pet");
-const sellingList = require("../../assets/growing/SellingList");
 const expList = require("../../assets/growing/ExpList");
 
 module.exports = class Zoo extends Command {
@@ -27,12 +26,8 @@ module.exports = class Zoo extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-    const animalMessages = language.locales.get(
-      language.defaultLocale
-    )?.animalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const animalMessages = language.locales.get(language.defaultLocale)?.animalMessages;
 
     try {
       // Get user data
@@ -57,6 +52,12 @@ module.exports = class Zoo extends Command {
         return ctx.sendMessage({ embeds: [embed] });
       }
 
+      // Find the pet with the highest level
+      const highestLevelPet = user.zoo.reduce((maxPet, currentPet) => {
+        return currentPet.level > maxPet.level ? currentPet : maxPet;
+      }, user.zoo[0]); // Start with the first pet as the initial max
+      const petInfo = petList.find((p) => p.id === highestLevelPet.id.toLowerCase());
+
       // Create a description of the user's zoo
       const zooDescription = user.zoo.map((pet, index) => {
           const petData = petList.find((p) => p.id === pet.id);
@@ -74,6 +75,7 @@ module.exports = class Zoo extends Command {
       const embed = client
         .embed()
         .setColor(color.main)
+        .setThumbnail(highestLevelPet ? client.utils.emojiToImage(petInfo.emoji[highestLevelPet.level]) : ctx.author.displayAvatarURL({ dynamic: true }),)
         .setDescription(
           (generalMessages?.title
             ?.replace("%{mainLeft}", emoji.mainLeft)

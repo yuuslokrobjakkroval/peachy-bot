@@ -43,7 +43,7 @@ module.exports = class Catch extends Command {
       }
 
       // Check for cooldown
-      const cooldownTime = 3600 * 1000; // 1 hour cooldown
+      const cooldownTime = 10 * 60 * 1000; // 10 min cooldown
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
