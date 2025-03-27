@@ -74,7 +74,7 @@ module.exports = class Inventory extends Command {
       const inventoryTypes = [
         "milk",
         "food",
-        "petfood",
+        "pet food",
         "drink",
         "cake",
         "couple",

@@ -11,8 +11,8 @@ module.exports = class Feed extends Command {
       name: "feed",
       description: {
         content: "Feed a pet in your zoo to help it grow!",
-        examples: ["feed bubbles", "feed bubbles 3"],
-        usage: "feed <pet id> [quantity]",
+        examples: ["feed bubbles fp01", "feed bubbles fp03 3"],
+        usage: "feed <pet id> <food id> [quantity]",
       },
       category: "animals",
       aliases: ["f"],
@@ -33,7 +33,7 @@ module.exports = class Feed extends Command {
         },
         {
           name: "food",
-          description: "The ID of the pet food to feed your pets",
+          description: "The ID of the food to feed your pets",
           type: 3, // String
           required: true,
         },
@@ -41,7 +41,7 @@ module.exports = class Feed extends Command {
           name: "quantity",
           description: "Amount of food to feed (default: 1)",
           type: 4, // Integer
-          required: false,
+          required: true,
         },
       ],
     });
@@ -119,7 +119,8 @@ module.exports = class Feed extends Command {
       }
 
       // Check if the user has enough food
-      const foodItem = AllItems.find((item) => item.id === foodId);
+      const foodItem = user.inventory.find((item) => item.id === foodId);
+      const foodInfo = AllItems.find(({ id }) => id.toLowerCase() === foodId.toLowerCase());
       if (!foodItem || foodItem.quantity <= quantity) {
         const embed = client.embed()
           .setColor(color.danger)
@@ -139,7 +140,7 @@ module.exports = class Feed extends Command {
       // Generate random XP between 8-10 for each food unit
       for (let i = 0; i < quantity; i++) {
         const randomXp = Math.floor(Math.random() * 3) + 8; // Random number between 8-10
-        totalXpGained += foodItem.xp + randomXp; // Base XP + random XP
+        totalXpGained += foodInfo.xp + randomXp; // Base XP + random XP
       }
 
       pet.levelXp += totalXpGained;
@@ -191,7 +192,7 @@ module.exports = class Feed extends Command {
                   ?.replace("%{petName}", petData.name)
                   ?.replace("%{exp}", pet.levelXp)
                   ?.replace("%{emoji}", petData.emoji[pet.level]) +
-                  `\nFed ${foodItem.emoji} ${quantity} food for ${totalXpGained} EXP!` ||
+                  `\nFed ${foodInfo.emoji} ${quantity} food for ${totalXpGained} EXP!` ||
                 `\nYou fed your **${
                   petData.name
                 }** ${quantity} food for ${totalXpGained} EXP! Current EXP: ${
