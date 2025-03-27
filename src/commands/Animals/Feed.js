@@ -121,7 +121,7 @@ module.exports = class Feed extends Command {
       // Check if the user has enough food
       const foodItem = user.inventory.find((item) => item.id === foodId);
       const foodInfo = AllItems.find(({ id }) => id.toLowerCase() === foodId.toLowerCase());
-      if (!foodItem || foodItem.quantity <= quantity) {
+      if (!foodItem || foodItem.quantity < quantity) {
         const embed = client.embed()
           .setColor(color.danger)
           .setDescription(
