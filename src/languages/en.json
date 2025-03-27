@@ -849,7 +849,7 @@
       "notMaxLevel": "Your **%{petName}** needs to be Level 10 to sell! Keep feeding it.",
       "confirm": "Are you sure you want to sell your %{color} **%{petName}** for **%{coins}** coins? Reply with \"yes\" to confirm.",
       "timeout": "You did not confirm in time. The sale has been canceled.",
-      "success": "\nYou sold your %{color} **%{petName}** for **%{coins}** coins!\nYou now have **${client.utils.formatNumber(user.balance.coin)}** coins."
+      "success": "\nYou sold your %{color} **%{petName}** for **%{coins}** coins!\nYou now have **%{userBalance}** coins."
     },
     "buyfood": {
       "invalidQuantity": "Please specify a valid quantity to buy!",
