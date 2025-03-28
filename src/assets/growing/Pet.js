@@ -1,49 +1,14 @@
+const petEmoji = require("./PetEmoji"); // Get the whole object first
 const {
-  // bubbles,
-  // ash,
   skye,
   blossom,
   coco,
-  // tangerine,
   misty,
   plum,
-  // vivi,
   limey,
-} = require("./PetEmoji");
+} = petEmoji; // Then destructure from petEmoji
 
 const petList = [
-  // {
-  //   id: "bubbles",
-  //   name: "Bubbles",
-  //   emoji: [
-  //     bubbles.lvl1,
-  //     bubbles.lvl2,
-  //     bubbles.lvl3,
-  //     bubbles.lvl4,
-  //     bubbles.lvl5,
-  //     bubbles.lvl6,
-  //     bubbles.lvl7,
-  //     bubbles.lvl8,
-  //     bubbles.lvl9,
-  //     bubbles.lvl10,
-  //   ],
-  // },
-  // {
-  //   id: "ash",
-  //   name: "Ash",
-  //   emoji: [
-  //     ash.lvl1,
-  //     ash.lvl2,
-  //     ash.lvl3,
-  //     ash.lvl4,
-  //     ash.lvl5,
-  //     ash.lvl6,
-  //     ash.lvl7,
-  //     ash.lvl8,
-  //     ash.lvl9,
-  //     ash.lvl10,
-  //   ],
-  // },
   {
     id: "skye",
     name: "Skye",
@@ -92,22 +57,6 @@ const petList = [
       coco.lvl10,
     ],
   },
-  // {
-  //   id: "tangerine",
-  //   name: "Tangerine",
-  //   emoji: [
-  //     tangerine.lvl1,
-  //     tangerine.lvl2,
-  //     tangerine.lvl3,
-  //     tangerine.lvl4,
-  //     tangerine.lvl5,
-  //     tangerine.lvl6,
-  //     tangerine.lvl7,
-  //     tangerine.lvl8,
-  //     tangerine.lvl9,
-  //     tangerine.lvl10,
-  //   ],
-  // },
   {
     id: "misty",
     name: "Misty",
@@ -140,22 +89,6 @@ const petList = [
       plum.lvl10,
     ],
   },
-  // {
-  //   id: "vivi",
-  //   name: "Vivi",
-  //   emoji: [
-  //     vivi.lvl1,
-  //     vivi.lvl2,
-  //     vivi.lvl3,
-  //     vivi.lvl4,
-  //     vivi.lvl5,
-  //     vivi.lvl6,
-  //     vivi.lvl7,
-  //     vivi.lvl8,
-  //     vivi.lvl9,
-  //     vivi.lvl10,
-  //   ],
-  // },
   {
     id: "limey",
     name: "Limey",
