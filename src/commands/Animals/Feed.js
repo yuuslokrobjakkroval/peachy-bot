@@ -197,7 +197,7 @@ module.exports = class Feed extends Command {
                   ?.replace("%{level}", pet.level)
                   ?.replace(
                     "%{emoji}",
-                    petData.emoji[pet.level > 1 ? pet.level - 1 : pet.level]
+                    petData.emoji[pet.level === 1 ? 0 : pet.level - 1]
                   ) + `\nFed ${quantity} food for ${totalXpGained} EXP!` ||
                 `\nYou fed your **${
                   petData.name
