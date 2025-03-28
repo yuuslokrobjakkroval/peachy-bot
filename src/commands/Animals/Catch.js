@@ -27,8 +27,12 @@ module.exports = class Catch extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const animalMessages = language.locales.get(language.defaultLocale)?.animalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
+    const animalMessages = language.locales.get(
+      language.defaultLocale
+    )?.animalMessages;
 
     try {
       // Get user data
@@ -139,8 +143,8 @@ module.exports = class Catch extends Command {
             ?.replace("%{mainRight}", emoji.mainRight) || "✨ **CATCH** ✨") +
             (animalMessages?.catch?.success
               ?.replace("%{petName}", randomPet.name)
-              ?.replace("%{emoji}", randomPet.emoji[1]) ||
-              `\nYou caught a **${randomPet.name}** egg! ${randomPet.emoji[1]}\nIt has been added to your zoo.`)
+              ?.replace("%{emoji}", randomPet.emoji[0]) ||
+              `\nYou caught a **${randomPet.name}** egg! ${randomPet.emoji[0]}\nIt has been added to your zoo.`)
         )
         .setFooter({
           text:

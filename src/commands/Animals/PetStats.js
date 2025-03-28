@@ -65,8 +65,12 @@ module.exports = class PetStats extends Command {
               .map((pet, index) => {
                 const petData = petList.find((p) => p.id === pet.id);
                 const petName = petData ? petData.name : pet.id;
-                const currentEmoji = petData ? petData.emoji[pet.level] : "❓";
-                return `**${index + 1}**. ${petName} ${currentEmoji}\nID: \`${pet.id}\`\nLevel: ${pet.level}`;
+                const currentEmoji = petData
+                  ? petData.emoji[pet.level - 1]
+                  : "❓";
+                return `**${index + 1}**. ${petName} ${currentEmoji}\nID: \`${
+                  pet.id
+                }\`\nLevel: ${pet.level}`;
               })
               .join("\n")
           : "You don’t have any pets in your zoo yet! Use `catch` to catch an egg.";

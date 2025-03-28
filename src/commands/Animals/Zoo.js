@@ -26,8 +26,12 @@ module.exports = class Zoo extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const animalMessages = language.locales.get(language.defaultLocale)?.animalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
+    const animalMessages = language.locales.get(
+      language.defaultLocale
+    )?.animalMessages;
 
     try {
       // Get user data
@@ -56,12 +60,15 @@ module.exports = class Zoo extends Command {
       const highestLevelPet = user.zoo.reduce((maxPet, currentPet) => {
         return currentPet.level > maxPet.level ? currentPet : maxPet;
       }, user.zoo[0]); // Start with the first pet as the initial max
-      const petInfo = petList.find((p) => p.id === highestLevelPet.id.toLowerCase());
+      const petInfo = petList.find(
+        (p) => p.id === highestLevelPet.id.toLowerCase()
+      );
 
       // Create a description of the user's zoo
-      const zooDescription = user.zoo.map((pet, index) => {
+      const zooDescription = user.zoo
+        .map((pet, index) => {
           const petData = petList.find((p) => p.id === pet.id);
-          const currentEmoji = petData.emoji[pet.level];
+          const currentEmoji = petData.emoji[pet.level - 1];
           return (
             `**${index + 1}**. ${petData.name} ${currentEmoji}\n` +
             `ID: \`${pet.id}\`\n` +
@@ -75,7 +82,13 @@ module.exports = class Zoo extends Command {
       const embed = client
         .embed()
         .setColor(color.main)
-        .setThumbnail(highestLevelPet ? client.utils.emojiToImage(petInfo.emoji[highestLevelPet.level]) : ctx.author.displayAvatarURL({ dynamic: true }),)
+        .setThumbnail(
+          highestLevelPet
+            ? client.utils.emojiToImage(
+                petInfo.emoji[highestLevelPet.level - 1]
+              )
+            : ctx.author.displayAvatarURL({ dynamic: true })
+        )
         .setDescription(
           (generalMessages?.title
             ?.replace("%{mainLeft}", emoji.mainLeft)

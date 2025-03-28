@@ -2,8 +2,8 @@ const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
 const petList = require("../../assets/growing/Pet");
 const expList = require("../../assets/growing/ExpList");
-const ShopItems = require('../../assets/inventory/ShopItems.js');
-const AllItems = ShopItems.flatMap(shop => shop.inventory);
+const ShopItems = require("../../assets/inventory/ShopItems.js");
+const AllItems = ShopItems.flatMap((shop) => shop.inventory);
 
 module.exports = class Feed extends Command {
   constructor(client) {
@@ -48,8 +48,12 @@ module.exports = class Feed extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const animalMessages = language.locales.get(language.defaultLocale)?.animalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
+    const animalMessages = language.locales.get(
+      language.defaultLocale
+    )?.animalMessages;
 
     try {
       // Get user data
@@ -75,9 +79,15 @@ module.exports = class Feed extends Command {
       }
 
       // Get the pet ID and quantity from arguments
-      const petId = ctx.isInteraction ? ctx.interaction.options.getString("pet") : args[0];
-      const foodId = ctx.isInteraction ? ctx.interaction.options.getString("food") : args[1];
-      const quantity = ctx.isInteraction ? ctx.interaction.options.getInteger("quantity") : args[2] || 1;  // Default to 1 if no quantity specified
+      const petId = ctx.isInteraction
+        ? ctx.interaction.options.getString("pet")
+        : args[0];
+      const foodId = ctx.isInteraction
+        ? ctx.interaction.options.getString("food")
+        : args[1];
+      const quantity = ctx.isInteraction
+        ? ctx.interaction.options.getInteger("quantity")
+        : args[2] || 1; // Default to 1 if no quantity specified
 
       if (isNaN(quantity) || quantity < 1) {
         const embed = client
@@ -106,7 +116,8 @@ module.exports = class Feed extends Command {
 
       // Check if the pet is already at max level
       if (pet.level >= 10) {
-        const embed = client.embed()
+        const embed = client
+          .embed()
           .setColor(color.danger)
           .setDescription(
             animalMessages?.feed?.maxLevel?.replace(
@@ -120,9 +131,12 @@ module.exports = class Feed extends Command {
 
       // Check if the user has enough food
       const foodItem = user.inventory.find((item) => item.id === foodId);
-      const foodInfo = AllItems.find(({ id }) => id.toLowerCase() === foodId.toLowerCase());
+      const foodInfo = AllItems.find(
+        ({ id }) => id.toLowerCase() === foodId.toLowerCase()
+      );
       if (!foodItem || foodItem.quantity < quantity) {
-        const embed = client.embed()
+        const embed = client
+          .embed()
           .setColor(color.danger)
           .setDescription(
             animalMessages?.feed?.noFood ||
@@ -181,17 +195,17 @@ module.exports = class Feed extends Command {
               ? animalMessages?.feed?.levelUp
                   ?.replace("%{petName}", petData.name)
                   ?.replace("%{level}", pet.level)
-                  ?.replace("%{emoji}", petData.emoji[pet.level]) +
+                  ?.replace("%{emoji}", petData.emoji[pet.level - 1]) +
                   `\nFed ${quantity} food for ${totalXpGained} EXP!` ||
                 `\nYou fed your **${
                   petData.name
                 }** ${quantity} food for ${totalXpGained} EXP! It leveled up to Level ${
                   pet.level
-                }! ${petData.emoji[pet.level]}`
+                }! ${petData.emoji[pet.level - 1]}`
               : animalMessages?.feed?.success
                   ?.replace("%{petName}", petData.name)
                   ?.replace("%{exp}", pet.levelXp)
-                  ?.replace("%{emoji}", petData.emoji[pet.level]) +
+                  ?.replace("%{emoji}", petData.emoji[pet.level - 1]) +
                   `\nFed ${foodInfo.emoji} ${quantity} food for ${totalXpGained} EXP!` ||
                 `\nYou fed your **${
                   petData.name

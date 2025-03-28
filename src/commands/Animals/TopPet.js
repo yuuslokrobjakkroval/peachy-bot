@@ -50,7 +50,7 @@ module.exports = class TopPet extends Command {
               .map((user, index) => {
                 const userObj = client.users.cache.get(user.userId);
                 const username = userObj ? userObj.username : "Unknown User";
-                return `**${index + 1}. ${username}** - ${
+                return `**${index + 1}**. ${username}\n- ${
                   user.feedCount
                 } feeds`;
               })
@@ -64,7 +64,7 @@ module.exports = class TopPet extends Command {
               .map((user, index) => {
                 const userObj = client.users.cache.get(user.userId);
                 const username = userObj ? userObj.username : "Unknown User";
-                return `**${index + 1}. ${username}** - ${
+                return `**${index + 1}**. ${username}\n- ${
                   user.sellPetCount
                 } pets sold`;
               })
