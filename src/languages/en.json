@@ -840,7 +840,7 @@
     "feed": {
       "invalidPet": "Please specify a valid pet ID! Use `zoo` to see your pets.",
       "noFood": "You’re out of food! Buy more with `shop`.",
-      "maxLevel": "Your **%{petName}** is already at the maximum level (Level 10)! You can sell it with `sellpet %{petId}`.",
+      "maxLevel": "Your **%{petName}** is already at the maximum level!\nYou can sell it with `sellpet %{petId}`.",
       "success": "\nYou fed your **%{petName}**! It now has %{exp} EXP. %{emoji}",
       "levelUp": "\nYou fed your **%{petName}**! It leveled up to Level %{level}! %{emoji}"
     },

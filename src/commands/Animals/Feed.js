@@ -120,10 +120,9 @@ module.exports = class Feed extends Command {
           .embed()
           .setColor(color.danger)
           .setDescription(
-            animalMessages?.feed?.maxLevel?.replace(
-              "%{petName}",
-              petData.name
-            ) ||
+            animalMessages?.feed?.maxLevel
+              ?.replace("%{petName}", petData.name)
+              ?.replace("%{petId}", petId) ||
               `Your **${petData.name}** is already at the maximum level (Level 10)! You can sell it with \`sell ${petId}\`.`
           );
         return ctx.sendMessage({ embeds: [embed] });
