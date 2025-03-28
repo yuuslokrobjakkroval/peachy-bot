@@ -69,7 +69,7 @@ module.exports = class Zoo extends Command {
         .map((pet, index) => {
           const petData = petList.find((p) => p.id === pet.id);
           const currentEmoji =
-            petData.emoji[pet.level > 1 ? pet.level - 1 : pet.level];
+            petData.emoji[pet.level === 1 ? 0 : pet.level - 1];
           return (
             `**${index + 1}**. ${petData.name} ${currentEmoji}\n` +
             `ID: \`${pet.id}\`\n` +
@@ -87,9 +87,7 @@ module.exports = class Zoo extends Command {
           highestLevelPet
             ? client.utils.emojiToImage(
                 petInfo.emoji[
-                  highestLevelPet.level > 1
-                    ? highestLevelPet.level - 1
-                    : highestLevelPet.level
+                  highestLevelPet.level === 1 ? 0 : highestLevelPet.level - 1
                 ]
               )
             : ctx.author.displayAvatarURL({ dynamic: true })

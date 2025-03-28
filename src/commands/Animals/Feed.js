@@ -195,17 +195,22 @@ module.exports = class Feed extends Command {
               ? animalMessages?.feed?.levelUp
                   ?.replace("%{petName}", petData.name)
                   ?.replace("%{level}", pet.level)
-                  ?.replace("%{emoji}", petData.emoji[pet.level - 1]) +
-                  `\nFed ${quantity} food for ${totalXpGained} EXP!` ||
+                  ?.replace(
+                    "%{emoji}",
+                    petData.emoji[pet.level > 1 ? pet.level - 1 : pet.level]
+                  ) + `\nFed ${quantity} food for ${totalXpGained} EXP!` ||
                 `\nYou fed your **${
                   petData.name
                 }** ${quantity} food for ${totalXpGained} EXP! It leveled up to Level ${
                   pet.level
-                }! ${petData.emoji[pet.level - 1]}`
+                }! ${petData.emoji[pet.level > 1 ? pet.level - 1 : pet.level]}`
               : animalMessages?.feed?.success
                   ?.replace("%{petName}", petData.name)
                   ?.replace("%{exp}", pet.levelXp)
-                  ?.replace("%{emoji}", petData.emoji[pet.level - 1]) +
+                  ?.replace(
+                    "%{emoji}",
+                    petData.emoji[pet.level === 1 ? 0 : pet.level - 1]
+                  ) +
                   `\nFed ${foodInfo.emoji} ${quantity} food for ${totalXpGained} EXP!` ||
                 `\nYou fed your **${
                   petData.name

@@ -66,7 +66,7 @@ module.exports = class PetStats extends Command {
                 const petData = petList.find((p) => p.id === pet.id);
                 const petName = petData ? petData.name : pet.id;
                 const currentEmoji = petData
-                  ? petData.emoji[pet.level > 1 ? pet.level - 1 : pet.level]
+                  ? petData.emoji[pet.level === 1 ? 0 : pet.level - 1]
                   : "❓";
                 return `**${index + 1}**. ${petName} ${currentEmoji}\nID: \`${
                   pet.id
