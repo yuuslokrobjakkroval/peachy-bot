@@ -28,13 +28,34 @@ module.exports = class RemoveOwner extends Command {
     const generalMessages = language.locales.get(
       language.defaultLocale
     )?.generalMessages;
+
+    // Check if argument is provided
+    if (!args[0]) {
+      return client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "Please provide a user to remove as owner",
+        color
+      );
+    }
+
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user")
-      : ctx.message.mentions.members.first() ||
-        ctx.guild.members.cache.get(args[0]) ||
+      : ctx.message.mentions.members.first()?.user || // Use .user to get User object
+        ctx.guild.members.cache.get(args[0])?.user ||
         args[0];
 
-    const userId = typeof mention === "string" ? mention : mention.id;
+    const userId = typeof mention === "string" ? mention : mention?.id;
+
+    // Validate userId format (Discord IDs are 17-19 digits)
+    if (typeof userId === "string" && !/^\d{17,19}$/.test(userId)) {
+      return client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "Invalid user ID format",
+        color
+      );
+    }
 
     let userInfo;
     try {
@@ -49,8 +70,8 @@ module.exports = class RemoveOwner extends Command {
     }
 
     try {
-      // Check if the owner exists
-      const existingOwner = await Owners.findOne({ ownerId: userInfo.id });
+      // Check if the owner exists using nested user.id
+      const existingOwner = await Owners.findOne({ "user.id": userInfo.id });
       if (!existingOwner) {
         return client.utils.sendErrorMessage(
           client,
@@ -60,7 +81,9 @@ module.exports = class RemoveOwner extends Command {
         );
       }
 
-      await Owners.deleteOne({ ownerId: userInfo.id });
+      // Delete the owner document
+      await Owners.deleteOne({ "user.id": userInfo.id });
+
       const embed = client
         .embed()
         .setColor(color.main)
@@ -69,7 +92,7 @@ module.exports = class RemoveOwner extends Command {
         )
         .setFooter({
           text:
-            generalMessages.requestedBy.replace(
+            generalMessages?.requestedBy.replace(
               "%{username}",
               ctx.author.displayName
             ) || `Requested by ${ctx.author.displayName}`,

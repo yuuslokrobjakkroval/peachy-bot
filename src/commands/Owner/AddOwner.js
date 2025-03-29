@@ -78,8 +78,8 @@ module.exports = class AddOwner extends Command {
     }
 
     try {
-      // Check if user is already an owner using ownerId
-      const existingOwner = await Owners.findOne({ ownerId: userInfo.id });
+      // Check if user is already an owner using user.id
+      const existingOwner = await Owners.findOne({ "user.id": userInfo.id });
       if (existingOwner) {
         return client.utils.sendErrorMessage(
           client,
@@ -89,8 +89,19 @@ module.exports = class AddOwner extends Command {
         );
       }
 
-      // Create new owner document with explicit fields
-      await Owners.create({ ownerId: userInfo.id });
+      // Create new owner document with structured user data
+      const newOwner = await Owners.create({
+        user: {
+          id: userInfo.id,
+          username: userInfo.username,
+          discriminator: userInfo.discriminator,
+          global_name: userInfo.globalName || userInfo.displayName, // Fallback to displayName if globalName is unavailable
+          avatar: userInfo.avatar,
+          banner: userInfo.banner || null, // Banner might not always be available
+          accent_color: userInfo.accentColor || null, // Accent color might not always be set
+          banner_color: userInfo.hexAccentColor || null, // Hex color if available
+        },
+      });
 
       const embed = client
         .embed()

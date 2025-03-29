@@ -39,14 +39,14 @@ module.exports = class ListOwners extends Command {
       const ownerList = await Promise.all(
         owners.map(async (owner) => {
           try {
-            const user = await client.users.fetch(owner.ownerId);
+            const user = await client.users.fetch(owner.user.id);
             return {
               id: user.id,
               name: user.displayName || user.username,
             };
           } catch (fetchError) {
             return {
-              id: owner.ownerId,
+              id: owner.user.id,
               name: "Unknown User",
             };
           }
