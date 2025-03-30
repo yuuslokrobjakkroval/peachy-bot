@@ -275,7 +275,7 @@ module.exports = class InteractionCreate extends Event {
             ];
 
             let logChannelId;
-            if (["animals"].includes(command.category.toLowerCase())) {
+            if (["animals", "building"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[8];
             } else if (["work"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[7];

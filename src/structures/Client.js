@@ -58,8 +58,9 @@ module.exports = class PeachyClient extends Client {
     this.body = [];
     this.utils = Utils;
     this.abilities = Abilities;
-    this.defaultColor = themeConfig.normal.color; // Default color set on client
-    this.emoji = emojis;  //Default emojis
+    this.defaultColor = themeConfig.normal.color;
+    this.color = globalConfig.color;
+    this.emoji = emojis;
     this.moment = moment;
     this.i18n = new I18n(globalConfig.language);
   }

@@ -1,5 +1,6 @@
 const Command = require("../../structures/Command.js");
 const { StringSelectMenuBuilder } = require("discord.js");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Help extends Command {
   constructor(client) {
@@ -93,7 +94,7 @@ module.exports = class Help extends Command {
                 value: categories
                     .map(
                         (category) =>
-                            `- ${emoji.help[category.toLowerCase()] || ""} ${
+                            `- ${emoji.help[category.toLowerCase()] ? emoji.help[category.toLowerCase()] : globalEmoji.help[category.toLowerCase()] || ""} ${
                                 categoriesMessages[category.toLowerCase()] || category
                             }`
                     )

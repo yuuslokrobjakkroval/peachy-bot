@@ -1231,8 +1231,7 @@ module.exports = class Utils {
     // Announce the winners
     await message.reply({
       embeds: [
-        client
-          .embed()
+        client.embed()
           .setColor(color.main)
           .setDescription(
             winnerIdArray.length
