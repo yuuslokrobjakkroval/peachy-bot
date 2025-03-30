@@ -6,14 +6,14 @@ const moment = require("moment");
 module.exports = class Catch extends Command {
   constructor(client) {
     super(client, {
-      name: "catch",
+      name: "tame",
       description: {
-        content: "Catch a random egg to add to your zoo.",
-        examples: ["catch"],
-        usage: "catch",
+        content: "Tame a random egg to add to your zoo.",
+        examples: ["tame"],
+        usage: "tame",
       },
       category: "animals",
-      aliases: ["c"],
+      aliases: ["t"],
       cooldown: 5,
       args: false,
       permissions: {
