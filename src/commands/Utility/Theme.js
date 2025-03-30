@@ -17,7 +17,7 @@ module.exports = class Theme extends Command {
                 usage: 'theme show\n theme normal\n theme peach\n theme goma\n theme help',
             },
             category: 'utility',
-            aliases: ['t'],
+            aliases: [],
             cooldown: 3,
             args: false,
             permissions: {
