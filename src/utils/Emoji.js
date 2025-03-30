@@ -22,6 +22,28 @@ module.exports = {
     timestamp: '<:TIMESTAMP:1339925743777353780>',
     buyMeCafe: '<:BUYMEACOFFEE:1350663153759031387>',
 
+    help: {
+        category: '📚',
+        actions: '🎭',
+        animals: '🐾',
+        bank: '🏦',
+        build: '⛏️',
+        economy: '💰',
+        emotes: '😀',
+        fun: '🎉',
+        gambling: '🎰',
+        games: '🎮',
+        giveaways: '🎁',
+        info: 'ℹ️',
+        inventory: '🎒',
+        profile: '👤',
+        rank: '🏆',
+        social: '🗣️',
+        relationship: '❤️',
+        utility: '🛠️',
+        work: '💼',
+    },
+
     // OPTION
     result: {
         tick: '<:YES:1350683168545706064>',

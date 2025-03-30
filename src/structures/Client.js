@@ -18,49 +18,32 @@ const globalConfig = require("../utils/Config");
 const { I18n } = require("@hammerhq/localization");
 const themeConfig = require("../config");
 
-// FREE
+// Emojis - Centralized in one object for easier management
 const emojis = require("../emojis");
-const emojiPeach = require("../theme/Peach/emojis");
-const emojiGoma = require("../theme/Goma/emojis");
-
-// NORMAL
-const emojiOcean = require("../theme/OceanBreeze/emojis");
-const emojiFrightFest = require("../theme/FrightFest/emojis");
-const emojiBooBash = require("../theme/BooBash/emojis");
-const emojiChristmas = require("../theme/Christmas/emojis");
-const emojiFestiveFrost = require("../theme/FestiveFrost/emojis");
-// const emojiMysticRealm = require("../theme/MySticRealm/emojis");
-// const emojiLunaLegend = require("../theme/LunarLegends/emojis");
-
-// SPECIAL
-const emojiHeaven = require("../theme/CelestialGrace/emojis");
-const emojiSakura = require("../theme/SakuraSerenity/emojis");
-const emojiBee = require("../theme/BuzzingBliss/emojis");
-const emojiFroggy = require("../theme/Froggy/emojis");
-const emojiSleepyPeach = require("../theme/ASleepyPeach/emojis");
-const emojiMagicalForest = require("../theme/MagicalForest/emojis");
-const emojiMatchaLatte = require("../theme/Matchalatte/emojis");
-// const emojiDarkAcademia = require("../theme/DarkAcademia/emojis");
-const emojiSpringBear = require("../theme/SpringBear/emojis");
-// const emojiFantasy = require("../theme/FantasyRpg/emojis");
-// const emojiCozySummer = require("../theme/CozySummer/emojis");
-
-// SUPPORT
-// const emojiSpiderMan = require("../theme/SpiderMan/emojis");
-// const emojiCucumber = require("../theme/Cucumber/emojis");
-// const emojiCappuccino = require("../theme/Cappuccino/emojis");
-// const emojiNithGojo = require("../theme/NithGoJo/emojis");
-const emojiQuirkyQuackers = require("../theme/QuirkyQuackers/emojis");
-const emojiKeoYuu = require("../theme/KeoYuu/emojis");
-// const emojiYuna = require("../theme/Yuna/emojis");
-// const emojiYunaYuna = require("../theme/YunaYuna/emojis");
-const emojiGhastlyGrins = require("../theme/GhastlyGrins/emojis");
-const emojiLoveBunnie = require("../theme/LoveBunnie/emojis");
-// const emojiSeaCoral = require("../theme/SeaCoral/emojis");
-
-// SELL
-const emojiEnchantedCatLake = require("../theme/EnchantedCatLake/emojis");
-const emojiYuyuzu = require("../theme/Yuyuzu/emojis");
+const themeEmojis = {  // Mapping theme ID to emojis - more maintainable
+  peach: require("../theme/Peach/emojis"),
+  goma: require("../theme/Goma/emojis"),
+  t01: require("../theme/OceanBreeze/emojis"),
+  t02: require("../theme/FrightFest/emojis"),
+  halloween: require("../theme/FrightFest/emojis"),
+  t03: require("../theme/BooBash/emojis"),
+  t04: require("../theme/Christmas/emojis"),
+  t05: require("../theme/FestiveFrost/emojis"),
+  st01: require("../theme/CelestialGrace/emojis"),
+  st02: require("../theme/SakuraSerenity/emojis"),
+  st03: require("../theme/BuzzingBliss/emojis"),
+  st04: require("../theme/Froggy/emojis"),
+  st05: require("../theme/ASleepyPeach/emojis"),
+  st06: require("../theme/MagicalForest/emojis"),
+  st07: require("../theme/Matchalatte/emojis"),
+  st09: require("../theme/SpringBear/emojis"),
+  st99: require("../theme/QuirkyQuackers/emojis"),
+  st2707: require("../theme/KeoYuu/emojis"),
+  st168: require("../theme/GhastlyGrins/emojis"),
+  st272: require("../theme/LoveBunnie/emojis"),
+  st1111: require("../theme/EnchantedCatLake/emojis"),
+  st2601: require("../theme/Yuyuzu/emojis"),
+};
 
 const Logger = require("./Logger");
 
@@ -75,8 +58,8 @@ module.exports = class PeachyClient extends Client {
     this.body = [];
     this.utils = Utils;
     this.abilities = Abilities;
-    this.color = themeConfig.normal.color;
-    this.emoji = emojis;
+    this.defaultColor = themeConfig.normal.color; // Default color set on client
+    this.emoji = emojis;  //Default emojis
     this.moment = moment;
     this.i18n = new I18n(globalConfig.language);
   }
@@ -86,11 +69,11 @@ module.exports = class PeachyClient extends Client {
   }
 
   async start(token) {
-    this.loadCommands();
+    await this.loadCommands();
     this.logger.info("Successfully loaded commands!");
-    this.loadEvents();
+    await this.loadEvents();
     this.logger.info("Successfully loaded events!");
-    this.connectMongodb().catch((error) => {
+    await this.connectMongodb().catch((error) => {
       console.error("Failed to connect to MongoDB:", error.message);
     });
     this.logger.info("Successfully connected to MongoDB.");
@@ -103,68 +86,54 @@ module.exports = class PeachyClient extends Client {
     await connect(globalConfig.database);
   }
 
-  loadCommands() {
-    const commandsPath = fs.readdirSync(path.join(__dirname, "../commands"));
-    commandsPath.forEach((dir) => {
-      const commandFiles = fs
-        .readdirSync(path.join(__dirname, `../commands/${dir}`))
-        .filter((file) => file.endsWith(""));
-      commandFiles.forEach(async (file) => {
-        const cmd = require(`../commands/${dir}/${file}`);
-        const command = new cmd(this, file);
-        command.category = dir;
-        command.file = file;
-        this.commands.set(command.name, command);
-        if (command.aliases.length !== 0) {
-          command.aliases.forEach((alias) => {
-            this.aliases.set(alias, command.name);
-          });
-        }
-        if (command.slashCommand) {
-          const data = {
-            name: command.name,
-            description: command.description.content,
-            type: ApplicationCommandType.ChatInput,
-            options: command.options ? command.options : null,
-            name_localizations: command.nameLocalizations
-              ? command.nameLocalizations
-              : null,
-            description_localizations: command.descriptionLocalizations
-              ? command.descriptionLocalizations
-              : null,
-            default_member_permissions:
-              command.permissions.user.length > 0
-                ? command.permissions.user
-                : null,
-          };
-          if (command.permissions.user.length > 0) {
-            const permissionValue = PermissionsBitField.resolve(
-              command.permissions.user
-            );
-            if (typeof permissionValue === "bigint") {
-              data.default_member_permissions = permissionValue.toString();
-            } else {
-              data.default_member_permissions = permissionValue;
-            }
+  async loadCommands() {
+    let commandCounter = 0;
+    const commandsPath = path.join(__dirname, "../commands");
+    const commandDirs = fs.readdirSync(commandsPath);
+
+    for (const dir of commandDirs) {
+      const commandFiles = fs.readdirSync(path.join(commandsPath, dir)).filter(file => file.endsWith(".js")); // Ensure only .js files
+      for (const file of commandFiles) {
+        try {
+          const cmd = require(`../commands/${dir}/${file}`);
+          const command = new cmd(this, file);  // Pass 'file' name
+          command.category = dir;
+          command.file = file;
+          this.commands.set(command.name, command);
+
+          if (command.aliases && command.aliases.length > 0) {  // Check if aliases exist
+            command.aliases.forEach(alias => this.aliases.set(alias, command.name));
           }
-          const json = JSON.stringify(data);
-          this.body.push(JSON.parse(json));
+
+          if (command.slashCommand) {
+            const data = {
+              name: command.name,
+              description: command.description.content,
+              type: ApplicationCommandType.ChatInput,
+              options: command.options || null,
+              name_localizations: command.nameLocalizations || null,
+              description_localizations: command.descriptionLocalizations || null,
+              default_member_permissions: command.permissions.user.length > 0
+                  ? PermissionsBitField.resolve(command.permissions.user).toString()
+                  : null
+            };
+            this.body.push(data);
+            commandCounter++;
+          }
+        } catch (error) {
+          this.logger.error(`Failed to load command ${file} in category ${dir}:`, error);
         }
-      });
-    });
+      }
+    }
+
+    this.logger.info(`Loaded a total of ${commandCounter} commands.`);
 
     this.once("ready", async () => {
-      const applicationCommands =
-        globalConfig.production === true
+      const applicationCommands = globalConfig.production
           ? Routes.applicationCommands(this.config.clientId ?? "")
-          : Routes.applicationGuildCommands(
-              this.config.clientId ?? "",
-              this.config.guildId ?? ""
-            );
+          : Routes.applicationGuildCommands(this.config.clientId ?? "", this.config.guildId ?? "");
       try {
-        const rest = new REST({ version: "10" }).setToken(
-          this.config.token ?? ""
-        );
+        const rest = new REST({ version: "10" }).setToken(this.config.token ?? "");
         await rest.put(applicationCommands, { body: this.body });
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
@@ -173,232 +142,95 @@ module.exports = class PeachyClient extends Client {
     });
   }
 
-  loadEvents() {
-    const eventsPath = fs.readdirSync(path.join(__dirname, "../events"));
-    eventsPath.forEach((dir) => {
-      const events = fs
-        .readdirSync(path.join(__dirname, `../events/${dir}`))
-        .filter((file) => file.endsWith(""));
-      events.forEach(async (file) => {
-        const event = require(`../events/${dir}/${file}`);
-        const evt = new event(this, file);
-        switch (dir) {
-          case "player":
-            this.shoukaku.on(evt.name, (...args) => evt.run(...args));
-            break;
-          default:
-            this.on(evt.name, (...args) => evt.run(...args));
-            break;
+
+  async loadEvents() {
+    const eventsPath = path.join(__dirname, "../events");
+    const eventDirs = fs.readdirSync(eventsPath);
+
+    for (const dir of eventDirs) {
+      const eventFiles = fs.readdirSync(path.join(eventsPath, dir)).filter(file => file.endsWith(".js"));
+      for (const file of eventFiles) {
+        try {
+          const event = require(`../events/${dir}/${file}`);
+          const evt = new event(this, file);
+          this.on(evt.name, (...args) => evt.run(...args)); //Simplify this
+        } catch (error) {
+          this.logger.error(`Failed to load event ${file} in category ${dir}:`, error);
         }
-      });
-    });
+      }
+      this.logger.info(`Loaded events from ${dir}`);
+    }
   }
 
-  setColorBasedOnTheme(userId) {
-    return this.utils
-      .getUser(userId)
-      .then((user) => {
-        // Determine the user's language preference
-        let userLanguage;
-        if (user && user.preferences) {
-          const { language = this.config.language.defaultLocale } =
-            user.preferences;
 
-          userLanguage = {
-            defaultLocale: language.split("-")[0],
-            directory: path.resolve(`./src/languages`),
-          };
-        } else {
-          userLanguage = {
-            defaultLocale: this.config.language.defaultLocale,
-            directory: path.resolve(`./src/languages`),
-          };
-        }
+  async setColorBasedOnTheme(userId) {
+    try {
+      const user = await this.utils.getUser(userId);
+      let userLanguage;
 
-        const language = new I18n({
-          defaultLocale: userLanguage.defaultLocale,
-          directory: userLanguage.directory,
-        });
+      if (user && user.preferences) {
+        const { language = this.config.language.defaultLocale } = user.preferences;
+        userLanguage = {
+          defaultLocale: language.split("-")[0],
+          directory: path.resolve(`./src/languages`),
+        };
+      } else {
+        userLanguage = {
+          defaultLocale: this.config.language.defaultLocale,
+          directory: path.resolve(`./src/languages`),
+        };
+      }
 
-        const localePath = path.join(
+      const language = new I18n({
+        defaultLocale: userLanguage.defaultLocale,
+        directory: userLanguage.directory,
+      });
+
+      const localePath = path.join(
           userLanguage.directory,
           `${userLanguage.defaultLocale}.json`
-        );
-        if (fs.existsSync(localePath)) {
-          const localeData = JSON.parse(fs.readFileSync(localePath, "utf8"));
-          language.locales.set(userLanguage.defaultLocale, localeData);
-        } else {
-          console.error("Locale file not found:", localePath);
-        }
+      );
+      if (fs.existsSync(localePath)) {
+        const localeData = JSON.parse(fs.readFileSync(localePath, "utf8"));
+        language.locales.set(userLanguage.defaultLocale, localeData);
+      } else {
+        console.error("Locale file not found:", localePath);
+      }
 
-        if (!language.locales.size) {
-          console.error(
+      if (!language.locales.size) {
+        console.error(
             "No locales loaded for language:",
             userLanguage.defaultLocale
-          );
+        );
+      }
+
+      let color = this.defaultColor;
+      let emoji = this.emoji;
+
+      if (user && user.preferences && user.preferences.theme) {
+        const themeId = user.preferences.theme;
+
+        const themeEmoji = themeEmojis[themeId];  // Look up emoji
+        if (themeEmoji) {
+          emoji = themeEmoji
         }
 
-        let color = themeConfig.normal.color;
-        let emoji = emojis;
-
-        if (user && user.preferences && user.preferences.theme) {
-          switch (user.preferences.theme) {
-            // NORMAL
-            case "t01":
-              color = themeConfig.oceanBreeze.color;
-              emoji = emojiOcean;
-              break;
-            case "t02":
-            case "halloween":
-              color = themeConfig.frightFest.color;
-              emoji = emojiFrightFest;
-              break;
-            case "t03":
-              color = themeConfig.booBash.color;
-              emoji = emojiBooBash;
-              break;
-            case "t04":
-              color = themeConfig.jingleJolly.color;
-              emoji = emojiChristmas;
-              break;
-            case "t05":
-              color = themeConfig.frightFest.color;
-              emoji = emojiFestiveFrost;
-              break;
-            // case "t06":
-            //   color = themeConfig.mysticRealm.color;
-            //   emoji = emojiMysticRealm;
-            //   break;
-            // case "t07":
-            //   color = themeConfig.lunaLegend.color;
-            //   emoji = emojiLunaLegend;
-            //   break;
-
-            // SPECIAL
-            case "st01":
-              color = themeConfig.celestialGrace.color;
-              emoji = emojiHeaven;
-              break;
-            case "st02":
-              color = themeConfig.sakuraSerenity.color;
-              emoji = emojiSakura;
-              break;
-            case "st03":
-              color = themeConfig.buzzingBliss.color;
-              emoji = emojiBee;
-              break;
-            case "st04":
-              color = themeConfig.froggyFun.color;
-              emoji = emojiFroggy;
-              break;
-            case "st05":
-              color = themeConfig.aSleepyPeach.color;
-              emoji = emojiSleepyPeach;
-              break;
-            case "st06":
-              color = themeConfig.magicalForest.color;
-              emoji = emojiMagicalForest;
-              break;
-            case "st07":
-              color = themeConfig.matchaLatte.color;
-              emoji = emojiMatchaLatte;
-              break;
-            // case "st08":
-            //   color = themeConfig.darkAcademia.color;
-            //   emoji = emojiDarkAcademia;
-            //   break;
-            case "st09":
-              color = themeConfig.springBear.color;
-              emoji = emojiSpringBear;
-              break;
-            // case "st10":
-            //   color = themeConfig.fantasyRpg.color;
-            //   emoji = emojiFantasy;
-            //   break;
-            // // SUPPORT
-            // case "st11":
-            //   color = themeConfig.spiderMan.color;
-            //   emoji = emojiSpiderMan;
-            //   break;
-            // case "st12":
-            //   color = themeConfig.cucumberCool.color;
-            //   emoji = emojiCucumber;
-            //   break;
-            // case "st13":
-            //   color = themeConfig.cappuccinoCharm.color;
-            //   emoji = emojiCappuccino;
-            //   break;
-            // case "st14":
-            //   color = themeConfig.nithGojo.color;
-            //   emoji = emojiNithGojo;
-            //   break;
-            // case "st15":
-            //   color = themeConfig.cozySummer.color;
-            //   emoji = emojiCozySummer;
-            //   break;
-            case "st99":
-              color = themeConfig.quirkyQuackers.color;
-              emoji = emojiQuirkyQuackers;
-              break;
-            case "st2707":
-              color = themeConfig.keoyuu.color;
-              emoji = emojiKeoYuu;
-              break;
-            // case "st1801":
-            //   color = themeConfig.yuna.color;
-            //   emoji = emojiYuna;
-            //   break;
-            // case "st0118":
-            //   color = themeConfig.yunayuna.color;
-            //   emoji = emojiYunaYuna;
-            //   break;
-            case "st168":
-              color = themeConfig.ghastlyGrins.color;
-              emoji = emojiGhastlyGrins;
-              break;
-            case "st272":
-              color = themeConfig.loveBunnie.color;
-              emoji = emojiLoveBunnie;
-              break;
-            // case "st2111":
-            //   color = themeConfig.seaCoral.color;
-            //   emoji = emojiSeaCoral;
-            //   break;
-
-            // SELL
-            case "st1111":
-              color = themeConfig.enchantedCatLake.color;
-              emoji = emojiEnchantedCatLake;
-              break;
-            case "st2601":
-              color = themeConfig.yuyuzu.color;
-              emoji = emojiYuyuzu;
-              break;
-
-            case "peach":
-              color = themeConfig.peach.color;
-              emoji = emojiPeach;
-              break;
-            case "goma":
-              color = themeConfig.goma.color;
-              emoji = emojiGoma;
-              break;
-            default:
-              color = themeConfig.normal.color;
-              emoji = emojis;
-              break;
-          }
+        if (themeConfig[themeId] && themeConfig[themeId].color) {
+          color = themeConfig[themeId].color; //Look up color
+        } else if (themeConfig[themeId.toLowerCase()] && themeConfig[themeId.toLowerCase()].color) {
+          color = themeConfig[themeId.toLowerCase()].color; //Look up color with lower case
         }
+      }
 
-        return { user, color, emoji, language };
-      })
-      .catch((error) => {
-        console.error("Error setting color and theme:", error.message);
-        return {
-          color: globalConfig.color,
-          emoji: emojis,
-          language: globalConfig.language,
-        };
-      });
+      return { user, color, emoji, language };
+
+    } catch (error) {
+      console.error("Error setting color and theme:", error.message);
+      return {
+        color: this.defaultColor,
+        emoji: this.emoji,
+        language: this.i18n,
+      };
+    }
   }
 };

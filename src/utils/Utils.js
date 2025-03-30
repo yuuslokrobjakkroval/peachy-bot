@@ -1442,4 +1442,39 @@ module.exports = class Utils {
       console.error("Error during user reset:", error);
     }
   }
+
+  static async checkResources(user, cost) {
+    if(!user.inventory) return false
+    for (const resource in cost) {
+      if (!user.inventory[resource] || user.inventory[resource] < cost[resource]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  static formatResults(current, total, size) {
+    const empty = { begin: '<:PB1E:1277709213753409587>', middle: '<:PB2E:1277709239942381701>', end: '<:PB3E:1277709259039178835>' };
+    const full = {
+      begin: '<:PB1CB:1277709205377122415>',
+      middle: '<:PB2CB:1277709231704903730>',
+      end: '<:PB3FB:1277709268203737121>',
+    };
+    const change = { begin: '<:PB1FB:1277709222913769562>', middle: '<:PB2FB:1277709250423951480>' };
+
+    const filledBar = Math.ceil((current / total) * size) || 0;
+    let emptyBar = size - filledBar || 0;
+
+    if (filledBar === 0) emptyBar = size;
+
+    const firstBar = filledBar ? (filledBar === 1 ? change.begin : full.begin) : empty.begin;
+    const middleBar = filledBar
+        ? filledBar === size
+            ? full.middle.repeat(filledBar - 1)
+            : full.middle.repeat(filledBar - 1) + empty.middle.repeat(size - filledBar)
+        : empty.middle.repeat(size - 1);
+    const endBar = filledBar === size ? full.end : empty.end;
+
+    return firstBar + middleBar + endBar;
+  }
 };

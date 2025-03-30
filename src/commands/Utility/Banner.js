@@ -35,7 +35,7 @@ module.exports = class Banner extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const bannerMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.bannerMessages;
         if (ctx.isInteraction) {
-            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
+            await ctx.interaction.deferReply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         } else {
             await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         }

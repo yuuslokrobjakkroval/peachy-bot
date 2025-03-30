@@ -1,4 +1,4 @@
-const { GatewayIntentBits } = require('discord.js');
+const { Partials, GatewayIntentBits } = require('discord.js');
 const { GuildMembers, GuildPresences, MessageContent, GuildVoiceStates, GuildMessages, Guilds, GuildInvites, GuildMessageTyping, GuildMessageReactions } = GatewayIntentBits;
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
@@ -7,11 +7,14 @@ const globalConfig = require('./utils/Config');
 const PeachyClient = require('./structures/Client.js');
 
 const clientOptions = {
+    partials: [Partials.Channel, Partials.GuildMember, Partials.Message, Partials.Reaction, Partials.User, Partials.GuildScheduledEvent],
     intents: [Guilds, GuildMessages, GuildInvites, MessageContent, GuildVoiceStates, GuildMembers, GuildPresences, GuildMessageTyping, GuildMessageReactions],
     allowedMentions: {
         parse: ['users', 'roles'],
         repliedUser: false,
     },
+    autoReconnect: true,
+    restTimeOffset: 0
 };
 
 const client = new PeachyClient(clientOptions);

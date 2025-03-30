@@ -856,5 +856,17 @@
       "notEnoughCoins": "You don’t have enough coins! You need **%{totalCost}** coins, but you only have **%{balance}**.",
       "success": "\nYou bought **%{quantity}** food item(s) for **%{totalCost}** coins!\nYou now have **%{balance}** coins."
     }
+  },
+  "blockBobberMessages": {
+    "chopMessages": {
+      "cooldown": "សូមរង់ចាំ %{minutes}នាទី %{seconds}វិនាទី មុននឹងកាប់ម្តងទៀត!",
+      "failure": "អ្នកមិនបានរកឃើញឈើទេនៅពេលនេះ!",
+      "success": "អ្នកបានកាប់ដើមឈើមួយ ហើយទទួលបាន %{woodAmount} %{woodType}!"
+    },
+    "mineMessages": {
+      "cooldown": "សូមរង់ចាំ %{minutes}នាទី %{seconds}វិនាទី មុននឹងជីក្លុងម្តងទៀត!",
+      "failure": "អ្នកមិនបានរកឃើញអ្វីទេនៅពេលនេះ!",
+      "success": "អ្នកបានជីកយក %{quantity} %{resource}!"
+    }
   }
 }

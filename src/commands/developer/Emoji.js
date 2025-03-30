@@ -1,6 +1,7 @@
 const { Command } = require("../../structures");
 const axios = require("axios");
 const globalConfig = require("../../utils/Config");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Emoji extends Command {
   constructor(client) {
@@ -63,58 +64,61 @@ module.exports = class Emoji extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
-      );
+      await ctx.interaction.reply(generalMessages.search.replace("%{loading}", globalEmoji.searching));
     } else {
-      await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
-      );
+      await ctx.sendDeferMessage(generalMessages.search.replace("%{loading}", globalEmoji.searching));
     }
 
     try {
-      const action = ctx.isInteraction
-        ? ctx.interaction.options.getString("action")
-        : args[0]?.toLowerCase();
+      let action = args[0]?.toLowerCase();
+      if (ctx.isInteraction) {
 
+        if (ctx.interaction.options.getSubcommand() === 'add') {
+          action = 'add';
+
+        } else if (ctx.interaction.options.getSubcommand() === 'remove') {
+          action = 'remove'
+        }
+        else if (ctx.interaction.options.getSubcommand() === 'get') {
+          action = 'get'
+        }
+      }
       switch (action) {
         case "get":
           // Get all emojis
           const getResponse = await axios.get(
-            `https://discord.com/api/v10/applications/${globalConfig.clientId}/emojis`,
-            {
-              headers: {
-                Authorization: `Bot ${globalConfig.token}`,
-              },
-            }
+              `https://discord.com/api/v10/applications/${globalConfig.clientId}/emojis`,
+              {
+                headers: {
+                  Authorization: `Bot ${globalConfig.token}`,
+                },
+              }
           );
 
           const emojis =
-            getResponse.data.items
-              .map((e) => `<:${e.name}:${e.id}> (${e.id})`)
-              .join("\n") || "No emojis found";
+              getResponse.data
+                  .map((e) => `<:${e.name}:${e.id}> (${e.id})`)
+                  .join("\n") || "No emojis found";
           const chunks = client.utils.chunk(emojis, 10);
           const pages = chunks.map((chunk, index) =>
-            client
-              .embed()
-              .setColor(color.main)
-              .setDescription(chunk.join("\n\n"))
-              .setFooter({ text: `Page ${index + 1} of ${chunks.length}` })
+              client
+                  .embed()
+                  .setColor(color.main)
+                  .setDescription(chunk.join("\n\n"))
+                  .setFooter({ text: `Page ${index + 1} of ${chunks.length}` })
           );
 
           return await client.utils.reactionPaginate(ctx, pages);
 
         case "add":
           const attachment = ctx.isInteraction
-            ? ctx.interaction.options.getAttachment("emoji")
-            : args[1];
+              ? ctx.interaction.options.getAttachment("emoji")
+              : args[1];
           const name = ctx.isInteraction
-            ? ctx.interaction.options.getString("name")
-            : args[2];
+              ? ctx.interaction.options.getString("name")
+              : args[2];
 
           const res = await axios.get(attachment.url, {
             responseType: "arraybuffer",
@@ -123,53 +127,53 @@ module.exports = class Emoji extends Command {
           const base64Image = buffer.toString("base64");
 
           const addResponse = await axios.post(
-            `https://discord.com/api/v10/applications/${globalConfig.clientId}/emojis`,
-            {
-              name: name,
-              image: `data:image/jpeg;base64,${base64Image}`,
-            },
-            {
-              headers: {
-                Authorization: `Bot ${globalConfig.token}`,
-                "content-type": "application/json",
+              `https://discord.com/api/v10/applications/${globalConfig.clientId}/emojis`,
+              {
+                name: name,
+                image: `data:image/jpeg;base64,${base64Image}`,
               },
-            }
+              {
+                headers: {
+                  Authorization: `Bot ${globalConfig.token}`,
+                  "content-type": "application/json",
+                },
+              }
           );
 
           return ctx.isInteraction
-            ? await ctx.interaction.editReply({
+              ? await ctx.interaction.editReply({
                 content: `<:${addResponse.data.name}:${addResponse.data.id}> Created new emoji!\nUse \`<:${addResponse.data.name}:${addResponse.data.id}>\` in your code`,
                 fetchReply: true,
               })
-            : await ctx.editMessage({
+              : await ctx.editMessage({
                 content: `<:${addResponse.data.name}:${addResponse.data.id}> Created new emoji!\nUse \`<:${addResponse.data.name}:${addResponse.data.id}>\` in your code`,
                 fetchReply: true,
               });
 
         case "remove":
           const emojiId = ctx.isInteraction
-            ? ctx.interaction.options.getString("emojiid")
-            : args[1];
+              ? ctx.interaction.options.getString("emojiid")
+              : args[1];
 
           if (!emojiId) {
             return ctx.reply(ctx, "Please provide an emoji ID to remove");
           }
 
           await axios.delete(
-            `https://discord.com/api/v10/applications/${globalConfig.clientId}/emojis/${emojiId}`,
-            {
-              headers: {
-                Authorization: `Bot ${globalConfig.token}`,
-              },
-            }
+              `https://discord.com/api/v10/applications/${globalConfig.clientId}/emojis/${emojiId}`,
+              {
+                headers: {
+                  Authorization: `Bot ${globalConfig.token}`,
+                },
+              }
           );
 
           return ctx.isInteraction
-            ? await ctx.interaction.editReply({
+              ? await ctx.interaction.editReply({
                 content: `Successfully removed emoji with ID: ${emojiId}`,
                 fetchReply: true,
               })
-            : await ctx.editMessage({
+              : await ctx.editMessage({
                 content: `Successfully removed emoji with ID: ${emojiId}`,
                 fetchReply: true,
               });

@@ -2,6 +2,43 @@ const emoji = require("../../utils/Emoji");
 const color = require("../../utils/Color");
 module.exports = [
   {
+    name: 'TOOL',
+    description: `Tools an item for earn coins!\n**・** \`pbuy {id}\` to buy an item`,
+    type: 'tool',
+    inventory: [
+      {
+        id: 't01',
+        name: 'Axe',
+        description: 'A tool for chopping wood.',
+        type: 'tool',
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 12,
+        emoji: '<:AXE:1355804959131832441>',
+        available: ['use'],
+        price: { buy: 10000, sell: 0 },
+      },
+      {
+        id: 't02',
+        name: 'Stone Axe',
+        description: 'A tool for breaking stones.',
+        type: 'tool',
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 12,
+        emoji: '<:STONEAXE:1355805092607037450>',
+        available: ['use'],
+        price: { buy: 10000, sell: 0 },
+      },
+    ]
+  },
+  {
     name: "FOOD",
     description: `Food items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
     type: "food",

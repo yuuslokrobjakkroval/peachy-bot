@@ -27,12 +27,8 @@ module.exports = class Catch extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-    const animalMessages = language.locales.get(
-      language.defaultLocale
-    )?.animalMessages;
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const animalMessages = language.locales.get(language.defaultLocale)?.animalMessages;
 
     try {
       // Get user data

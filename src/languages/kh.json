@@ -859,5 +859,29 @@
       "notEnoughCoins": "អ្នកមិនមានកាក់គ្រប់គ្រាន់ទេ! អ្នកត្រូវការ **%{totalCost}** កាក់ ប៉ុន្តែអ្នកមានតែ **%{balance}** ប៉ុណ្ណោះ។",
       "success": "\nអ្នកបានទិញចំណី **%{quantity}** ក្នុងតម្លៃ **%{totalCost}** កាក់!\nឥឡូវអ្នកមាន **%{balance}** កាក់។"
     }
+  },
+  "blockBobberMessages": {
+    "chopMessages": {
+      "cooldown": "Please wait %{minutes}m %{seconds}s before chopping again!",
+      "failure": "You didn't find any wood this time!",
+      "success": "You chopped down a tree and got %{woodAmount} %{woodType}!"
+    },
+    "mineMessages": {
+      "cooldown": "Please wait %{minutes}m %{seconds}s before mining again!",
+      "failure": "You didn't find anything this time!",
+      "success": "You mined %{quantity} %{resource}!"
+    },
+    "fishMessages": {
+      "cooldown": "Please wait %{minutes}m %{seconds}s before fishing again!",
+      "failure": "You didn't catch anything this time!",
+      "success": "You caught a %{fishName} (Quality: %{quality})!"
+    },
+    "buildMessages": {
+      "structureListTitle": "Available Structures:",
+      "structureNotFound": "Structure '%{structureName}' not found.",
+      "missingResources": "You don't have enough resources to build this structure.",
+      "buildSuccess": "You built a %{structureName}!",
+      "invalidCommand": "Invalid command arguments. Use `build list` to view available structures and requirements."
+    }
   }
 }

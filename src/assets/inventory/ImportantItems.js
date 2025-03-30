@@ -1,6 +1,21 @@
 const emoji = require("../../utils/Emoji");
 module.exports = [
   {
+    id: 'hand',
+    name: 'Bare hand',
+    description: 'Used to catch fish.',
+    type: 'tool',
+    able: {
+      use: false,
+      gift: false,
+      multiple: false,
+    },
+    quantity: 12,
+    emoji: '<a:START:1342748948825243699>',
+    available: ['use'],
+    price: { buy: 0, sell: 0 },
+  },
+  {
     id: "sm01",
     name: "Banana Milk Tea",
     description: "Sell Banana Milk Tea to get coin.",

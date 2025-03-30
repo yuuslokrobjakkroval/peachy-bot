@@ -30,8 +30,7 @@ module.exports = class Clear extends Command {
         });
     }
 
-    async run(client, ctx, args) {
-        // Check for user permissions
+    async run(client, ctx, args, color, emoji, language) {
         const hasManageMessages = ctx.member.permissions.has("ManageMessages");
         const isAdmin = ctx.member.permissions.has("Administrator");
 
