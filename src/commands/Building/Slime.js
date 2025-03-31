@@ -158,7 +158,7 @@ async function generateItems(tool, quantity) {
         net: { amount: Chance.integer({ min: 1, max: 2 }), common: 0.51, uncommon: 0.32, rare: 0.11, legendary: 0.04 },
     };
 
-    const probabilities = toolProbabilities[tool?.item] || toolProbabilities.bare_hand;
+    const probabilities = toolProbabilities[tool?.id] || toolProbabilities.hand;
     const numItems = quantity * probabilities.amount;
     const generatedSlimes = [];
 
