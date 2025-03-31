@@ -224,9 +224,6 @@ module.exports = class InteractionCreate extends Event {
               "withdraw",
               "multitransfer",
               "transfer",
-              "angpav",
-              "buy",
-              "sell",
             ];
             const gamblingCommands = [
               "slots",
@@ -235,55 +232,25 @@ module.exports = class InteractionCreate extends Event {
               "klaklouk",
             ];
             const gameCommands = [
-              "2048",
               "guessnumber",
-              "snake",
-              "tictactoe",
               "post",
               "guess",
-              "feedback",
               "wallpaper",
             ];
-            const mineCommands = [
-              "eat",
-              "drink",
-              "shop",
-              "inventory",
-              "giveitem",
-            ];
-            const utilityCommands = [
-              "avatar",
-              "emoji",
-              "language",
-              "qr",
-              "serverinfo",
-              "theme",
-              "userinfo",
-              "verify",
-            ];
-            const giveawaysCommands = [
-              "giveaway",
-              "giveawayshopitem",
-              "reroll",
-            ];
-            const workCommands = [
-              "applyjob",
-              "police",
-              "position",
-              "rob",
-              "student",
-            ];
-
             let logChannelId;
             if (["animals", "building"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[8];
             } else if (["work"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[7];
-            } else if (["giveaway"].includes(command.category.toLowerCase())) {
+            } else if (
+                ["giveaway"].includes(command.category.toLowerCase())
+            ) {
               logChannelId = this.client.config.logChannelId[6];
-            } else if (["utility"].includes(command.category.toLowerCase())) {
+            } else if (
+                ["utility"].includes(command.category.toLowerCase())
+            ) {
               logChannelId = this.client.config.logChannelId[5];
-            } else if (mineCommands.includes(command.name)) {
+            } else if (["inventory"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[4];
             } else if (balanceCommands.includes(command.name)) {
               logChannelId = this.client.config.logChannelId[3];

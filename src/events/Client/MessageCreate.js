@@ -582,35 +582,6 @@ module.exports = class MessageCreate extends Event {
                 "guess",
                 "wallpaper",
               ];
-              const mineCommands = [
-                "eat",
-                "drink",
-                "shop",
-                "inventory",
-                "giveitem",
-              ];
-              const utilityCommands = [
-                "avatar",
-                "emoji",
-                "language",
-                "qr",
-                "serverinfo",
-                "theme",
-                "userinfo",
-                "verify",
-              ];
-              const giveawaysCommands = [
-                "giveaway",
-                "giveawayshopitem",
-                "reroll",
-              ];
-              const workCommands = [
-                "applyjob",
-                "police",
-                "position",
-                "rob",
-                "student",
-              ];
 
               try {
                 let logChannelId;
@@ -626,7 +597,7 @@ module.exports = class MessageCreate extends Event {
                   ["utility"].includes(command.category.toLowerCase())
                 ) {
                   logChannelId = this.client.config.logChannelId[5];
-                } else if (mineCommands.includes(command.name)) {
+                } else if (["inventory"].includes(command.category.toLowerCase())) {
                   logChannelId = this.client.config.logChannelId[4];
                 } else if (balanceCommands.includes(command.name)) {
                   logChannelId = this.client.config.logChannelId[3];
