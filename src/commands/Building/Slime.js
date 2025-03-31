@@ -15,7 +15,7 @@ module.exports = class Catch extends Command {
                 usage: 'slime',
             },
             category: 'inventory',
-            aliases: ['psl'],
+            aliases: ['sl'],
             cooldown: 10,
             args: false,
             permissions: {
