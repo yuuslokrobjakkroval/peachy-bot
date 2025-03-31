@@ -6,6 +6,7 @@ const inventory = ShopItems.flatMap(shop => shop.inventory);
 const Themes = inventory.filter(value => value.type === 'theme' || value.type === 'special theme').sort((a, b) => a.price.buy - b.price.buy);
 const Wallpapers = inventory.filter(value => value.type === 'wallpaper');
 const Colors = inventory.filter(value => value.type === 'color');
+const Tools = inventory.filter(value => value.type === 'tool');
 
 module.exports = class Use extends Command {
     constructor(client) {
@@ -44,46 +45,26 @@ module.exports = class Use extends Command {
         try {
             const user = await client.utils.getUser(userId);
             const itemId = ctx.isInteraction ? ctx.interaction.options.data[0]?.value.toString().toLowerCase() : args[0].toLowerCase();
-            const themeItem = Themes.concat(ImportantItems).find(item => item.id === itemId);
-            const wallpaperItem = Wallpapers.concat(ImportantItems).find(item => item.id === itemId);
-            const colorItem = Colors.concat(ImportantItems).find(item => item.id === itemId);
+            const itemInfo = ImportantItems.concat(Wallpapers, Themes, Colors, Tools).find(item => item.id === itemId);
             const inventoryItem = user.inventory.find(item => item.id === itemId);
-
             if (!inventoryItem) {
-                return await client.utils.sendErrorMessage(
-                    client,
-                    ctx,
-                    useMessages?.notInInventory.replace('%{itemId}', itemId),
-                    color
-                );
+                return await client.utils.sendErrorMessage(client, ctx, useMessages?.notInInventory.replace('%{itemId}', itemId), color);
             }
 
-            if (themeItem) {
-                if (!themeItem.able.use) {
-                    return await client.utils.sendErrorMessage(
-                        client,
-                        ctx,
-                        useMessages?.unavailable.replace('%{itemEmote}', themeItem.emoji).replace('%{itemName}', themeItem.name),
-                        color
+            if (['special theme', 'theme'].includes(itemInfo.type)) {
+                if (!itemInfo.able.use) {
+                    return await client.utils.sendErrorMessage(client, ctx, useMessages?.unavailable.replace('%{itemEmote}', itemInfo.emoji).replace('%{itemName}', itemInfo.name), color
                     );
                 }
 
                 const currentTheme = user.preferences?.theme;
-                if (currentTheme === themeItem.id) {
-                    return await client.utils.sendErrorMessage(
-                        client,
-                        ctx,
-                        useMessages?.alreadyEquipped.replace('%{itemEmote}', themeItem.emoji).replace('%{itemName}', themeItem.name),
-                        color
+                if (currentTheme === itemInfo.id) {
+                    return await client.utils.sendErrorMessage(client, ctx, useMessages?.alreadyEquipped.replace('%{itemEmote}', itemInfo.emoji).replace('%{itemName}', itemInfo.name), color
                     );
                 }
 
                 if (currentTheme) {
-                    await Users.updateOne(
-                        { userId },
-                        { $set: { 'preferences.theme': null } }
-                    );
-
+                    await Users.updateOne({ userId }, { $set: { 'preferences.theme': null } });
                     const existingInventoryItem = user.inventory.find(item => item.id === currentTheme);
                     if (existingInventoryItem) {
                         existingInventoryItem.quantity += 1;
@@ -128,29 +109,27 @@ module.exports = class Use extends Command {
                     .setDescription(
                         useMessages?.applied
                             .replace('%{type}', 'theme')
-                            .replace('%{itemEmote}', themeItem.emoji)
-                            .replace('%{itemName}', themeItem.name)
+                            .replace('%{itemEmote}', itemInfo.emoji)
+                            .replace('%{itemName}', itemInfo.name)
                     );
 
                 return await ctx.sendMessage({ embeds: [embed] });
-            }
-
-            if (wallpaperItem) {
-                if (!wallpaperItem.able.use) {
+            } else if (itemInfo.type === 'wallpaper') {
+                if (!itemInfo.able.use) {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.unavailable.replace('%{itemEmote}', wallpaperItem.emoji).replace('%{itemName}', wallpaperItem.name),
+                        useMessages?.unavailable.replace('%{itemEmote}', itemInfo.emoji).replace('%{itemName}', itemInfo.name),
                         color
                     );
                 }
 
                 const equippedWallpaper = user.equip.find(equippedItem => equippedItem.id.startsWith('w'));
-                if (equippedWallpaper && equippedWallpaper.id === wallpaperItem.id) {
+                if (equippedWallpaper && equippedWallpaper.id === itemInfo.id) {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.alreadyEquipped.replace('%{itemEmote}', wallpaperItem.emoji).replace('%{itemName}', wallpaperItem.name),
+                        useMessages?.alreadyEquipped.replace('%{itemEmote}', itemInfo.emoji).replace('%{itemName}', itemInfo.name),
                         color
                     );
                 }
@@ -184,7 +163,7 @@ module.exports = class Use extends Command {
                 await Users.updateOne(
                     { userId },
                     {
-                        $addToSet: { equip: { id: wallpaperItem.id, quantity: 1 } },
+                        $addToSet: { equip: { id: itemInfo.id, quantity: 1 } },
                         $set: { inventory: user.inventory }
                     }
                 );
@@ -194,29 +173,27 @@ module.exports = class Use extends Command {
                     .setDescription(
                         useMessages?.applied
                             .replace('%{type}', 'wallpaper')
-                            .replace('%{itemEmote}', wallpaperItem.emoji)
-                            .replace('%{itemName}', wallpaperItem.name)
+                            .replace('%{itemEmote}', itemInfo.emoji)
+                            .replace('%{itemName}', itemInfo.name)
                     );
 
                 return await ctx.sendMessage({ embeds: [embed] });
-            }
-
-            if (colorItem) {
-                if (!colorItem.able.use) {
+            } else if (itemInfo.type === 'color') {
+                if (!itemInfo.able.use) {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.unavailable.replace('%{itemEmote}', colorItem.emoji).replace('%{itemName}', colorItem.name),
+                        useMessages?.unavailable.replace('%{itemEmote}', itemInfo.emoji).replace('%{itemName}', itemInfo.name),
                         color
                     );
                 }
 
                 const equippedColor = user.equip.find(equippedItem => equippedItem.id.startsWith('p'));
-                if (equippedColor && equippedColor.id === colorItem.id) {
+                if (equippedColor && equippedColor.id === itemInfo.id) {
                     return await client.utils.sendErrorMessage(
                         client,
                         ctx,
-                        useMessages?.alreadyEquipped.replace('%{itemEmote}', colorItem.emoji).replace('%{itemName}', colorItem.name),
+                        useMessages?.alreadyEquipped.replace('%{itemEmote}', itemInfo.emoji).replace('%{itemName}', itemInfo.name),
                         color
                     );
                 }
@@ -250,7 +227,7 @@ module.exports = class Use extends Command {
                 await Users.updateOne(
                     { userId },
                     {
-                        $addToSet: { equip: { id: colorItem.id, quantity: 1 } },
+                        $addToSet: { equip: { id: itemInfo.id, quantity: 1 } },
                         $set: { inventory: user.inventory }
                     }
                 );
@@ -260,20 +237,114 @@ module.exports = class Use extends Command {
                     .setDescription(
                         useMessages?.applied
                             .replace('%{type}', 'color')
-                            .replace('%{itemEmote}', colorItem.emoji)
-                            .replace('%{itemName}', colorItem.name)
+                            .replace('%{itemEmote}', itemInfo.emoji)
+                            .replace('%{itemName}', itemInfo.name)
                     );
 
                 return await ctx.sendMessage({ embeds: [embed] });
+            } else if (itemInfo.type === 'tool') {
+                const hasTools = user.equip.find(eq => eq.id.toLowerCase() === itemId);
+                if (hasTools) {
+                    const embed = client.embed()
+                        .setColor(client.color.main)
+                        .setDescription(`You already have ${itemInfo.emoji} **${itemInfo.name}** equipped. Do you want to change?`);
+
+                    const yesButton = client.utils.labelButton('accept', 'Yes', 3)
+                    const noButton = client.utils.labelButton('cancel', 'No', 4)
+                    const row = client.utils.createButtonRow(yesButton, noButton);
+
+                    const message = {embeds: [embed], components: [row], fetchReply: true};
+
+                    let msg = ctx.isInteraction ? await ctx.interaction.reply(message) : await ctx.channel.send(message);
+
+                    const filter = i => i.user.id === ctx.author.id;
+                    const collector = msg.createMessageComponentCollector({filter});
+
+                    collector.on('collect', async int => {
+                        await int.deferUpdate();
+                        if (int.customId === 'accept') {
+                            const embed = client.embed()
+                                .setColor(client.color.main)
+                                .setDescription(`You have successfully changed to ${itemInfo.emoji} **${itemInfo.name}**.`);
+
+                            try {
+                                await Users.updateOne(
+                                    { userId: ctx.author.id, 'inventory.id': itemInfo.id },
+                                    {
+                                        $pull: { equip: { id: itemInfo.id } },
+                                        $inc: { 'inventory.$.quantity': -1 }
+                                    }
+                                );
+
+                                await Users.updateOne(
+                                    { userId: ctx.author.id },
+                                    {
+                                        $push: { equip: { id: itemInfo.id, quantity: itemInfo.quantity } }
+                                    },
+                                );
+
+                                await Users.updateOne(
+                                    { userId: ctx.author.id, 'inventory.quantity': 0 },
+                                    { $pull: { inventory: { quantity: 0 } } }
+                                );
+
+                                int.editReply({ embeds: [embed], components: [] });
+                            } catch (error) {
+                                console.error('Error updating user:', error);
+                                int.editReply({
+                                    embeds: [client.embed()
+                                        .setColor(client.color.red)
+                                        .setDescription('Failed to update your equipment. Please try again.')],
+                                    components: []
+                                });
+                            }
+                        } else if (int.customId === 'cancel') {
+                            await Promise.all([ctx.message.delete(), msg.delete()]);
+                        }
+                    });
+
+                    collector.on('end', async () => {
+                        if (!msg) return;
+                        await Promise.all([ctx.message.delete(), msg.delete()]);
+                    });
+                } else {
+                    const hasItems = user.inventory.find(inv => inv.id.toLowerCase() === itemId);
+                    if (!hasItems) {
+                        return await client.utils.sendErrorMessage(
+                            client,
+                            ctx,
+                            `You don't have ${itemInfo.emoji} **${itemInfo.name}** in your inventory.`,
+                            color,
+                        );
+                    } else {
+                        const embed = client.embed()
+                            .setColor(client.color.main)
+                            .setDescription(`You have successfully used ${itemInfo.emoji} **${itemInfo.name}**.`);
+                        await Promise.all([
+                            Users.updateOne({ userId: ctx.author.id },
+                                {$push: {
+                                    equip: {
+                                        id: itemInfo.id,
+                                        quantity: itemInfo.quantity
+                                    }
+                                }
+                            }),
+
+                            Users.updateOne({
+                                userId: ctx.author.id,
+                                'inventory.id': itemInfo.id
+                            }, {$inc: {'inventory.$.quantity': -1}}),
+
+                            Users.updateOne(
+                                {userId: ctx.author.id, "inventory.quantity": 0},
+                                {$pull: {inventory: {quantity: 0}}}
+                            ),
+
+                        ]);
+                        return ctx.sendMessage({embeds: [embed]})
+                    }
+                }
             }
-
-            return await client.utils.sendErrorMessage(
-                client,
-                ctx,
-                useMessages?.themeID.replace('%{itemId}', itemId),
-                color
-            );
-
         } catch (error) {
             console.error("Error in the 'use' command:", error);
             return await client.utils.sendErrorMessage(client, ctx, "An error occurred while processing your request.", color);

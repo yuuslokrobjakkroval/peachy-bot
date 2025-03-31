@@ -1,5 +1,5 @@
 const emote = {
-    log: '<:LOG:1355780158451220520>',
+    log: '<:WOOD:1355805141080477807>',
     soft: '<:SOFTWOOD:1355805063775522908>',
     hard: '<:HARDWOOD:1355805024428753005>',
 };
@@ -19,7 +19,7 @@ module.exports = [
         type: 'wood',
         rarity: 'common',
         emoji: emote.soft,
-        price: { sell: 325 },
+        price: { sell: 225 },
     },
     {
         id: 'hardlog',
@@ -27,6 +27,6 @@ module.exports = [
         type: 'wood',
         rarity: 'legendary',
         emoji: emote.hard,
-        price: { sell: 500 },
+        price: { sell: 375 },
     },
 ];

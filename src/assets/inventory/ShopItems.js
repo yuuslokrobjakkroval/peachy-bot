@@ -36,6 +36,22 @@ module.exports = [
         available: ['use'],
         price: { buy: 10000, sell: 0 },
       },
+
+      {
+        id: 'net',
+        name: 'Net',
+        description: 'A tool for catch slime.',
+        type: 'tool',
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 12,
+        emoji: '<:NET:1355805034893541376>',
+        available: ['use'],
+        price: { buy: 10000, sell: 0 },
+      },
     ]
   },
   {

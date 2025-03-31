@@ -2,7 +2,7 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const Chance = require('chance').Chance();
 const Items = require('../../assets/inventory/ImportantItems.js');
-const ChopTools = require('../../assets/inventory/ChopTools.js');
+const ChopTools = require('../../assets/inventory/ChopTools');
 const Woods = require('../../assets/inventory/Woods.js');
 
 module.exports = class Chop extends Command {
@@ -29,24 +29,25 @@ module.exports = class Chop extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const author = ctx.author;
 
-        let user = await Users.findOne({ userId: author.id }).exec();
+        let user = await Users.findOne({userId: author.id}).exec();
         if (!user) {
-            user = new Users({ userId: author.id, username: author.username });
+            user = new Users({userId: author.id, username: author.username});
             await user.save();
         }
 
         let userTool = user.equip.find(equip => ChopTools.some(tool => tool.id === equip.id));
         if (!userTool) {
-            userTool = { id: 'hand', quantity: 1 };
+            userTool = {id: 'hand', quantity: 1};
         }
 
         const equippedTool = ChopTools.find(tool => tool.id === userTool.id) || Items.find(item => item.id === 'hand');
 
-        const [tool, currentQuantity, maxQuantity, minedAmount, cooldownTime] = userTool.id === 'hand'
-            ? [equippedTool, equippedTool.quantity, equippedTool.quantity, 1, 8000]
-            : [equippedTool, userTool.quantity, equippedTool.quantity, Chance.integer({ min: 1, max: 5 }), 15000];
+        const [tool, maxQuantity, minedAmount, cooldownTime] = userTool.id === 'hand'
+            ? [equippedTool, equippedTool.quantity, 1, 8000]
+            : [equippedTool, equippedTool.quantity, Chance.integer({min: 1, max: 5}), 15000];
 
         const cooldown = user.cooldowns.find(c => c.name === this.name.toLowerCase());
         const isOnCooldown = cooldown ? (Date.now() - cooldown.timestamp < cooldownTime) : false;
@@ -68,12 +69,43 @@ module.exports = class Chop extends Command {
         const totalWorth = aggregatedItems.reduce((total, item) => total + item.price.sell * item.quantity, 0);
 
         const itemsDescription = aggregatedItems
-            .map(item => `${item.emoji} **\`x${item.quantity}\`** ${client.utils.formatCapitalize(item.id)}`)
+            .map(item => `${item.emoji} **x${item.quantity}** ${client.utils.formatCapitalize(item.id)}`)
             .join('\n') || 'No woods found!';
 
+        let currentQuantity= 12;
+        await updateUserWithRetry(author.id, async (user) => {
+            aggregatedItems.forEach(item => {
+                const existingItem = user.inventory.find(inv => inv.id === item.id);
+                if (existingItem) {
+                    existingItem.quantity += item.quantity;
+                } else {
+                    user.inventory.push({ id: item.id, quantity: item.quantity});
+                }
+            });
+
+            if (userTool.id !== 'hand') {
+                const equipItem = user.equip.find(equip => equip.id === userTool.id);
+                if (equipItem) {
+                    equipItem.quantity -= 1;
+                    currentQuantity = equipItem.quantity;
+                    if (equipItem.quantity <= 0) {
+                        user.equip = user.equip.filter(equip => equip.id !== userTool.id);
+                        currentQuantity = 0;
+                    }
+                }
+            }
+
+            user.cooldowns.push({ name: 'chop', timestamp: Date.now(), duration: cooldownTime });
+        });
+
         const embed = client.embed()
-            .setTitle(`${author.displayName}'s Chopping!`)
             .setColor(color.main)
+            .setDescription(
+                generalMessages.title
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{title}', "CHOPPING")
+                    .replace('%{mainRight}', emoji.mainRight)
+            )
             .addFields(
                 {
                     name: 'Resources Found',
@@ -87,44 +119,16 @@ module.exports = class Chop extends Command {
                 },
                 {
                     name: 'Total Worth',
-                    value: `\`${totalWorth}\` ${emoji.coin}`,
+                    value: `${client.utils.formatNumber(totalWorth)} ${emoji.coin}`,
                     inline: true,
                 }
-            );
-
-        const updateSuccess = await updateUserWithRetry(author.id, async (user) => {
-            aggregatedItems.forEach(item => {
-                const existingItem = user.inventory.find(inv => inv.id === item.id);
-                if (existingItem) {
-                    existingItem.quantity += item.quantity;
-                } else {
-                    user.inventory.push({ id: item.id, quantity: item.quantity });
-                }
+            )
+            .setFooter({
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
             });
 
-            if (userTool.id !== 'hand') {
-                const equipItem = user.equip.find(equip => equip.id === userTool.id);
-                if (equipItem) {
-                    equipItem.quantity -= 1;
-                    if (equipItem.quantity <= 0) {
-                        user.equip = user.equip.filter(equip => equip.id !== userTool.id);
-                    }
-                }
-            }
-
-            const existingCooldown = user.cooldowns.find(c => c.name === 'chop');
-            if (existingCooldown) {
-                existingCooldown.timestamp = Date.now();
-            } else {
-                user.cooldowns.push({ name: 'chop', timestamp: Date.now(), duration: cooldownTime });
-            }
-        });
-
-        if (!updateSuccess) {
-            return await client.utils.sendErrorMessage(client, ctx, 'Failed to update your inventory. Please try again.');
-        }
-
-        return await ctx.sendMessage({ embeds: [embed] });
+        return await ctx.sendMessage({embeds: [embed]});
     }
 };
 
@@ -157,8 +161,8 @@ async function updateUserWithRetry(userId, updateFn, maxRetries = 3) {
 
 async function generateItems(tool, quantity) {
     const toolProbabilities = {
-        hand: { amount: 1, rare: 0.08, legendary: 0.03 },
-        axe: { amount: Chance.integer({ min: 1, max: 2 }), rare: 0.11, legendary: 0.04 },
+        hand: { amount: 1, rare: 0.08, common: 0.05, legendary: 0.03 },
+        axe: { amount: Chance.integer({ min: 1, max: 1.2 }), rare: 0.11, common: 0.07, legendary: 0.04 },
     };
 
     const probabilities = toolProbabilities[tool?.id] || toolProbabilities.hand;
@@ -178,7 +182,7 @@ function getRarity(probabilities) {
     const rand = Math.random();
     if (rand < probabilities.legendary) return 'legendary';
     if (rand < probabilities.rare + probabilities.legendary) return 'rare';
-    return 'common'; // Added common rarity for more variety
+    return 'common';
 }
 
 function generateRandomItem(rarity) {

@@ -5,13 +5,13 @@
     "permissionsClientError": "I don't have enough permissions to execute this command.",
     "permissionsUserError": "You don't have enough permissions to use this command.",
     "argumentsMissingTitle": "Missing Arguments",
-    "argumentsMissingDescription": "Please provide the required arguments for the *{commandName}* command.",
+    "argumentsMissingDescription": "Please provide the required arguments for the **{commandName}** command.",
     "usageHeader": "Usage",
     "examplesHeader": "Examples",
     "syntaxInstructions": "Syntax: [] = optional, <> = required",
     "noEveryoneOrHereError": "You can't use this command with everyone or here.",
     "invalidAmount": "Invalid amount. Please enter a positive integer value.",
-    "invalidItem": "The item with ID *%{itemId}* was not found. Please check the shop for available items.",
+    "invalidItem": "The item with ID **%{itemId}** was not found. Please check the shop for available items.",
     "invalidQuantity": "Invalid quantity specified.",
     "zeroBalance": "Your balance is zero. Please earn some coins before trying again.",
     "alreadyInGame": "You are already in a game. Please finish your current game before starting a new one.",
@@ -456,7 +456,7 @@
   },
   "inventoryMessages": {
     "buyMessages": {
-      "invalidItem": "The item with ID *%{itemId}* was not found. Please check the shop for available items.",
+      "invalidItem": "The item with ID **%{itemId}** was not found. Please check the shop for available items.",
       "themeAlreadyOwned": "You already own the theme **%{itemName}** %{itemEmote}. You cannot buy it again.",
       "itemCannotBeBought": "The item **%{itemName}** %{itemEmote} is not available for purchase.",
       "notEnoughCoins": "You need %{neededCoins} %{coinEmote} more to buy %{itemEmote} **%{itemName}**.",
@@ -545,10 +545,10 @@
       "itemListFooter": "Use `shopinfo <id>` to get more details about an item."
     },
     "useMessages": {
-      "themeID": "Theme with ID *%{itemId}* not found.",
+      "themeID": "Theme with ID **%{itemId}** not found.",
       "notOwned": "You do not own the theme %{itemName}.",
-      "notInInventory": "The item *%{itemId}* is not in your inventory.",
-      "unavailable": "The theme *%{itemName}* is not available for use.",
+      "notInInventory": "The item **%{itemId}** is not in your inventory.",
+      "unavailable": "The theme **%{itemName}** is not available for use.",
       "applied": "Successfully applied the %{type} %{itemEmote} **%{itemName}**!",
       "alreadyEquipped": "You are already using %{itemEmote} **%{itemName}**."
     }
@@ -800,16 +800,16 @@
       "noJob": "You don't have a job yet. Apply for one first using the `applyjob` command."
     },
     "studentMessages": {
-      "cooldown": "You need to wait *%{hours}*h *%{minutes}*m *%{seconds}*s before claiming your student reward again!",
+      "cooldown": "You need to wait **%{hours}**h **%{minutes}**m **%{seconds}**s before claiming your student reward again!",
       "success": "%{coinEmote} You earned **+%{coin}** coins!\n%{expEmote} You gained **+%{exp}** experience!"
     },
     "robMessages": {
       "invalidTarget": "You must specify a valid user to rob!",
       "cannotRobAsPolice": "You cannot rob others while you are a police officer!",
-      "protectedByPolice": "You can't rob *%{victim}*, they are protected by the police!",
-      "notEnoughCoins": "*%{victim}* doesn't have enough coins to be worth robbing.",
-      "cooldown": "You need to wait *%{minutes}* minutes and *%{seconds}* seconds before you can attempt to rob again.",
-      "failed": "You failed to rob *%{victim}* and lost *%{penalty}* coins as a penalty.",
+      "protectedByPolice": "You can't rob **%{victim}**, they are protected by the police!",
+      "notEnoughCoins": "**%{victim}** doesn't have enough coins to be worth robbing.",
+      "cooldown": "You need to wait **%{minutes}** minutes and **%{seconds}** seconds before you can attempt to rob again.",
+      "failed": "You failed to rob **%{victim}** and lost **%{penalty}** coins as a penalty.",
       "success": "You successfully robbed **%{victim}** and stole **%{stolenAmount}** coins!"
     },
     "policeMessages": {

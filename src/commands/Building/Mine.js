@@ -2,7 +2,7 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const Chance = require('chance').Chance();
 const Items = require('../../assets/inventory/ImportantItems.js');
-const MineTools = require('../../assets/inventory/MineTools.js');
+const MineTools = require('../../assets/inventory/MineTools');
 const Minerals = require('../../assets/inventory/Minerals.js');
 
 module.exports = class Mine extends Command {
@@ -29,19 +29,18 @@ module.exports = class Mine extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const author = ctx.author;
         const user = await Users.findOne({ userId: author.id }).exec();
-        let userTool = user.equip.find(({ item }) => MineTools.find(({ id }) => id === item));
-
+        let userTool = user.equip.find(equip => MineTools.some(tool => tool.id === equip.id));
         if (!userTool) {
-            userTool = { item: 'hand', quantity: 1 };
+            userTool = { id: 'hand', quantity: 1 };
         }
 
-        const equippedTool = MineTools.find(({ id }) => id === userTool.item) || Items.find(({ id }) => id === 'hand');
-
-        const [tool, currentQuantity, maxQuantity, minedAmount, cooldownTime] = userTool.item === 'hand'
-            ? [equippedTool, equippedTool.quantity, equippedTool.quantity, 1, 8000]
-            : [equippedTool, userTool.quantity, equippedTool.quantity, Chance.integer({ min: 1, max: 5 }), 15000]; //Corrected here
+        const equippedTool = MineTools.find(({ id }) => id === userTool.id) || Items.find(({ id }) => id === 'hand');
+        const [tool, maxQuantity, minedAmount, cooldownTime] = userTool.id === 'hand'
+            ? [equippedTool, equippedTool.quantity, 1, 12000]
+            : [equippedTool, equippedTool.quantity, Chance.integer({ min: 1, max: 3 }), 8000];
 
         // Check cooldown
         const cooldown = user.cooldowns.find(c => c.name === this.name.toLowerCase());
@@ -63,32 +62,11 @@ module.exports = class Mine extends Command {
 
         const totalWorth = aggregatedItems.reduce((total, item) => total + item.price.sell * item.quantity, 0);
 
-        // Improve item description formatting for readability
         const itemsDescription = aggregatedItems
-            .map(item => `${item.emoji} **\`x${item.quantity}\`** ${client.utils.formatCapitalize(item.id)}`) // Changed + to x for clarity
+            .map(item => `${item.emoji} **x${item.quantity}** ${client.utils.formatCapitalize(item.id)}`) // Changed + to x for clarity
             .join('\n');
 
-        const embed = client.embed()
-            .setTitle(`${author.displayName}'s mining!`)
-            .setColor(color.main)
-            .addFields(
-                {
-                    name: 'Resources Found',
-                    value: itemsDescription || 'No resources found!',
-                    inline: false,
-                },
-                {
-                    name: 'Tool Durability',
-                    value: `${tool.emoji} **\`${currentQuantity}/${maxQuantity}\`**`,
-                    inline: true,
-                },
-                {
-                    name: 'Total Worth',
-                    value: `\`${totalWorth}\` ${emoji.coin}`,
-                    inline: true,
-                },
-            );
-
+        let currentQuantity = 12;
         await updateUserWithRetry(author.id, async (user) => {
             aggregatedItems.forEach(item => {
                 const existingItem = user.inventory.find(inv => inv.id === item.id);
@@ -99,12 +77,14 @@ module.exports = class Mine extends Command {
                 }
             });
 
-            if (userTool.item !== 'hand') {
-                const equipItem = user.equip.find(equip => equip.id === userTool.item); // Use 'id' here too
+            if (userTool.id !== 'hand') {
+                const equipItem = user.equip.find(equip => equip.id === userTool.id);
                 if (equipItem) {
                     equipItem.quantity -= 1;
+                    currentQuantity = equipItem.quantity;
                     if (equipItem.quantity <= 0) {
-                        user.equip = user.equip.filter(equip => equip.id !== userTool.item);
+                        user.equip = user.equip.filter(equip => equip.id !== userTool.id);
+                        currentQuantity = 0
                     }
                 }
             }
@@ -116,6 +96,35 @@ module.exports = class Mine extends Command {
                 user.cooldowns.push({ name: 'mine', timestamp: Date.now(), duration: cooldownTime });
             }
         });
+
+        const embed = client.embed()
+            .setDescription(
+                generalMessages.title
+                    .replace('%{mainLeft}', emoji.mainLeft)
+                    .replace('%{title}', "MINING")
+                    .replace('%{mainRight}', emoji.mainRight)
+            )
+            .addFields(
+                {
+                    name: 'Resources Found',
+                    value: itemsDescription,
+                    inline: false,
+                },
+                {
+                    name: 'Tool Durability',
+                    value: `${tool.emoji} **\`${currentQuantity}/${maxQuantity}\`**`,
+                    inline: true,
+                },
+                {
+                    name: 'Total Worth',
+                    value: `${client.utils.formatNumber(totalWorth)} ${emoji.coin}`,
+                    inline: true,
+                }
+            )
+            .setFooter({
+                text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+                iconURL: ctx.author.displayAvatarURL(),
+            });
 
         return await ctx.sendMessage({ embeds: [embed] });
     }

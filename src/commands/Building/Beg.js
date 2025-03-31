@@ -3,8 +3,7 @@ const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
 const Woods = require("../../assets/inventory/Woods");
 const Minerals = require("../../assets/inventory/Minerals");
-const ChopTools = require("../../assets/inventory/ChopTools");
-const MineTools = require("../../assets/inventory/MineTools");
+const Tools = require("../../assets/inventory/NetTools");
 const inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = inventory.filter((value) => value.price.buy !== 0).sort((a, b) => a.price.buy - b.price.buy);
 
@@ -50,8 +49,8 @@ module.exports = class Inventory extends Command {
 
             user.inventory.forEach((item) => {
                 if (item.quantity > 0) {
-                    const itemInfo = Items.concat(ImportantItems, Woods, Minerals, ChopTools, MineTools).find(
-                        ({ id }) => id === item.id
+                    const itemInfo = Items.concat(ImportantItems, Woods, Minerals, Tools).find(
+                        ({ id }) => id === item.id.toLowerCase(),
                     );
 
                     if (itemInfo) {

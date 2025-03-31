@@ -1,12 +1,12 @@
 const emote = {
-    pickaxe: '⛏️',
+    pickaxe: '<:STONEAXE:1355805092607037450>',
 };
 
 module.exports = [
     //=====================================| Mining Tools |=====================================\\
     {
-        id: 't02',
-        name: 'Pickaxe',
+        id: 'stoneaxe',
+        name: 'Stone Axe',
         description: 'A tool for breaking stones.',
         type: 'tool',
         able: {
