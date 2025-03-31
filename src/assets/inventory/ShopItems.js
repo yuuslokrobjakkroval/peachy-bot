@@ -7,7 +7,7 @@ module.exports = [
     type: 'tool',
     inventory: [
       {
-        id: 't01',
+        id: 'axe',
         name: 'Axe',
         description: 'A tool for chopping wood.',
         type: 'tool',
@@ -22,7 +22,7 @@ module.exports = [
         price: { buy: 10000, sell: 0 },
       },
       {
-        id: 't02',
+        id: 'stoneaxe',
         name: 'Stone Axe',
         description: 'A tool for breaking stones.',
         type: 'tool',
