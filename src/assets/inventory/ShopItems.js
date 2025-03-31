@@ -22,7 +22,7 @@ module.exports = [
         price: { buy: 10000, sell: 0 },
       },
       {
-        id: 'stoneaxe',
+        id: 'sxe',
         name: 'Stone Axe',
         description: 'A tool for breaking stones.',
         type: 'tool',

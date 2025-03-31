@@ -5,7 +5,7 @@ const emote = {
 module.exports = [
     //=====================================| Mining Tools |=====================================\\
     {
-        id: 'stoneaxe',
+        id: 'sxe',
         name: 'Stone Axe',
         description: 'A tool for breaking stones.',
         type: 'tool',
