@@ -61,9 +61,6 @@ module.exports = class Inventory extends Command {
                                 itemInfo.name ? itemInfo.name : client.utils.formatCapitalize(itemInfo.id)
                             }`
                         );
-                        if (itemInfo.type === "milk") {
-                            totalWorth += itemInfo.price.sell * item.quantity;
-                        }
                     }
                 }
             });
@@ -102,11 +99,6 @@ module.exports = class Inventory extends Command {
             });
 
             const embedFields = [
-                {
-                    name: "Beg Net",
-                    value: `**\`${client.utils.formatNumber(totalWorth)}\`** ${emoji.coin}`,
-                    inline: false,
-                },
                 ...(fields.length
                     ? fields
                     : [
@@ -120,7 +112,7 @@ module.exports = class Inventory extends Command {
             const embed = client
                 .embed()
                 .setColor(color.main)
-                .setDescription(`## ${emoji.mainLeft} Beg ${emoji.mainRight}`)
+                .setDescription(`## ${emoji.mainLeft} BEG ${emoji.mainRight}`)
                 .setThumbnail(client.utils.emojiToImage(emoji.main))
                 .addFields(embedFields)
                 .setFooter({
