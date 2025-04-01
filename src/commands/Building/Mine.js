@@ -39,7 +39,7 @@ module.exports = class Mine extends Command {
 
         const equippedTool = MineTools.find(({ id }) => id === userTool.id) || Items.find(({ id }) => id === 'hand');
         const [tool, maxQuantity, minedAmount, cooldownTime] = userTool.id === 'hand'
-            ? [equippedTool, equippedTool.quantity, 1, 12000]
+            ? [equippedTool, equippedTool.quantity, 1, 10000]
             : [equippedTool, equippedTool.quantity, Chance.integer({ min: 1, max: 3 }), 8000];
 
         // Check cooldown
