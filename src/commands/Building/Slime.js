@@ -16,7 +16,7 @@ module.exports = class Catch extends Command {
             },
             category: 'inventory',
             aliases: ['sl'],
-            cooldown: 10,
+            cooldown: 3,
             args: false,
             permissions: {
                 dev: false,
@@ -38,8 +38,8 @@ module.exports = class Catch extends Command {
         }
         const equippedTool = SlimeTools.find(({ id }) => id === userTool.id) || Items.find(({ id }) => id === 'hand');
         const [tool, maxQuantity, caughtAmount, cooldownTime] = userTool.item === 'hand'
-            ? [equippedTool, equippedTool.quantity, 1, 20000]
-            : [equippedTool, equippedTool.quantity, Chance.integer({ min: 1, max: 5 }), 15000];
+            ? [equippedTool, equippedTool.quantity, 1, 10000]
+            : [equippedTool, equippedTool.quantity, Chance.integer({ min: 1, max: 5 }), 8000];
 
         const cooldown = user.cooldowns.find(c => c.name === this.name.toLowerCase());
         const isOnCooldown = cooldown ? (Date.now() - cooldown.timestamp < cooldownTime) : false;
