@@ -87,7 +87,7 @@ module.exports = class Catch extends Command {
                 }
             }
 
-            const existingCooldown = user.cooldowns.find(c => c.name === 'mine');
+            const existingCooldown = user.cooldowns.find(c => c.name === 'slime');
             if (existingCooldown) {
                 existingCooldown.timestamp = Date.now();
             } else {
