@@ -11,6 +11,7 @@ module.exports = [
       multiple: false,
     },
     quantity: 12,
+    rarity: 'common',
     emoji: '<a:START:1342748948825243699>',
     available: ['use'],
     price: { buy: 0, sell: 0 },
