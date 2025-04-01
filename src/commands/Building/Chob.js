@@ -46,8 +46,8 @@ module.exports = class Chop extends Command {
         const equippedTool = ChopTools.find(tool => tool.id === userTool.id) || Items.find(item => item.id === 'hand');
 
         const [tool, maxQuantity, minedAmount, cooldownTime] = userTool.id === 'hand'
-            ? [equippedTool, equippedTool.quantity, 1, 8000]
-            : [equippedTool, equippedTool.quantity, Chance.integer({min: 1, max: 5}), 15000];
+            ? [equippedTool, equippedTool.quantity, 1, 10000]
+            : [equippedTool, equippedTool.quantity, Chance.integer({min: 1, max: 5}), 8000];
 
         const cooldown = user.cooldowns.find(c => c.name === this.name.toLowerCase());
         const isOnCooldown = cooldown ? (Date.now() - cooldown.timestamp < cooldownTime) : false;
