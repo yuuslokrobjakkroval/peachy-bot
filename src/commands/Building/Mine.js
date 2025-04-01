@@ -157,8 +157,8 @@ async function updateUserWithRetry(userId, updateFn, maxRetries = 3) {
 
 async function generateItems(tool, quantity) {
     const toolProbabilities = {
-        bare_hand: { amount: 1, common: 0.58, uncommon: 0.3, rare: 0.08, legendary: 0.03 },
-        pickaxe: { amount: Chance.integer({ min: 1, max: 2 }), common: 0.51, uncommon: 0.32, rare: 0.11, legendary: 0.04 },
+        hand: { amount: 1, common: 0.58, uncommon: 0.3, rare: 0.08, legendary: 0.03 },
+        sxe: { amount: Chance.integer({ min: 1, max: 2 }), common: 0.51, uncommon: 0.32, rare: 0.11, legendary: 0.04 },
     };
 
     const probabilities = toolProbabilities[tool?.item] || toolProbabilities.bare_hand;
