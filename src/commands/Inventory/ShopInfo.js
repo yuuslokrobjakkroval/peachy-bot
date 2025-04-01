@@ -140,11 +140,10 @@ module.exports = class ShopInfo extends Command {
         break;
     }
 
-    return client
-        .embed()
+    return client.embed()
         .setColor(color.main)
         .setThumbnail(client.utils.emojiToImage(item.emoji))
-        .setDescription(`# ${emoji.shop.mainLeft} ITEM DETAIL ${emoji.shop.mainRight}\n${helpCommand}`)
+        .setDescription(`# ${emoji.mainLeft} ITEM DETAIL ${emoji.mainRight}\n${helpCommand}`)
         .addFields(
             { name: "ID", value: item.id || "Unknown", inline: true },
             { name: "Name", value: item.name || "Unnamed", inline: true },
