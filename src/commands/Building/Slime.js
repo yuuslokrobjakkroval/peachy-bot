@@ -61,7 +61,7 @@ module.exports = class Catch extends Command {
         const totalWorth = aggregatedItems.reduce((total, slime) => total + slime.price.sell * slime.quantity, 0);
 
         const itemsDescription = aggregatedItems
-            .map(slime => `${slime.emoji} **\`+${slime.quantity}\`** ${client.utils.formatCapitalize(slime.id)}`)
+            .map(slime => `${slime.emoji} **+${slime.quantity}** ${client.utils.formatCapitalize(slime.id)}`)
             .join('\n');
 
         let currentQuantity = 12;
@@ -91,7 +91,7 @@ module.exports = class Catch extends Command {
             if (existingCooldown) {
                 existingCooldown.timestamp = Date.now();
             } else {
-                user.cooldowns.push({ name: 'mine', timestamp: Date.now(), duration: cooldownTime });
+                user.cooldowns.push({ name: 'slime', timestamp: Date.now(), duration: cooldownTime });
             }
         });
 
