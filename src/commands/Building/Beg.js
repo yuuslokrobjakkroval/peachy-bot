@@ -1,9 +1,9 @@
 const { Command } = require("../../structures/index.js");
-const ImportantItems = require("../../assets/inventory/ImportantItems.js");
-const ShopItems = require("../../assets/inventory/ShopItems.js");
+const ImportantItems = require("../../assets/inventory/ImportantItems");
+const ShopItems = require("../../assets/inventory/ShopItems");
 const Woods = require("../../assets/inventory/Woods");
 const Minerals = require("../../assets/inventory/Minerals");
-const SlimeCategory = require("../../assets/inventory/SlimeCategory");
+const SlimeCategory = require("../../assets/inventory/SlimeCatalog");
 const Tools = require("../../assets/inventory/SlimeTools");
 const inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = inventory.filter((value) => value.price.buy !== 0).sort((a, b) => a.price.buy - b.price.buy);
