@@ -76,8 +76,8 @@ module.exports = class MessageCreate extends Event {
             .setTitle(`Heyoo! ${message.author.displayName}`)
             .setDescription(
               `My Name is ${this.client.user.displayName}.\n` +
-                `My prefix for this server is **\`${prefix}\`**.\n\n` +
-                `Do you need help? please use **\`${prefix}help\`**!!!`
+                `My prefix for this server is **${prefix}**.\n\n` +
+                `Do you need help? please use **${prefix}help**!!!`
             )
             .setImage(globalGif.mentionBot)
             .setFooter({
