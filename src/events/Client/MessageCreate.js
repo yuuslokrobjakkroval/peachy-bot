@@ -530,13 +530,18 @@ module.exports = class MessageCreate extends Event {
               } else {
                 const expirationTime =
                   timestamps.get(message.author.id) + cooldownAmount;
-                const timeLeft = (expirationTime - now) / 1000;
+                const timeLeft = Math.ceil((expirationTime - now) / 1000);
                 if (now < expirationTime && timeLeft > 0.9) {
-                  return message.reply({
-                    content: `Please wait \`${timeLeft.toFixed(
-                      1
-                    )}\` more second(s) before reusing the **${cmd}** command.`,
-                  });
+                  return await this.client.utils.sendErrorMessage(
+                      this.client,
+                      ctx,
+                      `Please wait <t:${Math.round(Date.now() / 1000) + timeLeft}:R> more second(s) before reusing the **${cmd}** command.`,
+                      color,
+                      timeLeft * 1000
+                  );
+                  // return message.reply({
+                  //   content: `Please wait <t:${Math.round(Date.now() / 1000) + timeLeft}:R> more second(s) before reusing the **${cmd}** command.`,
+                  // });
                 }
                 timestamps.set(message.author.id, now);
                 setTimeout(
