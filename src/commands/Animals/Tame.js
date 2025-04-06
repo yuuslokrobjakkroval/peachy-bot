@@ -76,7 +76,7 @@ module.exports = class Catch extends Command {
       }
 
       // Check if the user already has 10 pets
-      if (user.zoo && user.zoo.length >= 10) {
+      if (user.zoo && user.zoo.length >= petList?.length) {
         const embed = client
           .embed()
           .setColor(color.danger)
@@ -87,10 +87,9 @@ module.exports = class Catch extends Command {
         return ctx.sendMessage({ embeds: [embed] });
       }
 
-      // Randomly select a pet from the petList
       let randomPet;
       let attempts = 0;
-      const maxAttempts = 50; // Prevent infinite loops in case of edge cases
+      const maxAttempts = 50;
 
       do {
         randomPet = petList[Math.floor(Math.random() * petList.length)];
@@ -129,8 +128,7 @@ module.exports = class Catch extends Command {
       );
 
       // Create an embed to display the result
-      const successEmbed = client
-        .embed()
+      const successEmbed = client.embed()
         .setColor(color.main)
         .setDescription(
           (generalMessages?.title
