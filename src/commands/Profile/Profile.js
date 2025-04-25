@@ -8,16 +8,16 @@ const Wallpapers = inventory.filter((value) => value.type === "wallpaper");
 const Colors = inventory.filter((value) => value.type === "color");
 
 GlobalFonts.registerFromPath(
-    "./src/data/fonts/Kelvinch-Roman.otf",
-    "Kelvinch-Roman"
+  "./src/data/fonts/Kelvinch-Roman.otf",
+  "Kelvinch-Roman"
 );
 GlobalFonts.registerFromPath(
-    "./src/data/fonts/Kelvinch-Bold.otf",
-    "Kelvinch-Bold"
+  "./src/data/fonts/Kelvinch-Bold.otf",
+  "Kelvinch-Bold"
 );
 GlobalFonts.registerFromPath(
-    "./src/data/fonts/Graffierz Poison Shadow.otf",
-    "Graffierz Poison Shadow"
+  "./src/data/fonts/Graffierz Poison Shadow.otf",
+  "Graffierz Poison Shadow"
 );
 
 const defaultBanner = "https://i.imgur.com/8rZFeWI.jpg";
@@ -65,10 +65,10 @@ module.exports = class Profile extends Command {
 
       try {
         loadingMessage = await this.sendLoadingMessage(
-            client,
-            ctx,
-            color,
-            emoji
+          client,
+          ctx,
+          color,
+          emoji
         );
       } catch (error) {
         await this.handleError(ctx, loadingMessage);
@@ -78,13 +78,13 @@ module.exports = class Profile extends Command {
       await new Promise((resolve) => setTimeout(resolve, 4000));
 
       const equippedWallpaper = userInfo.equip.find((equippedItem) =>
-          equippedItem.id.startsWith("w")
+        equippedItem.id.startsWith("w")
       );
       const equippedColor = userInfo.equip.find((equippedItem) =>
-          equippedItem.id.startsWith("p")
+        equippedItem.id.startsWith("p")
       );
       const chinaNewYear = userInfo.equip.find(
-          (equippedItem) => equippedItem.id === "w168"
+        (equippedItem) => equippedItem.id === "w168"
       );
 
       let bannerImage;
@@ -93,7 +93,7 @@ module.exports = class Profile extends Command {
       } else {
         if (equippedWallpaper) {
           bannerImage = Wallpapers.find(
-              (wallpaperItem) => wallpaperItem.id === equippedWallpaper.id
+            (wallpaperItem) => wallpaperItem.id === equippedWallpaper.id
           )?.image;
         } else {
           bannerImage = defaultBanner;
@@ -103,7 +103,7 @@ module.exports = class Profile extends Command {
       let backgroundColor;
       if (equippedColor) {
         backgroundColor = Colors.find(
-            (colorItem) => colorItem.id === equippedColor.id
+          (colorItem) => colorItem.id === equippedColor.id
         )?.color;
       }
 
@@ -116,7 +116,7 @@ module.exports = class Profile extends Command {
 
         if (userInfo?.relationship?.partner?.userId) {
           partnerInfo = await client.utils.getUser(
-              userInfo?.relationship?.partner?.userId
+            userInfo?.relationship?.partner?.userId
           );
           partner = await client.users.fetch(partnerInfo?.userId);
         }
@@ -124,24 +124,24 @@ module.exports = class Profile extends Command {
         canvas = createCanvas(1920, 1080);
         context = canvas.getContext("2d");
         await this.drawChinaNewYearProfile(
-            client,
-            context,
-            user,
-            userInfo,
-            partner,
-            partnerInfo,
-            bannerImage
+          client,
+          context,
+          user,
+          userInfo,
+          partner,
+          partnerInfo,
+          bannerImage
         );
       } else {
         await this.drawProfile(
-            client,
-            context,
-            user,
-            userInfo,
-            color,
-            backgroundColor,
-            emoji,
-            bannerImage
+          client,
+          context,
+          user,
+          userInfo,
+          color,
+          backgroundColor,
+          emoji,
+          bannerImage
         );
       }
 
@@ -150,12 +150,12 @@ module.exports = class Profile extends Command {
       });
 
       ctx.isInteraction
-          ? await ctx.interaction.editReply({
+        ? await ctx.interaction.editReply({
             content: "",
             embeds: [],
             files: [attachment],
           })
-          : await loadingMessage.edit({
+        : await loadingMessage.edit({
             content: "",
             embeds: [],
             files: [attachment],
@@ -168,17 +168,17 @@ module.exports = class Profile extends Command {
 
   getTargetUser(ctx, args) {
     return ctx.isInteraction
-        ? ctx.interaction.options.getUser("user")
-        : ctx.message.mentions.users.first() ||
-        ctx.guild.members.cache.get(args[0]) ||
-        ctx.author;
+      ? ctx.interaction.options.getUser("user")
+      : ctx.message.mentions.users.first() ||
+          ctx.guild.members.cache.get(args[0]) ||
+          ctx.author;
   }
 
   async sendUserNotFoundEmbed(ctx, color) {
     const embed = ctx.client
-        .embed()
-        .setColor(color.main)
-        .setDescription("User Not Found");
+      .embed()
+      .setColor(color.main)
+      .setDescription("User Not Found");
     return ctx.sendMessage({
       embeds: [embed],
     });
@@ -186,11 +186,11 @@ module.exports = class Profile extends Command {
 
   async sendLoadingMessage(client, ctx, color, emoji) {
     const embed = client
-        .embed()
-        .setColor(color.main)
-        .setTitle(`**${emoji.mainLeft} 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 ${emoji.mainRight}**`)
-        .setDescription("**Generating your profile...**")
-        .setImage("https://i.imgur.com/0BrEHuc.gif");
+      .embed()
+      .setColor(color.main)
+      .setTitle(`**${emoji.mainLeft} 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 ${emoji.mainRight}**`)
+      .setDescription("**Generating your profile...**")
+      .setImage("https://i.imgur.com/0BrEHuc.gif");
     return await ctx.sendDeferMessage({
       embeds: [embed],
     });
@@ -199,7 +199,7 @@ module.exports = class Profile extends Command {
   async handleError(ctx, loadingMessage) {
     await loadingMessage?.edit({
       content:
-          "An error occurred while generating your profile. Please try again later.",
+        "An error occurred while generating your profile. Please try again later.",
       files: [],
     });
   }
@@ -241,19 +241,19 @@ module.exports = class Profile extends Command {
   }
 
   async drawProfile(
-      client,
-      context,
-      targetUser,
-      userInfo,
-      color,
-      backgroundColor,
-      emoji,
-      banner
+    client,
+    context,
+    targetUser,
+    userInfo,
+    color,
+    backgroundColor,
+    emoji,
+    banner
   ) {
     // Draw the background color
     context.fillStyle = backgroundColor
-        ? backgroundColor.primary
-        : client.utils.formatColor(color.main);
+      ? backgroundColor.primary
+      : client.utils.formatColor(color.main);
     context.fillRect(0, 0, 1280, 720);
 
     if (banner) {
@@ -272,10 +272,10 @@ module.exports = class Profile extends Command {
       context.quadraticCurveTo(x + width, y, x + width, y + radius);
       context.lineTo(x + width, y + height - radius);
       context.quadraticCurveTo(
-          x + width,
-          y + height,
-          x + width - radius,
-          y + height
+        x + width,
+        y + height,
+        x + width - radius,
+        y + height
       );
       context.lineTo(x + radius, y + height);
       context.quadraticCurveTo(x, y + height, x, y + height - radius);
@@ -292,38 +292,38 @@ module.exports = class Profile extends Command {
 
     // Draw the rounded rectangle for the title box
     this.drawRoundedRectangle(
-        context,
-        15,
-        25,
-        1250,
-        60,
-        12,
-        backgroundColor ? backgroundColor.secondary : "#F7D8DF"
+      context,
+      15,
+      25,
+      1250,
+      60,
+      12,
+      backgroundColor ? backgroundColor.secondary : "#F7D8DF"
     );
 
     // Draw "Settings" title
     context.font = "28px Kelvinch-Bold, Arial";
     context.fillStyle = backgroundColor
-        ? backgroundColor.text
-        : client.utils.formatColor(color.dark);
+      ? backgroundColor.text
+      : client.utils.formatColor(color.dark);
     context.fillText(`Profile`, 30, 65);
 
     // Draw the rounded rectangle for the information box
     this.drawRoundedRectangle(
-        context,
-        880,
-        100,
-        385,
-        570,
-        32,
-        backgroundColor
-            ? backgroundColor.secondary
-            : client.utils.formatColor(color.light)
+      context,
+      880,
+      100,
+      385,
+      570,
+      32,
+      backgroundColor
+        ? backgroundColor.secondary
+        : client.utils.formatColor(color.light)
     );
 
     // Draw the avatar as a circular image
     const userAvatar = await loadImage(
-        targetUser.displayAvatarURL({ format: "png", size: 256 })
+      targetUser.displayAvatarURL({ format: "png", size: 256 })
     );
     const userAvatarX = 1200;
     const userAvatarY = 34;
@@ -332,33 +332,33 @@ module.exports = class Profile extends Command {
     context.save();
     context.beginPath();
     context.arc(
-        userAvatarX + userAvatarSize / 2,
-        userAvatarY + userAvatarSize / 2,
-        userAvatarSize / 2,
-        0,
-        Math.PI * 2,
-        true
+      userAvatarX + userAvatarSize / 2,
+      userAvatarY + userAvatarSize / 2,
+      userAvatarSize / 2,
+      0,
+      Math.PI * 2,
+      true
     );
     context.closePath();
     context.clip();
     context.drawImage(
-        userAvatar,
-        userAvatarX,
-        userAvatarY,
-        userAvatarSize,
-        userAvatarSize
+      userAvatar,
+      userAvatarX,
+      userAvatarY,
+      userAvatarSize,
+      userAvatarSize
     );
     context.restore();
 
     // Add Avatar Decoration
     context.beginPath();
     context.arc(
-        userAvatarX + userAvatarSize / 2,
-        userAvatarY + userAvatarSize / 2,
-        userAvatarSize / 2 + 2,
-        0,
-        Math.PI * 2,
-        true
+      userAvatarX + userAvatarSize / 2,
+      userAvatarY + userAvatarSize / 2,
+      userAvatarSize / 2 + 2,
+      0,
+      Math.PI * 2,
+      true
     ); // Slightly larger circle
     context.lineWidth = 1;
     context.strokeStyle = color.main;
@@ -375,27 +375,27 @@ module.exports = class Profile extends Command {
       {
         label: "Gender",
         description:
-            userInfo.profile && userInfo.profile.gender
-                ? client.utils.formatCapitalize(userInfo.profile.gender)
-                : "Not Set",
+          userInfo.profile && userInfo.profile.gender
+            ? client.utils.formatCapitalize(userInfo.profile.gender)
+            : "Not Set",
         x: 895,
         y: 220,
       },
       {
         label: "Date of birth",
         description:
-            userInfo.profile && userInfo.profile.birthday
-                ? userInfo.profile.birthday
-                : "Not Set",
+          userInfo.profile && userInfo.profile.birthday
+            ? userInfo.profile.birthday
+            : "Not Set",
         x: 895,
         y: 300,
       },
       {
         label: "Bio",
         description:
-            userInfo.profile && userInfo.profile.bio
-                ? userInfo.profile.bio
-                : "Not Set",
+          userInfo.profile && userInfo.profile.bio
+            ? userInfo.profile.bio
+            : "Not Set",
         x: 895,
         y: 380,
       },
@@ -403,8 +403,8 @@ module.exports = class Profile extends Command {
 
     userInfoDetail.forEach((info) => {
       context.fillStyle = backgroundColor
-          ? backgroundColor.text
-          : client.utils.formatColor(color.dark);
+        ? backgroundColor.text
+        : client.utils.formatColor(color.dark);
       context.font = "24px Kelvinch-Bold, Arial";
       context.fillText(info.label, info.x, info.y);
       const maxWidth = 500;
@@ -418,9 +418,9 @@ module.exports = class Profile extends Command {
     // Draw Zodiac Sign
     if (userInfo.profile.gender) {
       const genderEmoji =
-          userInfo.profile.gender === "male"
-              ? emoji.gender.male
-              : emoji.gender.female;
+        userInfo.profile.gender === "male"
+          ? emoji.gender.male
+          : emoji.gender.female;
       const genderEmojiURL = client.utils.emojiToImage(genderEmoji);
 
       try {
@@ -450,32 +450,32 @@ module.exports = class Profile extends Command {
     // Draw the logout button
     // context.fillStyle = '#F582AE';
     this.drawRoundedRectangle(
-        context,
-        945,
-        600,
-        256,
-        50,
-        12,
-        backgroundColor ? backgroundColor.primary : "#F7D8DF"
+      context,
+      945,
+      600,
+      256,
+      50,
+      12,
+      backgroundColor ? backgroundColor.primary : "#F7D8DF"
     );
     context.fillStyle = client.utils.formatColor(color.dark);
     context.textAlign = "center";
     context.font = "28px Graffierz Poison Shadow, Arial";
     context.fillText(
-        !!userInfo?.relationship?.partner?.userId ? "Taken" : "Single",
-        1070,
-        632
+      !!userInfo?.relationship?.partner?.userId ? "Taken" : "Single",
+      1070,
+      632
     );
   }
 
   async drawChinaNewYearProfile(
-      client,
-      context,
-      user,
-      userInfo,
-      partner,
-      partnerInfo,
-      banner
+    client,
+    context,
+    user,
+    userInfo,
+    partner,
+    partnerInfo,
+    banner
   ) {
     const wallpaperCNY = await loadImage("https://i.imgur.com/51ycl94.jpg");
     if (wallpaperCNY) {
@@ -498,10 +498,10 @@ module.exports = class Profile extends Command {
       context.quadraticCurveTo(x + width, y, x + width, y + radius);
       context.lineTo(x + width, y + height - radius);
       context.quadraticCurveTo(
-          x + width,
-          y + height,
-          x + width - radius,
-          y + height
+        x + width,
+        y + height,
+        x + width - radius,
+        y + height
       );
       context.lineTo(x + radius, y + height);
       context.quadraticCurveTo(x, y + height, x, y + height - radius);
@@ -518,7 +518,7 @@ module.exports = class Profile extends Command {
 
     // Draw the avatar as a circular image
     const userAvatar = await loadImage(
-        user.displayAvatarURL({ format: "png", size: 256 })
+      user.displayAvatarURL({ format: "png", size: 256 })
     );
     const userAvatarX = 1740;
     const userAvatarY = 850;
@@ -528,21 +528,21 @@ module.exports = class Profile extends Command {
       context.save();
       context.beginPath();
       context.arc(
-          userAvatarX + userAvatarSize / 2,
-          userAvatarY + userAvatarSize / 2,
-          userAvatarSize / 2,
-          0,
-          Math.PI * 2,
-          true
+        userAvatarX + userAvatarSize / 2,
+        userAvatarY + userAvatarSize / 2,
+        userAvatarSize / 2,
+        0,
+        Math.PI * 2,
+        true
       );
       context.closePath();
       context.clip();
       context.drawImage(
-          userAvatar,
-          userAvatarX,
-          userAvatarY,
-          userAvatarSize,
-          userAvatarSize
+        userAvatar,
+        userAvatarX,
+        userAvatarY,
+        userAvatarSize,
+        userAvatarSize
       );
       context.restore();
     }
@@ -550,7 +550,7 @@ module.exports = class Profile extends Command {
     // PARTNER SECTION
     if (partner) {
       const partnerAvatar = await loadImage(
-          partner.displayAvatarURL({ format: "png", size: 256 })
+        partner.displayAvatarURL({ format: "png", size: 256 })
       );
       const partnerAvatarX = 1525;
       const partnerAvatarY = 967;
@@ -559,21 +559,21 @@ module.exports = class Profile extends Command {
         context.save();
         context.beginPath();
         context.arc(
-            partnerAvatarX + partnerAvatarSize / 2,
-            partnerAvatarY + partnerAvatarSize / 2,
-            partnerAvatarSize / 2,
-            0,
-            Math.PI * 2,
-            true
+          partnerAvatarX + partnerAvatarSize / 2,
+          partnerAvatarY + partnerAvatarSize / 2,
+          partnerAvatarSize / 2,
+          0,
+          Math.PI * 2,
+          true
         );
         context.closePath();
         context.clip();
         context.drawImage(
-            partnerAvatar,
-            partnerAvatarX,
-            partnerAvatarY,
-            partnerAvatarSize,
-            partnerAvatarSize
+          partnerAvatar,
+          partnerAvatarX,
+          partnerAvatarY,
+          partnerAvatarSize,
+          partnerAvatarSize
         );
         context.restore();
       }
@@ -582,12 +582,12 @@ module.exports = class Profile extends Command {
     // Add Avatar Decoration
     context.beginPath();
     context.arc(
-        userAvatarX + userAvatarSize / 2,
-        userAvatarY + userAvatarSize / 2,
-        userAvatarSize / 2 + 2,
-        0,
-        Math.PI * 2,
-        true
+      userAvatarX + userAvatarSize / 2,
+      userAvatarY + userAvatarSize / 2,
+      userAvatarSize / 2 + 2,
+      0,
+      Math.PI * 2,
+      true
     ); // Slightly larger circle
     context.lineWidth = 1;
     context.strokeStyle = "#000000";
@@ -600,38 +600,38 @@ module.exports = class Profile extends Command {
     context.fillText(client.utils.formatUpperCase(user.username), 1790, 617);
 
     context.fillText(
-        client.utils.formatUpperCase(userInfo.profile.gender ?? "Not Set"),
-        1790,
-        687
+      client.utils.formatUpperCase(userInfo.profile.gender ?? "Not Set"),
+      1790,
+      687
     );
 
     context.fillText(
-        userInfo?.profile?.birthday
-            ? moment(userInfo.profile.birthday, "DD-MMM").format("DD MMM")
-            : client.utils.formatUpperCase("Not Set"),
-        1790,
-        757
+      userInfo?.profile?.birthday
+        ? moment(userInfo.profile.birthday, "DD-MMM").format("DD MMM")
+        : client.utils.formatUpperCase("Not Set"),
+      1790,
+      757
     );
 
     context.fillText(
-        partner
-            ? client.utils.formatUpperCase(partner.username)
-            : client.utils.formatUpperCase("Single"),
-        955,
-        1025
+      partner
+        ? client.utils.formatUpperCase(partner.username)
+        : client.utils.formatUpperCase("Single"),
+      955,
+      1025
     );
 
     if (partner) {
       context.fillText(
-          client.utils.formatNumber(userInfo.balance.coin),
-          1790,
-          827
+        client.utils.formatNumber(userInfo.balance.coin),
+        1790,
+        827
       );
     } else {
       context.fillText(
-          client.utils.formatUpperCase(userInfo.profile.zodiacSign ?? "Not Set"),
-          1790,
-          827
+        client.utils.formatUpperCase(userInfo.profile.zodiacSign ?? "Not Set"),
+        1790,
+        827
       );
     }
 
@@ -639,14 +639,14 @@ module.exports = class Profile extends Command {
       const partnerDate = new Date(userInfo?.relationship?.partner?.date);
       const currentDate = Date.now();
       const diffInDays = Math.floor(
-          (currentDate - partnerDate) / (1000 * 60 * 60 * 24)
+        (currentDate - partnerDate) / (1000 * 60 * 60 * 24)
       );
       context.fillText(`${diffInDays + 1} Days`, 1350, 1025);
     } else {
       context.fillText(
-          client.utils.formatNumber(userInfo.balance.coin),
-          1350,
-          1025
+        client.utils.formatNumber(userInfo.balance.coin),
+        1350,
+        1025
       );
     }
   }
