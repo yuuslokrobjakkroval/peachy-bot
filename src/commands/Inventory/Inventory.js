@@ -84,7 +84,7 @@ module.exports = class Inventory extends Command {
         "theme",
         "special theme",
         "wallpaper",
-        "creditcard",
+        "credit card",
       ];
 
       inventoryTypes.forEach((type) => {

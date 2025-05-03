@@ -183,7 +183,7 @@ module.exports = [
     id: "bc",
     name: "Black Card",
     description: "this card have limit 100 million coins",
-    type: "creditcard",
+    type: "credit card",
     able: {
       use: true,
       gift: false,
@@ -198,7 +198,7 @@ module.exports = [
     id: "rc",
     name: "Red Card",
     description: "this card have limit 500 million coins",
-    type: "creditcard",
+    type: "credit card",
     able: {
       use: true,
       gift: false,
@@ -213,7 +213,7 @@ module.exports = [
     id: "pc",
     name: "Pink Card",
     description: "this card have limit 1000 million coins",
-    type: "creditcard",
+    type: "credit card",
     able: {
       use: true,
       gift: false,

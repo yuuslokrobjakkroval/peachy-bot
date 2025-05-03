@@ -89,7 +89,7 @@ module.exports = class UserInventory extends Command {
         "theme",
         "special theme",
         "wallpaper",
-        "creditcard",
+        "credit card",
       ];
 
       inventoryTypes.forEach((type) => {
@@ -147,7 +147,7 @@ module.exports = class UserInventory extends Command {
         .embed()
         .setColor(color.main)
         .setDescription(
-          `## ${emoji.mainLeft} ${invMessages.inventoryTitle || "𝐈𝐍𝐕𝐄𝐍𝐓𝐎𝐑𝐘"} ${
+          `## ${emoji.mainLeft} ${invMessages.inventoryTitle || "INVENTORY"} ${
             emoji.mainRight
           }`
         )
