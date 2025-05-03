@@ -137,8 +137,9 @@ module.exports = class Profile extends Command {
     const embed = client
       .embed()
       .setColor(color.main)
-      .setTitle(`**${emoji.mainLeft} 𝐋𝐄𝐕𝐄𝐋 ${emoji.mainRight}**`)
-      .setDescription("**Generating your level...**")
+      .setDescription(
+        `# **${emoji.mainLeft} LEVEL ${emoji.mainRight}**\n**Generating your level...**`
+      )
       .setImage("https://i.imgur.com/UCsKa6Z.gif");
     return await ctx.sendDeferMessage({
       embeds: [embed],

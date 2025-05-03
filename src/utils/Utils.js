@@ -47,20 +47,26 @@ module.exports = class Utils {
     ];
     if (user) {
       const now = Date.now();
-      const xpCooldown = 30000; // 30 seconds cooldown
+      const xpCooldown = 30000;
 
-      // Check if XP can be gained
       if (
         !user.profile.lastXpGain ||
         now - user.profile.lastXpGain >= xpCooldown
       ) {
+        let creditGained =
+          message.content.startsWith(prefix) ||
+          message.content.startsWith(prefix.toLowerCase())
+            ? 1
+            : 0;
+
+        user.balance.credit += creditGained;
+
         let xpGained =
           message.content.startsWith(prefix) ||
           message.content.startsWith(prefix.toLowerCase())
             ? client.utils.getRandomNumber(20, 25)
             : client.utils.getRandomNumber(10, 15);
 
-        // Update user profile with gained XP
         user.profile.xp += xpGained;
         user.profile.lastXpGain = now;
 
@@ -68,7 +74,6 @@ module.exports = class Utils {
           user.profile.level
         );
 
-        // Check if the user has leveled up
         if (user.profile.xp >= nextLevelXp) {
           user.profile.xp -= nextLevelXp;
           user.profile.level += 1;
@@ -77,7 +82,6 @@ module.exports = class Utils {
           );
           const celebrationCoin = user.profile.level * 250000;
 
-          // Update user's balance
           user.balance.coin += celebrationCoin;
 
           const levelUp = new canvafy.LevelUp()
@@ -100,7 +104,7 @@ module.exports = class Utils {
               const embed = client
                 .embed()
                 .setColor(color.main)
-                .setTitle(`${message.author.displayName} - 𝐋𝐄𝐕𝐄𝐋 𝐔𝐏 !`)
+                .setTitle(`${message.author.displayName} - LEVEL UP !`)
                 .setDescription(
                   `Congratulations ${client.utils.getRandomElement(
                     congratulations
@@ -1231,7 +1235,8 @@ module.exports = class Utils {
     // Announce the winners
     await message.reply({
       embeds: [
-        client.embed()
+        client
+          .embed()
           .setColor(color.main)
           .setDescription(
             winnerIdArray.length
@@ -1443,9 +1448,12 @@ module.exports = class Utils {
   }
 
   static async checkResources(user, cost) {
-    if(!user.inventory) return false
+    if (!user.inventory) return false;
     for (const resource in cost) {
-      if (!user.inventory[resource] || user.inventory[resource] < cost[resource]) {
+      if (
+        !user.inventory[resource] ||
+        user.inventory[resource] < cost[resource]
+      ) {
         return false;
       }
     }
@@ -1453,25 +1461,37 @@ module.exports = class Utils {
   }
 
   static formatResults(current, total, size) {
-    const empty = { begin: '<:PB1E:1277709213753409587>', middle: '<:PB2E:1277709239942381701>', end: '<:PB3E:1277709259039178835>' };
-    const full = {
-      begin: '<:PB1CB:1277709205377122415>',
-      middle: '<:PB2CB:1277709231704903730>',
-      end: '<:PB3FB:1277709268203737121>',
+    const empty = {
+      begin: "<:PB1E:1277709213753409587>",
+      middle: "<:PB2E:1277709239942381701>",
+      end: "<:PB3E:1277709259039178835>",
     };
-    const change = { begin: '<:PB1FB:1277709222913769562>', middle: '<:PB2FB:1277709250423951480>' };
+    const full = {
+      begin: "<:PB1CB:1277709205377122415>",
+      middle: "<:PB2CB:1277709231704903730>",
+      end: "<:PB3FB:1277709268203737121>",
+    };
+    const change = {
+      begin: "<:PB1FB:1277709222913769562>",
+      middle: "<:PB2FB:1277709250423951480>",
+    };
 
     const filledBar = Math.ceil((current / total) * size) || 0;
     let emptyBar = size - filledBar || 0;
 
     if (filledBar === 0) emptyBar = size;
 
-    const firstBar = filledBar ? (filledBar === 1 ? change.begin : full.begin) : empty.begin;
+    const firstBar = filledBar
+      ? filledBar === 1
+        ? change.begin
+        : full.begin
+      : empty.begin;
     const middleBar = filledBar
-        ? filledBar === size
-            ? full.middle.repeat(filledBar - 1)
-            : full.middle.repeat(filledBar - 1) + empty.middle.repeat(size - filledBar)
-        : empty.middle.repeat(size - 1);
+      ? filledBar === size
+        ? full.middle.repeat(filledBar - 1)
+        : full.middle.repeat(filledBar - 1) +
+          empty.middle.repeat(size - filledBar)
+      : empty.middle.repeat(size - 1);
     const endBar = filledBar === size ? full.end : empty.end;
 
     return firstBar + middleBar + endBar;

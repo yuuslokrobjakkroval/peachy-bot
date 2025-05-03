@@ -181,6 +181,7 @@ const userSchema = new Schema(
     balance: {
       coin: { type: Number, default: 25000 },
       bank: { type: Number, default: 0 },
+      credit: { type: Number, default: 0 },
       sponsor: { type: Number, default: 0 },
       slots: { type: Number, default: 0 },
       blackjack: { type: Number, default: 0 },

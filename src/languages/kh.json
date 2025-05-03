@@ -144,7 +144,7 @@
   },
   "economyMessages": {
     "balanceMessages": {
-      "description": "%{coinEmote} : **%{coin}** កាក់\n%{bankEmote} : **%{bank}** កាក់"
+      "description": "%{coinEmote} : **%{coin}** កាក់\n%{bankEmote} : **%{bank}** កាក់\n%{creditEmote} : **%{credit}** credits"
     },
     "dailyMessages": {
       "success": "អ្នកបានទទួលរង្វាន់ប្រចាំថ្ងៃរបស់អ្នកចំនួន %{coinEmote} **+%{coin}** កាក់ និង %{expEmote} **+%{exp} xp**\n%{bonusMessage}",

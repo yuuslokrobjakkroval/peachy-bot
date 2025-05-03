@@ -23,9 +23,18 @@ module.exports = class MessageCreate extends Event {
     this.client
       .setColorBasedOnTheme(message.author.id)
       .then(async ({ user, color, emoji, language }) => {
-        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-        const prefix = this.client.config.prefix;
-        this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
+        const generalMessages = language.locales.get(
+          language.defaultLocale
+        )?.generalMessages;
+        const prefix = globalConfig.prefix;
+        this.client.utils.getCheckingUser(
+          this.client,
+          message,
+          user,
+          color,
+          emoji,
+          prefix
+        );
 
         if (user?.verification?.isBanned) {
           return;
@@ -533,11 +542,13 @@ module.exports = class MessageCreate extends Event {
                 const timeLeft = Math.ceil((expirationTime - now) / 1000);
                 if (now < expirationTime && timeLeft > 0.9) {
                   return await this.client.utils.sendErrorMessage(
-                      this.client,
-                      ctx,
-                      `Please wait <t:${Math.round(Date.now() / 1000) + timeLeft}:R> more second(s) before reusing the **${cmd}** command.`,
-                      color,
-                      timeLeft * 1000
+                    this.client,
+                    ctx,
+                    `Please wait <t:${
+                      Math.round(Date.now() / 1000) + timeLeft
+                    }:R> more second(s) before reusing the **${cmd}** command.`,
+                    color,
+                    timeLeft * 1000
                   );
                   // return message.reply({
                   //   content: `Please wait <t:${Math.round(Date.now() / 1000) + timeLeft}:R> more second(s) before reusing the **${cmd}** command.`,
@@ -590,7 +601,11 @@ module.exports = class MessageCreate extends Event {
 
               try {
                 let logChannelId;
-                if (["animals", "building"].includes(command.category.toLowerCase())) {
+                if (
+                  ["animals", "building"].includes(
+                    command.category.toLowerCase()
+                  )
+                ) {
                   logChannelId = this.client.config.logChannelId[8];
                 } else if (["work"].includes(command.category.toLowerCase())) {
                   logChannelId = this.client.config.logChannelId[7];
@@ -602,7 +617,9 @@ module.exports = class MessageCreate extends Event {
                   ["utility"].includes(command.category.toLowerCase())
                 ) {
                   logChannelId = this.client.config.logChannelId[5];
-                } else if (["inventory"].includes(command.category.toLowerCase())) {
+                } else if (
+                  ["inventory"].includes(command.category.toLowerCase())
+                ) {
                   logChannelId = this.client.config.logChannelId[4];
                 } else if (balanceCommands.includes(command.name)) {
                   logChannelId = this.client.config.logChannelId[3];
