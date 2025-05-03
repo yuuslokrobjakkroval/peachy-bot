@@ -94,8 +94,11 @@ module.exports = class ShopInfo extends Command {
     const categorizedItems = {
       Food: [],
       Drink: [],
-      Theme: [],
+      Color: [],
       Milk: [],
+      Theme: [],
+      SpecialTheme: [],
+      CreditCard: [],
     };
 
     for (const item of AllItems) {
@@ -111,7 +114,7 @@ module.exports = class ShopInfo extends Command {
           );
           break;
         case "color":
-          categorizedItems.Milk.push(
+          categorizedItems.Color.push(
             `**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`
           );
         case "theme":
@@ -120,16 +123,15 @@ module.exports = class ShopInfo extends Command {
           );
           break;
         case "special theme":
-          categorizedItems.Milk.push(
+          categorizedItems.SpecialTheme.push(
             `**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`
           );
         case "milk":
           categorizedItems.Milk.push(
             `**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`
           );
-
         case "credit card":
-          categorizedItems.Milk.push(
+          categorizedItems.CreditCard.push(
             `**ID:** \`${item.id}\`\n**Name:** ${item.name} ${item.emoji}`
           );
           break;
@@ -141,8 +143,11 @@ module.exports = class ShopInfo extends Command {
     const itemList = [
       ...categorizedItems.Food,
       ...categorizedItems.Drink,
+      ...categorizedItems.Color,
       ...categorizedItems.Theme,
+      ...categorizedItems.SpecialTheme,
       ...categorizedItems.Milk,
+      ...categorizedItems.CreditCard,
     ];
 
     if (itemList.length === 0) {
@@ -170,12 +175,18 @@ module.exports = class ShopInfo extends Command {
       case "drink":
         helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`pdrink ${item.id}\``;
         break;
+      case "color":
+        helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`psell ${item.id}\``;
       case "theme":
         helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`puse ${item.id}\``;
         break;
+      case "special theme":
+        helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`psell ${item.id}\``;
       case "milk":
         helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`psell ${item.id}\``;
         break;
+      case "credit card":
+        helpCommand = `${item.description}\n**・** \`pbuy ${item.id}\`\n**・** \`psell ${item.id}\``;
       default:
         helpCommand = shopInfoMessages.noAdditionalCommands;
         break;
