@@ -3,8 +3,8 @@ const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
 const inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = inventory
-    .filter((value) => value.price.buy !== 0)
-    .sort((a, b) => a.price.buy - b.price.buy);
+  .filter((value) => value.price.buy !== 0)
+  .sort((a, b) => a.price.buy - b.price.buy);
 
 module.exports = class Inventory extends Command {
   constructor(client) {
@@ -30,17 +30,18 @@ module.exports = class Inventory extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const invMessages = language.locales.get(language.defaultLocale)?.inventoryMessages?.invMessages;
+    const invMessages = language.locales.get(language.defaultLocale)
+      ?.inventoryMessages?.invMessages;
 
     try {
       const user = await client.utils.getUser(ctx.author.id);
 
       if (!user || !user.inventory) {
         return await client.utils.sendErrorMessage(
-            client,
-            ctx,
-            invMessages.noInventory || "No inventory data found for this user.",
-            color
+          client,
+          ctx,
+          invMessages.noInventory || "No inventory data found for this user.",
+          color
         );
       }
 
@@ -50,16 +51,18 @@ module.exports = class Inventory extends Command {
       user.inventory.forEach((item) => {
         if (item.quantity > 0) {
           const itemInfo = Items.concat(ImportantItems).find(
-              ({ id }) => id === item.id
+            ({ id }) => id === item.id
           );
 
           if (itemInfo) {
             const type = itemInfo.type;
             itemList[type] = itemList[type] || [];
             itemList[type].push(
-                `\`${itemInfo.id}\` ${itemInfo.emoji} **${item.quantity}** ${
-                    itemInfo.name ? itemInfo.name : client.utils.formatCapitalize(itemInfo.id)
-                }`
+              `\`${itemInfo.id}\` ${itemInfo.emoji} **${item.quantity}** ${
+                itemInfo.name
+                  ? itemInfo.name
+                  : client.utils.formatCapitalize(itemInfo.id)
+              }`
             );
             if (itemInfo.type === "milk") {
               totalWorth += itemInfo.price.sell * item.quantity;
@@ -81,6 +84,7 @@ module.exports = class Inventory extends Command {
         "theme",
         "special theme",
         "wallpaper",
+        "creditcard",
       ];
 
       inventoryTypes.forEach((type) => {
@@ -116,45 +120,49 @@ module.exports = class Inventory extends Command {
       const embedFields = [
         {
           name: invMessages.inventoryNet || "Inventory Net",
-          value: `**\`${client.utils.formatNumber(totalWorth)}\`** ${emoji.coin}`,
+          value: `**\`${client.utils.formatNumber(totalWorth)}\`** ${
+            emoji.coin
+          }`,
           inline: false,
         },
         ...(fields.length
-            ? fields
-            : [
+          ? fields
+          : [
               {
                 name: invMessages.emptyInventoryFieldName || "Inventory",
                 value:
-                    invMessages.emptyInventoryFieldValue ||
-                    "Your inventory is currently empty.",
+                  invMessages.emptyInventoryFieldValue ||
+                  "Your inventory is currently empty.",
               },
             ]),
       ];
 
       const embed = client
-          .embed()
-          .setColor(color.main)
-          .setDescription(
-              `## ${emoji.mainLeft} ${invMessages.inventoryTitle || "INVENTORY"} ${emoji.mainRight}`
-          )
-          .setThumbnail(client.utils.emojiToImage(emoji.main))
-          .addFields(embedFields)
-          .setFooter({
-            text:
-                invMessages.footerText?.replace("{user}", ctx.author.displayName) ||
-                `Requested by ${ctx.author.displayName}`,
-            iconURL: ctx.author.displayAvatarURL(),
-          });
+        .embed()
+        .setColor(color.main)
+        .setDescription(
+          `## ${emoji.mainLeft} ${invMessages.inventoryTitle || "INVENTORY"} ${
+            emoji.mainRight
+          }`
+        )
+        .setThumbnail(client.utils.emojiToImage(emoji.main))
+        .addFields(embedFields)
+        .setFooter({
+          text:
+            invMessages.footerText?.replace("{user}", ctx.author.displayName) ||
+            `Requested by ${ctx.author.displayName}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        });
 
       return await ctx.sendMessage({ embeds: [embed] });
-
     } catch (error) {
       console.error("Error in Inventory command:", error);
       return await client.utils.sendErrorMessage(
-          client,
-          ctx,
-          invMessages.error || "An error occurred while retrieving your inventory.",
-          color
+        client,
+        ctx,
+        invMessages.error ||
+          "An error occurred while retrieving your inventory.",
+        color
       );
     }
   }

@@ -180,8 +180,8 @@ module.exports = [
     price: { buy: 1e10, sell: 15e6 },
   },
   {
-    id: "Black Card",
-    name: "blackcard",
+    id: "bc",
+    name: "Black Card",
     description: "this card have limit 100 million coins",
     type: "creditcard",
     able: {
@@ -195,8 +195,8 @@ module.exports = [
     price: { buy: 1e8, sell: 0 },
   },
   {
-    id: "Red Card",
-    name: "redcard",
+    id: "rc",
+    name: "Red Card",
     description: "this card have limit 500 million coins",
     type: "creditcard",
     able: {
@@ -210,8 +210,8 @@ module.exports = [
     price: { buy: 1e8, sell: 0 },
   },
   {
-    id: "Pink Card",
-    name: "pinkcard",
+    id: "pc",
+    name: "Pink Card",
     description: "this card have limit 1000 million coins",
     type: "creditcard",
     able: {
