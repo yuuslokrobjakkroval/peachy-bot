@@ -35,8 +35,11 @@ module.exports = class Slots extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const slotMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.slotMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
+    const slotMessages = language.locales.get(language.defaultLocale)
+      ?.gamblingMessages?.slotMessages;
 
     try {
       const user = await client.utils.getUser(ctx.author.id);
@@ -52,28 +55,57 @@ module.exports = class Slots extends Command {
       const { coin, bank, slots } = user.balance;
 
       if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
-        const activeCommand = user.validation.isKlaKlouk ? "Kla Klouk" : "Multiple Transfer";
-        return client.utils.sendErrorMessage(client, ctx, `You have already started the ${activeCommand} event. Please finish it before using this command.`, color);
+        const activeCommand = user.validation.isKlaKlouk
+          ? "Kla Klouk"
+          : "Multiple Transfer";
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `You have already started the ${activeCommand} event. Please finish it before using this command.`,
+          color
+        );
       }
 
       if (coin < 1) {
-        return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          generalMessages.zeroBalance,
+          color
+        );
       }
 
-      let amount = ctx.isInteraction ? ctx.interaction.options.data[0]?.value || 1 : args[0] || 1;
+      let amount = ctx.isInteraction
+        ? ctx.interaction.options.data[0]?.value || 1
+        : args[0] || 1;
 
       if (amount.toString().startsWith("-")) {
         return ctx.sendMessage({
-          embeds: [client.embed().setColor(color.danger).setDescription(generalMessages.invalidAmount)],
+          embeds: [
+            client
+              .embed()
+              .setColor(color.danger)
+              .setDescription(generalMessages.invalidAmount),
+          ],
         });
       }
 
-      if (isNaN(amount) || amount <= 0 || amount.toString().includes(".") || amount.toString().includes(",")) {
+      if (
+        isNaN(amount) ||
+        amount <= 0 ||
+        amount.toString().includes(".") ||
+        amount.toString().includes(",")
+      ) {
         const amountMap = { all: coin, half: Math.ceil(coin / 2) };
         if (amount in amountMap) {
           amount = amountMap[amount];
         } else {
-          return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
+          return client.utils.sendErrorMessage(
+            client,
+            ctx,
+            generalMessages.invalidAmount,
+            color
+          );
         }
       }
 
@@ -81,14 +113,14 @@ module.exports = class Slots extends Command {
 
       // Update the user's balance for the bet
       await Users.updateOne(
-          { userId: ctx.author.id },
-          {
-            $set: {
-              "balance.coin": coin - baseCoins,
-              "balance.slots": slots + baseCoins,
-              "balance.bank": bank,
-            },
-          }
+        { userId: ctx.author.id },
+        {
+          $set: {
+            "balance.coin": coin - baseCoins,
+            "balance.slots": slots + baseCoins,
+            "balance.bank": bank,
+          },
+        }
       );
 
       // Decide the result of the slots
@@ -119,9 +151,14 @@ module.exports = class Slots extends Command {
           let slot1 = Math.floor(Math.random() * SLOTS.length);
           let slot2 = Math.floor(Math.random() * SLOTS.length);
           let slot3 = Math.floor(Math.random() * SLOTS.length);
-          if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+          if (slot2 === slot1)
+            slot2 =
+              (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
           if (slot3 === slot1 || slot3 === slot2)
-            slot3 = (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+            slot3 =
+              (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
       } else {
@@ -147,9 +184,14 @@ module.exports = class Slots extends Command {
           let slot1 = Math.floor(Math.random() * SLOTS.length);
           let slot2 = Math.floor(Math.random() * SLOTS.length);
           let slot3 = Math.floor(Math.random() * SLOTS.length);
-          if (slot2 === slot1) slot2 = (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+          if (slot2 === slot1)
+            slot2 =
+              (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
           if (slot3 === slot1 || slot3 === slot2)
-            slot3 = (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) % SLOTS.length;
+            slot3 =
+              (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
           win = 0;
         }
@@ -157,26 +199,123 @@ module.exports = class Slots extends Command {
 
       const newBalance = coin + win - baseCoins;
 
-      const initialEmbed = client.embed().setColor(color.main).setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })).setDescription(
-          `# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${emoji.slots.spin} ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ╚═ •» ${globalEmoji.romdoul} «•« ══╝\n\n${slotMessages.bet.replace("%{coin}", client.utils.formatNumber(baseCoins)).replace("%{coinEmote}", emoji.coin)}\n`
-      ).setFooter({ text: `${generalMessages.gameInProgress.replace("%{user}", ctx.author.displayName)}`, iconURL: ctx.author.displayAvatarURL() });
+      const initialEmbed = client
+        .embed()
+        .setColor(color.main)
+        .setThumbnail(
+          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+        )
+        .setDescription(
+          `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
+            globalEmoji.romdoul
+          } «• ═╗\n ## **   「${emoji.slots.spin} ${emoji.slots.spin} ${
+            emoji.slots.spin
+          }」 **\n ### ╚═ •» ${
+            globalEmoji.romdoul
+          } «•« ══╝\n\n${slotMessages.bet
+            .replace("%{coin}", client.utils.formatNumber(baseCoins))
+            .replace("%{coinEmote}", emoji.coin)}\n`
+        )
+        .setFooter({
+          text: `${generalMessages.gameInProgress.replace(
+            "%{user}",
+            ctx.author.displayName
+          )}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        });
 
       const message = await ctx.sendMessage({ embeds: [initialEmbed] });
 
       // Update balance after sending message
-      await Users.updateOne({ userId: ctx.author.id }, { $set: { "balance.coin": newBalance, "balance.bank": bank } });
+      await Users.updateOne(
+        { userId: ctx.author.id },
+        { $set: { "balance.coin": newBalance, "balance.bank": bank } }
+      );
 
-      const spinEmbed = client.embed().setColor(color.main).setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })).setDescription(
-          `# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${emoji.slots.spin}」 **\n ### ╚═ •» ${globalEmoji.romdoul} «•« ══╝\n\n${slotMessages.bet.replace("%{coin}", client.utils.formatNumber(baseCoins)).replace("%{coinEmote}", emoji.coin)}\n`
-      ).setFooter({ text: `${generalMessages.gameInProgress.replace("%{user}", ctx.author.displayName)}`, iconURL: ctx.author.displayAvatarURL() });
+      const spinEmbed = client
+        .embed()
+        .setColor(color.main)
+        .setThumbnail(
+          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+        )
+        .setDescription(
+          `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
+            globalEmoji.romdoul
+          } «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${
+            emoji.slots.spin
+          }」 **\n ### ╚═ •» ${
+            globalEmoji.romdoul
+          } «•« ══╝\n\n${slotMessages.bet
+            .replace("%{coin}", client.utils.formatNumber(baseCoins))
+            .replace("%{coinEmote}", emoji.coin)}\n`
+        )
+        .setFooter({
+          text: `${generalMessages.gameInProgress.replace(
+            "%{user}",
+            ctx.author.displayName
+          )}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        });
 
-      const spinSecondEmbed = client.embed().setColor(color.main).setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })).setDescription(
-          `# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${rslots[2]}」 **\n ### ╚═ •» ${globalEmoji.romdoul} «•« ══╝\n\n${slotMessages.bet.replace("%{coin}", client.utils.formatNumber(baseCoins)).replace("%{coinEmote}", emoji.coin)}\n`
-      ).setFooter({ text: `${generalMessages.gameInProgress.replace("%{user}", ctx.author.displayName)}`, iconURL: ctx.author.displayAvatarURL() });
+      const spinSecondEmbed = client
+        .embed()
+        .setColor(color.main)
+        .setThumbnail(
+          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+        )
+        .setDescription(
+          `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
+            globalEmoji.romdoul
+          } «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${
+            rslots[2]
+          }」 **\n ### ╚═ •» ${
+            globalEmoji.romdoul
+          } «•« ══╝\n\n${slotMessages.bet
+            .replace("%{coin}", client.utils.formatNumber(baseCoins))
+            .replace("%{coinEmote}", emoji.coin)}\n`
+        )
+        .setFooter({
+          text: `${generalMessages.gameInProgress.replace(
+            "%{user}",
+            ctx.author.displayName
+          )}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        });
 
-      const resultEmbed = client.embed().setColor(color.main).setThumbnail(win === 0 ? client.utils.emojiToImage(globalEmoji.option.lose) : client.utils.emojiToImage(globalEmoji.option.win)).setDescription(
-          `# **${emoji.mainLeft} 𝐒𝐋𝐎𝐓𝐒 ${emoji.mainRight}**\n ### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n ## **   「${rslots[0]} ${rslots[1]} ${rslots[2]}」 **\n ### ╚═ •» ${globalEmoji.romdoul} «•« ══╝\n\n${slotMessages.bet.replace("%{coin}", client.utils.formatNumber(baseCoins)).replace("%{coinEmote}", emoji.coin)}\n${win === 0 ? `${slotMessages.lost.replace("%{coin}", client.utils.formatNumber(baseCoins)).replace("%{coinEmote}", emoji.coin)}` : `${slotMessages.won.replace("%{coin}", client.utils.formatNumber(win)).replace("%{coinEmote}", emoji.coin)}`}`
-      ).setFooter({ text: `${generalMessages.gameOver.replace("%{user}", ctx.author.displayName)}`, iconURL: ctx.author.displayAvatarURL() });
+      const resultEmbed = client
+        .embed()
+        .setColor(color.main)
+        .setThumbnail(
+          win === 0
+            ? client.utils.emojiToImage(globalEmoji.option.lose)
+            : client.utils.emojiToImage(globalEmoji.option.win)
+        )
+        .setDescription(
+          `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
+            globalEmoji.romdoul
+          } «• ═╗\n ## **   「${rslots[0]} ${rslots[1]} ${
+            rslots[2]
+          }」 **\n ### ╚═ •» ${
+            globalEmoji.romdoul
+          } «•« ══╝\n\n${slotMessages.bet
+            .replace("%{coin}", client.utils.formatNumber(baseCoins))
+            .replace("%{coinEmote}", emoji.coin)}\n${
+            win === 0
+              ? `${slotMessages.lost
+                  .replace("%{coin}", client.utils.formatNumber(baseCoins))
+                  .replace("%{coinEmote}", emoji.coin)}`
+              : `${slotMessages.won
+                  .replace("%{coin}", client.utils.formatNumber(win))
+                  .replace("%{coinEmote}", emoji.coin)}`
+          }`
+        )
+        .setFooter({
+          text: `${generalMessages.gameOver.replace(
+            "%{user}",
+            ctx.author.displayName
+          )}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        });
 
       setTimeout(async () => {
         await message.edit({ embeds: [spinEmbed] });
@@ -187,10 +326,14 @@ module.exports = class Slots extends Command {
           }, 1000);
         }, 700);
       }, 1000);
-
     } catch (error) {
       console.error("Error in slots command:", error);
-      client.utils.sendErrorMessage(client, ctx, "An error occurred. Please try again later.", color);
+      client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "An error occurred. Please try again later.",
+        color
+      );
     }
   }
 };
