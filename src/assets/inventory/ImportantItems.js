@@ -1,19 +1,19 @@
 const emoji = require("../../utils/Emoji");
 module.exports = [
   {
-    id: 'hand',
-    name: 'Bare hand',
-    description: 'Used to catch fish.',
-    type: 'tool',
+    id: "hand",
+    name: "Bare hand",
+    description: "Used to catch fish.",
+    type: "tool",
     able: {
       use: false,
       gift: false,
       multiple: false,
     },
     quantity: 12,
-    rarity: 'common',
-    emoji: '<a:START:1342748948825243699>',
-    available: ['use'],
+    rarity: "common",
+    emoji: "<a:START:1342748948825243699>",
+    available: ["use"],
     price: { buy: 0, sell: 0 },
   },
   {
@@ -146,7 +146,6 @@ module.exports = [
     price: { buy: 1e10, sell: 15e6 },
   },
 
-
   // SELL
   {
     id: "st1111",
@@ -179,5 +178,50 @@ module.exports = [
     emoji: emoji.specialTheme.yuyuzu,
     available: ["use"],
     price: { buy: 1e10, sell: 15e6 },
+  },
+  {
+    id: "Black Card",
+    name: "blackcard",
+    description: "this card have limit 100 million coins",
+    type: "creditcard",
+    able: {
+      use: true,
+      gift: false,
+      multiple: false,
+    },
+    quantity: 1,
+    emoji: emoji.card.black,
+    available: ["use"],
+    price: { buy: 1e8, sell: 0 },
+  },
+  {
+    id: "Red Card",
+    name: "redcard",
+    description: "this card have limit 500 million coins",
+    type: "creditcard",
+    able: {
+      use: true,
+      gift: false,
+      multiple: false,
+    },
+    quantity: 1,
+    emoji: emoji.card.red,
+    available: ["use"],
+    price: { buy: 1e8, sell: 0 },
+  },
+  {
+    id: "Pink Card",
+    name: "pinkcard",
+    description: "this card have limit 1000 million coins",
+    type: "creditcard",
+    able: {
+      use: true,
+      gift: false,
+      multiple: false,
+    },
+    quantity: 1,
+    emoji: emoji.card.pink,
+    available: ["use"],
+    price: { buy: 1e8, sell: 0 },
   },
 ];
