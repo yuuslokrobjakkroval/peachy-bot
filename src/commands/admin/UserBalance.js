@@ -11,7 +11,7 @@ module.exports = class UserBalance extends Command {
         examples: ["ubal @user"],
         usage: "ubal <@user>",
       },
-      category: "developer",
+      category: "admin",
       aliases: ["ubal"],
       args: true,
       permissions: {

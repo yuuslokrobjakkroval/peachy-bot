@@ -15,7 +15,7 @@ module.exports = class AddItem extends Command {
         examples: ["additem peach 2"],
         usage: "additem <item> <quantity>",
       },
-      category: "dev",
+      category: "admin",
       aliases: ["ai"],
       args: true,
       permissions: {

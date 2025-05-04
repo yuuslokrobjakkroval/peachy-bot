@@ -2,17 +2,17 @@ const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
 const globalEmoji = require("../../utils/Emoji");
 
-module.exports = class RemoveMoney extends Command {
+module.exports = class RemoveCredit extends Command {
   constructor(client) {
     super(client, {
-      name: "removemoney",
+      name: "removecredit",
       description: {
-        content: "Remove coin from user.",
-        examples: ["removemoney @user 100"],
-        usage: "removemoney <user> <amount>",
+        content: "Remove credit from the user's balance.",
+        examples: ["removecredit @user 100"],
+        usage: "removecredit <user> <amount>",
       },
       category: "admin",
-      aliases: ["rm"],
+      aliases: ["rc"],
       args: true,
       permissions: {
         dev: true,
@@ -23,17 +23,29 @@ module.exports = class RemoveMoney extends Command {
       options: [],
     });
   }
+
   async run(client, ctx, args, color, emoji, language) {
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user")
       : ctx.message.mentions.members.first() ||
         ctx.guild.members.cache.get(args[0]) ||
-        args[0];
+        ctx.author;
+    const user = await Users.findOne({ userId: mention.id });
 
-    const userId = typeof mention === "string" ? mention : mention.id;
-    const syncUser = await client.users.fetch(userId);
-    const user = await Users.findOne({ userId: syncUser.id });
-    const { coin, bank } = user.balance;
+    if (!user) {
+      return await ctx.sendMessage({
+        embeds: [
+          client
+            .embed()
+            .setColor(color.danger)
+            .setDescription(
+              client.i18n.get(language, "commands", "user_not_found")
+            ),
+        ],
+      });
+    }
+
+    const { coin, bank, credit } = user.balance;
 
     if (mention.bot)
       return await client.utils.sendErrorMessage(
@@ -52,11 +64,11 @@ module.exports = class RemoveMoney extends Command {
       amount.toString().includes(".") ||
       amount.toString().includes(",")
     ) {
-      const amountMap = { all: coin, half: Math.ceil(coin / 2) };
+      const amountMap = { all: credit, half: Math.ceil(credit / 2) };
       const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
 
       if (amount in amountMap) amount = amountMap[amount];
-      else if (amount.match(/\d+[kmbtq]/i)) {
+      else if (amount.match(/\d+[kmb]/i)) {
         const unit = amount.slice(-1).toLowerCase();
         const number = parseInt(amount);
         amount = number * (multiplier[unit] || 1);
@@ -74,24 +86,28 @@ module.exports = class RemoveMoney extends Command {
       }
     }
 
-    const baseCoins = parseInt(Math.min(amount));
-    const newCoin = coin - baseCoins;
+    const baseAmount = parseInt(amount);
+    const newCredit = Math.max(credit - baseAmount, 0);
 
     const embed = client
       .embed()
       .setColor(color.main)
       .setDescription(
         `${globalEmoji.result.tick} Removed **${client.utils.formatNumber(
-          baseCoins
-        )}** ${emoji.coin} to ${mention} balance.`
+          baseAmount
+        )}** ${globalEmoji.card.apple} from ${mention} balance.`
       );
 
-    await Promise.all([
-      Users.updateOne(
-        { userId: mention.id },
-        { $set: { "balance.coin": newCoin, "balance.bank": bank } }
-      ).exec(),
-    ]);
+    await Users.updateOne(
+      { userId: mention.id },
+      {
+        $set: {
+          "balance.coin": coin,
+          "balance.bank": bank,
+          "balance.credit": newCredit,
+        },
+      }
+    ).exec();
 
     return await ctx.sendMessage({ embeds: [embed] });
   }

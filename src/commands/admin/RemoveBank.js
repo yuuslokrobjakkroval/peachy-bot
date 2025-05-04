@@ -11,7 +11,7 @@ module.exports = class RemoveBank extends Command {
         examples: ["removebank @user 100"],
         usage: "removebank <user> <amount>",
       },
-      category: "developer",
+      category: "admin",
       aliases: ["rb"],
       args: true,
       permissions: {

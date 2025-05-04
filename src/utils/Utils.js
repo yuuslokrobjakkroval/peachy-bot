@@ -16,6 +16,7 @@ const canvafy = require("canvafy");
 const globalConfig = require("./Config");
 const gif = require("./Gif");
 const globalEmoji = require("./Emoji");
+const { getLevelingMessage } = require("./Abilities");
 
 module.exports = class Utils {
   static getUser(userId) {
@@ -80,6 +81,7 @@ module.exports = class Utils {
           user.profile.levelXp = client.utils.calculateNextLevelXpBonus(
             user.profile.level
           );
+          getLevelingMessage(client, message, user, color, emoji, prefix);
           const celebrationCoin = user.profile.level * 250000;
 
           user.balance.coin += celebrationCoin;

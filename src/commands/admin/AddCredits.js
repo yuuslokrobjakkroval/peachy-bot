@@ -1,18 +1,18 @@
 const { Command } = require("../../structures/index.js");
-const Users = require("../../schemas/user");
-const globalEmoji = require("../../utils/Emoji");
+const Users = require("../../schemas/user.js");
+const globalEmoji = require("../../utils/Emoji.js");
 
-module.exports = class AddMoney extends Command {
+module.exports = class AddCredit extends Command {
   constructor(client) {
     super(client, {
-      name: "addmoney",
+      name: "addcredit",
       description: {
-        content: "Add coin to a user's balance.",
-        examples: ["addmoney @user 100"],
-        usage: "addmoney <user> <amount>",
+        content: "Add credit to a user's balance.",
+        examples: ["addcredit @user 100"],
+        usage: "addcredit <user> <amount>",
       },
       category: "admin",
-      aliases: ["addm", "am"],
+      aliases: ["ac"],
       args: true,
       permissions: {
         dev: true,
@@ -25,9 +25,11 @@ module.exports = class AddMoney extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
     const mention = ctx.isInteraction
-      ? ctx.interaction.options.getUser("user") || ctx.author
+      ? ctx.interaction.options.getUser("user")
       : ctx.message.mentions.members.first() ||
         ctx.guild.members.cache.get(args[0]) ||
         args[0];
@@ -51,11 +53,12 @@ module.exports = class AddMoney extends Command {
         balance: {
           coin: 0,
           bank: 0,
+          credit: 0,
         },
       });
     }
 
-    const { coin, bank } = user.balance;
+    const { coin, bank, credit } = user.balance;
 
     let amount = ctx.isInteraction
       ? ctx.interaction.options.data[1]?.value || 1
@@ -67,7 +70,7 @@ module.exports = class AddMoney extends Command {
       amount.toString().includes(",")
     ) {
       const multiplier = { k: 1000, m: 1000000, b: 1000000000 };
-      if (amount.match(/\d+[kmbtq]/i)) {
+      if (amount.match(/\d+[kmb]/i)) {
         const unit = amount.slice(-1).toLowerCase();
         const number = parseInt(amount);
         amount = number * multiplier[unit];
@@ -83,21 +86,27 @@ module.exports = class AddMoney extends Command {
       }
     }
 
-    const baseCoins = parseInt(amount);
-    const newCoin = coin + baseCoins;
+    const baseCredits = parseInt(amount);
+    const newCredit = credit + baseCredits;
 
     const embed = client
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${globalEmoji.result.tick} Added **${client.utils.formatNumber(baseCoins)}** ${
-          emoji.coin
-        } to ${mention} balance.`
+        `${globalEmoji.result.tick} Added **${client.utils.formatNumber(
+          baseCredits
+        )}** ${globalEmoji.card.apple} to ${mention} balance.`
       );
 
     await Users.updateOne(
-      { userId },
-      { $set: { "balance.coin": newCoin, "balance.bank": bank } },
+      { userId: mention.id },
+      {
+        $set: {
+          "balance.credit": newCredit,
+          "balance.coin": coin,
+          "balance.bank": bank,
+        },
+      },
       { upsert: true }
     ).exec();
 

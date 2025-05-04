@@ -17,7 +17,7 @@ module.exports = class UserInventory extends Command {
         usage: "userinventory <user>",
       },
       cooldown: 5,
-      category: "developer",
+      category: "admin",
       aliases: ["ui"],
       args: true,
       permissions: {

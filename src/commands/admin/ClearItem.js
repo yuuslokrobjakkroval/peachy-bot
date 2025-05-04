@@ -11,7 +11,7 @@ module.exports = class ClearItem extends Command {
                 examples: ['clearitem @user'],
                 usage: 'clearitem <user> <amount>',
             },
-            category: 'dev',
+            category: 'admin',
             aliases: ['ci'],
             args: true,
             permissions: {

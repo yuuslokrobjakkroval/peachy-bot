@@ -11,7 +11,7 @@ module.exports = class ClearMoney extends Command {
                 examples: ['clearmoney @user'],
                 usage: 'clearmoney <user> <amount>',
             },
-            category: 'dev',
+            category: 'admin',
             aliases: ['cm'],
             args: true,
             permissions: {

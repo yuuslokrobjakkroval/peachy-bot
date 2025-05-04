@@ -11,7 +11,7 @@ module.exports = class AddBank extends Command {
         examples: ["addbank @user 100"],
         usage: "addbank <user> <amount>",
       },
-      category: "developer",
+      category: "admin",
       aliases: ["ab"],
       args: true,
       permissions: {

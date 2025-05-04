@@ -15,7 +15,7 @@ module.exports = class RemoveItem extends Command {
         examples: ["removeitem peach 2"],
         usage: "removeitem <item> [quantity]",
       },
-      category: "dev",
+      category: "admin",
       aliases: ["ri"],
       args: true,
       permissions: {
