@@ -9,7 +9,7 @@ const InviteSchema = require("../schemas/inviteTracker");
 const InviteTrackerSchema = require("../schemas/inviteTrackerMessages");
 const JoinRolesSchema = require("../schemas/joinRoles");
 const GoodByeMessagesSchema = require("../schemas/goodByeMessages");
-const LevelingMessagesSchema = require("../schemas/giveaway");
+const LevelingMessagesSchema = require("../schemas/levelingMessage");
 const globalConfig = require("../utils/Config");
 const globalEmoji = require("../utils/Emoji");
 
@@ -105,7 +105,7 @@ module.exports = class Ability {
     }
   }
 
-  static async getLevelingMessage(client, message) {
+  static async getLevelingMessage(client, message, level) {
     try {
       const levelingMessage = await LevelingMessagesSchema.findOne({
         id: message.guild.id,
@@ -118,7 +118,7 @@ module.exports = class Ability {
 
         if (!levelingChannel) {
           console.warn(
-            `Welcome channel ${channel} not found in guild ${member.guild.name}.`
+            `Leveling channel ${channel} not found in guild ${member.guild.name}.`
           );
           return;
         }
@@ -130,7 +130,10 @@ module.exports = class Ability {
                   client,
                   message.member,
                   message.guild,
-                  content
+                  content,
+                  null,
+                  null,
+                  level
                 )
               : "",
           });
@@ -581,22 +584,6 @@ module.exports = class Ability {
       }
 
       return await await client.abilities.SendMessage(client, member, feature);
-      // switch (feature) {
-      //     case 'welcome-message':
-      //         await client.abilities.SendMessage(client, member, feature);
-      //         break;
-      //     case 'booster-message':
-      //         await client.abilities.SendMessage(client, member, feature);
-      //         break;
-      //     case 'invite-tracker-message':
-      //         await client.abilities.SendMessage(client, member, feature);
-      //         break;
-      //     case 'goodbye-message':
-      //         await client.abilities.SendMessage(client, member);
-      //         break;
-      //     default:
-      //         return;
-      // }
     } catch (error) {
       console.error("Error processing message:", error);
     }
@@ -608,15 +595,23 @@ module.exports = class Ability {
         id: member.guild.id,
         isActive: true,
       });
+
       const boosterMessage = await BoosterSchema.findOne({
         id: member.guild.id,
         isActive: true,
       });
+
       const inviteTracker = await InviteTrackerSchema.findOne({
         id: member.guild.id,
         isActive: true,
       });
+
       const goodByeMessage = await GoodByeMessagesSchema.findOne({
+        id: member.guild.id,
+        isActive: true,
+      });
+
+      const levelingMessage = await LevelingMessagesSchema.findOne({
         id: member.guild.id,
         isActive: true,
       });
@@ -885,6 +880,28 @@ module.exports = class Ability {
           }
         }
       }
+
+      if (levelingMessage && feature === "leveling-system") {
+        const { channel, content } = levelingMessage;
+        const levelingChannel = member.guild.channels.cache.get(channel);
+        const userInfo = await client.utils.getUser(member.id);
+        const level = userInfo.profile.level || 0;
+        if (levelingChannel) {
+          levelingChannel.send({
+            content: content
+              ? await client.abilities.resultMessage(
+                  client,
+                  member,
+                  member.guild,
+                  content,
+                  null,
+                  null,
+                  level
+                )
+              : "",
+          });
+        }
+      }
     } catch (error) {
       console.error("Error processing message:", error);
     }
@@ -895,7 +912,7 @@ module.exports = class Ability {
     return str.replace(/\${(.*?)}/g, (_, key) => data[key] || `\${${key}}`); // Replace placeholders with data values
   }
 
-  static getReplacementData(member, guild, invite, inviter) {
+  static getReplacementData(member, guild, invite, inviter, level) {
     const accountCreationDate = moment(member.user.createdAt).fromNow();
 
     const guildTotalBoosts = guild.premiumSubscriptionCount || 0;
@@ -954,8 +971,8 @@ module.exports = class Ability {
       inviterbonusinvites: inviter?.bonusInvites || 0,
 
       // Level
-      oldlevel: level - 1,
-      level: level + 1,
+      oldLevel: level - 1 || 0,
+      level: level || 0,
     };
   }
 

@@ -81,7 +81,7 @@ module.exports = class Utils {
           user.profile.levelXp = client.utils.calculateNextLevelXpBonus(
             user.profile.level
           );
-          getLevelingMessage(client, message, user, color, emoji, prefix);
+          getLevelingMessage(client, message, user.profile.level);
           const celebrationCoin = user.profile.level * 250000;
 
           user.balance.coin += celebrationCoin;
