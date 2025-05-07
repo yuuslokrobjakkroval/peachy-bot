@@ -20,6 +20,16 @@ module.exports = {
     pink: "<a:PINKCARD:1368254505979871374>",
   },
 
+  rarity: {
+    common: "<:BBRONE:1356307376470364321>", // Common
+    uncommon: "<:BSILVER:1356307368429883524>", // Uncommon
+    rare: "<:BGOLD:1356307360930336928>", // Rare
+    epic: "<:BDAIMOND:1356307351531028580>", // Epic
+    mythic: "<:BMYTHIC:1356307344786718740>", // Legendary
+    legendary: "<:BLEGENDARY:1356307293175808020>", // Legendary
+    master: "<:BMASTER:1356307286275920192>", // Master
+  },
+
   ping: "<a:PING:1342748399669088256>",
 
   congratulation: "<a:CONGRATULATIONS:1350683778418475059>",

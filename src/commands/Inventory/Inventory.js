@@ -1,4 +1,10 @@
 const { Command } = require("../../structures/index.js");
+const {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  StringSelectMenuBuilder,
+} = require("discord.js");
 const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
 const inventory = ShopItems.flatMap((shop) => shop.inventory);
@@ -45,9 +51,34 @@ module.exports = class Inventory extends Command {
         );
       }
 
+      // Define category icons/emojis for better visual distinction
+      const categoryIcons = {
+        milk: "🥛",
+        food: "🍔",
+        "pet food": "🦴",
+        drink: "🥤",
+        cake: "🎂",
+        couple: "💑",
+        ring: "💍",
+        color: "🎨",
+        theme: "🎭",
+        "special theme": "✨",
+        wallpaper: "🖼️",
+        "credit card": "💳",
+      };
+
+      // Pagination settings
+      const ITEMS_PER_PAGE = 10;
+      const currentView = {
+        category: "all", // Current category being viewed (all = overview)
+        page: 1, // Current page number
+      };
+
       const itemList = {};
       let totalWorth = 0;
+      let totalItems = 0;
 
+      // Process inventory items
       user.inventory.forEach((item) => {
         if (item.quantity > 0) {
           const itemInfo = Items.concat(ImportantItems).find(
@@ -57,21 +88,41 @@ module.exports = class Inventory extends Command {
           if (itemInfo) {
             const type = itemInfo.type;
             itemList[type] = itemList[type] || [];
-            itemList[type].push(
-              `\`${itemInfo.id}\` ${itemInfo.emoji} **${item.quantity}** ${
-                itemInfo.name
-                  ? itemInfo.name
-                  : client.utils.formatCapitalize(itemInfo.id)
-              }`
-            );
-            if (itemInfo.type === "milk") {
-              totalWorth += itemInfo.price.sell * item.quantity;
+
+            // Format item name
+            const itemName = itemInfo.name
+              ? itemInfo.name
+              : client.utils.formatCapitalize(itemInfo.id);
+
+            // Calculate item worth
+            const itemWorth = itemInfo.price.sell * item.quantity;
+
+            // Create item object
+            const itemObj = {
+              id: itemInfo.id,
+              emoji: itemInfo.emoji,
+              quantity: item.quantity,
+              name: itemName,
+              rarity: itemInfo.rarity || "common",
+              worth: itemWorth,
+              type: type,
+              display: `${itemInfo.emoji} **${item.quantity}x** ${itemName}`,
+            };
+
+            // Add to category list
+            itemList[type].push(itemObj);
+
+            // Update totals
+            if (itemInfo.price.sell) {
+              totalWorth += itemWorth;
             }
+            totalItems += item.quantity;
           }
         }
       });
 
-      const fields = [];
+      // Calculate total pages for each category
+      const categoryPages = {};
       const inventoryTypes = [
         "milk",
         "food",
@@ -88,73 +139,307 @@ module.exports = class Inventory extends Command {
       ];
 
       inventoryTypes.forEach((type) => {
-        const items = itemList[type];
-        if (items && items.length > 0) {
-          let chunk = [];
-          let chunkLength = 0;
+        const items = itemList[type] || [];
+        categoryPages[type] = Math.ceil(items.length / ITEMS_PER_PAGE) || 1;
+      });
 
-          items.forEach((item) => {
-            if (chunkLength + item.length + 1 > 1024) {
-              fields.push({
-                name: client.utils.formatCapitalize(type),
-                value: chunk.join("\n"),
-                inline: false,
-              });
-              chunk = [];
-              chunkLength = 0;
-            }
-            chunk.push(item);
-            chunkLength += item.length + 1;
-          });
+      // Function to generate the overview embed (main inventory view)
+      const generateOverviewEmbed = () => {
+        const fields = [];
 
-          if (chunk.length > 0) {
+        // Process each inventory type
+        inventoryTypes.forEach((type) => {
+          const items = itemList[type];
+          if (items && items.length > 0) {
+            // For overview, just show the first few items of each category
+            const previewItems = items.slice(0, 3);
+            const hasMore = items.length > 3;
+
             fields.push({
-              name: client.utils.formatCapitalize(type),
-              value: chunk.join("\n"),
+              name: `${
+                categoryIcons[type] || ""
+              } ${client.utils.formatCapitalize(type)}`,
+              value: `${previewItems.map((item) => item.display).join("\n")}${
+                hasMore ? `\n... and ${items.length - 3} more items` : ""
+              }`,
               inline: false,
+            });
+          }
+        });
+
+        // Create inventory summary
+        const inventorySummary = [
+          `📦 **Total Items:** \`${totalItems}\``,
+          `🗃️ **Categories:** \`${Object.keys(itemList).length}\``,
+        ].join("\n");
+
+        // Create embed
+        const embed = client
+          .embed()
+          .setColor(color.main)
+          .setDescription(
+            `### ${emoji.mainLeft} ${
+              invMessages.inventoryTitle || "INVENTORY"
+            } ${emoji.mainRight}\n\n${inventorySummary}`
+          )
+          .setThumbnail(
+            client.utils.emojiToImage(emoji.inventory || emoji.main)
+          )
+          .setFooter({
+            text:
+              invMessages.footerText?.replace(
+                "{user}",
+                ctx.author.displayName
+              ) || `Requested by ${ctx.author.displayName}`,
+            iconURL: ctx.author.displayAvatarURL(),
+          })
+          .setTimestamp();
+
+        // Add fields to embed
+        if (fields.length > 0) {
+          embed.addFields(fields);
+        } else {
+          embed.addFields({
+            name: invMessages.emptyInventoryFieldName || "Inventory",
+            value:
+              invMessages.emptyInventoryFieldValue ||
+              "Your inventory is currently empty.",
+            inline: false,
+          });
+        }
+
+        return embed;
+      };
+
+      // Function to generate category embed (showing items of a specific category)
+      const generateCategoryEmbed = (category, page) => {
+        const items = itemList[category] || [];
+        const totalPages = categoryPages[category];
+
+        // Get items for the current page
+        const startIndex = (page - 1) * ITEMS_PER_PAGE;
+        const endIndex = Math.min(startIndex + ITEMS_PER_PAGE, items.length);
+        const pageItems = items.slice(startIndex, endIndex);
+
+        // Create embed
+        const embed = client
+          .embed()
+          .setColor(color.main)
+          .setDescription(
+            `### ${emoji.mainLeft} ${client.utils
+              .formatCapitalize(category)
+              .toUpperCase()} ${emoji.mainRight}\n\n` +
+              `Viewing ${pageItems.length} of ${items.length} items (Page ${page}/${totalPages})`
+          )
+          .setThumbnail(
+            client.utils.emojiToImage(
+              categoryIcons[category] || emoji.inventory || emoji.main
+            )
+          )
+          .setFooter({
+            text: `Page ${page}/${totalPages} • Use the buttons to navigate`,
+            iconURL: ctx.author.displayAvatarURL(),
+          })
+          .setTimestamp();
+
+        // Add items to embed
+        if (pageItems.length > 0) {
+          embed.addFields({
+            name: `${
+              categoryIcons[category] || ""
+            } ${client.utils.formatCapitalize(category)} Items`,
+            value: pageItems.map((item) => item.display).join("\n"),
+            inline: false,
+          });
+        } else {
+          embed.addFields({
+            name: `${
+              categoryIcons[category] || ""
+            } ${client.utils.formatCapitalize(category)}`,
+            value: "No items found in this category.",
+            inline: false,
+          });
+        }
+
+        return embed;
+      };
+
+      // Function to generate category dropdown menu
+      const generateCategoryDropdown = () => {
+        // Create options for dropdown
+        const categoryOptions = [
+          {
+            label: "Overview",
+            description: "View all categories",
+            value: "all",
+            emoji: "🏠",
+            default: currentView.category === "all",
+          },
+        ];
+
+        // Add options for categories with items
+        Object.keys(itemList).forEach((category) => {
+          if (itemList[category] && itemList[category].length > 0) {
+            categoryOptions.push({
+              label: client.utils.formatCapitalize(category),
+              description: `${itemList[category].length} items`,
+              value: category,
+              emoji: categoryIcons[category] || "📦",
+              default: currentView.category === category,
+            });
+          }
+        });
+
+        // Create dropdown menu
+        const dropdown = new StringSelectMenuBuilder()
+          .setCustomId("category_select")
+          .setPlaceholder("Select a category to view")
+          .addOptions(categoryOptions);
+
+        return new ActionRowBuilder().addComponents(dropdown);
+      };
+
+      // Function to generate pagination buttons
+      const generatePaginationButtons = (category, page) => {
+        const totalPages = categoryPages[category];
+
+        // Create pagination buttons
+        const prevButton = new ButtonBuilder()
+          .setCustomId("prev_page")
+          .setLabel("Previous")
+          .setStyle(ButtonStyle.Secondary)
+          .setEmoji("◀️")
+          .setDisabled(page <= 1);
+
+        const pageIndicator = new ButtonBuilder()
+          .setCustomId("page_indicator")
+          .setLabel(`Page ${page}/${totalPages}`)
+          .setStyle(ButtonStyle.Secondary)
+          .setDisabled(true);
+
+        const nextButton = new ButtonBuilder()
+          .setCustomId("next_page")
+          .setLabel("Next")
+          .setStyle(ButtonStyle.Secondary)
+          .setEmoji("▶️")
+          .setDisabled(page >= totalPages);
+
+        return new ActionRowBuilder().addComponents(
+          prevButton,
+          pageIndicator,
+          nextButton
+        );
+      };
+
+      // Initial embed and components
+      const initialEmbed = generateOverviewEmbed();
+      const initialComponents = [generateCategoryDropdown()];
+
+      // Send the message with components
+      const message = await ctx.sendMessage({
+        embeds: [initialEmbed],
+        components: initialComponents,
+      });
+
+      // Create collector for interactions
+      const collector = message.createMessageComponentCollector({
+        filter: (i) => i.user.id === ctx.author.id,
+        time: 180000, // 3 minutes timeout
+      });
+
+      collector.on("collect", async (interaction) => {
+        // Reset collector timeout
+        collector.resetTimer();
+
+        // Handle dropdown selection
+        if (interaction.customId === "category_select") {
+          const selectedCategory = interaction.values[0];
+          currentView.category = selectedCategory;
+          currentView.page = 1;
+
+          if (selectedCategory === "all") {
+            // Show overview
+            await interaction.update({
+              embeds: [generateOverviewEmbed()],
+              components: [generateCategoryDropdown()],
+            });
+          } else {
+            // Show category
+            const components = [
+              generateCategoryDropdown(),
+              generatePaginationButtons(selectedCategory, 1),
+            ];
+
+            await interaction.update({
+              embeds: [generateCategoryEmbed(selectedCategory, 1)],
+              components: components,
+            });
+          }
+        }
+        // Handle pagination buttons
+        else if (interaction.customId === "prev_page") {
+          if (currentView.page > 1) {
+            currentView.page--;
+            await interaction.update({
+              embeds: [
+                generateCategoryEmbed(currentView.category, currentView.page),
+              ],
+              components: [
+                generateCategoryDropdown(),
+                generatePaginationButtons(
+                  currentView.category,
+                  currentView.page
+                ),
+              ],
+            });
+          }
+        } else if (interaction.customId === "next_page") {
+          if (currentView.page < categoryPages[currentView.category]) {
+            currentView.page++;
+            await interaction.update({
+              embeds: [
+                generateCategoryEmbed(currentView.category, currentView.page),
+              ],
+              components: [
+                generateCategoryDropdown(),
+                generatePaginationButtons(
+                  currentView.category,
+                  currentView.page
+                ),
+              ],
             });
           }
         }
       });
 
-      const embedFields = [
-        {
-          name: invMessages.inventoryNet || "Inventory Net",
-          value: `**\`${client.utils.formatNumber(totalWorth)}\`** ${
-            emoji.coin
-          }`,
-          inline: false,
-        },
-        ...(fields.length
-          ? fields
-          : [
-              {
-                name: invMessages.emptyInventoryFieldName || "Inventory",
-                value:
-                  invMessages.emptyInventoryFieldValue ||
-                  "Your inventory is currently empty.",
-              },
-            ]),
-      ];
+      collector.on("end", async () => {
+        // Disable all components when collector ends
+        try {
+          const disabledComponents = message.components.map((row) => {
+            const newRow = new ActionRowBuilder();
+            row.components.forEach((component) => {
+              if (component.type === 3) {
+                // Select menu
+                newRow.addComponents(
+                  StringSelectMenuBuilder.from(component).setDisabled(true)
+                );
+              } else if (component.type === 2) {
+                // Button
+                newRow.addComponents(
+                  ButtonBuilder.from(component).setDisabled(true)
+                );
+              }
+            });
+            return newRow;
+          });
 
-      const embed = client
-        .embed()
-        .setColor(color.main)
-        .setDescription(
-          `## ${emoji.mainLeft} ${invMessages.inventoryTitle || "INVENTORY"} ${
-            emoji.mainRight
-          }`
-        )
-        .setThumbnail(client.utils.emojiToImage(emoji.main))
-        .addFields(embedFields)
-        .setFooter({
-          text:
-            invMessages.footerText?.replace("{user}", ctx.author.displayName) ||
-            `Requested by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
+          await message.edit({ components: disabledComponents });
+        } catch (error) {
+          console.error("Error disabling components:", error);
+        }
+      });
 
-      return await ctx.sendMessage({ embeds: [embed] });
+      return message;
     } catch (error) {
       console.error("Error in Inventory command:", error);
       return await client.utils.sendErrorMessage(

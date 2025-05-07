@@ -156,8 +156,8 @@ module.exports = class Withdraw extends Command {
           { userId: ctx.author.id },
           {
             $inc: {
-              "balance.coin": parseInt(baseCoins),
-              "balance.bank": -parseInt(baseCoins),
+              "balance.coin": Number.parseInt(baseCoins),
+              "balance.bank": -Number.parseInt(baseCoins),
             },
           },
           { new: true }
