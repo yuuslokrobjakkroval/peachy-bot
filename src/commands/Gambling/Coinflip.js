@@ -107,7 +107,7 @@ module.exports = class Coinflip extends Command {
         }
       }
 
-      const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
+      const baseCoins = Number.parseInt(Math.min(amount, coin, maxAmount));
 
       // ===================================== > Choice < ===================================== \\
       let choice = ctx.isInteraction
@@ -127,7 +127,7 @@ module.exports = class Coinflip extends Command {
       else if (choice.toLowerCase() === "goma" || choice.toLowerCase() === "g")
         choice = "g";
 
-      let rand = client.utils.getRandomNumber(0, 1);
+      const rand = client.utils.getRandomNumber(0, 1);
       let win = false;
       if (rand === 0 && choice === "g") win = true;
       else if (rand === 1 && choice === "p") win = true;
@@ -164,7 +164,7 @@ module.exports = class Coinflip extends Command {
       await user.save();
 
       // ===================================== > Result < ===================================== \\
-      setTimeout(function () {
+      setTimeout(() => {
         const resultCoin = win ? baseCoins * 2 : baseCoins;
         const resultEmbed = client
           .embed()

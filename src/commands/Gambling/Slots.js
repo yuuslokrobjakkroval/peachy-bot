@@ -109,7 +109,7 @@ module.exports = class Slots extends Command {
         }
       }
 
-      const baseCoins = parseInt(Math.min(amount, coin, maxAmount));
+      const baseCoins = Number.parseInt(Math.min(amount, coin, maxAmount));
 
       // Update the user's balance for the bet
       await Users.updateOne(
@@ -125,7 +125,7 @@ module.exports = class Slots extends Command {
 
       // Decide the result of the slots
       let rslots = [];
-      let rand = client.utils.getRandomNumber(1, 100);
+      const rand = client.utils.getRandomNumber(1, 100);
       let win = 0;
 
       if (user.verification.isBlacklist) {
@@ -148,7 +148,7 @@ module.exports = class Slots extends Command {
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
         } else {
-          let slot1 = Math.floor(Math.random() * SLOTS.length);
+          const slot1 = Math.floor(Math.random() * SLOTS.length);
           let slot2 = Math.floor(Math.random() * SLOTS.length);
           let slot3 = Math.floor(Math.random() * SLOTS.length);
           if (slot2 === slot1)
@@ -181,7 +181,7 @@ module.exports = class Slots extends Command {
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
         } else {
-          let slot1 = Math.floor(Math.random() * SLOTS.length);
+          const slot1 = Math.floor(Math.random() * SLOTS.length);
           let slot2 = Math.floor(Math.random() * SLOTS.length);
           let slot3 = Math.floor(Math.random() * SLOTS.length);
           if (slot2 === slot1)

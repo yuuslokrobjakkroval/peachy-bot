@@ -2,60 +2,60 @@ const emoji = require("../../utils/Emoji");
 const color = require("../../utils/Color");
 module.exports = [
   {
-    name: 'TOOL',
+    name: "Tools",
     description: `Tools an item for earn coins!\n**・** \`pbuy {id}\` to buy an item`,
-    type: 'tool',
+    type: "tool",
     inventory: [
       {
-        id: 'axe',
-        name: 'Axe',
-        description: 'A tool for chopping wood.',
-        type: 'tool',
+        id: "axe",
+        name: "Axe",
+        description: "A tool for chopping wood.",
+        type: "tool",
         able: {
           use: true,
           gift: false,
           multiple: false,
         },
         quantity: 12,
-        emoji: '<:AXE:1355804959131832441>',
-        available: ['use'],
+        emoji: "<:AXE:1355804959131832441>",
+        available: ["use"],
         price: { buy: 10000, sell: 0 },
       },
       {
-        id: 'sxe',
-        name: 'Stone Axe',
-        description: 'A tool for breaking stones.',
-        type: 'tool',
+        id: "sxe",
+        name: "Stone Axe",
+        description: "A tool for breaking stones.",
+        type: "tool",
         able: {
           use: true,
           gift: false,
           multiple: false,
         },
         quantity: 12,
-        emoji: '<:STONEAXE:1355805092607037450>',
-        available: ['use'],
+        emoji: "<:STONEAXE:1355805092607037450>",
+        available: ["use"],
         price: { buy: 10000, sell: 0 },
       },
 
       {
-        id: 'net',
-        name: 'Net',
-        description: 'A tool for catch slime.',
-        type: 'tool',
+        id: "net",
+        name: "Net",
+        description: "A tool for catch slime.",
+        type: "tool",
         able: {
           use: true,
           gift: false,
           multiple: false,
         },
         quantity: 12,
-        emoji: '<:NET:1355805034893541376>',
-        available: ['use'],
+        emoji: "<:NET:1355805034893541376>",
+        available: ["use"],
         price: { buy: 10000, sell: 0 },
       },
-    ]
+    ],
   },
   {
-    name: "FOOD",
+    name: "Food",
     description: `Food items to earn XP!\n**・** \`pbuy {id}\` to buy an item`,
     type: "food",
     inventory: [
@@ -700,7 +700,7 @@ module.exports = [
   //   ],
   // },
   {
-    name: "FOOD FOR PET",
+    name: "Food For Pet",
     description: `Food for pet items to earn XP with your pet!\n**・** \`pbuy {id}\` to buy an item`,
     type: "pet food",
     inventory: [
@@ -715,7 +715,7 @@ module.exports = [
           multiple: false,
         },
         quantity: 1,
-        emoji: '🍎',
+        emoji: "🍎",
         xp: 10,
         available: ["use"],
         price: { buy: 10000, sell: 0 },
@@ -731,7 +731,7 @@ module.exports = [
           multiple: false,
         },
         quantity: 1,
-        emoji: '🍊',
+        emoji: "🍊",
         xp: 14,
         available: ["use"],
         price: { buy: 15000, sell: 0 },
@@ -747,7 +747,7 @@ module.exports = [
           multiple: false,
         },
         quantity: 1,
-        emoji: '🍉',
+        emoji: "🍉",
         xp: 28,
         available: ["use"],
         price: { buy: 20000, sell: 0 },
@@ -763,7 +763,7 @@ module.exports = [
           multiple: false,
         },
         quantity: 1,
-        emoji: '🍒',
+        emoji: "🍒",
         xp: 35,
         available: ["use"],
         price: { buy: 30000, sell: 0 },
@@ -779,7 +779,7 @@ module.exports = [
           multiple: false,
         },
         quantity: 1,
-        emoji: '🍓',
+        emoji: "🍓",
         xp: 40,
         available: ["use"],
         price: { buy: 50000, sell: 0 },
@@ -787,7 +787,7 @@ module.exports = [
     ],
   },
   {
-    name: "COUPLE",
+    name: "Couple",
     description: `Ring items to connection your relationship!\n**・** \`pbuy {id}\` to buy an item`,
     type: "ring",
     inventory: [
@@ -826,7 +826,7 @@ module.exports = [
     ],
   },
   {
-    name: "DUTCH MILK",
+    name: "Dutch Milk",
     description: `Buy Dutch Milk for exchange your coin!\n**・** \`pbuy {id}\` to buy an item`,
     type: "dutchmilk",
     inventory: [
@@ -953,7 +953,7 @@ module.exports = [
     ],
   },
   {
-    name: "MILK",
+    name: "Milk",
     description: `Buy Milk for exchange your coin!\n**・** \`pbuy {id}\` to buy an item`,
     type: "milk",
     inventory: [
@@ -1230,7 +1230,7 @@ module.exports = [
     ],
   },
   {
-    name: "COLOR",
+    name: "Color",
     description: `Collect items to add color to your inventory!\n**・** \`pbuy {id}\` to buy an item`,
     type: "color",
     inventory: [
@@ -1349,7 +1349,7 @@ module.exports = [
     ],
   },
   {
-    name: "WALLPAPER",
+    name: "Wallpapers",
     description:
       "Collect wallpapers to use with your profile!\n**・** `pbuy {id}` to buy an item\n**・** Some items may be used or gifted.",
     type: "wallpaper",
@@ -1731,7 +1731,7 @@ module.exports = [
     ],
   },
   {
-    name: "THEME",
+    name: "Theme",
     description: `Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
     type: "theme",
     inventory: [
@@ -1818,7 +1818,7 @@ module.exports = [
     ],
   },
   {
-    name: "SPECIAL THEME",
+    name: "Special Theme",
     description: `Special Themes to customize your embed color and emoji!\n**・** \`pbuy {id}\` to buy a theme for customization.`,
     type: "special theme",
     inventory: [
@@ -1900,7 +1900,8 @@ module.exports = [
       {
         id: "st06",
         name: "Magical Forest",
-        description: "Explore the enchanting Magical Forest filled with wonders!",
+        description:
+          "Explore the enchanting Magical Forest filled with wonders!",
         type: "special theme",
         able: {
           use: true,
@@ -1931,7 +1932,8 @@ module.exports = [
       {
         id: "st09",
         name: "Spring Bear",
-        description: "Embrace spring’s charm with the joyful Spring Bear theme!",
+        description:
+          "Embrace spring’s charm with the joyful Spring Bear theme!",
         type: "special theme",
         able: {
           use: true,
@@ -1942,6 +1944,21 @@ module.exports = [
         emoji: emoji.specialTheme.springBear,
         available: ["use"],
         price: { buy: 4e7, sell: 35e6 },
+      },
+      {
+        id: "st0705",
+        name: "Panda Chef",
+        description: "Embrace spring’s charm with the joyful Panda Chef theme!",
+        type: "special theme",
+        able: {
+          use: true,
+          gift: true,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.pandachef,
+        available: ["use"],
+        price: { buy: 5e7, sell: 45e6 },
       },
     ],
   },

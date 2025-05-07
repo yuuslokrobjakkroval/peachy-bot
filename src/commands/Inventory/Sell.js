@@ -51,35 +51,7 @@ module.exports = class Sell extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const sellMessages = language.locales.get(language.defaultLocale)
-      ?.inventoryMessages?.sellMessages || {
-      inventoryEmpty: "Your inventory is empty.",
-      itemNotFound: "Item '%{item}' not found in your inventory.",
-      itemNotOwned: "You don't own any %{item}.",
-      itemNotSellable: "%{item} cannot be sold.",
-      invalidQuantity: "Please enter a valid quantity.",
-      itemSold: "{emoji} Sold {quantity}x {item} for {coinEmoji} {price}",
-      sellError: "An error occurred while selling the item.",
-      confirmSell:
-        "Are you sure you want to sell {quantity}x {item} for {coinEmoji} {price}?",
-      sellAll:
-        "Are you sure you want to sell all sellable items for {coinEmoji} {price}?",
-      sellAllSuccess: "Sold {count} different items for {coinEmoji} {price}",
-      sellConfirmation: "Sell Confirmation",
-      confirm: "Confirm",
-      cancel: "Cancel",
-      sellableItems: "Sellable Items",
-      noSellableItems: "You don't have any items that can be sold.",
-      remainingBalance: "Your balance: {coinEmoji} {balance}",
-      selectItem: "Select an item to sell",
-      sellMultiple: "Sell Multiple",
-      sellOne: "Sell One",
-      sellHalf: "Sell Half",
-      sellAll: "Sell All",
-      back: "Back",
-      quantity: "Quantity: {quantity}",
-      totalValue: "Total Value: {coinEmoji} {value}",
-      sellCancelled: "Sale cancelled.",
-    };
+      ?.inventoryMessages?.sellMessages;
 
     try {
       const user = await Users.findOne({ userId: ctx.author.id });
@@ -114,7 +86,7 @@ module.exports = class Sell extends Command {
         return await client.utils.sendErrorMessage(
           client,
           ctx,
-          sellMessages.itemNotFound.replace("%{item}", itemId),
+          sellMessages.itemNotFound.replace("{item}", itemId),
           color
         );
       }
@@ -124,7 +96,7 @@ module.exports = class Sell extends Command {
         return await client.utils.sendErrorMessage(
           client,
           ctx,
-          sellMessages.itemNotOwned.replace("%{item}", itemInfo.name),
+          sellMessages.itemNotOwned.replace("{item}", itemInfo.name),
           color
         );
       }
@@ -133,7 +105,7 @@ module.exports = class Sell extends Command {
         return await client.utils.sendErrorMessage(
           client,
           ctx,
-          sellMessages.itemNotSellable.replace("%{item}", itemInfo.name),
+          sellMessages.itemNotSellable.replace("{item}", itemInfo.name),
           color
         );
       }
@@ -244,7 +216,7 @@ module.exports = class Sell extends Command {
 
     const sellAllButton = new ButtonBuilder()
       .setCustomId("sell_all")
-      .setLabel(sellMessages.sellAll)
+      .setLabel(sellMessages.sellAllButtonLabel)
       .setStyle(ButtonStyle.Primary)
       .setEmoji("3️⃣");
 
@@ -587,11 +559,11 @@ module.exports = class Sell extends Command {
                 } ${client.utils.formatNumber(item.value)}`
             )
             .join("\n")
-            .substring(0, 1024), // Ensure it doesn't exceed Discord's limit
+            .substring(0, 1024),
         })
         .setFooter({
           text: sellMessages.remainingBalance
-            .replace("{coinEmoji}", "")
+            .replace("{coinEmoji}", emoji.coin)
             .replace("{balance}", client.utils.formatNumber(user.balance.coin)),
           iconURL: ctx.author.displayAvatarURL(),
         });

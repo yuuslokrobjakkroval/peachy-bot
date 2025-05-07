@@ -103,6 +103,9 @@ module.exports = class Bite extends Command {
         biteMessages.patReaction =
           biteMessages.patReaction ||
           defaultMessages.actionMessages.biteMessages.patReaction;
+        biteMessages.runRe =
+          biteMessages.patReaction ||
+          defaultMessages.actionMessages.biteMessages.patReaction;
         biteMessages.runReaction =
           biteMessages.runReaction ||
           defaultMessages.actionMessages.biteMessages.runReaction;

@@ -17,10 +17,17 @@ const Abilities = require("../utils/Abilities");
 const globalConfig = require("../utils/Config");
 const { I18n } = require("@hammerhq/localization");
 const themeConfig = require("../config");
+const ImportantItems = require("../assets/inventory/ImportantItems.js");
+const ShopItems = require("../assets/inventory/ShopItems.js");
+const MoreItems = ShopItems.flatMap((shop) => shop.inventory);
+const AllItems = [...ImportantItems, ...MoreItems].filter(
+  (item) => item.price.sell !== 0
+);
 
 // Emojis - Centralized in one object for easier management
 const emojis = require("../emojis");
-const themeEmojis = {  // Mapping theme ID to emojis - more maintainable
+const themeEmojis = {
+  // Mapping theme ID to emojis - more maintainable
   peach: require("../theme/Peach/emojis"),
   goma: require("../theme/Goma/emojis"),
   t01: require("../theme/OceanBreeze/emojis"),
@@ -37,6 +44,7 @@ const themeEmojis = {  // Mapping theme ID to emojis - more maintainable
   st06: require("../theme/MagicalForest/emojis"),
   st07: require("../theme/Matchalatte/emojis"),
   st09: require("../theme/SpringBear/emojis"),
+  st0705: require("../theme/PandaChef/emojis"),
   st99: require("../theme/QuirkyQuackers/emojis"),
   st2707: require("../theme/KeoYuu/emojis"),
   st168: require("../theme/GhastlyGrins/emojis"),
@@ -93,17 +101,22 @@ module.exports = class PeachyClient extends Client {
     const commandDirs = fs.readdirSync(commandsPath);
 
     for (const dir of commandDirs) {
-      const commandFiles = fs.readdirSync(path.join(commandsPath, dir)).filter(file => file.endsWith(".js")); // Ensure only .js files
+      const commandFiles = fs
+        .readdirSync(path.join(commandsPath, dir))
+        .filter((file) => file.endsWith(".js")); // Ensure only .js files
       for (const file of commandFiles) {
         try {
           const cmd = require(`../commands/${dir}/${file}`);
-          const command = new cmd(this, file);  // Pass 'file' name
+          const command = new cmd(this, file); // Pass 'file' name
           command.category = dir;
           command.file = file;
           this.commands.set(command.name, command);
 
-          if (command.aliases && command.aliases.length > 0) {  // Check if aliases exist
-            command.aliases.forEach(alias => this.aliases.set(alias, command.name));
+          if (command.aliases && command.aliases.length > 0) {
+            // Check if aliases exist
+            command.aliases.forEach((alias) =>
+              this.aliases.set(alias, command.name)
+            );
           }
 
           if (command.slashCommand) {
@@ -113,16 +126,23 @@ module.exports = class PeachyClient extends Client {
               type: ApplicationCommandType.ChatInput,
               options: command.options || null,
               name_localizations: command.nameLocalizations || null,
-              description_localizations: command.descriptionLocalizations || null,
-              default_member_permissions: command.permissions.user.length > 0
-                  ? PermissionsBitField.resolve(command.permissions.user).toString()
-                  : null
+              description_localizations:
+                command.descriptionLocalizations || null,
+              default_member_permissions:
+                command.permissions.user.length > 0
+                  ? PermissionsBitField.resolve(
+                      command.permissions.user
+                    ).toString()
+                  : null,
             };
             this.body.push(data);
             commandCounter++;
           }
         } catch (error) {
-          this.logger.error(`Failed to load command ${file} in category ${dir}:`, error);
+          this.logger.error(
+            `Failed to load command ${file} in category ${dir}:`,
+            error
+          );
         }
       }
     }
@@ -131,10 +151,15 @@ module.exports = class PeachyClient extends Client {
 
     this.once("ready", async () => {
       const applicationCommands = globalConfig.production
-          ? Routes.applicationCommands(this.config.clientId ?? "")
-          : Routes.applicationGuildCommands(this.config.clientId ?? "", this.config.guildId ?? "");
+        ? Routes.applicationCommands(this.config.clientId ?? "")
+        : Routes.applicationGuildCommands(
+            this.config.clientId ?? "",
+            this.config.guildId ?? ""
+          );
       try {
-        const rest = new REST({ version: "10" }).setToken(this.config.token ?? "");
+        const rest = new REST({ version: "10" }).setToken(
+          this.config.token ?? ""
+        );
         await rest.put(applicationCommands, { body: this.body });
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
@@ -143,26 +168,29 @@ module.exports = class PeachyClient extends Client {
     });
   }
 
-
   async loadEvents() {
     const eventsPath = path.join(__dirname, "../events");
     const eventDirs = fs.readdirSync(eventsPath);
 
     for (const dir of eventDirs) {
-      const eventFiles = fs.readdirSync(path.join(eventsPath, dir)).filter(file => file.endsWith(".js"));
+      const eventFiles = fs
+        .readdirSync(path.join(eventsPath, dir))
+        .filter((file) => file.endsWith(".js"));
       for (const file of eventFiles) {
         try {
           const event = require(`../events/${dir}/${file}`);
           const evt = new event(this, file);
           this.on(evt.name, (...args) => evt.run(...args)); //Simplify this
         } catch (error) {
-          this.logger.error(`Failed to load event ${file} in category ${dir}:`, error);
+          this.logger.error(
+            `Failed to load event ${file} in category ${dir}:`,
+            error
+          );
         }
       }
       this.logger.info(`Loaded events from ${dir}`);
     }
   }
-
 
   async setColorBasedOnTheme(userId) {
     try {
@@ -170,7 +198,8 @@ module.exports = class PeachyClient extends Client {
       let userLanguage;
 
       if (user && user.preferences) {
-        const { language = this.config.language.defaultLocale } = user.preferences;
+        const { language = this.config.language.defaultLocale } =
+          user.preferences;
         userLanguage = {
           defaultLocale: language.split("-")[0],
           directory: path.resolve(`./src/languages`),
@@ -188,8 +217,8 @@ module.exports = class PeachyClient extends Client {
       });
 
       const localePath = path.join(
-          userLanguage.directory,
-          `${userLanguage.defaultLocale}.json`
+        userLanguage.directory,
+        `${userLanguage.defaultLocale}.json`
       );
       if (fs.existsSync(localePath)) {
         const localeData = JSON.parse(fs.readFileSync(localePath, "utf8"));
@@ -200,8 +229,8 @@ module.exports = class PeachyClient extends Client {
 
       if (!language.locales.size) {
         console.error(
-            "No locales loaded for language:",
-            userLanguage.defaultLocale
+          "No locales loaded for language:",
+          userLanguage.defaultLocale
         );
       }
 
@@ -211,20 +240,22 @@ module.exports = class PeachyClient extends Client {
       if (user && user.preferences && user.preferences.theme) {
         const themeId = user.preferences.theme;
 
-        const themeEmoji = themeEmojis[themeId];  // Look up emoji
+        const themeEmoji = themeEmojis[themeId]; // Look up emoji
         if (themeEmoji) {
-          emoji = themeEmoji
+          emoji = themeEmoji;
         }
 
         if (themeConfig[themeId] && themeConfig[themeId].color) {
-          color = themeConfig[themeId].color; //Look up color
-        } else if (themeConfig[themeId.toLowerCase()] && themeConfig[themeId.toLowerCase()].color) {
-          color = themeConfig[themeId.toLowerCase()].color; //Look up color with lower case
+          color = themeConfig[themeId].color; // Look up color
+        } else if (
+          themeConfig[themeId.toLowerCase()] &&
+          themeConfig[themeId.toLowerCase()].color
+        ) {
+          color = themeConfig[themeId.toLowerCase()].color; // Look up color with lower case
         }
       }
 
       return { user, color, emoji, language };
-
     } catch (error) {
       console.error("Error setting color and theme:", error.message);
       return {

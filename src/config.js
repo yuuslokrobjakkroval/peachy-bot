@@ -50,7 +50,7 @@ const goma = {
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------- //
 
 // Ocean Breeze ( T01 )
-const oceanBreeze = {
+const t01 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -65,7 +65,7 @@ const oceanBreeze = {
 };
 
 // Fright Fest ( T02 )
-const frightFest = {
+const t02 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -80,7 +80,7 @@ const frightFest = {
 };
 
 // Boo Bash ( T03 )
-const booBash = {
+const t03 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -95,7 +95,7 @@ const booBash = {
 };
 
 // Jingle Jolly ( T04 )
-const jingleJolly = {
+const t04 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -110,7 +110,7 @@ const jingleJolly = {
 };
 
 // Festive Frost ( T05 )
-const festiveFrost = {
+const t04 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -125,7 +125,7 @@ const festiveFrost = {
 };
 
 // Mystic Realms ( T06 )
-const mysticRealm = {
+const t06 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -140,7 +140,7 @@ const mysticRealm = {
 };
 
 // Luna Legend ( T07 )
-const lunaLegend = {
+const t07 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -157,7 +157,7 @@ const lunaLegend = {
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------- //
 
 // Celestial Grace ( ST01 )
-const celestialGrace = {
+const st01 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -172,7 +172,7 @@ const celestialGrace = {
 };
 
 // SakuraSerenity ( ST02 )
-const sakuraSerenity = {
+const st02 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -187,7 +187,7 @@ const sakuraSerenity = {
 };
 
 // Buzzing Bliss ( ST03 )
-const buzzingBliss = {
+const st03 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -202,7 +202,7 @@ const buzzingBliss = {
 };
 
 // Froggy Fun ( ST04 )
-const froggyFun = {
+const st04 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -217,7 +217,7 @@ const froggyFun = {
 };
 
 // ASleepy Peach ( ST05 )
-const aSleepyPeach = {
+const st05 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -232,7 +232,7 @@ const aSleepyPeach = {
 };
 
 // Magical Forest ( ST06 )
-const magicalForest = {
+const st06 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -247,7 +247,7 @@ const magicalForest = {
 };
 
 // Matcha Latte ( ST07 )
-const matchaLatte = {
+const st07 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -262,7 +262,7 @@ const matchaLatte = {
 };
 
 // Dark Academia ( ST08 )
-const darkAcademia = {
+const st08 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -277,7 +277,7 @@ const darkAcademia = {
 };
 
 // Spring Bear ( ST09 )
-const springBear = {
+const st09 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -292,7 +292,7 @@ const springBear = {
 };
 
 // Fantasy RPG ( ST10 )
-const fantasyRpg = {
+const st10 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -306,8 +306,23 @@ const fantasyRpg = {
   },
 };
 
+// Panda Chef ( ST0705 )
+const st0705 = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xa0c878,
+    none: 0x2b2d31,
+  },
+};
+
 // SPIDER MAN FOR ANGKOR PARIS ( ST11 )
-const spiderMan = {
+const st11 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -322,7 +337,7 @@ const spiderMan = {
 };
 
 // CUCUMBER FOR SUPPORTER ( ST12 )
-const cucumberCool = {
+const st12 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -337,7 +352,7 @@ const cucumberCool = {
 };
 
 // CAPPUCCINO FOR SUPPORTER ( ST13 )
-const cappuccinoCharm = {
+const st13 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -352,7 +367,7 @@ const cappuccinoCharm = {
 };
 
 // CAPPUCCINO V2 FOR SUPPORTER ( ST14 )
-const nithGojo = {
+const st14 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -367,7 +382,7 @@ const nithGojo = {
 };
 
 // Cozy Summer ( ST15 )
-const cozySummer = {
+const st15 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -376,13 +391,13 @@ const cozySummer = {
     blue: 0x4cc9fe,
     pink: 0xe3a1ad,
     warning: 0xffa500,
-    main: 0xDDEB9D,
+    main: 0xddeb9d,
     none: 0x2b2d31,
   },
 };
 
 // YUNA FOR SUPPORTER ( ST1801 )
-const yuna = {
+const st1801 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -397,7 +412,7 @@ const yuna = {
 };
 
 // YUNA V2 FOR SUPPORTER ( ST0118 )
-const yunayuna = {
+const st0118 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -412,7 +427,7 @@ const yunayuna = {
 };
 
 // BABE OWNER FOR LOVE ( ST99 )
-const quirkyQuackers = {
+const st99 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -427,7 +442,7 @@ const quirkyQuackers = {
 };
 
 // OWNER FOR ANNIVERSARY ( ST2707 )
-const keoyuu = {
+const st2707 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -442,7 +457,7 @@ const keoyuu = {
 };
 
 // BOOSTER FOR SUPPORTER ( ST168 )
-const loveBunnie = {
+const st272 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -457,7 +472,7 @@ const loveBunnie = {
 };
 
 // PHY FOR SUPPORTER ( ST168 )
-const ghastlyGrins = {
+const st168 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -472,7 +487,7 @@ const ghastlyGrins = {
 };
 
 // REACH FOR SUPPORTER ( ST2111 )
-const seaCoral = {
+const st2111 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -487,7 +502,7 @@ const seaCoral = {
 };
 
 // FOR SALE ( ST1111 )
-const enchantedCatLake = {
+const st1111 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -502,7 +517,7 @@ const enchantedCatLake = {
 };
 
 // FOR SALE ( ST2601 )
-const yuyuzu = {
+const st2601 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -511,7 +526,7 @@ const yuyuzu = {
     blue: 0x4cc9fe,
     pink: 0xe3a1ad,
     warning: 0xffa500,
-    main: 0xFCC6FF,
+    main: 0xfcc6ff,
     none: 0x2b2d31,
   },
 };
@@ -523,45 +538,46 @@ module.exports = {
 
   // ---------- //
   // THEME
-  oceanBreeze,
-  frightFest,
-  booBash,
-  jingleJolly,
-  festiveFrost,
-  mysticRealm,
-  lunaLegend,
+  t01,
+  t02,
+  t03,
+  t04,
+  t05,
+  t06,
+  t07,
 
   // ---------- //
   // SPECIAL THEME
-  celestialGrace,
-  sakuraSerenity,
-  buzzingBliss,
-  froggyFun,
-  aSleepyPeach,
-  magicalForest,
-  matchaLatte,
-  darkAcademia,
-  springBear,
-  fantasyRpg,
+  st01,
+  st02,
+  st03,
+  st04,
+  st05,
+  st06,
+  st07,
+  st08,
+  st09,
+  st10,
+  st0705,
 
   // ---------- //
   // SUPPORTER THEME
-  spiderMan,
-  cucumberCool,
-  cappuccinoCharm,
-  nithGojo,
-  cozySummer, // ST15
+  st11,
+  st12,
+  st13,
+  st14,
+  st15, // ST15
 
-  yuna,
-  yunayuna,
-  quirkyQuackers,
-  keoyuu,
-  loveBunnie,
-  ghastlyGrins,
-  seaCoral,
+  st1801,
+  st0118,
+  st99,
+  st2707,
+  st272,
+  st168,
+  st2111,
 
   // ---------- //
   // SELL THEME
-  enchantedCatLake,
-  yuyuzu,
+  st1111,
+  st2601,
 };

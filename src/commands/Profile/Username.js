@@ -37,8 +37,11 @@ module.exports = class Username extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const userNameMessages = language.locales.get(language.defaultLocale)?.profileMessages?.userNameMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
+    const userNameMessages = language.locales.get(language.defaultLocale)
+      ?.profileMessages?.userNameMessages;
 
     client.utils.getUser(ctx.author.id).then((user) => {
       const embed = client.embed();

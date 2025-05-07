@@ -1,28 +1,17 @@
 const { Command } = require("../../structures");
 const { AttachmentBuilder } = require("discord.js");
 const { createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas");
-const ShopItems = require("../../assets/inventory/ShopItems");
 const moment = require("moment");
+const ShopItems = require("../../assets/inventory/ShopItems");
 const inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Wallpapers = inventory.filter((value) => value.type === "wallpaper");
 const Colors = inventory.filter((value) => value.type === "color");
 
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-Roman.otf",
-  "Kelvinch-Roman"
-);
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-Bold.otf",
-  "Kelvinch-Bold"
-);
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Graffierz Poison Shadow.otf",
-  "Graffierz Poison Shadow"
-);
+GlobalFonts.registerFromPath("./public/fonts/Ghibli.otf", "Kelvinch-Roman");
+GlobalFonts.registerFromPath("./public/fonts/Ghibli-Bold.otf", "Kelvinch-Bold");
 
 const defaultBanner = "https://i.imgur.com/8rZFeWI.jpg";
 const chinaNewYearBanner = "https://i.imgur.com/RmfP9ie.png";
-
 module.exports = class Profile extends Command {
   constructor(client) {
     super(client, {
@@ -188,7 +177,7 @@ module.exports = class Profile extends Command {
     const embed = client
       .embed()
       .setColor(color.main)
-      .setTitle(`**${emoji.mainLeft} 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 ${emoji.mainRight}**`)
+      .setTitle(`**${emoji.mainLeft} PROFILE ${emoji.mainRight}**`)
       .setDescription("**Generating your profile...**")
       .setImage("https://i.imgur.com/0BrEHuc.gif");
     return await ctx.sendDeferMessage({

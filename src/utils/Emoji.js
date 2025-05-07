@@ -204,6 +204,7 @@ module.exports = {
     magicalForest: "<:MFMAIN:1350667582067310735>",
     matchaLatte: "<:MLMAIN:1350667675830849577>",
     springBear: "<:BEARMAIN:1350667843926102067>",
+    pandachef: "<:PDMAIN:1369698779942617229>",
 
     // SUPPORTER
     duckling: "<:DMAIN:1350668515857793026>",

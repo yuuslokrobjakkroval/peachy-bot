@@ -78,12 +78,12 @@ module.exports = class Birthday extends Command {
         embed.addFields([
           {
             name: "**Usage :**",
-            value: `\`\`\`birthday <date || reset || help>\n\`\`\``,
+            value: "```birthday <date || reset || help>\n```",
             inline: false,
           },
           {
             name: "**Examples :**",
-            value: `\`\`\`birthday 20-03\nbirthday reset\nbirthday help\n\`\`\``,
+            value: "```birthday 20-03\nbirthday reset\nbirthday help\n```",
             inline: false,
           },
         ]);
@@ -128,7 +128,7 @@ module.exports = class Birthday extends Command {
         }
 
         // Set birthday and zodiac sign
-        let date = ctx.isInteraction
+        const date = ctx.isInteraction
           ? ctx.interaction.options.data[0]?.options[0]?.value.toString()
           : args.join(" ");
 
@@ -178,9 +178,9 @@ module.exports = class Birthday extends Command {
                 bdMessages?.setSuccess || "Your birthday has been set to"
               }\n**\`${formattedDate}\`**\n${
                 bdMessages?.zodiacSuccess || "Your zodiac sign is"
-              }\n**\`${client.utils.formatCapitalize(
-                zodiacSign.sign
-              )}\`** ${zodiacSign.emoji}.`
+              }\n**\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${
+                zodiacSign.emoji
+              }.`
             );
 
           await Users.updateOne(
