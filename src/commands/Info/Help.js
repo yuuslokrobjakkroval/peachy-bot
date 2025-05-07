@@ -212,11 +212,21 @@ module.exports = class Help extends Command {
           .setStyle(ButtonStyle.Secondary)
           .setEmoji("🏠");
 
-        // Create link buttons correctly - with URL but NO customId
+        const dashboardButton = new ButtonBuilder()
+          .setLabel("Dashboard")
+          .setStyle(ButtonStyle.Link)
+          .setURL(
+            client.config.links.dashboard ||
+              `https://peachy-gang-dashboard.vercel.app`
+          )
+          .setEmoji("🌐");
+
         const supportButton = new ButtonBuilder()
           .setLabel("Support")
           .setStyle(ButtonStyle.Link)
-          .setURL(client.config.links.support || "https://discord.gg/support")
+          .setURL(
+            client.config.links.support || "https://discord.gg/peachygang"
+          )
           .setEmoji("❓");
 
         const inviteButton = new ButtonBuilder()
@@ -233,6 +243,7 @@ module.exports = class Help extends Command {
         );
         const buttonRow = new ActionRowBuilder().addComponents(
           homeButton,
+          dashboardButton,
           supportButton,
           inviteButton
         );
