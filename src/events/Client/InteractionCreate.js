@@ -27,9 +27,9 @@ module.exports = class InteractionCreate extends Event {
   async run(interaction) {
     if (interaction.user.bot) return;
     if (globalConfig.env === "DEV") {
-      if (interaction.guild.id !== "1271685844700233738") return;
+      if (interaction.guild.id !== "1371280484046344242") return;
     } else {
-      if (interaction.guild.id === "1271685844700233738") return;
+      if (interaction.guild.id === "1371280484046344242") return;
     }
     this.client
       .setColorBasedOnTheme(interaction.user.id)
@@ -231,24 +231,17 @@ module.exports = class InteractionCreate extends Event {
               "coinflip",
               "klaklouk",
             ];
-            const gameCommands = [
-              "guessnumber",
-              "post",
-              "guess",
-              "wallpaper",
-            ];
+            const gameCommands = ["guessnumber", "post", "guess", "wallpaper"];
             let logChannelId;
-            if (["animals", "building"].includes(command.category.toLowerCase())) {
+            if (
+              ["animals", "building"].includes(command.category.toLowerCase())
+            ) {
               logChannelId = this.client.config.logChannelId[8];
             } else if (["work"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[7];
-            } else if (
-                ["giveaway"].includes(command.category.toLowerCase())
-            ) {
+            } else if (["giveaway"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[6];
-            } else if (
-                ["utility"].includes(command.category.toLowerCase())
-            ) {
+            } else if (["utility"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[5];
             } else if (["inventory"].includes(command.category.toLowerCase())) {
               logChannelId = this.client.config.logChannelId[4];
