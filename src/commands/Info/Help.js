@@ -45,9 +45,6 @@ module.exports = class Help extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
     const helpMessages = language.locales.get(language.defaultLocale)
       ?.informationMessages?.helpMessages;
     const categoriesMessages = language.locales.get(language.defaultLocale)
@@ -63,7 +60,7 @@ module.exports = class Help extends Command {
     ];
     const categories = [
       "actions",
-      "animals",
+      // "animals",
       "bank",
       "economy",
       "emotes",
@@ -78,7 +75,7 @@ module.exports = class Help extends Command {
       "social",
       "relationship",
       "utility",
-      "work",
+      // "work",
     ];
     const commands = client.commands.filter(
       (cmd) => !adminCategory.includes(cmd.category)
@@ -113,7 +110,7 @@ module.exports = class Help extends Command {
           "Social & Fun": categories.filter((cat) =>
             [
               "actions",
-              "animals",
+              // "animals",
               "emotes",
               "fun",
               "social",
@@ -127,7 +124,7 @@ module.exports = class Help extends Command {
               "gambling",
               "games",
               "inventory",
-              "work",
+              // "work",
             ].includes(cat)
           ),
           "Utility & Info": categories.filter((cat) =>
