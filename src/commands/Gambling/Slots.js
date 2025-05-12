@@ -51,7 +51,6 @@ module.exports = class Slots extends Command {
         emoji.slots.x5,
         emoji.slots.x10,
       ];
-      const verify = user.verification.verify.status === "verified";
       const { coin, bank, slots } = user.balance;
 
       if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
@@ -132,19 +131,19 @@ module.exports = class Slots extends Command {
         if (rand <= 10) {
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-        } else if (rand <= 13) {
+        } else if (rand <= 12) {
           win = baseCoins * 3;
           rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-        } else if (rand <= 15) {
+        } else if (rand <= 13) {
           win = baseCoins * 4;
           rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-        } else if (rand <= 23) {
+        } else if (rand <= 15) {
           win = baseCoins * 5;
           rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-        } else if (rand <= 24) {
+        } else if (rand <= 18) {
           win = baseCoins * 2;
           rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-        } else if (rand <= 24.5) {
+        } else if (rand <= 20) {
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
         } else {
