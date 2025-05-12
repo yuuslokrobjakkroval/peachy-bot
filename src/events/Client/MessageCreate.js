@@ -16,9 +16,9 @@ module.exports = class MessageCreate extends Event {
   async run(message) {
     if (message.author.bot) return;
     if (globalConfig.env === "DEV") {
-      if (message.guild.id !== "1354018322202492960") return;
+      if (message.guild.id !== "1271685844700233738") return;
     } else {
-      if (message.guild.id === "1354018322202492960") return;
+      if (message.guild.id === "1271685844700233738") return;
     }
     this.client
       .setColorBasedOnTheme(message.author.id)
