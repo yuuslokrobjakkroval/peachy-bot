@@ -321,6 +321,21 @@ const st0705 = {
   },
 };
 
+// Tangerine Depth ( ST20 )
+const st20 = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xfe7743,
+    none: 0x2b2d31,
+  },
+};
+
 // SPIDER MAN FOR ANGKOR PARIS ( ST11 )
 const st11 = {
   color: {
@@ -559,6 +574,7 @@ module.exports = {
   st09,
   st10,
   st0705,
+  st20, // ST15
 
   // ---------- //
   // SUPPORTER THEME

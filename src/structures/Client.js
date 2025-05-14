@@ -45,6 +45,7 @@ const themeEmojis = {
   st07: require("../theme/Matchalatte/emojis"),
   st09: require("../theme/SpringBear/emojis"),
   st0705: require("../theme/PandaChef/emojis"),
+  st20: require("../theme/TangerineDepth/emojis"),
   st99: require("../theme/QuirkyQuackers/emojis"),
   st2707: require("../theme/KeoYuu/emojis"),
   st168: require("../theme/GhastlyGrins/emojis"),

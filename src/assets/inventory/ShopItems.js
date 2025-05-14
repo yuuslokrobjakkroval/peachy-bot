@@ -1960,6 +1960,22 @@ module.exports = [
         available: ["use"],
         price: { buy: 5e7, sell: 45e6 },
       },
+      {
+        id: "st20",
+        name: "Tangerine Depth",
+        description:
+          "Dive into a vibrant, orange-infused 3D world with this bold and zesty theme!",
+        type: "special theme",
+        able: {
+          use: true,
+          gift: true,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.tangerineDepth,
+        available: ["use"],
+        price: { buy: 5e7, sell: 45e6 },
+      },
     ],
   },
 ];

@@ -205,6 +205,7 @@ module.exports = {
     matchaLatte: "<:MLMAIN:1350667675830849577>",
     springBear: "<:BEARMAIN:1350667843926102067>",
     pandachef: "<:PDMAIN:1369698779942617229>",
+    tangerineDepth: "<:frenchbulldog:1372178375623446589>",
 
     // SUPPORTER
     duckling: "<:DMAIN:1350668515857793026>",
