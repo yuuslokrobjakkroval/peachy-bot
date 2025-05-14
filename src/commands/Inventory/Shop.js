@@ -211,9 +211,7 @@ module.exports = class Shop extends Command {
               ? `**${price}** ${emoji.coin || "💰"}`
               : `${price} ${emoji.coin || "💰"}`;
 
-          return `\`${index + 1}.\` ${item.emoji} **${
-            item.name
-          }** - ${priceDisplay}`;
+          return `\`${item.id}\` ${item.emoji} **${item.name}** - ${priceDisplay}`;
         })
         .join("\n");
 

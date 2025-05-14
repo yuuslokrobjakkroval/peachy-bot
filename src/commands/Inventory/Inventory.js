@@ -106,7 +106,7 @@ module.exports = class Inventory extends Command {
               rarity: itemInfo.rarity || "common",
               worth: itemWorth,
               type: type,
-              display: `${itemInfo.emoji} **${item.quantity}x** ${itemName}`,
+              display: `\`${itemInfo.id}\` ${itemInfo.emoji} ${itemName} **x${item.quantity}**`,
             };
 
             // Add to category list
