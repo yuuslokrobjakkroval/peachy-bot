@@ -7,10 +7,10 @@ const {
 } = require("discord.js");
 const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
-const inventory = ShopItems.flatMap((shop) => shop.inventory);
-const Items = inventory
-  .filter((value) => value.price.buy !== 0)
-  .sort((a, b) => a.price.buy - b.price.buy);
+const Inventory = ShopItems.flatMap((shop) => shop.inventory);
+const Items = Inventory.filter((value) => value.price.buy !== 0).sort(
+  (a, b) => a.price.buy - b.price.buy
+);
 
 module.exports = class Inventory extends Command {
   constructor(client) {

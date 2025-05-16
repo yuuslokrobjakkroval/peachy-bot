@@ -709,14 +709,22 @@ module.exports = class Sell extends Command {
 
   parseQuantity(input, maxQuantity) {
     if (typeof input === "string") {
-      const lowerInput = input.toLowerCase();
+      const lowerInput = input.toLowerCase().trim();
       if (lowerInput === "all") return maxQuantity;
       if (lowerInput === "half") return Math.ceil(maxQuantity / 2);
+
+      // Remove commas for number parsing
+      const sanitizedInput = lowerInput.replace(/,/g, "");
+      const quantity = Number.parseInt(sanitizedInput);
+
+      // Better validation
+      if (!isNaN(quantity) && quantity > 0) {
+        return Math.min(quantity, maxQuantity);
+      }
+    } else if (typeof input === "number" && input > 0) {
+      return Math.min(input, maxQuantity);
     }
 
-    const quantity = Number.parseInt(input);
-    return isNaN(quantity) || quantity <= 0
-      ? null
-      : Math.min(quantity, maxQuantity);
+    return null;
   }
 };

@@ -17,12 +17,6 @@ const Abilities = require("../utils/Abilities");
 const globalConfig = require("../utils/Config");
 const { I18n } = require("@hammerhq/localization");
 const themeConfig = require("../config");
-const ImportantItems = require("../assets/inventory/ImportantItems.js");
-const ShopItems = require("../assets/inventory/ShopItems.js");
-const MoreItems = ShopItems.flatMap((shop) => shop.inventory);
-const AllItems = [...ImportantItems, ...MoreItems].filter(
-  (item) => item.price.sell !== 0
-);
 
 // Emojis - Centralized in one object for easier management
 const emojis = require("../emojis");

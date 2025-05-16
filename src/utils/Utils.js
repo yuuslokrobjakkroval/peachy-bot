@@ -19,6 +19,250 @@ const globalEmoji = require("./Emoji");
 const { getLevelingMessage } = require("./Abilities");
 
 module.exports = class Utils {
+  // Standardized updateUserWithRetry function
+  static async updateUserWithRetry(userId, updateFn, maxRetries = 3) {
+    let retries = 0;
+    while (retries < maxRetries) {
+      try {
+        const user = await Users.findOne({ userId }).exec();
+        if (!user) {
+          console.log(`User with ID ${userId} not found.`);
+          return false;
+        }
+        await updateFn(user);
+        await user.save();
+        return true;
+      } catch (error) {
+        console.error(`Error updating user ${userId}:`, error);
+        if (error.name === "VersionError") {
+          retries++;
+          if (retries === maxRetries) {
+            console.log(`Max retries reached for user ${userId}.`);
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+    }
+  }
+
+  // Caching system
+  static cache = {
+    users: new Map(),
+    items: null,
+    lastCacheClean: Date.now(),
+  };
+
+  // Cache user data with TTL
+  static async getCachedUser(userId, ttlMs = 60000) {
+    const now = Date.now();
+
+    // Clean expired cache entries every 5 minutes
+    if (now - this.cache.lastCacheClean > 300000) {
+      this.cleanCache();
+      this.cache.lastCacheClean = now;
+    }
+
+    const cachedUser = this.cache.users.get(userId);
+    if (cachedUser && now - cachedUser.timestamp < ttlMs) {
+      return cachedUser.data;
+    }
+
+    const user = await Users.findOne({ userId }).exec();
+    if (user) {
+      this.cache.users.set(userId, { data: user, timestamp: now });
+    }
+    return user;
+  }
+
+  // Clean expired cache entries
+  static cleanCache() {
+    const now = Date.now();
+    for (const [userId, entry] of this.cache.users.entries()) {
+      if (now - entry.timestamp > 300000) {
+        // 5 minutes TTL
+        this.cache.users.delete(userId);
+      }
+    }
+  }
+
+  // Cache all items on startup
+  static cacheItems() {
+    if (!this.cache.items) {
+      const allItems = [
+        ...require("../assets/inventory/ImportantItems"),
+        ...require("../assets/inventory/ShopItems").flatMap(
+          (shop) => shop.inventory
+        ),
+        ...require("../assets/inventory/SlimeCatalog"),
+        ...require("../assets/inventory/Woods"),
+        ...require("../assets/inventory/Minerals"),
+      ];
+      this.cache.items = allItems;
+    }
+    return this.cache.items;
+  }
+
+  // Standardized error handling
+  static errorMessages = {
+    INSUFFICIENT_FUNDS:
+      "You don't have enough coins for this action. Try earning more with daily rewards or by selling items.",
+    ITEM_NOT_FOUND:
+      "The requested item was not found. Check the item ID and try again.",
+    COOLDOWN_ACTIVE:
+      "This command is on cooldown. Please wait before trying again.",
+    PERMISSION_DENIED: "You don't have permission to use this command.",
+    INVALID_ARGUMENTS:
+      "Invalid command arguments. Please check the command usage.",
+    USER_NOT_FOUND: "User not found. Make sure you're mentioning a valid user.",
+    INVENTORY_FULL: "Your inventory is full. Try selling some items first.",
+    TOOL_BROKEN: "Your tool has broken! You'll need to buy a new one.",
+    GENERIC_ERROR:
+      "An error occurred while processing your request. Please try again later.",
+  };
+
+  static getErrorMessage(errorCode, ...args) {
+    const message =
+      this.errorMessages[errorCode] || this.errorMessages.GENERIC_ERROR;
+
+    // Replace placeholders with args if any
+    if (args.length > 0) {
+      return message.replace(/\{(\d+)\}/g, (match, index) => {
+        const argIndex = Number.parseInt(index, 10);
+        return argIndex < args.length ? args[argIndex] : match;
+      });
+    }
+
+    return message;
+  }
+
+  // Comprehensive input validation
+  static validateInput(input, type, options = {}) {
+    switch (type) {
+      case "number":
+        const num = Number(input);
+        if (isNaN(num)) return false;
+        if (options.min !== undefined && num < options.min) return false;
+        if (options.max !== undefined && num > options.max) return false;
+        return true;
+
+      case "string":
+        if (typeof input !== "string") return false;
+        if (options.minLength !== undefined && input.length < options.minLength)
+          return false;
+        if (options.maxLength !== undefined && input.length > options.maxLength)
+          return false;
+        if (options.regex && !options.regex.test(input)) return false;
+        return true;
+
+      case "userId":
+        return /^\d{17,19}$/.test(input);
+
+      case "itemId":
+        // Validate item ID format and check if it exists
+        if (!this.cache.items) this.cacheItems();
+        return this.cache.items.some((item) => item.id === input);
+
+      default:
+        return false;
+    }
+  }
+
+  // Rate limiting system
+  static rateLimits = new Map();
+
+  static checkRateLimit(userId, commandName, limit = 5, window = 60000) {
+    const now = Date.now();
+    const key = `${userId}:${commandName}`;
+
+    // Get or initialize the user's command usage history
+    if (!this.rateLimits.has(key)) {
+      this.rateLimits.set(key, []);
+    }
+
+    const userHistory = this.rateLimits.get(key);
+
+    // Remove timestamps outside the current window
+    const validHistory = userHistory.filter(
+      (timestamp) => now - timestamp < window
+    );
+    this.rateLimits.set(key, validHistory);
+
+    // Check if the user has exceeded the rate limit
+    if (validHistory.length >= limit) {
+      return {
+        limited: true,
+        resetTime: validHistory[0] + window,
+        remaining: 0,
+      };
+    }
+
+    // Add the current timestamp to the history
+    validHistory.push(now);
+    this.rateLimits.set(key, validHistory);
+
+    return {
+      limited: false,
+      resetTime: now + window,
+      remaining: limit - validHistory.length,
+    };
+  }
+
+  // Unified cooldown system
+  static async checkAndSetCooldown(client, ctx, command, cooldownTime) {
+    const userId = ctx.author.id;
+
+    // Get user from database
+    const user = await this.getCachedUser(userId);
+    if (!user) return false;
+
+    // Check if user is on cooldown
+    const cooldown = user.cooldowns.find(
+      (c) => c.name === command.name.toLowerCase()
+    );
+    const isOnCooldown = cooldown
+      ? Date.now() - cooldown.timestamp < cooldownTime
+      : false;
+
+    if (!isOnCooldown) {
+      // Set cooldown
+      await this.updateUserWithRetry(userId, async (user) => {
+        const existingCooldown = user.cooldowns.find(
+          (c) => c.name === command.name.toLowerCase()
+        );
+        if (existingCooldown) {
+          existingCooldown.timestamp = Date.now();
+        } else {
+          user.cooldowns.push({
+            name: command.name.toLowerCase(),
+            timestamp: Date.now(),
+            duration: cooldownTime,
+          });
+        }
+      });
+      return false; // Not on cooldown
+    } else {
+      // Calculate remaining time
+      const remainingTime = Math.ceil(
+        (cooldown.timestamp + cooldownTime - Date.now()) / 1000
+      );
+
+      // Send cooldown message
+      await this.sendErrorMessage(
+        client,
+        ctx,
+        `Please wait <t:${
+          Math.round(Date.now() / 1000) + remainingTime
+        }:R> before using this command again.`,
+        client.color.danger,
+        remainingTime * 1000
+      );
+
+      return true; // On cooldown
+    }
+  }
+
   static getUser(userId) {
     return Users.findOne({ userId })
       .then((user) => {
@@ -54,7 +298,7 @@ module.exports = class Utils {
         !user.profile.lastXpGain ||
         now - user.profile.lastXpGain >= xpCooldown
       ) {
-        let creditGained =
+        const creditGained =
           message.content.startsWith(prefix) ||
           message.content.startsWith(prefix.toLowerCase())
             ? 1
@@ -62,7 +306,7 @@ module.exports = class Utils {
 
         user.balance.credit += creditGained;
 
-        let xpGained =
+        const xpGained =
           message.content.startsWith(prefix) ||
           message.content.startsWith(prefix.toLowerCase())
             ? client.utils.getRandomNumber(20, 25)
@@ -220,7 +464,7 @@ module.exports = class Utils {
       cdId.push(id);
 
       if (prem.includes(id)) {
-        const CD = parseInt(cooldowntime / 2);
+        const CD = Number.parseInt(cooldowntime / 2);
 
         const currentTime = new Date();
         const cooldownEnd = new Date(currentTime.getTime() + CD);
@@ -278,7 +522,7 @@ module.exports = class Utils {
       return true;
     } else {
       if (prem.includes(id)) {
-        const CD = parseInt(cooldowntime / 2);
+        const CD = Number.parseInt(cooldowntime / 2);
 
         const currentTime = new Date();
         const cooldownEnd = new Date(currentTime.getTime() + CD);
@@ -379,7 +623,7 @@ module.exports = class Utils {
     let result = "";
     if (!digits) digits = count.toString().length;
     for (let i = 0; i < digits; i++) {
-      let digit = count % 10;
+      const digit = count % 10;
       count = Math.trunc(count / 10);
       result = numbers[digit] + result;
     }
@@ -391,7 +635,7 @@ module.exports = class Utils {
       return "";
     }
 
-    let formattedName = name.replace(/[^a-zA-Z0-9]+/g, " ");
+    const formattedName = name.replace(/[^a-zA-Z0-9]+/g, " ");
     return formattedName.toUpperCase();
   }
 
@@ -464,7 +708,7 @@ module.exports = class Utils {
     // Check for multiplier-based formats (e.g., 10k, 5m)
     if (/^\d+[kmb]$/i.test(amount)) {
       const unit = amount.slice(-1).toLowerCase(); // Get the last character (k, m, b)
-      const number = parseInt(amount.slice(0, -1)); // Remove the unit and parse the number
+      const number = Number.parseInt(amount.slice(0, -1)); // Remove the unit and parse the number
 
       if (isNaN(number)) {
         return ctx.sendMessage({
@@ -479,7 +723,7 @@ module.exports = class Utils {
 
     // Validate numeric input
     if (/^\d+$/.test(amount)) {
-      return parseInt(amount);
+      return Number.parseInt(amount);
     }
 
     // If all validations fail
@@ -550,7 +794,9 @@ module.exports = class Utils {
     const dm = decimals < 0 ? 0 : decimals;
     const sizes = ["", "K", "M", "B", "T", "Q"];
     const i = Math.floor(Math.log(number) / Math.log(k));
-    const formattedNumber = parseFloat((number / Math.pow(k, i)).toFixed(dm));
+    const formattedNumber = Number.parseFloat(
+      (number / Math.pow(k, i)).toFixed(dm)
+    );
     return dm === 0 ? formattedNumber.toFixed(0) : formattedNumber + sizes[i];
   }
 
@@ -1104,9 +1350,9 @@ module.exports = class Utils {
             Math.floor(Math.random() * (1000000 - 500000 + 1)) + 500000;
           const [day, month, year] = user.profile.birthday.split("-");
           const xp =
-            parseInt(day) +
+            Number.parseInt(day) +
             (new Date(Date.parse(`${month} 1, 2020`)).getMonth() + 1) +
-            parseInt(year.slice(-2));
+            Number.parseInt(year.slice(-2));
 
           // Create the birthday embed
           const birthdayEmbed = client
@@ -1499,3 +1745,4 @@ module.exports = class Utils {
     return firstBar + middleBar + endBar;
   }
 };
+  

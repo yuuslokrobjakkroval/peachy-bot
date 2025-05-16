@@ -404,6 +404,34 @@ module.exports = class Profile extends Command {
       });
     });
 
+    // Draw achievements section
+    if (userInfo.achievements && userInfo.achievements.length > 0) {
+      // Sort achievements by date earned
+      const sortedAchievements = [...userInfo.achievements].sort(
+        (a, b) => new Date(b.earnedAt) - new Date(a.earnedAt)
+      );
+
+      // Take the 3 most recent achievements
+      const recentAchievements = sortedAchievements.slice(0, 3);
+
+      // Draw achievements section
+      context.fillStyle = backgroundColor
+        ? backgroundColor.text
+        : client.utils.formatColor(color.dark);
+      context.font = "24px Kelvinch-Bold, Arial";
+      context.fillText("Recent Achievements", 895, 460);
+
+      // Draw each achievement
+      recentAchievements.forEach((achievement, index) => {
+        context.font = "18px Kelvinch-Roman, Arial";
+        context.fillText(
+          `${achievement.emoji} ${achievement.name}`,
+          895,
+          490 + index * 30
+        );
+      });
+    }
+
     // Draw Zodiac Sign
     if (userInfo.profile.gender) {
       const genderEmoji =
