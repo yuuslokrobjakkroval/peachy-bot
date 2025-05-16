@@ -15,6 +15,8 @@ const GiveawayShopItemSchema = require("./schemas/giveawayShopItem");
 const InviteSchema = require("./schemas/inviteTracker");
 const globalConfig = require("./utils/Config");
 const PeachyClient = require("./structures/Client.js");
+const EconomyManager = require("./managers/EconomyManager");
+const ResourceManager = require("./managers/ResourceManager");
 
 const clientOptions = {
   partials: [
@@ -47,17 +49,14 @@ const clientOptions = {
 const client = new PeachyClient(clientOptions);
 
 // Initialize ResourceManager
-const ResourceManager = require("./managers/ResourceManager");
 client.resourceManager = new ResourceManager(client);
+client.economyManager = new EconomyManager(client);
+client.logger.info("Economy initialized");
 
 client.once("ready", async () => {
-  return await client.abilities.syncInvites(client);
-});
-
-// Initialize cache on startup
-client.once("ready", () => {
   client.utils.cacheItems();
   client.logger.info("Item cache initialized!");
+  return await client.abilities.syncInvites(client);
 });
 
 client.on(

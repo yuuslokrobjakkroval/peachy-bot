@@ -233,6 +233,11 @@ const userSchema = new Schema(
     soldPets: { type: [SoldPetSchema], default: [] }, // Tracks history of sold pets
     achievements: { type: [AchievementsSchema], default: [] },
     isDailyClaim: { type: Boolean, default: false },
+    gathering: {
+      mine: { type: Boolean, default: false },
+      chop: { type: Boolean, default: false },
+      slime: { type: Boolean, default: false },
+    },
   },
   { timestamps: { createdAt: true, updatedAt: true } }
 );

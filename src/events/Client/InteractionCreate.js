@@ -559,7 +559,7 @@ module.exports = class InteractionCreate extends Event {
                   flags: 64,
                 });
               } else if (data.entered.includes(interaction.user.id)) {
-                return interaction.reply({
+                interaction.reply({
                   embeds: [
                     this.client
                       .embed()
@@ -766,7 +766,7 @@ module.exports = class InteractionCreate extends Event {
                   flags: 64,
                 });
               } else if (data.entered.includes(interaction.user.id)) {
-                return interaction.reply({
+                interaction.reply({
                   embeds: [
                     this.client
                       .embed()
@@ -911,6 +911,22 @@ module.exports = class InteractionCreate extends Event {
                 );
 
               await interaction.reply({ embeds: [embed], flags: 64 });
+              break;
+            }
+            case "giveaway-join-req": {
+              const giveaway = await client.utils.getGiveaway(interaction);
+              if (!giveaway) return;
+
+              // Check if user meets requirements
+              const meetsRequirements =
+                await client.utils.checkGiveawayRequirements(
+                  client,
+                  interaction.user,
+                  giveaway,
+                  interaction
+                );
+
+              if (!meetsRequirements) return;
               break;
             }
 

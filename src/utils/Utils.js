@@ -1744,5 +1744,151 @@ module.exports = class Utils {
 
     return firstBar + middleBar + endBar;
   }
+
+  static async processScheduledGiveaways(client, color, emoji) {
+    try {
+      const now = Date.now();
+
+      // Find scheduled giveaways that should start now
+      const scheduledGiveaways = await GiveawaySchema.find({
+        scheduled: true,
+        startTime: { $lte: now },
+        messageId: "scheduled",
+      });
+
+      for (const giveaway of scheduledGiveaways) {
+        try {
+          // Fetch the channel
+          const channel = await client.channels
+            .fetch(giveaway.channelId)
+            .catch(() => null);
+          if (!channel) {
+            console.error(
+              `Channel ${giveaway.channelId} not found for scheduled giveaway ${giveaway._id}`
+            );
+            continue;
+          }
+
+          // Create giveaway embed
+          const giveawayEmbed = client
+            .embed()
+            .setColor(color.main)
+            .setTitle(
+              `**${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin}`
+            )
+            .setDescription(
+              `Click ${emoji.main} button to enter!\n` +
+                `Winners: ${giveaway.winners}\n` +
+                `Hosted by: <@${giveaway.hostedBy}>\n` +
+                `Ends: <t:${Math.floor(giveaway.endTime / 1000)}:R>`
+            );
+
+          if (giveaway.image) giveawayEmbed.setImage(giveaway.image);
+          if (giveaway.thumbnail)
+            giveawayEmbed.setThumbnail(giveaway.thumbnail);
+
+          // Create buttons
+          const joinButton = client.utils.fullOptionButton(
+            "giveaway-join",
+            emoji.main,
+            "0",
+            1,
+            false
+          );
+          const participantsButton = client.utils.fullOptionButton(
+            "giveaway-participants",
+            "",
+            "Participants",
+            2,
+            false
+          );
+          const buttonRow = client.utils.createButtonRow(
+            joinButton,
+            participantsButton
+          );
+
+          // Send the giveaway message
+          const giveawayMessage = await channel.send({
+            embeds: [giveawayEmbed],
+            components: [buttonRow],
+          });
+
+          // Update the giveaway in the database
+          giveaway.messageId = giveawayMessage.id;
+          giveaway.scheduled = false;
+          await giveaway.save();
+
+          // Log the scheduled giveaway start
+          console.log(
+            `Started scheduled giveaway ${giveaway._id} in channel ${channel.name}`
+          );
+        } catch (error) {
+          console.error(
+            `Error starting scheduled giveaway ${giveaway._id}:`,
+            error
+          );
+        }
+      }
+
+      // Same for item giveaways
+      const scheduledItemGiveaways = await GiveawayShopItemSchema.find({
+        scheduled: true,
+        startTime: { $lte: now },
+        messageId: "scheduled",
+      });
+
+      for (const giveaway of scheduledItemGiveaways) {
+        try {
+          // Similar implementation for item giveaways
+          // ...
+        } catch (error) {
+          console.error(
+            `Error starting scheduled item giveaway ${giveaway._id}:`,
+            error
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Error processing scheduled giveaways:", error);
+    }
+  }
+
+  static async checkGiveawayRequirements(client, user, giveaway, interaction) {
+    // Check if giveaway has requirements
+    if (!giveaway.requirements) return true;
+
+    // Check minimum level requirement
+    if (giveaway.requirements.minLevel > 0) {
+      const userData = await client.utils.getCachedUser(user.id);
+      if (
+        !userData ||
+        userData.profile.level < giveaway.requirements.minLevel
+      ) {
+        await interaction.reply({
+          content: `You don't meet the level requirement (Level ${giveaway.requirements.minLevel}) for this giveaway.`,
+          ephemeral: true,
+        });
+        return false;
+      }
+    }
+
+    // Check required role
+    if (giveaway.requirements.requiredRole) {
+      const member = await interaction.guild.members
+        .fetch(user.id)
+        .catch(() => null);
+      if (
+        !member ||
+        !member.roles.cache.has(giveaway.requirements.requiredRole)
+      ) {
+        await interaction.reply({
+          content: `You don't have the required role <@&${giveaway.requirements.requiredRole}> to enter this giveaway.`,
+          ephemeral: true,
+        });
+        return false;
+      }
+    }
+
+    return true;
+  }
 };
-  
