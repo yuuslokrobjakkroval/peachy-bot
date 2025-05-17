@@ -4,6 +4,9 @@ const {
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
 } = require("discord.js");
 const Users = require("../../schemas/user");
 const globalGif = require("../../utils/Gif");
@@ -160,26 +163,27 @@ module.exports = class Balance extends Command {
       )
       .setImage(globalGif.balanceBanner)
       .setFooter({
-        text: (generalMessages?.requestedBy).replace(
-          "%{username}",
-          ctx.author.displayName
-        ),
+        text: (
+          generalMessages?.requestedBy || "Requested by %{username}"
+        ).replace("%{username}", ctx.author.displayName),
         iconURL: ctx.author.displayAvatarURL(),
       });
   }
 
-  createBalanceButtons(emoji) {
+  createBalanceButtons(emoji, disabled = false) {
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId("deposit")
         .setLabel("Deposit")
         .setEmoji(emoji.bank || "🏦")
-        .setStyle(ButtonStyle.Primary),
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(disabled),
       new ButtonBuilder()
         .setCustomId("withdraw")
         .setLabel("Withdraw")
         .setEmoji(emoji.coin || "💰")
         .setStyle(ButtonStyle.Success)
+        .setDisabled(disabled)
     );
 
     return [row];
@@ -440,7 +444,7 @@ module.exports = class Balance extends Command {
     }
   }
 
-  // CRITICAL FIX: New method that handles deposit directly without secondary buttons
+  // Enhanced method that handles deposit directly with button disabling
   async handleDepositDirectly(
     client,
     ctx,
@@ -452,6 +456,29 @@ module.exports = class Balance extends Command {
     message
   ) {
     try {
+      // First, disable the main balance buttons to prevent multiple transactions
+      if (message) {
+        const disabledEmbed = this.createBalanceEmbed(
+          client,
+          ctx,
+          ctx.author,
+          user,
+          color,
+          emoji,
+          language?.locales?.get(language.defaultLocale)?.generalMessages || {},
+          language?.locales?.get(language.defaultLocale)?.economyMessages
+            ?.balanceMessages || {}
+        );
+
+        await message
+          .edit({
+            embeds: [disabledEmbed],
+            components: this.createBalanceButtons(emoji, true), // Disable main buttons
+          })
+          .catch(() => {});
+      }
+
+      // Rest of the function remains the same...
       // Add fallbacks for language properties
       const depositMessages =
         language?.locales?.get(language.defaultLocale)?.economyMessages
@@ -464,17 +491,31 @@ module.exports = class Balance extends Command {
 
       // Check if user has coins to deposit
       if (user.balance.coin <= 0) {
+        // Re-enable main buttons if there's an error
+        if (message) {
+          await message
+            .edit({
+              embeds: [message.embeds[0]],
+              components: this.createBalanceButtons(emoji, false), // Re-enable main buttons
+            })
+            .catch(() => {});
+        }
+
         await interaction.followUp({
           embeds: [
             client
               .embed()
               .setColor(color.error)
-              .setDescription("You don't have any coins to deposit."),
+              .setDescription(
+                `${emoji?.error || "❌"} You don't have any coins to deposit.`
+              ),
           ],
           ephemeral: true,
         });
         return;
       }
+
+      // Continue with the rest of the function...
 
       // Create embed with options
       const depositEmbed = client
@@ -491,8 +532,9 @@ module.exports = class Balance extends Command {
       const uniqueId = Date.now().toString();
       const depositAllId = `deposit_all_${uniqueId}`;
       const depositHalfId = `deposit_half_${uniqueId}`;
+      const cancelId = `deposit_cancel_${uniqueId}`; // New cancel button ID
 
-      // Create action row with buttons
+      // Create action row with buttons including Cancel
       const actionRow = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId(depositAllId)
@@ -501,10 +543,14 @@ module.exports = class Balance extends Command {
         new ButtonBuilder()
           .setCustomId(depositHalfId)
           .setLabel("Deposit Half")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder()
+          .setCustomId(cancelId)
+          .setLabel("Cancel")
+          .setStyle(ButtonStyle.Danger) // Red color for cancel
       );
 
-      // Send the message with buttons - REMOVED ephemeral: true
+      // Send the message with buttons
       const reply = await interaction.followUp({
         embeds: [depositEmbed],
         components: [actionRow],
@@ -514,7 +560,9 @@ module.exports = class Balance extends Command {
       const filter = (i) => {
         const isCorrectUser = i.user.id === ctx.author.id;
         const isCorrectButton =
-          i.customId === depositAllId || i.customId === depositHalfId;
+          i.customId === depositAllId ||
+          i.customId === depositHalfId ||
+          i.customId === cancelId;
         return isCorrectUser && isCorrectButton;
       };
 
@@ -528,38 +576,100 @@ module.exports = class Balance extends Command {
       collector.on("collect", async (buttonInteraction) => {
         try {
           // Check which button was clicked
-          if (buttonInteraction.customId === depositAllId) {
-            // Defer update for non-modal buttons
+          if (
+            buttonInteraction.customId === depositAllId ||
+            buttonInteraction.customId === depositHalfId
+          ) {
+            // Immediately disable action buttons while keeping cancel enabled
+            const disabledButtonsRow = new ActionRowBuilder().addComponents(
+              new ButtonBuilder()
+                .setCustomId(depositAllId)
+                .setLabel("Deposit All")
+                .setStyle(ButtonStyle.Primary)
+                .setDisabled(true),
+              new ButtonBuilder()
+                .setCustomId(depositHalfId)
+                .setLabel("Deposit Half")
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(true),
+              new ButtonBuilder()
+                .setCustomId(cancelId)
+                .setLabel("Cancel")
+                .setStyle(ButtonStyle.Danger)
+                .setDisabled(false)
+            );
+
+            // Update message to show disabled buttons but keep cancel enabled
+            await reply
+              .edit({
+                embeds: [
+                  depositEmbed.setFooter({
+                    text: "Processing your deposit... Cancel is still available.",
+                  }),
+                ],
+                components: [disabledButtonsRow],
+              })
+              .catch(() => {});
+
+            // Defer update after disabling buttons
             await buttonInteraction.deferUpdate().catch(() => {});
 
-            await this.processDeposit(
-              client,
-              ctx,
-              buttonInteraction,
-              user,
-              user.balance.coin,
-              color,
-              emoji,
-              language,
-              message,
-              reply // Pass the reply message to be deleted after successful operation
-            );
-          } else if (buttonInteraction.customId === depositHalfId) {
-            // Defer update for non-modal buttons
+            if (buttonInteraction.customId === depositAllId) {
+              await this.processDeposit(
+                client,
+                ctx,
+                buttonInteraction,
+                user,
+                user.balance.coin,
+                color,
+                emoji,
+                language,
+                message,
+                reply // Pass the reply message to be deleted after successful operation
+              );
+            } else if (buttonInteraction.customId === depositHalfId) {
+              await this.processDeposit(
+                client,
+                ctx,
+                buttonInteraction,
+                user,
+                Math.floor(user.balance.coin / 2),
+                color,
+                emoji,
+                language,
+                message,
+                reply // Pass the reply message to be deleted after successful operation
+              );
+            }
+          } else if (buttonInteraction.customId === cancelId) {
+            // Handle cancel button
             await buttonInteraction.deferUpdate().catch(() => {});
 
-            await this.processDeposit(
-              client,
-              ctx,
-              buttonInteraction,
-              user,
-              Math.floor(user.balance.coin / 2),
-              color,
-              emoji,
-              language,
-              message,
-              reply // Pass the reply message to be deleted after successful operation
+            // Update the message to show it was canceled
+            const cancelEmbed = client
+              .embed()
+              .setColor(color.error || "#ff0000")
+              .setTitle(`${emoji?.bank || "🏦"} Deposit Canceled`)
+              .setDescription("The deposit operation has been canceled.");
+
+            // Disable all buttons
+            const disabledRow = ActionRowBuilder.from(actionRow);
+            disabledRow.components.forEach((component) =>
+              component.setDisabled(true)
             );
+
+            // Edit the reply with the cancel message
+            await reply
+              .edit({
+                embeds: [cancelEmbed],
+                components: [disabledRow],
+              })
+              .catch(() => {});
+
+            // Delete the cancel message after 3 seconds
+            setTimeout(() => {
+              reply.delete().catch(() => {});
+            }, 3000);
           }
         } catch (error) {
           await buttonInteraction
@@ -615,6 +725,7 @@ module.exports = class Balance extends Command {
     }
   }
 
+  // Enhanced method that handles withdraw directly with button disabling
   async handleWithdrawDirectly(
     client,
     ctx,
@@ -626,8 +737,40 @@ module.exports = class Balance extends Command {
     message
   ) {
     try {
+      // First, disable the main balance buttons to prevent multiple transactions
+      if (message) {
+        const disabledEmbed = this.createBalanceEmbed(
+          client,
+          ctx,
+          ctx.author,
+          user,
+          color,
+          emoji,
+          language?.locales?.get(language.defaultLocale)?.generalMessages || {},
+          language?.locales?.get(language.defaultLocale)?.economyMessages
+            ?.balanceMessages || {}
+        );
+
+        await message
+          .edit({
+            embeds: [disabledEmbed],
+            components: this.createBalanceButtons(emoji, true), // Disable main buttons
+          })
+          .catch(() => {});
+      }
+
+      // Double-check for zero balance with proper error handling
       if (user.balance.bank <= 0) {
-        // Use ephemeral: true instead of flags: 64 for clarity
+        // Re-enable main buttons if there's an error
+        if (message) {
+          await message
+            .edit({
+              embeds: [message.embeds[0]],
+              components: this.createBalanceButtons(emoji, false), // Re-enable main buttons
+            })
+            .catch(() => {});
+        }
+
         await interaction
           .followUp({
             embeds: [
@@ -642,9 +785,11 @@ module.exports = class Balance extends Command {
             ],
             ephemeral: true,
           })
-          .catch(() => {}); // Add error handling
+          .catch(() => {});
         return;
       }
+
+      // Continue with the rest of the function...
 
       const withdrawEmbed = client
         .embed()
@@ -660,8 +805,9 @@ module.exports = class Balance extends Command {
       const uniqueId = Date.now().toString();
       const withdrawAllId = `withdraw_all_${uniqueId}`;
       const withdrawHalfId = `withdraw_half_${uniqueId}`;
+      const cancelId = `withdraw_cancel_${uniqueId}`; // New cancel button ID
 
-      // Create action row with buttons
+      // Create action row with buttons including Cancel
       const actionRow = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId(withdrawAllId)
@@ -670,10 +816,14 @@ module.exports = class Balance extends Command {
         new ButtonBuilder()
           .setCustomId(withdrawHalfId)
           .setLabel("Withdraw Half")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder()
+          .setCustomId(cancelId)
+          .setLabel("Cancel")
+          .setStyle(ButtonStyle.Danger) // Red color for cancel
       );
 
-      // Send the message with buttons - REMOVED ephemeral: true
+      // Send the message with buttons
       const reply = await interaction.followUp({
         embeds: [withdrawEmbed],
         components: [actionRow],
@@ -683,7 +833,9 @@ module.exports = class Balance extends Command {
       const filter = (i) => {
         const isCorrectUser = i.user.id === ctx.author.id;
         const isCorrectButton =
-          i.customId === withdrawAllId || i.customId === withdrawHalfId;
+          i.customId === withdrawAllId ||
+          i.customId === withdrawHalfId ||
+          i.customId === cancelId;
         return isCorrectUser && isCorrectButton;
       };
 
@@ -696,38 +848,102 @@ module.exports = class Balance extends Command {
 
       collector.on("collect", async (buttonInteraction) => {
         try {
-          if (buttonInteraction.customId === withdrawAllId) {
+          if (
+            buttonInteraction.customId === withdrawAllId ||
+            buttonInteraction.customId === withdrawHalfId
+          ) {
+            // Immediately disable action buttons while keeping cancel enabled
+            const disabledButtonsRow = new ActionRowBuilder().addComponents(
+              new ButtonBuilder()
+                .setCustomId(withdrawAllId)
+                .setLabel("Withdraw All")
+                .setStyle(ButtonStyle.Primary)
+                .setDisabled(true),
+              new ButtonBuilder()
+                .setCustomId(withdrawHalfId)
+                .setLabel("Withdraw Half")
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(true),
+              new ButtonBuilder()
+                .setCustomId(cancelId)
+                .setLabel("Cancel")
+                .setStyle(ButtonStyle.Danger)
+                .setDisabled(false)
+            );
+
+            // Update message to show disabled buttons but keep cancel enabled
+            await reply
+              .edit({
+                embeds: [
+                  withdrawEmbed.setFooter({
+                    text: "Processing your withdrawal... Cancel is still available.",
+                  }),
+                ],
+                components: [disabledButtonsRow],
+              })
+              .catch(() => {});
+
+            // Defer update after disabling buttons
             await buttonInteraction.deferUpdate().catch(() => {});
 
-            // Process withdraw all
-            await this.processWithdraw(
-              client,
-              ctx,
-              buttonInteraction,
-              user,
-              user.balance.bank,
-              color,
-              emoji,
-              language,
-              message,
-              reply
-            );
-          } else if (buttonInteraction.customId === withdrawHalfId) {
+            if (buttonInteraction.customId === withdrawAllId) {
+              // Process withdraw all
+              await this.processWithdraw(
+                client,
+                ctx,
+                buttonInteraction,
+                user,
+                user.balance.bank,
+                color,
+                emoji,
+                language,
+                message,
+                reply
+              );
+            } else if (buttonInteraction.customId === withdrawHalfId) {
+              // Process withdraw half
+              await this.processWithdraw(
+                client,
+                ctx,
+                buttonInteraction,
+                user,
+                Math.floor(user.balance.bank / 2),
+                color,
+                emoji,
+                language,
+                message,
+                reply // Pass the reply message to be deleted after successful operation
+              );
+            }
+          } else if (buttonInteraction.customId === cancelId) {
+            // Handle cancel button
             await buttonInteraction.deferUpdate().catch(() => {});
 
-            // Process withdraw half
-            await this.processWithdraw(
-              client,
-              ctx,
-              buttonInteraction,
-              user,
-              Math.floor(user.balance.bank / 2),
-              color,
-              emoji,
-              language,
-              message,
-              reply // Pass the reply message to be deleted after successful operation
+            // Update the message to show it was canceled
+            const cancelEmbed = client
+              .embed()
+              .setColor(color.error || "#ff0000")
+              .setTitle(`${emoji?.coin || "💰"} Withdrawal Canceled`)
+              .setDescription("The withdrawal operation has been canceled.");
+
+            // Disable all buttons
+            const disabledRow = ActionRowBuilder.from(actionRow);
+            disabledRow.components.forEach((component) =>
+              component.setDisabled(true)
             );
+
+            // Edit the reply with the cancel message
+            await reply
+              .edit({
+                embeds: [cancelEmbed],
+                components: [disabledRow],
+              })
+              .catch(() => {});
+
+            // Delete the cancel message after 3 seconds
+            setTimeout(() => {
+              reply.delete().catch(() => {});
+            }, 3000);
           }
         } catch (error) {
           await buttonInteraction
@@ -767,28 +983,32 @@ module.exports = class Balance extends Command {
         }
       });
     } catch (error) {
+      // Ensure we still handle zero balance in the catch block as a fallback
       if (user.balance.bank <= 0) {
-        await interaction.followUp({
-          embeds: [
-            client
-              .embed()
-              .setColor(color.error)
-              .setDescription(
-                `${
-                  emoji?.error || "❌"
-                } You don't have any coins in your bank to withdraw.`
-              ),
-          ],
-          ephemeral: true,
-        });
+        await interaction
+          .followUp({
+            embeds: [
+              client
+                .embed()
+                .setColor(color.error)
+                .setDescription(
+                  `${
+                    emoji?.error || "❌"
+                  } You don't have any coins in your bank to withdraw.`
+                ),
+            ],
+            ephemeral: true,
+          })
+          .catch(() => {});
         return;
       }
+
       await interaction
         .followUp({
           embeds: [
             client
               .embed()
-              .setColor(color?.error)
+              .setColor(color?.error || "#ff0000")
               .setDescription(
                 "An error occurred while creating withdraw options. Please try again."
               ),
@@ -909,11 +1129,11 @@ module.exports = class Balance extends Command {
         })
         .catch(() => {});
 
-      // Delete the success message after 5 seconds
+      // Delete the success message after 3 seconds
       if (successMessage) {
         setTimeout(() => {
           successMessage.delete().catch(() => {});
-        }, 3000); // 5 seconds
+        }, 3000);
       }
 
       if (message) {
@@ -931,7 +1151,7 @@ module.exports = class Balance extends Command {
         await message
           .edit({
             embeds: [refreshedEmbed],
-            components: this.createBalanceButtons(emoji || {}),
+            components: this.createBalanceButtons(emoji || {}, false), // Re-enable buttons
           })
           .catch(() => {});
       }
@@ -1062,11 +1282,11 @@ module.exports = class Balance extends Command {
         })
         .catch(() => {});
 
-      // Delete the success message after 5 seconds
+      // Delete the success message after 3 seconds
       if (successMessage) {
         setTimeout(() => {
           successMessage.delete().catch(() => {});
-        }, 3000); // 5 seconds
+        }, 3000);
       }
 
       if (message) {
@@ -1084,7 +1304,7 @@ module.exports = class Balance extends Command {
         await message
           .edit({
             embeds: [refreshedEmbed],
-            components: this.createBalanceButtons(emoji),
+            components: this.createBalanceButtons(emoji, false),
           })
           .catch(() => {});
       }
