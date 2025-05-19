@@ -4,7 +4,7 @@ const GiveawaySchema = require("../../schemas/giveaway.js");
 module.exports = class Giveaway extends BaseGiveaway {
   constructor(client) {
     super(client, {
-      name: "giveaway",
+      name: "gstart",
       description: {
         content:
           "Start a giveaway with a specified duration, number of winners, and prize.",
