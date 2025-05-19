@@ -1,4 +1,3 @@
-// src/schemas/giveawayShopItem.js
 const { model, Schema } = require("mongoose");
 
 const GiveawayShopItemSchema = new Schema(
@@ -10,11 +9,9 @@ const GiveawayShopItemSchema = new Schema(
     itemId: { type: String, required: true },
     type: { type: String, required: true },
     amount: { type: Number, required: true, default: 1 },
-    startTime: { type: Number, default: null }, // For scheduled giveaways
     endTime: { type: Number, default: null },
     paused: { type: Boolean, default: false },
     ended: { type: Boolean, default: false },
-    scheduled: { type: Boolean, default: false }, // For scheduled giveaways
     hostedBy: { type: String, default: null },
     entered: { type: [String], default: [] },
     autoAdd: { type: Boolean, default: false },
@@ -23,12 +20,7 @@ const GiveawayShopItemSchema = new Schema(
     rerollOptions: { type: [String], default: [] },
     rerollCount: { type: Number, default: 0 },
     rerolledWinners: { type: [String], default: [] },
-    requirements: {
-      minLevel: { type: Number, default: 0 },
-      requiredRole: { type: String, default: null },
-    },
-    image: { type: String, default: null },
-    thumbnail: { type: String, default: null },
+    description: { type: String, default: "" },
   },
   { timestamps: { createdAt: true, updatedAt: true } }
 );

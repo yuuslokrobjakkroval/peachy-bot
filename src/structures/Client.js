@@ -57,6 +57,7 @@ module.exports = class PeachyClient extends Client {
     this.aliases = new Collection();
     this.cooldown = new Collection();
     this.config = globalConfig;
+    this.prefix = globalConfig.prefix.toLowerCase();
     this.logger = new Logger();
     this.body = [];
     this.utils = Utils;

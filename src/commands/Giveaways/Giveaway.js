@@ -1,21 +1,22 @@
-const { Command } = require("../../structures/index.js");
-const globalConfig = require("../../utils/Config");
+const BaseGiveaway = require("../../managers/BaseGiveaway.js");
 const GiveawaySchema = require("../../schemas/giveaway.js");
-const ms = require("ms");
 
-module.exports = class Start extends Command {
+module.exports = class Giveaway extends BaseGiveaway {
   constructor(client) {
     super(client, {
       name: "giveaway",
       description: {
         content:
-            "Start a giveaway with a specified duration, number of winners, and prize.",
-        examples: ["giveaway 1h 2 1000 true"],
+          "Start a giveaway with a specified duration, number of winners, and prize.",
+        examples: [
+          'giveaway "Win amazing coins!" 1000 1h 2',
+          'giveaway "Weekly giveaway" 10000 12h 5',
+        ],
         usage:
-            "giveaway <duration> <winners> <prize> <autopay> <image> <thumbnail>",
+          "giveaway <description> <prize> <duration> <winners> [image] [thumbnail] [autopay]",
       },
       category: "giveaway",
-      aliases: [],
+      aliases: ["g", "gcreate"],
       args: true,
       permissions: {
         dev: false,
@@ -25,21 +26,27 @@ module.exports = class Start extends Command {
       slashCommand: true,
       options: [
         {
+          name: "description",
+          description: "Custom description for the giveaway.",
+          type: 3,
+          required: true,
+        },
+        {
+          name: "prize",
+          description: "The prize amount in coins.",
+          type: 3,
+          required: true,
+        },
+        {
           name: "duration",
-          description: "The duration of the giveaway.",
+          description: "The duration of the giveaway (e.g. 1h, 1d, 1w).",
           type: 3,
           required: true,
         },
         {
           name: "winners",
-          description: "The number of winners for the giveaway.",
+          description: "The number of winners for the giveaway (1-20).",
           type: 4,
-          required: true,
-        },
-        {
-          name: "prize",
-          description: "The prize of the giveaway.",
-          type: 3,
           required: true,
         },
         {
@@ -57,7 +64,7 @@ module.exports = class Start extends Command {
         {
           name: "autopay",
           description:
-              "Automatically pay the winners after the giveaway ends. (Owner/Staff Only)",
+            "Automatically pay the winners after the giveaway ends. (Owner Only)",
           type: 3,
           required: false,
         },
@@ -66,103 +73,85 @@ module.exports = class Start extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
+
+    // Defer reply to give us time to process
     if (ctx.isInteraction) {
       await ctx.interaction.deferReply();
     } else {
-      await ctx.sendDeferMessage(`${client.user.username} is Thinking...`);
+      await ctx.sendDeferMessage(`${client.user.username} is thinking...`);
     }
 
-    // Owner and Admin checks
-    const isOwner = globalConfig.owners.includes(ctx.author.id);
-    // const isAdmin = client.utils.getCheckPermission(ctx, ctx.author.id, 'Administrator');
-    //
-    // if (!isOwner || !isAdmin) {
-    //     const response = {
-    //         content: 'Only the bot owner, server owner, and administrators can use this giveaway.',
-    //         flags: 64,
-    //     };
-    //     return ctx.isInteraction
-    //         ? ctx.interaction.editReply(response)
-    //         : ctx.editMessage(response);
-    // }
-
-    // Fetch arguments for giveaway
-    const durationStr = ctx.isInteraction
-        ? ctx.interaction.options.getString("duration")
-        : args[0];
-    const winnersStr = ctx.isInteraction
-        ? ctx.interaction.options.getInteger("winners")
-        : args[1];
+    // Parse command arguments in the new order
+    const description = ctx.isInteraction
+      ? ctx.interaction.options.getString("description")
+      : args[0];
     let prize = ctx.isInteraction
-        ? ctx.interaction.options.getString("prize")
-        : args[2];
+      ? ctx.interaction.options.getString("prize")
+      : args[1];
+    const durationStr = ctx.isInteraction
+      ? ctx.interaction.options.getString("duration")
+      : args[2];
+    const winnersStr = ctx.isInteraction
+      ? ctx.interaction.options.getInteger("winners")
+      : args[3];
     const image = ctx.isInteraction
-        ? ctx.interaction.options.getAttachment("image")
-        : args[3];
+      ? ctx.interaction.options.getAttachment("image")
+      : null;
     const thumbnail = ctx.isInteraction
-        ? ctx.interaction.options.getAttachment("thumbnail")
-        : args[4];
+      ? ctx.interaction.options.getAttachment("thumbnail")
+      : null;
     const autoPay = ctx.isInteraction
-        ? ctx.interaction.options.getString("autopay")
-        : args[5];
+      ? ctx.interaction.options.getString("autopay")
+      : args[6];
 
-    if (autoPay && !isOwner) {
+    // Validate common parameters
+    const winners = Number.parseInt(winnersStr, 10);
+    const validationResult = await this.validateCommonParams(
+      ctx,
+      client,
+      color,
+      durationStr,
+      winners
+    );
+    if (!validationResult.success) return;
+
+    // Extract validated data
+    const { duration, endTime, formattedDuration } = validationResult.data;
+
+    // Check autopay permission
+    if (autoPay && !this.hasSpecialPermission(ctx.author.id, "autopay")) {
       return ctx.isInteraction
-          ? ctx.interaction.editReply({
+        ? ctx.interaction.editReply({
             content: "Only the bot owner can enable autopay for giveaways.",
             flags: 64,
           })
-          : ctx.editMessage({
+        : ctx.editMessage({
             content: "Only the bot owner can enable autopay for giveaways.",
             flags: 64,
           });
     }
 
-    const duration = ms(durationStr);
-    const winners = parseInt(winnersStr, 10);
-    if (!duration || isNaN(winners) || winners <= 0 || !prize) {
-      const replyMessage = {
-        embeds: [
-          client
-              .embed()
-              .setAuthor({
-                name: client.user.displayName,
-                iconURL: client.user.displayAvatarURL(),
-              })
-              .setColor(color.danger)
-              .setDescription(
-                  "Invalid input. Please ensure the duration, number of winners, and prize are correctly provided."
-              ),
-        ],
-      };
-      if (ctx.isInteraction) {
-        await ctx.interaction.editReply(replyMessage);
-      } else {
-        await ctx.editMessage(replyMessage);
-      }
-      return;
-    }
-
-    const endTime = Date.now() + duration;
-    const formattedDuration = parseInt(endTime / 1000, 10);
-
+    // Validate prize
     if (prize.toString().startsWith("-")) {
       return ctx.sendMessage({
         embeds: [
           client
-              .embed()
-              .setColor(color.danger)
-              .setDescription(generalMessages.invalidAmount),
+            .embed()
+            .setColor(color.danger)
+            .setDescription(generalMessages.invalidAmount),
         ],
       });
     }
 
+    // Process prize amount with multipliers
     if (
-        isNaN(prize) ||
-        prize <= 0 ||
-        prize.toString().includes(".") ||
-        prize.toString().includes(",")
+      isNaN(prize) ||
+      prize <= 0 ||
+      prize.toString().includes(".") ||
+      prize.toString().includes(",")
     ) {
       const multipliers = {
         k: 1000,
@@ -171,86 +160,108 @@ module.exports = class Start extends Command {
         t: 1000000000000,
         q: 1000000000000000,
       };
+
       if (prize.match(/\d+[kmbtq]/i)) {
         const unit = prize.slice(-1).toLowerCase();
-        const number = parseInt(prize);
+        const number = Number.parseInt(prize);
         prize = number * (multipliers[unit] || 1);
       } else if (
-          prize.toString().includes(".") ||
-          prize.toString().includes(",")
+        prize.toString().includes(".") ||
+        prize.toString().includes(",")
       ) {
-        prize = parseInt(prize.replace(/,/g, ""));
+        prize = Number.parseInt(prize.replace(/,/g, ""));
       }
     }
 
+    // Create giveaway embed
     const giveawayEmbed = client
-        .embed()
-        .setColor(color.main)
-        .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
-        .setDescription(
-            `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
-        );
+      .embed()
+      .setColor(color.main)
+      .setTitle(`**${client.utils.formatNumber(prize)}** ${emoji.coin}`)
+      .setDescription(
+        `${description ? `${description}\n\n` : ""}Click ${
+          emoji.main
+        } button to enter!\nWinners: ${winners}\nHosted by: ${
+          ctx.author.displayName
+        }\nEnds: <t:${formattedDuration}:R>`
+      );
 
+    // Add optional image and thumbnail
     if (image) giveawayEmbed.setImage(image.url);
     if (thumbnail) giveawayEmbed.setThumbnail(thumbnail.url);
 
+    // Create buttons
     const joinButton = client.utils.fullOptionButton(
-        "giveaway-join",
-        emoji.main,
-        "0",
-        1,
-        false
+      "giveaway-join",
+      emoji.main,
+      "0",
+      1,
+      false
     );
     const participantsButton = client.utils.fullOptionButton(
-        "giveaway-participants",
-        "",
-        "Participants",
-        2,
-        false
+      "giveaway-participants",
+      "",
+      "Participants",
+      2,
+      false
     );
     const buttonRow = client.utils.createButtonRow(
-        joinButton,
-        participantsButton
+      joinButton,
+      participantsButton
     );
 
-    let giveawayMessage;
-    try {
-      giveawayMessage = ctx.isInteraction
-          ? await ctx.interaction.editReply({
-            content: "",
-            embeds: [giveawayEmbed],
-            components: [buttonRow],
-            fetchReply: true,
-          })
-          : await ctx.editMessage({
-            content: "",
-            embeds: [giveawayEmbed],
-            components: [buttonRow],
-            fetchReply: true,
-          });
-    } catch (err) {
-      console.error(err);
-      const response = "There was an error sending the giveaway message.";
-      return ctx.isInteraction
-          ? await ctx.interaction.editReply({ content: response })
-          : await ctx.editMessage({ content: response });
-    }
-
-    await GiveawaySchema.create({
-      guildId: ctx.guild.id,
-      channelId: ctx.channel.id,
-      messageId: giveawayMessage.id,
-      hostedBy: ctx.author.id,
-      winners: winners,
-      prize: parseInt(prize),
-      endTime: Date.now() + duration,
-      paused: false,
-      ended: false,
-      entered: [],
-      autopay: !!autoPay,
-      retryAutopay: false,
-      winnerId: [],
-      rerollOptions: [],
+    // Send giveaway message
+    const messageResult = await this.createGiveawayMessage(ctx, {
+      client,
+      color,
+      emoji,
+      embed: giveawayEmbed,
+      buttonRow,
     });
+
+    if (!messageResult.success) return;
+
+    // Save giveaway to database
+    try {
+      await GiveawaySchema.create({
+        guildId: ctx.guild.id,
+        channelId: ctx.channel.id,
+        messageId: messageResult.message.id,
+        hostedBy: ctx.author.id,
+        winners: winners,
+        prize: Number.parseInt(prize),
+        endTime: endTime,
+        paused: false,
+        ended: false,
+        entered: [],
+        autopay: !!autoPay,
+        retryAutopay: false,
+        winnerId: [],
+        rerollOptions: [],
+        description: description || "",
+      });
+
+      // Send confirmation message
+      const confirmEmbed = client
+        .embed()
+        .setColor(color.success)
+        .setDescription(
+          `Giveaway created successfully! It will end <t:${formattedDuration}:R>.`
+        );
+
+      await ctx.channel.send({ embeds: [confirmEmbed] });
+    } catch (error) {
+      console.error("Error creating giveaway:", error);
+      await ctx.channel.send({
+        embeds: [
+          client
+            .embed()
+            .setColor(color.danger)
+            .setDescription(
+              "There was an error saving the giveaway. Please try again."
+            ),
+        ],
+      });
+    }
   }
 };
