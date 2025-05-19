@@ -1,7 +1,7 @@
-const BaseGiveaway = require("../../managers/BaseGiveaway.js");
+const { Command } = require("../../structures/index.js");
 const GiveawaySchema = require("../../schemas/giveaway.js");
 
-module.exports = class Giveaway extends BaseGiveaway {
+module.exports = class Giveaway extends Command {
   constructor(client) {
     super(client, {
       name: "gstart",
