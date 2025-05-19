@@ -7,7 +7,7 @@ const items = shopItems.flatMap((shop) => shop.inventory);
 module.exports = class GiveawayShopItem extends BaseGiveaway {
   constructor(client) {
     super(client, {
-      name: "giveawayshopitem",
+      name: "gshopitem",
       description: {
         content:
           "Start a shop item giveaway for food, drink, themes, milk, ring, or other items.",
@@ -19,7 +19,7 @@ module.exports = class GiveawayShopItem extends BaseGiveaway {
           "giveawayshopitem <description> <type> <itemID> <amount> <duration> <winners> [image] [thumbnail] [autoadd]",
       },
       category: "giveaway",
-      aliases: ["gitem", "gshopitem"],
+      aliases: [""],
       args: true,
       permissions: {
         dev: false,
