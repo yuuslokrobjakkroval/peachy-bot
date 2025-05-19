@@ -1,10 +1,10 @@
-const BaseGiveaway = require("../../managers/BaseGiveaway.js");
+const { Command } = require("../../structures/index.js");
 const GiveawayShopItemSchema = require("../../schemas/giveawayShopItem.js");
 const importantItems = require("../../assets/inventory/ImportantItems.js");
 const shopItems = require("../../assets/inventory/ShopItems.js");
 const items = shopItems.flatMap((shop) => shop.inventory);
 
-module.exports = class GiveawayShopItem extends BaseGiveaway {
+module.exports = class GiveawayShopItem extends Command {
   constructor(client) {
     super(client, {
       name: "gshopitem",
