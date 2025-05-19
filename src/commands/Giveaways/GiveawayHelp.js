@@ -3,14 +3,14 @@ const { Command } = require("../../structures/index.js");
 module.exports = class GiveawayHelp extends Command {
   constructor(client) {
     super(client, {
-      name: "giveawayhelp",
+      name: "ghelp",
       description: {
         content: "Get help with giveaway commands.",
         examples: ["giveawayhelp"],
         usage: "giveawayhelp",
       },
       category: "giveaway",
-      aliases: ["ghelp"],
+      aliases: [""],
       permissions: {
         dev: false,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
