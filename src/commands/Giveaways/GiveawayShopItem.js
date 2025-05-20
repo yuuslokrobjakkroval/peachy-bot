@@ -177,7 +177,10 @@ module.exports = class GiveawayShopItem extends Command {
       : args[8];
 
     // Check autoadd permission
-    if (autoAdd && !this.hasSpecialPermission(ctx.author.id, "autoadd")) {
+    if (
+      autoAdd &&
+      (await client.utils.hasSpecialPermission(ctx.author.id, "autoadd"))
+    ) {
       return ctx.isInteraction
         ? ctx.interaction.editReply({
             content: "Only the bot owner can enable auto-add for giveaways.",
@@ -191,7 +194,7 @@ module.exports = class GiveawayShopItem extends Command {
 
     // Validate common parameters
     const winners = Number.parseInt(winnersStr, 10);
-    const commonValidation = await this.validateCommonParams(
+    const commonValidation = await client.utils.validateCommonParams(
       ctx,
       client,
       color,

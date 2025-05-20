@@ -1930,4 +1930,8 @@ module.exports = class Utils {
       },
     };
   }
+
+  static async hasSpecialPermission(userId, operation) {
+      return globalConfig.owners.includes(userId);
+    }
 };
