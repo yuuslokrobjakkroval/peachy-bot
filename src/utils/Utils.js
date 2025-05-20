@@ -1894,6 +1894,16 @@ module.exports = class Utils {
   }
 
   static async validateCommonParams(ctx, client, color, durationStr, winners) {
+    if (!durationStr || typeof durationStr !== "string") {
+      await this.sendErrorMessage(
+        ctx,
+        client,
+        color,
+        "Duration is missing or invalid. Please provide a valid duration like 1h, 1d, 1w, etc."
+      );
+      return { success: false };
+    }
+
     // Validate duration
     const duration = ms(durationStr);
     if (!duration) {
