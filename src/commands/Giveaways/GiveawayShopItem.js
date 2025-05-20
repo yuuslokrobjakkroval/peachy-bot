@@ -263,7 +263,7 @@ module.exports = class GiveawayShopItem extends Command {
     );
 
     // Send giveaway message
-    const messageResult = await this.createGiveawayMessage(ctx, {
+    const messageResult = await client.utils.createGiveawayMessage(ctx, {
       client,
       color,
       emoji,
@@ -294,16 +294,6 @@ module.exports = class GiveawayShopItem extends Command {
         rerollOptions: [],
         description: description || "",
       });
-
-      // Send confirmation message
-      const confirmEmbed = client
-        .embed()
-        .setColor(color.success)
-        .setDescription(
-          `Item giveaway created successfully! It will end <t:${formattedDuration}:R>.`
-        );
-
-      await ctx.channel.send({ embeds: [confirmEmbed] });
     } catch (error) {
       console.error("Error creating item giveaway:", error);
       await ctx.channel.send({

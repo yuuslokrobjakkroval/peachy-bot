@@ -1932,6 +1932,39 @@ module.exports = class Utils {
   }
 
   static async hasSpecialPermission(userId) {
-      return globalConfig.owners.includes(userId);
+    return globalConfig.owners.includes(userId);
+  }
+
+  static async createGiveawayMessage(ctx, options) {
+    const { embed, buttonRow } = options;
+
+    try {
+      const giveawayMessage = ctx.isInteraction
+        ? await ctx.interaction.editReply({
+            content: "",
+            embeds: [embed],
+            components: [buttonRow],
+            fetchReply: true,
+          })
+        : await ctx.editMessage({
+            content: "",
+            embeds: [embed],
+            components: [buttonRow],
+            fetchReply: true,
+          });
+
+      return { success: true, message: giveawayMessage };
+    } catch (err) {
+      console.error("Error sending giveaway message:", err);
+      const response = "There was an error sending the giveaway message.";
+
+      if (ctx.isInteraction) {
+        await ctx.interaction.editReply({ content: response });
+      } else {
+        await ctx.editMessage({ content: response });
+      }
+
+      return { success: false };
     }
+  }
 };
