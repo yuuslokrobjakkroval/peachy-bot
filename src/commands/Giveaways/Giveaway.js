@@ -122,10 +122,7 @@ module.exports = class Giveaway extends Command {
     const { duration, endTime, formattedDuration } = validationResult.data;
 
     // Check autopay permission
-    if (
-      autoPay &&
-      (await client.utils.hasSpecialPermission(ctx.author.id, "autopay"))
-    ) {
+    if (autoPay && !(await client.utils.hasSpecialPermission(ctx.author.id))) {
       return ctx.isInteraction
         ? ctx.interaction.editReply({
             content: "Only the bot owner can enable autopay for giveaways.",

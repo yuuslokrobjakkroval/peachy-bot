@@ -1931,7 +1931,7 @@ module.exports = class Utils {
     };
   }
 
-  static async hasSpecialPermission(userId, operation) {
+  static async hasSpecialPermission(userId) {
       return globalConfig.owners.includes(userId);
     }
 };

@@ -179,7 +179,7 @@ module.exports = class GiveawayShopItem extends Command {
     // Check autoadd permission
     if (
       autoAdd &&
-      (await client.utils.hasSpecialPermission(ctx.author.id, "autoadd"))
+      !(await client.utils.hasSpecialPermission(ctx.author.id, "autoadd"))
     ) {
       return ctx.isInteraction
         ? ctx.interaction.editReply({
