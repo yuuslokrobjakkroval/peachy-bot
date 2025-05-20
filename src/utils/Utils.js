@@ -1891,4 +1891,42 @@ module.exports = class Utils {
 
     return true;
   }
+
+  static async validateCommonParams(ctx, client, color, durationStr, winners) {
+    // Validate duration
+    const duration = ms(durationStr);
+    if (!duration) {
+      await this.sendErrorMessage(
+        ctx,
+        client,
+        color,
+        "Invalid duration format. Please use a valid format like 1h, 1d, 1w, etc."
+      );
+      return { success: false };
+    }
+
+    // Validate winners
+    if (isNaN(winners) || winners <= 0 || winners > 20) {
+      await this.sendErrorMessage(
+        ctx,
+        client,
+        color,
+        "Number of winners must be between 1 and 20."
+      );
+      return { success: false };
+    }
+
+    // Calculate end time
+    const endTime = Date.now() + duration;
+    const formattedDuration = Math.floor(endTime / 1000);
+
+    return {
+      success: true,
+      data: {
+        duration,
+        endTime,
+        formattedDuration,
+      },
+    };
+  }
 };

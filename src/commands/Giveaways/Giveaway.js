@@ -109,7 +109,7 @@ module.exports = class Giveaway extends Command {
 
     // Validate common parameters
     const winners = Number.parseInt(winnersStr, 10);
-    const validationResult = await this.validateCommonParams(
+    const validationResult = await client.utils.validateCommonParams(
       ctx,
       client,
       color,
