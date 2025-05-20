@@ -546,6 +546,21 @@ const st2601 = {
   },
 };
 
+// FOR SALE ( ST2002 )
+const st2002 = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xcd5656,
+    none: 0x2b2d31,
+  },
+};
+
 module.exports = {
   normal,
   peach,
@@ -596,4 +611,5 @@ module.exports = {
   // SELL THEME
   st1111,
   st2601,
+  st2002,
 };
