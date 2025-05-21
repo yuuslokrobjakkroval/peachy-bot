@@ -1977,4 +1977,140 @@ module.exports = class Utils {
       return { success: false };
     }
   }
+
+  static async checkBooster(client) {
+    console.log("Check Booster Start");
+    try {
+      // Define the guild, role, and channel IDs
+      const guildId = "1369956599720054847";
+      const roleIds = ["1340972051241893909"]; // Removed duplicate role ID
+      const rewardChannelId = "1374630700464210010"; // New channel ID
+      const rewardAmount = 1; // Coins to award
+
+      const guild = await client.guilds.fetch(guildId).catch((err) => {
+        console.error(
+          `[Booster] Error fetching guild ${guildId}: ${err.message}`
+        );
+        return null;
+      });
+
+      if (!guild) {
+        console.error(`[Booster] Guild ${guildId} not found or inaccessible.`);
+        return;
+      }
+
+      // Fetch all members of the guild
+      const members = await guild.members.fetch().catch((err) => {
+        console.error(`[Booster] Error fetching guild members: ${err.message}`);
+        return null;
+      });
+
+      if (!members) {
+        console.error(`[Booster] Unable to fetch guild members.`);
+        return;
+      }
+
+      // Fetch the reward channel
+      const rewardChannel = await client.channels
+        .fetch(rewardChannelId)
+        .catch((err) => {
+          console.error(
+            `[Booster] Error fetching reward channel ${rewardChannelId}: ${err.message}`
+          );
+          return null;
+        });
+
+      if (!rewardChannel) {
+        console.error(
+          `[Booster] Reward channel ${rewardChannelId} not found or inaccessible.`
+        );
+        return;
+      }
+
+      // Filter members who have at least one of the specified roles
+      const boosterMembers = members.filter((member) =>
+        roleIds.some((roleId) => member.roles.cache.has(roleId))
+      );
+
+      console.log(`Members with booster/sponsor roles:`, boosterMembers.size);
+
+      // Process each qualifying member
+      for (const member of boosterMembers.values()) {
+        try {
+          // Find the user in the database
+          const user = await Users.findOne({ _id: member.id });
+
+          if (!user) {
+            console.log(`[Booster] User ${member.id} not found in database.`);
+            continue;
+          }
+
+          // Check if the user has already been rewarded
+          if (user.profile.boosterAcknowledged) {
+            console.log(
+              `[Booster] User ${
+                user.profile.username || user.username
+              } already rewarded.`
+            );
+            continue;
+          }
+
+          // Create the booster reward embed
+          const boosterEmbed = client
+            .embed()
+            .setColor(client.color.main)
+            .setTitle(
+              `🎉 Thank You for Boosting/Sponsoring, ${
+                user.profile.username || user.username
+              }!`
+            )
+            .setDescription(
+              `We appreciate your support for keeping our server thriving!`
+            )
+            .addFields([
+              {
+                name: "🎁 Your Reward:",
+                value: `${rewardAmount.toLocaleString()} coins`,
+                inline: true,
+              },
+            ])
+            .setFooter({
+              text: "Thank you for your amazing support!",
+              iconURL: member.user.displayAvatarURL(),
+            })
+            .setTimestamp();
+
+          console.log(
+            `Constructed Booster Embed for ${
+              user.profile.username || user.username
+            }:`,
+            boosterEmbed
+          );
+
+          // Update user profile: mark booster acknowledged and add coins
+          user.profile.boosterAcknowledged = true; // Ensure this field exists in your schema
+          user.balance.coin += rewardAmount;
+
+          await user.save();
+          console.log(
+            `User ${
+              user.profile.username || user.username
+            } updated successfully with ${rewardAmount} coins.`
+          );
+
+          // Send the reward message to the channel
+          await rewardChannel.send({ embeds: [boosterEmbed] });
+          console.log(`Booster reward message sent for ${member.id}.`);
+        } catch (userError) {
+          console.error(
+            `[Booster] Error processing user ${member.id}: ${userError.message}`
+          );
+        }
+      }
+
+      console.log("Check Booster Ended");
+    } catch (err) {
+      console.error(`[Booster] Error in checkBooster: ${err.message}`);
+    }
+  }
 };

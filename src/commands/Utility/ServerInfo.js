@@ -156,7 +156,11 @@ module.exports = class ServerInfo extends Command {
           .setTitle(`${guild.name}'s Icon`)
           .setImage(iconURL || "https://cdn.discordapp.com/embed/avatars/0.png") // Default icon if none exists
           .setFooter({
-            text: !iconURL ? "This server does not have a custom icon." : "",
+            text:
+              generalMessages.requestedBy.replace(
+                "%{username}",
+                ctx.author.displayName
+              ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
           .setTimestamp();
@@ -187,9 +191,11 @@ module.exports = class ServerInfo extends Command {
           .setTitle(`${guild.name}'s Banner`)
           .setImage(bannerURL)
           .setFooter({
-            text: !guild.bannerURL()
-              ? "This server does not have a custom banner."
-              : "",
+            text:
+              generalMessages.requestedBy.replace(
+                "%{username}",
+                ctx.author.displayName
+              ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
           .setTimestamp();

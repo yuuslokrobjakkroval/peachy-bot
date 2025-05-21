@@ -233,7 +233,7 @@ module.exports = class Balance extends Command {
           embeds: [
             client
               .embed()
-              .setColor(color.error)
+              .setColor(color.danger)
               .setDescription(
                 "This balance menu belongs to someone else. Please use the balance command yourself."
               ),
@@ -253,7 +253,7 @@ module.exports = class Balance extends Command {
             embeds: [
               client
                 .embed()
-                .setColor(color.error)
+                .setColor(color.danger)
                 .setDescription(generalMessages.userNotFound),
             ],
             ephemeral: true,
@@ -293,7 +293,7 @@ module.exports = class Balance extends Command {
             embeds: [
               client
                 .embed()
-                .setColor(color.error)
+                .setColor(color.danger)
                 .setDescription(
                   "An error occurred while processing your request."
                 ),
@@ -354,7 +354,7 @@ module.exports = class Balance extends Command {
                 embeds: [
                   client
                     .embed()
-                    .setColor(color.error)
+                    .setColor(color.danger)
                     .setDescription("Please enter a valid amount."),
                 ],
                 ephemeral: true,
@@ -388,7 +388,7 @@ module.exports = class Balance extends Command {
                 embeds: [
                   client
                     .embed()
-                    .setColor(color.error)
+                    .setColor(color.danger)
                     .setDescription("Please enter a valid amount."),
                 ],
                 ephemeral: true,
@@ -415,7 +415,7 @@ module.exports = class Balance extends Command {
             embeds: [
               client
                 .embed()
-                .setColor(color.error)
+                .setColor(color.danger)
                 .setDescription(
                   "An error occurred while processing your request."
                 ),
@@ -505,7 +505,7 @@ module.exports = class Balance extends Command {
           embeds: [
             client
               .embed()
-              .setColor(color.error)
+              .setColor(color.danger)
               .setDescription(
                 `${emoji?.error || "❌"} You don't have any coins to deposit.`
               ),
@@ -648,7 +648,7 @@ module.exports = class Balance extends Command {
             // Update the message to show it was canceled
             const cancelEmbed = client
               .embed()
-              .setColor(color.error || "#ff0000")
+              .setColor(color.danger || "#ff0000")
               .setTitle(`${emoji?.bank || "🏦"} Deposit Canceled`)
               .setDescription("The deposit operation has been canceled.");
 
@@ -677,7 +677,7 @@ module.exports = class Balance extends Command {
               embeds: [
                 client
                   .embed()
-                  .setColor(color.error)
+                  .setColor(color.danger)
                   .setDescription(
                     "An error occurred while processing your request."
                   ),
@@ -714,7 +714,7 @@ module.exports = class Balance extends Command {
           embeds: [
             client
               .embed()
-              .setColor(color.error)
+              .setColor(color.danger)
               .setDescription(
                 "An error occurred while creating deposit options. Please try again."
               ),
@@ -776,7 +776,7 @@ module.exports = class Balance extends Command {
             embeds: [
               client
                 .embed()
-                .setColor(color.error)
+                .setColor(color.danger)
                 .setDescription(
                   `${
                     emoji?.error || "❌"
@@ -922,7 +922,7 @@ module.exports = class Balance extends Command {
             // Update the message to show it was canceled
             const cancelEmbed = client
               .embed()
-              .setColor(color.error || "#ff0000")
+              .setColor(color.danger || "#ff0000")
               .setTitle(`${emoji?.coin || "💰"} Withdrawal Canceled`)
               .setDescription("The withdrawal operation has been canceled.");
 
@@ -951,7 +951,7 @@ module.exports = class Balance extends Command {
               embeds: [
                 client
                   .embed()
-                  .setColor(color.error)
+                  .setColor(color.danger)
                   .setDescription(
                     "An error occurred while processing your request."
                   ),
@@ -990,7 +990,7 @@ module.exports = class Balance extends Command {
             embeds: [
               client
                 .embed()
-                .setColor(color.error)
+                .setColor(color.danger)
                 .setDescription(
                   `${
                     emoji?.error || "❌"
@@ -1054,7 +1054,7 @@ module.exports = class Balance extends Command {
           embeds: [
             client
               .embed()
-              .setColor(color.error)
+              .setColor(color.danger)
               .setDescription(
                 depositMessages.errors?.invalidAmount || "Invalid amount."
               ),
@@ -1071,7 +1071,7 @@ module.exports = class Balance extends Command {
           embeds: [
             client
               .embed()
-              .setColor(color.error)
+              .setColor(color.danger)
               .setDescription(
                 depositMessages.errors?.notEnoughCoins ||
                   "You don't have enough coins."
@@ -1207,7 +1207,7 @@ module.exports = class Balance extends Command {
           embeds: [
             client
               .embed()
-              .setColor(color.error)
+              .setColor(color.danger)
               .setDescription(
                 withdrawMessages.errors?.invalidAmount || "Invalid amount."
               ),
@@ -1224,7 +1224,7 @@ module.exports = class Balance extends Command {
           embeds: [
             client
               .embed()
-              .setColor(color.error)
+              .setColor(color.danger)
               .setDescription(
                 withdrawMessages.errors?.notEnoughCoins ||
                   "You don't have enough coins in your bank."
@@ -1314,7 +1314,7 @@ module.exports = class Balance extends Command {
           embeds: [
             client
               .embed()
-              .setColor(color.error)
+              .setColor(color.danger)
               .setDescription(
                 "An error occurred while processing your withdrawal."
               ),

@@ -17,6 +17,7 @@ const globalConfig = require("./utils/Config");
 const PeachyClient = require("./structures/Client.js");
 const EconomyManager = require("./managers/EconomyManager");
 const ResourceManager = require("./managers/ResourceManager");
+const cron = require("node-cron");
 
 const clientOptions = {
   partials: [
@@ -56,6 +57,24 @@ client.logger.info("Economy initialized");
 client.once("ready", async () => {
   client.utils.cacheItems();
   client.logger.info("Item cache initialized!");
+
+  cron.schedule(
+    "15 21 * * *",
+    () => {
+      client.utils
+        .checkBooster(client)
+        .then(() => console.log("Booster/Sponsor check completed."))
+        .catch((err) =>
+          console.error("Error in checkBirthdays function:", err)
+        );
+    },
+    {
+      scheduled: true,
+      timezone: "Asia/Bangkok",
+    }
+  );
+  client.logger.info("Booster/Sponsor check scheduled at 9:30 PM Asia/Bangkok");
+
   return await client.abilities.syncInvites(client);
 });
 
