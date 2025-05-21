@@ -60,13 +60,13 @@ client.once("ready", async () => {
   client.logger.info("Item cache initialized!");
 
   cron.schedule(
-    "50 21 * * *",
+    "01 22 * * *",
     () => {
       client.utils
         .checkBooster(client)
         .then(() => console.log("Booster/Sponsor check completed."))
         .catch((err) =>
-          console.error("Error in checkBirthdays function:", err)
+          console.error("Error in Booster/Sponsor function:", err)
         );
     },
     {

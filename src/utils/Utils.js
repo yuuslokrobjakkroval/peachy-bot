@@ -1984,7 +1984,7 @@ module.exports = class Utils {
       const guildId = "1369956599720054847";
       const roleIds = ["1370318327372714034", "1370299562312335441"];
       const rewardChannelId = "1374630700464210010";
-      const rewardAmount = 100000;
+      const rewardAmount = 1000000;
 
       const guild = await client.guilds.fetch(guildId).catch((err) => {
         console.error(
@@ -2031,10 +2031,8 @@ module.exports = class Utils {
 
       console.log(`Members with booster/sponsor roles:`, boosterMembers.size);
 
-      // Process each qualifying member
       for (const member of boosterMembers.values()) {
         try {
-          // Find the user in the database
           const user = await Users.findOne({ userId: member.id });
 
           if (!user) {
@@ -2042,7 +2040,6 @@ module.exports = class Utils {
             continue;
           }
 
-          // Check if the user has already been rewarded
           if (user.profile.boosterAcknowledged) {
             console.log(
               `[Booster] User ${
@@ -2051,11 +2048,10 @@ module.exports = class Utils {
             );
             continue;
           }
-
-          // Create the booster reward embed
           const boosterEmbed = client
             .embed()
             .setColor(client.color.main)
+            .setThumbnail(member.user.displayAvatarURL())
             .setTitle(
               `🎉 Thank You for Boosting/Sponsoring, ${
                 user.profile.username || user.username
@@ -2066,8 +2062,8 @@ module.exports = class Utils {
             )
             .addFields([
               {
-                name: "🎁 Your Reward:",
-                value: `${rewardAmount.toLocaleString()} coins`,
+                name: "Your Reward 🎁",
+                value: `**${rewardAmount.toLocaleString()}** coins`,
                 inline: true,
               },
             ])
@@ -2077,25 +2073,11 @@ module.exports = class Utils {
             })
             .setTimestamp();
 
-          console.log(
-            `Constructed Booster Embed for ${
-              user.profile.username || user.username
-            }:`,
-            boosterEmbed
-          );
-
-          // Update user profile: mark booster acknowledged and add coins
-          user.profile.boosterAcknowledged = true; // Ensure this field exists in your schema
+          user.profile.boosterAcknowledged = true;
           user.balance.coin += rewardAmount;
 
           await user.save();
-          console.log(
-            `User ${
-              user.profile.username || user.username
-            } updated successfully with ${rewardAmount} coins.`
-          );
 
-          // Send the reward message to the channel
           await rewardChannel.send({ embeds: [boosterEmbed] });
           console.log(`Booster reward message sent for ${member.id}.`);
         } catch (userError) {

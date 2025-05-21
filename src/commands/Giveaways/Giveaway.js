@@ -16,7 +16,7 @@ module.exports = class Giveaway extends Command {
           "giveaway <description> <prize> <duration> <winners> [image] [thumbnail] [autopay]",
       },
       category: "giveaway",
-      aliases: ["g", "gcreate"],
+      aliases: ["gcreate"],
       args: true,
       permissions: {
         dev: false,
