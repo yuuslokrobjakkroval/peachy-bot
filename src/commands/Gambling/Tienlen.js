@@ -2,22 +2,20 @@
 const { Command } = require("../../structures/index.js");
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const maxAmount = 250000;
-const deck = Array.from({ length: 52 }, (_, i) => i + 1); // Your 52-card deck
+const deck = Array.from({ length: 52 }, (_, i) => i + 1);
 const activeGames = new Map();
 
 const suits = ['♠', '♣', '♦', '♥'];
 const ranks = ['3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A', '2'];
-const suitOrder = { '♥': 4, '♦': 3, '♣': 2, '♠': 1 }; // Tiến Lên suit ranking
+const suitOrder = { '♥': 4, '♦': 3, '♣': 2, '♠': 1 };
 
 // Card utility functions
 const cardUtils = {
-  // Convert deck index (1-52) to rank and suit
   cardToString: (cardIndex) => {
     const suitIndex = Math.floor((cardIndex - 1) / 13);
     const rankIndex = (cardIndex - 1) % 13;
     return { rank: ranks[rankIndex], suit: suits[suitIndex] };
   },
-  // Shuffle deck
   shuffleDeck: (deck) => {
     for (let i = deck.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -25,17 +23,15 @@ const cardUtils = {
     }
     return deck;
   },
-  // Compare cards (2 > A > K > ... > 3, Hearts > Diamonds > Clubs > Spades)
   compareCards: (card1, card2) => {
     const rank1 = ranks.indexOf(card1.rank);
     const rank2 = ranks.indexOf(card2.rank);
-    if (rank1 !== rank2) return rank1 - rank2; // Higher rank index = stronger
-    return suitOrder[card1.suit] - suitOrder[card2.suit]; // Higher suit = stronger
+    if (rank1 !== rank2) return rank1 - rank2;
+    return suitOrder[card1.suit] - suitOrder[card2.suit];
   },
-  // Validate play (simplified for singles, pairs, sequences)
   isValidPlay: (cards, currentPlay, playType, playerHand) => {
     if (!cards.length || !playerHand.some(h => cards.every(c => h.rank === c.rank && h.suit === c.suit))) return false;
-    if (!currentPlay.length && cards[0].rank === '3' && cards[0].suit === '♠') return true; // 3♠ starts
+    if (!currentPlay.length && cards[0].rank === '3' && cards[0].suit === '♠') return true;
     if (cards.length !== currentPlay.length && currentPlay.length > 0) return false;
 
     if (playType === 'single') {
@@ -47,13 +43,12 @@ const cardUtils = {
       if (cards.length < 3) return false;
       const indices = cards.map(c => ranks.indexOf(c.rank)).sort((a, b) => a - b);
       for (let i = 1; i < indices.length; i++) {
-        if (indices[i] !== indices[i - 1] + 1) return false; // Must be consecutive
+        if (indices[i] !== indices[i - 1] + 1) return false;
       }
       return !currentPlay.length || cardUtils.compareCards(cards[cards.length - 1], currentPlay[currentPlay.length - 1]) > 0;
     }
     return false;
   },
-  // Generate game embed
   generateEmbed: (client, color, emoji, gameState, generalMessages, tienlenMessages) => {
     const embed = client
       .embed()
@@ -95,7 +90,7 @@ module.exports = class TienLen extends Command {
         {
           name: "start",
           description: "Start a new Tiến Lên game",
-          type: 1, // Subcommand
+          type: 1,
         },
         {
           name: "play",
@@ -120,7 +115,13 @@ module.exports = class TienLen extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    // Provide default messages to prevent undefined errors
+    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages || {
+      userNotFound: "User not found.",
+      alreadyInGame: "You are already in a game.",
+      invalidCommand: "Invalid command.",
+      pleaseStartAgain: "Please start again.",
+    };
     const tienlenMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.tienlenMessages || {
       title: "%{mainLeft} Tiến Lên %{mainRight}",
       hit: "Play Cards",
@@ -128,24 +129,28 @@ module.exports = class TienLen extends Command {
       invalidPlay: "Invalid play! Try again.",
       gameStarted: "Game started! Check your DMs for your hand.",
       gameEnded: "%{winner} wins!",
+      noCardsProvided: "Please provide cards to play (e.g., 5S 6S 7S).",
     };
     const interaction = ctx.isInteraction ? ctx.interaction : null;
     const userId = ctx.author.id;
 
     try {
       const user = await client.utils.getUser(userId);
-      if (!user) return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
+      if (!user) return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound || "User not found.", color);
 
       if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
         const activeCommand = user.validation.isKlaKlouk ? "Kla Klouk" : "Multiple Transfer";
-        return client.utils.sendErrorMessage(client, ctx, `You have already started the ${activeCommand} event.`, color);
+        return client.utils.sendErrorMessage(client, ctx, `You have already started the ${activeCommand} event.` || "You are in another event.", color);
       }
 
       if (activeGames.has(ctx.author.id)) {
-        return client.utils.sendErrorMessage(client, ctx, generalMessages.alreadyInGame, color);
+        return client.utils.sendErrorMessage(client, ctx, generalMessages.alreadyInGame || "You are already in a game.", color);
       }
 
-      const subcommand = ctx.isInteraction ? interaction.options.getSubcommand() : args[0];
+      const subcommand = ctx.isInteraction ? interaction.options.getSubcommand() : args[0]?.toLowerCase();
+      if (!subcommand) {
+        return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidCommand || "Invalid command.", color);
+      }
 
       if (subcommand === "start") {
         return startGame(client, ctx, color, emoji, generalMessages, tienlenMessages);
@@ -154,11 +159,11 @@ module.exports = class TienLen extends Command {
       } else if (subcommand === "pass") {
         return passTurn(client, ctx, color, emoji, generalMessages, tienlenMessages);
       } else {
-        return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidCommand, color);
+        return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidCommand || "Invalid command.", color);
       }
     } catch (err) {
       console.error("Error in tienlen command:", err);
-      client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+      client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError || "Error fetching user data.", color);
     }
   }
 };
@@ -167,14 +172,13 @@ async function startGame(client, ctx, color, emoji, generalMessages, tienlenMess
   const guildId = ctx.guild.id;
   const channelId = ctx.channel.id;
   const userId = ctx.author.id;
+  const gameKey = `${guildId}-${channelId}`;
 
-  // Check for existing game in channel
-  if (activeGames.has(`${guildId}-${channelId}`)) {
+  if (activeGames.has(gameKey)) {
     return client.utils.sendErrorMessage(client, ctx, "A Tiến Lên game is already active in this channel!", color);
   }
 
-  // Initialize game (simplified: 2 players for now, extend later)
-  const players = [{ userId, hand: [] }]; // Add logic to collect more players
+  const players = [{ userId, hand: [] }]; // Simplified for testing
   const tdeck = cardUtils.shuffleDeck(deck.slice(0));
   const hands = Array(2).fill().map(() => tdeck.splice(0, 13).map(cardUtils.cardToString));
   const gameState = {
@@ -187,18 +191,19 @@ async function startGame(client, ctx, color, emoji, generalMessages, tienlenMess
     passes: 0,
   };
 
-  // Find player with 3♠ to start
   gameState.players.forEach((p, i) => {
     if (p.hand.some(c => c.rank === '3' && c.suit === '♠')) gameState.currentPlayer = i;
   });
 
-  activeGames.set(`${guildId}-${channelId}`, gameState);
+  activeGames.set(gameKey, gameState);
 
-  // DM players their hands
   for (const player of gameState.players) {
     const user = await client.users.fetch(player.userId);
     const hand = player.hand.map(c => `${c.rank}${c.suit}`).join(', ');
-    await user.send(`Your Tiến Lên hand: ${hand}`);
+    await user.send(`Your Tiến Lên hand: ${hand}`).catch(err => {
+      console.error("Failed to send DM:", err);
+      client.utils.sendErrorMessage(client, ctx, "Failed to send your hand via DM. Please ensure your DMs are open.", color);
+    });
   }
 
   const embed = cardUtils.generateEmbed(client, color, emoji, gameState, generalMessages, tienlenMessages);
@@ -216,7 +221,20 @@ async function playCards(client, ctx, args, color, emoji, generalMessages, tienl
     return client.utils.sendErrorMessage(client, ctx, "It's not your turn!", color);
   }
 
-  const cardsInput = ctx.isInteraction ? ctx.interaction.options.getString("cards").split(' ') : args.slice(1);
+  let cardsInput;
+  if (ctx.isInteraction) {
+    const cardsOption = ctx.interaction.options.getString("cards");
+    if (!cardsOption) {
+      return client.utils.sendErrorMessage(client, ctx, tienlenMessages.noCardsProvided || "Please provide cards to play (e.g., 5S 6S 7S).", color);
+    }
+    cardsInput = cardsOption.split(' ');
+  } else {
+    cardsInput = args.slice(1);
+    if (!cardsInput.length) {
+      return client.utils.sendErrorMessage(client, ctx, tienlenMessages.noCardsProvided || "Please provide cards to play (e.g., 5S 6S 7S).", color);
+    }
+  }
+
   const cards = cardsInput.map(c => ({
     rank: c.slice(0, -1),
     suit: c.slice(-1),
@@ -224,10 +242,9 @@ async function playCards(client, ctx, args, color, emoji, generalMessages, tienl
   const playType = cards.length === 1 ? 'single' : cards.length === 2 && cards[0].rank === cards[1].rank ? 'pair' : 'sequence';
 
   if (!cardUtils.isValidPlay(cards, gameState.currentPlay, playType, gameState.players[gameState.currentPlayer].hand)) {
-    return client.utils.sendErrorMessage(client, ctx, tienlenMessages.invalidPlay, color);
+    return client.utils.sendErrorMessage(client, ctx, tienlenMessages.invalidPlay || "Invalid play! Try again.", color);
   }
 
-  // Update game state
   const player = gameState.players[gameState.currentPlayer];
   player.hand = player.hand.filter(h => !cards.some(c => c.rank === h.rank && c.suit === h.suit));
   gameState.currentPlay = cards;
@@ -235,7 +252,6 @@ async function playCards(client, ctx, args, color, emoji, generalMessages, tienl
   gameState.passes = 0;
   gameState.currentPlayer = (gameState.currentPlayer + 1) % gameState.players.length;
 
-  // Check for win
   if (player.hand.length === 0) {
     activeGames.delete(gameKey);
     const embed = client
@@ -245,7 +261,6 @@ async function playCards(client, ctx, args, color, emoji, generalMessages, tienl
     return ctx.sendMessage({ embeds: [embed], components: [] });
   }
 
-  // Update message
   const embed = cardUtils.generateEmbed(client, color, emoji, gameState, generalMessages, tienlenMessages);
   const row = createButtonRow(client, tienlenMessages);
   await ctx.sendMessage({ embeds: [embed], components: [row] });
