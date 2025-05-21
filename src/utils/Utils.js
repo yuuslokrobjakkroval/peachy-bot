@@ -1985,7 +1985,7 @@ module.exports = class Utils {
       const guildId = "1369956599720054847";
       const roleIds = ["1340972051241893909"]; // Removed duplicate role ID
       const rewardChannelId = "1374630700464210010"; // New channel ID
-      const rewardAmount = 1; // Coins to award
+      const rewardAmount = 100000; // Coins to award
 
       const guild = await client.guilds.fetch(guildId).catch((err) => {
         console.error(
