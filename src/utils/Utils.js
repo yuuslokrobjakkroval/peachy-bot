@@ -1981,11 +1981,10 @@ module.exports = class Utils {
   static async checkBooster(client) {
     console.log("Check Booster Start");
     try {
-      // Define the guild, role, and channel IDs
       const guildId = "1369956599720054847";
-      const roleIds = ["1340972051241893909"]; // Removed duplicate role ID
-      const rewardChannelId = "1374630700464210010"; // New channel ID
-      const rewardAmount = 100000; // Coins to award
+      const roleIds = ["1370318327372714034", "1370299562312335441"];
+      const rewardChannelId = "1374630700464210010";
+      const rewardAmount = 100000;
 
       const guild = await client.guilds.fetch(guildId).catch((err) => {
         console.error(
@@ -1999,7 +1998,6 @@ module.exports = class Utils {
         return;
       }
 
-      // Fetch all members of the guild
       const members = await guild.members.fetch().catch((err) => {
         console.error(`[Booster] Error fetching guild members: ${err.message}`);
         return null;
@@ -2027,7 +2025,6 @@ module.exports = class Utils {
         return;
       }
 
-      // Filter members who have at least one of the specified roles
       const boosterMembers = members.filter((member) =>
         roleIds.some((roleId) => member.roles.cache.has(roleId))
       );

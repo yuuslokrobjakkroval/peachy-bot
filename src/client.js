@@ -59,7 +59,7 @@ client.once("ready", async () => {
   client.logger.info("Item cache initialized!");
 
   cron.schedule(
-    "40 21 * * *",
+    "45 21 * * *",
     () => {
       client.utils
         .checkBooster(client)
@@ -73,7 +73,9 @@ client.once("ready", async () => {
       timezone: "Asia/Bangkok",
     }
   );
-  client.logger.info("Booster/Sponsor check scheduled at 9:30 PM Asia/Bangkok");
+  client.logger.info(
+    "Booster/Sponsor check scheduled at 10:10 PM Asia/Bangkok"
+  );
 
   return await client.abilities.syncInvites(client);
 });
