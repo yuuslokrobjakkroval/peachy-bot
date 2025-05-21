@@ -53,13 +53,14 @@ const client = new PeachyClient(clientOptions);
 client.resourceManager = new ResourceManager(client);
 client.economyManager = new EconomyManager(client);
 client.logger.info("Economy initialized");
+client.setMaxListeners(30);
 
 client.once("ready", async () => {
   client.utils.cacheItems();
   client.logger.info("Item cache initialized!");
 
   cron.schedule(
-    "45 21 * * *",
+    "50 21 * * *",
     () => {
       client.utils
         .checkBooster(client)

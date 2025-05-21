@@ -2035,7 +2035,7 @@ module.exports = class Utils {
       for (const member of boosterMembers.values()) {
         try {
           // Find the user in the database
-          const user = await Users.findOne({ _id: member.id });
+          const user = await Users.findOne({ userId: member.id });
 
           if (!user) {
             console.log(`[Booster] User ${member.id} not found in database.`);
