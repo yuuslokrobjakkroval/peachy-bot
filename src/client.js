@@ -59,7 +59,7 @@ client.once("ready", async () => {
   client.logger.info("Item cache initialized!");
 
   cron.schedule(
-    "20 21 * * *",
+    "33 21 * * *",
     () => {
       client.utils
         .checkBooster(client)
