@@ -9,18 +9,19 @@ const ms = require("ms");
 module.exports = class GiveawayShopItem extends Command {
   constructor(client) {
     super(client, {
-      name: "giveawayshopitem",
+      name: "gshopitem",
       description: {
         content:
           "Start a shop item giveaway for food, drink, or themes, milk, ring in the shop.",
         examples: [
-          "giveawayshopitem 1h 1 food f01 5 true",
-          "giveawayshopitem 2h 3 drink d01 false @User #channel",
+          "gshopitem 1h 1 food f01 5 true",
+          "gshopitem 2h 3 drink d01 false @User #channel",
         ],
         usage:
-          "giveawayshopitem <duration> <winners> <type> <itemID> <amount> <image> <thumbnail> <autoadd> [host] [channel]",
+          "gshopitem <duration> <winners> <type> <itemID> <amount> <image> <thumbnail> <autoadd> [host] [channel]",
       },
       category: "giveaway",
+      aliases: [""],
       args: true,
       permissions: {
         dev: false,
