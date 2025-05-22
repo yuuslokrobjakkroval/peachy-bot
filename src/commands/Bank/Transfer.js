@@ -73,12 +73,16 @@ module.exports = class Transfer extends Command {
 
     // Fetch user data
     const user = await Users.findOne({ userId: ctx.author.id });
-    const target =
-      (await Users.findOne({ userId: targetUser.id })) ||
-      new Users({
+
+    // Fetch or create target user's data
+    const target = await Users.findOne({ userId: targetUser.id });
+    if (!target) {
+      target = new Users({
         userId: targetUser.id,
         balance: { coin: 0, bank: 0 },
       });
+      await target.save();
+    }
 
     // Handle Kla Klouk or Multi Transfer validation
     if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
