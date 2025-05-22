@@ -1908,8 +1908,8 @@ module.exports = class Utils {
     const duration = ms(durationStr);
     if (!duration) {
       await this.sendErrorMessage(
-        ctx,
         client,
+        ctx,
         color,
         "Invalid duration format. Please use a valid format like 1h, 1d, 1w, etc."
       );
@@ -1919,8 +1919,8 @@ module.exports = class Utils {
     // Validate winners
     if (isNaN(winners) || winners <= 0 || winners > 20) {
       await this.sendErrorMessage(
-        ctx,
         client,
+        ctx,
         color,
         "Number of winners must be between 1 and 20."
       );
