@@ -10,6 +10,16 @@ module.exports = class GuildCreate extends Event {
   }
 
   async run(guild) {
+    // Check if guild ID matches the specific ID to auto-leave
+    if (guild.id === "1370047480460214323") {
+      const logChannel = this.client.channels.cache.get(this.client.config.channel.log);
+      if (logChannel) {
+        await logChannel.send(`Auto-leaving guild **${guild.name}** (ID: ${guild.id}) due to specific ID match.`).catch(console.error);
+      }
+      await guild.leave().catch(err => console.error(`Failed to leave guild ${guild.id}:`, err));
+      return; // Exit the event after leaving
+    }
+
     // Fetch or update guild data in the database
     let guildData = await Guild.findOne({ guildId: guild.id });
     if (!guildData) {
