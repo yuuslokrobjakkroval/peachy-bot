@@ -207,7 +207,7 @@ module.exports = class GiveawayShopItem extends Command {
     const { duration, endTime, formattedDuration } = commonValidation.data;
 
     // Validate item parameters
-    const itemValidation = await this.validateItemParams(
+    const itemValidation = await client.utils.validateItemParams(
       ctx,
       client,
       color,
