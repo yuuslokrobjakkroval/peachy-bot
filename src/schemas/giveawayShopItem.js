@@ -20,7 +20,6 @@ const GiveawayShopItemSchema = new Schema(
     rerollOptions: { type: [String], default: [] },
     rerollCount: { type: Number, default: 0 },
     rerolledWinners: { type: [String], default: [] },
-    description: { type: String, default: "" },
   },
   { timestamps: { createdAt: true, updatedAt: true } }
 );
