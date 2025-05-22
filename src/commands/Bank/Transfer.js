@@ -245,7 +245,9 @@ module.exports = class Transfer extends Command {
             await ctx.sendMessage({ embeds: [imageEmbed] });
           }, 2000);
 
-          await msg.delete();
+          if (msg) {
+            await msg.delete();
+          }
         } else {
           user.balance.coin += Number.parseInt(amount);
           await Users.updateOne(
