@@ -75,7 +75,8 @@ module.exports = class Transfer extends Command {
     const user = await Users.findOne({ userId: ctx.author.id });
 
     // Fetch or create target user's data
-    const target = await Users.findOne({ userId: targetUser.id });
+    let target = await Users.findOne({ userId: targetUser.id });
+
     if (!target) {
       target = new Users({
         userId: targetUser.id,
