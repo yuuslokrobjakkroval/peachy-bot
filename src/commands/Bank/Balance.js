@@ -4,9 +4,6 @@ const {
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
 } = require("discord.js");
 const Users = require("../../schemas/user");
 const globalGif = require("../../utils/Gif");
@@ -19,8 +16,8 @@ module.exports = class Balance extends Command {
       description: {
         content:
           "Check your balance with interactive deposit and withdrawal options.",
-        examples: ["balance", "balance @user"],
-        usage: "balance [user]",
+        examples: ["balance"],
+        usage: "balance",
       },
       category: "bank",
       aliases: ["bal", "money", "coins"],
@@ -32,20 +29,10 @@ module.exports = class Balance extends Command {
         user: [],
       },
       slashCommand: true,
-      options: [
-        {
-          name: "user",
-          description: "The user to check balance for",
-          type: 6,
-          required: false,
-        },
-      ],
+      options: [],
     });
 
-    // Store active modal handlers to prevent duplicates
     this.activeModalHandlers = new Map();
-
-    // Store active collectors to prevent duplicates and allow cleanup
     this.activeCollectors = new Map();
   }
 
@@ -59,13 +46,21 @@ module.exports = class Balance extends Command {
         language?.locales?.get(language.defaultLocale)?.economyMessages
           ?.balanceMessages || {};
 
-      // Get target user
-      const targetUser = ctx.isInteraction
-        ? ctx.interaction.options.getUser("user") || ctx.author
-        : ctx.message.mentions.users.first() || ctx.author;
+      // Check if user is trying to check another user's balance
+      if (
+        args?.length > 0 ||
+        (ctx.isInteraction && ctx.interaction.options.getUser("user")) ||
+        ctx.message?.mentions?.users?.size > 0
+      ) {
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          "You are not allowed to check another user's balance.",
+          color
+        );
+      }
 
-      // Get user data
-      const user = await client.utils.getUser(targetUser.id);
+      const user = await client.utils.getUser(ctx.author.id);
       if (!user) {
         return client.utils.sendErrorMessage(
           client,
@@ -78,44 +73,35 @@ module.exports = class Balance extends Command {
       const { coin = 0, bank = 0, credit = 0 } = user.balance || {};
       const netWorth = coin + bank;
 
-      if (targetUser.id === ctx.author.id && client.achievementManager) {
+      if (client.achievementManager) {
         await client.achievementManager.checkEconomyAchievements(
-          targetUser.id,
+          ctx.author.id,
           netWorth
         );
       }
 
-      // Create the balance embed
       const embed = this.createBalanceEmbed(
         client,
         ctx,
-        targetUser,
+        ctx.author,
         user,
         color,
         emoji,
         generalMessages,
         balanceMessages
       );
+      const components = this.createBalanceButtons(emoji);
+      const message = await ctx.sendMessage({ embeds: [embed], components });
 
-      // Only add interactive buttons if viewing own balance
-      if (targetUser.id === ctx.author.id) {
-        const components = this.createBalanceButtons(emoji);
-        const message = await ctx.sendMessage({ embeds: [embed], components });
-
-        // Set up button collector
-        this.handleBalanceInteractions(
-          client,
-          ctx,
-          message,
-          user,
-          color,
-          emoji,
-          language
-        );
-      } else {
-        // Just send the embed without buttons for other users
-        return ctx.sendMessage({ embeds: [embed] });
-      }
+      this.handleBalanceInteractions(
+        client,
+        ctx,
+        message,
+        user,
+        color,
+        emoji,
+        language
+      );
     } catch (error) {
       return ctx.sendMessage({
         content: "An error occurred while processing your request.",
@@ -126,14 +112,14 @@ module.exports = class Balance extends Command {
   createBalanceEmbed(
     client,
     ctx,
-    targetUser,
     user,
+    userData,
     color,
     emoji,
     generalMessages,
     balanceMessages
   ) {
-    const { coin = 0, bank = 0, credit = 0 } = user.balance || {};
+    const { coin = 0, bank = 0, credit = 0 } = userData.balance || {};
     const titleTemplate =
       generalMessages?.title || "# %{mainLeft} %{title} %{mainRight}\n";
     const descriptionTemplate =
@@ -151,7 +137,7 @@ module.exports = class Balance extends Command {
       .setDescription(
         titleTemplate
           .replace("%{mainLeft}", emoji.mainLeft || "")
-          .replace("%{title}", `${targetUser.displayName} BALANCE`)
+          .replace("%{title}", `${user.displayName} BALANCE`)
           .replace("%{mainRight}", emoji.mainRight || "") +
           descriptionTemplate
             .replace("%{coinEmote}", emoji.coin || "💰")
@@ -204,10 +190,7 @@ module.exports = class Balance extends Command {
     const balanceMessages = language.locales.get(language.defaultLocale)
       ?.economyMessages?.balanceMessages;
 
-    // Generate a unique ID for this command instance
     const commandInstanceId = `balance_${ctx.author.id}_${Date.now()}`;
-
-    // Set up modal handler for this specific command instance
     this.setupModalHandler(
       client,
       ctx,
@@ -218,13 +201,11 @@ module.exports = class Balance extends Command {
       message
     );
 
-    // Create collector for button interactions
     const collector = message.createMessageComponentCollector({
       componentType: ComponentType.Button,
-      time: 300000, // 5 minutes
+      time: 300000,
     });
 
-    // Store the collector for cleanup
     this.activeCollectors.set(commandInstanceId, collector);
 
     collector.on("collect", async (interaction) => {
@@ -245,8 +226,6 @@ module.exports = class Balance extends Command {
 
       try {
         await interaction.deferUpdate().catch(() => {});
-
-        // Get fresh user data
         const updatedUser = await client.utils.getUser(ctx.author.id);
         if (!updatedUser) {
           await interaction.followUp({
@@ -312,11 +291,7 @@ module.exports = class Balance extends Command {
       });
 
       message.edit({ components: disabledComponents }).catch(() => {});
-
-      // Clean up modal handler
       this.cleanupModalHandler(client, commandInstanceId);
-
-      // Remove from active collectors
       this.activeCollectors.delete(commandInstanceId);
     });
   }
@@ -330,16 +305,12 @@ module.exports = class Balance extends Command {
     language,
     message
   ) {
-    // Create a handler function for modal submissions
     const modalHandler = async (interaction) => {
-      // Check if this is one of our modals
       if (!interaction.isModalSubmit()) return;
       if (!interaction.customId.includes(commandInstanceId)) return;
 
       try {
-        // CRITICAL FIX: Immediately defer the update to prevent "This interaction failed" errors
         await interaction.deferUpdate().catch(() => {});
-
         const updatedUser = await client.utils.getUser(ctx.author.id);
 
         if (interaction.customId.startsWith("deposit_modal_")) {
@@ -426,25 +397,18 @@ module.exports = class Balance extends Command {
       }
     };
 
-    // Store the handler with its ID
     this.activeModalHandlers.set(commandInstanceId, modalHandler);
-
-    // Add the event listener
     client.on("interactionCreate", modalHandler);
   }
 
   cleanupModalHandler(client, commandInstanceId) {
-    // Get the handler
     const handler = this.activeModalHandlers.get(commandInstanceId);
     if (handler) {
-      // Remove the event listener
       client.removeListener("interactionCreate", handler);
-      // Remove from the map
       this.activeModalHandlers.delete(commandInstanceId);
     }
   }
 
-  // Enhanced method that handles deposit directly with button disabling
   async handleDepositDirectly(
     client,
     ctx,
@@ -456,7 +420,6 @@ module.exports = class Balance extends Command {
     message
   ) {
     try {
-      // First, disable the main balance buttons to prevent multiple transactions
       if (message) {
         const disabledEmbed = this.createBalanceEmbed(
           client,
@@ -473,13 +436,11 @@ module.exports = class Balance extends Command {
         await message
           .edit({
             embeds: [disabledEmbed],
-            components: this.createBalanceButtons(emoji, true), // Disable main buttons
+            components: this.createBalanceButtons(emoji, true),
           })
           .catch(() => {});
       }
 
-      // Rest of the function remains the same...
-      // Add fallbacks for language properties
       const depositMessages =
         language?.locales?.get(language.defaultLocale)?.economyMessages
           ?.depositMessages || {};
@@ -489,14 +450,12 @@ module.exports = class Balance extends Command {
         language?.locales?.get(language.defaultLocale)?.economyMessages
           ?.balanceMessages || {};
 
-      // Check if user has coins to deposit
       if (user.balance.coin <= 0) {
-        // Re-enable main buttons if there's an error
         if (message) {
           await message
             .edit({
               embeds: [message.embeds[0]],
-              components: this.createBalanceButtons(emoji, false), // Re-enable main buttons
+              components: this.createBalanceButtons(emoji, false),
             })
             .catch(() => {});
         }
@@ -515,9 +474,6 @@ module.exports = class Balance extends Command {
         return;
       }
 
-      // Continue with the rest of the function...
-
-      // Create embed with options
       const depositEmbed = client
         .embed()
         .setColor(color.main)
@@ -528,13 +484,11 @@ module.exports = class Balance extends Command {
           )}** coins in your wallet.`
         );
 
-      // Generate unique IDs for this specific interaction
       const uniqueId = Date.now().toString();
       const depositAllId = `deposit_all_${uniqueId}`;
       const depositHalfId = `deposit_half_${uniqueId}`;
-      const cancelId = `deposit_cancel_${uniqueId}`; // New cancel button ID
+      const cancelId = `deposit_cancel_${uniqueId}`;
 
-      // Create action row with buttons including Cancel
       const actionRow = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId(depositAllId)
@@ -547,16 +501,14 @@ module.exports = class Balance extends Command {
         new ButtonBuilder()
           .setCustomId(cancelId)
           .setLabel("Cancel")
-          .setStyle(ButtonStyle.Danger) // Red color for cancel
+          .setStyle(ButtonStyle.Danger)
       );
 
-      // Send the message with buttons
       const reply = await interaction.followUp({
         embeds: [depositEmbed],
         components: [actionRow],
       });
 
-      // Create a collector for this specific reply
       const filter = (i) => {
         const isCorrectUser = i.user.id === ctx.author.id;
         const isCorrectButton =
@@ -568,19 +520,17 @@ module.exports = class Balance extends Command {
 
       const collector = reply.createMessageComponentCollector({
         filter,
-        time: 60000, // 1 minute timeout
+        time: 60000,
         componentType: ComponentType.Button,
-        max: 1, // Only collect one interaction
+        max: 1,
       });
 
       collector.on("collect", async (buttonInteraction) => {
         try {
-          // Check which button was clicked
           if (
             buttonInteraction.customId === depositAllId ||
             buttonInteraction.customId === depositHalfId
           ) {
-            // Immediately disable action buttons while keeping cancel enabled
             const disabledButtonsRow = new ActionRowBuilder().addComponents(
               new ButtonBuilder()
                 .setCustomId(depositAllId)
@@ -599,7 +549,6 @@ module.exports = class Balance extends Command {
                 .setDisabled(false)
             );
 
-            // Update message to show disabled buttons but keep cancel enabled
             await reply
               .edit({
                 embeds: [
@@ -610,8 +559,6 @@ module.exports = class Balance extends Command {
                 components: [disabledButtonsRow],
               })
               .catch(() => {});
-
-            // Defer update after disabling buttons
             await buttonInteraction.deferUpdate().catch(() => {});
 
             if (buttonInteraction.customId === depositAllId) {
@@ -625,7 +572,7 @@ module.exports = class Balance extends Command {
                 emoji,
                 language,
                 message,
-                reply // Pass the reply message to be deleted after successful operation
+                reply
               );
             } else if (buttonInteraction.customId === depositHalfId) {
               await this.processDeposit(
@@ -638,38 +585,24 @@ module.exports = class Balance extends Command {
                 emoji,
                 language,
                 message,
-                reply // Pass the reply message to be deleted after successful operation
+                reply
               );
             }
           } else if (buttonInteraction.customId === cancelId) {
-            // Handle cancel button
             await buttonInteraction.deferUpdate().catch(() => {});
-
-            // Update the message to show it was canceled
             const cancelEmbed = client
               .embed()
               .setColor(color.danger || "#ff0000")
               .setTitle(`${emoji?.bank || "🏦"} Deposit Canceled`)
               .setDescription("The deposit operation has been canceled.");
-
-            // Disable all buttons
             const disabledRow = ActionRowBuilder.from(actionRow);
             disabledRow.components.forEach((component) =>
               component.setDisabled(true)
             );
-
-            // Edit the reply with the cancel message
             await reply
-              .edit({
-                embeds: [cancelEmbed],
-                components: [disabledRow],
-              })
+              .edit({ embeds: [cancelEmbed], components: [disabledRow] })
               .catch(() => {});
-
-            // Delete the cancel message after 3 seconds
-            setTimeout(() => {
-              reply.delete().catch(() => {});
-            }, 3000);
+            setTimeout(() => reply.delete().catch(() => {}), 3000);
           }
         } catch (error) {
           await buttonInteraction
@@ -690,12 +623,10 @@ module.exports = class Balance extends Command {
 
       collector.on("end", (collected) => {
         if (collected.size === 0) {
-          // No interactions collected, update the message to show it expired
           const disabledRow = ActionRowBuilder.from(actionRow);
           disabledRow.components.forEach((component) =>
             component.setDisabled(true)
           );
-
           reply
             .edit({
               embeds: [
@@ -725,7 +656,6 @@ module.exports = class Balance extends Command {
     }
   }
 
-  // Enhanced method that handles withdraw directly with button disabling
   async handleWithdrawDirectly(
     client,
     ctx,
@@ -737,7 +667,6 @@ module.exports = class Balance extends Command {
     message
   ) {
     try {
-      // First, disable the main balance buttons to prevent multiple transactions
       if (message) {
         const disabledEmbed = this.createBalanceEmbed(
           client,
@@ -750,27 +679,23 @@ module.exports = class Balance extends Command {
           language?.locales?.get(language.defaultLocale)?.economyMessages
             ?.balanceMessages || {}
         );
-
         await message
           .edit({
             embeds: [disabledEmbed],
-            components: this.createBalanceButtons(emoji, true), // Disable main buttons
+            components: this.createBalanceButtons(emoji, true),
           })
           .catch(() => {});
       }
 
-      // Double-check for zero balance with proper error handling
       if (user.balance.bank <= 0) {
-        // Re-enable main buttons if there's an error
         if (message) {
           await message
             .edit({
               embeds: [message.embeds[0]],
-              components: this.createBalanceButtons(emoji, false), // Re-enable main buttons
+              components: this.createBalanceButtons(emoji, false),
             })
             .catch(() => {});
         }
-
         await interaction
           .followUp({
             embeds: [
@@ -789,8 +714,6 @@ module.exports = class Balance extends Command {
         return;
       }
 
-      // Continue with the rest of the function...
-
       const withdrawEmbed = client
         .embed()
         .setColor(color.main)
@@ -801,13 +724,11 @@ module.exports = class Balance extends Command {
           )}** coins in your bank.`
         );
 
-      // Generate unique IDs for this specific interaction
       const uniqueId = Date.now().toString();
       const withdrawAllId = `withdraw_all_${uniqueId}`;
       const withdrawHalfId = `withdraw_half_${uniqueId}`;
-      const cancelId = `withdraw_cancel_${uniqueId}`; // New cancel button ID
+      const cancelId = `withdraw_cancel_${uniqueId}`;
 
-      // Create action row with buttons including Cancel
       const actionRow = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId(withdrawAllId)
@@ -820,16 +741,14 @@ module.exports = class Balance extends Command {
         new ButtonBuilder()
           .setCustomId(cancelId)
           .setLabel("Cancel")
-          .setStyle(ButtonStyle.Danger) // Red color for cancel
+          .setStyle(ButtonStyle.Danger)
       );
 
-      // Send the message with buttons
       const reply = await interaction.followUp({
         embeds: [withdrawEmbed],
         components: [actionRow],
       });
 
-      // Create a collector for this specific reply
       const filter = (i) => {
         const isCorrectUser = i.user.id === ctx.author.id;
         const isCorrectButton =
@@ -841,9 +760,9 @@ module.exports = class Balance extends Command {
 
       const collector = reply.createMessageComponentCollector({
         filter,
-        time: 60000, // 1 minute timeout
+        time: 60000,
         componentType: ComponentType.Button,
-        max: 1, // Only collect one interaction
+        max: 1,
       });
 
       collector.on("collect", async (buttonInteraction) => {
@@ -852,7 +771,6 @@ module.exports = class Balance extends Command {
             buttonInteraction.customId === withdrawAllId ||
             buttonInteraction.customId === withdrawHalfId
           ) {
-            // Immediately disable action buttons while keeping cancel enabled
             const disabledButtonsRow = new ActionRowBuilder().addComponents(
               new ButtonBuilder()
                 .setCustomId(withdrawAllId)
@@ -871,7 +789,6 @@ module.exports = class Balance extends Command {
                 .setDisabled(false)
             );
 
-            // Update message to show disabled buttons but keep cancel enabled
             await reply
               .edit({
                 embeds: [
@@ -882,12 +799,9 @@ module.exports = class Balance extends Command {
                 components: [disabledButtonsRow],
               })
               .catch(() => {});
-
-            // Defer update after disabling buttons
             await buttonInteraction.deferUpdate().catch(() => {});
 
             if (buttonInteraction.customId === withdrawAllId) {
-              // Process withdraw all
               await this.processWithdraw(
                 client,
                 ctx,
@@ -901,7 +815,6 @@ module.exports = class Balance extends Command {
                 reply
               );
             } else if (buttonInteraction.customId === withdrawHalfId) {
-              // Process withdraw half
               await this.processWithdraw(
                 client,
                 ctx,
@@ -912,38 +825,24 @@ module.exports = class Balance extends Command {
                 emoji,
                 language,
                 message,
-                reply // Pass the reply message to be deleted after successful operation
+                reply
               );
             }
           } else if (buttonInteraction.customId === cancelId) {
-            // Handle cancel button
             await buttonInteraction.deferUpdate().catch(() => {});
-
-            // Update the message to show it was canceled
             const cancelEmbed = client
               .embed()
               .setColor(color.danger || "#ff0000")
               .setTitle(`${emoji?.coin || "💰"} Withdrawal Canceled`)
               .setDescription("The withdrawal operation has been canceled.");
-
-            // Disable all buttons
             const disabledRow = ActionRowBuilder.from(actionRow);
             disabledRow.components.forEach((component) =>
               component.setDisabled(true)
             );
-
-            // Edit the reply with the cancel message
             await reply
-              .edit({
-                embeds: [cancelEmbed],
-                components: [disabledRow],
-              })
+              .edit({ embeds: [cancelEmbed], components: [disabledRow] })
               .catch(() => {});
-
-            // Delete the cancel message after 3 seconds
-            setTimeout(() => {
-              reply.delete().catch(() => {});
-            }, 3000);
+            setTimeout(() => reply.delete().catch(() => {}), 3000);
           }
         } catch (error) {
           await buttonInteraction
@@ -964,12 +863,10 @@ module.exports = class Balance extends Command {
 
       collector.on("end", (collected) => {
         if (collected.size === 0) {
-          // No interactions collected, update the message to show it expired
           const disabledRow = ActionRowBuilder.from(actionRow);
           disabledRow.components.forEach((component) =>
             component.setDisabled(true)
           );
-
           reply
             .edit({
               embeds: [
@@ -983,7 +880,6 @@ module.exports = class Balance extends Command {
         }
       });
     } catch (error) {
-      // Ensure we still handle zero balance in the catch block as a fallback
       if (user.balance.bank <= 0) {
         await interaction
           .followUp({
@@ -1031,7 +927,6 @@ module.exports = class Balance extends Command {
     message,
     originalReply = null
   ) {
-    // Add fallbacks for undefined language properties
     const depositMessages = language?.locales?.get(language.defaultLocale)
       ?.economyMessages?.depositMessages || {
       success: "You have deposited **{amount}** {bankEmote} to your bank.",
@@ -1094,17 +989,13 @@ module.exports = class Balance extends Command {
         }
       );
 
-      // Get updated user data
       const updatedUser = await client.utils.getUser(user.userId);
-
-      // Delete the original reply message if it exists
       if (originalReply) {
         try {
           await originalReply.delete();
         } catch (deleteError) {}
       }
 
-      // Send success message and store the message object
       const successMessage = await interaction
         .followUp({
           embeds: [
@@ -1125,15 +1016,12 @@ module.exports = class Balance extends Command {
                   )
               ),
           ],
-          ephemeral: false, // Make the success message visible to everyone
+          ephemeral: false,
         })
         .catch(() => {});
 
-      // Delete the success message after 3 seconds
       if (successMessage) {
-        setTimeout(() => {
-          successMessage.delete().catch(() => {});
-        }, 3000);
+        setTimeout(() => successMessage.delete().catch(() => {}), 3000);
       }
 
       if (message) {
@@ -1147,11 +1035,10 @@ module.exports = class Balance extends Command {
           generalMessages,
           balanceMessages
         );
-
         await message
           .edit({
             embeds: [refreshedEmbed],
-            components: this.createBalanceButtons(emoji || {}, false), // Re-enable buttons
+            components: this.createBalanceButtons(emoji || {}, false),
           })
           .catch(() => {});
       }
@@ -1184,7 +1071,6 @@ module.exports = class Balance extends Command {
     message,
     originalReply = null
   ) {
-    // Add fallbacks for undefined language properties
     const withdrawMessages = language?.locales?.get(language.defaultLocale)
       ?.economyMessages?.withdrawMessages || {
       success: "You have withdrawn **{amount}** {coinEmote} from your bank.",
@@ -1247,17 +1133,13 @@ module.exports = class Balance extends Command {
         }
       );
 
-      // Get updated user data
       const updatedUser = await client.utils.getUser(user.userId);
-
-      // Delete the original reply message if it exists
       if (originalReply) {
         try {
           await originalReply.delete();
         } catch (deleteError) {}
       }
 
-      // Send success message and store the message object
       const successMessage = await interaction
         .followUp({
           embeds: [
@@ -1278,15 +1160,12 @@ module.exports = class Balance extends Command {
                   )
               ),
           ],
-          ephemeral: false, // Make the success message visible to everyone
+          ephemeral: false,
         })
         .catch(() => {});
 
-      // Delete the success message after 3 seconds
       if (successMessage) {
-        setTimeout(() => {
-          successMessage.delete().catch(() => {});
-        }, 3000);
+        setTimeout(() => successMessage.delete().catch(() => {}), 3000);
       }
 
       if (message) {
@@ -1300,7 +1179,6 @@ module.exports = class Balance extends Command {
           generalMessages,
           balanceMessages
         );
-
         await message
           .edit({
             embeds: [refreshedEmbed],
