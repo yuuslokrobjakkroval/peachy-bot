@@ -1,6 +1,7 @@
 const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
 const globalGif = require("../../utils/Gif");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class UserBalance extends Command {
   constructor(client) {

@@ -19,7 +19,7 @@ module.exports = class Reroll extends Command {
         usage: "reroll [item] <messageId>",
       },
       category: "giveaway",
-      aliases: ["gr"],
+      aliases: ["gr", "reroll"],
       args: true,
       permissions: {
         dev: false,

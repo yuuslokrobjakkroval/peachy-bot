@@ -21,7 +21,7 @@ module.exports = class GiveawayShopItem extends Command {
           "gshopitem <duration> <winners> <type> <itemID> <amount> <image> <thumbnail> <autoadd> [host] [channel]",
       },
       category: "giveaway",
-      aliases: [""],
+      aliases: ["gs"],
       args: true,
       permissions: {
         dev: false,
