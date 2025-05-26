@@ -39,22 +39,66 @@ module.exports = class UserBalance extends Command {
       )?.generalMessages;
       const balanceMessages = language.locales.get(language.defaultLocale)
         ?.economyMessages?.balanceMessages;
+
       const mention = ctx.isInteraction
         ? ctx.interaction.options.getUser("user")
         : ctx.message.mentions.members.first() ||
           ctx.guild.members.cache.get(args[0]) ||
           args[0];
 
-      const userId = typeof mention === "string" ? mention : mention.id;
-      const syncUser = await client.users.fetch(userId);
+      let syncUser;
+      const userId = typeof mention === "string" ? mention : mention?.id;
+
+      // Validate userId
+      if (!userId || !/^\d{17,19}$/.test(userId)) {
+        const errorEmbed = client
+          .embed()
+          .setColor(color.error || "#FF0000")
+          .setDescription("Invalid user ID provided.")
+          .setFooter({
+            text: generalMessages.requestedBy.replace(
+              "%{username}",
+              ctx.author.displayName
+            ) || `Requested by ${ctx.author.displayName}`,
+            iconURL: ctx.author.displayAvatarURL(),
+          });
+
+        return await ctx.sendMessage({ embeds: [errorEmbed] });
+      }
+
+      try {
+        syncUser = await client.users.fetch(userId);
+      } catch (fetchError) {
+        const errorEmbed = client
+          .embed()
+          .setColor(color.error || "#FF0000")
+          .setDescription("Could not find a user with that ID.")
+          .setFooter({
+            text: generalMessages.requestedBy.replace(
+              "%{username}",
+              ctx.author.displayName
+            ) || `Requested by ${ctx.author.displayName}`,
+            iconURL: ctx.author.displayAvatarURL(),
+          });
+
+        return await ctx.sendMessage({ embeds: [errorEmbed] });
+      }
+
       const user = await Users.findOne({ userId: syncUser.id });
       if (!user) {
-        return await client.utils.sendErrorMessage(
-          client,
-          ctx,
-          "User not found.",
-          color
-        );
+        const errorEmbed = client
+          .embed()
+          .setColor(color.error || "#FF0000")
+          .setDescription("User not found in the database.")
+          .setFooter({
+            text: generalMessages.requestedBy.replace(
+              "%{username}",
+              ctx.author.displayName
+            ) || `Requested by ${ctx.author.displayName}`,
+            iconURL: ctx.author.displayAvatarURL(),
+          });
+
+        return await ctx.sendMessage({ embeds: [errorEmbed] });
       }
 
       const { coin = 0, bank = 0, credit = 0 } = user.balance;
@@ -93,9 +137,20 @@ module.exports = class UserBalance extends Command {
       return await ctx.sendMessage({ embeds: [embed] });
     } catch (error) {
       console.error("Error in user balance command:", error);
-      return await ctx.sendMessage({
-        content: "An error occurred while processing your request.",
-      });
+      const errorEmbed = client
+        .embed()
+        .setColor(color.error || "#FF0000")
+        .setDescription("An error occurred while processing your request.")
+        .setFooter({
+          text:
+            generalMessages.requestedBy.replace(
+              "%{username}",
+              ctx.author.displayName
+            ) || `Requested by ${ctx.author.displayName}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        });
+
+      return await ctx.sendMessage({ embeds: [errorEmbed] });
     }
   }
 };
