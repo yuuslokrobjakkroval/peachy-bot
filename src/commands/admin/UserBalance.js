@@ -57,7 +57,7 @@ module.exports = class UserBalance extends Command {
         );
       }
 
-      const { coin = 0, bank = 0 } = user.balance;
+      const { coin = 0, bank = 0, credit = 0 } = user.balance;
 
       const embed = client
         .embed()
