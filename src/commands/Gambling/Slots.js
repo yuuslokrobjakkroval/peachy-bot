@@ -131,9 +131,9 @@ module.exports = class Slots extends Command {
 
       // Check if the current channel is a special channel
       const isSpecialChannel = SPECIAL_CHANNELS.includes(ctx.channelId);
-      console.log(`Slots command used by user ${ctx.author.displayName}`);
 
       if (isSpecialChannel) {
+        console.log(`Slots command used by user ${ctx.author.displayName}`);
         // Higher win rates for special channels
         if (rand <= 25) {
           win = baseCoins;
