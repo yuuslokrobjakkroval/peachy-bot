@@ -53,13 +53,14 @@ module.exports = class UserBalance extends Command {
       if (!userId || !/^\d{17,19}$/.test(userId)) {
         const errorEmbed = client
           .embed()
-          .setColor(color.error || "#FF0000")
+          .setColor(color.danger || "#FF0000")
           .setDescription("Invalid user ID provided.")
           .setFooter({
-            text: generalMessages.requestedBy.replace(
-              "%{username}",
-              ctx.author.displayName
-            ) || `Requested by ${ctx.author.displayName}`,
+            text:
+              generalMessages.requestedBy.replace(
+                "%{username}",
+                ctx.author.displayName
+              ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
 
@@ -71,13 +72,14 @@ module.exports = class UserBalance extends Command {
       } catch (fetchError) {
         const errorEmbed = client
           .embed()
-          .setColor(color.error || "#FF0000")
+          .setColor(color.danger || "#FF0000")
           .setDescription("Could not find a user with that ID.")
           .setFooter({
-            text: generalMessages.requestedBy.replace(
-              "%{username}",
-              ctx.author.displayName
-            ) || `Requested by ${ctx.author.displayName}`,
+            text:
+              generalMessages.requestedBy.replace(
+                "%{username}",
+                ctx.author.displayName
+              ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
 
@@ -88,13 +90,14 @@ module.exports = class UserBalance extends Command {
       if (!user) {
         const errorEmbed = client
           .embed()
-          .setColor(color.error || "#FF0000")
+          .setColor(color.danger || "#FF0000")
           .setDescription("User not found in the database.")
           .setFooter({
-            text: generalMessages.requestedBy.replace(
-              "%{username}",
-              ctx.author.displayName
-            ) || `Requested by ${ctx.author.displayName}`,
+            text:
+              generalMessages.requestedBy.replace(
+                "%{username}",
+                ctx.author.displayName
+              ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
 
@@ -139,7 +142,7 @@ module.exports = class UserBalance extends Command {
       console.error("Error in user balance command:", error);
       const errorEmbed = client
         .embed()
-        .setColor(color.error || "#FF0000")
+        .setColor(color.danger || "#FF0000")
         .setDescription("An error occurred while processing your request.")
         .setFooter({
           text:
