@@ -1,6 +1,7 @@
 const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const globalEmoji = require("../../utils/Emoji");
+const Logger = require("../../structures/Logger");
 
 const maxAmount = 250000;
 const SPECIAL_CHANNELS = ["1376910445453250660", "1376911850209284146"];
@@ -130,6 +131,9 @@ module.exports = class Slots extends Command {
 
       // Check if the current channel is a special channel
       const isSpecialChannel = SPECIAL_CHANNELS.includes(ctx.channelId);
+      Logger.info(
+        `Slots command used in channel ${ctx.channelId} by user ${ctx.author.id}. Special channel: ${isSpecialChannel}`
+      );
 
       if (isSpecialChannel) {
         // Higher win rates for special channels
