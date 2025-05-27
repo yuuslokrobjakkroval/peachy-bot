@@ -472,7 +472,7 @@ module.exports = class Use extends Command {
 
         // Log for debugging
         console.log(
-          `User ${userId} used potion ${itemInfo.name}: Boost ${
+          `User ${ctx.author.displayName} used potion ${itemInfo.name}: Boost ${
             itemInfo.luckBoost * 100
           }% for ${itemInfo.luckDuration / 1000} seconds`
         );

@@ -64,20 +64,17 @@ module.exports = class CheckPotion extends Command {
         return await ctx.sendMessage({ embeds: [embed] });
       }
 
-      const now = Date.now();
-      const remainingTime = luckBuff.expires - now;
+      const remainingTime = luckBuff.expires - Date.now();
       const minutes = Math.floor(remainingTime / (1000 * 60));
       const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-      const timeLeft = Math.ceil((seconds - now) / 1000);
+
       const embed = client
         .embed()
         .setColor(color.main)
         .setDescription(
           `You have an active **${luckBuff.potionName}** ${luckBuff.potionEmoji} effect! 🍀\n` +
             `Luck Boost: ${(luckBuff.boost * 100).toFixed(0)}%\n` +
-            `Expires in: **${minutes} minute(s) and <t:${
-              Math.round(Date.now() / 1000) + timeLeft
-            }:R> second(s)**.`
+            `Expires in: **${minutes} minute(s) and ${seconds} second(s)**.`
         );
 
       return await ctx.sendMessage({ embeds: [embed] });
