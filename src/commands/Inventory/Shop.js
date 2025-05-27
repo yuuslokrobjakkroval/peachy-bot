@@ -169,41 +169,6 @@ module.exports = class Shop extends Command {
       return Shops.find((shop) => shop.type === currentState.category);
     };
 
-    // Add a filter dropdown
-    const generateFilterDropdown = () => {
-      const filterOptions = [
-        {
-          label: "All Items",
-          value: "all",
-          description: "Show all items",
-          default: true,
-        },
-        { label: "Tools", value: "tool", description: "Show only tools" },
-        {
-          label: "Consumables",
-          value: "consumable",
-          description: "Show only consumables",
-        },
-        {
-          label: "Decorative",
-          value: "decorative",
-          description: "Show only decorative items",
-        },
-        {
-          label: "Rare Items",
-          value: "rare",
-          description: "Show only rare items",
-        },
-      ];
-
-      const dropdown = new StringSelectMenuBuilder()
-        .setCustomId("filter_select")
-        .setPlaceholder("Filter items")
-        .addOptions(filterOptions);
-
-      return new ActionRowBuilder().addComponents(dropdown);
-    };
-
     // Function to get all items in the current shop
     const getCurrentItems = () => {
       const shop = getCurrentShop();
@@ -233,7 +198,7 @@ module.exports = class Shop extends Command {
     // Function to get total pages for current shop
     const getTotalPages = () => {
       const items = getCurrentItems();
-      return Math.ceil(items.length / ITEMS_PER_PAGE);
+      return Math.ceil(items.length / ITEMS_PER_PAGE) ?? 1;
     };
 
     // Function to get items for current page
@@ -572,7 +537,6 @@ module.exports = class Shop extends Command {
         } else {
           // List view
           components.push(generateCategoryDropdown());
-          components.push(generateFilterDropdown());
 
           const items = getCurrentItems();
           if (items && items.length > 0) {
