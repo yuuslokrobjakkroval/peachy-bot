@@ -55,7 +55,8 @@ module.exports = class Use extends Command {
         Wallpapers,
         Themes,
         Colors,
-        Tools
+        Tools,
+        Inventory.filter((value) => value.type === "potion")
       ).find((item) => item.id === itemId);
       const inventoryItem = user.inventory.find((item) => item.id === itemId);
       if (!inventoryItem) {
@@ -436,6 +437,66 @@ module.exports = class Use extends Command {
             return ctx.sendMessage({ embeds: [embed] });
           }
         }
+      } else if (itemInfo.type === "potion") {
+        if (!itemInfo.able.use) {
+          return await client.utils.sendErrorMessage(
+            client,
+            ctx,
+            useMessages?.unavailable
+              .replace("%{itemEmote}", itemInfo.emoji)
+              .replace("%{itemName}", itemInfo.name),
+            color
+          );
+        }
+
+        const inventoryItemIndex = user.inventory.findIndex(
+          (invItem) => invItem.id === itemId
+        );
+        if (inventoryItemIndex > -1) {
+          if (user.inventory[inventoryItemIndex].quantity > 1) {
+            user.inventory[inventoryItemIndex].quantity -= 1;
+          } else {
+            user.inventory.splice(inventoryItemIndex, 1);
+          }
+        }
+
+        // Apply luck buff with dynamic duration, boost, and potion details
+        if (!client.luckBuffs) client.luckBuffs = new Map(); // Ensure Map exists
+        const expiresAt = Date.now() + itemInfo.luckDuration;
+        client.luckBuffs.set(userId, {
+          expires: expiresAt,
+          boost: itemInfo.luckBoost,
+          potionName: itemInfo.name,
+          potionEmoji: itemInfo.emoji,
+        });
+
+        // Log for debugging
+        console.log(
+          `User ${userId} used potion ${itemInfo.name}: Boost ${
+            itemInfo.luckBoost * 100
+          }% for ${itemInfo.luckDuration / 1000} seconds`
+        );
+
+        // Update inventory
+        await Users.updateOne(
+          { userId },
+          { $set: { inventory: user.inventory } }
+        );
+
+        const embed = client
+          .embed()
+          .setColor(color.main)
+          .setDescription(
+            `You used ${itemInfo.emoji} **${
+              itemInfo.name
+            }**! Your gambling luck is boosted by ${(
+              itemInfo.luckBoost * 100
+            ).toFixed(0)}% for approximately ${Math.round(
+              itemInfo.luckDuration / 60000
+            )} minute(s)! 🍀`
+          );
+
+        return await ctx.sendMessage({ embeds: [embed] });
       }
     } catch (error) {
       console.error("Error in the 'use' command:", error);

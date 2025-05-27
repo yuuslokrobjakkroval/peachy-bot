@@ -61,6 +61,15 @@ module.exports = {
     work: "💼",
   },
 
+  // POTION
+  potion: {
+    vial: "<:VIAL:1376951912049410058>",
+    suval: "<:SUVAL:1376951903774048276>",
+    lantern: "<:LANTERN:1376951893795930253>",
+    alchemyKit: "<:ALCHEMYKIT:1376951768243765401>",
+    elementalorb: "<:ELEMENTALORB:1376951753391738953>",
+  },
+
   // OPTION
   result: {
     tick: "<:YES:1350683168545706064>",

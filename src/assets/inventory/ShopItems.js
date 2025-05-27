@@ -787,6 +787,168 @@ module.exports = [
     ],
   },
   {
+    name: "Potions",
+    description: `Magical potions to boost your luck!\n**・** \`pbuy {id}\` to buy an item`,
+    type: "potion",
+    inventory: [
+      {
+        id: "p001",
+        name: "Glow Potion",
+        description: "A radiant potion that boosts your gambling luck!",
+        type: "potion",
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: "<:ALCHEMYKIT:1376951768243765401>",
+        available: ["use", "sell"],
+        price: { buy: 550000, sell: 275000 },
+        luckDuration: Math.max(
+          60000,
+          Math.min(
+            600000,
+            Math.round(
+              (550000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
+            )
+          )
+        ), // ~3.3-6.6 min based on price
+        luckBoost: Math.max(
+          0.05,
+          Math.min(
+            0.3,
+            (550000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
+          )
+        ), // ~0.11-0.16 based on price
+      },
+      {
+        id: "p002",
+        name: "Frost Potion",
+        description: "A chilling potion that boosts your gambling luck!",
+        type: "potion",
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: "<:ELEMENTALORB:1376951753391738953>",
+        available: ["use", "sell"],
+        price: { buy: 650000, sell: 325000 },
+        luckDuration: Math.max(
+          60000,
+          Math.min(
+            600000,
+            Math.round(
+              (650000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
+            )
+          )
+        ), // ~3.9-7.8 min based on price
+        luckBoost: Math.max(
+          0.05,
+          Math.min(
+            0.3,
+            (650000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
+          )
+        ), // ~0.13-0.19 based on price
+      },
+      {
+        id: "p003",
+        name: "Shadow Potion",
+        description: "A dark potion that boosts your gambling luck!",
+        type: "potion",
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: "<:VIAL:1376951912049410058>",
+        available: ["use", "sell"],
+        price: { buy: 520000, sell: 260000 },
+        luckDuration: Math.max(
+          60000,
+          Math.min(
+            600000,
+            Math.round(
+              (520000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
+            )
+          )
+        ), // ~3.1-6.2 min based on price
+        luckBoost: Math.max(
+          0.05,
+          Math.min(
+            0.3,
+            (520000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
+          )
+        ), // ~0.10-0.15 based on price
+      },
+      {
+        id: "p004",
+        name: "Star Potion",
+        description: "A celestial potion that boosts your gambling luck!",
+        type: "potion",
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: "<:SUVAL:1376951903774048276>",
+        available: ["use", "sell"],
+        price: { buy: 680000, sell: 340000 },
+        luckDuration: Math.max(
+          60000,
+          Math.min(
+            600000,
+            Math.round(
+              (680000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
+            )
+          )
+        ), // ~4.1-8.2 min based on price
+        luckBoost: Math.max(
+          0.05,
+          Math.min(
+            0.3,
+            (680000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
+          )
+        ), // ~0.14-0.20 based on price
+      },
+      {
+        id: "p005",
+        name: "Mystic Potion",
+        description: "A mysterious potion that boosts your gambling luck!",
+        type: "potion",
+        able: {
+          use: true,
+          gift: false,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: "<:LANTERN:1376951893795930253>",
+        available: ["use", "sell"],
+        price: { buy: 620000, sell: 310000 },
+        luckDuration: Math.max(
+          60000,
+          Math.min(
+            600000,
+            Math.round(
+              (620000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
+            )
+          )
+        ), // ~3.7-7.4 min based on price
+        luckBoost: Math.max(
+          0.05,
+          Math.min(
+            0.3,
+            (620000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
+          )
+        ), // ~0.12-0.18 based on price
+      },
+    ],
+  },
+  {
     name: "Couple",
     description: `Ring items to connection your relationship!\n**・** \`pbuy {id}\` to buy an item`,
     type: "ring",
