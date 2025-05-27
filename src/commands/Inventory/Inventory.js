@@ -7,6 +7,10 @@ const {
 } = require("discord.js");
 const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
+const Woods = require("../../assets/inventory/Woods");
+const Minerals = require("../../assets/inventory/Minerals");
+const SlimeCategory = require("../../assets/inventory/SlimeCatalog");
+const Tools = require("../../assets/inventory/SlimeTools");
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = Inventory.filter((value) => value.price.buy !== 0).sort(
   (a, b) => a.price.buy - b.price.buy
@@ -21,9 +25,9 @@ module.exports = class Inventory extends Command {
         examples: ["inventory"],
         usage: "inventory",
       },
-      cooldown: 5,
       category: "inventory",
       aliases: ["inv"],
+      cooldown: 5,
       args: false,
       permissions: {
         dev: false,
@@ -52,6 +56,7 @@ module.exports = class Inventory extends Command {
       }
 
       // Define category icons/emojis for better visual distinction
+      // Include "resources" category
       const categoryIcons = {
         milk: "🥛",
         food: "🍔",
@@ -65,6 +70,7 @@ module.exports = class Inventory extends Command {
         "special theme": "✨",
         wallpaper: "🖼️",
         "credit card": "💳",
+        resources: "⛏️", // Icon for merged resources category
       };
 
       // Pagination settings
@@ -79,14 +85,23 @@ module.exports = class Inventory extends Command {
       let totalItems = 0;
 
       // Process inventory items
+      // Map woods, minerals, slime, tools to "resources"
       user.inventory.forEach((item) => {
         if (item.quantity > 0) {
-          const itemInfo = Items.concat(ImportantItems).find(
-            ({ id }) => id === item.id
-          );
+          const itemInfo = Items.concat(
+            ImportantItems,
+            Woods,
+            Minerals,
+            SlimeCategory,
+            Tools
+          ).find(({ id }) => id === item.id);
 
           if (itemInfo) {
-            const type = itemInfo.type;
+            // Map specific types to "resources"
+            let type = itemInfo.type;
+            if (["woods", "minerals", "slime", "tools"].includes(type)) {
+              type = "resources";
+            }
             itemList[type] = itemList[type] || [];
 
             // Format item name
@@ -95,25 +110,27 @@ module.exports = class Inventory extends Command {
               : client.utils.formatCapitalize(itemInfo.id);
 
             // Calculate item worth
-            const itemWorth = itemInfo.price.sell * item.quantity;
+            const itemWorth = (itemInfo.price?.sell || 0) * item.quantity;
 
             // Create item object
             const itemObj = {
               id: itemInfo.id,
-              emoji: itemInfo.emoji,
+              emoji: itemInfo.emoji || "📦",
               quantity: item.quantity,
               name: itemName,
               rarity: itemInfo.rarity || "common",
               worth: itemWorth,
               type: type,
-              display: `\`${itemInfo.id}\` ${itemInfo.emoji} ${itemName} **x${item.quantity}**`,
+              display: `\`${itemInfo.id}\` ${
+                itemInfo.emoji || "📦"
+              } ${itemName} **x${item.quantity}**`,
             };
 
             // Add to category list
             itemList[type].push(itemObj);
 
             // Update totals
-            if (itemInfo.price.sell) {
+            if (itemInfo.price?.sell) {
               totalWorth += itemWorth;
             }
             totalItems += item.quantity;
@@ -123,6 +140,7 @@ module.exports = class Inventory extends Command {
 
       // Calculate total pages for each category
       const categoryPages = {};
+      // Include "resources" instead of individual categories
       const inventoryTypes = [
         "milk",
         "food",
@@ -136,6 +154,7 @@ module.exports = class Inventory extends Command {
         "special theme",
         "wallpaper",
         "credit card",
+        "resources",
       ];
 
       inventoryTypes.forEach((type) => {
@@ -151,7 +170,7 @@ module.exports = class Inventory extends Command {
         inventoryTypes.forEach((type) => {
           const items = itemList[type];
           if (items && items.length > 0) {
-            // For overview, just show the first few items of each category
+            // For overview, show the first few items of each category
             const previewItems = items.slice(0, 3);
             const hasMore = items.length > 3;
 
@@ -214,7 +233,7 @@ module.exports = class Inventory extends Command {
       // Function to generate category embed (showing items of a specific category)
       const generateCategoryEmbed = (category, page) => {
         const items = itemList[category] || [];
-        const totalPages = categoryPages[category];
+        const totalPages = categoryPages[category] || 1;
 
         // Get items for the current page
         const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -331,9 +350,29 @@ module.exports = class Inventory extends Command {
         );
       };
 
+      // Function to generate components for the overview embed
+      const generateOverviewComponents = () => {
+        const components = [generateCategoryDropdown()];
+
+        // Add "View Resources" button if resources category has items
+        if (itemList.resources && itemList.resources.length > 0) {
+          const resourcesButton = new ButtonBuilder()
+            .setCustomId("view_resources")
+            .setLabel("View Resources")
+            .setStyle(ButtonStyle.Primary)
+            .setEmoji(categoryIcons.resources);
+
+          components.push(
+            new ActionRowBuilder().addComponents(resourcesButton)
+          );
+        }
+
+        return components;
+      };
+
       // Initial embed and components
       const initialEmbed = generateOverviewEmbed();
-      const initialComponents = [generateCategoryDropdown()];
+      const initialComponents = generateOverviewComponents();
 
       // Send the message with components
       const message = await ctx.sendMessage({
@@ -361,7 +400,7 @@ module.exports = class Inventory extends Command {
             // Show overview
             await interaction.update({
               embeds: [generateOverviewEmbed()],
-              components: [generateCategoryDropdown()],
+              components: generateOverviewComponents(),
             });
           } else {
             // Show category
@@ -375,6 +414,21 @@ module.exports = class Inventory extends Command {
               components: components,
             });
           }
+        }
+        // Handle "View Resources" button
+        else if (interaction.customId === "view_resources") {
+          currentView.category = "resources";
+          currentView.page = 1;
+
+          const components = [
+            generateCategoryDropdown(),
+            generatePaginationButtons("resources", 1),
+          ];
+
+          await interaction.update({
+            embeds: [generateCategoryEmbed("resources", 1)],
+            components: components,
+          });
         }
         // Handle pagination buttons
         else if (interaction.customId === "prev_page") {

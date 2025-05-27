@@ -2,6 +2,10 @@ const { Command } = require("../../structures/index.js");
 const Users = require("../../schemas/user");
 const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
+const Woods = require("../../assets/inventory/Woods");
+const Minerals = require("../../assets/inventory/Minerals");
+const SlimeCategory = require("../../assets/inventory/SlimeCatalog");
+const Tools = require("../../assets/inventory/SlimeTools");
 const {
   ActionRowBuilder,
   ButtonBuilder,
@@ -9,18 +13,23 @@ const {
   StringSelectMenuBuilder,
 } = require("discord.js");
 const MoreItems = ShopItems.flatMap((shop) => shop.inventory);
-const AllItems = [...ImportantItems, ...MoreItems].filter(
-  (item) => item.price.sell !== 0
-);
+const AllItems = [
+  ...ImportantItems,
+  ...MoreItems,
+  ...Woods,
+  ...Minerals,
+  ...SlimeCategory,
+  ...Tools,
+].filter((item) => item.price.sell !== 0);
 
 module.exports = class Sell extends Command {
   constructor(client) {
     super(client, {
       name: "sell",
       description: {
-        content: "Sell an item from your inventory.",
-        examples: ["sell coal", "sell all", "sell coal 5"],
-        usage: "sell <item_id> [amount]",
+        content: "Sell an item or category from your inventory.",
+        examples: ["sell coal", "sell resources", "sell coal 5", "sell all"],
+        usage: "sell <item_id | category> [amount]",
       },
       cooldown: 5,
       category: "inventory",
@@ -35,13 +44,14 @@ module.exports = class Sell extends Command {
       options: [
         {
           name: "items",
-          description: "The item you want to sell.",
+          description:
+            "The item or category you want to sell (e.g., 'coal' or 'resources').",
           type: 3,
           required: true,
         },
         {
           name: "amount",
-          description: "The amount of the item you want to sell.",
+          description: "The amount of the item to sell (omit for categories).",
           type: 3,
           required: false,
         },
@@ -50,6 +60,9 @@ module.exports = class Sell extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
     const sellMessages = language.locales.get(language.defaultLocale)
       ?.inventoryMessages?.sellMessages;
 
@@ -64,39 +77,71 @@ module.exports = class Sell extends Command {
         );
       }
 
-      const itemId = ctx.isInteraction
-        ? ctx.interaction.options.getString("items")
-        : args[0];
+      const input = ctx.isInteraction
+        ? ctx.interaction.options.getString("items").toLowerCase()
+        : args[0].toLowerCase();
+
+      // Define valid categories (consistent with inventory.js)
+      const validCategories = [
+        "milk",
+        "food",
+        "pet food",
+        "drink",
+        "cake",
+        "couple",
+        "ring",
+        "color",
+        "theme",
+        "special theme",
+        "wallpaper",
+        "credit card",
+        "resources",
+      ];
 
       // Handle "all" command to sell everything
-      if (itemId.toLowerCase() === "all") {
+      if (input === "all") {
         return await this.sellAllItems(
           client,
           ctx,
           user,
           color,
           emoji,
+          generalMessages,
+          sellMessages
+        );
+      }
+
+      // Handle category selling
+      if (validCategories.includes(input)) {
+        return await this.sellSpecificCategory(
+          client,
+          ctx,
+          user,
+          input,
+          color,
+          emoji,
+          generalMessages,
           sellMessages
         );
       }
 
       // Find the item in the database
-      const itemInfo = AllItems.find((item) => item.id === itemId);
+      const itemInfo = AllItems.find((item) => item.id === input);
       if (!itemInfo) {
         return await client.utils.sendErrorMessage(
           client,
           ctx,
-          sellMessages.itemNotFound.replace("{item}", itemId),
+          sellMessages.itemNotFound.replace("{item}", input),
           color
         );
       }
 
-      const hasItems = user.inventory.find((item) => item.id === itemId);
+      const hasItems = user.inventory.find((item) => item.id === input);
       if (!hasItems || hasItems.quantity <= 0) {
         return await client.utils.sendErrorMessage(
           client,
           ctx,
-          sellMessages.itemNotOwned.replace("{item}", itemInfo.name),
+          sellMessages.itemNotOwned.replace("{item}", itemInfo.name || input),
           color
         );
       }
@@ -105,7 +150,10 @@ module.exports = class Sell extends Command {
         return await client.utils.sendErrorMessage(
           client,
           ctx,
-          sellMessages.itemNotSellable.replace("{item}", itemInfo.name),
+          sellMessages.itemNotSellable.replace(
+            "{item}",
+            itemInfo.name || input
+          ),
           color
         );
       }
@@ -114,7 +162,7 @@ module.exports = class Sell extends Command {
         ? ctx.interaction.options.getString("amount") || "1"
         : args[1] || "1";
 
-      // Show interactive sell interface
+      // Show interactive sell interface for specific item
       return await this.showSellInterface(
         client,
         ctx,
@@ -124,6 +172,7 @@ module.exports = class Sell extends Command {
         quantity,
         color,
         emoji,
+        generalMessages,
         sellMessages
       );
     } catch (error) {
@@ -146,6 +195,7 @@ module.exports = class Sell extends Command {
     quantityInput,
     color,
     emoji,
+    generalMessages,
     sellMessages
   ) {
     // Parse the quantity
@@ -161,7 +211,11 @@ module.exports = class Sell extends Command {
     const embed = client
       .embed()
       .setColor(color.main)
-      .setTitle(`${itemInfo.emoji} ${itemInfo.name}`)
+      .setTitle(
+        `${itemInfo.emoji || "📦"} ${
+          itemInfo.name || client.utils.formatCapitalize(itemInfo.id)
+        }`
+      )
       .setDescription(
         `**${sellMessages.quantity.replace("{quantity}", quantity)}**\n` +
           `**${sellMessages.totalValue
@@ -175,9 +229,11 @@ module.exports = class Sell extends Command {
               client.utils.formatNumber(user.balance.coin)
             )}`
       )
-      .setThumbnail(client.utils.emojiToImage(itemInfo.emoji))
+      .setThumbnail(client.utils.emojiToImage(itemInfo.emoji || "📦"))
       .setFooter({
-        text: `You have ${hasItems.quantity}x ${itemInfo.name}`,
+        text: (
+          generalMessages?.requestedBy || "Requested by %{username}"
+        ).replace("%{username}", ctx.author.displayName),
         iconURL: ctx.author.displayAvatarURL(),
       });
 
@@ -200,25 +256,24 @@ module.exports = class Sell extends Command {
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(quantity >= hasItems.quantity);
 
-    // Create action buttons
+    // Create preset buttons
     const sellOneButton = new ButtonBuilder()
       .setCustomId("sell_one")
-      .setLabel(sellMessages.sellOne)
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("1️⃣");
+      .setLabel("1")
+      .setStyle(ButtonStyle.Secondary)
+      .setDisabled(quantity === 1);
 
     const sellHalfButton = new ButtonBuilder()
       .setCustomId("sell_half")
-      .setLabel(sellMessages.sellHalf)
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("2️⃣")
+      .setLabel("Half")
+      .setStyle(ButtonStyle.Secondary)
       .setDisabled(hasItems.quantity <= 1);
 
     const sellAllButton = new ButtonBuilder()
       .setCustomId("sell_all")
-      .setLabel(sellMessages.sellAllButtonLabel)
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji("3️⃣");
+      .setLabel("All")
+      .setStyle(ButtonStyle.Secondary)
+      .setDisabled(quantity === hasItems.quantity);
 
     const confirmButton = new ButtonBuilder()
       .setCustomId("confirm_sell")
@@ -327,7 +382,11 @@ module.exports = class Sell extends Command {
         const updatedEmbed = client
           .embed()
           .setColor(color.main)
-          .setTitle(`${itemInfo.emoji} ${itemInfo.name}`)
+          .setTitle(
+            `${itemInfo.emoji || "📦"} ${
+              itemInfo.name || client.utils.formatCapitalize(itemInfo.id)
+            }`
+          )
           .setDescription(
             `**${sellMessages.quantity.replace(
               "{quantity}",
@@ -347,9 +406,11 @@ module.exports = class Sell extends Command {
                   client.utils.formatNumber(user.balance.coin)
                 )}`
           )
-          .setThumbnail(client.utils.emojiToImage(itemInfo.emoji))
+          .setThumbnail(client.utils.emojiToImage(itemInfo.emoji || "📦"))
           .setFooter({
-            text: `You have ${hasItems.quantity}x ${itemInfo.name}`,
+            text: (
+              generalMessages?.requestedBy || "Requested by %{username}"
+            ).replace("%{username}", ctx.author.displayName),
             iconURL: ctx.author.displayAvatarURL(),
           });
 
@@ -366,16 +427,34 @@ module.exports = class Sell extends Command {
           increaseButton
         ).setDisabled(currentQuantity >= hasItems.quantity);
 
+        const updatedSellOneButton = ButtonBuilder.from(
+          sellOneButton
+        ).setDisabled(currentQuantity === 1);
+
+        const updatedSellHalfButton = ButtonBuilder.from(
+          sellHalfButton
+        ).setDisabled(hasItems.quantity <= 1);
+
+        const updatedSellAllButton = ButtonBuilder.from(
+          sellAllButton
+        ).setDisabled(currentQuantity === hasItems.quantity);
+
         const updatedQuantityRow = new ActionRowBuilder().addComponents(
           updatedDecreaseButton,
           updatedQuantityButton,
           updatedIncreaseButton
         );
 
+        const updatedPresetRow = new ActionRowBuilder().addComponents(
+          updatedSellOneButton,
+          updatedSellHalfButton,
+          updatedSellAllButton
+        );
+
         // Update the message
         await interaction.update({
           embeds: [updatedEmbed],
-          components: [updatedQuantityRow, presetRow, actionRow],
+          components: [updatedQuantityRow, updatedPresetRow, actionRow],
         });
       } catch (error) {
         console.error("Error in sell interaction:", error);
@@ -471,19 +550,19 @@ module.exports = class Sell extends Command {
             .setColor(color.success)
             .setDescription(
               sellMessages.itemSold
-                .replace("{emoji}", itemInfo.emoji)
+                .replace("{emoji}", itemInfo.emoji || "📦")
                 .replace("{quantity}", quantity)
-                .replace("{item}", itemInfo.name)
+                .replace(
+                  "{item}",
+                  itemInfo.name || client.utils.formatCapitalize(itemInfo.id)
+                )
                 .replace("{coinEmoji}", emoji.coin)
                 .replace("{price}", client.utils.formatNumber(totalSalePrice))
             )
             .setFooter({
-              text: sellMessages.remainingBalance
-                .replace("{coinEmoji}", "")
-                .replace(
-                  "{balance}",
-                  client.utils.formatNumber(updatedUser.balance.coin)
-                ),
+              text: (
+                generalMessages?.requestedBy || "Requested by %{username}"
+              ).replace("%{username}", ctx.author.displayName),
               iconURL: ctx.author.displayAvatarURL(),
             }),
         ],
@@ -503,7 +582,15 @@ module.exports = class Sell extends Command {
     }
   }
 
-  async sellAllItems(client, ctx, user, color, emoji, sellMessages) {
+  async sellAllItems(
+    client,
+    ctx,
+    user,
+    color,
+    emoji,
+    generalMessages,
+    sellMessages
+  ) {
     try {
       // Get all sellable items from the user's inventory
       const sellableItems = user.inventory.filter((item) => {
@@ -530,9 +617,9 @@ module.exports = class Sell extends Command {
           const value = itemInfo.price.sell * item.quantity;
           totalValue += value;
           itemsToSell.push({
-            id: item.id,
-            name: itemInfo.name,
-            emoji: itemInfo.emoji,
+            id: itemInfo.id,
+            name: itemInfo.name || client.utils.formatCapitalize(itemInfo.id),
+            emoji: itemInfo.emoji || "📦",
             quantity: item.quantity,
             value: value,
           });
@@ -554,17 +641,17 @@ module.exports = class Sell extends Command {
           value: itemsToSell
             .map(
               (item) =>
-                `${item.emoji} ${item.quantity}x ${item.name} - ${
-                  emoji.coin
-                } ${client.utils.formatNumber(item.value)}`
+                `${item.emoji} ${item.quantity}x \`${
+                  item.id
+                }\` -  **${client.utils.formatNumber(item.value)}**`
             )
             .join("\n")
             .substring(0, 1024),
         })
         .setFooter({
-          text: sellMessages.remainingBalance
-            .replace("{coinEmoji}", emoji.coin)
-            .replace("{balance}", client.utils.formatNumber(user.balance.coin)),
+          text: (
+            generalMessages?.requestedBy || "Requested by %{username}"
+          ).replace("%{username}", ctx.author.displayName),
           iconURL: ctx.author.displayAvatarURL(),
         });
 
@@ -578,7 +665,7 @@ module.exports = class Sell extends Command {
       const cancelButton = new ButtonBuilder()
         .setCustomId("cancel_sell_all")
         .setLabel(sellMessages.cancel)
-        .setStyle(ButtonStyle.Danger)
+        .setStyle(ButtonStyle.Secondary)
         .setEmoji("❌");
 
       const actionRow = new ActionRowBuilder().addComponents(
@@ -640,12 +727,9 @@ module.exports = class Sell extends Command {
                       .replace("{price}", client.utils.formatNumber(totalValue))
                   )
                   .setFooter({
-                    text: sellMessages.remainingBalance
-                      .replace("{coinEmoji}", "")
-                      .replace(
-                        "{balance}",
-                        client.utils.formatNumber(updatedUser.balance.coin)
-                      ),
+                    text: (
+                      generalMessages?.requestedBy || "Requested by %{username}"
+                    ).replace("%{username}", ctx.author.displayName),
                     iconURL: ctx.author.displayAvatarURL(),
                   }),
               ],
@@ -698,6 +782,234 @@ module.exports = class Sell extends Command {
       return message;
     } catch (error) {
       console.error("Error in sellAllItems:", error);
+      return await client.utils.sendErrorMessage(
+        client,
+        ctx,
+        sellMessages.sellError,
+        color
+      );
+    }
+  }
+
+  async sellSpecificCategory(
+    client,
+    ctx,
+    user,
+    category,
+    color,
+    emoji,
+    generalMessages,
+    sellMessages
+  ) {
+    try {
+      // Map category to item types (for resources, include woods, minerals, slime, tools)
+      const categoryTypes =
+        category === "resources"
+          ? ["woods", "minerals", "slime", "tools"]
+          : [category];
+
+      // Get sellable items from the specified category
+      const sellableItems = user.inventory.filter((item) => {
+        const itemInfo = AllItems.find((i) => i.id === item.id);
+        return (
+          itemInfo &&
+          itemInfo.price.sell > 0 &&
+          categoryTypes.includes(itemInfo.type)
+        );
+      });
+
+      if (sellableItems.length === 0) {
+        return await client.utils.sendErrorMessage(
+          client,
+          ctx,
+          sellMessages.noSellableItemsInCategory.replace(
+            "{category}",
+            client.utils.formatCapitalize(category)
+          ),
+          color
+        );
+      }
+
+      // Calculate total value
+      let totalValue = 0;
+      const itemsToSell = [];
+
+      for (const item of sellableItems) {
+        const itemInfo = AllItems.find((i) => i.id === item.id);
+        if (itemInfo) {
+          const value = itemInfo.price.sell * item.quantity;
+          totalValue += value;
+          itemsToSell.push({
+            id: itemInfo.id,
+            name: itemInfo.name || client.utils.formatCapitalize(itemInfo.id),
+            emoji: itemInfo.emoji || "📦",
+            quantity: item.quantity,
+            value: value,
+          });
+        }
+      }
+
+      // Create confirmation embed
+      const embed = client
+        .embed()
+        .setColor(color.warning)
+        .setTitle(sellMessages.sellConfirmation || "Sell Confirmation")
+        .setDescription(
+          sellMessages.sellCategory
+            .replace("{category}", client.utils.formatCapitalize(category))
+            .replace("{coinEmoji}", emoji.coin)
+            .replace("{price}", client.utils.formatNumber(totalValue))
+        )
+        .addFields({
+          name: sellMessages.sellableItems,
+          value: itemsToSell
+            .map(
+              (item) =>
+                `${item.emoji} ${item.quantity}x ${item.name} - ${
+                  emoji.coin
+                } ${client.utils.formatNumber(item.value)}`
+            )
+            .join("\n")
+            .substring(0, 1024),
+        })
+        .setFooter({
+          text: (
+            generalMessages?.requestedBy || "Requested by %{username}"
+          ).replace("%{username}", ctx.author.displayName),
+          iconURL: ctx.author.displayAvatarURL(),
+        });
+
+      // Create confirmation buttons
+      const confirmButton = new ButtonBuilder()
+        .setCustomId("confirm_sell_category")
+        .setLabel(sellMessages.confirm)
+        .setStyle(ButtonStyle.Success)
+        .setEmoji("✅");
+
+      const cancelButton = new ButtonBuilder()
+        .setCustomId("cancel_sell_category")
+        .setLabel(sellMessages.cancel)
+        .setStyle(ButtonStyle.Danger)
+        .setEmoji("❌");
+
+      const actionRow = new ActionRowBuilder().addComponents(
+        confirmButton,
+        cancelButton
+      );
+
+      // Send confirmation message
+      const message = await ctx.sendMessage({
+        embeds: [embed],
+        components: [actionRow],
+      });
+
+      // Create collector
+      const collector = message.createMessageComponentCollector({
+        filter: (i) => i.user.id === ctx.author.id,
+        time: 60000, // 1 minute timeout
+      });
+
+      collector.on("collect", async (interaction) => {
+        try {
+          if (interaction.customId === "confirm_sell_category") {
+            // Process the sale of all items in the category
+            let totalSold = 0;
+
+            // Update user's balance
+            await Users.updateOne(
+              { userId: ctx.author.id },
+              { $inc: { "balance.coin": totalValue } }
+            );
+
+            // Remove all sold items from inventory
+            for (const item of itemsToSell) {
+              await Users.updateOne(
+                { userId: ctx.author.id },
+                {
+                  $pull: {
+                    inventory: { id: item.id },
+                    equip: { id: item.id },
+                  },
+                }
+              );
+              totalSold += item.quantity;
+            }
+
+            // Get updated user data
+            const updatedUser = await Users.findOne({ userId: ctx.author.id });
+
+            // Send success message
+            await interaction.update({
+              embeds: [
+                client
+                  .embed()
+                  .setColor(color.success)
+                  .setDescription(
+                    sellMessages.sellCategorySuccess
+                      .replace(
+                        "{category}",
+                        client.utils.formatCapitalize(category)
+                      )
+                      .replace("{count}", itemsToSell.length)
+                      .replace("{coinEmoji}", emoji.coin)
+                      .replace("{price}", client.utils.formatNumber(totalValue))
+                  )
+                  .setFooter({
+                    text: (
+                      generalMessages?.requestedBy || "Requested by %{username}"
+                    ).replace("%{username}", ctx.author.displayName),
+                    iconURL: ctx.author.displayAvatarURL(),
+                  }),
+              ],
+              components: [],
+            });
+          } else if (interaction.customId === "cancel_sell_category") {
+            await interaction.update({
+              embeds: [
+                client
+                  .embed()
+                  .setColor(color.danger)
+                  .setDescription(sellMessages.sellCancelled),
+              ],
+              components: [],
+            });
+          }
+
+          collector.stop();
+        } catch (error) {
+          console.error("Error in sell category interaction:", error);
+          await interaction.update({
+            embeds: [
+              client
+                .embed()
+                .setColor(color.danger)
+                .setDescription(sellMessages.sellError),
+            ],
+            components: [],
+          });
+          collector.stop();
+        }
+      });
+
+      collector.on("end", async (collected, reason) => {
+        if (reason === "time") {
+          try {
+            // Disable all buttons
+            const disabledRow = new ActionRowBuilder().addComponents(
+              ButtonBuilder.from(confirmButton).setDisabled(true),
+              ButtonBuilder.from(cancelButton).setDisabled(true)
+            );
+
+            await message.edit({ components: [disabledRow] });
+          } catch (error) {
+            console.error("Error disabling buttons:", error);
+          }
+        }
+      });
+
+      return message;
+    } catch (error) {
+      console.error("Error in sellSpecificCategory:", error);
       return await client.utils.sendErrorMessage(
         client,
         ctx,

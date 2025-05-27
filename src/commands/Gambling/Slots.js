@@ -17,7 +17,7 @@ module.exports = class Slots extends Command {
       },
       category: "gambling",
       aliases: ["slot", "s"],
-      cooldown: 3,
+      cooldown: 5,
       args: false,
       permissions: {
         dev: false,
@@ -133,7 +133,6 @@ module.exports = class Slots extends Command {
       const isSpecialChannel = SPECIAL_CHANNELS.includes(ctx.channelId);
 
       if (isSpecialChannel) {
-        console.log(`Slots command used by user ${ctx.author.displayName}`);
         // Higher win rates for special channels
         if (rand <= 25) {
           win = baseCoins;

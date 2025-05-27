@@ -166,7 +166,9 @@ class ResourceManager {
         },
         {
           name: "Total Worth",
-          value: `${this.client.utils.formatNumber(totalWorth)} ${emoji.coin}`,
+          value: `**${this.client.utils.formatNumber(totalWorth)}** ${
+            emoji.coin
+          }`,
           inline: true,
         }
       )
