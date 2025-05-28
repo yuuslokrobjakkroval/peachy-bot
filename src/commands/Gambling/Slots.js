@@ -124,7 +124,7 @@ module.exports = class Slots extends Command {
         }
       );
 
-      // Decide the result of the slots with a conservative luck boost
+      // Decide the result of the slots with updated win probabilities
       let rslots = [];
       const rand = client.utils.getRandomNumber(1, 100);
       let win = 0;
@@ -133,51 +133,57 @@ module.exports = class Slots extends Command {
       let baseWinThreshold = 0;
       const luckBuff = client.luckBuffs?.get(ctx.author.id);
       const isLuckActive = luckBuff && luckBuff.expires > Date.now();
-      const luckBoost = isLuckActive ? Math.min(luckBuff.boost, 0.05) : 0; // Cap luck boost at 5%
+      const luckBoost = isLuckActive ? 10 : 0; // 10% boost for potion users
 
-      // Check if the current channel is a special channel
+      // Determine win probability based on user status and channel
       const isSpecialChannel = SPECIAL_CHANNELS.includes(ctx.channelId);
 
       if (isSpecialChannel) {
-        baseWinThreshold = 20; // Reduced from 25% to 20% for special channels
+        // Special channel: 50-65% win chance
+        baseWinThreshold = client.utils.getRandomNumber(50, 65);
       } else if (user.verification.isBlacklist) {
-        baseWinThreshold = 8; // Reduced from 10% to 8% for blacklisted users
+        // Blacklisted users: 10% win chance
+        baseWinThreshold = 10;
+      } else if (isLuckActive) {
+        // Potion users: 45-55% win chance
+        baseWinThreshold = client.utils.getRandomNumber(45, 55);
       } else {
-        baseWinThreshold = 15; // Reduced from 20% to 15% for regular users
+        // Normal users: 30-50% win chance
+        baseWinThreshold = client.utils.getRandomNumber(30, 50);
       }
 
-      const totalWinThreshold = Math.min(
-        baseWinThreshold + luckBoost * 100,
-        100
-      ); // Cap total win chance
+      const totalWinThreshold = Math.min(baseWinThreshold + luckBoost, 100); // Cap total win chance at 100%
 
       if (rand <= totalWinThreshold) {
-        if (rand <= baseWinThreshold * 0.1) {
-          // 10% of base threshold for 10x (very rare)
+        // Distribute win multipliers with adjusted probabilities
+        const winRand = client.utils.getRandomNumber(1, 100);
+        if (winRand <= 5) {
+          // 5% chance for 10x (very rare)
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-        } else if (rand <= baseWinThreshold * 0.2) {
-          // 10% of base threshold for 5x (rare)
+        } else if (winRand <= 15) {
+          // 10% chance for 5x (rare)
           win = baseCoins * 5;
           rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-        } else if (rand <= baseWinThreshold * 0.35) {
-          // 15% of base threshold for 4x
+        } else if (winRand <= 30) {
+          // 15% chance for 4x
           win = baseCoins * 4;
           rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-        } else if (rand <= baseWinThreshold * 0.5) {
-          // 15% of base threshold for 3x
+        } else if (winRand <= 50) {
+          // 20% chance for 3x
           win = baseCoins * 3;
           rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-        } else if (rand <= baseWinThreshold * 0.7) {
-          // 20% of base threshold for 2x
+        } else if (winRand <= 75) {
+          // 25% chance for 2x
           win = baseCoins * 2;
           rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
         } else {
-          // 30% of base threshold for 1x
+          // 25% chance for 1x
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
         }
       } else {
+        // Loss case: generate different slots
         const slot1 = Math.floor(Math.random() * SLOTS.length);
         let slot2 = Math.floor(Math.random() * SLOTS.length);
         let slot3 = Math.floor(Math.random() * SLOTS.length);
