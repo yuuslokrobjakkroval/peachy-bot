@@ -17,7 +17,7 @@ module.exports = class Slots extends Command {
       },
       category: "gambling",
       aliases: ["slot", "s"],
-      cooldown: 5,
+      cooldown: 3,
       args: false,
       permissions: {
         dev: false,
@@ -124,79 +124,119 @@ module.exports = class Slots extends Command {
         }
       );
 
-      // Decide the result of the slots with updated win probabilities
+      // Decide the result of the slots
       let rslots = [];
       const rand = client.utils.getRandomNumber(1, 100);
       let win = 0;
 
-      // Check for luck buff from potions
-      let baseWinThreshold = 0;
-      const luckBuff = client.luckBuffs?.get(ctx.author.id);
-      const isLuckActive = luckBuff && luckBuff.expires > Date.now();
-      const luckBoost = isLuckActive ? 10 : 0; // 10% boost for potion users
-
-      // Determine win probability based on user status and channel
+      // Check if the current channel is a special channel
       const isSpecialChannel = SPECIAL_CHANNELS.includes(ctx.channelId);
+      Logger.info(
+        `Slots command used in channel ${ctx.channelId} by user ${ctx.author.id}. Special channel: ${isSpecialChannel}`
+      );
 
       if (isSpecialChannel) {
-        // Special channel: 50-65% win chance
-        baseWinThreshold = client.utils.getRandomNumber(50, 65);
-      } else if (user.verification.isBlacklist) {
-        // Blacklisted users: 10% win chance
-        baseWinThreshold = 10;
-      } else if (isLuckActive) {
-        // Potion users: 45-55% win chance
-        baseWinThreshold = client.utils.getRandomNumber(45, 55);
-      } else {
-        // Normal users: 30-50% win chance
-        baseWinThreshold = client.utils.getRandomNumber(30, 50);
-      }
-
-      const totalWinThreshold = Math.min(baseWinThreshold + luckBoost, 100); // Cap total win chance at 100%
-
-      if (rand <= totalWinThreshold) {
-        // Distribute win multipliers with adjusted probabilities
-        const winRand = client.utils.getRandomNumber(1, 100);
-        if (winRand <= 5) {
-          // 5% chance for 10x (very rare)
-          win = baseCoins * 10;
-          rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
-        } else if (winRand <= 15) {
-          // 10% chance for 5x (rare)
-          win = baseCoins * 5;
-          rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-        } else if (winRand <= 30) {
-          // 15% chance for 4x
-          win = baseCoins * 4;
-          rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-        } else if (winRand <= 50) {
-          // 20% chance for 3x
-          win = baseCoins * 3;
-          rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-        } else if (winRand <= 75) {
-          // 25% chance for 2x
-          win = baseCoins * 2;
-          rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-        } else {
-          // 25% chance for 1x
+        // Higher win rates for special channels
+        if (rand <= 25) {
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
+        } else if (rand <= 38) {
+          win = baseCoins * 2;
+          rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
+        } else if (rand <= 48) {
+          win = baseCoins * 3;
+          rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
+        } else if (rand <= 56) {
+          win = baseCoins * 4;
+          rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
+        } else if (rand <= 62) {
+          win = baseCoins * 5;
+          rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
+        } else if (rand <= 65) {
+          win = baseCoins * 10;
+          rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
+        } else {
+          const slot1 = Math.floor(Math.random() * SLOTS.length);
+          let slot2 = Math.floor(Math.random() * SLOTS.length);
+          let slot3 = Math.floor(Math.random() * SLOTS.length);
+          if (slot2 === slot1)
+            slot2 =
+              (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          if (slot3 === slot1 || slot3 === slot2)
+            slot3 =
+              (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
+          win = 0;
+        }
+      } else if (user.verification.isBlacklist) {
+        if (rand <= 10) {
+          win = baseCoins;
+          rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
+        } else if (rand <= 12) {
+          win = baseCoins * 3;
+          rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
+        } else if (rand <= 13) {
+          win = baseCoins * 4;
+          rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
+        } else if (rand <= 15) {
+          win = baseCoins * 5;
+          rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
+        } else if (rand <= 18) {
+          win = baseCoins * 2;
+          rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
+        } else if (rand <= 20) {
+          win = baseCoins * 10;
+          rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
+        } else {
+          const slot1 = Math.floor(Math.random() * SLOTS.length);
+          let slot2 = Math.floor(Math.random() * SLOTS.length);
+          let slot3 = Math.floor(Math.random() * SLOTS.length);
+          if (slot2 === slot1)
+            slot2 =
+              (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          if (slot3 === slot1 || slot3 === slot2)
+            slot3 =
+              (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
       } else {
-        // Loss case: generate different slots
-        const slot1 = Math.floor(Math.random() * SLOTS.length);
-        let slot2 = Math.floor(Math.random() * SLOTS.length);
-        let slot3 = Math.floor(Math.random() * SLOTS.length);
-        if (slot2 === slot1)
-          slot2 =
-            (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
-            SLOTS.length;
-        if (slot3 === slot1 || slot3 === slot2)
-          slot3 =
-            (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
-            SLOTS.length;
-        rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
-        win = 0;
+        if (rand <= 20) {
+          win = baseCoins;
+          rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
+        } else if (rand <= 30) {
+          win = baseCoins * 2;
+          rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
+        } else if (rand <= 36) {
+          win = baseCoins * 3;
+          rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
+        } else if (rand <= 41) {
+          win = baseCoins * 4;
+          rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
+        } else if (rand <= 45) {
+          win = baseCoins * 5;
+          rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
+        } else if (rand <= 47.5) {
+          win = baseCoins * 10;
+          rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
+        } else {
+          const slot1 = Math.floor(Math.random() * SLOTS.length);
+          let slot2 = Math.floor(Math.random() * SLOTS.length);
+          let slot3 = Math.floor(Math.random() * SLOTS.length);
+          if (slot2 === slot1)
+            slot2 =
+              (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          if (slot3 === slot1 || slot3 === slot2)
+            slot3 =
+              (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
+          win = 0;
+        }
       }
 
       const newBalance = coin + win - baseCoins;

@@ -1,5 +1,5 @@
 const { Event } = require("../../structures/index.js");
-const Guild = require("../../schemas/guild"); // Assuming the guild model is in a models folder
+const Guild = require("../../schemas/guild");
 
 module.exports = class GuildDelete extends Event {
   constructor(client, file) {
@@ -27,9 +27,15 @@ module.exports = class GuildDelete extends Event {
     if (guildData.leaveCount >= 10 && !guildData.isBlacklisted) {
       guildData.isBlacklisted = true;
       guildData.blacklistReason = "Bot removed 10 or more times";
-      const logChannel = this.client.channels.cache.get(this.client.config.channel.log);
+      const logChannel = this.client.channels.cache.get(
+        this.client.config.channel.log
+      );
       if (logChannel) {
-        await logChannel.send(`Guild **${guild.name}** (ID: ${guild.id}) has been blacklisted due to excessive leaves (${guildData.leaveCount}).`).catch(console.error);
+        await logChannel
+          .send(
+            `Guild **${guild.name}** (ID: ${guild.id}) has been blacklisted due to excessive leaves (${guildData.leaveCount}).`
+          )
+          .catch(console.error);
       }
     }
     await guildData.save();
@@ -49,7 +55,9 @@ module.exports = class GuildDelete extends Event {
   }
 
   async sendGuildInfo(guild, owner, guildData) {
-    const channel = this.client.channels.cache.get(this.client.config.channel.log);
+    const channel = this.client.channels.cache.get(
+      this.client.config.channel.log
+    );
     if (!channel) {
       console.log("Log channel not found!");
       return;
@@ -59,37 +67,49 @@ module.exports = class GuildDelete extends Event {
 
     // Build the embed message
     const embed = this.client
-        .embed()
-        .setColor(this.client.color.danger)
-        .setAuthor({
-          name: guild.name,
-          iconURL: guild.iconURL({ format: "jpeg" }),
-        })
-        .setDescription(`**${guild.name}** has removed the bot.`)
-        .setThumbnail(guild.iconURL({ format: "jpeg" }))
-        .addFields([
-          { name: "Owner", value: owner.user.tag, inline: true },
-          { name: "ID", value: guild.id, inline: true },
-          { name: "Members", value: memberCount, inline: true },
-          { name: "Leave Count", value: guildData.leaveCount.toString(), inline: true },
-          { name: "Blacklisted", value: guildData.isBlacklisted ? "Yes" : "No", inline: true },
-          {
-            name: "Created At",
-            value: new Date(guild.createdTimestamp).toLocaleDateString('en-GB', {
-              day: '2-digit',        // DD (e.g., 25)
-              month: 'short',        // MMM (e.g., Feb)
-              year: 'numeric'        // YYYY (e.g., 2025)
-            }).replace(/ /g, ' - '), // Replace spaces with " - "
-            inline: true
-          },
-        ])
-        .setTimestamp()
-        .setFooter({
-          text: "Sorry to see you go!",
-          iconURL: this.client.user.displayAvatarURL(),
-        });
+      .embed()
+      .setColor(this.client.color.danger)
+      .setAuthor({
+        name: guild.name,
+        iconURL: guild.iconURL({ format: "jpeg" }),
+      })
+      .setDescription(`**${guild.name}** has removed the bot.`)
+      .setThumbnail(guild.iconURL({ format: "jpeg" }))
+      .addFields([
+        { name: "Owner", value: owner.user.tag, inline: true },
+        { name: "ID", value: guild.id, inline: true },
+        { name: "Members", value: memberCount, inline: true },
+        {
+          name: "Leave Count",
+          value: guildData.leaveCount.toString(),
+          inline: true,
+        },
+        {
+          name: "Blacklisted",
+          value: guildData.isBlacklisted ? "Yes" : "No",
+          inline: true,
+        },
+        {
+          name: "Created At",
+          value: new Date(guild.createdTimestamp)
+            .toLocaleDateString("en-GB", {
+              day: "2-digit", // DD (e.g., 25)
+              month: "short", // MMM (e.g., Feb)
+              year: "numeric", // YYYY (e.g., 2025)
+            })
+            .replace(/ /g, " - "), // Replace spaces with " - "
+          inline: true,
+        },
+      ])
+      .setTimestamp()
+      .setFooter({
+        text: "Sorry to see you go!",
+        iconURL: this.client.user.displayAvatarURL(),
+      });
 
     // Send the embed to the logging channel
-    await channel.send({ embeds: [embed] }).catch(err => console.error("Failed to send guild delete embed:", err));
+    await channel
+      .send({ embeds: [embed] })
+      .catch((err) => console.error("Failed to send guild delete embed:", err));
   }
 };
