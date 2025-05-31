@@ -202,22 +202,22 @@ module.exports = class Slots extends Command {
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
       } else {
-        if (rand <= 20) {
+        if (rand <= 24.5) {
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-        } else if (rand <= 30) {
+        } else if (rand <= 34.5) {
           win = baseCoins * 2;
           rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-        } else if (rand <= 36) {
+        } else if (rand <= 40) {
           win = baseCoins * 3;
           rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-        } else if (rand <= 41) {
+        } else if (rand <= 45) {
           win = baseCoins * 4;
           rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-        } else if (rand <= 45) {
+        } else if (rand <= 48) {
           win = baseCoins * 5;
           rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-        } else if (rand <= 47.5) {
+        } else if (rand <= 50) {
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
         } else {
