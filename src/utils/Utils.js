@@ -867,96 +867,40 @@ module.exports = class Utils {
       });
   }
 
-  static async sendErrorMessage(client, ctx, message, color, time) {
-    const embed = client.embed().setColor(color.danger).setDescription(message);
-    try {
-      let message;
-      if (ctx.isInteraction) {
-        if (ctx.interaction.deferred) {
-          message = ctx.interaction.editReply({
-            embeds: [embed],
-            flags: 64,
-          });
-        } else {
-          message = ctx.interaction.reply({
-            embeds: [embed],
-            flags: 64,
-          });
-        }
-      } else {
-        message = await ctx
-          .editMessage({
-            embeds: [embed],
-          })
-          .catch(
-            async () =>
-              await ctx.sendMessage({
-                embeds: [embed],
-              })
-          );
-      }
-      setTimeout(
-        () => {
-          if (message && message.deletable) {
-            message.delete().catch((error) => {
-              console.error("Error deleting success message:", error);
-            });
-          }
-        },
-        time ? time : 10000
-      );
-      return message;
-    } catch (error) {
-      console.error("Error sending success message:", error);
-      return null;
-    }
+  static sendErrorMessage(client, ctx, args, color, time) {
+    const embed = client.embed().setColor(color.danger).setDescription(args);
+
+    return ctx
+      .sendMessage({ embeds: [embed] })
+      .then((msg) => {
+        setTimeout(
+          () => {
+            msg.delete().catch(() => {});
+          },
+          time ? time : 10000
+        );
+      })
+      .catch((error) => {
+        console.error("Error sending error message:", error);
+      });
   }
 
-  static async sendSuccessMessage(client, ctx, args, color, time) {
+  static sendSuccessMessage(client, ctx, args, color, time) {
     const embed = client.embed().setColor(color.main).setDescription(args);
-    try {
-      let message;
-      if (ctx.isInteraction) {
-        if (ctx.interaction.deferred) {
-          message = await ctx.interaction.editReply({
-            embeds: [embed],
-            flags: 64,
-          });
-        } else {
-          message = await ctx.interaction.reply({
-            embeds: [embed],
-            flags: 64,
-            fetchReply: true,
-          });
-        }
-      } else {
-        message = await ctx
-          .editMessage({
-            embeds: [embed],
-          })
-          .catch(async () => {
-            return await ctx.sendMessage({
-              embeds: [embed],
-            });
-          });
-      }
 
-      setTimeout(
-        () => {
-          if (message && message.deletable) {
-            message.delete().catch((error) => {
-              console.error("Error deleting success message:", error);
-            });
-          }
-        },
-        time ? time : 10000
-      );
-
-      return message;
-    } catch (error) {
-      console.error("Error sending success message:", error);
-      return null;
-    }
+    return ctx
+      .sendMessage({ embeds: [embed] })
+      .then((msg) => {
+        setTimeout(
+          () => {
+            msg.delete().catch(() => {});
+          },
+          time ? time : 10000
+        );
+      })
+      .catch((error) => {
+        console.error("Error sending success message:", error);
+      });
   }
 
   static getZodiacSign(zodiacSign, day, month) {
