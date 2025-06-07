@@ -848,7 +848,10 @@ module.exports = class Utils {
   }
 
   static oops(client, ctx, args, color, time) {
-    const embed = client.embed().setColor(color.danger).setDescription(args);
+    const embed = this.client
+      .embed()
+      .setColor(color.danger)
+      .setDescription(args);
     return ctx
       .sendMessage({ embeds: [embed] })
       .then((msg) => {
@@ -865,7 +868,10 @@ module.exports = class Utils {
   }
 
   static async sendErrorMessage(ctx, client, message, color) {
-    const embed = client.embed().setColor(color.danger).setDescription(message);
+    const embed = this.client
+      .embed()
+      .setColor(color.danger)
+      .setDescription(message);
     try {
       let message;
       if (ctx.isInteraction) {

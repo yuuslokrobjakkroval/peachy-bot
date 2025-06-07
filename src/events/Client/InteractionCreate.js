@@ -231,7 +231,9 @@ module.exports = class InteractionCreate extends Event {
               "coinflip",
               "klaklouk",
             ];
+            
             const gameCommands = ["guessnumber", "post", "guess", "wallpaper"];
+
             let logChannelId;
             if (
               ["animals", "building"].includes(command.category.toLowerCase())

@@ -598,7 +598,7 @@ module.exports = class MessageCreate extends Event {
                 "guess",
                 "wallpaper",
               ];
-
+              
               try {
                 let logChannelId;
                 if (
@@ -610,7 +610,9 @@ module.exports = class MessageCreate extends Event {
                 } else if (["work"].includes(command.category.toLowerCase())) {
                   logChannelId = this.client.config.logChannelId[7];
                 } else if (
-                  ["giveaway"].includes(command.category.toLowerCase())
+                  ["giveaway"].includes(
+                    command.category.toLowerCase()
+                  )
                 ) {
                   logChannelId = this.client.config.logChannelId[6];
                 } else if (
