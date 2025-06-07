@@ -867,7 +867,7 @@ module.exports = class Utils {
       });
   }
 
-  static async sendErrorMessage(client, ctx, message, color) {
+  static async sendErrorMessage(client, ctx, message, color, time) {
     const embed = client.embed().setColor(color.danger).setDescription(message);
     try {
       let message;
