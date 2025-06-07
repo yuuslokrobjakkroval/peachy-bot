@@ -1898,8 +1898,8 @@ module.exports = class Utils {
       await this.sendErrorMessage(
         ctx,
         client,
-        color,
-        "Duration is missing or invalid. Please provide a valid duration like 1h, 1d, 1w, etc."
+        "Duration is missing or invalid. Please provide a valid duration like 1h, 1d, 1w, etc.",
+        color
       );
       return { success: false };
     }
@@ -1910,8 +1910,9 @@ module.exports = class Utils {
       await this.sendErrorMessage(
         client,
         ctx,
-        color,
-        "Invalid duration format. Please use a valid format like 1h, 1d, 1w, etc."
+        "Invalid duration format. Please use a valid format like 1h, 1d, 1w, etc.",
+
+        color
       );
       return { success: false };
     }
@@ -1921,8 +1922,8 @@ module.exports = class Utils {
       await this.sendErrorMessage(
         client,
         ctx,
-        color,
-        "Number of winners must be between 1 and 20."
+        "Number of winners must be between 1 and 20.",
+        color
       );
       return { success: false };
     }
