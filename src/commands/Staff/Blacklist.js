@@ -25,15 +25,18 @@ module.exports = class Blacklist extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const mention = ctx.isInteraction
-        ? ctx.interaction.options.getUser("user")
-        : ctx.message.mentions.members.first() ||
+      ? ctx.interaction.options.getUser("user")
+      : ctx.message.mentions.members.first() ||
         ctx.guild.members.cache.get(args[0]) ||
         args[0];
 
     if (!mention) {
       return await ctx.sendMessage({
         embeds: [
-          client.embed().setColor(color.danger).setDescription("Please mention a valid user."),
+          client
+            .embed()
+            .setColor(color.danger)
+            .setDescription("Please mention a valid user."),
         ],
       });
     }
@@ -46,30 +49,38 @@ module.exports = class Blacklist extends Command {
 
     if (typeof mention !== "string" && mention.bot) {
       return await client.utils.sendErrorMessage(
-          client,
-          ctx,
-          "You cannot blacklist a bot.",
-          color
+        client,
+        ctx,
+        "You cannot blacklist a bot.",
+        color
       );
     }
 
     if (user.verification.isBlacklist) {
       return await ctx.sendMessage({
         embeds: [
-          client.embed().setColor(color.danger).setDescription("This user is already blacklisted."),
+          client
+            .embed()
+            .setColor(color.danger)
+            .setDescription("This user is already blacklisted."),
         ],
       });
     }
 
     await Users.updateOne(
-        { userId },
-        { $set: { "verification.isBlacklist": true } },
-        { upsert: true }
+      { userId },
+      { $set: { "verification.isBlacklist": true } },
+      { upsert: true }
     ).exec();
 
     return await ctx.sendMessage({
       embeds: [
-        client.embed().setColor(color.main).setDescription(`${emoji.tick} Blacklisted **Successfully**.`),
+        client
+          .embed()
+          .setColor(color.main)
+          .setDescription(
+            `${globalEmoji.result.tick} Blacklisted **Successfully**.`
+          ),
       ],
     });
   }

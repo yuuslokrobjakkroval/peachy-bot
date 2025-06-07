@@ -867,11 +867,8 @@ module.exports = class Utils {
       });
   }
 
-  static async sendErrorMessage(ctx, client, message, color) {
-    const embed = this.client
-      .embed()
-      .setColor(color.danger)
-      .setDescription(message);
+  static async sendErrorMessage(client, ctx, message, color) {
+    const embed = client.embed().setColor(color.danger).setDescription(message);
     try {
       let message;
       if (ctx.isInteraction) {
@@ -915,32 +912,27 @@ module.exports = class Utils {
 
   static async sendSuccessMessage(client, ctx, args, color, time) {
     const embed = client.embed().setColor(color.main).setDescription(args);
-
     try {
       let message;
       if (ctx.isInteraction) {
         if (ctx.interaction.deferred) {
-          // If interaction is deferred, edit the deferred reply
           message = await ctx.interaction.editReply({
             embeds: [embed],
-            flags: 64, // Ephemeral message (optional, remove if not needed)
+            flags: 64,
           });
         } else {
-          // If not deferred, send a new reply
           message = await ctx.interaction.reply({
             embeds: [embed],
-            flags: 64, // Ephemeral message (optional, remove if not needed)
-            fetchReply: true, // Ensure we get the message object
+            flags: 64,
+            fetchReply: true,
           });
         }
       } else {
-        // For non-interaction (text-based commands)
         message = await ctx
           .editMessage({
             embeds: [embed],
           })
           .catch(async () => {
-            // Fallback to sendMessage if editMessage fails
             return await ctx.sendMessage({
               embeds: [embed],
             });
@@ -1958,8 +1950,8 @@ module.exports = class Utils {
   static async validateCommonParams(ctx, client, color, durationStr, winners) {
     if (!durationStr || typeof durationStr !== "string") {
       await this.sendErrorMessage(
-        ctx,
         client,
+        ctx,
         "Duration is missing or invalid. Please provide a valid duration like 1h, 1d, 1w, etc.",
         color
       );

@@ -25,48 +25,18 @@ module.exports = class AddMoney extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale
+    )?.generalMessages;
 
-    // Defer reply to handle potential delays
-    if (ctx.isInteraction) {
-      await ctx.interaction.deferReply();
-    } else {
-      await ctx.sendDeferMessage(`${client.user.username} is thinking...`);
-    }
-
-    // Parse user mention or ID
-    let mention = ctx.isInteraction
+    const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user") || ctx.author
-      : ctx.message.mentions.members.first()?.user ||
-        ctx.guild.members.cache.get(args[0])?.user ||
+      : ctx.message.mentions.members.first() ||
+        ctx.guild.members.cache.get(args[0]) ||
         args[0];
 
-    // Extract user ID from mention or input
-    let userId;
-    if (typeof mention === "string") {
-      // Handle raw mention (e.g., "<@926038347187634207>")
-      const match = mention.match(/^<@!?(\d+)>$/);
-      if (match) {
-        userId = match[1]; // Extract the numeric ID
-      } else {
-        // Try treating the input as a raw ID
-        userId = mention;
-      }
-    } else {
-      userId = mention.id;
-    }
+    const userId = typeof mention === "string" ? mention : mention.id;
 
-    // Validate userId is a snowflake (numeric and reasonable length)
-    if (!/^\d{17,19}$/.test(userId)) {
-      return await client.utils.sendErrorMessage(
-        client,
-        ctx,
-        generalMessages?.invalidUser || "Invalid user provided. Please mention a user or provide a valid user ID.",
-        color
-      );
-    }
-
-    // Fetch user from Discord API
     let syncUser;
     try {
       syncUser = await client.users.fetch(userId);
@@ -80,7 +50,6 @@ module.exports = class AddMoney extends Command {
       );
     }
 
-    // Check if user is a bot
     if (syncUser.bot) {
       return await client.utils.sendErrorMessage(
         client,
@@ -90,7 +59,6 @@ module.exports = class AddMoney extends Command {
       );
     }
 
-    // Fetch or create user in database
     let user = await Users.findOne({ userId: syncUser.id });
     if (!user) {
       user = new Users({
@@ -124,7 +92,8 @@ module.exports = class AddMoney extends Command {
         return await client.utils.sendErrorMessage(
           client,
           ctx,
-          generalMessages?.invalidAmount || "Invalid amount. Please provide a positive number (e.g., 100, 1k, 1m).",
+          generalMessages?.invalidAmount ||
+            "Invalid amount. Please provide a positive number (e.g., 100, 1k, 1m).",
           color
         );
       }
@@ -138,9 +107,9 @@ module.exports = class AddMoney extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${globalEmoji.result.tick} Added **${client.utils.formatNumber(baseCoins)}** ${
-          emoji.coin
-        } to ${syncUser.tag}'s balance.`
+        `${globalEmoji.result.tick} Added **${client.utils.formatNumber(
+          baseCoins
+        )}** ${emoji.coin} to ${syncUser.tag}'s balance.`
       );
 
     // Update user balance in database
@@ -155,7 +124,8 @@ module.exports = class AddMoney extends Command {
       return await client.utils.sendErrorMessage(
         client,
         ctx,
-        generalMessages?.databaseError || "An error occurred while updating the balance. Please try again.",
+        generalMessages?.databaseError ||
+          "An error occurred while updating the balance. Please try again.",
         color
       );
     }

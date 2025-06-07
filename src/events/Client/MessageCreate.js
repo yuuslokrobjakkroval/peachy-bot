@@ -142,7 +142,7 @@ module.exports = class MessageCreate extends Event {
               const embed = this.client
                 .embed()
                 .setColor(color.main)
-                .setTitle(`${emoji.mainLeft}  𝐏𝐄𝐀𝐂𝐇𝐘  ${emoji.mainRight}`)
+                .setTitle(`${emoji.mainLeft}  PEACHY  ${emoji.mainRight}`)
                 .setThumbnail(
                   ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
                 )
@@ -189,7 +189,7 @@ module.exports = class MessageCreate extends Event {
                           .embed()
                           .setColor(color.main)
                           .setTitle(
-                            `${emoji.mainLeft} 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 ${emoji.mainRight}`
+                            `${emoji.mainLeft} WELCOME ${emoji.mainRight}`
                           )
                           .setThumbnail(
                             ctx.author.displayAvatarURL({
@@ -243,7 +243,7 @@ module.exports = class MessageCreate extends Event {
                           .embed()
                           .setColor(color.main)
                           .setTitle(
-                            `${emoji.mainLeft} 𝐏𝐑𝐈𝐕𝐀𝐂𝐘 𝐏𝐎𝐋𝐈𝐂𝐘 ${emoji.mainRight}`
+                            `${emoji.mainLeft} PRIVACY POLICY ${emoji.mainRight}`
                           )
                           .setDescription(
                             `**Introduction**\n` +
@@ -364,7 +364,7 @@ module.exports = class MessageCreate extends Event {
                             size: 1024,
                           })
                         )
-                        .setTitle(`${emoji.mainLeft} 𝐏𝐄𝐀𝐂𝐇𝐘 ${emoji.mainRight}`)
+                        .setTitle(`${emoji.mainLeft} PEACHY ${emoji.mainRight}`)
                         .setDescription(
                           `Warming Gift for you ${emoji.congratulation}\nDear ${
                             ctx.author.displayName
@@ -372,7 +372,7 @@ module.exports = class MessageCreate extends Event {
                             gift
                           )} ${
                             emoji.coin
-                          } from 𝐏𝐄𝐀𝐂𝐇𝐘\n\nYou have successfully registered!\nYou can now use the bot.`
+                          } from PEACHY\n\nYou have successfully registered!\nYou can now use the bot.`
                         )
                         .setImage(globalGif.peachy);
                       await int.editReply({
@@ -400,7 +400,7 @@ module.exports = class MessageCreate extends Event {
                               })
                             )
                             .setTitle(
-                              `${emoji.mainLeft} 𝐓𝐇𝐀𝐍𝐊 𝐘𝐎𝐔 ${ctx.author.displayName} ${emoji.mainRight}`
+                              `${emoji.mainLeft} THANK YOU ${ctx.author.displayName} ${emoji.mainRight}`
                             )
                             .setDescription(
                               `Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`
@@ -598,7 +598,7 @@ module.exports = class MessageCreate extends Event {
                 "guess",
                 "wallpaper",
               ];
-              
+
               try {
                 let logChannelId;
                 if (
@@ -610,9 +610,7 @@ module.exports = class MessageCreate extends Event {
                 } else if (["work"].includes(command.category.toLowerCase())) {
                   logChannelId = this.client.config.logChannelId[7];
                 } else if (
-                  ["giveaway"].includes(
-                    command.category.toLowerCase()
-                  )
+                  ["giveaway"].includes(command.category.toLowerCase())
                 ) {
                   logChannelId = this.client.config.logChannelId[6];
                 } else if (

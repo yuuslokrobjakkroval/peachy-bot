@@ -72,7 +72,7 @@ module.exports = class BanUser extends Command {
     const embed = client
       .embed()
       .setColor(color.main)
-      .setDescription(`${emoji.tick} Unbanned **${mention}**.`);
+      .setDescription(`${globalEmoji.option.yes} Unbanned **${mention}**.`);
 
     return await ctx.sendMessage({ embeds: [embed] });
   }
