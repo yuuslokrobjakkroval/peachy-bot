@@ -39,6 +39,7 @@ Before you start, make sure you have the following ready:
 Follow these simple steps to bring Peachy-Bot to life on your server! 🌸
 
 ### 1. Clone the Fun! 🏠
+
 - Download or clone the project files to your computer.
 - Use Git Bash, Terminal, or your favorite tool:
   ```
@@ -47,6 +48,7 @@ Follow these simple steps to bring Peachy-Bot to life on your server! 🌸
 - If you don’t use Git, just download the ZIP from the repository and unzip it!
 
 ### 2. Install the Goodies! 📦
+
 - Open your terminal and navigate to the project folder:
   ```
   cd Peachy-Bot
@@ -58,13 +60,16 @@ Follow these simple steps to bring Peachy-Bot to life on your server! 🌸
 - This will download everything Peachy needs to run smoothly! 🎀
 
 ### 3. Configure Your Peach! 🛠️
+
 Peachy-Bot uses a `.env` file to store configuration settings, which you’ll need to create. Follow these steps to set it up:
 
 - **Create a `.env` File**:
+
   - In the root folder of the project (where `config.js` is), create a new file named `.env`.
   - You can do this in your text editor by right-clicking the folder > New File > name it `.env`.
 
 - **Add Environment Variables**:
+
   - Open the `.env` file and add the following variables. Replace the placeholder values with your own:
     ```
     NODE_ENV=PRODUCTION
@@ -93,6 +98,7 @@ Peachy-Bot uses a `.env` file to store configuration settings, which you’ll ne
     - `KEEP_ALIVE`: Set to `true` to keep the bot running on free hosting (e.g., Replit), `false` otherwise (default is `false`).
 
 - **Optional Channels**:
+
   - The `channel` object in `config.js` lists specific channel IDs for features like welcome messages, logs, and giveaways. You can update these in the `.env` file or directly in `config.js` if needed. Example:
     ```
     WELCOME_CHANNEL=1299416615275987025
@@ -106,6 +112,7 @@ Peachy-Bot uses a `.env` file to store configuration settings, which you’ll ne
   - Note: Add `.env` to your `.gitignore` file to keep it secret if you push to GitHub!
 
 ### 4. Launch the Adventure! 🚀
+
 - In your terminal, still in the project folder, run:
   ```
   node src/index.js
@@ -114,6 +121,7 @@ Peachy-Bot uses a `.env` file to store configuration settings, which you’ll ne
 - If you get errors, check the "Troubleshooting" section below.
 
 ### 5. Invite Your Buddy! 🚪
+
 - Go to the [Discord Developer Portal](https://discord.com/developers/applications).
 - Select your bot, go to the "OAuth2" tab, and use the URL Generator.
 - Check permissions like "Send Messages" and "Manage Roles."
@@ -126,21 +134,30 @@ Peachy-Bot uses a `.env` file to store configuration settings, which you’ll ne
 - Explore the `commands/` folder to see all the fun categories like `FUN/`, `GAMES/`, and `ECONOMY/`.
 
 ### ✨ Create Your Own Commands! ✨
+
 Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug` command as an example, where users can hug someone in the server with a cute embed message. Follow these steps:
 
 #### Step 1: Pick a Category
+
 - Go to the `src/commands/` folder. You’ll see folders like `FUN/`, `ACTIONS/`, and `ADMIN/`.
 - Since a `hug` command is playful, let’s put it in the `ACTIONS/` folder (same place as the `bite` command!).
 
 #### Step 2: Create a New File
+
 - Inside `src/commands/ACTIONS/`, create a new file called `hug.js`.
 - You can do this in your text editor (like VS Code) by right-clicking the `ACTIONS/` folder > New File > name it `hug.js`.
 
 #### Step 3: Add the Command Code
+
 - Open `hug.js` and paste the following code. This creates a simple `hug` command that sends a cute embed message!
+
   ```javascript
   const { Command } = require("../../structures/index.js");
-  const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+  const {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+  } = require("discord.js");
 
   module.exports = class Hug extends Command {
     constructor(client) {
@@ -206,7 +223,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
           .setImage(client.utils.emojiToImage("🤗")) // A cute hug emoji
           .setDescription(
             `${emoji.mainLeft || "🧡"} **HUG** ${emoji.mainRight || "🧡"}\n\n` +
-            `**${ctx.author.displayName}** gives **${target.displayName}** a big, warm hug! 🤗`
+              `**${ctx.author.displayName}** gives **${target.displayName}** a big, warm hug! 🤗`
           )
           .setFooter({
             text: `Requested by ${ctx.author.displayName}`,
@@ -234,7 +251,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
             if (i.user.id !== target.id) {
               i.reply({
                 content: "Only the person who was hugged can use this button!",
-                flags: 64, // Ephemeral message
+                flags: 64,
               });
               return false;
             }
@@ -285,6 +302,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
     }
   };
   ```
+
 - Let’s break down what this code does:
   - **Command Setup**: We define the `hug` command with a name, description, category, and permissions, just like the `bite` command.
   - **Target User**: It checks for a mentioned user (via slash command or mention) and handles errors if no user is mentioned or if someone tries to hug themselves.
@@ -293,6 +311,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
   - **Error Handling**: Catches any errors and sends a friendly message if something goes wrong.
 
 #### Step 4: Save and Test!
+
 - Save the `hug.js` file.
 - Restart the bot by running:
   ```
@@ -305,7 +324,9 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
 - You should see a cute embed message with a "Hug back" button! 🎉
 
 #### Step 5: Customize It!
+
 - Want to add more? You can tweak the embed message, add more buttons (like in the `bite` command), or change the emoji! For example, add more buttons like this:
+
   ```javascript
   const tickleButton = new ButtonBuilder()
     .setCustomId(`tickle_${ctx.author.id}_${target.id}`)
@@ -315,6 +336,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
 
   const row = new ActionRowBuilder().addComponents(hugBackButton, tickleButton);
   ```
+
 - Just make sure to update the `collector.on("collect", ...)` part to handle the new button, like the `bite` command does!
 
 ## ❓ Troubleshooting Tips ❓

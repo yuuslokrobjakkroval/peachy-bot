@@ -180,7 +180,7 @@ module.exports = class Kill extends Command {
           if (i.user.id !== target.id) {
             i.reply({
               content: "Only the person who was killed can use these buttons!",
-              flags: 64, // Using flags: 64 instead of ephemeral: true (64 = ephemeral flag)
+              flags: 64,
             });
             return false;
           }

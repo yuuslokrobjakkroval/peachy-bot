@@ -180,7 +180,7 @@ module.exports = class Emoji extends Command {
       if (interaction.user.id !== ctx.author.id) {
         return interaction.reply({
           content: "This button is not for you!",
-          flags: 64, // Using flags for ephemeral messages (64 = ephemeral)
+          flags: 64,
         });
       }
 
@@ -197,23 +197,21 @@ module.exports = class Emoji extends Command {
           });
           const buffer = Buffer.from(response.data);
 
-          // Create attachment with the correct format
           const attachment = new AttachmentBuilder(buffer, {
             name: `${emojiData.name}.${format}`,
           });
 
-          // Send the file using flags instead of ephemeral
           await interaction.reply({
             content: `Here's your emoji in ${format.toUpperCase()} format:`,
             files: [attachment],
-            flags: 64, // Using flags for ephemeral messages (64 = ephemeral)
+            flags: 64,
           });
         } catch (error) {
           console.error("Error downloading emoji:", error);
           await interaction.reply({
             content:
               "There was an error downloading the emoji. Please try again.",
-            flags: 64, // Using flags for ephemeral messages (64 = ephemeral)
+            flags: 64,
           });
         }
       }

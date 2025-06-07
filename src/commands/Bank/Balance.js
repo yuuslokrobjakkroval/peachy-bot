@@ -219,7 +219,7 @@ module.exports = class Balance extends Command {
                 "This balance menu belongs to someone else. Please use the balance command yourself."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         });
         return;
       }
@@ -235,7 +235,7 @@ module.exports = class Balance extends Command {
                 .setColor(color.danger)
                 .setDescription(generalMessages.userNotFound),
             ],
-            ephemeral: true,
+            flags: 64,
           });
           return;
         }
@@ -277,7 +277,7 @@ module.exports = class Balance extends Command {
                   "An error occurred while processing your request."
                 ),
             ],
-            ephemeral: true,
+            flags: 64,
           });
         } catch (followUpError) {}
       }
@@ -328,7 +328,7 @@ module.exports = class Balance extends Command {
                     .setColor(color.danger)
                     .setDescription("Please enter a valid amount."),
                 ],
-                ephemeral: true,
+                flags: 64,
               })
               .catch(() => {});
             return;
@@ -362,7 +362,7 @@ module.exports = class Balance extends Command {
                     .setColor(color.danger)
                     .setDescription("Please enter a valid amount."),
                 ],
-                ephemeral: true,
+                flags: 64,
               })
               .catch(() => {});
             return;
@@ -391,7 +391,7 @@ module.exports = class Balance extends Command {
                   "An error occurred while processing your request."
                 ),
             ],
-            ephemeral: true,
+            flags: 64,
           });
         } catch (followUpError) {}
       }
@@ -469,7 +469,7 @@ module.exports = class Balance extends Command {
                 `${emoji?.error || "❌"} You don't have any coins to deposit.`
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         });
         return;
       }
@@ -615,7 +615,7 @@ module.exports = class Balance extends Command {
                     "An error occurred while processing your request."
                   ),
               ],
-              ephemeral: true,
+              flags: 64,
             })
             .catch(() => {});
         }
@@ -650,7 +650,7 @@ module.exports = class Balance extends Command {
                 "An error occurred while creating deposit options. Please try again."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         })
         .catch(() => {});
     }
@@ -708,7 +708,7 @@ module.exports = class Balance extends Command {
                   } You don't have any coins in your bank to withdraw.`
                 ),
             ],
-            ephemeral: true,
+            flags: 64,
           })
           .catch(() => {});
         return;
@@ -855,7 +855,7 @@ module.exports = class Balance extends Command {
                     "An error occurred while processing your request."
                   ),
               ],
-              ephemeral: true,
+              flags: 64,
             })
             .catch(() => {});
         }
@@ -893,7 +893,7 @@ module.exports = class Balance extends Command {
                   } You don't have any coins in your bank to withdraw.`
                 ),
             ],
-            ephemeral: true,
+            flags: 64,
           })
           .catch(() => {});
         return;
@@ -909,7 +909,7 @@ module.exports = class Balance extends Command {
                 "An error occurred while creating withdraw options. Please try again."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         })
         .catch(() => {});
     }
@@ -954,7 +954,7 @@ module.exports = class Balance extends Command {
                 depositMessages.errors?.invalidAmount || "Invalid amount."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         })
         .catch(() => {});
       return;
@@ -972,7 +972,7 @@ module.exports = class Balance extends Command {
                   "You don't have enough coins."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         })
         .catch(() => {});
       return;
@@ -1016,7 +1016,7 @@ module.exports = class Balance extends Command {
                   )
               ),
           ],
-          ephemeral: false,
+          flags: 0,
         })
         .catch(() => {});
 
@@ -1053,7 +1053,7 @@ module.exports = class Balance extends Command {
                 "An error occurred while processing your deposit."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         })
         .catch(() => {});
     }
@@ -1098,7 +1098,7 @@ module.exports = class Balance extends Command {
                 withdrawMessages.errors?.invalidAmount || "Invalid amount."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         })
         .catch(() => {});
       return;
@@ -1116,7 +1116,7 @@ module.exports = class Balance extends Command {
                   "You don't have enough coins in your bank."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         })
         .catch(() => {});
       return;
@@ -1160,7 +1160,7 @@ module.exports = class Balance extends Command {
                   )
               ),
           ],
-          ephemeral: false,
+          flags: 0,
         })
         .catch(() => {});
 
@@ -1197,7 +1197,7 @@ module.exports = class Balance extends Command {
                 "An error occurred while processing your withdrawal."
               ),
           ],
-          ephemeral: true,
+          flags: 64,
         })
         .catch(() => {});
     }

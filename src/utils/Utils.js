@@ -1870,7 +1870,7 @@ module.exports = class Utils {
       ) {
         await interaction.reply({
           content: `You don't meet the level requirement (Level ${giveaway.requirements.minLevel}) for this giveaway.`,
-          ephemeral: true,
+          flags: 64,
         });
         return false;
       }
@@ -1887,7 +1887,7 @@ module.exports = class Utils {
       ) {
         await interaction.reply({
           content: `You don't have the required role <@&${giveaway.requirements.requiredRole}> to enter this giveaway.`,
-          ephemeral: true,
+          flags: 64,
         });
         return false;
       }

@@ -600,7 +600,7 @@ module.exports = class Shop extends Command {
         if (!item) {
           await interaction.reply({
             content: "Item not found.",
-            flags: 64, // Using flags for ephemeral messages (64 = ephemeral)
+            flags: 64,
           });
           return false;
         }
