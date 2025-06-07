@@ -12,7 +12,7 @@ module.exports = class Coinflip extends Command {
       },
       category: "gambling",
       aliases: ["flip", "cf"],
-      cooldown: 3,
+      cooldown: 5,
       args: true,
       permissions: {
         dev: false,
