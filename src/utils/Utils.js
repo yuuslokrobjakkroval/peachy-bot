@@ -884,16 +884,15 @@ module.exports = class Utils {
           });
         }
       } else {
-        message = ctx
+        message = await ctx
           .editMessage({
             embeds: [embed],
-            flags: 64,
           })
-          .catch(() =>
-            ctx.sendMessage({
-              embeds: [embed],
-              flags: 64,
-            })
+          .catch(
+            async () =>
+              await ctx.sendMessage({
+                embeds: [embed],
+              })
           );
       }
       setTimeout(
