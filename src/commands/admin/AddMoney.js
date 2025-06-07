@@ -72,7 +72,6 @@ module.exports = class AddMoney extends Command {
 
     const { coin, bank } = user.balance;
 
-    // Parse amount
     let amount = ctx.isInteraction
       ? ctx.interaction.options.data[1]?.value || 1
       : args[1] || 1;
@@ -102,7 +101,6 @@ module.exports = class AddMoney extends Command {
     const baseCoins = parseInt(amount);
     const newCoin = coin + baseCoins;
 
-    // Create success embed
     const embed = client
       .embed()
       .setColor(color.main)
@@ -112,7 +110,6 @@ module.exports = class AddMoney extends Command {
         )}** ${emoji.coin} to ${syncUser.tag}'s balance.`
       );
 
-    // Update user balance in database
     try {
       await Users.updateOne(
         { userId: syncUser.id },
@@ -130,13 +127,6 @@ module.exports = class AddMoney extends Command {
       );
     }
 
-    // Send success message
-    return await client.utils.sendSuccessMessage(
-      client,
-      ctx,
-      embed.description,
-      color,
-      5000
-    );
+    return await ctx.sendMessage({ embeds: [embed] });
   }
 };
