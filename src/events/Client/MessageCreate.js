@@ -602,6 +602,12 @@ module.exports = class MessageCreate extends Event {
               try {
                 let logChannelId;
                 if (
+                  ["admin", "staff", "developer", "guild"].includes(
+                    command.category.toLowerCase()
+                  )
+                ) {
+                  logChannelId = this.client.config.logChannelId[9];
+                } else if (
                   ["animals", "building"].includes(
                     command.category.toLowerCase()
                   )

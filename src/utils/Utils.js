@@ -896,13 +896,16 @@ module.exports = class Utils {
             })
           );
       }
-      setTimeout(() => {
-        if (message && message.deletable) {
-          message.delete().catch((error) => {
-            console.error("Error deleting success message:", error);
-          });
-        }
-      }, time || 10000);
+      setTimeout(
+        () => {
+          if (message && message.deletable) {
+            message.delete().catch((error) => {
+              console.error("Error deleting success message:", error);
+            });
+          }
+        },
+        time ? time : 10000
+      );
       return message;
     } catch (error) {
       console.error("Error sending success message:", error);
@@ -939,13 +942,16 @@ module.exports = class Utils {
           });
       }
 
-      setTimeout(() => {
-        if (message && message.deletable) {
-          message.delete().catch((error) => {
-            console.error("Error deleting success message:", error);
-          });
-        }
-      }, time || 10000);
+      setTimeout(
+        () => {
+          if (message && message.deletable) {
+            message.delete().catch((error) => {
+              console.error("Error deleting success message:", error);
+            });
+          }
+        },
+        time ? time : 10000
+      );
 
       return message;
     } catch (error) {

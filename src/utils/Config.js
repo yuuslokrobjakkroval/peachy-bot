@@ -26,6 +26,7 @@ const channel = {
   // LOGGER CATEGORIES
   log: "1289803142606622771",
   logAll: "1278729169340993721",
+  logAdmin: "1380904402335826000",
   logBalance: "1278728739760640093",
   logShop: "1287322335724044350",
   logGame: "1278728844110598195",
@@ -46,6 +47,7 @@ const logChannelId = [
   channel.logGiveaways,
   channel.logWork,
   channel.logAnimal,
+  channel.logAdmin,
 ];
 
 module.exports = {

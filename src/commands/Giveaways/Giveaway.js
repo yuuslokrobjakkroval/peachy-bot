@@ -77,7 +77,6 @@ module.exports = class Giveaway extends Command {
       language.defaultLocale
     )?.generalMessages;
 
-    // Defer reply to give us time to process
     if (ctx.isInteraction) {
       await ctx.interaction.deferReply();
     } else {

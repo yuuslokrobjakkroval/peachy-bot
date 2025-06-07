@@ -231,11 +231,18 @@ module.exports = class InteractionCreate extends Event {
               "coinflip",
               "klaklouk",
             ];
-            
-            const gameCommands = ["guessnumber", "post", "guess", "wallpaper"];
 
+            const gameCommands = ["guessnumber", "post", "guess", "wallpaper"];
+            console.log(command.category.toLowerCase());
+            console.log(["giveaway"].includes(command.category.toLowerCase()));
             let logChannelId;
             if (
+              ["admin", "staff", "developer", "guild"].includes(
+                command.category.toLowerCase()
+              )
+            ) {
+              logChannelId = this.client.config.logChannelId[9];
+            } else if (
               ["animals", "building"].includes(command.category.toLowerCase())
             ) {
               logChannelId = this.client.config.logChannelId[8];
