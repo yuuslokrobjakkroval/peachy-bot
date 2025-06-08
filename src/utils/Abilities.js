@@ -346,16 +346,16 @@ module.exports = class Ability {
                       .embed()
                       .setColor(globalConfig.color.main)
                       .setDescription(
-                        `# ${globalEmoji.giveaway.gift} 𝐆𝐈𝐅𝐓 𝐅𝐎𝐑 𝐈𝐍𝐕𝐈𝐓𝐄𝐑 ${
+                        `# ${globalEmoji.giveaway.gift} GIFT FOR INVITER ${
                           globalEmoji.giveaway.gift
-                        }\n${inviterMention} 𝒈𝒐𝒕 𝒓𝒆𝒘𝒂𝒓𝒅 **${client.utils.formatNumber(
+                        }\n${inviterMention} got reward **${client.utils.formatNumber(
                           300000
                         )}** ${
                           globalEmoji.coin
-                        }\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒇𝒐𝒓 𝒊𝒏𝒗𝒊𝒕𝒊𝒏𝒈 𝒂 𝒏𝒆𝒘 𝒎𝒆𝒎𝒃𝒆𝒓 𝒕𝒐 𝒕𝒉𝒆 𝒔𝒆𝒓𝒗𝒆𝒓! 𝑾𝒆 𝒂𝒑𝒑𝒓𝒆𝒄𝒊𝒂𝒕𝒆 𝒚𝒐𝒖𝒓 𝒉𝒆𝒍𝒑 𝒊𝒏 𝒈𝒓𝒐𝒘𝒊𝒏𝒈 𝒐𝒖𝒓 𝒄𝒐𝒎𝒎𝒖𝒏𝒊𝒕𝒚!`
+                        }\Thanks for inviting a new 𝒎𝒆𝒎𝒃𝒆𝒓 to the server! We apprecite your help in growing our 𝒄𝒐𝒎𝒎𝒖𝒏𝒊𝒕𝒚!`
                       )
                       .setFooter({
-                        text: "𝑬𝒏𝒋𝒐𝒚 𝒚𝒐𝒖𝒓 𝒓𝒆𝒘𝒂𝒓𝒅!",
+                        text: "Enjoy your reward!",
                         iconURL: client.utils.emojiToImage(
                           globalEmoji.timestamp
                         ),
@@ -913,8 +913,8 @@ module.exports = class Ability {
   }
 
   static getReplacementData(member, guild, invite, inviter, level) {
+    const user = this.client.getUser(member.id);
     const accountCreationDate = moment(member.user.createdAt).fromNow();
-
     const guildTotalBoosts = guild.premiumSubscriptionCount || 0;
     const guildBoostLevel = guild.premiumTier || 0;
     const boostsMissingForNext =
@@ -971,8 +971,12 @@ module.exports = class Ability {
       inviterbonusinvites: inviter?.bonusInvites || 0,
 
       // Level
-      oldLevel: level - 1 || 0,
-      level: level || 0,
+      oldLevel: user?.profile?.level - 1 || 0,
+      currentLevel: user?.profile?.level || 0,
+      nextLevel: user?.profile?.level + 1 || 0,
+      currentXP: user?.profile?.xp || 0,
+      requiredXP: user?.profile?.levelXp || 0,
+      xpGained: user?.profile?.lastXpGain || 0,
     };
   }
 
@@ -1057,7 +1061,6 @@ module.exports = class Ability {
         });
       }
 
-      // Set timestamp
       embed.setTimestamp();
 
       return embed;
