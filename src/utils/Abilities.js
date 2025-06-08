@@ -353,7 +353,7 @@ module.exports = class Ability {
                           300000
                         )}** ${
                           globalEmoji.coin
-                        }\Thanks for inviting a new 𝒎𝒆𝒎𝒃𝒆𝒓 to the server! We apprecite your help in growing our 𝒄𝒐𝒎𝒎𝒖𝒏𝒊𝒕𝒚!`
+                        }\nhanks for inviting a new member to the server! We apprecite your help in growing our community!`
                       )
                       .setFooter({
                         text: "Enjoy your reward!",
