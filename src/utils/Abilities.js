@@ -183,6 +183,7 @@ module.exports = class Ability {
               content: content
                 ? await client.abilities.replacePlaceholders(
                     client.abilities.getReplacementData(
+                      client,
                       member,
                       member.guild,
                       content
@@ -463,6 +464,7 @@ module.exports = class Ability {
               content: content
                 ? await client.abilities.replacePlaceholders(
                     client.abilities.getReplacementData(
+                      client,
                       member,
                       member.guild,
                       content
@@ -640,6 +642,7 @@ module.exports = class Ability {
               content: content
                 ? await client.abilities.replacePlaceholders(
                     client.abilities.getReplacementData(
+                      client,
                       member,
                       member.guild,
                       content
@@ -699,6 +702,7 @@ module.exports = class Ability {
               content: content
                 ? await client.abilities.replacePlaceholders(
                     client.abilities.getReplacementData(
+                      client,
                       member,
                       member.guild,
                       content
@@ -912,8 +916,10 @@ module.exports = class Ability {
     return str.replace(/\${(.*?)}/g, (_, key) => data[key] || `\${${key}}`); // Replace placeholders with data values
   }
 
-  static getReplacementData(member, guild, invite, inviter) {
-    const user = this.client.utils.getUser(member.id);
+  static getReplacementData(client, member, guild, invite, inviter) {
+    const user = client.utils.getUser(
+      member?.id ? member?.id : member?.user.id
+    );
     const accountCreationDate = moment(member.user.createdAt).fromNow();
     const guildTotalBoosts = guild.premiumSubscriptionCount || 0;
     const guildBoostLevel = guild.premiumTier || 0;
@@ -980,21 +986,13 @@ module.exports = class Ability {
     };
   }
 
-  static async resultMessage(
-    client,
-    member,
-    guild,
-    result,
-    invite,
-    inviter,
-    level
-  ) {
+  static async resultMessage(client, member, guild, result, invite, inviter) {
     const data = client.abilities.getReplacementData(
+      client,
       member,
       guild,
       invite,
-      inviter,
-      level
+      inviter
     );
 
     if (typeof result !== "object") {
