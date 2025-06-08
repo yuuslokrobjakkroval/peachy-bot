@@ -912,8 +912,8 @@ module.exports = class Ability {
     return str.replace(/\${(.*?)}/g, (_, key) => data[key] || `\${${key}}`); // Replace placeholders with data values
   }
 
-  static getReplacementData(member, guild, invite, inviter, level) {
-    const user = this.client.getUser(member.id);
+  static getReplacementData(member, guild, invite, inviter) {
+    const user = this.client.utils.getUser(member.id);
     const accountCreationDate = moment(member.user.createdAt).fromNow();
     const guildTotalBoosts = guild.premiumSubscriptionCount || 0;
     const guildBoostLevel = guild.premiumTier || 0;
