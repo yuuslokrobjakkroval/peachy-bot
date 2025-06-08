@@ -124,6 +124,7 @@ module.exports = class Ability {
         }
 
         if (levelingChannel) {
+          const userInfo = client.utils.getUser(message.member.id);
           levelingChannel.send({
             content: content
               ? await client.abilities.resultMessage(
@@ -133,7 +134,7 @@ module.exports = class Ability {
                   content,
                   null,
                   null,
-                  level
+                  userInfo
                 )
               : "",
           });
@@ -183,7 +184,6 @@ module.exports = class Ability {
               content: content
                 ? await client.abilities.replacePlaceholders(
                     client.abilities.getReplacementData(
-                      client,
                       member,
                       member.guild,
                       content
@@ -353,7 +353,7 @@ module.exports = class Ability {
                           300000
                         )}** ${
                           globalEmoji.coin
-                        }\nhanks for inviting a new member to the server! We apprecite your help in growing our community!`
+                        }\Thanks for inviting a new member to the server! We apprecite your help in growing our community!`
                       )
                       .setFooter({
                         text: "Enjoy your reward!",
@@ -464,7 +464,6 @@ module.exports = class Ability {
               content: content
                 ? await client.abilities.replacePlaceholders(
                     client.abilities.getReplacementData(
-                      client,
                       member,
                       member.guild,
                       content
@@ -642,7 +641,6 @@ module.exports = class Ability {
               content: content
                 ? await client.abilities.replacePlaceholders(
                     client.abilities.getReplacementData(
-                      client,
                       member,
                       member.guild,
                       content
@@ -702,7 +700,6 @@ module.exports = class Ability {
               content: content
                 ? await client.abilities.replacePlaceholders(
                     client.abilities.getReplacementData(
-                      client,
                       member,
                       member.guild,
                       content
@@ -889,7 +886,6 @@ module.exports = class Ability {
         const { channel, content } = levelingMessage;
         const levelingChannel = member.guild.channels.cache.get(channel);
         const userInfo = await client.utils.getUser(member.id);
-        const level = userInfo.profile.level || 0;
         if (levelingChannel) {
           levelingChannel.send({
             content: content
@@ -900,7 +896,7 @@ module.exports = class Ability {
                   content,
                   null,
                   null,
-                  level
+                  userInfo
                 )
               : "",
           });
@@ -916,10 +912,7 @@ module.exports = class Ability {
     return str.replace(/\${(.*?)}/g, (_, key) => data[key] || `\${${key}}`); // Replace placeholders with data values
   }
 
-  static getReplacementData(client, member, guild, invite, inviter) {
-    const user = client.utils.getUser(
-      member?.id ? member?.id : member?.user.id
-    );
+  static getReplacementData(member, guild, invite, inviter, user) {
     const accountCreationDate = moment(member.user.createdAt).fromNow();
     const guildTotalBoosts = guild.premiumSubscriptionCount || 0;
     const guildBoostLevel = guild.premiumTier || 0;
@@ -986,13 +979,21 @@ module.exports = class Ability {
     };
   }
 
-  static async resultMessage(client, member, guild, result, invite, inviter) {
+  static async resultMessage(
+    client,
+    member,
+    guild,
+    result,
+    invite,
+    inviter,
+    userInfo
+  ) {
     const data = client.abilities.getReplacementData(
-      client,
       member,
       guild,
       invite,
-      inviter
+      inviter,
+      userInfo
     );
 
     if (typeof result !== "object") {
