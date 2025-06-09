@@ -337,7 +337,7 @@ const st20 = {
 };
 
 // Diary Cat ( ST22 )
-const st22 = {
+const st21 = {
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -605,7 +605,7 @@ module.exports = {
   st10,
   st0705,
   st20,
-  st22,
+  st21,
 
   // ---------- //
   // SUPPORTER THEME
