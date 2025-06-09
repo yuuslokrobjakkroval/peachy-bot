@@ -2138,6 +2138,22 @@ module.exports = [
         available: ["use"],
         price: { buy: 5e7, sell: 45e6 },
       },
+      {
+        id: "st21",
+        name: "Diary Cat",
+        description:
+          "Step into a cozy, cat-filled diary world with handwritten charm and purr-fect details!",
+        type: "special theme",
+        able: {
+          use: true,
+          gift: true,
+          multiple: false,
+        },
+        quantity: 1,
+        emoji: emoji.specialTheme.diaryCat,
+        available: ["use"],
+        price: { buy: 5e7, sell: 45e6 },
+      },
     ],
   },
 ];

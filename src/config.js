@@ -336,6 +336,21 @@ const st20 = {
   },
 };
 
+// Diary Cat ( ST22 )
+const st22 = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xfed16a,
+    none: 0x2b2d31,
+  },
+};
+
 // SPIDER MAN FOR ANGKOR PARIS ( ST11 )
 const st11 = {
   color: {
@@ -589,7 +604,8 @@ module.exports = {
   st09,
   st10,
   st0705,
-  st20, // ST15
+  st20,
+  st22,
 
   // ---------- //
   // SUPPORTER THEME
@@ -597,7 +613,7 @@ module.exports = {
   st12,
   st13,
   st14,
-  st15, // ST15
+  st15,
 
   st1801,
   st0118,

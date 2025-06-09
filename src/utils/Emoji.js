@@ -215,6 +215,7 @@ module.exports = {
     springBear: "<:BEARMAIN:1350667843926102067>",
     pandachef: "<:PDMAIN:1369698779942617229>",
     tangerineDepth: "<:frenchbulldog:1372178375623446589>",
+    diaryCat: "<:NCMAIN:1381632861135700150>",
 
     // SUPPORTER
     duckling: "<:DMAIN:1350668515857793026>",
