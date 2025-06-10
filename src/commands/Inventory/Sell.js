@@ -6,12 +6,7 @@ const Woods = require("../../assets/inventory/Woods");
 const Minerals = require("../../assets/inventory/Minerals");
 const SlimeCategory = require("../../assets/inventory/SlimeCatalog");
 const Tools = require("../../assets/inventory/SlimeTools");
-const {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  StringSelectMenuBuilder,
-} = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const MoreItems = ShopItems.flatMap((shop) => shop.inventory);
 const AllItems = [
   ...ImportantItems,
@@ -356,6 +351,7 @@ module.exports = class Sell extends Command {
               interaction,
               color,
               emoji,
+              generalMessages,
               sellMessages
             );
             collector.stop();
@@ -508,6 +504,7 @@ module.exports = class Sell extends Command {
     interaction,
     color,
     emoji,
+    generalMessages,
     sellMessages
   ) {
     try {
