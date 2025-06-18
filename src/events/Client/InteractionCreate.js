@@ -232,9 +232,8 @@ module.exports = class InteractionCreate extends Event {
               "klaklouk",
             ];
 
-            const gameCommands = ["guessnumber", "post", "guess", "wallpaper"];
-            console.log(command.category.toLowerCase());
-            console.log(["giveaway"].includes(command.category.toLowerCase()));
+            const gameCommands = ["guessnumber"];
+
             let logChannelId;
             if (
               ["admin", "staff", "developer", "guild"].includes(

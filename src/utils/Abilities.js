@@ -114,11 +114,12 @@ module.exports = class Ability {
 
       if (levelingMessage) {
         const { channel, content } = levelingMessage;
-        const levelingChannel = member.guild.channels.cache.get(channel);
+        const levelingChannel =
+          message.member.guild.channels.cache.get(channel);
 
         if (!levelingChannel) {
           console.warn(
-            `Leveling channel ${channel} not found in guild ${member.guild.name}.`
+            `Leveling channel ${channel} not found in guild ${message.member.guild.name}.`
           );
           return;
         }
