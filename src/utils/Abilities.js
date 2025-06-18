@@ -58,7 +58,16 @@ module.exports = class Ability {
 
               await InviteSchema.updateOne(
                 { inviteCode: invite.code },
-                { $set: data },
+                {
+                  $set: {
+                    guildId: guild.id,
+                    guildName: guild.name,
+                    inviterId: invite.inviter?.id || "Unknown",
+                    inviterTag: invite.inviter?.tag || "Unknown",
+                  },
+                  $max: { uses: invite.uses },
+                  $setOnInsert: { userId: [] },
+                },
                 { upsert: true }
               );
             })
