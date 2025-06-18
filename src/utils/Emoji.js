@@ -227,6 +227,7 @@ module.exports = {
     enchantedCatLake: "<:ENCHANTEDMALE:1353727486797807687>",
     yuyuzu: "<:YUYUZUMAIN:1353730318716113026>",
     yara: "<:YRX10:1374396262190678147>",
+    catana: "<:CATANAMAIN:1384795614306500629>",
   },
 
   // EXCHANGE

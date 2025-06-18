@@ -195,6 +195,21 @@ module.exports = [
     price: { buy: 1e10, sell: 15e6 },
   },
   {
+    id: "st2025",
+    name: "Cat Ana",
+    description: "Inviter theme",
+    type: "special theme",
+    able: {
+      use: true,
+      gift: true,
+      multiple: false,
+    },
+    quantity: 1,
+    emoji: emoji.specialTheme.catana,
+    available: ["use"],
+    price: { buy: 1e10, sell: 15e6 },
+  },
+  {
     id: "bc",
     name: "Black Card",
     description: "this card have limit 100 million coins",
