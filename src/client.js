@@ -85,12 +85,14 @@ client.on(
   "guildMemberAdd",
   async (member) => await client.abilities.getWelcomeMessage(client, member)
 );
+
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (oldMember.premiumSince === null && newMember.premiumSince !== null) {
     // Member has just boosted the server
     await client.abilities.getBoosterMessage(client, newMember);
   }
 });
+
 client.on("guildMemberRemove", async (member) => {
   try {
     await client.abilities.getGoodByeMessage(client, member);
@@ -98,17 +100,15 @@ client.on("guildMemberRemove", async (member) => {
     console.error("Error in getGoodByeMessage:", error);
   }
 });
+
 client.on(
   "messageCreate",
   async (message) => await client.abilities.getAutoResponse(client, message)
 );
+
 client.on(
   "inviteCreate",
   async (invite) => await client.abilities.getInviteCreate(invite)
-);
-client.on(
-  "inviteDelete",
-  async (invite) => await client.abilities.getInviteDelete(invite)
 );
 
 setInterval(async () => {
