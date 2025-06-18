@@ -287,8 +287,16 @@ module.exports = class Slots extends Command {
         .setColor(color.main)
         .setThumbnail(
           win === 0
-            ? client.utils.emojiToImage(globalEmoji.option.lose)
-            : client.utils.emojiToImage(globalEmoji.option.win)
+            ? client.utils.emojiToImage(
+                emoji?.result
+                  ? client.utils.getRandomElement(emoji?.result?.lose)
+                  : globalEmoji.option.lose
+              )
+            : client.utils.emojiToImage(
+                emoji?.result
+                  ? client.utils.getRandomElement(emoji?.result?.win)
+                  : globalEmoji.option.win
+              )
         )
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${

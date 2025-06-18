@@ -4,7 +4,7 @@ module.exports = {
   exp: "<:KYEXP:1350691993743003689>",
   main: "<:CATANAMAIN:1384795614306500629>",
   mainLeft: "<:CATANALEFT:1384794146145046609>",
-  mainRight: "<:CATANARIGHT:1384794385631416443>",
+  mainRight: "<:CATANARIGHT:1384801275337773056>",
   help: {
     category: "📚",
     actions: "<:CATANAACTIONS:1384793471029612644>",
@@ -76,5 +76,15 @@ module.exports = {
     libra: "<:LIBRA:1342746973664575568>",
     scorpio: "<:SCORPIO:1342746996733247528>",
     sagittarius: "<:SAGITTARIUS:1342746987925078077>",
+  },
+  result: {
+    win: [
+      "<:CATANAWIN:1384798074949599313>",
+      "<:CATANAWINII:1384798093115129926>",
+    ],
+    lose: [
+      "<:CATANALOSEI:1384798153529888798>",
+      "<:CATANALOSEII:1384798169229037589>",
+    ],
   },
 };
