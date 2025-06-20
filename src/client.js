@@ -118,14 +118,14 @@ client.on("messageCreate", async (message) => {
   ) {
     const channelId = message.channel.id;
     messageCount.set(channelId, (messageCount.get(channelId) || 0) + 1);
-    if (messageCount.get(channelId) === 3) {
+    if (messageCount.get(channelId) === 10) {
       const embed = client
         .embed()
         .setColor(client.color.main)
         .setTitle("Surprise Drop!")
         .setDescription("Claim your coins now!")
         .addFields({
-          name: "Amount",
+          name: "Lucky Coin",
           value: `${client.utils.formatNumber(
             Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000
           )} ${client.emoji.coin}`,
