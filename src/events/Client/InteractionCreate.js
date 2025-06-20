@@ -13,8 +13,11 @@ const {
   // TextInputStyle, zStringSelectMenuBuilder, EmbedBuilder,
 } = require("discord.js");
 // const JoinToCreateSchema = require('../../schemas/joinToCreate');
+const users = require("../../schemas/user");
 const GiveawaySchema = require("../../schemas/giveaway");
 const GiveawayShopItemSchema = require("../../schemas/giveawayShopItem");
+const userCaptcha = require("../../schemas/userCaptcha");
+const verifySchema = require("../../schemas/verificationCaptcha");
 const globalGif = require("../../utils/Gif");
 const globalEmoji = require("../../utils/Emoji");
 const globalConfig = require("../../utils/Config");
@@ -936,6 +939,87 @@ module.exports = class InteractionCreate extends Event {
 
               if (!meetsRequirements) return;
               break;
+            }
+
+            case "modal": {
+              await interaction.deferReply({ ephemeral: true });
+
+              const Data = await verifySchema.findOne({ Guild: guild.id });
+              const UserData = await userCaptcha.findOne({
+                User: interaction.user.id,
+              });
+
+              if (!UserData) return; // No captcha data found for the user
+
+              const answer = interaction.fields.getTextInputValue("answer");
+
+              if (answer !== UserData.Captcha)
+                return await interaction.editReply({
+                  content: "That was wrong! try again.",
+                  ephemeral: true,
+                });
+              else {
+                // Correct captcha
+                const roleID = Data.Role;
+                const veriGuild = await client.guilds.fetch(guild.id);
+                const member = await veriGuild.members.fetch(
+                  interaction.user.id
+                );
+                await member.roles.add(roleID).catch((err) => {
+                  interaction.editReply({
+                    content: "There was an error.",
+                    ephemeral: true,
+                  });
+                });
+
+                await interaction.editReply({
+                  content: "You have been verified.",
+                });
+              }
+            }
+
+            case "claim": {
+              const userId = interaction.user.id;
+              const user = await users.findOne({ userId });
+
+              if (!user) {
+                await interaction.reply({
+                  content:
+                    "You do not have an account. Create one to claim rewards.",
+                  ephemeral: true,
+                });
+              } else {
+                const claimedCoins =
+                  Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
+
+                await users.findOneAndUpdate(
+                  { userId },
+                  { $inc: { "balance.coin": claimedCoins } }
+                );
+
+                const row = new ActionRowBuilder().addComponents(
+                  new ButtonBuilder()
+                    .setCustomId("claim")
+                    .setLabel("Claimed")
+                    .setEmoji("🕔")
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(true)
+                );
+
+                const embed = this.client
+                  .embed()
+                  .setColor(this.client.color.main)
+                  .setDescription(
+                    `Claim successful! ${this.client.utils.formatNumber(
+                      claimedCoins
+                    )} ${this.client.emoji.coin} added to your balance.`
+                  );
+
+                await interaction.update({
+                  embeds: [embed],
+                  components: [row],
+                });
+              }
             }
 
             default:

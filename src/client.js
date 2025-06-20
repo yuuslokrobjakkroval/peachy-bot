@@ -1,4 +1,10 @@
-const { Partials, GatewayIntentBits } = require("discord.js");
+const {
+  Partials,
+  GatewayIntentBits,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+} = require("discord.js");
 const {
   GuildMembers,
   GuildPresences,
@@ -18,6 +24,8 @@ const PeachyClient = require("./structures/Client.js");
 const EconomyManager = require("./managers/EconomyManager");
 const ResourceManager = require("./managers/ResourceManager");
 const cron = require("node-cron");
+
+let messageCount = new Map();
 
 const clientOptions = {
   partials: [
@@ -101,10 +109,42 @@ client.on("guildMemberRemove", async (member) => {
   }
 });
 
-client.on(
-  "messageCreate",
-  async (message) => await client.abilities.getAutoResponse(client, message)
-);
+client.on("messageCreate", async (message) => {
+  if (!message.guild) return;
+
+  if (
+    message.content.startsWith(globalConfig.prefix) ||
+    message.content.startsWith(globalConfig.prefix.toLowerCase())
+  ) {
+    const channelId = message.channel.id;
+    messageCount.set(channelId, (messageCount.get(channelId) || 0) + 1);
+    if (messageCount.get(channelId) === 3) {
+      const embed = client
+        .embed()
+        .setColor(client.color.main)
+        .setTitle("Surprise Drop!")
+        .setDescription("Claim your coins now!")
+        .addFields({
+          name: "Amount",
+          value: `${client.utils.formatNumber(
+            Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000
+          )} ${client.emoji.coin}`,
+        });
+
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setCustomId("claim")
+          .setLabel("Claim")
+          .setEmoji("🎁")
+          .setStyle(ButtonStyle.Primary)
+      );
+
+      message.channel.send({ embeds: [embed], components: [row] });
+      messageCount = new Map();
+    }
+  }
+  await client.abilities.getAutoResponse(client, message);
+});
 
 client.on(
   "inviteCreate",
