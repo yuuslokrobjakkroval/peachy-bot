@@ -1010,7 +1010,7 @@ module.exports = class InteractionCreate extends Event {
                   .embed()
                   .setColor(this.client.color.main)
                   .setDescription(
-                    `Claim successful! ${this.client.utils.formatNumber(
+                    `Congratulations to <@${userId}> ! Claim successful! ${this.client.utils.formatNumber(
                       claimedCoins
                     )} ${this.client.emoji.coin} added to your balance.`
                   );
