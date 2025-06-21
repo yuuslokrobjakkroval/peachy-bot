@@ -4,6 +4,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  Events,
 } = require("discord.js");
 const {
   GuildMembers,
@@ -16,6 +17,7 @@ const {
   GuildMessageTyping,
   GuildMessageReactions,
 } = GatewayIntentBits;
+const AntiLinkSchema = require("./schemas/antiLink");
 const GiveawaySchema = require("./schemas/giveaway");
 const GiveawayShopItemSchema = require("./schemas/giveawayShopItem");
 const InviteSchema = require("./schemas/inviteTracker");
@@ -143,6 +145,35 @@ client.on("messageCreate", async (message) => {
       messageCount = new Map();
     }
   }
+
+  if (
+    message.content.startsWith("http") ||
+    message.content.startsWith("discord.gg")
+  ) {
+    const antiLinkInfo = await AntiLinkSchema.findOne({
+      guild: message.guild.id,
+    });
+
+    if (!antiLinkInfo) return;
+
+    const memberPerms = antiLinkInfo.perms;
+
+    const user = message.author;
+    const member = message.guild.members.cache.get(user.id);
+
+    if (!member.permissions.has(memberPerms)) {
+      try {
+        const sentMessage = await message.channel.send({
+          content: `${message.author}, you can't send links here`,
+        });
+        setTimeout(() => sentMessage.delete(), 3000);
+        await message.delete();
+      } catch (error) {
+        console.error("Error handling anti-link message:", error);
+      }
+    }
+  }
+
   await client.abilities.getAutoResponse(client, message);
 });
 
