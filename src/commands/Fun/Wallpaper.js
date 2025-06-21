@@ -34,7 +34,7 @@ module.exports = class Wallpaper extends Command {
     const wallpaper = language.locales.get(language.defaultLocale)?.funMessage
       ?.wallpaper;
     let selectedWallpapers = Wallpapers.filter(
-      (wallpaper) => wallpaper.type === selectedCategory
+      (wallpaper) => wallpaper.type === selectedCategory,
     );
 
     const pages = [];
@@ -44,12 +44,12 @@ module.exports = class Wallpaper extends Command {
     for (let i = 0; i < totalPages; i++) {
       const currentItems = selectedWallpapers.slice(
         i * itemsPerPage,
-        (i + 1) * itemsPerPage
+        (i + 1) * itemsPerPage,
       );
       const wallpaperList = currentItems
         .map(
           (wallpaper, index) =>
-            `${index + 1}. ${wallpaper.emoji} **${wallpaper.name}**`
+            `${index + 1}. ${wallpaper.emoji} **${wallpaper.name}**`,
         )
         .join("\n\n");
 
@@ -58,11 +58,11 @@ module.exports = class Wallpaper extends Command {
         .setColor(color.main)
         .setTitle(
           `${emoji.mainLeft} 𝐖𝐀𝐋𝐋𝐏𝐀𝐏𝐄𝐑𝐒 - ${client.utils.formatCapitalize(
-            selectedCategory
-          )} ${emoji.mainRight}`
+            selectedCategory,
+          )} ${emoji.mainRight}`,
         )
         .setThumbnail(
-          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
         )
         .setDescription(`${wallpaperList}`)
         .setFooter({ text: `Page ${i + 1} of ${totalPages}` });
@@ -78,7 +78,7 @@ module.exports = class Wallpaper extends Command {
       pages,
       selectedCategory,
       selectedWallpapers,
-      wallpaper
+      wallpaper,
     );
   }
 };
@@ -91,7 +91,7 @@ async function paginateWallpapers(
   pages,
   selectedCategory,
   selectedWallpapers,
-  wallpaper
+  wallpaper,
 ) {
   let page = 0;
   let selectedItemIndex = null; // For selecting specific wallpaper within the category
@@ -99,7 +99,7 @@ async function paginateWallpapers(
 
   const updatePages = (selectedCategory) => {
     selectedWallpapers = Wallpapers.filter(
-      (wallpaper) => wallpaper.type === selectedCategory
+      (wallpaper) => wallpaper.type === selectedCategory,
     );
 
     pages.length = 0; // Clear previous pages
@@ -108,12 +108,12 @@ async function paginateWallpapers(
     for (let i = 0; i < totalPages; i++) {
       const currentItems = selectedWallpapers.slice(
         i * itemsPerPage,
-        (i + 1) * itemsPerPage
+        (i + 1) * itemsPerPage,
       );
       const wallpaperList = currentItems
         .map(
           (wallpaper, index) =>
-            `${index + 1}. ${wallpaper.emoji} **${wallpaper.name}**`
+            `${index + 1}. ${wallpaper.emoji} **${wallpaper.name}**`,
         )
         .join("\n\n");
 
@@ -122,11 +122,11 @@ async function paginateWallpapers(
         .setColor(color.main)
         .setTitle(
           `${emoji.mainLeft} 𝐖𝐀𝐋𝐋𝐏𝐀𝐏𝐄𝐑𝐒 - ${client.utils.formatCapitalize(
-            selectedCategory
-          )} ${emoji.mainRight}`
+            selectedCategory,
+          )} ${emoji.mainRight}`,
         )
         .setThumbnail(
-          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
         )
         .setDescription(`${wallpaperList}`)
         .setFooter({ text: `Page ${i + 1} of ${totalPages}` });
@@ -168,7 +168,7 @@ async function paginateWallpapers(
       .addOptions(
         itemOptions.length
           ? itemOptions
-          : [{ label: wallpaper.noWallpapers, value: "none" }]
+          : [{ label: wallpaper.noWallpapers, value: "none" }],
       );
 
     const row1 = new ActionRowBuilder().addComponents(categorySelect);
@@ -206,7 +206,7 @@ async function paginateWallpapers(
       .embed()
       .setColor(color.main)
       .setTitle(
-        `${wallpaper.DetailsTitle}\n${emoji.mainLeft} ${selectedWallpaper.name} ${emoji.mainRight}`
+        `${wallpaper.DetailsTitle}\n${emoji.mainLeft} ${selectedWallpaper.name} ${emoji.mainRight}`,
       ) // Localized title
       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }))
       .setDescription(
@@ -214,7 +214,7 @@ async function paginateWallpapers(
           wallpaper.descriptionLabel
         } : ** ${selectedWallpaper.description}\n**${
           wallpaper.categoryLabel
-        } : ** ${client.utils.formatCapitalize(selectedWallpaper.type)}`
+        } : ** ${client.utils.formatCapitalize(selectedWallpaper.type)}`,
       )
       .setImage(selectedWallpaper.image);
 
@@ -272,7 +272,7 @@ async function paginateWallpapers(
       await int.update(getButtonRow());
     } else if (int.customId === "item_select") {
       selectedItemIndex = selectedWallpapers.findIndex(
-        (w) => w.id.toString() === int.values[0]
+        (w) => w.id.toString() === int.values[0],
       );
       if (selectedItemIndex !== -1) {
         await int.update({

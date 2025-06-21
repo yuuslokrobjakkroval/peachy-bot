@@ -35,7 +35,7 @@ module.exports = class KlaKlouk extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const klaKloukMessages = language.locales.get(language.defaultLocale)
       ?.gamblingMessages?.klaKloukMessages;
@@ -48,7 +48,7 @@ module.exports = class KlaKlouk extends Command {
             client,
             ctx,
             generalMessages.zeroBalance,
-            color
+            color,
           );
         }
 
@@ -81,7 +81,7 @@ module.exports = class KlaKlouk extends Command {
               client,
               ctx,
               generalMessages.invalidAmount,
-              color
+              color,
             );
           }
         }
@@ -96,7 +96,7 @@ module.exports = class KlaKlouk extends Command {
           coin,
           betCoins,
           generalMessages,
-          klaKloukMessages
+          klaKloukMessages,
         );
       });
     } catch (error) {

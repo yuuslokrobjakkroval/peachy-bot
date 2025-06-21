@@ -38,38 +38,61 @@ module.exports = class Avatar extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
+    const avatarMessages = language.locales.get(language.defaultLocale)
+      ?.utilityMessages?.avatarMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
+      await ctx.interaction.reply(
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+      );
     } else {
-      await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
+      await ctx.sendDeferMessage(
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+      );
     }
 
     const mention = ctx.isInteraction
-        ? ctx.interaction.options.getUser("user") || ctx.author
-        : ctx.message.mentions.users.first() || ctx.guild.members.cache.get(args[0]) || ctx.author;
+      ? ctx.interaction.options.getUser("user") || ctx.author
+      : ctx.message.mentions.users.first() ||
+        ctx.guild.members.cache.get(args[0]) ||
+        ctx.author;
 
     if (!mention) {
-      const errorMessage = avatarMessages?.noUserMentioned || "No user mentioned";
+      const errorMessage =
+        avatarMessages?.noUserMentioned || "No user mentioned";
       return client.utils.sendErrorMessage(client, ctx, errorMessage, color);
     }
 
-    const embed = client.embed()
-        .setColor(color.main)
-        .setDescription(
-            generalMessages.title
-                .replace('%{mainLeft}', emoji.mainLeft)
-                .replace('%{title}', `AVATAR`)
-                .replace('%{mainRight}', emoji.mainRight)
-        )
-        .setImage(mention.displayAvatarURL({ dynamic: true, extension: "png", size: 1024 }))
-        .setFooter({
-          text: generalMessages.requestedBy.replace('%{username}', ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        })
-        .setTimestamp();
+    const embed = client
+      .embed()
+      .setColor(color.main)
+      .setDescription(
+        generalMessages.title
+          .replace("%{mainLeft}", emoji.mainLeft)
+          .replace("%{title}", `AVATAR`)
+          .replace("%{mainRight}", emoji.mainRight),
+      )
+      .setImage(
+        mention.displayAvatarURL({
+          dynamic: true,
+          extension: "png",
+          size: 1024,
+        }),
+      )
+      .setFooter({
+        text:
+          generalMessages.requestedBy.replace(
+            "%{username}",
+            ctx.author.displayName,
+          ) || `Requested by ${ctx.author.displayName}`,
+        iconURL: ctx.author.displayAvatarURL(),
+      })
+      .setTimestamp();
 
-    return ctx.isInteraction ? await ctx.interaction.editReply({ content: "", embeds: [embed] }) : await ctx.editMessage({ content: "", embeds: [embed] });
+    return ctx.isInteraction
+      ? await ctx.interaction.editReply({ content: "", embeds: [embed] })
+      : await ctx.editMessage({ content: "", embeds: [embed] });
   }
 };

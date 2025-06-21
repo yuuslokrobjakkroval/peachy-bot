@@ -88,7 +88,7 @@ module.exports = class JoinToCreate extends Event {
         await newVoiceChannel
           .delete()
           .catch((error) =>
-            console.error("Failed to delete empty channel:", error)
+            console.error("Failed to delete empty channel:", error),
           );
         guild.client.off("voiceStateUpdate", checkIfChannelEmpty); // Remove listener
       }

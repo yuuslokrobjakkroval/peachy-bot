@@ -11,7 +11,7 @@ const AntiLinkSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: { createdAt: true, updatedAt: true } }
+  { timestamps: { createdAt: true, updatedAt: true } },
 );
 
 module.exports = model("antilink", AntiLinkSchema);

@@ -39,7 +39,7 @@ module.exports = class RemoveCredit extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              client.i18n.get(language, "commands", "user_not_found")
+              client.i18n.get(language, "commands", "user_not_found"),
             ),
         ],
       });
@@ -52,7 +52,7 @@ module.exports = class RemoveCredit extends Command {
         client,
         ctx,
         client.i18n.get(language, "commands", "mention_to_bot"),
-        color
+        color,
       );
 
     let amount = ctx.isInteraction
@@ -79,7 +79,7 @@ module.exports = class RemoveCredit extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                client.i18n.get(language, "commands", "invalid_amount")
+                client.i18n.get(language, "commands", "invalid_amount"),
               ),
           ],
         });
@@ -94,8 +94,8 @@ module.exports = class RemoveCredit extends Command {
       .setColor(color.main)
       .setDescription(
         `${globalEmoji.result.tick} Removed **${client.utils.formatNumber(
-          baseAmount
-        )}** ${globalEmoji.card.apple} from ${mention} balance.`
+          baseAmount,
+        )}** ${globalEmoji.card.apple} from ${mention} balance.`,
       );
 
     await Users.updateOne(
@@ -106,7 +106,7 @@ module.exports = class RemoveCredit extends Command {
           "balance.bank": bank,
           "balance.credit": newCredit,
         },
-      }
+      },
     ).exec();
 
     return await ctx.sendMessage({ embeds: [embed] });

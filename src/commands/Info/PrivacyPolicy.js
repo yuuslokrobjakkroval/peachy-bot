@@ -29,29 +29,45 @@ module.exports = class PrivacyPolicy extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const privacyMessages = language.locales.get(language.defaultLocale)?.informationMessages?.privacyMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
+    const privacyMessages = language.locales.get(language.defaultLocale)
+      ?.informationMessages?.privacyMessages;
 
-    const embed = this.client.embed()
-        .setColor(color.main)
-        .setTitle(privacyMessages.title)
-        .setDescription(privacyMessages.description);
+    const embed = this.client
+      .embed()
+      .setColor(color.main)
+      .setTitle(privacyMessages.title)
+      .setDescription(privacyMessages.description);
 
     // Add fields dynamically from the policies array
-    privacyMessages.policies.forEach(policy => {
-      embed.addFields({ name: policy.name, value: policy.value, inline: false });
+    privacyMessages.policies.forEach((policy) => {
+      embed.addFields({
+        name: policy.name,
+        value: policy.value,
+        inline: false,
+      });
     });
 
-    embed.setFooter({
-      text: privacyMessages.footer.replace('{botName}', client.user.username),
-      iconURL: client.user.displayAvatarURL(),
-    }).setTimestamp();
+    embed
+      .setFooter({
+        text: privacyMessages.footer.replace("{botName}", client.user.username),
+        iconURL: client.user.displayAvatarURL(),
+      })
+      .setTimestamp();
 
-    const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
-    const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
+    const supportButton = client.utils.linkButton(
+      generalMessages.supportButton,
+      client.config.links.support,
+    );
+    const inviteButton = client.utils.linkButton(
+      generalMessages.inviteButton,
+      client.config.links.invite,
+    );
     // const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
     const row = client.utils.createButtonRow(supportButton, inviteButton);
 
     return await ctx.sendMessage({ embeds: [embed], components: [row] });
   }
-}
+};

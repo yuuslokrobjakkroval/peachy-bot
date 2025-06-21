@@ -7,10 +7,7 @@ module.exports = class UpdatePaymentStatus extends Command {
       name: "userverify",
       description: {
         content: "Update a user's verification",
-        examples: [
-          "userverify @user paid",
-          "userverify <userId> reset",
-        ],
+        examples: ["userverify @user paid", "userverify <userId> reset"],
         usage: "userverify <userId> <paid|unpaid|reset|clear>",
       },
       category: "staff",
@@ -64,7 +61,7 @@ module.exports = class UpdatePaymentStatus extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              'Please provide a valid user ID and payment status ("paid", "unpaid", or "reset").'
+              'Please provide a valid user ID and payment status ("paid", "unpaid", or "reset").',
             ),
         ],
       });
@@ -101,7 +98,7 @@ module.exports = class UpdatePaymentStatus extends Command {
               .embed()
               .setColor(color.success)
               .setDescription(
-                `Successfully reset verification for user <@${userId}>.`
+                `Successfully reset verification for user <@${userId}>.`,
               ),
           ],
         });
@@ -122,7 +119,7 @@ module.exports = class UpdatePaymentStatus extends Command {
               .embed()
               .setColor(color.success)
               .setDescription(
-                `Successfully clear verification for user <@${userId}>.`
+                `Successfully clear verification for user <@${userId}>.`,
               ),
           ],
         });
@@ -139,8 +136,8 @@ module.exports = class UpdatePaymentStatus extends Command {
             .setColor(color.success)
             .setDescription(
               `Successfully updated payment status to **${client.utils.formatCapitalize(
-                status
-              )}** for user <@${userId}>.`
+                status,
+              )}** for user <@${userId}>.`,
             ),
         ],
       });
@@ -152,7 +149,7 @@ module.exports = class UpdatePaymentStatus extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "An error occurred while updating the payment status."
+              "An error occurred while updating the payment status.",
             ),
         ],
       });

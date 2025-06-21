@@ -167,7 +167,7 @@ If you need any additional help, make sure to join our support server [here](htt
 ## 😎 OWNER
 
 - [𝐏𝐄𝐀𝐂𝐇𝐘](https://discord.gg/peachygang) - Join us now
-<br>
+  <br>
 
 Peachy is a discord bot mode by [𝐊𝐘𝐔𝐔 🐣💞](https://discord.gg/CmsxPWNEjf)
 

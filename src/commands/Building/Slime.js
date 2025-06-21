@@ -33,7 +33,7 @@ module.exports = class Catch extends Command {
       Slimes,
       emoji,
       color,
-      language
+      language,
     );
   }
 };

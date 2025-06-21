@@ -31,7 +31,9 @@ module.exports = class Ping extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.reply(globalEmoji.searching);
     } else {
@@ -48,35 +50,39 @@ module.exports = class Ping extends Command {
     };
 
     const embed = client
-        .embed()
-        .setColor(color.main)
-        .setDescription(`# **${emoji.mainLeft} PING ${emoji.mainRight}**`)
-        .setThumbnail(client.utils.emojiToImage(emoji.main))
-        .addFields([
-          {
-            name: `BOT ${client.utils.getLoopElement(" ", 2)}${globalEmoji.ping}`,
-            value: `\`\`\`ini\n[ ${randomNumber}ms ]\n\`\`\``,
-            inline: true,
-          },
-          {
-            name: `API ${client.utils.getLoopElement(" ", 2)}${globalEmoji.ping}`,
-            value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
-            inline: true,
-          },
-          {
-            name: `DB ${client.utils.getLoopElement(" ", 2)}${globalEmoji.ping}`,
-            value: `\`\`\`ini\n[ ${await dbPing()}ms ]\n\`\`\``,
-            inline: true,
-          },
-        ])
-        .setFooter({
-          text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        })
-        .setTimestamp();
+      .embed()
+      .setColor(color.main)
+      .setDescription(`# **${emoji.mainLeft} PING ${emoji.mainRight}**`)
+      .setThumbnail(client.utils.emojiToImage(emoji.main))
+      .addFields([
+        {
+          name: `BOT ${client.utils.getLoopElement(" ", 2)}${globalEmoji.ping}`,
+          value: `\`\`\`ini\n[ ${randomNumber}ms ]\n\`\`\``,
+          inline: true,
+        },
+        {
+          name: `API ${client.utils.getLoopElement(" ", 2)}${globalEmoji.ping}`,
+          value: `\`\`\`ini\n[ ${Math.round(ctx.client.ws.ping)}ms ]\n\`\`\``,
+          inline: true,
+        },
+        {
+          name: `DB ${client.utils.getLoopElement(" ", 2)}${globalEmoji.ping}`,
+          value: `\`\`\`ini\n[ ${await dbPing()}ms ]\n\`\`\``,
+          inline: true,
+        },
+      ])
+      .setFooter({
+        text:
+          generalMessages.requestedBy.replace(
+            "%{username}",
+            ctx.author.displayName,
+          ) || `Requested by ${ctx.author.displayName}`,
+        iconURL: ctx.author.displayAvatarURL(),
+      })
+      .setTimestamp();
 
     return ctx.isInteraction
-        ? await ctx.interaction.editReply({ content: "", embeds: [embed] })
-        : await ctx.editMessage({ content: "", embeds: [embed] });
+      ? await ctx.interaction.editReply({ content: "", embeds: [embed] })
+      : await ctx.editMessage({ content: "", embeds: [embed] });
   }
 };

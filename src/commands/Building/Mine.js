@@ -33,7 +33,7 @@ module.exports = class Mine extends Command {
       Minerals,
       emoji,
       color,
-      language
+      language,
     );
   }
 };

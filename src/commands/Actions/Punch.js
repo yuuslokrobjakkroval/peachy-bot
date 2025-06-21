@@ -112,7 +112,7 @@ module.exports = class Punch extends Command {
           client,
           ctx,
           errorMessages.noUser,
-          color
+          color,
         );
       }
 
@@ -121,14 +121,14 @@ module.exports = class Punch extends Command {
           client,
           ctx,
           errorMessages.selfPunch,
-          color
+          color,
         );
       }
 
       // Get random emoji
       const randomEmoji = client.utils.getRandomElement(
         emoji.actions?.punches ||
-          globalEmoji.actions?.punches || ["👊", "🥊", "💥"]
+          globalEmoji.actions?.punches || ["👊", "🥊", "💥"],
       );
 
       // Create the embed message for punching
@@ -144,13 +144,13 @@ module.exports = class Punch extends Command {
             "\n\n" +
             punchMessages.description
               .replace("%{displayName}", `**${ctx.author.displayName}**`)
-              .replace("%{target}", `**${target.displayName}**`)
+              .replace("%{target}", `**${target.displayName}**`),
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -177,7 +177,7 @@ module.exports = class Punch extends Command {
       const row = new ActionRowBuilder().addComponents(
         punchBackButton,
         dodgeButton,
-        blockButton
+        blockButton,
       );
 
       // Send the message with buttons
@@ -214,15 +214,15 @@ module.exports = class Punch extends Command {
               .setDescription(
                 punchMessages.punchBack
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(
                 client.utils.emojiToImage(
                   client.utils.getRandomElement(
                     emoji.actions?.punches ||
-                      globalEmoji.actions?.punches || ["👊", "🥊", "💥"]
-                  )
-                )
+                      globalEmoji.actions?.punches || ["👊", "🥊", "💥"],
+                  ),
+                ),
               );
             break;
 
@@ -231,7 +231,7 @@ module.exports = class Punch extends Command {
               .setDescription(
                 punchMessages.dodgeReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.dodge || "💨"));
             break;
@@ -241,7 +241,7 @@ module.exports = class Punch extends Command {
               .setDescription(
                 punchMessages.blockReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.block || "🛡️"));
             break;
@@ -251,7 +251,7 @@ module.exports = class Punch extends Command {
         const disabledRow = new ActionRowBuilder().addComponents(
           ButtonBuilder.from(punchBackButton).setDisabled(true),
           ButtonBuilder.from(dodgeButton).setDisabled(true),
-          ButtonBuilder.from(blockButton).setDisabled(true)
+          ButtonBuilder.from(blockButton).setDisabled(true),
         );
 
         // Update the message with the response and disabled buttons
@@ -271,7 +271,7 @@ module.exports = class Punch extends Command {
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(punchBackButton).setDisabled(true),
               ButtonBuilder.from(dodgeButton).setDisabled(true),
-              ButtonBuilder.from(blockButton).setDisabled(true)
+              ButtonBuilder.from(blockButton).setDisabled(true),
             );
 
             await message.edit({ components: [disabledRow] });
@@ -286,7 +286,7 @@ module.exports = class Punch extends Command {
         client,
         ctx,
         "An error occurred while executing the command.",
-        color
+        color,
       );
     }
   }

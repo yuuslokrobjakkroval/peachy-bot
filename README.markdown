@@ -203,7 +203,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
             client,
             ctx,
             "You need to mention a user to hug! 🥺",
-            color
+            color,
           );
         }
 
@@ -212,7 +212,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
             client,
             ctx,
             "You can’t hug yourself! But here’s a hug from Peachy! 🤗",
-            color
+            color,
           );
         }
 
@@ -223,7 +223,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
           .setImage(client.utils.emojiToImage("🤗")) // A cute hug emoji
           .setDescription(
             `${emoji.mainLeft || "🧡"} **HUG** ${emoji.mainRight || "🧡"}\n\n` +
-              `**${ctx.author.displayName}** gives **${target.displayName}** a big, warm hug! 🤗`
+              `**${ctx.author.displayName}** gives **${target.displayName}** a big, warm hug! 🤗`,
           )
           .setFooter({
             text: `Requested by ${ctx.author.displayName}`,
@@ -265,13 +265,13 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
             .embed()
             .setColor(color.main)
             .setDescription(
-              `**${target.displayName}** hugs **${ctx.author.displayName}** back! Aww, so sweet! 🤗`
+              `**${target.displayName}** hugs **${ctx.author.displayName}** back! Aww, so sweet! 🤗`,
             )
             .setImage(client.utils.emojiToImage("🤗"));
 
           // Disable the button after use
           const disabledRow = new ActionRowBuilder().addComponents(
-            ButtonBuilder.from(hugBackButton).setDisabled(true)
+            ButtonBuilder.from(hugBackButton).setDisabled(true),
           );
 
           await interaction.update({
@@ -285,7 +285,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
         collector.on("end", async (collected, reason) => {
           if (reason === "time" && message.editable) {
             const disabledRow = new ActionRowBuilder().addComponents(
-              ButtonBuilder.from(hugBackButton).setDisabled(true)
+              ButtonBuilder.from(hugBackButton).setDisabled(true),
             );
             await message.edit({ components: [disabledRow] });
           }
@@ -296,7 +296,7 @@ Want to add a new command to Peachy? It’s super easy! Let’s make a fun `hug`
           client,
           ctx,
           "Oh no! Something went wrong while hugging. Try again later! 😢",
-          color
+          color,
         );
       }
     }

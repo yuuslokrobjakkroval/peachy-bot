@@ -23,7 +23,7 @@ module.exports = class Ready extends Event {
     return await BotLog.send(
       this.client,
       `${this.client.user?.tag} is ready!`,
-      "success"
+      "success",
     );
   }
 };

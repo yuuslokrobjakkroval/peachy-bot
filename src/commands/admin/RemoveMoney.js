@@ -40,7 +40,7 @@ module.exports = class RemoveMoney extends Command {
         client,
         ctx,
         client.i18n.get(language, "commands", "mention_to_bot"),
-        color
+        color,
       );
 
     let amount = ctx.isInteraction
@@ -67,7 +67,7 @@ module.exports = class RemoveMoney extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                client.i18n.get(language, "commands", "invalid_amount")
+                client.i18n.get(language, "commands", "invalid_amount"),
               ),
           ],
         });
@@ -82,14 +82,14 @@ module.exports = class RemoveMoney extends Command {
       .setColor(color.main)
       .setDescription(
         `${globalEmoji.result.tick} Removed **${client.utils.formatNumber(
-          baseCoins
-        )}** ${emoji.coin} to ${mention} balance.`
+          baseCoins,
+        )}** ${emoji.coin} to ${mention} balance.`,
       );
 
     await Promise.all([
       Users.updateOne(
         { userId: mention.id },
-        { $set: { "balance.coin": newCoin, "balance.bank": bank } }
+        { $set: { "balance.coin": newCoin, "balance.bank": bank } },
       ).exec(),
     ]);
 

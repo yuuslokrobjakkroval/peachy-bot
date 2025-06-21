@@ -3,7 +3,7 @@ const Users = require("../../schemas/user");
 const ShopItems = require("../../assets/inventory/ShopItems");
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = Inventory.filter((value) => value.price.buy !== 0).sort(
-  (a, b) => a.price.buy - b.price.buy
+  (a, b) => a.price.buy - b.price.buy,
 );
 
 module.exports = class Buy extends Command {
@@ -44,7 +44,7 @@ module.exports = class Buy extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const buyMessages = language.locales.get(language.defaultLocale)
       ?.inventoryMessages?.buyMessages;
@@ -59,7 +59,7 @@ module.exports = class Buy extends Command {
         client,
         ctx,
         generalMessages.zeroBalance,
-        color
+        color,
       );
     }
 
@@ -77,14 +77,14 @@ module.exports = class Buy extends Command {
         client,
         ctx,
         buyMessages.invalidItem.replace("%{itemId}", args.join(" ")),
-        color
+        color,
       );
     }
 
     // Check if the item is a theme and the user already owns it
     if (itemInfo.type === "ring") {
       const ringExists = user.inventory.find(
-        (invItem) => invItem.id === itemId
+        (invItem) => invItem.id === itemId,
       );
       if (ringExists) {
         return await client.utils.sendErrorMessage(
@@ -93,7 +93,7 @@ module.exports = class Buy extends Command {
           buyMessages.themeAlreadyOwned
             .replace("%{itemEmote}", itemInfo.emoji)
             .replace("%{itemName}", itemInfo.name),
-          color
+          color,
         );
       }
     }
@@ -106,7 +106,7 @@ module.exports = class Buy extends Command {
         buyMessages.itemCannotBeBought
           .replace("%{itemEmote}", itemInfo.emoji)
           .replace("%{itemName}", itemInfo.name),
-        color
+        color,
       );
     }
 
@@ -119,11 +119,11 @@ module.exports = class Buy extends Command {
           .replace("%{coinEmote}", emoji.coin)
           .replace(
             "%{neededCoins}",
-            client.utils.formatNumber(itemInfo.price.buy - coin)
+            client.utils.formatNumber(itemInfo.price.buy - coin),
           )
           .replace("%{itemEmote}", itemInfo.emoji)
           .replace("%{itemName}", itemInfo.name),
-        color
+        color,
       );
     }
 
@@ -148,7 +148,7 @@ module.exports = class Buy extends Command {
           client,
           ctx,
           generalMessages.invalidAmount,
-          color
+          color,
         );
       }
     }
@@ -172,18 +172,18 @@ module.exports = class Buy extends Command {
         buyMessages.description
           .replace(
             "%{afford}",
-            afford ? buyMessages.success : buyMessages.partial
+            afford ? buyMessages.success : buyMessages.partial,
           )
           .replace("%{itemEmote}", itemInfo.emoji)
           .replace("%{itemName}", itemInfo.name)
           .replace("%{coinEmote}", emoji.coin)
           .replace("%{totalPrice}", client.utils.formatNumber(totalPrice))
-          .replace("%{amountToBuy}", amountToBuy)
+          .replace("%{amountToBuy}", amountToBuy),
       );
 
     // Update user's inventory and balance
     const existingItem = user.inventory.find(
-      (invItem) => invItem.id.toLowerCase() === itemId
+      (invItem) => invItem.id.toLowerCase() === itemId,
     );
 
     if (existingItem) {
@@ -195,7 +195,7 @@ module.exports = class Buy extends Command {
             "inventory.$.quantity": amountToBuy,
           },
           $set: { "balance.bank": bank },
-        }
+        },
       ).exec();
     } else {
       await Users.updateOne(
@@ -209,7 +209,7 @@ module.exports = class Buy extends Command {
               quantity: amountToBuy,
             },
           },
-        }
+        },
       ).exec();
     }
 

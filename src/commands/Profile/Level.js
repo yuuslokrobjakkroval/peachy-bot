@@ -46,7 +46,7 @@ module.exports = class Profile extends Command {
             client,
             ctx,
             color,
-            emoji
+            emoji,
           );
         } catch (error) {
           await this.handleError(ctx, loadingMessage);
@@ -54,16 +54,16 @@ module.exports = class Profile extends Command {
         }
 
         const equippedWallpaper = user.equip.find((equippedItem) =>
-          equippedItem.id.startsWith("w")
+          equippedItem.id.startsWith("w"),
         );
         const equippedColor = user.equip.find((equippedItem) =>
-          equippedItem.id.startsWith("p")
+          equippedItem.id.startsWith("p"),
         );
 
         let bannerImage;
         if (equippedWallpaper) {
           bannerImage = Wallpapers.find(
-            (wallpaperItem) => wallpaperItem.id === equippedWallpaper.id
+            (wallpaperItem) => wallpaperItem.id === equippedWallpaper.id,
           )?.image;
         } else {
           bannerImage = "https://i.imgur.com/8rZFeWI.jpg";
@@ -72,7 +72,7 @@ module.exports = class Profile extends Command {
         let backgroundColor;
         if (equippedColor) {
           backgroundColor = Colors.find(
-            (colorItem) => colorItem.id === equippedColor.id
+            (colorItem) => colorItem.id === equippedColor.id,
           )?.color;
         }
 
@@ -87,7 +87,7 @@ module.exports = class Profile extends Command {
           color,
           backgroundColor,
           emoji,
-          bannerImage
+          bannerImage,
         );
 
         const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), {
@@ -134,7 +134,7 @@ module.exports = class Profile extends Command {
         `# ${emoji.mainLeft} GENERATING LEVEL CARD ${emoji.mainRight}
     
 Creating a stunning premium level card just for you! ✨
-Please wait a moment while we craft your personalized stats display...`
+Please wait a moment while we craft your personalized stats display...`,
       )
       .setImage("https://i.imgur.com/UCsKa6Z.gif");
     return await ctx.sendDeferMessage({
@@ -206,7 +206,7 @@ Please wait a moment while we craft your personalized stats display...`
     let output = "";
     for (const [type, items] of Object.entries(categorizedItems)) {
       output += `${client.utils.formatCapitalize(type)}\n${items.join(
-        ", "
+        ", ",
       )}\n\n`;
     }
 
@@ -290,7 +290,7 @@ Please wait a moment while we craft your personalized stats display...`
       x + size,
       y + size / 2,
       x + size / 2,
-      y + (size * 3) / 4
+      y + (size * 3) / 4,
     );
     ctx.lineTo(x, y + size / 4);
 
@@ -417,7 +417,7 @@ Please wait a moment while we craft your personalized stats display...`
     height,
     radius,
     thickness = 4,
-    baseColor
+    baseColor,
   ) {
     ctx.save();
 
@@ -429,7 +429,7 @@ Please wait a moment while we craft your personalized stats display...`
       width,
       height,
       baseColor,
-      45
+      45,
     );
 
     // Draw outer stroke
@@ -447,7 +447,7 @@ Please wait a moment while we craft your personalized stats display...`
       y + thickness / 2,
       width - thickness,
       height - thickness,
-      radius - thickness / 2
+      radius - thickness / 2,
     );
     ctx.stroke();
 
@@ -529,7 +529,7 @@ Please wait a moment while we craft your personalized stats display...`
         0,
         x + size / 2,
         y + size / 2,
-        size / 2
+        size / 2,
       );
 
       badgeGradient.addColorStop(0, this.adjustColor(primaryColor, 70));
@@ -644,7 +644,7 @@ Please wait a moment while we craft your personalized stats display...`
         user.displayAvatarURL({
           extension: "png",
           size: 256,
-        })
+        }),
       );
 
       // Create circular clip for avatar
@@ -675,7 +675,7 @@ Please wait a moment while we craft your personalized stats display...`
         x,
         y,
         x + size / 3,
-        y + size / 3
+        y + size / 3,
       );
 
       shineGradient.addColorStop(0, "rgba(255, 255, 255, 0.5)");
@@ -720,7 +720,7 @@ Please wait a moment while we craft your personalized stats display...`
         width,
         height,
         height / 2,
-        bgGradient
+        bgGradient,
       );
 
       // Reset shadow
@@ -738,7 +738,7 @@ Please wait a moment while we craft your personalized stats display...`
         y + 2,
         width - 4,
         height - 4,
-        height / 2 - 2
+        height / 2 - 2,
       );
       ctx.stroke();
 
@@ -772,7 +772,7 @@ Please wait a moment while we craft your personalized stats display...`
               x + fillWidth,
               y + height,
               x + fillWidth - radius,
-              y + height
+              y + height,
             );
           } else {
             // Flat right edge for partial fill
@@ -824,7 +824,7 @@ Please wait a moment while we craft your personalized stats display...`
             0,
             x + fillWidth,
             y + height / 2,
-            height / 2
+            height / 2,
           );
 
           glowGradient.addColorStop(0, this.adjustColor(colorStr, 30));
@@ -869,7 +869,7 @@ Please wait a moment while we craft your personalized stats display...`
           0,
           markerX,
           y + height / 2,
-          height / 4
+          height / 4,
         );
         glowGradient.addColorStop(0, "rgba(255, 255, 255, 0.5)");
         glowGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
@@ -951,11 +951,11 @@ Please wait a moment while we craft your personalized stats display...`
             size,
             `rgba(${Number.parseInt(
               starColor.slice(1, 3),
-              16
+              16,
             )}, ${Number.parseInt(
               starColor.slice(3, 5),
-              16
-            )}, ${Number.parseInt(starColor.slice(5, 7), 16)}, 0.5)`
+              16,
+            )}, ${Number.parseInt(starColor.slice(5, 7), 16)}, 0.5)`,
           );
         }
       }
@@ -974,7 +974,7 @@ Please wait a moment while we craft your personalized stats display...`
     color,
     backgroundColor,
     emoji,
-    banner
+    banner,
   ) {
     try {
       const width = 1280;
@@ -986,8 +986,8 @@ Please wait a moment while we craft your personalized stats display...`
           ? backgroundColor.primary
           : `#${backgroundColor.primary.toString(16).padStart(6, "0")}`
         : typeof color.main === "string"
-        ? color.main
-        : "#FF9AA2";
+          ? color.main
+          : "#FF9AA2";
 
       // Draw full-size banner/wallpaper as background
       if (banner) {
@@ -1049,7 +1049,7 @@ Please wait a moment while we craft your personalized stats display...`
         cardHeight,
         30,
         "rgba(255, 255, 255, 0.1)",
-        0.15
+        0.15,
       );
 
       // Draw premium border around card
@@ -1061,7 +1061,7 @@ Please wait a moment while we craft your personalized stats display...`
         cardHeight,
         30,
         4,
-        baseColor
+        baseColor,
       );
 
       // Draw header section
@@ -1074,7 +1074,7 @@ Please wait a moment while we craft your personalized stats display...`
         headerHeight,
         15,
         baseColor,
-        0.3
+        0.3,
       );
 
       // Draw header text
@@ -1091,7 +1091,7 @@ Please wait a moment while we craft your personalized stats display...`
       context.fillText(
         `✨ LEVEL ${userInfo.profile.level || 1} ✨`,
         centerX,
-        cardY + 20 + headerHeight / 2
+        cardY + 20 + headerHeight / 2,
       );
 
       // Reset shadow and text alignment
@@ -1112,7 +1112,7 @@ Please wait a moment while we craft your personalized stats display...`
         avatarX,
         avatarY,
         avatarSize,
-        baseColor
+        baseColor,
       );
 
       // Draw username with premium styling
@@ -1125,7 +1125,7 @@ Please wait a moment while we craft your personalized stats display...`
         centerX - 150,
         avatarY + avatarSize + 20,
         centerX + 150,
-        avatarY + avatarSize + 60
+        avatarY + avatarSize + 60,
       );
 
       usernameGradient.addColorStop(0, "white");
@@ -1172,7 +1172,7 @@ Please wait a moment while we craft your personalized stats display...`
         progressBarWidth,
         progressBarHeight,
         progressPercentage,
-        baseColor
+        baseColor,
       );
 
       // Draw XP text with enhanced styling
@@ -1184,7 +1184,7 @@ Please wait a moment while we craft your personalized stats display...`
       context.shadowBlur = 3;
 
       const xpText = `${client.utils.formatNumber(
-        currentXP
+        currentXP,
       )} / ${client.utils.formatNumber(maxXP)} XP`;
       context.fillText(xpText, centerX, progressBarY + progressBarHeight + 15);
 
@@ -1207,7 +1207,7 @@ Please wait a moment while we craft your personalized stats display...`
         badgeY,
         badgeSize,
         userInfo.profile?.level || 1,
-        baseColor
+        baseColor,
       );
 
       // Add final decorative elements
@@ -1217,14 +1217,14 @@ Please wait a moment while we craft your personalized stats display...`
         cardX + 30,
         cardY + 30,
         heartSize,
-        this.adjustColor(baseColor, 30)
+        this.adjustColor(baseColor, 30),
       );
       this.drawHeart(
         context,
         cardX + cardWidth - 50,
         cardY + 30,
         heartSize,
-        this.adjustColor(baseColor, 30)
+        this.adjustColor(baseColor, 30),
       );
 
       // Add signature
@@ -1234,7 +1234,7 @@ Please wait a moment while we craft your personalized stats display...`
       context.fillText(
         "Peachy Bot",
         cardX + cardWidth - 20,
-        cardY + cardHeight - 15
+        cardY + cardHeight - 15,
       );
 
       return context.canvas;

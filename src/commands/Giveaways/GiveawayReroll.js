@@ -73,13 +73,13 @@ module.exports = class Reroll extends Command {
     const type = ctx.isInteraction
       ? ctx.interaction.options.getString("type")
       : args[0] === "item"
-      ? "item"
-      : "coin";
+        ? "item"
+        : "coin";
     const messageId = ctx.isInteraction
       ? ctx.interaction.options.getString("messageid")
       : type === "item"
-      ? args[1]
-      : args[0];
+        ? args[1]
+        : args[0];
     const newWinnerCount = ctx.isInteraction
       ? ctx.interaction.options.getInteger("winners")
       : null;
@@ -121,7 +121,7 @@ module.exports = class Reroll extends Command {
               .setDescription(
                 `No ${
                   isItemGiveaway ? "item " : ""
-                }giveaway found with message ID: ${messageId}`
+                }giveaway found with message ID: ${messageId}`,
               ),
           ],
         });
@@ -135,7 +135,7 @@ module.exports = class Reroll extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                "This giveaway hasn't ended yet. You can only reroll ended giveaways."
+                "This giveaway hasn't ended yet. You can only reroll ended giveaways.",
               ),
           ],
         });
@@ -149,7 +149,7 @@ module.exports = class Reroll extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                "No one entered this giveaway, so there's no one to reroll."
+                "No one entered this giveaway, so there's no one to reroll.",
               ),
           ],
         });
@@ -166,7 +166,7 @@ module.exports = class Reroll extends Command {
 
       // Filter out previous winners if possible
       const eligibleParticipants = giveaway.entered.filter(
-        (id) => !giveaway.winnerId.includes(id)
+        (id) => !giveaway.winnerId.includes(id),
       );
 
       // If no eligible participants (all have won already), use all participants
@@ -178,7 +178,7 @@ module.exports = class Reroll extends Command {
       // Select new winners
       const newWinners = getMultipleRandom(
         selectionPool,
-        Math.min(winnersToSelect, selectionPool.length)
+        Math.min(winnersToSelect, selectionPool.length),
       );
 
       // Update giveaway in database
@@ -199,7 +199,7 @@ module.exports = class Reroll extends Command {
           .concat(importantItems)
           .filter((c) => c.type === giveaway.type);
         const item = category.find(
-          (i) => i.id.toLowerCase() === giveaway.itemId.toLowerCase()
+          (i) => i.id.toLowerCase() === giveaway.itemId.toLowerCase(),
         );
 
         winnerAnnouncement = newWinners.length
@@ -222,7 +222,7 @@ module.exports = class Reroll extends Command {
               const user = await Users.findOne({ userId: winner });
               if (user && item) {
                 const itemIndex = user.inventory.findIndex(
-                  (i) => i.id === item.id
+                  (i) => i.id === item.id,
                 );
                 if (itemIndex > -1) {
                   user.inventory[itemIndex].quantity += giveaway.amount;
@@ -241,7 +241,7 @@ module.exports = class Reroll extends Command {
                       .embed()
                       .setColor(color.success)
                       .setDescription(
-                        `Added **${item.name}** x${giveaway.amount} to <@${winner}>'s inventory.`
+                        `Added **${item.name}** x${giveaway.amount} to <@${winner}>'s inventory.`,
                       ),
                   ],
                 });
@@ -280,7 +280,7 @@ module.exports = class Reroll extends Command {
                     .setDescription(
                       `Added **${client.utils.formatNumber(giveaway.prize)}** ${
                         emoji.coin
-                      } to <@${winner}>'s balance.`
+                      } to <@${winner}>'s balance.`,
                     ),
                 ],
               });
@@ -310,7 +310,7 @@ module.exports = class Reroll extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "An error occurred while rerolling the giveaway. Please try again."
+              "An error occurred while rerolling the giveaway. Please try again.",
             ),
         ],
       });

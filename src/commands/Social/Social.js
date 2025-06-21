@@ -75,7 +75,7 @@ module.exports = class Socials extends Command {
       .setTitle(
         `${
           smMessages?.title || "📱 Social Media Profiles"
-        } for ${targetUsername} 📱`
+        } for ${targetUsername} 📱`,
       )
       .setDescription(socialDescription)
       .setColor(color.main);

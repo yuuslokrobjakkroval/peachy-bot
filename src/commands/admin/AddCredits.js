@@ -26,7 +26,7 @@ module.exports = class AddCredit extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user")
@@ -42,7 +42,7 @@ module.exports = class AddCredit extends Command {
         client,
         ctx,
         generalMessages.botTransfer,
-        color
+        color,
       );
     }
 
@@ -94,8 +94,8 @@ module.exports = class AddCredit extends Command {
       .setColor(color.main)
       .setDescription(
         `${globalEmoji.result.tick} Added **${client.utils.formatNumber(
-          baseCredits
-        )}** ${globalEmoji.card.apple} to ${mention} balance.`
+          baseCredits,
+        )}** ${globalEmoji.card.apple} to ${mention} balance.`,
       );
 
     await Users.updateOne(
@@ -107,7 +107,7 @@ module.exports = class AddCredit extends Command {
           "balance.bank": bank,
         },
       },
-      { upsert: true }
+      { upsert: true },
     ).exec();
 
     return await ctx.sendMessage({ embeds: [embed] });

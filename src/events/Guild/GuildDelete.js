@@ -28,12 +28,12 @@ module.exports = class GuildDelete extends Event {
       guildData.isBlacklisted = true;
       guildData.blacklistReason = "Bot removed 10 or more times";
       const logChannel = this.client.channels.cache.get(
-        this.client.config.channel.log
+        this.client.config.channel.log,
       );
       if (logChannel) {
         await logChannel
           .send(
-            `Guild **${guild.name}** (ID: ${guild.id}) has been blacklisted due to excessive leaves (${guildData.leaveCount}).`
+            `Guild **${guild.name}** (ID: ${guild.id}) has been blacklisted due to excessive leaves (${guildData.leaveCount}).`,
           )
           .catch(console.error);
       }
@@ -56,7 +56,7 @@ module.exports = class GuildDelete extends Event {
 
   async sendGuildInfo(guild, owner, guildData) {
     const channel = this.client.channels.cache.get(
-      this.client.config.channel.log
+      this.client.config.channel.log,
     );
     if (!channel) {
       console.log("Log channel not found!");

@@ -21,7 +21,7 @@ const GiveawayShopItemSchema = new Schema(
     rerollCount: { type: Number, default: 0 },
     rerolledWinners: { type: [String], default: [] },
   },
-  { timestamps: { createdAt: true, updatedAt: true } }
+  { timestamps: { createdAt: true, updatedAt: true } },
 );
 
 module.exports = model("giveawayshopitems", GiveawayShopItemSchema);

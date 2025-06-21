@@ -43,7 +43,7 @@ module.exports = class Coinflip extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const coinflipMessages = language.locales.get(language.defaultLocale)
       ?.gamblingMessages?.coinflipMessages;
@@ -60,7 +60,7 @@ module.exports = class Coinflip extends Command {
           client,
           ctx,
           `You have already started the ${activeCommand} event. Please finish it before using this command.`,
-          color
+          color,
         );
       }
 
@@ -69,7 +69,7 @@ module.exports = class Coinflip extends Command {
           client,
           ctx,
           generalMessages.zeroBalance,
-          color
+          color,
         );
       }
 
@@ -102,7 +102,7 @@ module.exports = class Coinflip extends Command {
             client,
             ctx,
             generalMessages.invalidAmount,
-            color
+            color,
           );
         }
       }
@@ -118,7 +118,7 @@ module.exports = class Coinflip extends Command {
           client,
           ctx,
           coinflipMessages.invalidChoice,
-          color
+          color,
         );
       }
 
@@ -145,12 +145,12 @@ module.exports = class Coinflip extends Command {
             coinflipMessages.description
               .replace("%{coinEmote}", emoji.coin)
               .replace("%{coin}", client.utils.formatNumber(baseCoins))
-              .replace("%{choice}", choice === "p" ? "Peach" : "Goma")
+              .replace("%{choice}", choice === "p" ? "Peach" : "Goma"),
         )
         .setFooter({
           text: generalMessages.gameInProgress.replace(
             "%{user}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ),
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -176,9 +176,9 @@ module.exports = class Coinflip extends Command {
                   ? emoji.coinFlip.peach
                   : emoji.coinFlip.goma
                 : choice === "p"
-                ? emoji.coinFlip.goma
-                : emoji.coinFlip.peach
-            )
+                  ? emoji.coinFlip.goma
+                  : emoji.coinFlip.peach,
+            ),
           )
           .setDescription(
             generalMessages.title
@@ -191,12 +191,12 @@ module.exports = class Coinflip extends Command {
                 .replace("%{choice}", choice === "p" ? "Peach" : "Goma")
                 .replace("%{result}", win ? "won" : "lost")
                 .replace("%{resultCoin}", client.utils.formatNumber(resultCoin))
-                .replace("%{coinEmote}", emoji.coin)
+                .replace("%{coinEmote}", emoji.coin),
           )
           .setFooter({
             text: generalMessages.gameOver.replace(
               "%{user}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ),
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -209,7 +209,7 @@ module.exports = class Coinflip extends Command {
         client,
         ctx,
         generalMessages.userFetchError,
-        color
+        color,
       );
     }
   }

@@ -30,26 +30,39 @@ module.exports = class Rules extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const rulesMessages = language.locales.get(language.defaultLocale)?.informationMessages?.rulesMessages;
-    const embed = this.client.embed()
-        .setColor(color.main)
-        .setTitle(rulesMessages.title)
-        .setDescription(rulesMessages.description)
-        .setImage(globalGif.banner.rule)
-        .setFooter({
-          text: rulesMessages.footer.replace('%{botName}', client.user.displayName),
-          iconURL: this.client.user.displayAvatarURL(),
-        })
-        .setTimestamp();
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
+    const rulesMessages = language.locales.get(language.defaultLocale)
+      ?.informationMessages?.rulesMessages;
+    const embed = this.client
+      .embed()
+      .setColor(color.main)
+      .setTitle(rulesMessages.title)
+      .setDescription(rulesMessages.description)
+      .setImage(globalGif.banner.rule)
+      .setFooter({
+        text: rulesMessages.footer.replace(
+          "%{botName}",
+          client.user.displayName,
+        ),
+        iconURL: this.client.user.displayAvatarURL(),
+      })
+      .setTimestamp();
 
     // Add each rule to the embed
-    rulesMessages.rules.forEach(rule => {
+    rulesMessages.rules.forEach((rule) => {
       embed.addFields({ name: rule.name, value: rule.value, inline: false });
     });
 
-    const supportButton = client.utils.linkButton(generalMessages.supportButton, client.config.links.support)
-    const inviteButton = client.utils.linkButton(generalMessages.inviteButton, client.config.links.invite)
+    const supportButton = client.utils.linkButton(
+      generalMessages.supportButton,
+      client.config.links.support,
+    );
+    const inviteButton = client.utils.linkButton(
+      generalMessages.inviteButton,
+      client.config.links.invite,
+    );
     // const voteButton = client.utils.linkButton(generalMessages.voteButton, client.config.links.vote)
     const row = client.utils.createButtonRow(supportButton, inviteButton);
 

@@ -105,7 +105,7 @@ module.exports = class Kiss extends Command {
           client,
           ctx,
           errorMessages.noUser,
-          color
+          color,
         );
       }
 
@@ -114,14 +114,14 @@ module.exports = class Kiss extends Command {
           client,
           ctx,
           errorMessages.selfKiss,
-          color
+          color,
         );
       }
 
       // Get random emoji
       const randomEmoji = client.utils.getRandomElement(
         emoji.actions?.kisses ||
-          globalEmoji.actions.kisses || ["💋", "😘", "😚"]
+          globalEmoji.actions.kisses || ["💋", "😘", "😚"],
       );
 
       // Create the embed message for kissing
@@ -137,13 +137,13 @@ module.exports = class Kiss extends Command {
             "\n\n" +
             kissMessages.description
               .replace("%{displayName}", `**${ctx.author.displayName}**`)
-              .replace("%{target}", `**${target.displayName}**`)
+              .replace("%{target}", `**${target.displayName}**`),
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -163,7 +163,7 @@ module.exports = class Kiss extends Command {
 
       const row = new ActionRowBuilder().addComponents(
         kissBackButton,
-        runButton
+        runButton,
       );
 
       // Send the message with buttons
@@ -200,15 +200,15 @@ module.exports = class Kiss extends Command {
               .setDescription(
                 kissMessages.kissBack
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(
                 client.utils.emojiToImage(
                   client.utils.getRandomElement(
                     emoji.actions?.kisses ||
-                      globalEmoji.actions.kisses || ["💋", "😘", "😚"]
-                  )
-                )
+                      globalEmoji.actions.kisses || ["💋", "😘", "😚"],
+                  ),
+                ),
               );
             break;
 
@@ -217,7 +217,7 @@ module.exports = class Kiss extends Command {
               .setDescription(
                 kissMessages.runReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.run || "🏃"));
             break;
@@ -226,7 +226,7 @@ module.exports = class Kiss extends Command {
         // Disable all buttons
         const disabledRow = new ActionRowBuilder().addComponents(
           ButtonBuilder.from(kissBackButton).setDisabled(true),
-          ButtonBuilder.from(runButton).setDisabled(true)
+          ButtonBuilder.from(runButton).setDisabled(true),
         );
 
         // Update the message with the response and disabled buttons
@@ -245,7 +245,7 @@ module.exports = class Kiss extends Command {
           try {
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(kissBackButton).setDisabled(true),
-              ButtonBuilder.from(runButton).setDisabled(true)
+              ButtonBuilder.from(runButton).setDisabled(true),
             );
 
             await message.edit({ components: [disabledRow] });
@@ -260,7 +260,7 @@ module.exports = class Kiss extends Command {
         client,
         ctx,
         "An error occurred while executing the command.",
-        color
+        color,
       );
     }
   }

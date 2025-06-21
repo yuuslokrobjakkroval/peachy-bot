@@ -35,8 +35,11 @@ module.exports = class Cmd extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const blackjackMessages = language.locales.get(language.defaultLocale)?.gamblingMessages?.blackjackMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
+    const blackjackMessages = language.locales.get(language.defaultLocale)
+      ?.gamblingMessages?.blackjackMessages;
 
     const interaction = ctx.isInteraction ? ctx.interaction : null;
     const userId = ctx.author.id;
@@ -44,53 +47,77 @@ module.exports = class Cmd extends Command {
     try {
       const user = await client.utils.getUser(userId);
       if (!user) {
-        return client.utils.sendErrorMessage(client, ctx, generalMessages.userNotFound, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          generalMessages.userNotFound,
+          color,
+        );
       }
 
       if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
-        const activeCommand = user.validation.isKlaKlouk ? "Kla Klouk" : "Multiple Transfer";
+        const activeCommand = user.validation.isKlaKlouk
+          ? "Kla Klouk"
+          : "Multiple Transfer";
         return client.utils.sendErrorMessage(
-            client,
-            ctx,
-            `You have already started the ${activeCommand} event. Please finish it before using this command.`,
-            color
+          client,
+          ctx,
+          `You have already started the ${activeCommand} event. Please finish it before using this command.`,
+          color,
         );
       }
 
       if (activeGames.has(ctx.author.id)) {
-        return client.utils.sendErrorMessage(client, ctx, generalMessages.alreadyInGame, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          generalMessages.alreadyInGame,
+          color,
+        );
       }
 
       const { coin, blackjack, bank } = user.balance;
 
       if (coin < 1) {
-        return client.utils.sendErrorMessage(client, ctx, generalMessages.zeroBalance, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          generalMessages.zeroBalance,
+          color,
+        );
       }
 
-      let amount = ctx.isInteraction ? interaction.options.getString("amount") || 1 : args[0] || 1;
+      let amount = ctx.isInteraction
+        ? interaction.options.getString("amount") || 1
+        : args[0] || 1;
 
       if (amount.toString().startsWith("-")) {
         return ctx.sendMessage({
           embeds: [
             client
-                .embed()
-                .setColor(color.danger)
-                .setDescription(generalMessages.invalidAmount),
+              .embed()
+              .setColor(color.danger)
+              .setDescription(generalMessages.invalidAmount),
           ],
         });
       }
 
       if (
-          isNaN(amount) ||
-          amount <= 0 ||
-          amount.toString().includes(".") ||
-          amount.toString().includes(",")
+        isNaN(amount) ||
+        amount <= 0 ||
+        amount.toString().includes(".") ||
+        amount.toString().includes(",")
       ) {
         const amountMap = { all: coin, half: Math.ceil(coin / 2) };
         if (amount in amountMap) {
           amount = amountMap[amount];
         } else {
-          return client.utils.sendErrorMessage(client, ctx, generalMessages.invalidAmount, color);
+          return client.utils.sendErrorMessage(
+            client,
+            ctx,
+            generalMessages.invalidAmount,
+            color,
+          );
         }
       }
 
@@ -99,21 +126,42 @@ module.exports = class Cmd extends Command {
       user.balance.coin = coin - baseCoins;
       user.balance.blackjack = blackjack + baseCoins;
       user.balance.bank = bank;
-      await user.save();  // Await the user save operation
+      await user.save(); // Await the user save operation
 
       activeGames.set(ctx.author.id, true);
 
       if (interaction) await interaction.deferReply();
 
-      await initBlackjack(client, ctx, color, emoji, baseCoins, generalMessages, blackjackMessages);
+      await initBlackjack(
+        client,
+        ctx,
+        color,
+        emoji,
+        baseCoins,
+        generalMessages,
+        blackjackMessages,
+      );
     } catch (err) {
       console.error("Error fetching user data:", err);
-      client.utils.sendErrorMessage(client, ctx, generalMessages.userFetchError, color);
+      client.utils.sendErrorMessage(
+        client,
+        ctx,
+        generalMessages.userFetchError,
+        color,
+      );
     }
   }
 };
 
-function initBlackjack(client, ctx, color, emoji, bet, generalMessages, blackjackMessages) {
+function initBlackjack(
+  client,
+  ctx,
+  color,
+  emoji,
+  bet,
+  generalMessages,
+  blackjackMessages,
+) {
   let tdeck = deck.slice(0);
   let player = [
     bjUtil.randCard(client, tdeck, "f"),
@@ -133,7 +181,7 @@ function initBlackjack(client, ctx, color, emoji, bet, generalMessages, blackjac
     dealer,
     bet,
     generalMessages,
-    blackjackMessages
+    blackjackMessages,
   );
 }
 
@@ -146,7 +194,7 @@ function blackjack(
   dealer,
   bet,
   generalMessages,
-  blackjackMessages
+  blackjackMessages,
 ) {
   try {
     // First embed with GIF
@@ -174,20 +222,20 @@ function blackjack(
             "",
             "",
             generalMessages,
-            blackjackMessages
+            blackjackMessages,
           );
 
           const hitButton = client.utils.fullOptionButton(
             "hit",
             "",
             blackjackMessages.hit,
-            1
+            1,
           );
           const standButton = client.utils.fullOptionButton(
             "stand",
             "",
             blackjackMessages.stand,
-            2
+            2,
           );
           const row = client.utils.createButtonRow(hitButton, standButton);
 
@@ -226,7 +274,7 @@ function blackjack(
                       bet,
                       collector,
                       generalMessages,
-                      blackjackMessages
+                      blackjackMessages,
                     );
                   });
                 } else if (int.customId === "stand") {
@@ -243,7 +291,7 @@ function blackjack(
                       bet,
                       true,
                       generalMessages,
-                      blackjackMessages
+                      blackjackMessages,
                     );
                   });
                 }
@@ -260,7 +308,7 @@ function blackjack(
                       .replace("%{mainLeft}", emoji.mainLeft)
                       .replace("%{title}", blackjackMessages.title)
                       .replace("%{mainRight}", emoji.mainRight) +
-                      `⏳ **Time is up** !!! You didn't click the button in time.`
+                      `⏳ **Time is up** !!! You didn't click the button in time.`,
                   )
                   .setFooter({
                     text: `${ctx.author.displayName}, ${generalMessages.pleaseStartAgain}`,
@@ -293,7 +341,7 @@ function hit(
   bet,
   collector,
   generalMessages,
-  blackjackMessages
+  blackjackMessages,
 ) {
   let tdeck = bjUtil.initDeck(deck.slice(0), player, dealer);
   let card = bjUtil.randCard(client, tdeck, "f");
@@ -316,7 +364,7 @@ function hit(
       bet,
       true,
       generalMessages,
-      blackjackMessages
+      blackjackMessages,
     );
   } else {
     let embed = bjUtil.generateEmbed(
@@ -330,7 +378,7 @@ function hit(
       "",
       "",
       generalMessages,
-      blackjackMessages
+      blackjackMessages,
     );
     msg.edit({ embeds: [embed] });
   }
@@ -347,13 +395,14 @@ function stop(
   bet,
   fromHit,
   generalMessages,
-  blackjackMessages
+  blackjackMessages,
 ) {
   if (!fromHit) {
     player.forEach((card) => (card.type = "c")); // Reveal all player's cards
   }
   dealer.forEach((card) => {
-    if (card.type === "b") card.type = "f"; // Reveal face-down dealer cards
+    if (card.type === "b")
+      card.type = "f"; // Reveal face-down dealer cards
     else card.type = "c"; // Mark other dealer cards as completed
   });
 
@@ -376,11 +425,16 @@ function stop(
 
   // Determine the game outcome
   let winner;
-  if (ppoints > 21 && dpoints > 21) winner = "tb"; // Both bust
-  else if (ppoints === dpoints) winner = "t"; // Tie
-  else if (ppoints > 21) winner = "l"; // Player busts
-  else if (dpoints > 21) winner = "w"; // Dealer busts
-  else if (ppoints > dpoints) winner = "w"; // Player wins
+  if (ppoints > 21 && dpoints > 21)
+    winner = "tb"; // Both bust
+  else if (ppoints === dpoints)
+    winner = "t"; // Tie
+  else if (ppoints > 21)
+    winner = "l"; // Player busts
+  else if (dpoints > 21)
+    winner = "w"; // Dealer busts
+  else if (ppoints > dpoints)
+    winner = "w"; // Player wins
   else winner = "l"; // Dealer wins
 
   // Adjust user balance based on the result
@@ -411,7 +465,7 @@ function stop(
         winner,
         bet,
         generalMessages,
-        blackjackMessages
+        blackjackMessages,
       );
 
       activeGames.delete(int.user.id);

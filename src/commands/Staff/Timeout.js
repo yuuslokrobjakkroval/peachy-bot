@@ -25,7 +25,9 @@ module.exports = class Timeout extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user")
       : ctx.message.mentions.members.first() ||
@@ -48,7 +50,7 @@ module.exports = class Timeout extends Command {
         client,
         ctx,
         generalMessages.botTransfer,
-        color
+        color,
       );
     }
 
@@ -100,7 +102,7 @@ module.exports = class Timeout extends Command {
       user.verification.timeout.expiresAt > now
     ) {
       const remainingTime = Math.ceil(
-        (user.verification.timeout.expiresAt - now) / 1000 / 60
+        (user.verification.timeout.expiresAt - now) / 1000 / 60,
       ); // Convert to minutes
       return await ctx.sendMessage({
         embeds: [
@@ -108,7 +110,7 @@ module.exports = class Timeout extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              `User is already in timeout. Timeout ends in ${remainingTime} minute(s).`
+              `User is already in timeout. Timeout ends in ${remainingTime} minute(s).`,
             ),
         ],
       });
@@ -136,7 +138,7 @@ module.exports = class Timeout extends Command {
     const countdownInterval = setInterval(async () => {
       const now = new Date();
       const newRemainingTime = Math.ceil(
-        (user.verification.timeout.expiresAt - now) / 1000 / 60
+        (user.verification.timeout.expiresAt - now) / 1000 / 60,
       ); // Recalculate remaining time
 
       if (newRemainingTime <= 0) {
@@ -163,7 +165,7 @@ module.exports = class Timeout extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                `User is in timeout. Timeout ends in ${newRemainingTime} minute(s).`
+                `User is in timeout. Timeout ends in ${newRemainingTime} minute(s).`,
               ),
           ],
         });

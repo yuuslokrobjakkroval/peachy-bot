@@ -35,7 +35,7 @@ module.exports = class GuildListInvite extends Command {
           ch.type === ChannelType.GuildText &&
           ch
             .permissionsFor(guild.members.me)
-            .has(PermissionFlagsBits.CreateInstantInvite)
+            .has(PermissionFlagsBits.CreateInstantInvite),
       );
 
       if (!channel) {
@@ -44,7 +44,7 @@ module.exports = class GuildListInvite extends Command {
             ch.type === ChannelType.GuildVoice &&
             ch
               .permissionsFor(guild.members.me)
-              .has(PermissionFlagsBits.CreateInstantInvite)
+              .has(PermissionFlagsBits.CreateInstantInvite),
         );
       }
 
@@ -55,13 +55,11 @@ module.exports = class GuildListInvite extends Command {
             maxUses: 5,
             reason: "Listing server invites",
           });
-          guildInviteData.push(
-            `**${guild.name}**\n**LINK**: ${invite.url}`
-          );
+          guildInviteData.push(`**${guild.name}**\n**LINK**: ${invite.url}`);
         } catch (error) {
           console.error(
             `Failed to create invite for guild ${guild.name}:`,
-            error
+            error,
           );
         }
       }
@@ -72,7 +70,7 @@ module.exports = class GuildListInvite extends Command {
         client,
         ctx,
         "No guild invites available.",
-        color
+        color,
       );
     }
 

@@ -52,7 +52,7 @@ module.exports = class Blacklist extends Command {
         client,
         ctx,
         "You cannot blacklist a bot.",
-        color
+        color,
       );
     }
 
@@ -70,7 +70,7 @@ module.exports = class Blacklist extends Command {
     await Users.updateOne(
       { userId },
       { $set: { "verification.isBlacklist": true } },
-      { upsert: true }
+      { upsert: true },
     ).exec();
 
     return await ctx.sendMessage({
@@ -79,7 +79,7 @@ module.exports = class Blacklist extends Command {
           .embed()
           .setColor(color.main)
           .setDescription(
-            `${globalEmoji.result.tick} Blacklisted **Successfully**.`
+            `${globalEmoji.result.tick} Blacklisted **Successfully**.`,
           ),
       ],
     });

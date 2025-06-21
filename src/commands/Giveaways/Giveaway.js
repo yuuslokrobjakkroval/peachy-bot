@@ -74,7 +74,7 @@ module.exports = class Giveaway extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     if (ctx.isInteraction) {
@@ -113,7 +113,7 @@ module.exports = class Giveaway extends Command {
       client,
       color,
       durationStr,
-      winners
+      winners,
     );
     if (!validationResult.success) return;
 
@@ -181,16 +181,16 @@ module.exports = class Giveaway extends Command {
           description
             ? `${description}`
             : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`
-        }`
+        }`,
       )
       .setDescription(
         `Click ${
           emoji.main
         } button to enter!\nWinners: ${winners} with **${client.utils.formatNumber(
-          prize
+          prize,
         )}** ${emoji.coin}\nHosted by: ${
           ctx.author.displayName
-        }\nEnds: <t:${formattedDuration}:R>`
+        }\nEnds: <t:${formattedDuration}:R>`,
       );
 
     // Add optional image and thumbnail
@@ -203,18 +203,18 @@ module.exports = class Giveaway extends Command {
       emoji.main,
       "0",
       1,
-      false
+      false,
     );
     const participantsButton = client.utils.fullOptionButton(
       "giveaway-participants",
       "",
       "Participants",
       2,
-      false
+      false,
     );
     const buttonRow = client.utils.createButtonRow(
       joinButton,
-      participantsButton
+      participantsButton,
     );
 
     // Send giveaway message
@@ -255,7 +255,7 @@ module.exports = class Giveaway extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "There was an error saving the giveaway. Please try again."
+              "There was an error saving the giveaway. Please try again.",
             ),
         ],
       });

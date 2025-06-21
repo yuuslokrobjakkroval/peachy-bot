@@ -20,7 +20,7 @@ const GiveawaySchema = new Schema(
     rerolledWinners: { type: [String], default: [] },
     description: { type: String, default: "" },
   },
-  { timestamps: { createdAt: true, updatedAt: true } }
+  { timestamps: { createdAt: true, updatedAt: true } },
 );
 
 module.exports = model("giveaways", GiveawaySchema);

@@ -6,7 +6,7 @@ module.exports = class Ranking extends Command {
       name: "leaderboard",
       description: {
         content:
-            "Check top coin, spent coin, and streak of peachy in your Discord guild and globally.",
+          "Check top coin, spent coin, and streak of peachy in your Discord guild and globally.",
         examples: ["leaderboard bal", "leaderboard peach", "leaderboard slots"],
         usage: "leaderboard bal\nrank bal\ntop bal\nlb bal",
       },
@@ -40,17 +40,22 @@ module.exports = class Ranking extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-    const rankingMessages = language.locales.get(language.defaultLocale)?.economyMessages?.rankingMessages;
-    const type = ctx.isInteraction ? ctx.interaction.options.data[0]?.value : args[0] || "bal";
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
+    const rankingMessages = language.locales.get(language.defaultLocale)
+      ?.economyMessages?.rankingMessages;
+    const type = ctx.isInteraction
+      ? ctx.interaction.options.data[0]?.value
+      : args[0] || "bal";
     const users = await client.utils.userRanking(client, ctx, color, type);
 
     if (!users.length) {
       return await client.utils.oops(
-          client,
-          ctx,
-          rankingMessages.notFound,
-          color
+        client,
+        ctx,
+        rankingMessages.notFound,
+        color,
       );
     }
 
@@ -63,18 +68,22 @@ module.exports = class Ranking extends Command {
     const chunks = client.utils.chunk(leaderboardList, 10);
     const pages = chunks.map((chunk, i) => {
       return client
-          .embed()
-          .setColor(color.main)
-          .setDescription(
-              generalMessages.title
-                  .replace("%{mainLeft}", emoji.rank.owner)
-                  .replace("%{title}", client.utils.titleRanking(type, rankingMessages))
-                  .replace("%{mainRight}", emoji.rank.owner) + `${chunk.join("\n\n")}`
-          )
-          .setFooter({
-            text: `${generalMessages.requestedBy.replace("%{username}", ctx.author.displayName)} | Page ${i + 1} of ${chunks.length}`,
-            iconURL: ctx.author.displayAvatarURL(),
-          });
+        .embed()
+        .setColor(color.main)
+        .setDescription(
+          generalMessages.title
+            .replace("%{mainLeft}", emoji.rank.owner)
+            .replace(
+              "%{title}",
+              client.utils.titleRanking(type, rankingMessages),
+            )
+            .replace("%{mainRight}", emoji.rank.owner) +
+            `${chunk.join("\n\n")}`,
+        )
+        .setFooter({
+          text: `${generalMessages.requestedBy.replace("%{username}", ctx.author.displayName)} | Page ${i + 1} of ${chunks.length}`,
+          iconURL: ctx.author.displayAvatarURL(),
+        });
     });
     return await client.utils.reactionPaginate(ctx, pages);
   }

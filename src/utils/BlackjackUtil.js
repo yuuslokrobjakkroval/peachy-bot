@@ -67,7 +67,7 @@ exports.randCard = randCard;
 function randCard(client, deck, type) {
   let card = deck.splice(
     client.utils.getRandomNumber(0, deck.length - 1),
-    1
+    1,
   )[0];
   return { card: card, type: type };
 }
@@ -93,7 +93,7 @@ function generateEmbed(
   end,
   winnings,
   generalMessages,
-  blackjackMessages
+  blackjackMessages,
 ) {
   let description = "";
   let endColor = "";
@@ -142,7 +142,8 @@ function generateEmbed(
     }
   };
 
-  return client.embed()
+  return client
+    .embed()
     .setColor(endColor)
     .setThumbnail(checkThumbnail(end))
     .setDescription(
@@ -157,7 +158,7 @@ function generateEmbed(
           playerValue.ace ? "*" : ""
         }\`**\n` +
         `# ${playerValue.display}\n` +
-        `${description}`
+        `${description}`,
     )
     .setFooter({
       text: !end

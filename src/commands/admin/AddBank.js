@@ -25,7 +25,9 @@ module.exports = class AddBank extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user")
       : ctx.message.mentions.members.first() ||
@@ -40,7 +42,7 @@ module.exports = class AddBank extends Command {
         client,
         ctx,
         generalMessages.botTransfer,
-        color
+        color,
       );
     }
 
@@ -92,13 +94,13 @@ module.exports = class AddBank extends Command {
       .setDescription(
         `${globalEmoji.result.tick} Added **${client.utils.formatNumber(baseCoins)}** ${
           emoji.coin
-        } to ${mention}'s bank balance.`
+        } to ${mention}'s bank balance.`,
       );
 
     await Users.updateOne(
       { userId: mention.id },
       { $set: { "balance.bank": newBank, "balance.coin": coin } },
-      { upsert: true }
+      { upsert: true },
     ).exec();
 
     return await ctx.sendMessage({ embeds: [embed] });

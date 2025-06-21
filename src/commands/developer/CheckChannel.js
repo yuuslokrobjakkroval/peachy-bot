@@ -45,7 +45,7 @@ module.exports = class CheckChannelInAllServers extends Command {
         const channel = guild.channels.cache.get(channelId);
         if (channel) {
           result.push(
-            `**Server Name:** ${guild.name} (ID: ${guild.id})\n**Channel Name:** <#${channelId}> (${channel.name})\n**Channel ID:** ${channelId}`
+            `**Server Name:** ${guild.name} (ID: ${guild.id})\n**Channel Name:** <#${channelId}> (${channel.name})\n**Channel ID:** ${channelId}`,
           );
         }
       });
@@ -71,7 +71,7 @@ module.exports = class CheckChannelInAllServers extends Command {
         client,
         ctx,
         "An error occurred while checking the channel in all servers.",
-        color
+        color,
       );
     }
   }

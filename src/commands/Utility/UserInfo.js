@@ -34,16 +34,16 @@ module.exports = class UserInfo extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     }
 
@@ -61,7 +61,7 @@ module.exports = class UserInfo extends Command {
         client,
         ctx,
         generalMessages?.userNotFound,
-        color
+        color,
       );
     }
     const { guild } = ctx;
@@ -96,7 +96,7 @@ module.exports = class UserInfo extends Command {
       emoji,
       color,
       generalMessages,
-      globalEmoji
+      globalEmoji,
     );
 
     // Create buttons
@@ -110,7 +110,7 @@ module.exports = class UserInfo extends Command {
         .setCustomId("banner")
         .setLabel("Banner")
         .setStyle(ButtonStyle.Secondary)
-        .setEmoji("🏞️")
+        .setEmoji("🏞️"),
     );
 
     // Send the initial message with buttons
@@ -153,7 +153,7 @@ module.exports = class UserInfo extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName
+                ctx.author.displayName,
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
@@ -170,7 +170,7 @@ module.exports = class UserInfo extends Command {
             .setCustomId("banner")
             .setLabel("Banner")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("🏞️")
+            .setEmoji("🏞️"),
         );
 
         await interaction.update({
@@ -203,7 +203,7 @@ module.exports = class UserInfo extends Command {
             .setCustomId("avatar")
             .setLabel("Avatar")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("🖼️")
+            .setEmoji("🖼️"),
         );
 
         await interaction.update({
@@ -230,7 +230,7 @@ module.exports = class UserInfo extends Command {
           .setLabel("Banner")
           .setStyle(ButtonStyle.Secondary)
           .setEmoji("🏞️")
-          .setDisabled(true)
+          .setDisabled(true),
       );
 
       // Try to update the message with disabled buttons
@@ -256,7 +256,7 @@ module.exports = class UserInfo extends Command {
     emoji,
     color,
     generalMessages,
-    globalEmoji
+    globalEmoji,
   ) {
     return client
       .embed()
@@ -266,7 +266,7 @@ module.exports = class UserInfo extends Command {
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", "USER INFO")
-          .replace("%{mainRight}", emoji.mainRight)
+          .replace("%{mainRight}", emoji.mainRight),
       )
       .addFields([
         {
@@ -285,7 +285,7 @@ module.exports = class UserInfo extends Command {
             guildMember?.joinedTimestamp
               ? `${Math.floor(
                   (Date.now() - guildMember.joinedTimestamp) /
-                    (1000 * 60 * 60 * 24)
+                    (1000 * 60 * 60 * 24),
                 )} days ago`
               : "N/A"
           }**`,
@@ -313,7 +313,7 @@ module.exports = class UserInfo extends Command {
         {
           name: "📅 Created At",
           value: `${globalEmoji.arrow} **${Math.floor(
-            (Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365)
+            (Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365),
           )}** years ago`,
           inline: false,
         },
@@ -322,7 +322,7 @@ module.exports = class UserInfo extends Command {
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })

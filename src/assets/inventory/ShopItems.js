@@ -810,16 +810,16 @@ module.exports = [
           Math.min(
             600000,
             Math.round(
-              (550000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
-            )
-          )
+              (550000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2),
+            ),
+          ),
         ), // ~3.3-6.6 min based on price
         luckBoost: Math.max(
           0.05,
           Math.min(
             0.3,
-            (550000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
-          )
+            (550000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2),
+          ),
         ), // ~0.11-0.16 based on price
       },
       {
@@ -841,16 +841,16 @@ module.exports = [
           Math.min(
             600000,
             Math.round(
-              (650000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
-            )
-          )
+              (650000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2),
+            ),
+          ),
         ), // ~3.9-7.8 min based on price
         luckBoost: Math.max(
           0.05,
           Math.min(
             0.3,
-            (650000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
-          )
+            (650000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2),
+          ),
         ), // ~0.13-0.19 based on price
       },
       {
@@ -872,16 +872,16 @@ module.exports = [
           Math.min(
             600000,
             Math.round(
-              (520000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
-            )
-          )
+              (520000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2),
+            ),
+          ),
         ), // ~3.1-6.2 min based on price
         luckBoost: Math.max(
           0.05,
           Math.min(
             0.3,
-            (520000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
-          )
+            (520000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2),
+          ),
         ), // ~0.10-0.15 based on price
       },
       {
@@ -903,16 +903,16 @@ module.exports = [
           Math.min(
             600000,
             Math.round(
-              (680000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
-            )
-          )
+              (680000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2),
+            ),
+          ),
         ), // ~4.1-8.2 min based on price
         luckBoost: Math.max(
           0.05,
           Math.min(
             0.3,
-            (680000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
-          )
+            (680000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2),
+          ),
         ), // ~0.14-0.20 based on price
       },
       {
@@ -934,16 +934,16 @@ module.exports = [
           Math.min(
             600000,
             Math.round(
-              (620000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2)
-            )
-          )
+              (620000 / 100000) * 60000 * (1 + (Math.random() - 0.5) * 0.2),
+            ),
+          ),
         ), // ~3.7-7.4 min based on price
         luckBoost: Math.max(
           0.05,
           Math.min(
             0.3,
-            (620000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2)
-          )
+            (620000 / 1000000) * 0.25 * (1 + (Math.random() - 0.5) * 0.2),
+          ),
         ), // ~0.12-0.18 based on price
       },
     ],

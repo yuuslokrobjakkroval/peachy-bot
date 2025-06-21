@@ -38,7 +38,7 @@ module.exports = class Username extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const userNameMessages = language.locales.get(language.defaultLocale)
       ?.profileMessages?.userNameMessages;
@@ -63,13 +63,13 @@ module.exports = class Username extends Command {
                 "\n\n**Examples:**\n" +
                 userNameMessages.help.examples
                   .map((example) => `\`${example}\``)
-                  .join("\n")
+                  .join("\n"),
             )
             .setFooter({
               text:
                 generalMessages?.requestedBy.replace(
                   "%{username}",
-                  ctx.author.displayName
+                  ctx.author.displayName,
                 ) || `Request By ${ctx.author.displayName}`,
               iconURL: ctx.author.displayAvatarURL(),
             });
@@ -86,13 +86,13 @@ module.exports = class Username extends Command {
                 .replace("%{mainLeft}", emoji.mainLeft)
                 .replace("%{title}", "𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄")
                 .replace("%{mainRight}", emoji.mainRight) +
-                userNameMessages.reset
+                userNameMessages.reset,
             )
             .setFooter({
               text:
                 generalMessages?.requestedBy.replace(
                   "%{username}",
-                  ctx.author.displayName
+                  ctx.author.displayName,
                 ) || `Request By ${ctx.author.displayName}`,
               iconURL: ctx.author.displayAvatarURL(),
             });
@@ -115,7 +115,7 @@ module.exports = class Username extends Command {
                 client,
                 ctx,
                 userNameMessages.error.long,
-                color
+                color,
               );
               return;
             }
@@ -127,13 +127,13 @@ module.exports = class Username extends Command {
                   .replace("%{mainLeft}", emoji.mainLeft)
                   .replace("%{title}", "𝐔𝐒𝐄𝐑𝐍𝐀𝐌𝐄")
                   .replace("%{mainRight}", emoji.mainRight) +
-                  userNameMessages.success.replace("%{username}", text)
+                  userNameMessages.success.replace("%{username}", text),
               )
               .setFooter({
                 text:
                   generalMessages?.requestedBy.replace(
                     "%{username}",
-                    ctx.author.displayName
+                    ctx.author.displayName,
                   ) || `Request By ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
               });
@@ -152,14 +152,14 @@ module.exports = class Username extends Command {
                   .replace("%{mainRight}", emoji.mainRight) +
                   userNameMessages.name.replace(
                     "%{username}",
-                    user.profile.username || userNameMessages.noUsername
-                  )
+                    user.profile.username || userNameMessages.noUsername,
+                  ),
               )
               .setFooter({
                 text:
                   generalMessages?.requestedBy.replace(
                     "%{username}",
-                    ctx.author.displayName
+                    ctx.author.displayName,
                   ) || `Request By ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
               });

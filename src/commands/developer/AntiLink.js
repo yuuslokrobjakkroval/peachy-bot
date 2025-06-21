@@ -84,16 +84,16 @@ module.exports = class AntiLink extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     }
 
@@ -117,7 +117,7 @@ module.exports = class AntiLink extends Command {
       return await this.reply(
         ctx,
         "You must have ADMINISTRATOR perms to use this command in a guild.",
-        { flags: 64 }
+        { flags: 64 },
       );
     }
 
@@ -135,7 +135,7 @@ module.exports = class AntiLink extends Command {
         if (data) {
           return await this.reply(
             ctx,
-            "You already have the anti-link system setup."
+            "You already have the anti-link system setup.",
           );
         }
 
@@ -148,7 +148,7 @@ module.exports = class AntiLink extends Command {
           .embed()
           .setColor(color?.main || "#00c7fe") // Fallback color
           .setDescription(
-            `Successfully setup anti-link system with permissions **${permissions}**`
+            `Successfully setup anti-link system with permissions **${permissions}**`,
           );
 
         return await this.reply(ctx, { embeds: [embed] });
@@ -192,7 +192,7 @@ module.exports = class AntiLink extends Command {
           return await this.reply(
             ctx,
             "There is no anti-link system set up here.",
-            { flags: 64 }
+            { flags: 64 },
           );
         }
 
@@ -212,7 +212,7 @@ module.exports = class AntiLink extends Command {
           .embed()
           .setColor(color?.success || "#00c7fe") // Fallback color
           .setDescription(
-            `Your anti-link BYPASS permissions has now been set to ${newPermissions}`
+            `Your anti-link BYPASS permissions has now been set to ${newPermissions}`,
           );
 
         return await this.reply(ctx, { embeds: [embed3] });

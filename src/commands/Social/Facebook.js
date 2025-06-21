@@ -86,7 +86,7 @@ module.exports = class Facebook extends Command {
         client,
         ctx,
         fbMessages?.userNotFound || "User not found.",
-        color
+        color,
       );
     }
 
@@ -95,7 +95,7 @@ module.exports = class Facebook extends Command {
       .setTitle(
         `${emoji.mainLeft} ${
           fbMessages?.settingsTitle || "Facebook Settings"
-        } ${emoji.mainRight}`
+        } ${emoji.mainRight}`,
       );
 
     switch (subCommand) {
@@ -109,13 +109,13 @@ module.exports = class Facebook extends Command {
             ctx,
             fbMessages?.invalidName ||
               "Please provide a valid Facebook name (up to 21 characters).",
-            color
+            color,
           );
         }
 
         embed
           .setDescription(
-            fbMessages?.nameUpdated || "Your Facebook name has been set."
+            fbMessages?.nameUpdated || "Your Facebook name has been set.",
           )
           .addFields([
             {
@@ -127,7 +127,7 @@ module.exports = class Facebook extends Command {
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "social.facebook.name": name } }
+          { $set: { "social.facebook.name": name } },
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -144,13 +144,13 @@ module.exports = class Facebook extends Command {
             client,
             ctx,
             fbMessages?.invalidLink || "Please provide a valid Facebook link.",
-            color
+            color,
           );
         }
 
         embed
           .setDescription(
-            fbMessages?.linkUpdated || "Your Facebook link has been set."
+            fbMessages?.linkUpdated || "Your Facebook link has been set.",
           )
           .addFields([
             {
@@ -163,7 +163,7 @@ module.exports = class Facebook extends Command {
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "social.facebook.link": link } }
+          { $set: { "social.facebook.link": link } },
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -174,7 +174,7 @@ module.exports = class Facebook extends Command {
           .setTitle(fbMessages?.helpTitle || "Facebook Command Help")
           .setDescription(
             fbMessages?.helpDescription ||
-              "Manage your Facebook details with the following subcommands:"
+              "Manage your Facebook details with the following subcommands:",
           )
           .addFields([
             {
@@ -216,9 +216,9 @@ module.exports = class Facebook extends Command {
               fbName && fbLink
                 ? `[${fbName}](${fbLink})`
                 : fbName
-                ? fbName
-                : fbMessages?.notSet || "Not set"
-            }**`
+                  ? fbName
+                  : fbMessages?.notSet || "Not set"
+            }**`,
           );
 
         await ctx.sendMessage({ embeds: [embed] });

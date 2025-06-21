@@ -25,7 +25,9 @@ module.exports = class BanUser extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
 
     if (args.length < 1) {
       return await ctx.sendMessage({
@@ -34,7 +36,7 @@ module.exports = class BanUser extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "Please specify whether to `ban`, and mention a user."
+              "Please specify whether to `ban`, and mention a user.",
             ),
         ],
       });
@@ -47,7 +49,12 @@ module.exports = class BanUser extends Command {
         args[0];
 
     if (!mention) {
-      return client.util.sendErrorMessage(client, ctx, generalMessages.noUserMentioned, color);
+      return client.util.sendErrorMessage(
+        client,
+        ctx,
+        generalMessages.noUserMentioned,
+        color,
+      );
     }
 
     const userId = typeof mention === "string" ? mention : mention.id;
@@ -67,7 +74,10 @@ module.exports = class BanUser extends Command {
     if (isBanned) {
       return await ctx.sendMessage({
         embeds: [
-          client.embed().setColor(color.danger).setDescription(`${mention} is already banned.`),
+          client
+            .embed()
+            .setColor(color.danger)
+            .setDescription(`${mention} is already banned.`),
         ],
       });
     } else {
@@ -80,14 +90,14 @@ module.exports = class BanUser extends Command {
             "verification.banReason": reason,
           },
         },
-        { upsert: true }
+        { upsert: true },
       ).exec();
 
       const embed = client
         .embed()
         .setColor(color.main)
         .setDescription(
-          `${globalEmoji.result.tick} Banned **${mention}** for: \`${reason}\``
+          `${globalEmoji.result.tick} Banned **${mention}** for: \`${reason}\``,
         );
 
       return await ctx.sendMessage({ embeds: [embed] });

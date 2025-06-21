@@ -69,15 +69,15 @@ module.exports = class JoinToCreate extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", emoji.searching)
+        generalMessages.search.replace("%{loading}", emoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", emoji.searching)
+        generalMessages.search.replace("%{loading}", emoji.searching),
       );
     }
 
@@ -85,7 +85,7 @@ module.exports = class JoinToCreate extends Command {
       if (!ctx.guild) {
         return await this.reply(
           ctx,
-          "This command can only be used in a server."
+          "This command can only be used in a server.",
         );
       }
       const guildId = ctx.guild.id;
@@ -96,7 +96,7 @@ module.exports = class JoinToCreate extends Command {
       if (!subcommand) {
         return await this.reply(
           ctx,
-          "Please specify a subcommand: setup or delete."
+          "Please specify a subcommand: setup or delete.",
         );
       }
 
@@ -116,32 +116,32 @@ module.exports = class JoinToCreate extends Command {
           if (channel.type !== ChannelType.GuildVoice) {
             return await this.reply(
               ctx,
-              'The "channel" option must be a voice channel.'
+              'The "channel" option must be a voice channel.',
             );
           }
           if (category.type !== ChannelType.GuildCategory) {
             return await this.reply(
               ctx,
-              'The "category" option must be a category channel.'
+              'The "category" option must be a category channel.',
             );
           }
         } else {
           if (!channel || channel.type !== ChannelType.GuildVoice) {
             return await this.reply(
               ctx,
-              "Please provide a valid voice channel ID."
+              "Please provide a valid voice channel ID.",
             );
           }
           if (!category || category.type !== ChannelType.GuildCategory) {
             return await this.reply(
               ctx,
-              "Please provide a valid category channel ID."
+              "Please provide a valid category channel ID.",
             );
           }
           if (isNaN(voiceLimit) || voiceLimit < 1) {
             return await this.reply(
               ctx,
-              "Please provide a valid voice limit (minimum 1)."
+              "Please provide a valid voice limit (minimum 1).",
             );
           }
         }
@@ -151,7 +151,7 @@ module.exports = class JoinToCreate extends Command {
         if (existingSetup) {
           return await this.reply(
             ctx,
-            "Join-to-Create is already set up for this guild. Use `/join-to-create delete` to reset."
+            "Join-to-Create is already set up for this guild. Use `/join-to-create delete` to reset.",
           );
         }
 
@@ -165,36 +165,36 @@ module.exports = class JoinToCreate extends Command {
         await newSetup.save();
         return await this.reply(
           ctx,
-          `Join-to-Create system successfully set up! Users who join ${channel.name} will have private voice channels created under ${category.name} with a limit of ${voiceLimit} users.`
+          `Join-to-Create system successfully set up! Users who join ${channel.name} will have private voice channels created under ${category.name} with a limit of ${voiceLimit} users.`,
         );
       } else if (subcommand === "delete") {
         const existingSetup = await JoinToCreateModel.findOne({ guildId });
         if (!existingSetup) {
           return await this.reply(
             ctx,
-            "No Join-to-Create system found for this guild."
+            "No Join-to-Create system found for this guild.",
           );
         }
 
         await JoinToCreateModel.deleteOne({ guildId });
         return await this.reply(
           ctx,
-          "Join-to-Create system successfully deleted for this guild."
+          "Join-to-Create system successfully deleted for this guild.",
         );
       } else {
         return await this.reply(
           ctx,
-          "Invalid subcommand. Use: setup or delete."
+          "Invalid subcommand. Use: setup or delete.",
         );
       }
     } catch (error) {
       console.error(
         `Error in JoinToCreate command for guild ${ctx.guild?.id}:`,
-        error
+        error,
       );
       return await this.reply(
         ctx,
-        "An error occurred while processing your request."
+        "An error occurred while processing your request.",
       );
     }
   }

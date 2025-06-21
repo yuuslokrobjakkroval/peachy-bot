@@ -26,15 +26,18 @@ module.exports = class Unblacklist extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const mention = ctx.isInteraction
-        ? ctx.interaction.options.getUser("user")
-        : ctx.message.mentions.members.first() ||
+      ? ctx.interaction.options.getUser("user")
+      : ctx.message.mentions.members.first() ||
         ctx.guild.members.cache.get(args[0]) ||
         args[0];
 
     if (!mention) {
       return await ctx.sendMessage({
         embeds: [
-          client.embed().setColor(color.danger).setDescription("Please mention a valid user."),
+          client
+            .embed()
+            .setColor(color.danger)
+            .setDescription("Please mention a valid user."),
         ],
       });
     }
@@ -45,19 +48,27 @@ module.exports = class Unblacklist extends Command {
     if (!user || !user.verification.isBlacklist) {
       return await ctx.sendMessage({
         embeds: [
-          client.embed().setColor(color.danger).setDescription("This user is not blacklisted."),
+          client
+            .embed()
+            .setColor(color.danger)
+            .setDescription("This user is not blacklisted."),
         ],
       });
     }
 
     await Users.updateOne(
-        { userId },
-        { $set: { "verification.isBlacklist": false } }
+      { userId },
+      { $set: { "verification.isBlacklist": false } },
     ).exec();
 
     return await ctx.sendMessage({
       embeds: [
-        client.embed().setColor(color.success).setDescription(`${globalEmoji.result.tick} Un-blacklisted Successfully.`),
+        client
+          .embed()
+          .setColor(color.success)
+          .setDescription(
+            `${globalEmoji.result.tick} Un-blacklisted Successfully.`,
+          ),
       ],
     });
   }

@@ -34,16 +34,16 @@ module.exports = class ServerInfo extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     }
 
@@ -53,16 +53,16 @@ module.exports = class ServerInfo extends Command {
     const members = await guild.members.fetch();
 
     const onlineCount = members.filter(
-      (member) => member.presence?.status === "online"
+      (member) => member.presence?.status === "online",
     ).size;
     const idleCount = members.filter(
-      (member) => member.presence?.status === "idle"
+      (member) => member.presence?.status === "idle",
     ).size;
     const dndCount = members.filter(
-      (member) => member.presence?.status === "dnd"
+      (member) => member.presence?.status === "dnd",
     ).size;
     const offlineCount = members.filter(
-      (member) => !member.presence || member.presence?.status === "offline"
+      (member) => !member.presence || member.presence?.status === "offline",
     ).size;
 
     const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
@@ -70,11 +70,11 @@ module.exports = class ServerInfo extends Command {
 
     // Count members offline for 7 days and 30 days
     const offline7Days = members.filter(
-      (member) => !member.presence && member.joinedTimestamp < sevenDaysAgo
+      (member) => !member.presence && member.joinedTimestamp < sevenDaysAgo,
     ).size;
 
     const offline30Days = members.filter(
-      (member) => !member.presence && member.joinedTimestamp < thirtyDaysAgo
+      (member) => !member.presence && member.joinedTimestamp < thirtyDaysAgo,
     ).size;
 
     // Get server icon and banner URLs
@@ -102,7 +102,7 @@ module.exports = class ServerInfo extends Command {
       emoji,
       generalMessages,
       globalEmoji,
-      bannerURL
+      bannerURL,
     );
 
     // Create buttons
@@ -116,7 +116,7 @@ module.exports = class ServerInfo extends Command {
         .setCustomId("banner")
         .setLabel("Banner")
         .setStyle(ButtonStyle.Secondary)
-        .setEmoji("🏞️")
+        .setEmoji("🏞️"),
     );
 
     // Send the initial message with buttons
@@ -159,7 +159,7 @@ module.exports = class ServerInfo extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName
+                ctx.author.displayName,
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
@@ -176,7 +176,7 @@ module.exports = class ServerInfo extends Command {
             .setCustomId("banner")
             .setLabel("Banner")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("🏞️")
+            .setEmoji("🏞️"),
         );
 
         await interaction.update({
@@ -194,7 +194,7 @@ module.exports = class ServerInfo extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName
+                ctx.author.displayName,
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
@@ -211,7 +211,7 @@ module.exports = class ServerInfo extends Command {
             .setCustomId("icon")
             .setLabel("Avatar")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("🖼️")
+            .setEmoji("🖼️"),
         );
 
         await interaction.update({
@@ -238,7 +238,7 @@ module.exports = class ServerInfo extends Command {
           .setLabel("Banner")
           .setStyle(ButtonStyle.Secondary)
           .setEmoji("🏞️")
-          .setDisabled(true)
+          .setDisabled(true),
       );
 
       // Try to update the message with disabled buttons
@@ -270,7 +270,7 @@ module.exports = class ServerInfo extends Command {
     emoji,
     generalMessages,
     globalEmoji,
-    bannerURL
+    bannerURL,
   ) {
     return client
       .embed()
@@ -280,7 +280,7 @@ module.exports = class ServerInfo extends Command {
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", "SERVER INFO")
-          .replace("%{mainRight}", emoji.mainRight)
+          .replace("%{mainRight}", emoji.mainRight),
       )
       .addFields([
         {
@@ -360,7 +360,7 @@ module.exports = class ServerInfo extends Command {
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })

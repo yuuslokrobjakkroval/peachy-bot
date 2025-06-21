@@ -49,7 +49,7 @@ module.exports = class UserInventory extends Command {
           client,
           ctx,
           invMessages.noInventory || "No inventory data found for this user.",
-          color
+          color,
         );
       }
 
@@ -58,7 +58,7 @@ module.exports = class UserInventory extends Command {
       user.inventory.forEach((item) => {
         if (item.quantity > 0) {
           const itemInfo = Items.concat(ImportantItems).find(
-            ({ id }) => id === item.id
+            ({ id }) => id === item.id,
           );
 
           if (itemInfo) {
@@ -69,7 +69,7 @@ module.exports = class UserInventory extends Command {
                 itemInfo.name
                   ? itemInfo.name
                   : client.utils.toNameCase(itemInfo.id)
-              }`
+              }`,
             );
             if (itemInfo.type === "milk") {
               totalWorth += itemInfo.price.sell * item.quantity;
@@ -149,7 +149,7 @@ module.exports = class UserInventory extends Command {
         .setDescription(
           `## ${emoji.mainLeft} ${invMessages.inventoryTitle || "INVENTORY"} ${
             emoji.mainRight
-          }`
+          }`,
         )
         .setThumbnail(client.utils.emojiToImage(emoji.main))
         .addFields(embedFields)
@@ -168,7 +168,7 @@ module.exports = class UserInventory extends Command {
         ctx,
         invMessages.error ||
           "An error occurred while retrieving your inventory.",
-        color
+        color,
       );
     }
   }

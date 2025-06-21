@@ -96,12 +96,12 @@ module.exports = class Birthday extends Command {
         // Reset birthday and zodiac sign
         embed.setDescription(
           bdMessages?.resetSuccess ||
-            "Your birthday and zodiac sign have been reset."
+            "Your birthday and zodiac sign have been reset.",
         );
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "profile.birthday": null, "profile.zodiacSign": null } }
+          { $set: { "profile.birthday": null, "profile.zodiacSign": null } },
         ).exec();
 
         await ctx.sendMessage({ embeds: [embed] });
@@ -117,7 +117,7 @@ module.exports = class Birthday extends Command {
 
           const zodiacMessage = user.profile.zodiacSign
             ? `Your zodiac sign is **\`${client.utils.formatCapitalize(
-                user.profile.zodiacSign
+                user.profile.zodiacSign,
               )}\`**.\n`
             : bdMessages?.noZodiac || "No zodiac sign set.";
 
@@ -138,7 +138,7 @@ module.exports = class Birthday extends Command {
             ctx,
             bdMessages?.provideDate ||
               "Please provide a valid date for your birthday or a valid subcommand.",
-            color
+            color,
           );
           return;
         }
@@ -154,7 +154,7 @@ module.exports = class Birthday extends Command {
             `${
               bdMessages?.invalidDate ||
               "The date must be in one of the supported formats:"
-            }\n• DD-MM\n• MM-DD\n• MM/DD\n• MM-DD\n• DD/MM`
+            }\n• DD-MM\n• MM-DD\n• MM/DD\n• MM-DD\n• DD/MM`,
           );
           await ctx.sendMessage({ embeds: [embed] });
         } else {
@@ -165,7 +165,7 @@ module.exports = class Birthday extends Command {
           const zodiacSign = client.utils.getZodiacSign(
             emoji.zodiac,
             day,
-            month
+            month,
           );
           const zodiacEmojiImage = zodiacSign
             ? client.utils.emojiToImage(zodiacSign.emoji)
@@ -180,7 +180,7 @@ module.exports = class Birthday extends Command {
                 bdMessages?.zodiacSuccess || "Your zodiac sign is"
               }\n**\`${client.utils.formatCapitalize(zodiacSign.sign)}\`** ${
                 zodiacSign.emoji
-              }.`
+              }.`,
             );
 
           await Users.updateOne(
@@ -190,7 +190,7 @@ module.exports = class Birthday extends Command {
                 "profile.birthday": formattedDate,
                 "profile.zodiacSign": zodiacSign.sign,
               },
-            }
+            },
           ).exec();
 
           await ctx.sendMessage({ embeds: [embed] });

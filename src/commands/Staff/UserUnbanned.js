@@ -25,7 +25,7 @@ module.exports = class BanUser extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     if (args.length < 1) {
@@ -35,7 +35,7 @@ module.exports = class BanUser extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "Please specify whether to `unban`, and mention a user."
+              "Please specify whether to `unban`, and mention a user.",
             ),
         ],
       });
@@ -52,7 +52,7 @@ module.exports = class BanUser extends Command {
         client,
         ctx,
         generalMessages.noUserMentioned,
-        color
+        color,
       );
     }
 
@@ -66,7 +66,7 @@ module.exports = class BanUser extends Command {
           "verification.banReason": null,
         },
       },
-      { upsert: true }
+      { upsert: true },
     ).exec();
 
     const embed = client

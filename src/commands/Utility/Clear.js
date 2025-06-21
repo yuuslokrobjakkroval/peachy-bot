@@ -36,7 +36,7 @@ module.exports = class Clear extends Command {
 
     if (!hasManageMessages && !isAdmin) {
       return client.utils.sendErrorMessage(
-        "You need the 'Manage Messages' or 'Administrator' permission to use this command."
+        "You need the 'Manage Messages' or 'Administrator' permission to use this command.",
       );
     }
 
@@ -50,7 +50,7 @@ module.exports = class Clear extends Command {
       numberMessageDelete > 1000
     ) {
       return ctx.sendMessage(
-        "Please provide a valid number between 1 and 1000."
+        "Please provide a valid number between 1 and 1000.",
       );
     }
 

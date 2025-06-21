@@ -33,7 +33,7 @@ module.exports = class Chop extends Command {
       Woods,
       emoji,
       color,
-      language
+      language,
     );
   }
 };

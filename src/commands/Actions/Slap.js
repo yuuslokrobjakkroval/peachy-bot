@@ -112,7 +112,7 @@ module.exports = class Slap extends Command {
           client,
           ctx,
           errorMessages.noUser,
-          color
+          color,
         );
       }
 
@@ -121,13 +121,14 @@ module.exports = class Slap extends Command {
           client,
           ctx,
           errorMessages.selfSlap,
-          color
+          color,
         );
       }
 
       // Get random emoji
       const randomEmoji = client.utils.getRandomElement(
-        emoji.actions?.slaps || globalEmoji.actions?.slaps || ["👋", "✋", "💢"]
+        emoji.actions?.slaps ||
+          globalEmoji.actions?.slaps || ["👋", "✋", "💢"],
       );
 
       // Create the embed message for slapping
@@ -143,13 +144,13 @@ module.exports = class Slap extends Command {
             "\n\n" +
             slapMessages.description
               .replace("%{displayName}", `**${ctx.author.displayName}**`)
-              .replace("%{target}", `**${target.displayName}**`)
+              .replace("%{target}", `**${target.displayName}**`),
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -176,7 +177,7 @@ module.exports = class Slap extends Command {
       const row = new ActionRowBuilder().addComponents(
         slapBackButton,
         dodgeButton,
-        cryButton
+        cryButton,
       );
 
       // Send the message with buttons
@@ -213,15 +214,15 @@ module.exports = class Slap extends Command {
               .setDescription(
                 slapMessages.slapBack
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(
                 client.utils.emojiToImage(
                   client.utils.getRandomElement(
                     emoji.actions?.slaps ||
-                      globalEmoji.actions?.slaps || ["👋", "✋", "💢"]
-                  )
-                )
+                      globalEmoji.actions?.slaps || ["👋", "✋", "💢"],
+                  ),
+                ),
               );
             break;
 
@@ -230,7 +231,7 @@ module.exports = class Slap extends Command {
               .setDescription(
                 slapMessages.dodgeReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.dodge || "💨"));
             break;
@@ -240,7 +241,7 @@ module.exports = class Slap extends Command {
               .setDescription(
                 slapMessages.cryReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.cry || "😢"));
             break;
@@ -250,7 +251,7 @@ module.exports = class Slap extends Command {
         const disabledRow = new ActionRowBuilder().addComponents(
           ButtonBuilder.from(slapBackButton).setDisabled(true),
           ButtonBuilder.from(dodgeButton).setDisabled(true),
-          ButtonBuilder.from(cryButton).setDisabled(true)
+          ButtonBuilder.from(cryButton).setDisabled(true),
         );
 
         // Update the message with the response and disabled buttons
@@ -270,7 +271,7 @@ module.exports = class Slap extends Command {
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(slapBackButton).setDisabled(true),
               ButtonBuilder.from(dodgeButton).setDisabled(true),
-              ButtonBuilder.from(cryButton).setDisabled(true)
+              ButtonBuilder.from(cryButton).setDisabled(true),
             );
 
             await message.edit({ components: [disabledRow] });
@@ -285,7 +286,7 @@ module.exports = class Slap extends Command {
         client,
         ctx,
         "An error occurred while executing the command.",
-        color
+        color,
       );
     }
   }

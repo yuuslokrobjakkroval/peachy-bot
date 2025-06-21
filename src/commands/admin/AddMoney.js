@@ -26,7 +26,7 @@ module.exports = class AddMoney extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     const mention = ctx.isInteraction
@@ -46,7 +46,7 @@ module.exports = class AddMoney extends Command {
         client,
         ctx,
         generalMessages?.invalidUser || "Could not find the specified user.",
-        color
+        color,
       );
     }
 
@@ -55,7 +55,7 @@ module.exports = class AddMoney extends Command {
         client,
         ctx,
         generalMessages?.botTransfer || "Cannot add money to a bot's balance.",
-        color
+        color,
       );
     }
 
@@ -93,7 +93,7 @@ module.exports = class AddMoney extends Command {
           ctx,
           generalMessages?.invalidAmount ||
             "Invalid amount. Please provide a positive number (e.g., 100, 1k, 1m).",
-          color
+          color,
         );
       }
     }
@@ -106,15 +106,15 @@ module.exports = class AddMoney extends Command {
       .setColor(color.main)
       .setDescription(
         `${globalEmoji.result.tick} Added **${client.utils.formatNumber(
-          baseCoins
-        )}** ${emoji.coin} to ${syncUser.tag}'s balance.`
+          baseCoins,
+        )}** ${emoji.coin} to ${syncUser.tag}'s balance.`,
       );
 
     try {
       await Users.updateOne(
         { userId: syncUser.id },
         { $set: { "balance.coin": newCoin, "balance.bank": bank } },
-        { upsert: true }
+        { upsert: true },
       ).exec();
     } catch (error) {
       console.error("Error updating user balance:", error);
@@ -123,7 +123,7 @@ module.exports = class AddMoney extends Command {
         ctx,
         generalMessages?.databaseError ||
           "An error occurred while updating the balance. Please try again.",
-        color
+        color,
       );
     }
 

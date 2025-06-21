@@ -1,6 +1,7 @@
-const { model, Schema } = require('mongoose');
+const { model, Schema } = require("mongoose");
 
-const InviteSchema = new Schema({
+const InviteSchema = new Schema(
+  {
     guildId: { type: String, required: true },
     guildName: { type: String, default: null },
     inviteCode: { type: String, required: true, unique: true },
@@ -8,6 +9,8 @@ const InviteSchema = new Schema({
     userId: { type: Array, default: [] },
     inviterId: { type: String, required: true },
     inviterTag: { type: String, required: true },
-}, { timestamps: { createdAt: true, updatedAt: true } });
+  },
+  { timestamps: { createdAt: true, updatedAt: true } },
+);
 
-module.exports = model('invites', InviteSchema);
+module.exports = model("invites", InviteSchema);

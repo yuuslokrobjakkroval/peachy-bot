@@ -86,7 +86,7 @@ module.exports = class TikTok extends Command {
         client,
         ctx,
         ttMessages?.userNotFound || "User not found.",
-        color
+        color,
       );
     }
 
@@ -95,7 +95,7 @@ module.exports = class TikTok extends Command {
       .setTitle(
         `${emoji.mainLeft} ${
           ttMessages?.settingsTitle || "TikTok Settings for"
-        } ${targetUsername} ${emoji.mainRight}`
+        } ${targetUsername} ${emoji.mainRight}`,
       );
 
     switch (subCommand) {
@@ -109,13 +109,13 @@ module.exports = class TikTok extends Command {
             ctx,
             ttMessages?.invalidName ||
               "Please provide a valid TikTok name (up to 21 characters).",
-            color
+            color,
           );
         }
 
         embed
           .setDescription(
-            ttMessages?.nameUpdated || "Your TikTok name has been set."
+            ttMessages?.nameUpdated || "Your TikTok name has been set.",
           )
           .addFields([
             {
@@ -127,7 +127,7 @@ module.exports = class TikTok extends Command {
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "social.tiktok.name": name } }
+          { $set: { "social.tiktok.name": name } },
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -144,13 +144,13 @@ module.exports = class TikTok extends Command {
             client,
             ctx,
             ttMessages?.invalidLink || "Please provide a valid TikTok link.",
-            color
+            color,
           );
         }
 
         embed
           .setDescription(
-            ttMessages?.linkUpdated || "Your TikTok link has been set."
+            ttMessages?.linkUpdated || "Your TikTok link has been set.",
           )
           .addFields([
             {
@@ -163,7 +163,7 @@ module.exports = class TikTok extends Command {
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "social.tiktok.link": link } }
+          { $set: { "social.tiktok.link": link } },
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -174,7 +174,7 @@ module.exports = class TikTok extends Command {
           .setTitle(ttMessages?.helpTitle || "TikTok Command Help")
           .setDescription(
             ttMessages?.helpDescription ||
-              "Manage your TikTok details with the following subcommands:"
+              "Manage your TikTok details with the following subcommands:",
           )
           .addFields([
             {
@@ -215,9 +215,9 @@ module.exports = class TikTok extends Command {
               ttName && ttLink
                 ? `[${ttName}](${ttLink})`
                 : ttName
-                ? ttName
-                : ttMessages?.notSet || "Not set"
-            }**`
+                  ? ttName
+                  : ttMessages?.notSet || "Not set"
+            }**`,
           );
 
         await ctx.sendMessage({ embeds: [embed] });

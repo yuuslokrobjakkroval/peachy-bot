@@ -40,7 +40,7 @@ module.exports = class Emoji extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const emojiMessages = language.locales.get(language.defaultLocale)
       ?.utilityMessages?.emojiMessages || {
@@ -53,7 +53,7 @@ module.exports = class Emoji extends Command {
       await ctx.interaction.deferReply();
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     }
 
@@ -67,7 +67,7 @@ module.exports = class Emoji extends Command {
         client,
         ctx,
         emojiMessages.invalidEmoji,
-        color
+        color,
       );
     }
 
@@ -120,7 +120,7 @@ module.exports = class Emoji extends Command {
         client,
         ctx,
         emojiMessages.noEmojisFound,
-        color
+        color,
       );
     }
 
@@ -133,19 +133,19 @@ module.exports = class Emoji extends Command {
           .replace("%{title}", "EMOJI IMAGE")
           .replace("%{mainRight}", emoji.mainRight) +
           "\n\n" +
-          emojiMessages.emojiDescription
+          emojiMessages.emojiDescription,
       )
       .setTitle(
         `${emojiData.name} ${
           emojiData.isUnicode ? "" : `(ID: ${emojiData.id})`
-        }`
+        }`,
       )
       .setImage(emojiData.url)
       .setFooter({
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })
@@ -164,7 +164,7 @@ module.exports = class Emoji extends Command {
       new ButtonBuilder()
         .setCustomId(`download_gif`)
         .setLabel("GIF")
-        .setStyle(ButtonStyle.Secondary)
+        .setStyle(ButtonStyle.Secondary),
     );
 
     const message = ctx.isInteraction
@@ -223,7 +223,7 @@ module.exports = class Emoji extends Command {
 
       row.components.forEach((component) => {
         disabledRow.addComponents(
-          ButtonBuilder.from(component).setDisabled(true)
+          ButtonBuilder.from(component).setDisabled(true),
         );
       });
 

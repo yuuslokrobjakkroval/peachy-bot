@@ -14,7 +14,7 @@ class ResourceManager {
     resourceList,
     emoji,
     color,
-    language
+    language,
   ) {
     const author = ctx.author;
     const user = await this.client.utils.getCachedUser(author.id);
@@ -23,13 +23,13 @@ class ResourceManager {
         this.client,
         ctx,
         "You need to register first! Use the `/register` command.",
-        color
+        color,
       );
     }
 
     // Get equipped tool
     let userTool = user.equip.find((equip) =>
-      toolList.some((tool) => tool.id === equip.id)
+      toolList.some((tool) => tool.id === equip.id),
     );
     if (!userTool) {
       userTool = { id: "hand", quantity: 1 };
@@ -52,7 +52,7 @@ class ResourceManager {
 
     // Check cooldown
     const cooldown = user.cooldowns.find(
-      (c) => c.name === resourceType.toLowerCase()
+      (c) => c.name === resourceType.toLowerCase(),
     );
     const isOnCooldown = cooldown
       ? Date.now() - cooldown.timestamp < cooldownTime
@@ -60,7 +60,7 @@ class ResourceManager {
 
     if (isOnCooldown) {
       const remainingTime = Math.ceil(
-        (cooldown.timestamp + cooldownTime - Date.now()) / 1000
+        (cooldown.timestamp + cooldownTime - Date.now()) / 1000,
       );
       return await this.client.utils.sendErrorMessage(
         this.client,
@@ -69,7 +69,7 @@ class ResourceManager {
           Math.round(Date.now() / 1000) + remainingTime
         }:R>.`,
         color,
-        remainingTime * 1000
+        remainingTime * 1000,
       );
     }
 
@@ -78,14 +78,14 @@ class ResourceManager {
       equippedTool,
       gatheredAmount,
       resourceList,
-      resourceType
+      resourceType,
     );
     const aggregatedItems = this.aggregateItems(generatedItems);
 
     // Calculate total worth
     const totalWorth = aggregatedItems.reduce(
       (total, item) => total + item.price.sell * item.quantity,
-      0
+      0,
     );
 
     // Format items description
@@ -95,7 +95,7 @@ class ResourceManager {
           (item) =>
             `${item.emoji} **+${
               item.quantity
-            }** ${this.client.utils.formatCapitalize(item.id)}`
+            }** ${this.client.utils.formatCapitalize(item.id)}`,
         )
         .join("\n") || `No ${resourceType.toLowerCase()}s found!`;
 
@@ -127,7 +127,7 @@ class ResourceManager {
 
       // Update cooldown
       const existingCooldown = user.cooldowns.find(
-        (c) => c.name === resourceType.toLowerCase()
+        (c) => c.name === resourceType.toLowerCase(),
       );
       if (existingCooldown) {
         existingCooldown.timestamp = Date.now();
@@ -142,7 +142,7 @@ class ResourceManager {
 
     // Create and send embed
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const embed = this.client
       .embed()
@@ -151,7 +151,7 @@ class ResourceManager {
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", resourceType.toUpperCase())
-          .replace("%{mainRight}", emoji.mainRight)
+          .replace("%{mainRight}", emoji.mainRight),
       )
       .addFields(
         {
@@ -170,13 +170,13 @@ class ResourceManager {
             emoji.coin
           }`,
           inline: true,
-        }
+        },
       )
       .setFooter({
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       });

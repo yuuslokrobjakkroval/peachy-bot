@@ -40,7 +40,7 @@ module.exports = class SyncInvites extends Command {
 
     // Initial progress message
     const progressMessage = await ctx.sendDeferMessage(
-      `Synchronizing invites${emoji.searching || globalEmoji.loading}`
+      `Synchronizing invites${emoji.searching || globalEmoji.loading}`,
     );
 
     for (const guild of guilds) {
@@ -81,7 +81,7 @@ module.exports = class SyncInvites extends Command {
           } catch (error) {
             console.error(
               `Error handling invite for guild ${guild.name}:`,
-              error
+              error,
             );
           }
         });
@@ -98,11 +98,11 @@ module.exports = class SyncInvites extends Command {
       } catch (error) {
         if (error.code === 50013) {
           resultMessages.push(
-            `**${guild.name}** - Insufficient permissions to fetch invites.`
+            `**${guild.name}** - Insufficient permissions to fetch invites.`,
           );
         } else {
           resultMessages.push(
-            `**${guild.name}** - An error occurred during synchronization.`
+            `**${guild.name}** - An error occurred during synchronization.`,
           );
         }
       }
@@ -112,7 +112,7 @@ module.exports = class SyncInvites extends Command {
       await progressMessage.edit(
         `Synchronizing invites${
           emoji.searching || globalEmoji.loading
-        } (${processedGuilds}/${totalGuilds})`
+        } (${processedGuilds}/${totalGuilds})`,
       );
     }
 

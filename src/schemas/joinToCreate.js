@@ -20,7 +20,7 @@ const JoinToCreateSchema = new Schema(
       default: 0,
     },
   },
-  { timestamps: { createdAt: true, updatedAt: true } }
+  { timestamps: { createdAt: true, updatedAt: true } },
 );
 
 module.exports = model("jointocreate", JoinToCreateSchema);

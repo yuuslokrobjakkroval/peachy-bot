@@ -136,7 +136,7 @@ module.exports = class Bite extends Command {
           client,
           ctx,
           errorMessages.noUser,
-          color
+          color,
         );
       }
 
@@ -145,7 +145,7 @@ module.exports = class Bite extends Command {
           client,
           ctx,
           errorMessages.selfBite,
-          color
+          color,
         );
       }
 
@@ -159,19 +159,19 @@ module.exports = class Bite extends Command {
         globalEmoji.actions?.bites || ["😬", "🦷", "😁"];
       const gentleEmojis =
         biteEmojis.filter(
-          (e) => e.includes && (e.includes("gentle") || e.includes("nibble"))
+          (e) => e.includes && (e.includes("gentle") || e.includes("nibble")),
         ).length > 0
           ? biteEmojis.filter(
               (e) =>
-                e.includes && (e.includes("gentle") || e.includes("nibble"))
+                e.includes && (e.includes("gentle") || e.includes("nibble")),
             )
           : biteEmojis;
       const hardEmojis =
         biteEmojis.filter(
-          (e) => e.includes && (e.includes("hard") || e.includes("chomp"))
+          (e) => e.includes && (e.includes("hard") || e.includes("chomp")),
         ).length > 0
           ? biteEmojis.filter(
-              (e) => e.includes && (e.includes("hard") || e.includes("chomp"))
+              (e) => e.includes && (e.includes("hard") || e.includes("chomp")),
             )
           : biteEmojis;
 
@@ -204,13 +204,13 @@ module.exports = class Bite extends Command {
             "\n\n" +
             biteMessage
               .replace("%{displayName}", `**${ctx.author.displayName}**`)
-              .replace("%{target}", `**${target.displayName}**`)
+              .replace("%{target}", `**${target.displayName}**`),
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -237,7 +237,7 @@ module.exports = class Bite extends Command {
       const row = new ActionRowBuilder().addComponents(
         biteBackButton,
         patButton,
-        runButton
+        runButton,
       );
 
       // Send the message with buttons
@@ -274,12 +274,12 @@ module.exports = class Bite extends Command {
               .setDescription(
                 biteMessages.biteBack
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(
                 client.utils.emojiToImage(
-                  client.utils.getRandomElement(biteEmojis)
-                )
+                  client.utils.getRandomElement(biteEmojis),
+                ),
               );
             break;
 
@@ -288,7 +288,7 @@ module.exports = class Bite extends Command {
               .setDescription(
                 biteMessages.patReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.pat || "👋"));
             break;
@@ -298,7 +298,7 @@ module.exports = class Bite extends Command {
               .setDescription(
                 biteMessages.runReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.run || "🏃"));
             break;
@@ -308,7 +308,7 @@ module.exports = class Bite extends Command {
         const disabledRow = new ActionRowBuilder().addComponents(
           ButtonBuilder.from(biteBackButton).setDisabled(true),
           ButtonBuilder.from(patButton).setDisabled(true),
-          ButtonBuilder.from(runButton).setDisabled(true)
+          ButtonBuilder.from(runButton).setDisabled(true),
         );
 
         // Update the message with the response and disabled buttons
@@ -328,7 +328,7 @@ module.exports = class Bite extends Command {
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(biteBackButton).setDisabled(true),
               ButtonBuilder.from(patButton).setDisabled(true),
-              ButtonBuilder.from(runButton).setDisabled(true)
+              ButtonBuilder.from(runButton).setDisabled(true),
             );
 
             await message.edit({ components: [disabledRow] });
@@ -343,7 +343,7 @@ module.exports = class Bite extends Command {
         client,
         ctx,
         "An error occurred while executing the command.",
-        color
+        color,
       );
     }
   }

@@ -39,7 +39,7 @@ module.exports = class RemoveItem extends Command {
         client,
         ctx,
         client.i18n.get(language, "commands", "mention_to_bot"),
-        color
+        color,
       );
 
     const itemId = args[1]?.toLowerCase();
@@ -50,7 +50,7 @@ module.exports = class RemoveItem extends Command {
         client,
         ctx,
         client.i18n.get(language, "commands", "invalid_item"),
-        color
+        color,
       );
     }
 
@@ -65,7 +65,7 @@ module.exports = class RemoveItem extends Command {
         client,
         ctx,
         client.i18n.get(language, "commands", "invalid_quantity"),
-        color
+        color,
       );
     }
 
@@ -73,18 +73,18 @@ module.exports = class RemoveItem extends Command {
     try {
       await Users.updateOne(
         { userId: mention.id, "inventory.id": itemId },
-        { $inc: { "inventory.$.quantity": -baseQuantity } }
+        { $inc: { "inventory.$.quantity": -baseQuantity } },
       );
 
       await Users.updateOne(
         { userId: mention.id, "inventory.quantity": { $lte: 0 } },
-        { $pull: { inventory: { id: itemId } } }
+        { $pull: { inventory: { id: itemId } } },
       );
       const embed = client
         .embed()
         .setColor(color.main)
         .setDescription(
-          `${globalEmoji.result.tick} Removed ${itemInfo.emoji} **x${baseQuantity}** ${itemInfo.id} from ${mention.displayName}'s inventory.`
+          `${globalEmoji.result.tick} Removed ${itemInfo.emoji} **x${baseQuantity}** ${itemInfo.id} from ${mention.displayName}'s inventory.`,
         );
 
       return await ctx.sendMessage({ embeds: [embed] });
@@ -94,7 +94,7 @@ module.exports = class RemoveItem extends Command {
         client,
         ctx,
         "Failed to update inventory.",
-        color
+        color,
       );
     }
   }

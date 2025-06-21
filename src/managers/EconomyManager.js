@@ -34,7 +34,7 @@ class EconomyManager {
       const user = await Users.findOneAndUpdate(
         { userId },
         { $inc: { "balance.coin": amount } },
-        { new: true, upsert: true }
+        { new: true, upsert: true },
       );
 
       // Log transaction
@@ -44,7 +44,7 @@ class EconomyManager {
       if (this.client.achievementManager) {
         await this.client.achievementManager.checkEconomyAchievements(
           userId,
-          user.balance.coin + user.balance.bank
+          user.balance.coin + user.balance.bank,
         );
       }
 
@@ -74,7 +74,7 @@ class EconomyManager {
       const updatedUser = await Users.findOneAndUpdate(
         { userId },
         { $inc: { "balance.coin": -amount } },
-        { new: true }
+        { new: true },
       );
 
       // Log transaction
@@ -116,7 +116,7 @@ class EconomyManager {
     } catch (error) {
       console.error(
         `[ECONOMY] Error transferring coins from ${senderId} to ${receiverId}:`,
-        error
+        error,
       );
       return false;
     }
@@ -145,7 +145,7 @@ class EconomyManager {
             "balance.bank": amount,
           },
         },
-        { new: true }
+        { new: true },
       );
 
       // Log transaction
@@ -181,7 +181,7 @@ class EconomyManager {
             "balance.bank": -amount,
           },
         },
-        { new: true }
+        { new: true },
       );
 
       // Log transaction
@@ -308,13 +308,13 @@ class EconomyManager {
         // Item exists, update quantity
         await Users.updateOne(
           { userId, "inventory.id": itemId },
-          { $inc: { "inventory.$.quantity": quantity } }
+          { $inc: { "inventory.$.quantity": quantity } },
         );
       } else {
         // Item doesn't exist, add it
         await Users.updateOne(
           { userId },
-          { $push: { inventory: { id: itemId, quantity } } }
+          { $push: { inventory: { id: itemId, quantity } } },
         );
       }
 
@@ -322,7 +322,7 @@ class EconomyManager {
       BotLog.send(
         this.client,
         `Awarded ${quantity}x ${itemId} to user ${userId} from ${source}`,
-        "info"
+        "info",
       );
 
       // Check for inventory-related achievements

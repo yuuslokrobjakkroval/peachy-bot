@@ -86,7 +86,7 @@ module.exports = class Instagram extends Command {
         client,
         ctx,
         igMessages?.userNotFound || "User not found.",
-        color
+        color,
       );
     }
 
@@ -95,7 +95,7 @@ module.exports = class Instagram extends Command {
       .setTitle(
         `${emoji.mainLeft} ${
           igMessages?.settingsTitle || "Instagram Settings for"
-        } ${targetUsername} ${emoji.mainRight}`
+        } ${targetUsername} ${emoji.mainRight}`,
       );
 
     switch (subCommand) {
@@ -109,13 +109,13 @@ module.exports = class Instagram extends Command {
             ctx,
             igMessages?.invalidName ||
               "Please provide a valid Instagram name (up to 21 characters).",
-            color
+            color,
           );
         }
 
         embed
           .setDescription(
-            igMessages?.nameUpdated || "Your Instagram name has been set."
+            igMessages?.nameUpdated || "Your Instagram name has been set.",
           )
           .addFields([
             {
@@ -127,7 +127,7 @@ module.exports = class Instagram extends Command {
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "social.instagram.name": name } }
+          { $set: { "social.instagram.name": name } },
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -144,13 +144,13 @@ module.exports = class Instagram extends Command {
             client,
             ctx,
             igMessages?.invalidLink || "Please provide a valid Instagram link.",
-            color
+            color,
           );
         }
 
         embed
           .setDescription(
-            igMessages?.linkUpdated || "Your Instagram link has been set."
+            igMessages?.linkUpdated || "Your Instagram link has been set.",
           )
           .addFields([
             {
@@ -163,7 +163,7 @@ module.exports = class Instagram extends Command {
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "social.instagram.link": link } }
+          { $set: { "social.instagram.link": link } },
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -174,7 +174,7 @@ module.exports = class Instagram extends Command {
           .setTitle(igMessages?.helpTitle || "Instagram Command Help")
           .setDescription(
             igMessages?.helpDescription ||
-              "Manage your Instagram details with the following subcommands:"
+              "Manage your Instagram details with the following subcommands:",
           )
           .addFields([
             {
@@ -216,9 +216,9 @@ module.exports = class Instagram extends Command {
               igName && igLink
                 ? `[${igName}](${igLink})`
                 : igName
-                ? igName
-                : igMessages?.notSet || "Not set"
-            }**`
+                  ? igName
+                  : igMessages?.notSet || "Not set"
+            }**`,
           );
 
         await ctx.sendMessage({ embeds: [embed] });

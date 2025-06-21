@@ -37,7 +37,7 @@ module.exports = class CheckPotion extends Command {
           .embed()
           .setColor(color.main)
           .setDescription(
-            "No potion effects are being tracked. Please try using a potion again. 🍀"
+            "No potion effects are being tracked. Please try using a potion again. 🍀",
           );
         return await ctx.sendMessage({ embeds: [embed] });
       }
@@ -49,7 +49,7 @@ module.exports = class CheckPotion extends Command {
           .embed()
           .setColor(color.main)
           .setDescription(
-            "You don't have any active potion effects at the moment. 🍀"
+            "You don't have any active potion effects at the moment. 🍀",
           );
         return await ctx.sendMessage({ embeds: [embed] });
       }
@@ -74,7 +74,7 @@ module.exports = class CheckPotion extends Command {
         .setDescription(
           `You have an active **${luckBuff.potionName}** ${luckBuff.potionEmoji} effect! 🍀\n` +
             `Luck Boost: ${(luckBuff.boost * 100).toFixed(0)}%\n` +
-            `Expires in: **${minutes} minute(s) and ${seconds} second(s)**.`
+            `Expires in: **${minutes} minute(s) and ${seconds} second(s)**.`,
         );
 
       return await ctx.sendMessage({ embeds: [embed] });
@@ -84,7 +84,7 @@ module.exports = class CheckPotion extends Command {
         client,
         ctx,
         "An error occurred while processing your request.",
-        color
+        color,
       );
     }
   }

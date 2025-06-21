@@ -26,14 +26,14 @@ module.exports = class MultiTransfer extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const multiTransferMessages = language.locales.get(language.defaultLocale)
       ?.bankMessages?.multiTransferMessages;
 
     // Extract users and amounts from arguments
     const userArgs = args.filter((arg) =>
-      ctx.message.mentions.users.has(arg.replace(/[<@!>]/g, ""))
+      ctx.message.mentions.users.has(arg.replace(/[<@!>]/g, "")),
     );
     const amount = args.pop() || 1;
 
@@ -42,7 +42,7 @@ module.exports = class MultiTransfer extends Command {
         client,
         ctx,
         multiTransferMessages.noValidUsers,
-        color
+        color,
       );
     }
 
@@ -57,7 +57,7 @@ module.exports = class MultiTransfer extends Command {
         client,
         ctx,
         generalMessages.botTransfer,
-        color
+        color,
       );
     }
 
@@ -68,7 +68,7 @@ module.exports = class MultiTransfer extends Command {
         client,
         ctx,
         generalMessages.zeroBalance,
-        color
+        color,
       );
     }
 
@@ -114,7 +114,7 @@ module.exports = class MultiTransfer extends Command {
         client,
         ctx,
         multiTransferMessages.tooSmallAmount,
-        color
+        color,
       );
     }
 
@@ -125,7 +125,7 @@ module.exports = class MultiTransfer extends Command {
         client,
         ctx,
         multiTransferMessages.insufficientBalanceForAll,
-        color
+        color,
       );
     }
 
@@ -133,7 +133,7 @@ module.exports = class MultiTransfer extends Command {
     const confirmButton = client.utils.labelButton(
       "confirm_button",
       "Confirm",
-      3
+      3,
     );
     const cancelButton = client.utils.labelButton("cancel_button", "Cancel", 4);
     const buttonRow = client.utils.createButtonRow(confirmButton, cancelButton);
@@ -147,7 +147,7 @@ module.exports = class MultiTransfer extends Command {
         multiTransferMessages.confirm
           .replace("%{amount}", client.utils.formatNumber(transferAmount))
           .replace("%{emoji}", emoji.coin)
-          .replace("%{userList}", userList)
+          .replace("%{userList}", userList),
       );
 
     const confirmMessage = await ctx.channel.send({
@@ -180,7 +180,7 @@ module.exports = class MultiTransfer extends Command {
             {
               "balance.coin": sender.balance.coin,
               "validation.isMultiTransfer": false,
-            }
+            },
           );
 
           // Process each user and transfer amount
@@ -205,8 +205,8 @@ module.exports = class MultiTransfer extends Command {
                 .replace("%{userCount}", users.length)
                 .replace(
                   "%{individualAmount}",
-                  client.utils.formatNumber(transferAmount)
-                )
+                  client.utils.formatNumber(transferAmount),
+                ),
             );
 
           await ctx.channel.send({ embeds: [successEmbed] });

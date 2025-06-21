@@ -111,7 +111,7 @@ module.exports = class Hug extends Command {
           client,
           ctx,
           errorMessages.noUser,
-          color
+          color,
         );
       }
 
@@ -120,13 +120,13 @@ module.exports = class Hug extends Command {
           client,
           ctx,
           errorMessages.selfHug,
-          color
+          color,
         );
       }
 
       // Get random emoji
       const randomEmoji = client.utils.getRandomElement(
-        emoji.actions?.hugs || globalEmoji.actions?.hugs || ["🤗", "🫂", "💕"]
+        emoji.actions?.hugs || globalEmoji.actions?.hugs || ["🤗", "🫂", "💕"],
       );
 
       // Create the embed message for hugging
@@ -142,13 +142,13 @@ module.exports = class Hug extends Command {
             "\n\n" +
             hugMessages.description
               .replace("%{displayName}", `**${ctx.author.displayName}**`)
-              .replace("%{target}", `**${target.displayName}**`)
+              .replace("%{target}", `**${target.displayName}**`),
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -175,7 +175,7 @@ module.exports = class Hug extends Command {
       const row = new ActionRowBuilder().addComponents(
         hugBackButton,
         patButton,
-        blushButton
+        blushButton,
       );
 
       // Send the message with buttons
@@ -212,15 +212,15 @@ module.exports = class Hug extends Command {
               .setDescription(
                 hugMessages.hugBack
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(
                 client.utils.emojiToImage(
                   client.utils.getRandomElement(
                     emoji.actions?.hugs ||
-                      globalEmoji.actions?.hugs || ["🤗", "🫂", "💕"]
-                  )
-                )
+                      globalEmoji.actions?.hugs || ["🤗", "🫂", "💕"],
+                  ),
+                ),
               );
             break;
 
@@ -229,7 +229,7 @@ module.exports = class Hug extends Command {
               .setDescription(
                 hugMessages.patReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.pat || "👋"));
             break;
@@ -239,7 +239,7 @@ module.exports = class Hug extends Command {
               .setDescription(
                 hugMessages.blushReaction
                   .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${ctx.author.displayName}**`),
               )
               .setImage(client.utils.emojiToImage(emoji.blush || "😊"));
             break;
@@ -249,7 +249,7 @@ module.exports = class Hug extends Command {
         const disabledRow = new ActionRowBuilder().addComponents(
           ButtonBuilder.from(hugBackButton).setDisabled(true),
           ButtonBuilder.from(patButton).setDisabled(true),
-          ButtonBuilder.from(blushButton).setDisabled(true)
+          ButtonBuilder.from(blushButton).setDisabled(true),
         );
 
         // Update the message with the response and disabled buttons
@@ -269,7 +269,7 @@ module.exports = class Hug extends Command {
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(hugBackButton).setDisabled(true),
               ButtonBuilder.from(patButton).setDisabled(true),
-              ButtonBuilder.from(blushButton).setDisabled(true)
+              ButtonBuilder.from(blushButton).setDisabled(true),
             );
 
             await message.edit({ components: [disabledRow] });
@@ -284,7 +284,7 @@ module.exports = class Hug extends Command {
         client,
         ctx,
         "An error occurred while executing the command.",
-        color
+        color,
       );
     }
   }

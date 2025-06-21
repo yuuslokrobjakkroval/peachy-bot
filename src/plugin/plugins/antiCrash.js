@@ -8,7 +8,7 @@ const antiCrash = {
         "Unhandled Rejection at:",
         promise,
         "reason:",
-        reason
+        reason,
       );
     });
 

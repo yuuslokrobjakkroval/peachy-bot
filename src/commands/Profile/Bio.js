@@ -62,7 +62,7 @@ module.exports = class Bio extends Command {
           .setDescription(
             `${
               bioMessages?.usage || "**Usage:**"
-            } \`bio <text || reset || show || help>\`\n\n**Examples:**\n\`bio I love coding\`\n\`bio reset\`\n\`bio show\`\n\`bio help\``
+            } \`bio <text || reset || show || help>\`\n\n**Examples:**\n\`bio I love coding\`\n\`bio reset\`\n\`bio show\`\n\`bio help\``,
           );
 
         await ctx.sendMessage({ embeds: [embed] });
@@ -73,12 +73,12 @@ module.exports = class Bio extends Command {
         embed
           .setColor(color.main)
           .setDescription(
-            bioMessages?.resetSuccess || "The bio for you has been reset."
+            bioMessages?.resetSuccess || "The bio for you has been reset.",
           );
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "profile.bio": "No bio written." } }
+          { $set: { "profile.bio": "No bio written." } },
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -90,7 +90,7 @@ module.exports = class Bio extends Command {
           .setDescription(
             user.profile.bio
               ? `\`\`\`arm\n${user.profile.bio}\`\`\``
-              : bioMessages?.noBio || "No bio written."
+              : bioMessages?.noBio || "No bio written.",
           );
 
         await ctx.sendMessage({ embeds: [embed] });
@@ -108,7 +108,7 @@ module.exports = class Bio extends Command {
             ctx,
             bioMessages?.provideText ||
               "Please provide a bio text or a valid subcommand.",
-            color
+            color,
           );
           return;
         }
@@ -119,14 +119,14 @@ module.exports = class Bio extends Command {
             ctx,
             bioMessages?.tooLong ||
               "The bio cannot be longer than 300 characters.",
-            color
+            color,
           );
           return;
         }
 
         embed
           .setDescription(
-            bioMessages?.setSuccess || "The bio for you has been set."
+            bioMessages?.setSuccess || "The bio for you has been set.",
           )
           .addFields([
             {
@@ -138,7 +138,7 @@ module.exports = class Bio extends Command {
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "profile.bio": text } }
+          { $set: { "profile.bio": text } },
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;

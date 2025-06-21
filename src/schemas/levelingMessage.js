@@ -7,7 +7,7 @@ const LevelingMessagesSchema = new Schema(
     content: { type: String, default: "" },
     isActive: { type: Boolean, default: true },
   },
-  { timestamps: { createdAt: true, updatedAt: true } }
+  { timestamps: { createdAt: true, updatedAt: true } },
 );
 
 module.exports = model("levelings", LevelingMessagesSchema);

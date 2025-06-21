@@ -14,7 +14,7 @@ const KeepAlive = {
       const server = http.createServer((req, res) => {
         res.writeHead(200, { "Content-Type": "text/plain" });
         res.end(
-          `I'm alive! Currently serving ${client.guilds.cache.size} guilds.`
+          `I'm alive! Currently serving ${client.guilds.cache.size} guilds.`,
         );
       });
       server.listen(3000, () => {

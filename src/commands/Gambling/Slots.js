@@ -38,7 +38,7 @@ module.exports = class Slots extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const slotMessages = language.locales.get(language.defaultLocale)
       ?.gamblingMessages?.slotMessages;
@@ -63,7 +63,7 @@ module.exports = class Slots extends Command {
           client,
           ctx,
           `You have already started the ${activeCommand} event. Please finish it before using this command.`,
-          color
+          color,
         );
       }
 
@@ -72,7 +72,7 @@ module.exports = class Slots extends Command {
           client,
           ctx,
           generalMessages.zeroBalance,
-          color
+          color,
         );
       }
 
@@ -105,7 +105,7 @@ module.exports = class Slots extends Command {
             client,
             ctx,
             generalMessages.invalidAmount,
-            color
+            color,
           );
         }
       }
@@ -121,7 +121,7 @@ module.exports = class Slots extends Command {
             "balance.slots": slots + baseCoins,
             "balance.bank": bank,
           },
-        }
+        },
       );
 
       let rslots = [];
@@ -203,7 +203,7 @@ module.exports = class Slots extends Command {
         .embed()
         .setColor(color.main)
         .setThumbnail(
-          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
         )
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
@@ -214,12 +214,12 @@ module.exports = class Slots extends Command {
             globalEmoji.romdoul
           } «•« ══╝\n\n${slotMessages.bet
             .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote}", emoji.coin)}\n`
+            .replace("%{coinEmote}", emoji.coin)}\n`,
         )
         .setFooter({
           text: `${generalMessages.gameInProgress.replace(
             "%{user}",
-            ctx.author.displayName
+            ctx.author.displayName,
           )}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -229,14 +229,14 @@ module.exports = class Slots extends Command {
       // Update balance after sending message
       await Users.updateOne(
         { userId: ctx.author.id },
-        { $set: { "balance.coin": newBalance, "balance.bank": bank } }
+        { $set: { "balance.coin": newBalance, "balance.bank": bank } },
       );
 
       const spinEmbed = client
         .embed()
         .setColor(color.main)
         .setThumbnail(
-          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
         )
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
@@ -247,12 +247,12 @@ module.exports = class Slots extends Command {
             globalEmoji.romdoul
           } «•« ══╝\n\n${slotMessages.bet
             .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote}", emoji.coin)}\n`
+            .replace("%{coinEmote}", emoji.coin)}\n`,
         )
         .setFooter({
           text: `${generalMessages.gameInProgress.replace(
             "%{user}",
-            ctx.author.displayName
+            ctx.author.displayName,
           )}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -261,7 +261,7 @@ module.exports = class Slots extends Command {
         .embed()
         .setColor(color.main)
         .setThumbnail(
-          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
         )
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
@@ -272,12 +272,12 @@ module.exports = class Slots extends Command {
             globalEmoji.romdoul
           } «•« ══╝\n\n${slotMessages.bet
             .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote}", emoji.coin)}\n`
+            .replace("%{coinEmote}", emoji.coin)}\n`,
         )
         .setFooter({
           text: `${generalMessages.gameInProgress.replace(
             "%{user}",
-            ctx.author.displayName
+            ctx.author.displayName,
           )}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -290,13 +290,13 @@ module.exports = class Slots extends Command {
             ? client.utils.emojiToImage(
                 emoji?.result
                   ? client.utils.getRandomElement(emoji?.result?.lose)
-                  : globalEmoji.option.lose
+                  : globalEmoji.option.lose,
               )
             : client.utils.emojiToImage(
                 emoji?.result
                   ? client.utils.getRandomElement(emoji?.result?.win)
-                  : globalEmoji.option.win
-              )
+                  : globalEmoji.option.win,
+              ),
         )
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
@@ -315,12 +315,12 @@ module.exports = class Slots extends Command {
               : `${slotMessages.won
                   .replace("%{coin}", client.utils.formatNumber(win))
                   .replace("%{coinEmote}", emoji.coin)}`
-          }`
+          }`,
         )
         .setFooter({
           text: `${generalMessages.gameOver.replace(
             "%{user}",
-            ctx.author.displayName
+            ctx.author.displayName,
           )}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -340,7 +340,7 @@ module.exports = class Slots extends Command {
         client,
         ctx,
         "An error occurred. Please try again later.",
-        color
+        color,
       );
     }
   }

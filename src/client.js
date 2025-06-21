@@ -76,16 +76,16 @@ client.once("ready", async () => {
         .checkBooster(client)
         .then(() => console.log("Booster/Sponsor check completed."))
         .catch((err) =>
-          console.error("Error in Booster/Sponsor function:", err)
+          console.error("Error in Booster/Sponsor function:", err),
         );
     },
     {
       scheduled: true,
       timezone: "Asia/Bangkok",
-    }
+    },
   );
   client.logger.info(
-    "Booster/Sponsor check scheduled at 10:10 PM Asia/Bangkok"
+    "Booster/Sponsor check scheduled at 10:10 PM Asia/Bangkok",
   );
 
   return await client.abilities.syncInvites(client);
@@ -93,7 +93,7 @@ client.once("ready", async () => {
 
 client.on(
   "guildMemberAdd",
-  async (member) => await client.abilities.getWelcomeMessage(client, member)
+  async (member) => await client.abilities.getWelcomeMessage(client, member),
 );
 
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
@@ -129,7 +129,7 @@ client.on("messageCreate", async (message) => {
         .addFields({
           name: "Lucky Coin",
           value: `${client.utils.formatNumber(
-            Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000
+            Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000,
           )} ${client.emoji.coin}`,
         });
 
@@ -138,7 +138,7 @@ client.on("messageCreate", async (message) => {
           .setCustomId("claim")
           .setLabel("Claim")
           .setEmoji("🎁")
-          .setStyle(ButtonStyle.Primary)
+          .setStyle(ButtonStyle.Primary),
       );
 
       message.channel.send({ embeds: [embed], components: [row] });
@@ -179,16 +179,19 @@ client.on("messageCreate", async (message) => {
 
 client.on(
   "inviteCreate",
-  async (invite) => await client.abilities.getInviteCreate(invite)
+  async (invite) => await client.abilities.getInviteCreate(invite),
 );
 
-setInterval(async () => {
-  try {
-    await client.utils.getResetThief(client);
-  } catch (error) {
-    console.error("Error resetting rob status:", error);
-  }
-}, 3 * 60 * 1000);
+setInterval(
+  async () => {
+    try {
+      await client.utils.getResetThief(client);
+    } catch (error) {
+      console.error("Error resetting rob status:", error);
+    }
+  },
+  3 * 60 * 1000,
+);
 
 setInterval(async () => {
   return await client.abilities.getSendMessage(client);
@@ -216,7 +219,7 @@ setInterval(() => {
               dbInvite
                 .deleteOne()
                 .catch((error) =>
-                  console.error("Error deleting invite from DB:", error)
+                  console.error("Error deleting invite from DB:", error),
                 );
             }
           });
@@ -238,26 +241,26 @@ setInterval(() => {
                   return newInvite
                     .save()
                     .catch((error) =>
-                      console.error("Error saving new invite:", error)
+                      console.error("Error saving new invite:", error),
                     );
                 } else {
                   existingInvite.uses = invite.uses;
                   return existingInvite
                     .save()
                     .catch((error) =>
-                      console.error("Error updating existing invite:", error)
+                      console.error("Error updating existing invite:", error),
                     );
                 }
               })
               .catch((error) =>
-                console.error("Error finding invite in DB:", error)
+                console.error("Error finding invite in DB:", error),
               );
           });
 
           return Promise.all(invitePromises);
         })
         .catch((error) =>
-          console.error("Error processing invites from DB:", error)
+          console.error("Error processing invites from DB:", error),
         );
     })
     .catch((error) => console.error("Error fetching invites:", error));
@@ -284,7 +287,7 @@ setInterval(() => {
                     client.color,
                     client.emoji,
                     giveawayMessage,
-                    giveaway.autopay
+                    giveaway.autopay,
                   )
                   .then(() => {
                     giveaway.ended = true;
@@ -296,7 +299,7 @@ setInterval(() => {
             .catch((err) => {
               if (err.code === 10008) {
                 console.warn(
-                  `Message with ID ${giveaway.messageId} was not found.`
+                  `Message with ID ${giveaway.messageId} was not found.`,
                 );
                 giveaway.ended = true;
                 giveaway.save().catch(console.error);
@@ -333,21 +336,21 @@ setInterval(() => {
                     client.color,
                     client.emoji,
                     giveawayMessage,
-                    giveaway.autoAdd
+                    giveaway.autoAdd,
                   )
                   .then(() => {
                     giveaway.ended = true;
                     return giveaway.save();
                   })
                   .catch((err) =>
-                    console.error("Error ending giveaway shop item:", err)
+                    console.error("Error ending giveaway shop item:", err),
                   );
               }
             })
             .catch((err) => {
               if (err.code === 10008) {
                 console.warn(
-                  `Message with ID ${giveaway.messageId} was not found.`
+                  `Message with ID ${giveaway.messageId} was not found.`,
                 );
                 giveaway.ended = true;
                 giveaway.save().catch(console.error);
@@ -370,12 +373,17 @@ setTimeout(() => {
     .catch((err) => console.error("Error in checkBirthdays function:", err));
 
   // Repeat every 24 hours after the initial execution
-  setInterval(() => {
-    client.utils
-      .checkBirthdays(client)
-      .then(() => console.log("Birthday check completed."))
-      .catch((err) => console.error("Error in checkBirthdays function:", err));
-  }, 24 * 60 * 60 * 1000); // 24 hours
+  setInterval(
+    () => {
+      client.utils
+        .checkBirthdays(client)
+        .then(() => console.log("Birthday check completed."))
+        .catch((err) =>
+          console.error("Error in checkBirthdays function:", err),
+        );
+    },
+    24 * 60 * 60 * 1000,
+  ); // 24 hours
 }, client.utils.getDelayUntil7PM());
 
 client.start(globalConfig.token);

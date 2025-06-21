@@ -11,7 +11,7 @@ module.exports = class RemoveTimeout extends Command {
         usage: "removetimeout <user>",
       },
       category: "staff",
-      aliases: ["untimeout", 'rto'],
+      aliases: ["untimeout", "rto"],
       args: true,
       permissions: {
         dev: true,
@@ -36,7 +36,7 @@ module.exports = class RemoveTimeout extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "Please mention a user to remove the timeout from."
+              "Please mention a user to remove the timeout from.",
             ),
         ],
       });
@@ -66,9 +66,7 @@ module.exports = class RemoveTimeout extends Command {
         client
           .embed()
           .setColor(color.success)
-          .setDescription(
-            `Successfully removed timeout from **${mention}**.`
-          ),
+          .setDescription(`Successfully removed timeout from **${mention}**.`),
       ],
     });
   }

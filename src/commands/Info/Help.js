@@ -78,7 +78,7 @@ module.exports = class Help extends Command {
       // "work",
     ];
     const commands = client.commands.filter(
-      (cmd) => !adminCategory.includes(cmd.category)
+      (cmd) => !adminCategory.includes(cmd.category),
     );
     const selectedItemIndex = null;
 
@@ -89,7 +89,7 @@ module.exports = class Help extends Command {
     // Calculate pages for each category
     categories.forEach((category) => {
       const categoryCommands = commands.filter(
-        (cmd) => cmd.category.toLowerCase() === category.toLowerCase()
+        (cmd) => cmd.category.toLowerCase() === category.toLowerCase(),
       );
       categoryPages[category] =
         Math.ceil(categoryCommands.size / COMMANDS_PER_PAGE) || 1;
@@ -100,7 +100,7 @@ module.exports = class Help extends Command {
       const messageOptions = () => {
         const totalCommands = categories.reduce((sum, category) => {
           const categoryCommands = commands.filter(
-            (cmd) => cmd.category.toLowerCase() === category.toLowerCase()
+            (cmd) => cmd.category.toLowerCase() === category.toLowerCase(),
           );
           return sum + categoryCommands.size;
         }, 0);
@@ -115,7 +115,7 @@ module.exports = class Help extends Command {
               "fun",
               "social",
               "relationship",
-            ].includes(cat)
+            ].includes(cat),
           ),
           "Economy & Games": categories.filter((cat) =>
             [
@@ -125,10 +125,10 @@ module.exports = class Help extends Command {
               "games",
               "inventory",
               // "work",
-            ].includes(cat)
+            ].includes(cat),
           ),
           "Utility & Info": categories.filter((cat) =>
-            ["giveaways", "info", "profile", "rank", "utility"].includes(cat)
+            ["giveaways", "info", "profile", "rank", "utility"].includes(cat),
           ),
         };
 
@@ -142,10 +142,10 @@ module.exports = class Help extends Command {
           .setDescription(
             `${helpMessages.description} **${prefix}help [command]**\n` +
               `${helpMessages.examples} **${prefix}help balance**\n\n` +
-              `${helpMessages.note}`
+              `${helpMessages.note}`,
           )
           .setThumbnail(
-            client.user.displayAvatarURL({ dynamic: true, size: 512 })
+            client.user.displayAvatarURL({ dynamic: true, size: 512 }),
           )
           .setImage(client.config.links.banner)
           .setFooter({
@@ -163,7 +163,7 @@ module.exports = class Help extends Command {
                 .map((category) => {
                   const categoryCommandCount = commands.filter(
                     (cmd) =>
-                      cmd.category.toLowerCase() === category.toLowerCase()
+                      cmd.category.toLowerCase() === category.toLowerCase(),
                   ).size;
                   return `${
                     emoji.help[category.toLowerCase()]
@@ -177,13 +177,13 @@ module.exports = class Help extends Command {
                 .join("\n"),
               inline: false,
             });
-          }
+          },
         );
 
         // Create a more attractive dropdown
         const categoryOptions = categories.map((category) => {
           const categoryCommandCount = commands.filter(
-            (cmd) => cmd.category.toLowerCase() === category.toLowerCase()
+            (cmd) => cmd.category.toLowerCase() === category.toLowerCase(),
           ).size;
           return {
             emoji: `${emoji.help[category.toLowerCase()] || ""}`,
@@ -214,7 +214,7 @@ module.exports = class Help extends Command {
           .setStyle(ButtonStyle.Link)
           .setURL(
             client.config.links.dashboard ||
-              `https://peachy-gang-dashboard.vercel.app`
+              `https://peachy-gang-dashboard.vercel.app`,
           )
           .setEmoji("🌐");
 
@@ -222,7 +222,7 @@ module.exports = class Help extends Command {
           .setLabel("Support")
           .setStyle(ButtonStyle.Link)
           .setURL(
-            client.config.links.support || "https://discord.gg/peachygang"
+            client.config.links.support || "https://discord.gg/peachygang",
           )
           .setEmoji("❓");
 
@@ -231,18 +231,18 @@ module.exports = class Help extends Command {
           .setStyle(ButtonStyle.Link)
           .setURL(
             client.config.links.invite ||
-              `https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot%20applications.commands`
+              `https://discord.com/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot%20applications.commands`,
           )
           .setEmoji("➕");
 
         const selectRow = new ActionRowBuilder().addComponents(
-          categorySelectButton
+          categorySelectButton,
         );
         const buttonRow = new ActionRowBuilder().addComponents(
           homeButton,
           dashboardButton,
           supportButton,
-          inviteButton
+          inviteButton,
         );
 
         return { embeds: [helpEmbed], components: [selectRow, buttonRow] };
@@ -302,7 +302,7 @@ module.exports = class Help extends Command {
             emoji,
             categoriesMessages,
             prefix,
-            categories
+            categories,
           );
           return;
         }
@@ -326,7 +326,7 @@ module.exports = class Help extends Command {
             emoji,
             categoriesMessages,
             prefix,
-            categories
+            categories,
           );
         }
       });
@@ -339,7 +339,7 @@ module.exports = class Help extends Command {
             if (component.type === 3) {
               // Select menu
               newRow.addComponents(
-                StringSelectMenuBuilder.from(component).setDisabled(true)
+                StringSelectMenuBuilder.from(component).setDisabled(true),
               );
             } else if (
               component.type === 2 &&
@@ -347,7 +347,7 @@ module.exports = class Help extends Command {
             ) {
               // Button (not link)
               newRow.addComponents(
-                ButtonBuilder.from(component).setDisabled(true)
+                ButtonBuilder.from(component).setDisabled(true),
               );
             } else {
               newRow.addComponents(component);
@@ -459,7 +459,7 @@ module.exports = class Help extends Command {
 
       collector.on("end", () => {
         const disabledRow = new ActionRowBuilder().addComponents(
-          ButtonBuilder.from(backButton).setDisabled(true)
+          ButtonBuilder.from(backButton).setDisabled(true),
         );
         replyMessage.edit({ components: [disabledRow] }).catch(() => {});
       });
@@ -479,10 +479,10 @@ module.exports = class Help extends Command {
     emoji,
     categoriesMessages,
     prefix,
-    categories
+    categories,
   ) {
     const categoryCommands = commands.filter(
-      (cmd) => cmd.category.toLowerCase() === category.toLowerCase()
+      (cmd) => cmd.category.toLowerCase() === category.toLowerCase(),
     );
 
     // Calculate start and end indices for the current page
@@ -492,7 +492,7 @@ module.exports = class Help extends Command {
     // Get commands for the current page
     const pageCommands = Array.from(categoryCommands.values()).slice(
       startIdx,
-      endIdx
+      endIdx,
     );
 
     // Create embed for the current page
@@ -510,7 +510,7 @@ module.exports = class Help extends Command {
           categoriesMessages[category.toLowerCase()] ||
           client.utils.formatCapitalize(category)
         }** category.\n` +
-          `Use \`${prefix}help [command]\` for detailed information about a specific command.`
+          `Use \`${prefix}help [command]\` for detailed information about a specific command.`,
       )
       .setThumbnail(client.user.displayAvatarURL({ dynamic: true, size: 512 }))
       .setFooter({
@@ -542,7 +542,7 @@ module.exports = class Help extends Command {
                   cmd.description.content.length > 50
                     ? cmd.description.content.substring(0, 50) + "..."
                     : cmd.description.content
-                }`
+                }`,
             )
             .join("\n"),
           inline: false,
@@ -603,7 +603,7 @@ module.exports = class Help extends Command {
         prevButton,
         pageIndicator,
         nextButton,
-        homeButton
+        homeButton,
       );
     } else {
       buttonRow = new ActionRowBuilder().addComponents(homeButton);

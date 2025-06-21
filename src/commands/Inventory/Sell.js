@@ -56,7 +56,7 @@ module.exports = class Sell extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const sellMessages = language.locales.get(language.defaultLocale)
       ?.inventoryMessages?.sellMessages;
@@ -68,7 +68,7 @@ module.exports = class Sell extends Command {
           client,
           ctx,
           sellMessages.inventoryEmpty,
-          color
+          color,
         );
       }
 
@@ -102,7 +102,7 @@ module.exports = class Sell extends Command {
           color,
           emoji,
           generalMessages,
-          sellMessages
+          sellMessages,
         );
       }
 
@@ -116,7 +116,7 @@ module.exports = class Sell extends Command {
           color,
           emoji,
           generalMessages,
-          sellMessages
+          sellMessages,
         );
       }
 
@@ -127,7 +127,7 @@ module.exports = class Sell extends Command {
           client,
           ctx,
           sellMessages.itemNotFound.replace("{item}", input),
-          color
+          color,
         );
       }
 
@@ -137,7 +137,7 @@ module.exports = class Sell extends Command {
           client,
           ctx,
           sellMessages.itemNotOwned.replace("{item}", itemInfo.name || input),
-          color
+          color,
         );
       }
 
@@ -147,9 +147,9 @@ module.exports = class Sell extends Command {
           ctx,
           sellMessages.itemNotSellable.replace(
             "{item}",
-            itemInfo.name || input
+            itemInfo.name || input,
           ),
-          color
+          color,
         );
       }
 
@@ -168,7 +168,7 @@ module.exports = class Sell extends Command {
         color,
         emoji,
         generalMessages,
-        sellMessages
+        sellMessages,
       );
     } catch (error) {
       console.error("Error in Sell command:", error);
@@ -176,7 +176,7 @@ module.exports = class Sell extends Command {
         client,
         ctx,
         sellMessages.sellError,
-        color
+        color,
       );
     }
   }
@@ -191,7 +191,7 @@ module.exports = class Sell extends Command {
     color,
     emoji,
     generalMessages,
-    sellMessages
+    sellMessages,
   ) {
     // Parse the quantity
     let quantity = this.parseQuantity(quantityInput, hasItems.quantity);
@@ -209,7 +209,7 @@ module.exports = class Sell extends Command {
       .setTitle(
         `${itemInfo.emoji || "📦"} ${
           itemInfo.name || client.utils.formatCapitalize(itemInfo.id)
-        }`
+        }`,
       )
       .setDescription(
         `**${sellMessages.quantity.replace("{quantity}", quantity)}**\n` +
@@ -221,8 +221,8 @@ module.exports = class Sell extends Command {
             .replace("{coinEmoji}", emoji.coin)
             .replace(
               "{balance}",
-              client.utils.formatNumber(user.balance.coin)
-            )}`
+              client.utils.formatNumber(user.balance.coin),
+            )}`,
       )
       .setThumbnail(client.utils.emojiToImage(itemInfo.emoji || "📦"))
       .setFooter({
@@ -286,16 +286,16 @@ module.exports = class Sell extends Command {
     const quantityRow = new ActionRowBuilder().addComponents(
       decreaseButton,
       quantityButton,
-      increaseButton
+      increaseButton,
     );
     const presetRow = new ActionRowBuilder().addComponents(
       sellOneButton,
       sellHalfButton,
-      sellAllButton
+      sellAllButton,
     );
     const actionRow = new ActionRowBuilder().addComponents(
       confirmButton,
-      cancelButton
+      cancelButton,
     );
 
     // Send the message
@@ -352,7 +352,7 @@ module.exports = class Sell extends Command {
               color,
               emoji,
               generalMessages,
-              sellMessages
+              sellMessages,
             );
             collector.stop();
             return;
@@ -381,26 +381,26 @@ module.exports = class Sell extends Command {
           .setTitle(
             `${itemInfo.emoji || "📦"} ${
               itemInfo.name || client.utils.formatCapitalize(itemInfo.id)
-            }`
+            }`,
           )
           .setDescription(
             `**${sellMessages.quantity.replace(
               "{quantity}",
-              currentQuantity
+              currentQuantity,
             )}**\n` +
               `**${sellMessages.totalValue
                 .replace("{coinEmoji}", emoji.coin)
                 .replace(
                   "{value}",
-                  client.utils.formatNumber(newSalePrice)
+                  client.utils.formatNumber(newSalePrice),
                 )}**\n\n` +
               (itemInfo.description ? `*${itemInfo.description}*\n\n` : "") +
               `${sellMessages.remainingBalance
                 .replace("{coinEmoji}", emoji.coin)
                 .replace(
                   "{balance}",
-                  client.utils.formatNumber(user.balance.coin)
-                )}`
+                  client.utils.formatNumber(user.balance.coin),
+                )}`,
           )
           .setThumbnail(client.utils.emojiToImage(itemInfo.emoji || "📦"))
           .setFooter({
@@ -412,39 +412,39 @@ module.exports = class Sell extends Command {
 
         // Update buttons
         const updatedDecreaseButton = ButtonBuilder.from(
-          decreaseButton
+          decreaseButton,
         ).setDisabled(currentQuantity <= 1);
 
         const updatedQuantityButton = ButtonBuilder.from(
-          quantityButton
+          quantityButton,
         ).setLabel(`${currentQuantity}/${hasItems.quantity}`);
 
         const updatedIncreaseButton = ButtonBuilder.from(
-          increaseButton
+          increaseButton,
         ).setDisabled(currentQuantity >= hasItems.quantity);
 
         const updatedSellOneButton = ButtonBuilder.from(
-          sellOneButton
+          sellOneButton,
         ).setDisabled(currentQuantity === 1);
 
         const updatedSellHalfButton = ButtonBuilder.from(
-          sellHalfButton
+          sellHalfButton,
         ).setDisabled(hasItems.quantity <= 1);
 
         const updatedSellAllButton = ButtonBuilder.from(
-          sellAllButton
+          sellAllButton,
         ).setDisabled(currentQuantity === hasItems.quantity);
 
         const updatedQuantityRow = new ActionRowBuilder().addComponents(
           updatedDecreaseButton,
           updatedQuantityButton,
-          updatedIncreaseButton
+          updatedIncreaseButton,
         );
 
         const updatedPresetRow = new ActionRowBuilder().addComponents(
           updatedSellOneButton,
           updatedSellHalfButton,
-          updatedSellAllButton
+          updatedSellAllButton,
         );
 
         // Update the message
@@ -479,7 +479,7 @@ module.exports = class Sell extends Command {
             const newRow = new ActionRowBuilder();
             row.components.forEach((component) => {
               newRow.addComponents(
-                ButtonBuilder.from(component).setDisabled(true)
+                ButtonBuilder.from(component).setDisabled(true),
               );
             });
             return newRow;
@@ -505,7 +505,7 @@ module.exports = class Sell extends Command {
     color,
     emoji,
     generalMessages,
-    sellMessages
+    sellMessages,
   ) {
     try {
       // Calculate total sale price
@@ -520,7 +520,7 @@ module.exports = class Sell extends Command {
             "inventory.$.quantity": -quantity,
           },
         },
-        { new: true }
+        { new: true },
       );
 
       // If the item quantity is now 0, remove it from inventory
@@ -535,7 +535,7 @@ module.exports = class Sell extends Command {
               inventory: { id: itemInfo.id },
               equip: { id: itemInfo.id },
             },
-          }
+          },
         );
       }
 
@@ -551,10 +551,10 @@ module.exports = class Sell extends Command {
                 .replace("{quantity}", quantity)
                 .replace(
                   "{item}",
-                  itemInfo.name || client.utils.formatCapitalize(itemInfo.id)
+                  itemInfo.name || client.utils.formatCapitalize(itemInfo.id),
                 )
                 .replace("{coinEmoji}", emoji.coin)
-                .replace("{price}", client.utils.formatNumber(totalSalePrice))
+                .replace("{price}", client.utils.formatNumber(totalSalePrice)),
             )
             .setFooter({
               text: (
@@ -586,7 +586,7 @@ module.exports = class Sell extends Command {
     color,
     emoji,
     generalMessages,
-    sellMessages
+    sellMessages,
   ) {
     try {
       // Get all sellable items from the user's inventory
@@ -600,7 +600,7 @@ module.exports = class Sell extends Command {
           client,
           ctx,
           sellMessages.noSellableItems,
-          color
+          color,
         );
       }
 
@@ -631,7 +631,7 @@ module.exports = class Sell extends Command {
         .setDescription(
           sellMessages.sellAll
             .replace("{coinEmoji}", emoji.coin)
-            .replace("{price}", client.utils.formatNumber(totalValue))
+            .replace("{price}", client.utils.formatNumber(totalValue)),
         )
         .addFields({
           name: sellMessages.sellableItems,
@@ -640,7 +640,7 @@ module.exports = class Sell extends Command {
               (item) =>
                 `${item.emoji} ${item.quantity}x \`${
                   item.id
-                }\` -  **${client.utils.formatNumber(item.value)}**`
+                }\` -  **${client.utils.formatNumber(item.value)}**`,
             )
             .join("\n")
             .substring(0, 1024),
@@ -667,7 +667,7 @@ module.exports = class Sell extends Command {
 
       const actionRow = new ActionRowBuilder().addComponents(
         confirmButton,
-        cancelButton
+        cancelButton,
       );
 
       // Send confirmation message
@@ -691,7 +691,7 @@ module.exports = class Sell extends Command {
             // Update user's balance
             await Users.updateOne(
               { userId: ctx.author.id },
-              { $inc: { "balance.coin": totalValue } }
+              { $inc: { "balance.coin": totalValue } },
             );
 
             // Remove all sold items from inventory
@@ -703,7 +703,7 @@ module.exports = class Sell extends Command {
                     inventory: { id: item.id },
                     equip: { id: item.id },
                   },
-                }
+                },
               );
               totalSold += item.quantity;
             }
@@ -721,7 +721,10 @@ module.exports = class Sell extends Command {
                     sellMessages.sellAllSuccess
                       .replace("{count}", itemsToSell.length)
                       .replace("{coinEmoji}", emoji.coin)
-                      .replace("{price}", client.utils.formatNumber(totalValue))
+                      .replace(
+                        "{price}",
+                        client.utils.formatNumber(totalValue),
+                      ),
                   )
                   .setFooter({
                     text: (
@@ -766,7 +769,7 @@ module.exports = class Sell extends Command {
             // Disable all buttons
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(confirmButton).setDisabled(true),
-              ButtonBuilder.from(cancelButton).setDisabled(true)
+              ButtonBuilder.from(cancelButton).setDisabled(true),
             );
 
             await message.edit({ components: [disabledRow] });
@@ -783,7 +786,7 @@ module.exports = class Sell extends Command {
         client,
         ctx,
         sellMessages.sellError,
-        color
+        color,
       );
     }
   }
@@ -796,7 +799,7 @@ module.exports = class Sell extends Command {
     color,
     emoji,
     generalMessages,
-    sellMessages
+    sellMessages,
   ) {
     try {
       // Map category to item types (for resources, include woods, minerals, slime, tools)
@@ -821,9 +824,9 @@ module.exports = class Sell extends Command {
           ctx,
           sellMessages.noSellableItemsInCategory.replace(
             "{category}",
-            client.utils.formatCapitalize(category)
+            client.utils.formatCapitalize(category),
           ),
-          color
+          color,
         );
       }
 
@@ -855,7 +858,7 @@ module.exports = class Sell extends Command {
           sellMessages.sellCategory
             .replace("{category}", client.utils.formatCapitalize(category))
             .replace("{coinEmoji}", emoji.coin)
-            .replace("{price}", client.utils.formatNumber(totalValue))
+            .replace("{price}", client.utils.formatNumber(totalValue)),
         )
         .addFields({
           name: sellMessages.sellableItems,
@@ -864,7 +867,7 @@ module.exports = class Sell extends Command {
               (item) =>
                 `${item.emoji} ${item.quantity}x ${item.name} - ${
                   emoji.coin
-                } ${client.utils.formatNumber(item.value)}`
+                } ${client.utils.formatNumber(item.value)}`,
             )
             .join("\n")
             .substring(0, 1024),
@@ -891,7 +894,7 @@ module.exports = class Sell extends Command {
 
       const actionRow = new ActionRowBuilder().addComponents(
         confirmButton,
-        cancelButton
+        cancelButton,
       );
 
       // Send confirmation message
@@ -915,7 +918,7 @@ module.exports = class Sell extends Command {
             // Update user's balance
             await Users.updateOne(
               { userId: ctx.author.id },
-              { $inc: { "balance.coin": totalValue } }
+              { $inc: { "balance.coin": totalValue } },
             );
 
             // Remove all sold items from inventory
@@ -927,7 +930,7 @@ module.exports = class Sell extends Command {
                     inventory: { id: item.id },
                     equip: { id: item.id },
                   },
-                }
+                },
               );
               totalSold += item.quantity;
             }
@@ -945,11 +948,14 @@ module.exports = class Sell extends Command {
                     sellMessages.sellCategorySuccess
                       .replace(
                         "{category}",
-                        client.utils.formatCapitalize(category)
+                        client.utils.formatCapitalize(category),
                       )
                       .replace("{count}", itemsToSell.length)
                       .replace("{coinEmoji}", emoji.coin)
-                      .replace("{price}", client.utils.formatNumber(totalValue))
+                      .replace(
+                        "{price}",
+                        client.utils.formatNumber(totalValue),
+                      ),
                   )
                   .setFooter({
                     text: (
@@ -994,7 +1000,7 @@ module.exports = class Sell extends Command {
             // Disable all buttons
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(confirmButton).setDisabled(true),
-              ButtonBuilder.from(cancelButton).setDisabled(true)
+              ButtonBuilder.from(cancelButton).setDisabled(true),
             );
 
             await message.edit({ components: [disabledRow] });
@@ -1011,7 +1017,7 @@ module.exports = class Sell extends Command {
         client,
         ctx,
         sellMessages.sellError,
-        color
+        color,
       );
     }
   }
