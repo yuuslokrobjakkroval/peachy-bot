@@ -1,10 +1,8 @@
 const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const globalEmoji = require("../../utils/Emoji");
-const Logger = require("../../structures/Logger");
 
 const maxAmount = 250000;
-const SPECIAL_CHANNELS = ["1376910445453250660", "1376911850209284146"];
 
 module.exports = class Slots extends Command {
   constructor(client) {
