@@ -94,7 +94,7 @@ module.exports = class Utils {
       const allItems = [
         ...require("../assets/inventory/ImportantItems"),
         ...require("../assets/inventory/ShopItems").flatMap(
-          (shop) => shop.inventory,
+          (shop) => shop.inventory
         ),
         ...require("../assets/inventory/SlimeCatalog"),
         ...require("../assets/inventory/Woods"),
@@ -186,7 +186,7 @@ module.exports = class Utils {
 
     // Remove timestamps outside the current window
     const validHistory = userHistory.filter(
-      (timestamp) => now - timestamp < window,
+      (timestamp) => now - timestamp < window
     );
     this.rateLimits.set(key, validHistory);
 
@@ -220,7 +220,7 @@ module.exports = class Utils {
 
     // Check if user is on cooldown
     const cooldown = user.cooldowns.find(
-      (c) => c.name === command.name.toLowerCase(),
+      (c) => c.name === command.name.toLowerCase()
     );
     const isOnCooldown = cooldown
       ? Date.now() - cooldown.timestamp < cooldownTime
@@ -230,7 +230,7 @@ module.exports = class Utils {
       // Set cooldown
       await this.updateUserWithRetry(userId, async (user) => {
         const existingCooldown = user.cooldowns.find(
-          (c) => c.name === command.name.toLowerCase(),
+          (c) => c.name === command.name.toLowerCase()
         );
         if (existingCooldown) {
           existingCooldown.timestamp = Date.now();
@@ -246,7 +246,7 @@ module.exports = class Utils {
     } else {
       // Calculate remaining time
       const remainingTime = Math.ceil(
-        (cooldown.timestamp + cooldownTime - Date.now()) / 1000,
+        (cooldown.timestamp + cooldownTime - Date.now()) / 1000
       );
 
       // Send cooldown message
@@ -257,7 +257,7 @@ module.exports = class Utils {
           Math.round(Date.now() / 1000) + remainingTime
         }:R> before using this command again.`,
         client.color.danger,
-        remainingTime * 1000,
+        remainingTime * 1000
       );
 
       return true; // On cooldown
@@ -286,11 +286,6 @@ module.exports = class Utils {
   }
 
   static getCheckingUser(client, message, user, color, emoji, prefix) {
-    const congratulations = [
-      emoji.congratulation,
-      emoji.peachCongratulation,
-      emoji.gomaCongratulation,
-    ];
     if (user) {
       const now = Date.now();
       const xpCooldown = 30000;
@@ -317,14 +312,14 @@ module.exports = class Utils {
         user.profile.lastXpGain = now;
 
         const nextLevelXp = client.utils.calculateNextLevelXpBonus(
-          user.profile.level,
+          user.profile.level
         );
 
         if (user.profile.xp >= nextLevelXp) {
           user.profile.xp -= nextLevelXp;
           user.profile.level += 1;
           user.profile.levelXp = client.utils.calculateNextLevelXpBonus(
-            user.profile.level,
+            user.profile.level
           );
           getLevelingMessage(client, message, user.profile.level);
           const celebrationCoin = user.profile.level * 250000;
@@ -333,7 +328,7 @@ module.exports = class Utils {
 
           const levelUp = new canvafy.LevelUp()
             .setAvatar(
-              message.author.displayAvatarURL({ format: "png", size: 512 }),
+              message.author.displayAvatarURL({ format: "png", size: 512 })
             )
             .setUsername(`${message.author.username}`, "#000000")
             .setBorder("#8BD3DD")
@@ -353,16 +348,16 @@ module.exports = class Utils {
                 .setColor(color.main)
                 .setTitle(`${message.author.displayName} - LEVEL UP !`)
                 .setDescription(
-                  `Congratulations ${client.utils.getRandomElement(
-                    congratulations,
-                  )} !!!\nYou leveled up to level ${
+                  `Congratulations ${
+                    globalEmoji.congratulation
+                  } !!!\nYou leveled up to level ${
                     user.profile.level
                   }!\nYou have been awarded ${client.utils.formatNumber(
-                    celebrationCoin,
-                  )} ${emoji.coin}.`,
+                    celebrationCoin
+                  )} ${emoji.coin}.`
                 )
                 .setThumbnail(
-                  message.author.displayAvatarURL({ format: "png", size: 512 }),
+                  message.author.displayAvatarURL({ format: "png", size: 512 })
                 )
                 .setImage("attachment://level-up.png");
 
@@ -378,7 +373,7 @@ module.exports = class Utils {
             .catch((error) => {
               console.error("Error creating level up image:", error);
               message.channel.send(
-                "You leveled up, but there was an error creating the level-up image!",
+                "You leveled up, but there was an error creating the level-up image!"
               );
             });
         }
@@ -478,8 +473,8 @@ module.exports = class Utils {
                   .setColor("Blue")
                   .setDescription(
                     `<@${id}> cooldown **<t:${Math.floor(
-                      cooldownEnd.getTime() / 1000,
-                    )}:R>**`,
+                      cooldownEnd.getTime() / 1000
+                    )}:R>**`
                   ),
               ],
             })
@@ -506,8 +501,8 @@ module.exports = class Utils {
                 .setColor("Blue")
                 .setDescription(
                   `<@${id}> cooldown **<t:${Math.floor(
-                    cooldownEnd.getTime() / 1000,
-                  )}:R>**`,
+                    cooldownEnd.getTime() / 1000
+                  )}:R>**`
                 ),
             ],
           })
@@ -598,7 +593,7 @@ module.exports = class Utils {
       .then((user) => {
         if (user) {
           const cooldownIndex = user.cooldowns.findIndex(
-            (c) => c.name === command,
+            (c) => c.name === command
           );
           if (cooldownIndex > -1) {
             user.cooldowns[cooldownIndex].timestamp = now;
@@ -647,7 +642,7 @@ module.exports = class Utils {
   static formatCapitalize(val) {
     const words = val.split("_");
     const CapitalizeWords = words.map(
-      (word) => word.charAt(0).toUpperCase() + word.slice(1),
+      (word) => word.charAt(0).toUpperCase() + word.slice(1)
     );
     return CapitalizeWords.join(" ");
   }
@@ -672,7 +667,7 @@ module.exports = class Utils {
     }
     if (remainingSeconds > 0 || (hours === 0 && minutes === 0)) {
       parts.push(
-        `${remainingSeconds} second${remainingSeconds > 1 ? "s" : ""}`,
+        `${remainingSeconds} second${remainingSeconds > 1 ? "s" : ""}`
       );
     }
 
@@ -796,7 +791,7 @@ module.exports = class Utils {
     const sizes = ["", "K", "M", "B", "T", "Q"];
     const i = Math.floor(Math.log(number) / Math.log(k));
     const formattedNumber = Number.parseFloat(
-      (number / Math.pow(k, i)).toFixed(dm),
+      (number / Math.pow(k, i)).toFixed(dm)
     );
     return dm === 0 ? formattedNumber.toFixed(0) : formattedNumber + sizes[i];
   }
@@ -859,7 +854,7 @@ module.exports = class Utils {
           () => {
             msg.delete().catch(() => {});
           },
-          time ? time : 10000,
+          time ? time : 10000
         );
       })
       .catch((error) => {
@@ -877,7 +872,7 @@ module.exports = class Utils {
           () => {
             msg.delete().catch(() => {});
           },
-          time ? time : 10000,
+          time ? time : 10000
         );
       })
       .catch((error) => {
@@ -895,7 +890,7 @@ module.exports = class Utils {
           () => {
             msg.delete().catch(() => {});
           },
-          time ? time : 10000,
+          time ? time : 10000
         );
       })
       .catch((error) => {
@@ -1233,8 +1228,8 @@ module.exports = class Utils {
             .setCustomId(button.id)
             .setLabel(button.label)
             .setStyle(2)
-            .setDisabled(button.disabled),
-        ),
+            .setDisabled(button.disabled)
+        )
       );
       return { embeds: [pageEmbed], components: [components] };
     };
@@ -1254,7 +1249,7 @@ module.exports = class Utils {
 
     collector.on(
       "end",
-      async () => await msg.edit({ embeds: [embed[page]], components: [] }),
+      async () => await msg.edit({ embeds: [embed[page]], components: [] })
     );
     collector.on("collect", async (interaction) => {
       if (interaction.user.id !== author.id)
@@ -1337,7 +1332,7 @@ module.exports = class Utils {
         .catch((err) => {
           console.error(
             "[Birthday] Error fetching birthday channel:",
-            err.message,
+            err.message
           );
         });
 
@@ -1363,10 +1358,10 @@ module.exports = class Utils {
             .embed()
             .setColor(client.color.main)
             .setTitle(
-              `🎉 Happy Birthday, ${user.profile.username || user.username}! 🎂`,
+              `🎉 Happy Birthday, ${user.profile.username || user.username}! 🎂`
             )
             .setDescription(
-              `On this special day, we celebrate you and all the joy you bring into our lives!`,
+              `On this special day, we celebrate you and all the joy you bring into our lives!`
             )
             .addFields([
               {
@@ -1392,7 +1387,7 @@ module.exports = class Utils {
           console.log(
             `User ${
               user.profile.username || user.username
-            } updated successfully.`,
+            } updated successfully.`
           );
 
           // Send the birthday message to the channel
@@ -1400,7 +1395,7 @@ module.exports = class Utils {
           console.log("Birthday message sent successfully.");
         } catch (userError) {
           console.error(
-            `[Birthday] Error processing user ${user._id}: ${userError.message}`,
+            `[Birthday] Error processing user ${user._id}: ${userError.message}`
           );
         }
       }
@@ -1457,18 +1452,18 @@ module.exports = class Utils {
     }
 
     const disableButton = ActionRowBuilder.from(
-      message.components[0],
+      message.components[0]
     ).setComponents(
       ButtonBuilder.from(message.components[0].components[0])
         .setLabel(`${data.entered.length}`)
         .setDisabled(true),
-      ButtonBuilder.from(message.components[0].components[1]).setDisabled(true),
+      ButtonBuilder.from(message.components[0].components[1]).setDisabled(true)
     );
 
     const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
       .setColor(color.main)
       .setDescription(
-        `Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`,
+        `Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`
       );
 
     await message
@@ -1480,7 +1475,7 @@ module.exports = class Utils {
             channelId: data.channelId,
             messageId: msg.id,
           },
-          { ended: true, winnerId: winnerIdArray },
+          { ended: true, winnerId: winnerIdArray }
         );
       });
 
@@ -1492,10 +1487,10 @@ module.exports = class Utils {
           .setColor(color.main)
           .setDescription(
             winnerIdArray.length
-              ? `Congratulations ${emoji.congratulation}\n${winnerIdArray
+              ? `Congratulations ${globalEmoji.congratulation}\n${winnerIdArray
                   .map((user) => `<@${user}>`)
                   .join(", ")} ! You have won **${client.utils.formatNumber(
-                  data.prize,
+                  data.prize
                 )}** ${emoji.coin} ${
                   autopay
                     ? ``
@@ -1504,8 +1499,8 @@ module.exports = class Utils {
                       }\``
                 }`
               : `No one entered the giveaway for **\`${client.utils.formatNumber(
-                  data.prize,
-                )}\`**!`,
+                  data.prize
+                )}\`**!`
           )
           .setFooter({
             text: "Better luck next time!",
@@ -1526,8 +1521,8 @@ module.exports = class Utils {
                   `**${
                     client.user.username
                   }** has awarded **${client.utils.formatNumber(
-                    data.prize,
-                  )}** ${emoji.coin} to <@${winner}>.`,
+                    data.prize
+                  )}** ${emoji.coin} to <@${winner}>.`
                 ),
             ],
           });
@@ -1564,11 +1559,11 @@ module.exports = class Utils {
     }
 
     const itemInfo = category.find(
-      (i) => i.id.toLowerCase() === data.itemId.toLowerCase(),
+      (i) => i.id.toLowerCase() === data.itemId.toLowerCase()
     );
     if (!itemInfo) {
       console.error(
-        `No item found with ID ${data.itemId} in category ${data.type} for winner <@${winner}>.`,
+        `No item found with ID ${data.itemId} in category ${data.type} for winner <@${winner}>.`
       );
       return;
     }
@@ -1586,19 +1581,19 @@ module.exports = class Utils {
     }
 
     const disableButton = ActionRowBuilder.from(
-      message.components[0],
+      message.components[0]
     ).setComponents(
       ButtonBuilder.from(message.components[0].components[0])
         .setLabel(`${data.entered.length}`)
         .setDisabled(true),
-      ButtonBuilder.from(message.components[0].components[1]).setDisabled(true),
+      ButtonBuilder.from(message.components[0].components[1]).setDisabled(true)
     );
 
     const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
       .setColor(color.main)
       .setThumbnail(client.utils.emojiToImage(itemInfo.emoji))
       .setDescription(
-        `Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`,
+        `Winners: ${data.winners}\nHosted by: <@${data.hostedBy}>`
       );
 
     await message
@@ -1610,7 +1605,7 @@ module.exports = class Utils {
             channelId: data.channelId,
             messageId: msg.id,
           },
-          { ended: true, winnerId: winnerIdArray },
+          { ended: true, winnerId: winnerIdArray }
         );
       });
 
@@ -1622,7 +1617,7 @@ module.exports = class Utils {
           .setThumbnail(client.utils.emojiToImage(itemInfo.emoji))
           .setDescription(
             winnerIdArray.length
-              ? `Congratulations ${emoji.congratulation}` +
+              ? `Congratulations ${globalEmoji.congratulation}` +
                   `${winnerIdArray
                     .map((user) => `<@${user}>`)
                     .join(", ")} ! You have won **${
@@ -1637,7 +1632,7 @@ module.exports = class Utils {
                   itemInfo.name
                 } **\`${client.utils.formatNumber(data.amount)}\`** ${
                   itemInfo.emoji
-                }!`,
+                }!`
           )
           .setFooter({
             text: "Better luck next time!",
@@ -1652,7 +1647,7 @@ module.exports = class Utils {
           const user = await Users.findOne({ userId: winner });
           if (user) {
             const itemIndex = user.inventory.findIndex(
-              (item) => item.id === itemInfo.id,
+              (item) => item.id === itemInfo.id
             );
             if (itemIndex > -1) {
               user.inventory[itemIndex].quantity += data.amount;
@@ -1671,7 +1666,7 @@ module.exports = class Utils {
                   .embed()
                   .setColor(color.main)
                   .setDescription(
-                    `**${client.user.displayName}** has added **${itemInfo.name} ${itemInfo.emoji} \`${data.amount}\`** to <@${winner}>'s inventory.`,
+                    `**${client.user.displayName}** has added **${itemInfo.name} ${itemInfo.emoji} \`${data.amount}\`** to <@${winner}>'s inventory.`
                   ),
               ],
             });
@@ -1768,7 +1763,7 @@ module.exports = class Utils {
             .catch(() => null);
           if (!channel) {
             console.error(
-              `Channel ${giveaway.channelId} not found for scheduled giveaway ${giveaway._id}`,
+              `Channel ${giveaway.channelId} not found for scheduled giveaway ${giveaway._id}`
             );
             continue;
           }
@@ -1778,13 +1773,13 @@ module.exports = class Utils {
             .embed()
             .setColor(color.main)
             .setTitle(
-              `**${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin}`,
+              `**${client.utils.formatNumber(giveaway.prize)}** ${emoji.coin}`
             )
             .setDescription(
               `Click ${emoji.main} button to enter!\n` +
                 `Winners: ${giveaway.winners}\n` +
                 `Hosted by: <@${giveaway.hostedBy}>\n` +
-                `Ends: <t:${Math.floor(giveaway.endTime / 1000)}:R>`,
+                `Ends: <t:${Math.floor(giveaway.endTime / 1000)}:R>`
             );
 
           if (giveaway.image) giveawayEmbed.setImage(giveaway.image);
@@ -1797,18 +1792,18 @@ module.exports = class Utils {
             emoji.main,
             "0",
             1,
-            false,
+            false
           );
           const participantsButton = client.utils.fullOptionButton(
             "giveaway-participants",
             "",
             "Participants",
             2,
-            false,
+            false
           );
           const buttonRow = client.utils.createButtonRow(
             joinButton,
-            participantsButton,
+            participantsButton
           );
 
           // Send the giveaway message
@@ -1824,12 +1819,12 @@ module.exports = class Utils {
 
           // Log the scheduled giveaway start
           console.log(
-            `Started scheduled giveaway ${giveaway._id} in channel ${channel.name}`,
+            `Started scheduled giveaway ${giveaway._id} in channel ${channel.name}`
           );
         } catch (error) {
           console.error(
             `Error starting scheduled giveaway ${giveaway._id}:`,
-            error,
+            error
           );
         }
       }
@@ -1848,7 +1843,7 @@ module.exports = class Utils {
         } catch (error) {
           console.error(
             `Error starting scheduled item giveaway ${giveaway._id}:`,
-            error,
+            error
           );
         }
       }
@@ -1902,7 +1897,7 @@ module.exports = class Utils {
         client,
         ctx,
         "Duration is missing or invalid. Please provide a valid duration like 1h, 1d, 1w, etc.",
-        color,
+        color
       );
       return { success: false };
     }
@@ -1915,7 +1910,7 @@ module.exports = class Utils {
         ctx,
         "Invalid duration format. Please use a valid format like 1h, 1d, 1w, etc.",
 
-        color,
+        color
       );
       return { success: false };
     }
@@ -1926,7 +1921,7 @@ module.exports = class Utils {
         client,
         ctx,
         "Number of winners must be between 1 and 20.",
-        color,
+        color
       );
       return { success: false };
     }
@@ -1992,7 +1987,7 @@ module.exports = class Utils {
 
       const guild = await client.guilds.fetch(guildId).catch((err) => {
         console.error(
-          `[Booster] Error fetching guild ${guildId}: ${err.message}`,
+          `[Booster] Error fetching guild ${guildId}: ${err.message}`
         );
         return null;
       });
@@ -2017,20 +2012,20 @@ module.exports = class Utils {
         .fetch(rewardChannelId)
         .catch((err) => {
           console.error(
-            `[Booster] Error fetching reward channel ${rewardChannelId}: ${err.message}`,
+            `[Booster] Error fetching reward channel ${rewardChannelId}: ${err.message}`
           );
           return null;
         });
 
       if (!rewardChannel) {
         console.error(
-          `[Booster] Reward channel ${rewardChannelId} not found or inaccessible.`,
+          `[Booster] Reward channel ${rewardChannelId} not found or inaccessible.`
         );
         return;
       }
 
       const boosterMembers = members.filter((member) =>
-        roleIds.some((roleId) => member.roles.cache.has(roleId)),
+        roleIds.some((roleId) => member.roles.cache.has(roleId))
       );
 
       console.log(`Members with booster/sponsor roles:`, boosterMembers.size);
@@ -2048,7 +2043,7 @@ module.exports = class Utils {
             console.log(
               `[Booster] User ${
                 user.profile.username || user.username
-              } already rewarded.`,
+              } already rewarded.`
             );
             continue;
           }
@@ -2059,10 +2054,10 @@ module.exports = class Utils {
             .setTitle(
               `🎉 Thank You for Boosting/Sponsoring, ${
                 user.profile.username || user.username
-              }!`,
+              }!`
             )
             .setDescription(
-              `We appreciate your support for keeping our server thriving!`,
+              `We appreciate your support for keeping our server thriving!`
             )
             .addFields([
               {
@@ -2086,7 +2081,7 @@ module.exports = class Utils {
           console.log(`Booster reward message sent for ${member.id}.`);
         } catch (userError) {
           console.error(
-            `[Booster] Error processing user ${member.id}: ${userError.message}`,
+            `[Booster] Error processing user ${member.id}: ${userError.message}`
           );
         }
       }
@@ -2103,7 +2098,7 @@ module.exports = class Utils {
     let captcha = "";
     for (let i = 0; i < 6; i++) {
       captcha += characters.charAt(
-        Math.floor(Math.random() * characters.length),
+        Math.floor(Math.random() * characters.length)
       );
     }
     return captcha;
