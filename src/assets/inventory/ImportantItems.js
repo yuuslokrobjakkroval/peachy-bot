@@ -222,7 +222,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.card.black,
     available: ["use"],
-    price: { buy: 1e8, sell: 0 },
+    price: { buy: 1e7, sell: 9e6 },
   },
   {
     id: "rc",
@@ -237,7 +237,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.card.red,
     available: ["use"],
-    price: { buy: 1e8, sell: 0 },
+    price: { buy: 1e8, sell: 9e7 },
   },
   {
     id: "pc",
@@ -252,6 +252,6 @@ module.exports = [
     quantity: 1,
     emoji: emoji.card.pink,
     available: ["use"],
-    price: { buy: 1e8, sell: 0 },
+    price: { buy: 11e7, sell: 1e8 },
   },
 ];
