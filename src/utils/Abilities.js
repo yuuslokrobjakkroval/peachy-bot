@@ -145,7 +145,8 @@ module.exports = class Ability {
         content,
         null,
         null,
-        userInfo
+        userInfo,
+        level
       );
 
       await levelingChannel.send({
@@ -997,7 +998,8 @@ module.exports = class Ability {
     result,
     invite,
     inviter,
-    userInfo
+    userInfo,
+    level
   ) {
     const data = client.abilities.getReplacementData(
       member,
