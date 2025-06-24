@@ -288,7 +288,7 @@ module.exports = class Utils {
   static getCheckingUser(client, message, user, color, emoji, prefix) {
     if (user) {
       const now = Date.now();
-      const xpCooldown = 30000;
+      const xpCooldown = 10000;
 
       if (
         !user.profile.lastXpGain ||
