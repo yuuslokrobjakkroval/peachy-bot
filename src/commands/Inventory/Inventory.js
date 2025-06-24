@@ -13,7 +13,7 @@ const SlimeCategory = require("../../assets/inventory/SlimeCatalog");
 const Tools = require("../../assets/inventory/SlimeTools");
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = Inventory.filter((value) => value.price.buy !== 0).sort(
-  (a, b) => a.price.buy - b.price.buy,
+  (a, b) => a.price.buy - b.price.buy
 );
 
 module.exports = class Inventory extends Command {
@@ -51,26 +51,23 @@ module.exports = class Inventory extends Command {
           client,
           ctx,
           invMessages.noInventory || "No inventory data found for this user.",
-          color,
+          color
         );
       }
 
       // Define category icons/emojis for better visual distinction
       // Include "resources" category
       const categoryIcons = {
-        milk: "🥛",
-        food: "🍔",
-        "pet food": "🦴",
         drink: "🥤",
         cake: "🎂",
         couple: "💑",
         ring: "💍",
         color: "🎨",
         theme: "🎭",
-        "special theme": "✨",
+        specialtheme: "✨",
         wallpaper: "🖼️",
-        "credit card": "💳",
-        resources: "⛏️", // Icon for merged resources category
+        card: "💳",
+        resources: "⛏️",
       };
 
       // Pagination settings
@@ -93,8 +90,8 @@ module.exports = class Inventory extends Command {
             Woods,
             Minerals,
             SlimeCategory,
-            Tools,
-          ).find(({ id }) => id === item.id);
+            Tools
+          ).find(({ id }) => id.toLowerCase() === item.id.toLowerCase());
 
           if (itemInfo) {
             // Map specific types to "resources"
@@ -142,18 +139,14 @@ module.exports = class Inventory extends Command {
       const categoryPages = {};
       // Include "resources" instead of individual categories
       const inventoryTypes = [
+        "card",
         "milk",
-        "food",
-        "pet food",
-        "drink",
-        "cake",
         "couple",
         "ring",
         "color",
         "theme",
         "special theme",
         "wallpaper",
-        "credit card",
         "resources",
       ];
 
@@ -199,16 +192,16 @@ module.exports = class Inventory extends Command {
           .setDescription(
             `### ${emoji.mainLeft} ${
               invMessages.inventoryTitle || "INVENTORY"
-            } ${emoji.mainRight}\n\n${inventorySummary}`,
+            } ${emoji.mainRight}\n\n${inventorySummary}`
           )
           .setThumbnail(
-            client.utils.emojiToImage(emoji.inventory || emoji.main),
+            client.utils.emojiToImage(emoji.inventory || emoji.main)
           )
           .setFooter({
             text:
               invMessages.footerText?.replace(
                 "{user}",
-                ctx.author.displayName,
+                ctx.author.displayName
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
@@ -248,12 +241,12 @@ module.exports = class Inventory extends Command {
             `### ${emoji.mainLeft} ${client.utils
               .formatCapitalize(category)
               .toUpperCase()} ${emoji.mainRight}\n\n` +
-              `Viewing ${pageItems.length} of ${items.length} items (Page ${page}/${totalPages})`,
+              `Viewing ${pageItems.length} of ${items.length} items (Page ${page}/${totalPages})`
           )
           .setThumbnail(
             client.utils.emojiToImage(
-              categoryIcons[category] || emoji.inventory || emoji.main,
-            ),
+              categoryIcons[category] || emoji.inventory || emoji.main
+            )
           )
           .setFooter({
             text: `Page ${page}/${totalPages} • Use the buttons to navigate`,
@@ -346,7 +339,7 @@ module.exports = class Inventory extends Command {
         return new ActionRowBuilder().addComponents(
           prevButton,
           pageIndicator,
-          nextButton,
+          nextButton
         );
       };
 
@@ -363,7 +356,7 @@ module.exports = class Inventory extends Command {
             .setEmoji(categoryIcons.resources);
 
           components.push(
-            new ActionRowBuilder().addComponents(resourcesButton),
+            new ActionRowBuilder().addComponents(resourcesButton)
           );
         }
 
@@ -442,7 +435,7 @@ module.exports = class Inventory extends Command {
                 generateCategoryDropdown(),
                 generatePaginationButtons(
                   currentView.category,
-                  currentView.page,
+                  currentView.page
                 ),
               ],
             });
@@ -458,7 +451,7 @@ module.exports = class Inventory extends Command {
                 generateCategoryDropdown(),
                 generatePaginationButtons(
                   currentView.category,
-                  currentView.page,
+                  currentView.page
                 ),
               ],
             });
@@ -475,12 +468,12 @@ module.exports = class Inventory extends Command {
               if (component.type === 3) {
                 // Select menu
                 newRow.addComponents(
-                  StringSelectMenuBuilder.from(component).setDisabled(true),
+                  StringSelectMenuBuilder.from(component).setDisabled(true)
                 );
               } else if (component.type === 2) {
                 // Button
                 newRow.addComponents(
-                  ButtonBuilder.from(component).setDisabled(true),
+                  ButtonBuilder.from(component).setDisabled(true)
                 );
               }
             });
@@ -501,7 +494,7 @@ module.exports = class Inventory extends Command {
         ctx,
         invMessages.error ||
           "An error occurred while retrieving your inventory.",
-        color,
+        color
       );
     }
   }

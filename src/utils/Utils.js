@@ -280,7 +280,7 @@ module.exports = class Utils {
   }
 
   static calculateNextLevelXpBonus(level) {
-    const base = 1000;
+    const base = 100;
     const scalingFactor = 1.5;
     return Math.floor(base * Math.pow(scalingFactor, level - 1));
   }
@@ -305,8 +305,8 @@ module.exports = class Utils {
         const xpGained =
           message.content.startsWith(prefix) ||
           message.content.startsWith(prefix.toLowerCase())
-            ? client.utils.getRandomNumber(20, 25)
-            : client.utils.getRandomNumber(10, 15);
+            ? client.utils.getRandomNumber(8, 10)
+            : client.utils.getRandomNumber(7, 8);
 
         user.profile.xp += xpGained;
         user.profile.lastXpGain = now;
@@ -322,7 +322,7 @@ module.exports = class Utils {
             user.profile.level
           );
           getLevelingMessage(client, message, user.profile.level);
-          const celebrationCoin = user.profile.level * 250000;
+          const celebrationCoin = user.profile.level * 25000;
 
           user.balance.coin += celebrationCoin;
 
