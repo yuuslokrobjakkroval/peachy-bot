@@ -19,7 +19,7 @@ module.exports = {
       quantity: 1,
       emoji: emoji.card.black,
       available: ["use"],
-      price: { buy: 5e7, sell: 49e6 },
+      price: { buy: 5e7, sell: 49e5 },
     },
     {
       id: "gc",
@@ -35,7 +35,7 @@ module.exports = {
       quantity: 1,
       emoji: emoji.card.red,
       available: ["use"],
-      price: { buy: 1e8, sell: 99e7 },
+      price: { buy: 1e8, sell: 99e6 },
     },
     {
       id: "ppc",
