@@ -51,7 +51,7 @@ module.exports = {
       quantity: 1,
       emoji: emoji.card.pink,
       available: ["use"],
-      price: { buy: 1e9, sell: 99e8 },
+      price: { buy: 1e9, sell: 9e8 },
     },
   ],
 };
