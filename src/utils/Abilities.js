@@ -423,20 +423,38 @@ module.exports = class Ability {
           message.content.toLowerCase() === response.trigger.toLowerCase()
       );
 
-      if (!matchingResponses) return;
+      if (!matchingResponses || matchingResponses.length === 0) return;
 
-      if (matchingResponses.length > 0) {
-        const randomResponse =
-          matchingResponses[
-            Math.floor(Math.random() * matchingResponses.length)
-          ];
-        if (randomResponse?.response) {
-          await message.reply(randomResponse.response);
-        } else {
-          console.warn(
-            `No valid response found for trigger: ${message.content}`
-          );
-        }
+      const randomResponse =
+        matchingResponses[Math.floor(Math.random() * matchingResponses.length)];
+      if (!randomResponse?.response) {
+        return;
+      }
+
+      const userInfo = await client.utils.getUser(message.author.id);
+      if (!userInfo) {
+        await message.reply(randomResponse.response);
+        return;
+      }
+
+      const processedContent = await this.resultMessage(
+        client,
+        message.member,
+        message.guild,
+        randomResponse.response,
+        null,
+        null,
+        userInfo,
+        message.content
+      );
+
+      if (processedContent) {
+        await message.reply(processedContent);
+      } else {
+        console.warn(
+          `Failed to process response for trigger: ${message.content}`
+        );
+        await message.reply(randomResponse.response); // Fallback to raw response
       }
     } catch (error) {
       console.error(
@@ -982,9 +1000,9 @@ module.exports = class Ability {
       inviterbonusinvites: inviter?.bonusInvites || 0,
 
       // Level
-      oldLevel: level ? level - 1 : user?.profile?.level - 1 || 0,
-      currentLevel: level || user?.profile?.level || 0,
-      nextLevel: level ? level + 1 : user?.profile?.level + 1 || 0,
+      oldLevel: user?.profile?.level - 1 || 0,
+      currentLevel: user?.profile?.level || 1,
+      nextLevel: user?.profile?.level + 1 || 0,
       currentXP: user?.profile?.xp || 0,
       requiredXP: user?.profile?.levelXp || 0,
       xpGained: user?.profile?.lastXpGain || 0,
