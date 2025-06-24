@@ -122,9 +122,6 @@ module.exports = class Ability {
       });
 
       if (!levelingMessage) {
-        console.log(
-          `No active leveling message found for guild ${message.guild.id}`
-        );
         return;
       }
 
@@ -132,9 +129,6 @@ module.exports = class Ability {
       const levelingChannel = message.member.guild.channels.cache.get(channel);
 
       if (!levelingChannel) {
-        console.warn(
-          `Leveling channel ${channel} not found in guild ${message.member.guild.name}.`
-        );
         return;
       }
 
