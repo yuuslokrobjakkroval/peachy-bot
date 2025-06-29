@@ -14,7 +14,7 @@ module.exports = class MessageCreate extends Event {
   }
 
   async run(message) {
-    if (message.author.bot) return;
+    if (message.author.bot || message.channel.type === 1) return;
     if (globalConfig.env === "DEV") {
       if (message.guild.id !== "1371280484046344242") return;
     } else {
@@ -24,7 +24,7 @@ module.exports = class MessageCreate extends Event {
       .setColorBasedOnTheme(message.author.id)
       .then(async ({ user, color, emoji, language }) => {
         const generalMessages = language.locales.get(
-          language.defaultLocale,
+          language.defaultLocale
         )?.generalMessages;
         const prefix = globalConfig.prefix;
         this.client.utils.getCheckingUser(
@@ -33,7 +33,7 @@ module.exports = class MessageCreate extends Event {
           user,
           color,
           emoji,
-          prefix,
+          prefix
         );
 
         if (user?.verification?.isBanned) {
@@ -47,7 +47,7 @@ module.exports = class MessageCreate extends Event {
           // Calculate hours, minutes, and seconds
           const hours = Math.floor(remainingTime / (1000 * 60 * 60));
           const minutes = Math.floor(
-            (remainingTime % (1000 * 60 * 60)) / (1000 * 60),
+            (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
           );
           const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
@@ -71,7 +71,7 @@ module.exports = class MessageCreate extends Event {
             .setDescription(
               `You are in timeout for: \`${
                 user.verification.timeout.reason || "No reason provided"
-              }\`.\nTimeout ends in **${timeString}**.`,
+              }\`.\nTimeout ends in **${timeString}**.`
             );
 
           return message.channel.send({ embeds: [embed] });
@@ -86,7 +86,7 @@ module.exports = class MessageCreate extends Event {
             .setDescription(
               `My Name is ${this.client.user.displayName}.\n` +
                 `My prefix for this server is **${prefix}**.\n\n` +
-                `Do you need help? please use **${prefix}help**!!!`,
+                `Do you need help? please use **${prefix}help**!!!`
             )
             .setImage(globalGif.mentionBot)
             .setFooter({
@@ -96,7 +96,7 @@ module.exports = class MessageCreate extends Event {
 
           const clickSuppButton = this.client.utils.linkButton(
             "Click for support",
-            this.client.config.links.support,
+            this.client.config.links.support
           );
 
           const row = this.client.utils.createButtonRow(clickSuppButton);
@@ -111,7 +111,7 @@ module.exports = class MessageCreate extends Event {
             str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
           const prefixRegex = new RegExp(
             `^(<@!?${this.client.user.id}>|${escapeRegex(prefix)})\\s*`,
-            "i",
+            "i"
           );
           const match = prefixRegex.exec(message.content);
           const [, matchedPrefix] = match;
@@ -144,26 +144,26 @@ module.exports = class MessageCreate extends Event {
                 .setColor(color.main)
                 .setTitle(`${emoji.mainLeft}  PEACHY  ${emoji.mainRight}`)
                 .setThumbnail(
-                  ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
+                  ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
                 )
                 .setDescription(
-                  `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`,
+                  `It seems like you haven’t registered yet.\nPlease Click **Register** !!!\nFor read **Rules and Privacy Policy**\nTo start using the bot and earning rewards!`
                 )
                 .setImage(globalGif.peachy);
 
               const registerButton = this.client.utils.labelButton(
                 "register",
                 "Register",
-                3,
+                3
               );
               const cancelButton = this.client.utils.labelButton(
                 "cancel",
                 "Cancel",
-                4,
+                4
               );
               const row = this.client.utils.createButtonRow(
                 registerButton,
-                cancelButton,
+                cancelButton
               );
 
               ctx
@@ -189,13 +189,13 @@ module.exports = class MessageCreate extends Event {
                           .embed()
                           .setColor(color.main)
                           .setTitle(
-                            `${emoji.mainLeft} WELCOME ${emoji.mainRight}`,
+                            `${emoji.mainLeft} WELCOME ${emoji.mainRight}`
                           )
                           .setThumbnail(
                             ctx.author.displayAvatarURL({
                               dynamic: true,
                               size: 1024,
-                            }),
+                            })
                           )
                           .setDescription(
                             `Welcome to the PEACHY community! Please take a moment to read and follow these guidelines to ensure a fun and respectful environment for everyone:\n\n` +
@@ -205,29 +205,29 @@ module.exports = class MessageCreate extends Event {
                               `3. **Avoid Spamming**: Please avoid spamming commands. Excessive or inappropriate use will result in a balance reset. Continued spamming may lead to a permanent blacklist.\n\n` +
                               `4. **Be Courteous**: Use appropriate language and behavior. Hate speech, harassment, or any form of inappropriate behavior will not be tolerated.\n\n` +
                               `5. **Follow Discord’s Rules**: Always adhere to Discord’s Terms of Service and Community Guidelines. These are non-negotiable.\n\n` +
-                              `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/BJT4h55hbg). We're here to help!`,
+                              `If you have any questions or need assistance, feel free to join our [Support Server](https://discord.gg/BJT4h55hbg). We're here to help!`
                           );
 
                         const confirmButton = this.client.utils.labelButton(
                           "confirm",
                           "Accept for Register",
-                          3,
+                          3
                         );
                         const privacyButton = this.client.utils.labelButton(
                           "privacy",
                           "Privacy Policy",
-                          2,
+                          2
                         );
                         const cancelButton = this.client.utils.labelButton(
                           "cancel",
                           "Cancel",
-                          4,
+                          4
                         );
 
                         const row = this.client.utils.createButtonRow(
                           confirmButton,
                           privacyButton,
-                          cancelButton,
+                          cancelButton
                         );
                         await int.editReply({
                           content: "",
@@ -243,7 +243,7 @@ module.exports = class MessageCreate extends Event {
                           .embed()
                           .setColor(color.main)
                           .setTitle(
-                            `${emoji.mainLeft} PRIVACY POLICY ${emoji.mainRight}`,
+                            `${emoji.mainLeft} PRIVACY POLICY ${emoji.mainRight}`
                           )
                           .setDescription(
                             `**Introduction**\n` +
@@ -269,29 +269,29 @@ module.exports = class MessageCreate extends Event {
                               `**Policy Updates**\n` +
                               `We may update this Privacy Policy to reflect changes in our practices. Major updates will be announced in our Discord server, and the latest version will always be accessible via the bot’s profile and help command.\n\n` +
                               `**Contact Information**\n` +
-                              `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`,
+                              `If you have any questions, concerns, or suggestions regarding this Privacy Policy, please reach out to us by joining our support server. We're here to help!`
                           );
 
                         const confirmButton = this.client.utils.labelButton(
                           "confirm",
                           "Accept for Register",
-                          3,
+                          3
                         );
                         const registerButton = this.client.utils.labelButton(
                           "register",
                           "Rules and Guidelines",
-                          2,
+                          2
                         );
                         const cancelButton = this.client.utils.labelButton(
                           "cancel",
                           "Cancel",
-                          4,
+                          4
                         );
 
                         const row = this.client.utils.createButtonRow(
                           confirmButton,
                           registerButton,
-                          cancelButton,
+                          cancelButton
                         );
 
                         await int.editReply({
@@ -306,23 +306,23 @@ module.exports = class MessageCreate extends Event {
                       const confirmButton = this.client.utils.labelButton(
                         "confirm",
                         "Accept for Register",
-                        3,
+                        3
                       );
                       const privacyButton = this.client.utils.labelButton(
                         "privacy",
                         "Privacy Policy",
-                        2,
+                        2
                       );
                       const cancelButton = this.client.utils.labelButton(
                         "cancel",
                         "Cancel",
-                        4,
+                        4
                       );
 
                       const row = this.client.utils.createButtonRow(
                         confirmButton,
                         privacyButton,
-                        cancelButton,
+                        cancelButton
                       );
 
                       await int.update({
@@ -352,7 +352,7 @@ module.exports = class MessageCreate extends Event {
                             },
                           },
                         },
-                        { upsert: true },
+                        { upsert: true }
                       );
 
                       const embed = this.client
@@ -362,17 +362,17 @@ module.exports = class MessageCreate extends Event {
                           ctx.author.displayAvatarURL({
                             dynamic: true,
                             size: 1024,
-                          }),
+                          })
                         )
                         .setTitle(`${emoji.mainLeft} PEACHY ${emoji.mainRight}`)
                         .setDescription(
                           `Warming Gift for you ${emoji.congratulation}\nDear ${
                             ctx.author.displayName
                           }!!\nYou got ${this.client.utils.formatNumber(
-                            gift,
+                            gift
                           )} ${
                             emoji.coin
-                          } from PEACHY\n\nYou have successfully registered!\nYou can now use the bot.`,
+                          } from PEACHY\n\nYou have successfully registered!\nYou can now use the bot.`
                         )
                         .setImage(globalGif.peachy);
                       await int.editReply({
@@ -397,13 +397,13 @@ module.exports = class MessageCreate extends Event {
                               ctx.author.displayAvatarURL({
                                 dynamic: true,
                                 size: 1024,
-                              }),
+                              })
                             )
                             .setTitle(
-                              `${emoji.mainLeft} THANK YOU ${ctx.author.displayName} ${emoji.mainRight}`,
+                              `${emoji.mainLeft} THANK YOU ${ctx.author.displayName} ${emoji.mainRight}`
                             )
                             .setDescription(
-                              `Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`,
+                              `Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`
                             ),
                         ],
                         components: [],
@@ -420,7 +420,7 @@ module.exports = class MessageCreate extends Event {
                           .replace("%{mainLeft}", emoji.mainLeft)
                           .replace("%{title}", "TIME IS UP")
                           .replace("%{mainRight}", emoji.mainRight) +
-                          "⏳ Time is up! You didn't register.",
+                          "⏳ Time is up! You didn't register."
                       )
                       .setFooter({
                         text: `${ctx.author.displayName}, please try again`,
@@ -470,7 +470,7 @@ module.exports = class MessageCreate extends Event {
                 if (
                   command.permissions.client &&
                   !message.guild.members.me.permissions.has(
-                    command.permissions.client,
+                    command.permissions.client
                   )
                 ) {
                   return message.reply({
@@ -501,7 +501,7 @@ module.exports = class MessageCreate extends Event {
                   .setColor(color.danger)
                   .setTitle("Missing Arguments")
                   .setDescription(
-                    `Please provide the required arguments for the \`${command.name}\` command.`,
+                    `Please provide the required arguments for the \`${command.name}\` command.`
                   )
                   .addFields([
                     {
@@ -534,7 +534,7 @@ module.exports = class MessageCreate extends Event {
                 timestamps.set(message.author.id, now);
                 setTimeout(
                   () => timestamps.delete(message.author.id),
-                  cooldownAmount,
+                  cooldownAmount
                 );
               } else {
                 const expirationTime =
@@ -548,7 +548,7 @@ module.exports = class MessageCreate extends Event {
                       Math.round(Date.now() / 1000) + timeLeft
                     }:R> more second(s) before reusing the **${cmd}** command.`,
                     color,
-                    timeLeft * 1000,
+                    timeLeft * 1000
                   );
                   // return message.reply({
                   //   content: `Please wait <t:${Math.round(Date.now() / 1000) + timeLeft}:R> more second(s) before reusing the **${cmd}** command.`,
@@ -557,7 +557,7 @@ module.exports = class MessageCreate extends Event {
                 timestamps.set(message.author.id, now);
                 setTimeout(
                   () => timestamps.delete(message.author.id),
-                  cooldownAmount,
+                  cooldownAmount
                 );
               }
 
@@ -573,7 +573,7 @@ module.exports = class MessageCreate extends Event {
                 user,
                 color,
                 emoji,
-                command,
+                command
               );
 
               const balanceCommands = [
@@ -603,13 +603,13 @@ module.exports = class MessageCreate extends Event {
                 let logChannelId;
                 if (
                   ["admin", "staff", "developer", "guild"].includes(
-                    command.category.toLowerCase(),
+                    command.category.toLowerCase()
                   )
                 ) {
                   logChannelId = this.client.config.logChannelId[9];
                 } else if (
                   ["animals", "building"].includes(
-                    command.category.toLowerCase(),
+                    command.category.toLowerCase()
                   )
                 ) {
                   logChannelId = this.client.config.logChannelId[8];
@@ -644,8 +644,8 @@ module.exports = class MessageCreate extends Event {
                     .setColor(color.success)
                     .setTitle(
                       `Command - ${this.client.utils.formatCapitalize(
-                        command.name,
-                      )}`,
+                        command.name
+                      )}`
                     )
                     .setThumbnail(message.guild.iconURL({ extension: "jpeg" }))
                     .addFields([
@@ -680,14 +680,14 @@ module.exports = class MessageCreate extends Event {
                   ctx.args,
                   color,
                   emoji,
-                  language,
+                  language
                 );
               } catch (error) {
                 console.error("Error executing command:", error);
                 BotLog.send(
                   this.client,
                   `An error occurred: \`${error.message}\``,
-                  "error",
+                  "error"
                 );
                 message.reply({
                   content: `An error occurred: \`${error.message}\``,

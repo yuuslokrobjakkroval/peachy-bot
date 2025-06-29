@@ -57,6 +57,7 @@ module.exports = {
   guildId: process.env.GUILD_ID,
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
+  geminiApiKey: process.env.GEMINI_API_KEY,
   channel,
   logChannelId,
   owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(",") : [],

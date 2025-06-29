@@ -18,6 +18,7 @@ const globalConfig = require("./Config");
 const gif = require("./Gif");
 const globalEmoji = require("./Emoji");
 const { getLevelingMessage } = require("./Abilities");
+const { default: axios } = require("axios");
 
 module.exports = class Utils {
   // Standardized updateUserWithRetry function
@@ -2102,5 +2103,51 @@ module.exports = class Utils {
       );
     }
     return captcha;
+  }
+
+  static async generateAIResponse(messageContent, conversationHistory = []) {
+    const apiKey = globalConfig.geminiApiKey || process.env.GEMINI_API_KEY; // Fallback to .env if globalConfig is undefined
+    if (!apiKey) {
+      return "សួស្តី! ខ្ញុំជា Peachy ជាបុត Discord ដែលមានប្រយោជន៍។ ខ្ញុំផ្តល់ជូននូវមុខងារដូចជា Economy (រក coins និងទិញ roles ឬ items), Rank (បង្ហាញកម្រិតនៃការសកម្មភាព), Games (ហ្គេមអន្តរកម្ម), និងការគ្រប់គ្រងសហគមន៍។ តើខ្ញុំអាចជួយអ្នកអ្វីខ្លះ?"; // Fallback
+    }
+
+    try {
+      // System prompt as a user message
+      const systemPrompt = {
+        role: "user",
+        content:
+          "អ្នកគឺជា Peachy ជាបុត Discord ដែលមានប្រយោជន៍ ឆ្លើយតបជាភាសាខ្មែរតែប៉ុណ្ណោះ។ អ្នកមានមុខងារដូចជា Economy (អនុញ្ញាតឱ្យអ្នកប្រើរក coins និងទិញ roles ឬ items), Rank (បង្ហាញកម្រិតនៃការសកម្មភាព), Games (ហ្គេមអន្តរកម្ម), និងការគ្រប់គ្រងសហគមន៍។ ឆ្លើយតបដោយផ្អែកលើបរិបទនៃការសន្ទនា។",
+      };
+
+      // Combine system prompt, conversation history, and current message
+      const messages = [
+        systemPrompt,
+        ...conversationHistory,
+        { role: "user", content: messageContent },
+      ];
+
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          contents: messages.map((msg) => ({
+            role: msg.role, // 'user' or 'model'
+            parts: [{ text: msg.content }],
+          })),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return (
+        response.data.candidates[0].content.parts[0].text ||
+        "សូមអភ័យទោស មិនអាចបង្កើតការឆ្លើយតបបានទេ។"
+      );
+    } catch (error) {
+      console.error("Gemini API error:", error.response?.data || error.message);
+      throw error;
+    }
   }
 };
