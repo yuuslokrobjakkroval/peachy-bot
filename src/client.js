@@ -201,7 +201,9 @@ client.on("messageCreate", async (message) => {
         );
     }
   } else {
-    if (!message.guild) return;
+    if (message.attachments.size > 0 && !message.content.trim()) {
+      return;
+    }
 
     if (
       message.content.startsWith(globalConfig.prefix) ||
@@ -261,6 +263,7 @@ client.on("messageCreate", async (message) => {
         }
       }
     }
+
     await client.abilities.getAutoResponse(client, message);
   }
 });
