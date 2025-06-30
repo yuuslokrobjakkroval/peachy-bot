@@ -201,7 +201,7 @@ client.on("messageCreate", async (message) => {
         );
     }
   } else {
-    if (message.attachments.size > 0 && !message.content.trim()) {
+    if (message.attachments.size > 0 || !message.content.trim()) {
       return;
     }
 
