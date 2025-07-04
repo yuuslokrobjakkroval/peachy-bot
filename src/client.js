@@ -79,6 +79,7 @@ client.once("ready", async () => {
   client.utils.cacheItems();
   client.logger.info("Item cache initialized!");
 
+  // cron.schedule("0 17 * * 6", client.utils.weeklyReset);
   cron.schedule(
     "01 22 * * *",
     () => {

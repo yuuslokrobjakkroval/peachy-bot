@@ -16,6 +16,12 @@ const SoldPetSchema = new Schema({
   soldAt: { type: Date, default: Date.now }, // Timestamp of when the pet was sold
 });
 
+const SponsorTransactionSchema = new Schema({
+  amount: { type: Number, required: true },
+  recipientId: { type: String, required: true },
+  timestamp: { type: Date, default: Date.now },
+});
+
 // InventoryItemSchema
 const InventoryItemSchema = new Schema({
   id: { type: String, required: true },
@@ -193,6 +199,9 @@ const userSchema = new Schema(
       coinflip: { type: Number, default: 0 },
       klaklouk: { type: Number, default: 0 },
     },
+    sponsorRank: { type: Number, default: 0 }, // Added: 1-10 for top sponsors, 0 otherwise
+    sponsorTransactions: { type: [SponsorTransactionSchema], default: [] }, // Added: Tracks sponsor coin transfers
+    lastSponsorReset: { type: Date, default: Date.now }, // Added: Tracks last sponsor reset
     validation: {
       isMultiTransfer: { type: Boolean, default: false },
       isKlaKlouk: { type: Boolean, default: false },

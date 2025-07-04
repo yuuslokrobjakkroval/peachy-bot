@@ -169,7 +169,8 @@
       "slots": "TOP SLOTS",
       "blackjack": "TOP BLACKJACKS",
       "coinflip": "TOP COINFLIP",
-      "klaklouk": "TOP KLAKLOUK"
+      "klaklouk": "TOP KLAKLOUK",
+      "sponsor": "TOP SPONSOR"
     },
     "weeklyMessages": {
       "success": "You have claimed your weekly reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp}** xp\n%{bonusMessage}",
