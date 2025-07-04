@@ -601,7 +601,7 @@ const ct002 = {
     blue: 0x4cc9fe,
     pink: 0xe3a1ad,
     warning: 0xffa500,
-    main: 0xffedf3,
+    main: 0xf582ae,
     none: 0x2b2d31,
   },
 };
