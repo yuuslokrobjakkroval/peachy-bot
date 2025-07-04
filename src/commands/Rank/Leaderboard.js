@@ -33,6 +33,7 @@ module.exports = class Ranking extends Command {
             { name: "Slots", value: "slots" },
             { name: "Blackjack", value: "blackjack" },
             { name: "Coinflip", value: "coinflip" },
+            { name: "Sponsor", value: "sponsor" },
           ],
         },
       ],

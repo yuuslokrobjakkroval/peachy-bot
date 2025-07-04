@@ -169,7 +169,8 @@
       "slots": "កំពូល SLOTS",
       "blackjack": "កំពូល BLACKJACKS",
       "coinflip": "កំពូល COINFLIP",
-      "klaklouk": "កំពូល KLAKLOUK"
+      "klaklouk": "កំពូល KLAKLOUK",
+      "sponsor": "កំពូល SPONSOR"
     },
     "weeklyMessages": {
       "success": "អ្នកបានទទួលរង្វាន់ប្រចាំសប្តាហ៍របស់អ្នកចំនួន %{coinEmote} **+%{coin}** កាក់ និង %{expEmote} **+%{exp}** xp\n%{bonusMessage}",

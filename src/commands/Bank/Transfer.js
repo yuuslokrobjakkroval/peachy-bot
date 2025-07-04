@@ -40,7 +40,7 @@ module.exports = class Transfer extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const transferMessages = language.locales.get(language.defaultLocale)
       ?.bankMessages?.transferMessages;
@@ -58,16 +58,16 @@ module.exports = class Transfer extends Command {
         client,
         ctx,
         transferMessages.selfTransfer,
-        color,
+        color
       );
     }
 
-    if (targetUser && targetUser.user.bot) {
+    if (targetUser && targetUser.user.bot && targetUser.id !== client.user.id) {
       return await client.utils.sendErrorMessage(
         client,
         ctx,
         generalMessages.botTransfer,
-        color,
+        color
       );
     }
 
@@ -94,7 +94,7 @@ module.exports = class Transfer extends Command {
         client,
         ctx,
         `You have already started the ${activeCommand} event. Please finish it before using this command.`,
-        color,
+        color
       );
     }
 
@@ -103,7 +103,7 @@ module.exports = class Transfer extends Command {
         client,
         ctx,
         generalMessages.zeroBalance,
-        color,
+        color
       );
     }
 
@@ -112,7 +112,7 @@ module.exports = class Transfer extends Command {
         client,
         ctx,
         transferMessages.balanceNotExist,
-        color,
+        color
       );
     }
 
@@ -124,7 +124,7 @@ module.exports = class Transfer extends Command {
       ctx.isInteraction
         ? ctx.interaction.options.getString("amount")
         : args[1] || 1,
-      transferMessages.invalidAmount,
+      transferMessages.invalidAmount
     );
     if (typeof amount === "object") return;
 
@@ -133,7 +133,7 @@ module.exports = class Transfer extends Command {
         client,
         ctx,
         transferMessages.insufficientFunds,
-        color,
+        color
       );
     }
 
@@ -142,17 +142,17 @@ module.exports = class Transfer extends Command {
       "confirm",
       emoji.tick,
       "Confirm",
-      3,
+      3
     );
     const cancelButton = client.utils.fullOptionButton(
       "cancel",
       emoji.deny,
       "Cancel",
-      4,
+      4
     );
     const allButtons = client.utils.createButtonRow(
       confirmButton,
-      cancelButton,
+      cancelButton
     );
 
     // Embed for confirmation
@@ -167,14 +167,14 @@ module.exports = class Transfer extends Command {
           transferMessages.confirm
             .replace("%{amount}", client.utils.formatNumber(amount))
             .replace("%{emoji}", emoji.coin)
-            .replace("%{user}", targetUser.displayName),
+            .replace("%{user}", targetUser.displayName)
       )
       .setImage(globalGif.banner.transferPending)
       .setFooter({
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName,
+            ctx.author.displayName
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       });
@@ -187,7 +187,7 @@ module.exports = class Transfer extends Command {
     user.balance.coin -= Number.parseInt(amount);
     await Users.updateOne(
       { userId: ctx.author.id },
-      { "balance.coin": user.balance.coin },
+      { "balance.coin": user.balance.coin }
     ).exec();
 
     // Create interaction filter and collector
@@ -210,8 +210,18 @@ module.exports = class Transfer extends Command {
           target.balance.coin += Number.parseInt(amount);
           await Users.updateOne(
             { userId: targetUser.id },
-            { "balance.coin": target.balance.coin },
+            { "balance.coin": target.balance.coin }
           ).exec();
+
+          if (targetUser.id === client.user.id) {
+            console.log(targetUser.id === botAccount.accountId);
+
+            user.balance.sponsor += Number.parseInt(amount);
+            await Users.updateOne(
+              { userId: ctx.author.id },
+              { "balance.sponsor": user.balance.sponsor }
+            ).exec();
+          }
 
           const confirmationEmbed = client
             .embed()
@@ -224,13 +234,13 @@ module.exports = class Transfer extends Command {
                 transferMessages.success
                   .replace("%{amount}", client.utils.formatNumber(amount))
                   .replace("%{emoji}", emoji.coin)
-                  .replace("%{user}", targetUser.displayName),
+                  .replace("%{user}", targetUser.displayName)
             )
             .setFooter({
               text:
                 generalMessages.requestedBy.replace(
                   "%{username}",
-                  ctx.author.displayName,
+                  ctx.author.displayName
                 ) || `Requested by ${ctx.author.displayName}`,
               iconURL: ctx.author.displayAvatarURL(),
             });
@@ -243,7 +253,7 @@ module.exports = class Transfer extends Command {
               .embed()
               .setColor(color.main)
               .setDescription(
-                `${targetUser} wants to say thanks to ${ctx.author}.`,
+                `${targetUser} wants to say thanks to ${ctx.author}.`
               )
               .setImage(globalGif.thanks);
 
@@ -257,7 +267,7 @@ module.exports = class Transfer extends Command {
           user.balance.coin += Number.parseInt(amount);
           await Users.updateOne(
             { userId: ctx.author.id },
-            { "balance.coin": user.balance.coin },
+            { "balance.coin": user.balance.coin }
           ).exec();
 
           const cancelEmbed = client
@@ -268,13 +278,13 @@ module.exports = class Transfer extends Command {
                 .replace("%{mainLeft}", emoji.mainLeft)
                 .replace("%{title}", "TRANSACTION")
                 .replace("%{mainRight}", emoji.mainRight) +
-                transferMessages.cancel,
+                transferMessages.cancel
             )
             .setFooter({
               text:
                 generalMessages.requestedBy.replace(
                   "%{username}",
-                  ctx.author.displayName,
+                  ctx.author.displayName
                 ) || `Requested by ${ctx.author.displayName}`,
               iconURL: ctx.author.displayAvatarURL(),
             });
@@ -289,7 +299,7 @@ module.exports = class Transfer extends Command {
         user.balance.coin += Number.parseInt(amount);
         await Users.updateOne(
           { userId: ctx.author.id },
-          { "balance.coin": user.balance.coin },
+          { "balance.coin": user.balance.coin }
         ).exec();
 
         const timeoutEmbed = client

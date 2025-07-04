@@ -932,6 +932,21 @@ module.exports = class Utils {
 
   static async userRanking(client, ctx, color, type) {
     switch (type) {
+      case "sponsor":
+        return await Users.aggregate([
+          {
+            $match: {
+              "balance.sponsor": { $gt: 0 },
+            },
+          },
+          {
+            $project: {
+              total: "$balance.sponsor",
+              username: "$username",
+            },
+          },
+          { $sort: { total: -1 } },
+        ]).exec();
       case "slots":
       case "slot":
         return await Users.aggregate([
@@ -1069,6 +1084,8 @@ module.exports = class Utils {
       case "klaklouk":
       case "kk":
         return rankingMessages.klaklouk;
+      case "sponsor":
+        return rankingMessages.sponsor;
       default:
         return rankingMessages.top;
     }
