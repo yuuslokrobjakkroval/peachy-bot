@@ -591,6 +591,21 @@ const st2025 = {
   },
 };
 
+// FOR NHA SPONSOR ( ct002 )
+const ct002 = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xffedf3,
+    none: 0x2b2d31,
+  },
+};
+
 module.exports = {
   normal,
   peach,
@@ -644,4 +659,8 @@ module.exports = {
   st2601,
   st2002,
   st2025,
+
+  // ---------- //
+  // SPONSOR THEME
+  ct002,
 };
