@@ -228,6 +228,9 @@ module.exports = {
     yuyuzu: "<:YUYUZUMAIN:1353730318716113026>",
     yara: "<:YRX10:1374396262190678147>",
     catana: "<:CATANAMAIN:1384795614306500629>",
+
+    // SPONSOR
+    paoinh: "<:PAOMAIN:1390635988203864104>",
   },
 
   // EXCHANGE

@@ -49,6 +49,8 @@ const themeEmojis = {
   st2601: require("../theme/Yuyuzu/emojis"),
   st2002: require("../theme/Yara/emojis"),
   st2025: require("../theme/CatAna/emojis"),
+  //
+  ct002: require("../theme/PaoInh/emojis"),
 };
 
 const Logger = require("./Logger");

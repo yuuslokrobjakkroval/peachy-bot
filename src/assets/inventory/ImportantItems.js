@@ -209,4 +209,19 @@ module.exports = [
     available: ["use"],
     price: { buy: 1e10, sell: 15e6 },
   },
+  {
+    id: "ct002",
+    name: "Pao Inh",
+    description: "Sponsor theme for nha special edition",
+    type: "special theme",
+    able: {
+      use: true,
+      gift: true,
+      multiple: false,
+    },
+    quantity: 1,
+    emoji: emoji.specialTheme.paoinh,
+    available: ["use"],
+    price: { buy: 1e10, sell: 15e6 },
+  },
 ];
