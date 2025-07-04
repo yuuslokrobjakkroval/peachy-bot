@@ -214,8 +214,6 @@ module.exports = class Transfer extends Command {
           ).exec();
 
           if (targetUser.id === client.user.id) {
-            console.log(targetUser.id === botAccount.accountId);
-
             user.balance.sponsor += Number.parseInt(amount);
             await Users.updateOne(
               { userId: ctx.author.id },
