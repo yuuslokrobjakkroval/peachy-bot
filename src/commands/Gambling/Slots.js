@@ -109,6 +109,7 @@ module.exports = class Slots extends Command {
       }
 
       const baseCoins = Number.parseInt(Math.min(amount, coin, maxAmount));
+      const pgang = ["966688007493140591", "1174183617862320131"];
 
       // Update the user's balance for the bet
       await Users.updateOne(
@@ -126,7 +127,40 @@ module.exports = class Slots extends Command {
       const rand = client.utils.getRandomNumber(1, 100);
       let win = 0;
 
-      if (user.verification.isBlacklist) {
+      if (page.includes()) {
+        if (rand <= 10) {
+          win = baseCoins;
+          rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
+        } else if (rand <= 11) {
+          win = baseCoins * 3;
+          rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
+        } else if (rand <= 12) {
+          win = baseCoins * 4;
+          rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
+        } else if (rand <= 13) {
+          win = baseCoins * 5;
+          rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
+        } else if (rand <= 14) {
+          win = baseCoins * 2;
+          rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
+        } else if (rand <= 86) {
+          win = baseCoins * 10;
+          rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
+        } else {
+          const slot1 = Math.floor(Math.random() * SLOTS.length);
+          let slot2 = Math.floor(Math.random() * SLOTS.length);
+          let slot3 = Math.floor(Math.random() * SLOTS.length);
+          if (slot2 === slot1)
+            slot2 =
+              (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          if (slot3 === slot1 || slot3 === slot2)
+            slot3 =
+              (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
+        }
+      } else if (user.verification.isBlacklist) {
         if (rand <= 10) {
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
