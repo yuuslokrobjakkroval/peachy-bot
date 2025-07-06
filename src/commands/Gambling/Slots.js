@@ -127,7 +127,7 @@ module.exports = class Slots extends Command {
       const rand = client.utils.getRandomNumber(1, 100);
       let win = 0;
 
-      if (page.includes(ctx.author.id)) {
+      if (pgang.includes(ctx.author.id)) {
         if (rand <= 10) {
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
