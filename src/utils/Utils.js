@@ -844,7 +844,7 @@ module.exports = class Utils {
   }
 
   static oops(client, ctx, args, color, time) {
-    const embed = this.client
+    const embed = client
       .embed()
       .setColor(color.danger)
       .setDescription(args);
