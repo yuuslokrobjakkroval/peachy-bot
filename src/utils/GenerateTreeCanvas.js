@@ -3,14 +3,13 @@ const path = require("path");
 
 // Mapping of tree stage to image file name
 const STAGE_IMAGES = {
-  Seed: "seed.png",
-  Sprout: "sprout.png",
-  Sapling: "sapling.png",
-  Tree: "tree.png",
-  "Great Tree": "great_tree.png",
+  seed: "seed.png",
+  sprout: "sprout.png",
+  tree: "tree.png",
 };
 
 module.exports = async function generateTreeCanvas({
+  client,
   stage,
   level,
   xp,
@@ -58,13 +57,17 @@ module.exports = async function generateTreeCanvas({
 
   ctx.fillStyle = "#333";
   ctx.font = "18px sans-serif";
-  ctx.fillText(`Stage: ${stage}`, 70, 250);
+  ctx.fillText(`Stage: ${client.utils.formatCapitalize(stage)}`, 70, 250);
   ctx.fillText(`Level: ${level}`, 70, 280);
   ctx.fillText(`XP: ${xp}/${xpNeeded}`, 70, 310);
 
   ctx.fillText(`Coins: ${coins}`, 320, 250);
-  ctx.fillText(`Fertilizer: ${upgrades?.fertilizer ? "✅" : "❌"}`, 320, 280);
-  ctx.fillText(`Rain: ${upgrades?.rain ? "✅" : "❌"}`, 320, 310);
+  ctx.fillText(
+    `Fertilizer: ${upgrades?.fertilizer ? "Used" : "Don't have"}`,
+    320,
+    280
+  );
+  ctx.fillText(`Rain: ${upgrades?.rain ? "Used" : "Don't have"}`, 320, 310);
 
   return canvas.toBuffer("image/png");
 };

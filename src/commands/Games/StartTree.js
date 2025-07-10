@@ -1,5 +1,7 @@
 const { Command } = require("../../structures");
 const Tree = require("../../schemas/tree");
+const globalImage = require("../../utils/Gif");
+const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class StartTree extends Command {
   constructor(client) {
@@ -34,7 +36,7 @@ module.exports = class StartTree extends Command {
               .embed()
               .setColor(color.warning)
               .setDescription(
-                "🌱 You've already planted a tree! Use `/tree` to view it."
+                "🌱 You've already planted a tree!\nUse `ptree` or `/tree` to view it."
               ),
           ],
         });
@@ -44,8 +46,8 @@ module.exports = class StartTree extends Command {
         userId: ctx.author.id,
         tree: {
           xp: 0,
-          level: 0,
-          stage: "Seed",
+          level: 1,
+          stage: "seed",
           lastWatered: 0,
         },
         coins: 0,
@@ -60,8 +62,10 @@ module.exports = class StartTree extends Command {
           client
             .embed()
             .setColor(color.success)
+            .setThumbnail(client.utils.emojiToImage(globalEmoji.growTree.seed))
+            .setImage(globalImage.growTree)
             .setDescription(
-              "🌱 You've planted a tree! Use `/tree` to view and water it."
+              "🌱 You've planted a tree!\nUse `ptree` or `/tree` to view and water it."
             ),
         ],
       });

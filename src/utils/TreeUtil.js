@@ -60,6 +60,10 @@ function buildWaterButton(lastWatered, level, canWater) {
   return row;
 }
 
+function getTreeSellValue(tree) {
+  return tree.level * 25 + Math.floor(tree.xp / 2);
+}
+
 // Build embed (header only)
 function buildTreeEmbed(client, ctx, color, language) {
   return client
@@ -101,4 +105,5 @@ module.exports = {
   buildWaterButton,
   buildTreeEmbed,
   sendNotStartedEmbed,
+  getTreeSellValue,
 };

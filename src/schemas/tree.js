@@ -8,8 +8,8 @@ const TreeSchema = new Schema(
       level: { type: Number, default: 0 },
       stage: {
         type: String,
-        enum: ["Seed", "Sprout", "Sapling", "Tree", "Great Tree"],
-        default: "Seed",
+        enum: ["seed", "sprout", "sapling", "tree"],
+        default: "seed",
       },
       lastWatered: { type: Date, default: 0 },
     },

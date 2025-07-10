@@ -5,6 +5,7 @@ const {
   checkWaterCooldown,
   getWaterCooldown,
 } = require("../../utils/TreeUtil");
+const { growTree } = require("../../utils/Emoji");
 
 module.exports = class WaterTree extends Command {
   constructor(client) {
@@ -39,7 +40,7 @@ module.exports = class WaterTree extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                "🌱 You haven’t planted a tree yet. Use `/starttree`."
+                "🌱 You haven’t planted a tree yet.\nUse `pstarttree` or `/starttree`."
               ),
           ],
         });
@@ -51,7 +52,6 @@ module.exports = class WaterTree extends Command {
       if (!canWater) {
         const cooldown = getWaterCooldown(level);
         const next = new Date(treeUser.tree.lastWatered).getTime() + cooldown;
-        const remaining = Math.ceil((next - Date.now()) / 1000);
         return ctx.sendMessage({
           embeds: [
             client
@@ -66,7 +66,7 @@ module.exports = class WaterTree extends Command {
         });
       }
 
-      // XP logic
+      // Gain XP
       let gainedXP = 10;
       if (treeUser.upgrades.fertilizer) gainedXP += 5;
       if (treeUser.upgrades.rain) gainedXP += 10;
@@ -80,18 +80,15 @@ module.exports = class WaterTree extends Command {
         currentLevel += 1;
       }
 
-      // Update tree stage
+      // Determine new stage
       const newStage =
-        currentLevel >= 10
-          ? "Great Tree"
-          : currentLevel >= 7
-          ? "Tree"
-          : currentLevel >= 4
-          ? "Sapling"
-          : currentLevel >= 1
-          ? "Sprout"
-          : "Seed";
+        currentLevel >= 7 ? "tree" : currentLevel >= 4 ? "sprout" : "seed";
 
+      // Coins
+      const gainedCoins = 500 + Math.floor(Math.random() * 6); // 500–1000 coins
+      const totalCoins = treeUser.coins + gainedCoins;
+
+      // Save updates
       await Tree.findOneAndUpdate(
         { userId: ctx.author.id },
         {
@@ -100,6 +97,7 @@ module.exports = class WaterTree extends Command {
             "tree.level": currentLevel,
             "tree.stage": newStage,
             "tree.lastWatered": new Date(),
+            coins: totalCoins,
           },
         },
         { new: true }
@@ -110,10 +108,15 @@ module.exports = class WaterTree extends Command {
           client
             .embed()
             .setColor(color.success)
+            .setTitle("💧 Tree Watered!")
             .setDescription(
-              `💧 You watered your tree and gained **${gainedXP} XP**!\nIt's now level **${currentLevel}** (${xp}/${getXpNeeded(
-                currentLevel
-              )} XP).`
+              `You've gained:\n` +
+                `• **+${gainedXP} XP**\n` +
+                `• **+${gainedCoins} ${growTree.coin}**\n\n` +
+                `🌱 Your tree is now **level ${currentLevel}** (${xp}/${getXpNeeded(
+                  currentLevel
+                )} XP)\n` +
+                `Stage: **${client.utils.formatCapitalize(newStage)}**`
             ),
         ],
       });

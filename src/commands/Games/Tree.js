@@ -46,6 +46,7 @@ module.exports = class ViewTree extends Command {
 
       // Generate the tree progress canvas image
       const buffer = await generateTreeCanvas({
+        client,
         stage: userTree.tree.stage,
         level,
         xp: userTree.tree.xp,

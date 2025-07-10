@@ -89,6 +89,13 @@ module.exports = {
     knife: "<:KNIFE:1350682649785532436>",
   },
 
+  growTree: {
+    seed: "<:seed:1392838529645805638>",
+    sprout: "<:sprout:1392843133930176512>",
+    tree: "<:tree:1392843254806085664>",
+    coin: "<:TREECOIN:1392838502764253251>",
+  },
+
   // VERIFY
   arrow: "<a:ARROW:1350663329018023946>",
   hiring: "<:HIRING:1350682485104574474>",
