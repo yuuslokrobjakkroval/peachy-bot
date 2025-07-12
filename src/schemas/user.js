@@ -57,15 +57,15 @@ const ProfileSchema = new Schema({
   bio: { type: String, default: null, maxlength: 300 },
   birthday: { type: String, default: null },
   birthdayAcknowledged: { type: Boolean, default: false },
-  xp: { type: Number, default: 0 }, // Text-based XP
-  level: { type: Number, default: 1 }, // Text-based level
-  levelXp: { type: Number, default: 100 }, // XP required for next text level
-  voiceXP: { type: Number, default: 0 }, // Voice-based XP
-  voiceLevel: { type: Number, default: 1 }, // Voice-based level
-  voiceLevelXp: { type: Number, default: 100 }, // XP required for next voice level
-  lastXpGain: { type: Number, default: 0 }, // Last text XP gained
-  lastVoiceXpGain: { type: Number, default: 0 }, // Last voice XP gained
-  lastVoiceActivity: { type: Date }, // Track last voice XP award
+  xp: { type: Number, default: 0 },
+  level: { type: Number, default: 1 },
+  levelXp: { type: Number, default: 100 },
+  lastXpGain: { type: Number, default: 0 },
+  voiceXP: { type: Number, default: 0 },
+  voiceLevel: { type: Number, default: 1 },
+  voiceLevelXp: { type: Number, default: 100 },
+  lastVoiceXpGain: { type: Number, default: 0 },
+  lastVoiceActivity: { type: Date },
   visibility: {
     status: { type: Boolean, default: false },
     message: { type: String, default: null },

@@ -386,6 +386,89 @@ module.exports = class Utils {
     }
   }
 
+  static async getVoiceCheckingUser(client, member, user, color, emoji) {
+    if (!user) return;
+
+    const now = Date.now();
+
+    const guildId = member.guild.id;
+
+    const isMainGuild = guildId === globalConfig.guildId;
+    const xpGained = isMainGuild
+      ? client.utils.getRandomNumber(8, 10)
+      : client.utils.getRandomNumber(7, 8);
+
+    user.profile.voiceXP += xpGained;
+    user.profile.lastVoiceXpGain = now;
+    user.profile.lastVoiceActivity = new Date();
+
+    const nextLevelXp = client.utils.calculateNextLevelXpBonus(
+      user.profile.voiceLevel
+    );
+
+    if (user.profile.voiceXP >= nextLevelXp) {
+      user.profile.voiceXP -= nextLevelXp;
+      user.profile.voiceLevel += 1;
+      user.profile.voiceLevelXp = client.utils.calculateNextLevelXpBonus(
+        user.profile.voiceLevel
+      );
+      const celebrationCoin = user.profile.voiceLevel * 15000;
+      user.balance.coin += celebrationCoin;
+
+      // Generate level up image
+      const levelUp = new canvafy.LevelUp()
+        .setAvatar(member.user.displayAvatarURL({ format: "png", size: 512 }))
+        .setUsername(`${member.user.username}`, "#000000")
+        .setBorder("#8BD3DD")
+        .setBackground("image", gif.backgroundLevel)
+        .setLevels(user.profile.voiceLevel - 1, user.profile.voiceLevel)
+        .build();
+
+      levelUp
+        .then((levelUpImage) => {
+          const levelImage = {
+            attachment: levelUpImage,
+            name: "voice-level-up.png",
+          };
+
+          const embed = client
+            .embed()
+            .setColor(color.main)
+            .setTitle(`${member.displayName} - VOICE LEVEL UP !`)
+            .setDescription(
+              `You’ve leveled up to voice level **${user.profile.voiceLevel}**!\n` +
+                `You received ${client.utils.formatNumber(celebrationCoin)} ${
+                  emoji.coin
+                } 🎙️`
+            )
+            .setThumbnail(
+              member.user.displayAvatarURL({ format: "png", size: 512 })
+            )
+            .setImage("attachment://voice-level-up.png");
+
+          const sendChannel = member.guild.channels.cache.get(
+            member.voice.channelId
+          );
+          if (sendChannel) {
+            sendChannel
+              .send({ embeds: [embed], files: [levelImage] })
+              .catch(console.error);
+          } else {
+            console.warn(
+              `[Voice XP] No valid text channel to send level-up message in guild ${member.guild.name}`
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("Error creating voice level-up image:", error);
+        });
+    }
+
+    await user.save().catch((err) => {
+      console.error("Error saving user data (voice xp):", err);
+    });
+  }
+
   static async getValidationUser(client, message, user, color, emoji, command) {
     let updateField;
     switch (command.name) {
@@ -844,10 +927,7 @@ module.exports = class Utils {
   }
 
   static oops(client, ctx, args, color, time) {
-    const embed = client
-      .embed()
-      .setColor(color.danger)
-      .setDescription(args);
+    const embed = client.embed().setColor(color.danger).setDescription(args);
     return ctx
       .sendMessage({ embeds: [embed] })
       .then((msg) => {
