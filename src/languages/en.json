@@ -1,6 +1,6 @@
 {
   "generalMessages": {
-    "title": "# %{mainLeft} %{title} %{mainRight}\n",
+    "title": "%{mainLeft} **%{title}** %{mainRight}\n\n",
     "search": "Searching %{loading}",
     "permissionsClientError": "I don't have enough permissions to execute this command.",
     "permissionsUserError": "You don't have enough permissions to use this command.",
@@ -447,10 +447,9 @@
       "title": "STATISTICS",
       "description": "Here are some information:",
       "fields": {
-        "servers": "SERVERS {arrow} {guildCount}",
-        "users": "USERS {arrow} {userCount}",
-        "channels": "CHANNELS {arrow} {channelCount}",
-        "uptime": "UPTIME {arrow} **{days}** day **{hours}** hour **{minutes}** minutes"
+        "servers": "Servers {arrow} {guildCount}",
+        "users": "users {arrow} {userCount}",
+        "uptime": "Uptime {arrow} **{days}** day **{hours}** hour **{minutes}** minutes"
       },
       "footer": "For more information, click the buttons below."
     }

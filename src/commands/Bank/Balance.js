@@ -120,11 +120,8 @@ module.exports = class Balance extends Command {
     balanceMessages
   ) {
     const { coin = 0, bank = 0, credit = 0 } = userData.balance || {};
-    const titleTemplate =
-      generalMessages?.title || "# %{mainLeft} %{title} %{mainRight}\n";
-    const descriptionTemplate =
-      balanceMessages?.description ||
-      "%{coinEmote} : **%{coin}** coins\n%{bankEmote} : **%{bank}** coins\n%{creditEmote} : **%{credit}** credits";
+    const titleTemplate = generalMessages?.title;
+    const descriptionTemplate = balanceMessages?.description;
 
     return client
       .embed()

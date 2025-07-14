@@ -418,8 +418,9 @@ module.exports = class Ability {
       const { autoresponse } = responseMessage;
       if (!autoresponse || autoresponse.length === 0) return;
 
-      const matchingResponses = autoresponse.filter((response) =>
-        response.trigger.toLowerCase().includes(message.content.toLowerCase())
+      const matchingResponses = autoresponse.filter(
+        (response) =>
+          response.trigger.toLowerCase() === message.content.toLowerCase()
       );
 
       if (!matchingResponses || matchingResponses.length === 0) return;

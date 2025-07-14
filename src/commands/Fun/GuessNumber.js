@@ -9,7 +9,7 @@ module.exports = class GuessNumber extends Command {
         examples: ["guessnumber"],
         usage: "guessnumber",
       },
-      category: "games",
+      category: "fun",
       aliases: ["gn"],
       cooldown: 10,
       args: false,

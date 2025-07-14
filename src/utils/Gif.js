@@ -58,4 +58,6 @@ module.exports = {
       gomaPew: "https://i.imgur.com/YUvhkE1.gif",
     },
   },
+
+  growTree: "https://i.imgur.com/PqPUQK6.png"
 };

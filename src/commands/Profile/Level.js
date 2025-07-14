@@ -131,7 +131,7 @@ module.exports = class Profile extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `# ${emoji.mainLeft} GENERATING LEVEL CARD ${emoji.mainRight}
+        `# ${emoji.mainLeft} LEVEL CARD ${emoji.mainRight}
     
 Creating a stunning premium level card just for you! ✨
 Please wait a moment while we craft your personalized stats display...`,

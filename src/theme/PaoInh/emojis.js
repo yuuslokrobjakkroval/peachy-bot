@@ -7,7 +7,7 @@ module.exports = {
   mainRight: "<:GOMAKILL:1342777776800792648>",
   help: {
     category: "📚",
-    actions: "<:PAOINHACTIONS:1390624902721044510>",
+    actions: "<:KYACTIONS:1350691168157040651>",
     animals: "<:EGG:1354825084598095952>",
     bank: "<:PAOPAOINHBANK:1390624963601629201>",
     economy: "<:PAOINHECONOMY:1390624907779641354>",
