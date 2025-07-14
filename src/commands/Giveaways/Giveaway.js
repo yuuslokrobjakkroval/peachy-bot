@@ -115,7 +115,19 @@ module.exports = class Giveaway extends Command {
       durationStr,
       winners,
     );
-    if (!validationResult.success) return;
+   if (!validationResult.success) {
+      const errorMessage = "⚠️ Invalid parameters provided. Please check your input and try again.";
+    
+      return ctx.isInteraction
+        ? await ctx.interaction.editReply({
+            content: errorMessage,
+            fetchReply: true,
+          })
+        : await ctx.editMessage({
+            content: errorMessage,
+            fetchReply: true,
+          });
+    }
 
     // Extract validated data
     const { duration, endTime, formattedDuration } = validationResult.data;
@@ -226,8 +238,19 @@ module.exports = class Giveaway extends Command {
       buttonRow,
     });
 
-    if (!messageResult.success) return;
-
+    if (!messageResult.success) {
+      const errorMessage = "❌ Failed to send the giveaway message. Please try again later.";
+    
+      return ctx.isInteraction
+        ? await ctx.interaction.editReply({
+            content: errorMessage,
+            fetchReply: true,
+          })
+        : await ctx.editMessage({
+            content: errorMessage,
+            fetchReply: true,
+          });
+    }
     // Save giveaway to database
     try {
       await GiveawaySchema.create({
