@@ -14,6 +14,7 @@ const {
 } = require("discord.js");
 // const JoinToCreateSchema = require('../../schemas/joinToCreate');
 const users = require("../../schemas/user");
+const Tree = require("../../schemas/tree");
 const GiveawaySchema = require("../../schemas/giveaway");
 const GiveawayShopItemSchema = require("../../schemas/giveawayShopItem");
 const userCaptcha = require("../../schemas/userCaptcha");
@@ -325,191 +326,6 @@ module.exports = class InteractionCreate extends Event {
           interaction instanceof ButtonInteraction &&
           interaction.type === InteractionType.MessageComponent
         ) {
-          // try {
-          //   if (interaction.isButton()) {
-          //     const config = await JoinToCreateSchema.findOne({ guildId: interaction.guild.id })
-          //
-          //     if (!config?.enabled) {
-          //       const embed = this.client.embed()
-          //           .setColor(color.danger)
-          //           .setDescription('The Join to create system is not enabled in this server.');
-          //       return interaction.reply({ embeds: [embed], flags: 64 })
-          //     }
-          //
-          //     const tempChannel = config.tempChannels.find(tc => tc.channelId === interaction.channelId);
-          //
-          //     if (!tempChannel) return;
-          //
-          //     if (tempChannel.ownerId !== interaction.user.id) {
-          //       const embed = this.client.embed()
-          //           .setColor(color.danger)
-          //           .setDescription('Only the Channel owner can use theses controls.');
-          //       return interaction.reply({ embeds: [embed], flags: 64 });
-          //     }
-          //
-          //     const channel = interaction.guild.channels.cache.get(tempChannel.channelId);
-          //     if (!channel) return;
-          //
-          //     switch (interaction.customId) {
-          //       case 'vc-lock': {
-          //         const isLocked = tempChannel.locked;
-          //         await channel.permissionOverwrites.edit(interaction.guild.id, {
-          //           Connect: isLocked ? null : false
-          //         });
-          //
-          //         await JoinToCreateSchema.findOneAndUpdate(
-          //             { guildId: interaction.guild.id, "tempChannels.channelId": channel.id },
-          //             { $set: {"tempChannels.$.locked": !isLocked } }
-          //         );
-          //         const embed = EmbedBuilder.from(interaction.message.embeds[0]).spliceFields(1, 1, { name: 'Status', value: !isLocked ? 'Locked' : 'Unlocked', inline: true });
-          //         await interaction.message.edit({ embeds: [embed] });
-          //
-          //         if (!interaction.replied && !interaction.deferred) {
-          //           const successEmbed = this.client.embed()
-          //               .setColor(color.success)
-          //               .setDescription(`Channel ${isLocked ? 'unlocked' : 'locked'} Successfully.`);
-          //           await interaction.reply({embeds: [successEmbed], flags: 64});
-          //         }
-          //         break;
-          //       }
-          //
-          //       case 'vc-hide': {
-          //         const isHidden = tempChannel.hidden;
-          //         await channel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: isHidden ? null : false });
-          //
-          //         await JoinToCreateSchema.findOneAndUpdate(
-          //             { guildId: interaction.guild.id, "tempChannels.channelId": channel.id },
-          //             { $set: {"tempChannels.$.hidden": !isHidden } }
-          //         );
-          //         const embed = EmbedBuilder.from(interaction.message.embeds[0]).spliceFields(2, 1, { name: 'Visibility', value: !isHidden ? 'Hidden' : 'Visible', inline: true });
-          //         await interaction.message.edit({ embeds: [embed] });
-          //
-          //         if (!interaction.replied && !interaction.deferred) {
-          //           const successEmbed = this.client.embed()
-          //               .setColor(color.success)
-          //               .setDescription(`Channel ${isHidden ? 'shown' : 'hidden'} Successfully.`);
-          //           await interaction.reply({embeds: [successEmbed], flags: 64});
-          //         }
-          //         break;
-          //       }
-          //
-          //       case 'vc-limit': {
-          //         const modal = new ModalBuilder()
-          //             .setCustomId('vc-limit-modal')
-          //             .setTitle('Set Voice Channel Limit');
-          //
-          //         const limitInput = new TextInputBuilder()
-          //             .setCustomId('limit')
-          //             .setLabel('Enter User Limit (0-99)')
-          //             .setStyle(TextInputStyle.Short)
-          //             .setRequired(true)
-          //             .setMinLength(1)
-          //             .setMaxLength(2)
-          //             .setPlaceholder('Enter a number (0 = No Limit)')
-          //             .setValue(channel.userLimit.toString())
-          //
-          //         const actionRow = this.client.utils.createButtonRow(limitInput);
-          //         modal.addComponents(actionRow)
-          //
-          //         await interaction.showModal(modal);
-          //         break;
-          //       }
-          //
-          //       case 'vc-kick': {
-          //         const members = channel.members.filter(member => member.id !== tempChannel.ownerId);
-          //         if (!members.size) {
-          //           const embed = this.client.embed()
-          //               .setColor(color.danger)
-          //               .setDescription('There are no members to kick from the channel!');
-          //           await interaction.reply({ embeds: [embed], flags: 64 });
-          //         }
-          //
-          //         const row = this.client.utils.createButtonRow(
-          //             new StringSelectMenuBuilder()
-          //                 .setCustomId('vc-kick-select')
-          //                 .setPlaceholder('Select a user to kick')
-          //                 .addOptions(
-          //                     members.map(member => ({
-          //                       label: member.displayName,
-          //                       description: `ID: ${member.id}`,
-          //                       value: member.id
-          //                     }))
-          //                 )
-          //         );
-          //         if (!interaction.replied && !interaction.deferred) {
-          //           const embed = this.client.embed()
-          //               .setColor(color.main)
-          //               .setDescription(`Select a user to kick`);
-          //           await interaction.reply({content: "", embeds: [embed], components: [row], flags: 64});
-          //         }
-          //         break;
-          //       }
-          //     }
-          //   }
-          //
-          //   if (interaction.isModalSubmit()) {
-          //     if (interaction.customId === 'vc-limit-modal') {
-          //       const config = await JoinToCreateSchema.findOne({ guildId: interaction.guild.id });
-          //       if (!config) return;
-          //
-          //       const tempChannel = config.tempChannels.find(tc => tc.channelId === interaction.channelId)
-          //       if (!tempChannel) return;
-          //
-          //       const channel = interaction.guild.channels.cache.get(tempChannel.channelId);
-          //       if (!channel) return;
-          //
-          //       const limit = parseInt(interaction.fields.getTextInputValue('limit'));
-          //       if (isNaN(limit) || limit < 0 || limit > 99) {
-          //         const embed = this.client.embed()
-          //             .setColor(color.danger)
-          //             .setDescription('Please provide a valid number between 0 and 99')
-          //         await interaction.reply({ embeds: [embed], flags: 64 });
-          //       }
-          //
-          //       await channel.setUserLimit(limit);
-          //       const message = await interaction.channel.messages.fetch(interaction.message.id);
-          //       const embed = EmbedBuilder.from(message.embeds[0]).spliceFields(3, 1, { name: 'User Limit', value: limit ? `${limit} Users` : 'No limit', inline: true });
-          //       await message.edit({ embeds: [embed] });
-          //       if (!interaction.replied && !interaction.deferred) {
-          //         const successEmbed = this.client.embed()
-          //             .setColor(color.success)
-          //             .setDescription(`Voice channel limit ${limit === 0 ? 'removed' : `set to ${limit}`}!`)
-          //         await interaction.reply({embeds: [successEmbed], flags: 64});
-          //       }
-          //     }
-          //   }
-          //
-          //   if (interaction.isStringSelectMenu()) {
-          //     if (interaction.customId === 'vc-kick-select') {
-          //       const config = await JoinToCreateSchema.findOne({ guildId: interaction.guild.id });
-          //       if (!config) return;
-          //
-          //       const tempChannel = config.tempChannels.find(tc => tc.channelId === interaction.channelId)
-          //       if (!tempChannel) return;
-          //
-          //       const channel = interaction.guild.channels.cache.get(tempChannel.channelId);
-          //       if (!channel) return;
-          //
-          //       const targetId = interaction.values[0];
-          //       const member = channel.members.get(targetId);
-          //
-          //       if (!member) {
-          //         const embed = this.client.embed()
-          //             .setColor(color.danger)
-          //             .setDescription('Selected member is no longer in the channel.');
-          //         return interaction.reply({ embeds: [embed], flags: 64 });
-          //       }
-          //       await member.voice.disconnect();
-          //       const embed = this.client.embed()
-          //           .setColor(color.success)
-          //           .setDescription(`Successfully kicked ${member.displayName} from the channel.`);
-          //       return interaction.reply({ embeds: [embed], flags: 64 });
-          //     }
-          //   }
-          // } catch (err) {
-          //   console.error(`Error handling command ${interaction.commandName}:`, err);
-          // }
-
           switch (interaction.customId) {
             case "giveaway-join": {
               const data = await GiveawaySchema.findOne({
@@ -924,6 +740,7 @@ module.exports = class InteractionCreate extends Event {
               await interaction.reply({ embeds: [embed], flags: 64 });
               break;
             }
+
             case "giveaway-join-req": {
               const giveaway = await client.utils.getGiveaway(interaction);
               if (!giveaway) return;
@@ -1024,6 +841,74 @@ module.exports = class InteractionCreate extends Event {
 
             default:
               break;
+          }
+        } else if (interaction.isModalSubmit()) {
+          const userId = interaction.user.id;
+
+          switch (true) {
+            case interaction.customId.startsWith("tree-name-modal-"): {
+              const treeName = interaction.fields.getTextInputValue("treeName");
+
+              const existing = await Tree.findOne({ userId });
+              if (existing) {
+                return interaction.reply({
+                  content: "You already have a tree!",
+                  ephemeral: true,
+                });
+              }
+
+              const newTree = await Tree.create({
+                userId,
+                tree: {
+                  name: treeName,
+                  height: 1,
+                  xp: 0,
+                  level: 0,
+                  lastWatered: 0,
+                  waterCount: 0,
+                },
+              });
+
+              return interaction.reply({
+                content: `🌱 You planted **${treeName}**! Use \`/tree\` again to see it.`,
+                ephemeral: true,
+              });
+            }
+
+            case interaction.customId.startsWith("rename-tree-modal-"): {
+              const newName = interaction.fields
+                .getTextInputValue("newTreeName")
+                .trim();
+
+              if (newName.length === 0) {
+                return interaction.reply({
+                  content: "Name cannot be empty!",
+                  ephemeral: true,
+                });
+              }
+
+              const userTree = await Tree.findOne({ userId });
+              if (!userTree) {
+                return interaction.reply({
+                  content: "You don't have a tree yet.",
+                  ephemeral: true,
+                });
+              }
+
+              userTree.tree.name = newName;
+              await userTree.save();
+
+              return interaction.reply({
+                content: `✅ Your tree has been renamed to **${newName}**!`,
+                ephemeral: true,
+              });
+            }
+
+            default:
+              return interaction.reply({
+                content: "Unknown modal interaction.",
+                ephemeral: true,
+              });
           }
         }
       });

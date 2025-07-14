@@ -4,19 +4,13 @@ const TreeSchema = new Schema(
   {
     userId: { type: String, required: true, unique: true },
     tree: {
+      name: { type: String, required: true },
+      height: { type: Number, default: 1 },
       xp: { type: Number, default: 0 },
       level: { type: Number, default: 0 },
-      stage: {
-        type: String,
-        enum: ["seed", "sprout", "sapling", "tree"],
-        default: "seed",
-      },
       lastWatered: { type: Date, default: 0 },
-    },
-    coins: { type: Number, default: 0 },
-    upgrades: {
-      fertilizer: { type: Boolean, default: false },
-      rain: { type: Boolean, default: false },
+      waterCount: { type: Number, default: 0 },
+      lastWateredBy: { type: String, default: null },
     },
   },
   { timestamps: true }

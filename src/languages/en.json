@@ -447,10 +447,9 @@
       "title": "STATISTICS",
       "description": "Here are some information:",
       "fields": {
-        "servers": "SERVERS {arrow} {guildCount}",
-        "users": "USERS {arrow} {userCount}",
-        "channels": "CHANNELS {arrow} {channelCount}",
-        "uptime": "UPTIME {arrow} **{days}** day **{hours}** hour **{minutes}** minutes"
+        "servers": "Servers {arrow} {guildCount}",
+        "users": "users {arrow} {userCount}",
+        "uptime": "Uptime {arrow} **{days}** day **{hours}** hour **{minutes}** minutes"
       },
       "footer": "For more information, click the buttons below."
     }

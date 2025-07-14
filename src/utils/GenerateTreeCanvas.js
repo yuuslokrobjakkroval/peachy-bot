@@ -1,73 +1,112 @@
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
-const path = require("path");
 
-// Mapping of tree stage to image file name
-const STAGE_IMAGES = {
-  seed: "seed.png",
-  sprout: "sprout.png",
-  tree: "tree.png",
-};
-
-module.exports = async function generateTreeCanvas({
-  client,
-  stage,
-  level,
-  xp,
-  xpNeeded,
-  coins,
-  upgrades,
-}) {
-  const width = 600;
-  const height = 400;
-
-  const canvas = createCanvas(width, height);
+module.exports = async function generateTreeCanvas({ height }) {
+  const canvasWidth = 512;
+  const canvasHeight = 768;
+  const canvas = createCanvas(canvasWidth, canvasHeight);
   const ctx = canvas.getContext("2d");
+  // Draw background
+  const background = await loadImage("https://i.imgur.com/myURtVX.png");
+  ctx.drawImage(background, 0, 0, canvasWidth, canvasHeight);
 
-  // Background
-  ctx.fillStyle = "#e9f5db";
-  ctx.fillRect(0, 0, width, height);
+  // // Limit height scaling
+  // const maxHeightFt = 50;
+  // const clampedHeight = Math.min(height, maxHeightFt);
 
-  // Title
-  ctx.fillStyle = "#2e4600";
-  ctx.font = "bold 30px sans-serif";
-  ctx.fillText("🌳 My Tree", 220, 40);
+  // // Scale visual size
+  // const baseTreeHeight = 140;
+  // const scale = clampedHeight / maxHeightFt;
+  // const treeHeight = baseTreeHeight + scale * 180;
+  // const treeWidth = treeHeight * 0.65;
 
-  // Load tree stage image
-  const imagePath = path.join(
-    __dirname,
-    "../assets",
-    STAGE_IMAGES[stage] || STAGE_IMAGES["Seed"]
-  );
-  try {
-    const treeImage = await loadImage(imagePath);
-    ctx.drawImage(treeImage, 230, 60, 140, 140);
-  } catch (err) {
-    console.warn("Tree image failed to load:", imagePath, err.message);
-    ctx.fillStyle = "#555";
-    ctx.font = "italic 16px sans-serif";
-    ctx.fillText("[Missing Tree Image]", 240, 140);
-  }
+  // const trunkHeight = treeHeight * 0.35;
+  // const trunkWidth = treeWidth * 0.25;
+  // const foliageRadius = treeHeight * 0.45;
 
-  // Stats Box
-  ctx.fillStyle = "#ffffff";
-  ctx.strokeStyle = "#cccccc";
-  ctx.lineWidth = 2;
-  ctx.fillRect(50, 220, 500, 140);
-  ctx.strokeRect(50, 220, 500, 140);
+  // const x = canvasWidth / 2;
+  // const y = canvasHeight - 60; // ground
 
-  ctx.fillStyle = "#333";
-  ctx.font = "18px sans-serif";
-  ctx.fillText(`Stage: ${client.utils.formatCapitalize(stage)}`, 70, 250);
-  ctx.fillText(`Level: ${level}`, 70, 280);
-  ctx.fillText(`XP: ${xp}/${xpNeeded}`, 70, 310);
+  // // Draw subtle shadow
+  // ctx.beginPath();
+  // ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+  // ctx.ellipse(
+  //   x + 20,
+  //   y,
+  //   foliageRadius * 0.8,
+  //   foliageRadius * 0.3,
+  //   0,
+  //   0,
+  //   Math.PI * 2
+  // );
+  // ctx.fill();
 
-  ctx.fillText(`Coins: ${coins}`, 320, 250);
-  ctx.fillText(
-    `Fertilizer: ${upgrades?.fertilizer ? "Used" : "Don't have"}`,
-    320,
-    280
-  );
-  ctx.fillText(`Rain: ${upgrades?.rain ? "Used" : "Don't have"}`, 320, 310);
+  // // Draw trunk with texture
+  // ctx.fillStyle = "#654321";
+  // ctx.fillRect(x - trunkWidth / 2, y - trunkHeight, trunkWidth, trunkHeight);
 
-  return canvas.toBuffer("image/png");
+  // // Add trunk texture lines
+  // ctx.strokeStyle = "#4A3721";
+  // ctx.lineWidth = 2;
+  // for (let i = 0; i < 6; i++) {
+  //   ctx.beginPath();
+  //   ctx.moveTo(x - trunkWidth / 2 + 5, y - trunkHeight + (i * trunkHeight) / 6);
+  //   ctx.lineTo(x + trunkWidth / 2 - 5, y - trunkHeight + (i * trunkHeight) / 6);
+  //   ctx.stroke();
+  // }
+
+  // // Create gradient for foliage
+  // const gradient = ctx.createRadialGradient(
+  //   x,
+  //   y - trunkHeight,
+  //   foliageRadius * 0.3,
+  //   x,
+  //   y - trunkHeight,
+  //   foliageRadius * 1.2
+  // );
+  // gradient.addColorStop(0, "#32CD32");
+  // gradient.addColorStop(1, "#228B22");
+
+  // // Draw layered foliage for fuller canopy
+  // const layers = [
+  //   { offsetY: 0, radius: foliageRadius },
+  //   { offsetY: -foliageRadius * 0.5, radius: foliageRadius * 0.95 },
+  //   { offsetY: -foliageRadius * 0.9, radius: foliageRadius * 0.85 },
+  //   {
+  //     offsetY: -foliageRadius * 0.3,
+  //     radius: foliageRadius * 0.9,
+  //     offsetX: -foliageRadius * 0.4,
+  //   },
+  //   {
+  //     offsetY: -foliageRadius * 0.3,
+  //     radius: foliageRadius * 0.9,
+  //     offsetX: foliageRadius * 0.4,
+  //   },
+  // ];
+
+  // ctx.fillStyle = gradient;
+  // layers.forEach((layer) => {
+  //   ctx.beginPath();
+  //   ctx.arc(
+  //     x + (layer.offsetX || 0),
+  //     y - trunkHeight + layer.offsetY,
+  //     layer.radius,
+  //     0,
+  //     Math.PI * 2
+  //   );
+  //   ctx.fill();
+  // });
+
+  // // Add highlight for depth
+  // ctx.beginPath();
+  // ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+  // ctx.arc(
+  //   x - foliageRadius * 0.3,
+  //   y - trunkHeight - foliageRadius * 0.4,
+  //   foliageRadius * 0.5,
+  //   0,
+  //   Math.PI * 2
+  // );
+  // ctx.fill();
+
+  return await canvas.encode("png");
 };
