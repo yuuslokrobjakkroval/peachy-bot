@@ -1934,11 +1934,11 @@ module.exports = class Utils {
     }
 
     // Validate winners
-    if (isNaN(winners) || winners <= 0 || winners > 20) {
+    if (isNaN(winners) || winners <= 0) {
       await this.sendErrorMessage(
         client,
         ctx,
-        "Number of winners must be between 1 and 20.",
+        "Number of winners must be bigger than 0",
         color
       );
       return { success: false };
