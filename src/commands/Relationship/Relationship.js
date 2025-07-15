@@ -1,43 +1,51 @@
-const { Command } = require("../../structures");
-const { AttachmentBuilder } = require("discord.js");
-const { createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas");
+const { Command } = require("../../structures/index.js");
 
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-Roman.otf",
-  "Kelvinch-Roman",
-);
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-Bold.otf",
-  "Kelvinch-Bold",
-);
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Adore Cats.ttf",
-  "Kelvinch-SemiBoldItalic",
-);
+const RELATIONSHIP_LIMITS = {
+  partner: 1,
+  bestie: 4,
+  brother: 4,
+  sister: 4,
+};
 
-module.exports = class Profile extends Command {
+module.exports = class RelationshipCommand extends Command {
   constructor(client) {
     super(client, {
       name: "relationship",
       description: {
-        content: "Shows the relationship between you and your partner",
-        examples: ["profile @user"],
-        usage: "profile <user>",
+        content: "Manage your relationships (partner, bestie, etc.)",
+        examples: ["relationship add partner @user", "relationship remove bestie @user"],
+        usage: "relationship <add/remove> <type> <user>",
       },
       category: "relationship",
-      aliases: ["ship", "rs"],
+      args: true,
       cooldown: 5,
-      args: false,
-      permissions: {
-        dev: false,
-        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: [],
-      },
       slashCommand: true,
       options: [
         {
+          name: "action",
+          description: "Add or Remove relationship",
+          type: 3,
+          required: true,
+          choices: [
+            { name: "Add", value: "add" },
+            { name: "Remove", value: "remove" },
+          ],
+        },
+        {
+          name: "type",
+          description: "Relationship type",
+          type: 3,
+          required: true,
+          choices: [
+            { name: "Partner", value: "partner" },
+            { name: "Bestie", value: "bestie" },
+            { name: "Brother", value: "brother" },
+            { name: "Sister", value: "sister" },
+          ],
+        },
+        {
           name: "user",
-          description: "The user to view the profile of",
+          description: "The user you want to add or remove",
           type: 6,
           required: true,
         },
@@ -46,375 +54,112 @@ module.exports = class Profile extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    let loadingMessage;
-    try {
-      const targetUser = this.getTargetUser(ctx, args);
-      const user = await client.utils.getUser(targetUser.id);
-      const syncUserInfo = await client.users.fetch(targetUser.id);
-      if (user?.relationship?.partner?.userId) {
-        const partner = await client.utils.getUser(
-          user?.relationship?.partner?.userId,
-        );
-        const syncPartnerInfo = await client.users.fetch(partner?.userId);
-        if (!user) {
-          return await this.sendUserNotFoundEmbed(ctx, color);
-        }
+    const action = ctx.isInteraction
+      ? ctx.interaction.options.getString("action")
+      : args[0];
 
-        try {
-          loadingMessage = await this.sendLoadingMessage(
-            client,
-            ctx,
-            color,
-            emoji,
-          );
-        } catch (error) {
-          await this.handleError(ctx, loadingMessage);
-          console.error(error);
-        }
+    const type = ctx.isInteraction
+      ? ctx.interaction.options.getString("type")
+      : args[1];
 
-        await new Promise((resolve) => setTimeout(resolve, 4000));
-
-        let bannerImage;
-        if (user?.profile?.gender === "male") {
-          bannerImage = "https://i.imgur.com/fMtSCsL.png";
-        } else if (user?.profile?.gender === "female") {
-          bannerImage = "https://i.imgur.com/W0cNDDP.png";
-        } else {
-          bannerImage = "https://i.imgur.com/4DqQYT7.png";
-        }
-
-        const canvas = createCanvas(1280, 800);
-        const context = canvas.getContext("2d");
-
-        await this.drawPartnership(
-          client,
-          context,
-          user,
-          syncUserInfo,
-          partner,
-          syncPartnerInfo,
-          color,
-          emoji,
-          bannerImage,
-        );
-
-        const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), {
-          name: `${ctx.author.username}.png`,
-        });
-
-        ctx.isInteraction
-          ? await ctx.interaction.editReply({
-              content: "",
-              embeds: [],
-              files: [attachment],
-            })
-          : await loadingMessage.edit({
-              content: "",
-              embeds: [],
-              files: [attachment],
-            });
-      } else {
-        client.utils.sendErrorMessage(
-          client,
-          ctx,
-          `You not yet to get relationship`,
-          color,
-        );
-      }
-    } catch (error) {
-      await this.handleError(ctx, loadingMessage);
-      console.error(error);
-    }
-  }
-
-  getTargetUser(ctx, args) {
-    return ctx.isInteraction
+    const target = ctx.isInteraction
       ? ctx.interaction.options.getUser("user")
-      : ctx.message.mentions.users.first() ||
-          ctx.guild.members.cache.get(args[0]) ||
-          ctx.author;
-  }
+      : ctx.message.mentions.users.first() || args[2];
 
-  async sendUserNotFoundEmbed(ctx, color) {
-    const embed = ctx.client
-      .embed()
-      .setColor(color.main)
-      .setDescription("User Not Found");
-    return ctx.sendMessage({
-      embeds: [embed],
-    });
-  }
+    if (!target) {
+      return client.utils.sendErrorMessage(client, ctx, "You must mention a user.", color);
+    }
 
-  async sendLoadingMessage(client, ctx, color, emoji) {
-    const embed = client
-      .embed()
-      .setColor(color.main)
-      .setTitle(`**${emoji.mainLeft} RELATIONSHIP ${emoji.mainRight}**`)
-      .setDescription("**Generating...**")
-      .setImage("https://i.imgur.com/ygbvn3G.gif");
-    return await ctx.sendDeferMessage({
-      embeds: [embed],
-    });
-  }
+    if (target.id === ctx.author.id) {
+      return client.utils.sendErrorMessage(client, ctx, "You cannot choose yourself.", color);
+    }
 
-  async handleError(ctx, loadingMessage) {
-    await loadingMessage?.edit({
-      content:
-        "An error occurred while generating your profile. Please try again later.",
-      files: [],
-    });
-  }
+    const user = await client.utils.getUser(ctx.author.id);
+    const mention = await client.utils.getUser(target.id);
 
-  drawRoundedRectangle(
-    ctx,
-    x,
-    y,
-    width,
-    height,
-    radius,
-    color,
-    borderColor,
-    borderWidth,
-  ) {
-    // Draw the main rectangle with rounded corners
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + width - radius, y);
-    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-    ctx.lineTo(x + width, y + height - radius);
-    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-    ctx.lineTo(x + radius, y + height);
-    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
+    if (!user || !mention) {
+      return client.utils.sendErrorMessage(client, ctx, "Both users must be registered.", color);
+    }
 
-    // Fill the rectangle with color
-    ctx.fillStyle = color;
-    ctx.fill();
-
-    // Add a border stroke
-    if (borderWidth > 0) {
-      ctx.lineWidth = borderWidth;
-      ctx.strokeStyle = borderColor;
-      ctx.stroke();
+    switch (action) {
+      case "add":
+        await this.addRelationship(client, ctx, user, target, mention, type, color);
+        break;
+      case "remove":
+        await this.removeRelationship(client, ctx, user, target, mention, type, color);
+        break;
+      default:
+        return client.utils.sendErrorMessage(client, ctx, "Invalid action provided.", color);
     }
   }
 
-  async drawPartnership(
-    client,
-    context,
-    user,
-    userInfo,
-    partner,
-    partnerInfo,
-    color,
-    emoji,
-    banner,
-  ) {
-    // Draw the background color
-    context.fillStyle = "#f582ae";
-    context.fillRect(0, 0, 1280, 800);
+  async addRelationship(client, ctx, user, target, mention, type, color) {
+    const limit = RELATIONSHIP_LIMITS[type];
 
-    const userAvatar = await loadImage(
-      userInfo.displayAvatarURL({ format: "png", size: 256 }),
-    );
-    const userAvatarX = 72;
-    const userAvatarY = 186;
-    const userAvatarSize = 300;
-    if (userAvatar) {
-      const borderRadius = 16;
-      context.save();
-      context.beginPath();
-      context.moveTo(userAvatarX + borderRadius, userAvatarY);
-      context.lineTo(userAvatarX + userAvatarSize - borderRadius, userAvatarY);
-      context.arcTo(
-        userAvatarX + userAvatarSize,
-        userAvatarY,
-        userAvatarX + userAvatarSize,
-        userAvatarY + borderRadius,
-        borderRadius,
-      );
-      context.lineTo(
-        userAvatarX + userAvatarSize,
-        userAvatarY + userAvatarSize - borderRadius,
-      );
-      context.arcTo(
-        userAvatarX + userAvatarSize,
-        userAvatarY + userAvatarSize,
-        userAvatarX + userAvatarSize - borderRadius,
-        userAvatarY + userAvatarSize,
-        borderRadius,
-      );
-      context.lineTo(userAvatarX + borderRadius, userAvatarY + userAvatarSize);
-      context.arcTo(
-        userAvatarX,
-        userAvatarY + userAvatarSize,
-        userAvatarX,
-        userAvatarY + userAvatarSize - borderRadius,
-        borderRadius,
-      );
-      context.lineTo(userAvatarX, userAvatarY + borderRadius);
-      context.arcTo(
-        userAvatarX,
-        userAvatarY,
-        userAvatarX + borderRadius,
-        userAvatarY,
-        borderRadius,
-      );
-      context.closePath();
+    if (type === "partner") {
+      if (user.relationship?.partner?.userId) {
+        return client.utils.sendErrorMessage(client, ctx, `You already have a partner.`, color);
+      }
+      if (mention.relationship?.partner?.userId) {
+        return client.utils.sendErrorMessage(client, ctx, `${target.username} already has a partner.`, color);
+      }
 
-      context.lineWidth = 8;
-      context.stroke();
-      context.clip();
-      context.drawImage(
-        userAvatar,
-        userAvatarX,
-        userAvatarY,
-        userAvatarSize,
-        userAvatarSize,
-      );
-      context.restore();
+      // Add partner both ways
+      user.relationship.partner = {
+        userId: target.id,
+        name: target.username,
+        date: new Date(),
+        xp: 0,
+        level: 1,
+      };
+      mention.relationship.partner = {
+        userId: ctx.author.id,
+        name: ctx.author.username,
+        date: new Date(),
+        xp: 0,
+        level: 1,
+      };
+    } else {
+      const existing = user.relationship?.[`${type}s`] || [];
+      if (existing.find((rel) => rel.userId === target.id)) {
+        return client.utils.sendErrorMessage(client, ctx, `You already added ${target.username} as your ${type}.`, color);
+      }
+      if (limit && existing.length >= limit) {
+        return client.utils.sendErrorMessage(client, ctx, `You can only have up to ${limit} ${type}s.`, color);
+      }
+
+      user.relationship[`${type}s`].push({
+        userId: target.id,
+        name: target.username,
+        date: new Date(),
+        xp: 0,
+        level: 1,
+      });
     }
 
-    // PARTNER SECTION
-    const partnerAvatar = await loadImage(
-      partnerInfo.displayAvatarURL({ format: "png", size: 256 }),
-    );
-    const partnerAvatarX = 400;
-    const partnerAvatarY = 186;
-    const partnerAvatarSize = 300;
-    if (partnerAvatar) {
-      const borderRadius = 16;
-      context.save();
-      context.beginPath();
-      context.moveTo(partnerAvatarX + borderRadius, partnerAvatarY);
-      context.lineTo(
-        partnerAvatarX + partnerAvatarSize - borderRadius,
-        partnerAvatarY,
-      );
-      context.arcTo(
-        partnerAvatarX + partnerAvatarSize,
-        partnerAvatarY,
-        partnerAvatarX + partnerAvatarSize,
-        partnerAvatarY + borderRadius,
-        borderRadius,
-      );
-      context.lineTo(
-        partnerAvatarX + partnerAvatarSize,
-        partnerAvatarY + partnerAvatarSize - borderRadius,
-      );
-      context.arcTo(
-        partnerAvatarX + partnerAvatarSize,
-        partnerAvatarY + partnerAvatarSize,
-        partnerAvatarX + partnerAvatarSize - borderRadius,
-        partnerAvatarY + partnerAvatarSize,
-        borderRadius,
-      );
-      context.lineTo(
-        partnerAvatarX + borderRadius,
-        partnerAvatarY + partnerAvatarSize,
-      );
-      context.arcTo(
-        partnerAvatarX,
-        partnerAvatarY + partnerAvatarSize,
-        partnerAvatarX,
-        partnerAvatarY + partnerAvatarSize - borderRadius,
-        borderRadius,
-      );
-      context.lineTo(partnerAvatarX, partnerAvatarY + borderRadius);
-      context.arcTo(
-        partnerAvatarX,
-        partnerAvatarY,
-        partnerAvatarX + borderRadius,
-        partnerAvatarY,
-        borderRadius,
-      );
-      context.closePath();
+    await Promise.all([user.save(), mention.save()]);
+    return client.utils.sendSuccessMessage(client, ctx, `🎉 You are now ${type}s with ${target.username}!`, color);
+  }
 
-      context.lineWidth = 8;
-      context.stroke();
-      context.clip();
-      context.drawImage(
-        partnerAvatar,
-        partnerAvatarX,
-        partnerAvatarY,
-        partnerAvatarSize,
-        partnerAvatarSize,
+  async removeRelationship(client, ctx, user, target, mention, type, color) {
+    if (type === "partner") {
+      if (user.relationship.partner?.userId !== target.id) {
+        return client.utils.sendErrorMessage(client, ctx, `You are not partners with ${target.username}.`, color);
+      }
+      user.relationship.partner = null;
+      mention.relationship.partner = null;
+    } else {
+      const prevCount = user.relationship[`${type}s`]?.length || 0;
+      user.relationship[`${type}s`] = user.relationship[`${type}s`].filter(
+        (rel) => rel.userId !== target.id
       );
-      context.restore();
+
+      if (user.relationship[`${type}s`].length === prevCount) {
+        return client.utils.sendErrorMessage(client, ctx, `You don't have ${target.username} as your ${type}.`, color);
+      }
     }
 
-    // BANNER SECTION
-    if (banner) {
-      const bannerImage = await loadImage(banner);
-      const x = 15;
-      const y = 32;
-      const width = 1250;
-      const height = 736;
-      context.drawImage(bannerImage, x, y, width, height);
-    }
-
-    // USER SECTION
-    context.fillStyle = "#4C585B";
-    context.font = "28px Kelvinch-SemiBoldItalic, Arial";
-    context.fillText(
-      client.utils.formatCapitalize(userInfo.username),
-      958,
-      210,
-    );
-    context.fillText(
-      client.utils.formatCapitalize(
-        user.social.facebook?.name ? user.social.facebook.name : "Not Set",
-      ),
-      958,
-      290,
-    );
-    context.fillText(
-      client.utils.formatCapitalize(
-        user.social.instagram?.name ? user.social.instagram.name : "Not Set",
-      ),
-      958,
-      370,
-    );
-
-    // PARTNER SECTION
-    context.fillStyle = "#4C585B";
-    context.font = "28px Kelvinch-SemiBoldItalic, Arial";
-    context.fillText(
-      client.utils.formatCapitalize(partnerInfo.username),
-      958,
-      545,
-    );
-    context.fillText(
-      client.utils.formatCapitalize(
-        partner.social.facebook?.name
-          ? partner.social.facebook.name
-          : "Not Set",
-      ),
-      958,
-      625,
-    );
-    context.fillText(
-      client.utils.formatCapitalize(
-        partner.social.instagram?.name
-          ? partner.social.instagram.name
-          : "Not Set",
-      ),
-      958,
-      705,
-    );
-
-    if (user?.relationship?.partner?.date) {
-      const partnerDate = new Date(user?.relationship?.partner?.date);
-      const currentDate = Date.now();
-      const diffInDays = Math.floor(
-        (currentDate - partnerDate) / (1000 * 60 * 60 * 24),
-      );
-      context.fillStyle = "#000000";
-      context.textAlign = "center";
-      context.font = "28px Kelvinch-SemiBoldItalic, Arial";
-      context.fillText(`${diffInDays + 1} Days`, 380, 656);
-    }
+    await Promise.all([user.save(), mention.save()]);
+    return client.utils.sendSuccessMessage(client, ctx, `💔 ${target.username} has been removed from your ${type}s.`, color);
   }
 };
