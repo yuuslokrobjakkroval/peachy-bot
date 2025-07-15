@@ -448,7 +448,7 @@
       "description": "Here are some information:",
       "fields": {
         "servers": "Servers {arrow} {guildCount}",
-        "users": "users {arrow} {userCount}",
+        "users": "Users {arrow} {userCount}",
         "uptime": "Uptime {arrow} **{days}** day **{hours}** hour **{minutes}** minutes"
       },
       "footer": "For more information, click the buttons below."

@@ -27,18 +27,18 @@ module.exports = class Stats extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const statsMessages = language.locales.get(language.defaultLocale)
       ?.informationMessages?.statsMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     }
 
@@ -67,7 +67,7 @@ module.exports = class Stats extends Command {
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", statsMessages.title)
-          .replace("%{mainRight}", emoji.mainRight) + statsMessages.description,
+          .replace("%{mainRight}", emoji.mainRight) + statsMessages.description
       )
       .addFields([
         {
@@ -84,24 +84,17 @@ module.exports = class Stats extends Command {
           value: "\u200b",
           inline: false,
         },
-        {
-          name: statsMessages.fields.channels
-            .replace("{arrow}", globalEmoji.arrow)
-            .replace("{channelCount}", channelCount),
-          value: "\u200b",
-          inline: false,
-        },
         { name: uptimeString, value: "\u200b", inline: false },
       ])
       .setFooter({ text: statsMessages.footer });
 
     const supportButton = client.utils.linkButton(
       generalMessages.supportButton,
-      client.config.links.support,
+      client.config.links.support
     );
     const inviteButton = client.utils.linkButton(
       generalMessages.inviteButton,
-      client.config.links.invite,
+      client.config.links.invite
     );
     const row = client.utils.createButtonRow(supportButton, inviteButton);
 
