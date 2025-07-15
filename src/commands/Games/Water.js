@@ -22,8 +22,13 @@ module.exports = class WaterTree extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const userId = ctx.author.id;
+    if (!ctx.interaction) {
+      return ctx.sendMessage(
+        "⚠️ This command only works with slash commands right now."
+      );
+    }
 
+    const userId = ctx.author.id;
     const userTree = await Tree.findOne({ userId });
     if (!userTree) {
       return ctx.sendMessage({

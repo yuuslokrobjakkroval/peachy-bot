@@ -32,8 +32,9 @@ module.exports = class RenameTree extends Command {
     const userId = ctx.author.id;
 
     if (!ctx.interaction) {
-      console.error("No interaction found on ctx!");
-      return;
+      return ctx.sendMessage(
+        "⚠️ This command only works with slash commands right now."
+      );
     }
 
     // Check if user has a tree
