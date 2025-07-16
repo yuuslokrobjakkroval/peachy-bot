@@ -80,6 +80,34 @@ module.exports = class ViewRelationship extends Command {
 
     const fields = [];
 
+    if (type === "all") {
+      fields.push({
+        name: "💍 Partner",
+        value: rel.partner?.userId ? formatOne(rel.partner) : "None",
+      });
+    }
+
+    if (type === "all" || type === "bestie") {
+      fields.push({
+        name: "💖 Besties",
+        value: formatList(rel.besties || []),
+      });
+    }
+
+    if (type === "all" || type === "brother") {
+      fields.push({
+        name: "👬 Brothers",
+        value: formatList(rel.brothers || []),
+      });
+    }
+
+    if (type === "all" || type === "sister") {
+      fields.push({
+        name: "👭 Sisters",
+        value: formatList(rel.sisters || []),
+      });
+    }
+
     if (type === "partner") {
       if (!rel.partner?.userId) {
         return client.utils.sendErrorMessage(
@@ -127,27 +155,6 @@ module.exports = class ViewRelationship extends Command {
             embeds: [embed],
             files: [attachment],
           });
-    }
-
-    if (type === "all" || type === "bestie") {
-      fields.push({
-        name: "💖 Besties",
-        value: formatList(rel.besties || []),
-      });
-    }
-
-    if (type === "all" || type === "brother") {
-      fields.push({
-        name: "👬 Brothers",
-        value: formatList(rel.brothers || []),
-      });
-    }
-
-    if (type === "all" || type === "sister") {
-      fields.push({
-        name: "👭 Sisters",
-        value: formatList(rel.sisters || []),
-      });
     }
 
     embed.addFields(...fields);
