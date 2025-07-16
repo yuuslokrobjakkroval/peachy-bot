@@ -71,9 +71,9 @@ module.exports = class ViewRelationship extends Command {
       .setFooter({ text: "Use /relationship to manage them." });
 
     const formatOne = (r) =>
-      `• <@${r.userId}> (Lv. ${r.level}, XP: ${
-        r.xp
-      })\n  — Since: <t:${Math.floor(new Date(r.date).getTime() / 1000)}:d>`;
+      `• <@${r.userId}> \n  — Since: <t:${Math.floor(
+        new Date(r.date).getTime() / 1000
+      )}:d>`;
 
     const formatList = (list) =>
       list?.length ? list.map((r) => formatOne(r)).join("\n") : "None";
