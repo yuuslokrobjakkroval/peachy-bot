@@ -19,7 +19,7 @@ module.exports = class Profile extends Command {
         usage: "level",
       },
       category: "profile",
-      aliases: ["lvl", "xp"],
+      aliases: ["lvl", "xp", "id"],
       cooldown: 5,
       args: false,
       permissions: {
