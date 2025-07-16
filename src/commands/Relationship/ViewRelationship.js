@@ -76,7 +76,7 @@ module.exports = class ViewRelationship extends Command {
       )}:d>`;
 
     const formatList = (list) =>
-      list?.length ? list.map((r) => formatOne(r)).join("\n") : "None";
+      list?.length ? list.map((r) => formatOne(r)).join("\n\n") : "None";
 
     const fields = [];
 
