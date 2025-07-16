@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const generateTreeCanvas = require("../../utils/GenerateTreeCanvas");
+const generateTreeCanvas = require("../../utils/GenerateImages");
 const Tree = require("../../schemas/tree");
 
 const {

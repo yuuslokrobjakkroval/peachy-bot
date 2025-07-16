@@ -1,5 +1,6 @@
 const { Command } = require("../../structures/index.js");
-const { EmbedBuilder } = require("discord.js");
+const { AttachmentBuilder } = require("discord.js");
+const { generatePartnerCanvas } = require("../../utils/GenerateImages.js");
 
 module.exports = class ViewRelationship extends Command {
   constructor(client) {
@@ -60,7 +61,8 @@ module.exports = class ViewRelationship extends Command {
 
     const rel = user.relationship || {};
 
-    const embed = new EmbedBuilder()
+    const embed = client
+      .embed()
       .setColor(color.main)
       .setAuthor({
         name: `${target.username}'s Relationships`,
@@ -78,11 +80,53 @@ module.exports = class ViewRelationship extends Command {
 
     const fields = [];
 
-    if (type === "all" || type === "partner") {
-      fields.push({
-        name: "💍 Partner",
-        value: rel.partner?.userId ? formatOne(rel.partner) : "None",
+    if (type === "partner") {
+      if (!rel.partner?.userId) {
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `${target.username} does not have a partner yet.`,
+          color.main
+        );
+      }
+
+      if (ctx.isInteraction) await ctx.interaction.deferReply();
+
+      const canvas = await generatePartnerCanvas(client, user, target);
+      if (!canvas) {
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `Could not generate partner image.`,
+          color.main
+        );
+      }
+
+      const fileName = `${target.username}_partner.png`;
+      const attachment = new AttachmentBuilder(canvas, {
+        name: fileName,
       });
+
+      embed.setDescription(
+        `💍 Partner of <@${target.id}>:\n<@${
+          rel.partner.userId
+        }> (Since <t:${Math.floor(
+          new Date(rel.partner.date).getTime() / 1000
+        )}:d>)`
+      );
+      embed.setImage(`attachment://${fileName}`);
+
+      return ctx.isInteraction
+        ? await ctx.interaction.editReply({
+            content: "",
+            embeds: [embed],
+            files: [attachment],
+          })
+        : await ctx.sendMessage({
+            content: "",
+            embeds: [embed],
+            files: [attachment],
+          });
     }
 
     if (type === "all" || type === "bestie") {
