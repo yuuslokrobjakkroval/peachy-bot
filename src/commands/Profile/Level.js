@@ -46,7 +46,7 @@ module.exports = class Profile extends Command {
             client,
             ctx,
             color,
-            emoji,
+            emoji
           );
         } catch (error) {
           await this.handleError(ctx, loadingMessage);
@@ -54,16 +54,16 @@ module.exports = class Profile extends Command {
         }
 
         const equippedWallpaper = user.equip.find((equippedItem) =>
-          equippedItem.id.startsWith("w"),
+          equippedItem.id.startsWith("w")
         );
         const equippedColor = user.equip.find((equippedItem) =>
-          equippedItem.id.startsWith("p"),
+          equippedItem.id.startsWith("p")
         );
 
         let bannerImage;
         if (equippedWallpaper) {
           bannerImage = Wallpapers.find(
-            (wallpaperItem) => wallpaperItem.id === equippedWallpaper.id,
+            (wallpaperItem) => wallpaperItem.id === equippedWallpaper.id
           )?.image;
         } else {
           bannerImage = "https://i.imgur.com/8rZFeWI.jpg";
@@ -72,7 +72,7 @@ module.exports = class Profile extends Command {
         let backgroundColor;
         if (equippedColor) {
           backgroundColor = Colors.find(
-            (colorItem) => colorItem.id === equippedColor.id,
+            (colorItem) => colorItem.id === equippedColor.id
           )?.color;
         }
 
@@ -84,10 +84,8 @@ module.exports = class Profile extends Command {
           context,
           targetUser,
           user,
-          color,
           backgroundColor,
-          emoji,
-          bannerImage,
+          bannerImage
         );
 
         const attachment = new AttachmentBuilder(canvas.toBuffer("image/png"), {
@@ -134,7 +132,7 @@ module.exports = class Profile extends Command {
         `# ${emoji.mainLeft} LEVEL CARD ${emoji.mainRight}
     
 Creating a stunning premium level card just for you! ✨
-Please wait a moment while we craft your personalized stats display...`,
+Please wait a moment while we craft your personalized stats display...`
       )
       .setImage("https://i.imgur.com/UCsKa6Z.gif");
     return await ctx.sendDeferMessage({
@@ -166,7 +164,6 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.fill();
   }
 
-  // Function to split text into multiple lines
   splitText(context, text, maxWidth) {
     const textConverted = text.toString();
     const words = textConverted.split(" ");
@@ -202,22 +199,19 @@ Please wait a moment while we craft your personalized stats display...`,
       categorizedItems[itemType].push(`${item.name} x${item.quantity}`);
     });
 
-    // Format the output
     let output = "";
     for (const [type, items] of Object.entries(categorizedItems)) {
       output += `${client.utils.formatCapitalize(type)}\n${items.join(
-        ", ",
+        ", "
       )}\n\n`;
     }
 
-    return output.trim(); // Trim to remove any trailing whitespace
+    return output.trim();
   }
 
-  // Draw sparkle effect
   drawSparkle(ctx, x, y, size, color) {
     ctx.save();
 
-    // Draw main sparkle lines
     for (let i = 0; i < 4; i++) {
       const angle = (i * Math.PI) / 4;
       ctx.beginPath();
@@ -229,7 +223,6 @@ Please wait a moment while we craft your personalized stats display...`,
       ctx.stroke();
     }
 
-    // Draw center dot
     ctx.beginPath();
     ctx.arc(x, y, size / 5, 0, Math.PI * 2);
     ctx.fillStyle = "white";
@@ -238,12 +231,10 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.restore();
   }
 
-  // Draw a cute star
   drawStar(ctx, x, y, size, color) {
     ctx.save();
     ctx.beginPath();
 
-    // Draw a 5-point star
     for (let i = 0; i < 5; i++) {
       const angle = (i * 2 * Math.PI) / 5 - Math.PI / 2;
       const outerX = x + size * Math.cos(angle);
@@ -266,7 +257,6 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.fillStyle = color;
     ctx.fill();
 
-    // Add a cute shine to the star
     ctx.beginPath();
     ctx.arc(x - size / 5, y - size / 5, size / 8, 0, Math.PI * 2);
     ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
@@ -275,12 +265,10 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.restore();
   }
 
-  // Draw a heart
   drawHeart(ctx, x, y, size, color) {
     ctx.save();
     ctx.beginPath();
 
-    // Draw heart shape
     ctx.moveTo(x, y + size / 4);
     ctx.quadraticCurveTo(x, y, x + size / 4, y);
     ctx.quadraticCurveTo(x + size / 2, y, x + size / 2, y + size / 4);
@@ -290,14 +278,13 @@ Please wait a moment while we craft your personalized stats display...`,
       x + size,
       y + size / 2,
       x + size / 2,
-      y + (size * 3) / 4,
+      y + (size * 3) / 4
     );
     ctx.lineTo(x, y + size / 4);
 
     ctx.fillStyle = color;
     ctx.fill();
 
-    // Add a shine to the heart
     ctx.beginPath();
     ctx.arc(x + size / 4, y + size / 4, size / 10, 0, Math.PI * 2);
     ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
@@ -306,7 +293,6 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.restore();
   }
 
-  // Helper method for rounded rectangle path (without filling)
   roundedRect(ctx, x, y, width, height, radius) {
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
@@ -321,40 +307,31 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.closePath();
   }
 
-  // Helper method to adjust colors
   adjustColor(hex, amount) {
-    // Handle numeric color values
     if (typeof hex === "number") {
       hex = `#${hex.toString(16).padStart(6, "0")}`;
     }
 
-    // Remove # if present
     hex = hex.replace("#", "");
 
-    // Convert to RGB
     let r = Number.parseInt(hex.substring(0, 2), 16);
     let g = Number.parseInt(hex.substring(2, 4), 16);
     let b = Number.parseInt(hex.substring(4, 6), 16);
 
-    // Adjust
     r = Math.max(0, Math.min(255, r + amount));
     g = Math.max(0, Math.min(255, g + amount));
     b = Math.max(0, Math.min(255, b + amount));
 
-    // Convert back to hex
     return `#${r.toString(16).padStart(2, "0")}${g
       .toString(16)
       .padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
   }
 
-  // Create a glass effect
   drawGlassEffect(ctx, x, y, width, height, radius, color, alpha = 0.3) {
-    // Draw glass panel
     ctx.save();
     this.roundedRect(ctx, x, y, width, height, radius);
     ctx.clip();
 
-    // Create glass gradient
     const glassGradient = ctx.createLinearGradient(x, y, x, y + height);
     glassGradient.addColorStop(0, `rgba(255, 255, 255, ${alpha + 0.1})`);
     glassGradient.addColorStop(0.2, `rgba(255, 255, 255, ${alpha - 0.05})`);
@@ -364,7 +341,6 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.fillStyle = glassGradient;
     ctx.fillRect(x, y, width, height);
 
-    // Add shine at the top
     const shineGradient = ctx.createLinearGradient(x, y, x, y + height / 3);
     shineGradient.addColorStop(0, "rgba(255, 255, 255, 0.5)");
     shineGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
@@ -372,7 +348,6 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.fillStyle = shineGradient;
     ctx.fillRect(x, y, width, height / 3);
 
-    // Add subtle border
     ctx.strokeStyle = `rgba(255, 255, 255, ${alpha + 0.2})`;
     ctx.lineWidth = 2;
     this.roundedRect(ctx, x, y, width, height, radius);
@@ -381,23 +356,17 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.restore();
   }
 
-  // Create a premium gradient
   createPremiumGradient(ctx, x, y, width, height, baseColor, angle = 0) {
-    // Convert angle to radians
     const radians = (angle * Math.PI) / 180;
-
-    // Calculate gradient start and end points based on angle
     const xDiff = Math.cos(radians) * width;
     const yDiff = Math.sin(radians) * height;
 
     const gradient = ctx.createLinearGradient(x, y, x + xDiff, y + yDiff);
 
-    // Ensure baseColor is a string
     if (typeof baseColor === "number") {
       baseColor = `#${baseColor.toString(16).padStart(6, "0")}`;
     }
 
-    // Create a premium gradient based on the base color
     const lighterColor = this.adjustColor(baseColor, 40);
     const darkerColor = this.adjustColor(baseColor, -40);
 
@@ -408,7 +377,6 @@ Please wait a moment while we craft your personalized stats display...`,
     return gradient;
   }
 
-  // Draw a premium border
   drawPremiumBorder(
     ctx,
     x,
@@ -417,11 +385,10 @@ Please wait a moment while we craft your personalized stats display...`,
     height,
     radius,
     thickness = 4,
-    baseColor,
+    baseColor
   ) {
     ctx.save();
 
-    // Create gradient for border
     const borderGradient = this.createPremiumGradient(
       ctx,
       x,
@@ -429,16 +396,14 @@ Please wait a moment while we craft your personalized stats display...`,
       width,
       height,
       baseColor,
-      45,
+      45
     );
 
-    // Draw outer stroke
     ctx.strokeStyle = borderGradient;
     ctx.lineWidth = thickness;
     this.roundedRect(ctx, x, y, width, height, radius);
     ctx.stroke();
 
-    // Add shine effect to border
     ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
     ctx.lineWidth = 1;
     this.roundedRect(
@@ -447,26 +412,22 @@ Please wait a moment while we craft your personalized stats display...`,
       y + thickness / 2,
       width - thickness,
       height - thickness,
-      radius - thickness / 2,
+      radius - thickness / 2
     );
     ctx.stroke();
 
     ctx.restore();
   }
 
-  // Draw background pattern
   drawBackgroundPattern(ctx, width, height, baseColor, patternType = "dots") {
     ctx.save();
 
-    // Set pattern style based on type
     if (patternType === "dots") {
-      // Draw subtle dot pattern
       ctx.fillStyle = `rgba(255, 255, 255, 0.1)`;
       const spacing = 30;
 
       for (let x = 0; x < width; x += spacing) {
         for (let y = 0; y < height; y += spacing) {
-          // Offset every other row
           const offset = y % (spacing * 2) === 0 ? spacing / 2 : 0;
 
           ctx.beginPath();
@@ -475,13 +436,11 @@ Please wait a moment while we craft your personalized stats display...`,
         }
       }
     } else if (patternType === "lines") {
-      // Draw subtle line pattern
       ctx.strokeStyle = `rgba(255, 255, 255, 0.07)`;
       ctx.lineWidth = 1;
 
       const spacing = 40;
 
-      // Horizontal lines
       for (let y = 0; y < height; y += spacing) {
         ctx.beginPath();
         ctx.moveTo(0, y);
@@ -489,7 +448,6 @@ Please wait a moment while we craft your personalized stats display...`,
         ctx.stroke();
       }
 
-      // Vertical lines
       for (let x = 0; x < width; x += spacing) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -501,35 +459,30 @@ Please wait a moment while we craft your personalized stats display...`,
     ctx.restore();
   }
 
-  // Draw a premium badge
-  drawPremiumBadge(ctx, x, y, size, level, baseColor) {
+  drawPremiumBadge(ctx, x, y, size, level, baseColor, label = "LEVEL") {
     try {
       ctx.save();
 
-      // Ensure color values are strings
       const primaryColor =
         typeof baseColor === "string"
           ? baseColor
           : `#${baseColor.toString(16).padStart(6, "0")}`;
 
-      // Draw badge shadow
       ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
       ctx.shadowBlur = 15;
       ctx.shadowOffsetX = 5;
       ctx.shadowOffsetY = 5;
 
-      // Draw badge background
       ctx.beginPath();
       ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
 
-      // Create premium gradient for badge
       const badgeGradient = ctx.createRadialGradient(
         x + size / 3,
         y + size / 3,
         0,
         x + size / 2,
         y + size / 2,
-        size / 2,
+        size / 2
       );
 
       badgeGradient.addColorStop(0, this.adjustColor(primaryColor, 70));
@@ -539,13 +492,11 @@ Please wait a moment while we craft your personalized stats display...`,
       ctx.fillStyle = badgeGradient;
       ctx.fill();
 
-      // Reset shadow
       ctx.shadowColor = "transparent";
       ctx.shadowBlur = 0;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 0;
 
-      // Add metallic ring
       ctx.beginPath();
       ctx.arc(x + size / 2, y + size / 2, size / 2 - 3, 0, Math.PI * 2);
       ctx.lineWidth = 3;
@@ -559,35 +510,29 @@ Please wait a moment while we craft your personalized stats display...`,
       ctx.strokeStyle = ringGradient;
       ctx.stroke();
 
-      // Draw level text with 3D effect
       ctx.font = `bold 36px 'Ghibli-Bold', 'Kelvinch-Bold', Arial`;
 
-      // Draw text shadow for 3D effect
       ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(level.toString(), x + size / 2 + 2, y + size / 2 + 2);
 
-      // Draw main text
       ctx.fillStyle = "white";
       ctx.fillText(level.toString(), x + size / 2, y + size / 2);
 
-      // Add shine
       ctx.beginPath();
       ctx.arc(x + size / 3, y + size / 3, size / 8, 0, Math.PI * 2);
       ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
       ctx.fill();
 
-      // Add "LEVEL" text below
-      ctx.font = `bold 16px 'Ghibli', 'Kelvinch-Roman', Arial`;
+      ctx.font = `bold 20px 'Ghibli', 'Kelvinch-Roman', Arial`;
       ctx.fillStyle = "white";
       ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
       ctx.shadowBlur = 3;
       ctx.shadowOffsetX = 1;
       ctx.shadowOffsetY = 1;
-      ctx.fillText("LEVEL", x + size / 2, y + size + 15);
+      ctx.fillText(label, x + size / 2, y + size + 15);
 
-      // Reset shadow
       ctx.shadowColor = "transparent";
       ctx.shadowBlur = 0;
       ctx.shadowOffsetX = 0;
@@ -599,12 +544,10 @@ Please wait a moment while we craft your personalized stats display...`,
     }
   }
 
-  // Draw premium avatar frame
   async drawPremiumAvatarFrame(ctx, user, x, y, size, baseColor) {
     try {
       ctx.save();
 
-      // Draw outer glow
       ctx.shadowColor =
         typeof baseColor === "string"
           ? baseColor
@@ -615,18 +558,14 @@ Please wait a moment while we craft your personalized stats display...`,
       ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
       ctx.fill();
 
-      // Reset shadow
       ctx.shadowColor = "transparent";
       ctx.shadowBlur = 0;
 
-      // Draw premium border
       ctx.beginPath();
       ctx.arc(x + size / 2, y + size / 2, size / 2 + 5, 0, Math.PI * 2);
 
-      // Create premium gradient for border
       const borderGradient = ctx.createLinearGradient(x, y, x + size, y + size);
 
-      // Ensure baseColor is a string
       const colorStr =
         typeof baseColor === "string"
           ? baseColor
@@ -639,43 +578,37 @@ Please wait a moment while we craft your personalized stats display...`,
       ctx.fillStyle = borderGradient;
       ctx.fill();
 
-      // Draw avatar
       const avatar = await loadImage(
         user.displayAvatarURL({
           extension: "png",
           size: 256,
-        }),
+        })
       );
 
-      // Create circular clip for avatar
       ctx.beginPath();
       ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
       ctx.clip();
 
-      // Draw avatar
       ctx.drawImage(avatar, x, y, size, size);
 
       ctx.restore();
 
-      // Draw inner ring
       ctx.beginPath();
       ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
       ctx.lineWidth = 2;
       ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
       ctx.stroke();
 
-      // Add shine effect
       ctx.save();
       ctx.beginPath();
       ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
       ctx.clip();
 
-      // Draw shine gradient
       const shineGradient = ctx.createLinearGradient(
         x,
         y,
         x + size / 3,
-        y + size / 3,
+        y + size / 3
       );
 
       shineGradient.addColorStop(0, "rgba(255, 255, 255, 0.5)");
@@ -690,24 +623,20 @@ Please wait a moment while we craft your personalized stats display...`,
     }
   }
 
-  // Draw enhanced premium progress bar
   drawEnhancedProgressBar(ctx, x, y, width, height, progress, baseColor) {
     try {
       ctx.save();
 
-      // Ensure baseColor is a string
       const colorStr =
         typeof baseColor === "string"
           ? baseColor
           : `#${baseColor.toString(16).padStart(6, "0")}`;
 
-      // Draw shadow for progress bar
       ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
       ctx.shadowBlur = 10;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 5;
 
-      // Draw progress bar background with metallic effect
       const bgGradient = ctx.createLinearGradient(x, y, x, y + height);
       bgGradient.addColorStop(0, "rgba(40, 40, 40, 0.8)");
       bgGradient.addColorStop(0.5, "rgba(30, 30, 30, 0.8)");
@@ -720,16 +649,14 @@ Please wait a moment while we craft your personalized stats display...`,
         width,
         height,
         height / 2,
-        bgGradient,
+        bgGradient
       );
 
-      // Reset shadow
       ctx.shadowColor = "transparent";
       ctx.shadowBlur = 0;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 0;
 
-      // Draw inner border for depth
       ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
       ctx.lineWidth = 2;
       this.roundedRect(
@@ -738,33 +665,27 @@ Please wait a moment while we craft your personalized stats display...`,
         y + 2,
         width - 4,
         height - 4,
-        height / 2 - 2,
+        height / 2 - 2
       );
       ctx.stroke();
 
-      // Draw progress fill
       if (progress > 0) {
         const fillWidth = Math.max(height, progress * width);
 
-        // Create metallic gradient for fill
         const fillGradient = ctx.createLinearGradient(x, y, x, y + height);
         fillGradient.addColorStop(0, this.adjustColor(colorStr, 50));
         fillGradient.addColorStop(0.5, colorStr);
         fillGradient.addColorStop(1, this.adjustColor(colorStr, -30));
 
-        // Draw rounded fill
         ctx.beginPath();
         if (progress >= 1) {
-          // If 100%, use full rounded rectangle
           this.roundedRect(ctx, x, y, width, height, height / 2);
         } else {
-          // Custom path for partial fill with only left side rounded
           const radius = height / 2;
           ctx.moveTo(x + radius, y);
           ctx.lineTo(x + fillWidth, y);
 
           if (fillWidth >= width - radius) {
-            // If near the end, round the right corner
             ctx.lineTo(x + fillWidth - radius, y);
             ctx.quadraticCurveTo(x + fillWidth, y, x + fillWidth, y + radius);
             ctx.lineTo(x + fillWidth, y + height - radius);
@@ -772,10 +693,9 @@ Please wait a moment while we craft your personalized stats display...`,
               x + fillWidth,
               y + height,
               x + fillWidth - radius,
-              y + height,
+              y + height
             );
           } else {
-            // Flat right edge for partial fill
             ctx.lineTo(x + fillWidth, y + height);
           }
 
@@ -789,7 +709,6 @@ Please wait a moment while we craft your personalized stats display...`,
         ctx.fillStyle = fillGradient;
         ctx.fill();
 
-        // Add shine effect to fill
         const shineGradient = ctx.createLinearGradient(x, y, x, y + height / 2);
         shineGradient.addColorStop(0, "rgba(255, 255, 255, 0.4)");
         shineGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
@@ -798,7 +717,6 @@ Please wait a moment while we craft your personalized stats display...`,
         if (progress >= 1) {
           this.roundedRect(ctx, x, y, width, height / 2, height / 2);
         } else {
-          // Custom path for shine on partial fill
           const radius = height / 2;
           ctx.moveTo(x + radius, y);
           ctx.lineTo(x + fillWidth, y);
@@ -813,10 +731,8 @@ Please wait a moment while we craft your personalized stats display...`,
         ctx.fillStyle = shineGradient;
         ctx.fill();
 
-        // Add progress markers/ticks
         this.drawProgressMarkers(ctx, x, y, width, height, progress);
 
-        // Add glow at the progress edge
         if (progress < 1) {
           const glowGradient = ctx.createRadialGradient(
             x + fillWidth,
@@ -824,7 +740,7 @@ Please wait a moment while we craft your personalized stats display...`,
             0,
             x + fillWidth,
             y + height / 2,
-            height / 2,
+            height / 2
           );
 
           glowGradient.addColorStop(0, this.adjustColor(colorStr, 30));
@@ -844,23 +760,18 @@ Please wait a moment while we craft your personalized stats display...`,
     }
   }
 
-  // Draw progress markers/ticks
   drawProgressMarkers(ctx, x, y, width, height, currentProgress) {
-    // Draw milestone markers
     const milestones = [0.25, 0.5, 0.75, 1];
 
     milestones.forEach((milestone) => {
       const markerX = x + width * milestone;
 
-      // Only draw if we haven't passed this milestone
       if (milestone <= currentProgress) {
-        // Draw filled milestone
         ctx.beginPath();
         ctx.arc(markerX, y + height / 2, height / 6, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
         ctx.fill();
 
-        // Draw glow for milestone
         ctx.beginPath();
         ctx.arc(markerX, y + height / 2, height / 4, 0, Math.PI * 2);
         const glowGradient = ctx.createRadialGradient(
@@ -869,14 +780,13 @@ Please wait a moment while we craft your personalized stats display...`,
           0,
           markerX,
           y + height / 2,
-          height / 4,
+          height / 4
         );
         glowGradient.addColorStop(0, "rgba(255, 255, 255, 0.5)");
         glowGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
         ctx.fillStyle = glowGradient;
         ctx.fill();
       } else {
-        // Draw empty milestone
         ctx.beginPath();
         ctx.arc(markerX, y + height / 2, height / 6, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
@@ -884,10 +794,8 @@ Please wait a moment while we craft your personalized stats display...`,
       }
     });
 
-    // Draw minor ticks
     for (let i = 1; i < 10; i++) {
       if (i % 2.5 !== 0) {
-        // Skip positions where milestones are
         const tickX = x + width * (i / 10);
         const tickHeight = height / 4;
 
@@ -896,7 +804,6 @@ Please wait a moment while we craft your personalized stats display...`,
         ctx.lineTo(tickX, y + (height + tickHeight) / 2);
         ctx.lineWidth = 1;
 
-        // Ticks we've passed are brighter
         if (i / 10 <= currentProgress) {
           ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
         } else {
@@ -908,18 +815,15 @@ Please wait a moment while we craft your personalized stats display...`,
     }
   }
 
-  // Draw decorative elements
   drawPremiumDecorations(ctx, width, height, baseColor) {
     try {
       ctx.save();
 
-      // Draw subtle sparkles
       for (let i = 0; i < 15; i++) {
         const x = Math.random() * width;
         const y = Math.random() * height;
         const size = 3 + Math.random() * 7;
 
-        // Only draw sparkles in certain areas (avoid center)
         if (
           Math.abs(x - width / 2) > width / 4 ||
           Math.abs(y - height / 2) > height / 4
@@ -928,13 +832,11 @@ Please wait a moment while we craft your personalized stats display...`,
         }
       }
 
-      // Draw subtle stars
       for (let i = 0; i < 5; i++) {
         const x = Math.random() * width;
         const y = Math.random() * height;
         const size = 5 + Math.random() * 10;
 
-        // Only draw stars in corners
         if (
           (x < width / 4 || x > (width * 3) / 4) &&
           (y < height / 4 || y > (height * 3) / 4)
@@ -951,11 +853,11 @@ Please wait a moment while we craft your personalized stats display...`,
             size,
             `rgba(${Number.parseInt(
               starColor.slice(1, 3),
-              16,
+              16
             )}, ${Number.parseInt(
               starColor.slice(3, 5),
-              16,
-            )}, ${Number.parseInt(starColor.slice(5, 7), 16)}, 0.5)`,
+              16
+            )}, ${Number.parseInt(starColor.slice(5, 7), 16)}, 0.5)`
           );
         }
       }
@@ -971,35 +873,29 @@ Please wait a moment while we craft your personalized stats display...`,
     context,
     targetUser,
     userInfo,
-    color,
     backgroundColor,
-    emoji,
-    banner,
+    banner
   ) {
     try {
       const width = 1280;
       const height = 720;
 
-      // Get base color from user's color or default
+      // Get base color (using pinkish tone from image)
       const baseColor = backgroundColor
         ? typeof backgroundColor.primary === "string"
           ? backgroundColor.primary
           : `#${backgroundColor.primary.toString(16).padStart(6, "0")}`
-        : typeof color.main === "string"
-          ? color.main
-          : "#FF9AA2";
+        : "#FF9999"; // Soft pink similar to the image's aura
 
       // Draw full-size banner/wallpaper as background
       if (banner) {
         try {
           const bannerImage = await loadImage(banner);
 
-          // Draw banner with slight zoom and blur for premium effect
           context.filter = "blur(5px)";
           context.drawImage(bannerImage, -50, -50, width + 100, height + 100);
           context.filter = "none";
 
-          // Add overlay gradient
           const overlayGradient = context.createLinearGradient(0, 0, 0, height);
           overlayGradient.addColorStop(0, "rgba(0, 0, 0, 0.7)");
           overlayGradient.addColorStop(0.5, "rgba(0, 0, 0, 0.5)");
@@ -1010,7 +906,6 @@ Please wait a moment while we craft your personalized stats display...`,
         } catch (error) {
           console.error("Error loading banner:", error);
 
-          // Fallback to gradient background
           const bgGradient = context.createLinearGradient(0, 0, width, height);
           bgGradient.addColorStop(0, this.adjustColor(baseColor, -70));
           bgGradient.addColorStop(1, "black");
@@ -1019,7 +914,6 @@ Please wait a moment while we craft your personalized stats display...`,
           context.fillRect(0, 0, width, height);
         }
       } else {
-        // Fallback to gradient background
         const bgGradient = context.createLinearGradient(0, 0, width, height);
         bgGradient.addColorStop(0, this.adjustColor(baseColor, -70));
         bgGradient.addColorStop(1, "black");
@@ -1031,14 +925,27 @@ Please wait a moment while we craft your personalized stats display...`,
       // Add background pattern
       this.drawBackgroundPattern(context, width, height, baseColor, "dots");
 
-      // Draw premium decorations
-      this.drawPremiumDecorations(context, width, height, baseColor);
-
       // Calculate card dimensions
-      const cardWidth = 1000;
-      const cardHeight = 500; // Reduced height since we removed stat panels
+      const cardWidth = 800;
+      const cardHeight = 500;
       const cardX = (width - cardWidth) / 2;
       const cardY = (height - cardHeight) / 2;
+
+      // Draw glowing aura
+      context.shadowColor = this.adjustColor(baseColor, 20); // Lighter pink for glow
+      context.shadowBlur = 30;
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 0;
+      this.drawRoundedRectangle(
+        context,
+        cardX - 10,
+        cardY - 10,
+        cardWidth + 20,
+        cardHeight + 20,
+        30,
+        "rgba(255, 255, 255, 0.1)"
+      );
+      context.shadowBlur = 0;
 
       // Draw main card with glass effect
       this.drawGlassEffect(
@@ -1049,7 +956,7 @@ Please wait a moment while we craft your personalized stats display...`,
         cardHeight,
         30,
         "rgba(255, 255, 255, 0.1)",
-        0.15,
+        0.15
       );
 
       // Draw premium border around card
@@ -1061,180 +968,137 @@ Please wait a moment while we craft your personalized stats display...`,
         cardHeight,
         30,
         4,
-        baseColor,
+        baseColor
       );
 
-      // Draw header section
-      const headerHeight = 80;
-      this.drawGlassEffect(
-        context,
-        cardX + 20,
-        cardY + 20,
-        cardWidth - 40,
-        headerHeight,
-        15,
-        baseColor,
-        0.3,
-      );
-
-      // Draw header text
-      context.font = "bold 36px 'Ghibli-Bold', 'Kelvinch-Bold', Arial";
+      // Draw level header
+      const headerHeight = 70;
+      context.font = "bold 48px 'Ghibli-Bold', 'Kelvinch-Bold', Arial";
       context.fillStyle = "white";
       context.textAlign = "center";
       context.textBaseline = "middle";
-      context.shadowColor = "rgba(0, 0, 0, 0.5)";
-      context.shadowBlur = 5;
-      context.shadowOffsetX = 2;
-      context.shadowOffsetY = 2;
-
-      const centerX = cardX + cardWidth / 2;
       context.fillText(
-        `✨ LEVEL ${userInfo.profile.level || 1} ✨`,
-        centerX,
-        cardY + 20 + headerHeight / 2,
+        `LEVEL ${userInfo.profile?.level || 1}`,
+        cardX + cardWidth / 2,
+        cardY + headerHeight / 2
       );
 
-      // Reset shadow and text alignment
-      context.shadowColor = "transparent";
-      context.shadowBlur = 0;
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 0;
-      context.textAlign = "start";
-      context.textBaseline = "alphabetic";
-
-      // Draw premium avatar frame
-      const avatarSize = 180;
-      const avatarX = centerX - avatarSize / 2;
-      const avatarY = cardY + headerHeight + 40;
+      // Draw avatar
+      const avatarSize = 160;
+      const avatarX = cardX + (cardWidth - avatarSize) / 2;
+      const avatarY = cardY + headerHeight + 30;
       await this.drawPremiumAvatarFrame(
         context,
         targetUser,
         avatarX,
         avatarY,
         avatarSize,
-        baseColor,
+        baseColor
       );
 
-      // Draw username with premium styling
-      context.font = "bold 36px 'Ghibli-Bold', 'Kelvinch-Bold', Arial";
+      // Draw username and percentage
+      context.font = "bold 30px 'Ghibli', 'Kelvinch-Roman', Arial";
+      context.fillStyle = "white";
       context.textAlign = "center";
-      context.textBaseline = "top";
-
-      // Create gradient for username
-      const usernameGradient = context.createLinearGradient(
-        centerX - 150,
-        avatarY + avatarSize + 20,
-        centerX + 150,
-        avatarY + avatarSize + 60,
-      );
-
-      usernameGradient.addColorStop(0, "white");
-      usernameGradient.addColorStop(0.5, this.adjustColor(baseColor, 70));
-      usernameGradient.addColorStop(1, "white");
-
-      context.fillStyle = usernameGradient;
-      context.shadowColor = "rgba(0, 0, 0, 0.5)";
-      context.shadowBlur = 5;
-      context.shadowOffsetX = 2;
-      context.shadowOffsetY = 2;
-
       const username =
         userInfo.profile && userInfo.profile.name
           ? client.utils.formatCapitalize(userInfo.profile.name)
           : targetUser.username;
+      context.fillText(
+        username,
+        cardX + cardWidth / 2,
+        avatarY + avatarSize + 15
+      );
 
-      context.fillText(username, centerX, avatarY + avatarSize + 20);
-
-      // Reset shadow
-      context.shadowColor = "transparent";
-      context.shadowBlur = 0;
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 0;
-
-      // Draw enhanced XP progress bar - larger and more prominent
-      const progressBarWidth = 700;
-      const progressBarHeight = 40;
-      const progressBarX = centerX - progressBarWidth / 2;
-      const progressBarY = cardY + cardHeight - 100;
-
-      const currentXP =
-        userInfo.profile && userInfo.profile.xp ? userInfo.profile.xp : 0;
-      const maxXP =
-        userInfo.profile && userInfo.profile.levelXp
-          ? userInfo.profile.levelXp
-          : 1000;
+      const currentXP = userInfo.profile?.xp || 0;
+      const maxXP = userInfo.profile?.levelXp || 1000;
       const progressPercentage = Math.min(currentXP / maxXP, 1);
+      context.font = "bold 32px 'Ghibli-Bold', 'Kelvinch-Bold', Arial";
+      context.fillText(
+        `${Math.floor(progressPercentage * 100)}%`,
+        cardX + cardWidth / 2,
+        avatarY + avatarSize + 55
+      );
 
+      // Draw progress bars
+      const progressBarWidth = 450;
+      const progressBarHeight = 35;
+      const progressBarX = cardX + (cardWidth - progressBarWidth) / 2;
+      const progressBarY = avatarY + avatarSize + 100;
+
+      const xpProgress = Math.min(currentXP / maxXP, 1);
       this.drawEnhancedProgressBar(
         context,
         progressBarX,
         progressBarY,
         progressBarWidth,
         progressBarHeight,
-        progressPercentage,
-        baseColor,
+        xpProgress,
+        baseColor
       );
 
-      // Draw XP text with enhanced styling
-      context.font = "bold 20px 'Ghibli', 'Kelvinch-Roman', Arial";
+      const currentVoiceXP = userInfo.profile?.voiceXP || 0;
+      const maxVoiceXP = userInfo.profile?.voiceLevelXp || 100;
+      const voiceProgress = Math.min(currentVoiceXP / maxVoiceXP, 1);
+      this.drawEnhancedProgressBar(
+        context,
+        progressBarX,
+        progressBarY + progressBarHeight + 30,
+        progressBarWidth,
+        progressBarHeight,
+        voiceProgress,
+        this.adjustColor(baseColor, -20)
+      );
+
+      // Draw XP and Voice XP text
+      context.font = "bold 24px 'Ghibli', 'Kelvinch-Roman', Arial";
       context.fillStyle = "white";
       context.textAlign = "center";
-      context.textBaseline = "top";
-      context.shadowColor = "rgba(0, 0, 0, 0.5)";
-      context.shadowBlur = 3;
+      context.fillText(
+        `${client.utils.formatNumber(currentXP)} / ${client.utils.formatNumber(
+          maxXP
+        )} XP`,
+        cardX + cardWidth / 2,
+        progressBarY + progressBarHeight + 15
+      );
+      context.fillText(
+        `${client.utils.formatNumber(
+          currentVoiceXP
+        )} / ${client.utils.formatNumber(maxVoiceXP)} Voice XP`,
+        cardX + cardWidth / 2,
+        progressBarY + progressBarHeight + 45 + progressBarHeight
+      );
 
-      const xpText = `${client.utils.formatNumber(
-        currentXP,
-      )} / ${client.utils.formatNumber(maxXP)} XP`;
-      context.fillText(xpText, centerX, progressBarY + progressBarHeight + 15);
-
-      // Add percentage text
-      const percentText = `${Math.floor(progressPercentage * 100)}%`;
-      context.font = "bold 24px 'Ghibli-Bold', 'Kelvinch-Bold', Arial";
-      context.fillText(percentText, centerX, progressBarY - 30);
-
-      // Reset shadow
-      context.shadowColor = "transparent";
-      context.shadowBlur = 0;
-
-      // Draw level badge - more prominent now
-      const badgeSize = 140;
-      const badgeX = cardX + cardWidth - 200;
-      const badgeY = cardY + 150;
+      // Draw level badges
+      const badgeSize = 90;
+      const badgeX = cardX + cardWidth - badgeSize - 30;
+      const badgeY = cardY + headerHeight + 40;
       this.drawPremiumBadge(
         context,
         badgeX,
         badgeY,
         badgeSize,
         userInfo.profile?.level || 1,
-        baseColor,
+        baseColor
       );
-
-      // Add final decorative elements
-      const heartSize = 20;
-      this.drawHeart(
+      this.drawPremiumBadge(
         context,
-        cardX + 30,
-        cardY + 30,
-        heartSize,
-        this.adjustColor(baseColor, 30),
-      );
-      this.drawHeart(
-        context,
-        cardX + cardWidth - 50,
-        cardY + 30,
-        heartSize,
-        this.adjustColor(baseColor, 30),
+        badgeX,
+        badgeY + badgeSize + 30,
+        badgeSize,
+        userInfo.profile?.voiceLevel || 1,
+        this.adjustColor(baseColor, -20),
+        "VOICE LEVEL"
       );
 
       // Add signature
-      context.font = "14px 'Ghibli', 'Kelvinch-Roman', Arial";
+      context.font = "18px 'Ghibli', 'Kelvinch-Roman', Arial";
       context.fillStyle = "rgba(255, 255, 255, 0.5)";
       context.textAlign = "right";
       context.fillText(
         "Peachy Bot",
         cardX + cardWidth - 20,
-        cardY + cardHeight - 15,
+        cardY + cardHeight - 20
       );
 
       return context.canvas;
