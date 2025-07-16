@@ -13,9 +13,13 @@ module.exports = class RelationshipCommand extends Command {
       name: "relationship",
       description: {
         content: "Manage your relationships (partner, bestie, etc.)",
-        examples: ["relationship add partner @user", "relationship remove bestie @user"],
+        examples: [
+          "relationship add partner @user",
+          "relationship remove bestie @user",
+        ],
         usage: "relationship <add/remove> <type> <user>",
       },
+      aliases: ["ship", "r"],
       category: "relationship",
       args: true,
       cooldown: 5,
@@ -67,29 +71,65 @@ module.exports = class RelationshipCommand extends Command {
       : ctx.message.mentions.users.first() || args[2];
 
     if (!target) {
-      return client.utils.sendErrorMessage(client, ctx, "You must mention a user.", color);
+      return client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "You must mention a user.",
+        color
+      );
     }
 
     if (target.id === ctx.author.id) {
-      return client.utils.sendErrorMessage(client, ctx, "You cannot choose yourself.", color);
+      return client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "You cannot choose yourself.",
+        color
+      );
     }
 
     const user = await client.utils.getUser(ctx.author.id);
     const mention = await client.utils.getUser(target.id);
 
     if (!user || !mention) {
-      return client.utils.sendErrorMessage(client, ctx, "Both users must be registered.", color);
+      return client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "Both users must be registered.",
+        color
+      );
     }
 
     switch (action) {
       case "add":
-        await this.addRelationship(client, ctx, user, target, mention, type, color);
+        await this.addRelationship(
+          client,
+          ctx,
+          user,
+          target,
+          mention,
+          type,
+          color
+        );
         break;
       case "remove":
-        await this.removeRelationship(client, ctx, user, target, mention, type, color);
+        await this.removeRelationship(
+          client,
+          ctx,
+          user,
+          target,
+          mention,
+          type,
+          color
+        );
         break;
       default:
-        return client.utils.sendErrorMessage(client, ctx, "Invalid action provided.", color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          "Invalid action provided.",
+          color
+        );
     }
   }
 
@@ -98,10 +138,20 @@ module.exports = class RelationshipCommand extends Command {
 
     if (type === "partner") {
       if (user.relationship?.partner?.userId) {
-        return client.utils.sendErrorMessage(client, ctx, `You already have a partner.`, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `You already have a partner.`,
+          color
+        );
       }
       if (mention.relationship?.partner?.userId) {
-        return client.utils.sendErrorMessage(client, ctx, `${target.username} already has a partner.`, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `${target.username} already has a partner.`,
+          color
+        );
       }
 
       // Add partner both ways
@@ -122,10 +172,20 @@ module.exports = class RelationshipCommand extends Command {
     } else {
       const existing = user.relationship?.[`${type}s`] || [];
       if (existing.find((rel) => rel.userId === target.id)) {
-        return client.utils.sendErrorMessage(client, ctx, `You already added ${target.username} as your ${type}.`, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `You already added ${target.username} as your ${type}.`,
+          color
+        );
       }
       if (limit && existing.length >= limit) {
-        return client.utils.sendErrorMessage(client, ctx, `You can only have up to ${limit} ${type}s.`, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `You can only have up to ${limit} ${type}s.`,
+          color
+        );
       }
 
       user.relationship[`${type}s`].push({
@@ -138,13 +198,23 @@ module.exports = class RelationshipCommand extends Command {
     }
 
     await Promise.all([user.save(), mention.save()]);
-    return client.utils.sendSuccessMessage(client, ctx, `🎉 You are now ${type}s with ${target.username}!`, color);
+    return client.utils.sendSuccessMessage(
+      client,
+      ctx,
+      `🎉 You are now ${type}s with ${target.username}!`,
+      color
+    );
   }
 
   async removeRelationship(client, ctx, user, target, mention, type, color) {
     if (type === "partner") {
       if (user.relationship.partner?.userId !== target.id) {
-        return client.utils.sendErrorMessage(client, ctx, `You are not partners with ${target.username}.`, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `You are not partners with ${target.username}.`,
+          color
+        );
       }
       user.relationship.partner = null;
       mention.relationship.partner = null;
@@ -155,11 +225,21 @@ module.exports = class RelationshipCommand extends Command {
       );
 
       if (user.relationship[`${type}s`].length === prevCount) {
-        return client.utils.sendErrorMessage(client, ctx, `You don't have ${target.username} as your ${type}.`, color);
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `You don't have ${target.username} as your ${type}.`,
+          color
+        );
       }
     }
 
     await Promise.all([user.save(), mention.save()]);
-    return client.utils.sendSuccessMessage(client, ctx, `💔 ${target.username} has been removed from your ${type}s.`, color);
+    return client.utils.sendSuccessMessage(
+      client,
+      ctx,
+      `💔 ${target.username} has been removed from your ${type}s.`,
+      color
+    );
   }
 };
