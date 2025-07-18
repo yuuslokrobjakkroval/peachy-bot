@@ -15,7 +15,7 @@ module.exports = class Slots extends Command {
       },
       category: "gambling",
       aliases: ["slot", "s"],
-      cooldown: 0,
+      cooldown: 2,
       args: false,
       permissions: {
         dev: false,
