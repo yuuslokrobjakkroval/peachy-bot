@@ -47,6 +47,7 @@
     "moment-timezone": "^0.6.0",
     "mongoose": "^8.16.4",
     "node-cron": "^4.2.1",
+    "prettier": "^3.6.2",
     "signale": "^1.4.0"
   },
   "signale": {

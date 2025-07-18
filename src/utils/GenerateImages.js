@@ -26,7 +26,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
   const userInfo = await client.users.fetch(targetUser.id);
   if (user?.relationship?.partner?.userId) {
     const partner = await client.utils.getUser(
-      user?.relationship?.partner?.userId
+      user?.relationship?.partner?.userId,
     );
     const partnerInfo = await client.users.fetch(partner?.userId);
     if (!user) {
@@ -48,7 +48,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
     context.fillRect(0, 0, 1280, 800);
 
     const userAvatar = await loadImage(
-      userInfo.displayAvatarURL({ format: "png", size: 256 })
+      userInfo.displayAvatarURL({ format: "png", size: 256 }),
     );
     const userAvatarX = 72;
     const userAvatarY = 186;
@@ -64,18 +64,18 @@ async function generatePartnerCanvas(client, user, targetUser) {
         userAvatarY,
         userAvatarX + userAvatarSize,
         userAvatarY + borderRadius,
-        borderRadius
+        borderRadius,
       );
       context.lineTo(
         userAvatarX + userAvatarSize,
-        userAvatarY + userAvatarSize - borderRadius
+        userAvatarY + userAvatarSize - borderRadius,
       );
       context.arcTo(
         userAvatarX + userAvatarSize,
         userAvatarY + userAvatarSize,
         userAvatarX + userAvatarSize - borderRadius,
         userAvatarY + userAvatarSize,
-        borderRadius
+        borderRadius,
       );
       context.lineTo(userAvatarX + borderRadius, userAvatarY + userAvatarSize);
       context.arcTo(
@@ -83,7 +83,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
         userAvatarY + userAvatarSize,
         userAvatarX,
         userAvatarY + userAvatarSize - borderRadius,
-        borderRadius
+        borderRadius,
       );
       context.lineTo(userAvatarX, userAvatarY + borderRadius);
       context.arcTo(
@@ -91,7 +91,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
         userAvatarY,
         userAvatarX + borderRadius,
         userAvatarY,
-        borderRadius
+        borderRadius,
       );
       context.closePath();
 
@@ -103,14 +103,14 @@ async function generatePartnerCanvas(client, user, targetUser) {
         userAvatarX,
         userAvatarY,
         userAvatarSize,
-        userAvatarSize
+        userAvatarSize,
       );
       context.restore();
     }
 
     // PARTNER SECTION
     const partnerAvatar = await loadImage(
-      partnerInfo.displayAvatarURL({ format: "png", size: 256 })
+      partnerInfo.displayAvatarURL({ format: "png", size: 256 }),
     );
     const partnerAvatarX = 400;
     const partnerAvatarY = 186;
@@ -122,36 +122,36 @@ async function generatePartnerCanvas(client, user, targetUser) {
       context.moveTo(partnerAvatarX + borderRadius, partnerAvatarY);
       context.lineTo(
         partnerAvatarX + partnerAvatarSize - borderRadius,
-        partnerAvatarY
+        partnerAvatarY,
       );
       context.arcTo(
         partnerAvatarX + partnerAvatarSize,
         partnerAvatarY,
         partnerAvatarX + partnerAvatarSize,
         partnerAvatarY + borderRadius,
-        borderRadius
+        borderRadius,
       );
       context.lineTo(
         partnerAvatarX + partnerAvatarSize,
-        partnerAvatarY + partnerAvatarSize - borderRadius
+        partnerAvatarY + partnerAvatarSize - borderRadius,
       );
       context.arcTo(
         partnerAvatarX + partnerAvatarSize,
         partnerAvatarY + partnerAvatarSize,
         partnerAvatarX + partnerAvatarSize - borderRadius,
         partnerAvatarY + partnerAvatarSize,
-        borderRadius
+        borderRadius,
       );
       context.lineTo(
         partnerAvatarX + borderRadius,
-        partnerAvatarY + partnerAvatarSize
+        partnerAvatarY + partnerAvatarSize,
       );
       context.arcTo(
         partnerAvatarX,
         partnerAvatarY + partnerAvatarSize,
         partnerAvatarX,
         partnerAvatarY + partnerAvatarSize - borderRadius,
-        borderRadius
+        borderRadius,
       );
       context.lineTo(partnerAvatarX, partnerAvatarY + borderRadius);
       context.arcTo(
@@ -159,7 +159,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
         partnerAvatarY,
         partnerAvatarX + borderRadius,
         partnerAvatarY,
-        borderRadius
+        borderRadius,
       );
       context.closePath();
 
@@ -171,7 +171,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
         partnerAvatarX,
         partnerAvatarY,
         partnerAvatarSize,
-        partnerAvatarSize
+        partnerAvatarSize,
       );
       context.restore();
     }
@@ -192,21 +192,21 @@ async function generatePartnerCanvas(client, user, targetUser) {
     context.fillText(
       client.utils.formatCapitalize(userInfo.username),
       958,
-      210
+      210,
     );
     context.fillText(
       client.utils.formatCapitalize(
-        user.social.facebook?.name ? user.social.facebook.name : "Not Set"
+        user.social.facebook?.name ? user.social.facebook.name : "Not Set",
       ),
       958,
-      290
+      290,
     );
     context.fillText(
       client.utils.formatCapitalize(
-        user.social.instagram?.name ? user.social.instagram.name : "Not Set"
+        user.social.instagram?.name ? user.social.instagram.name : "Not Set",
       ),
       958,
-      370
+      370,
     );
 
     // PARTNER SECTION
@@ -215,30 +215,32 @@ async function generatePartnerCanvas(client, user, targetUser) {
     context.fillText(
       client.utils.formatCapitalize(partnerInfo.username),
       958,
-      545
+      545,
     );
     context.fillText(
       client.utils.formatCapitalize(
-        partner.social.facebook?.name ? partner.social.facebook.name : "Not Set"
+        partner.social.facebook?.name
+          ? partner.social.facebook.name
+          : "Not Set",
       ),
       958,
-      625
+      625,
     );
     context.fillText(
       client.utils.formatCapitalize(
         partner.social.instagram?.name
           ? partner.social.instagram.name
-          : "Not Set"
+          : "Not Set",
       ),
       958,
-      705
+      705,
     );
 
     if (user?.relationship?.partner?.date) {
       const partnerDate = new Date(user?.relationship?.partner?.date);
       const currentDate = Date.now();
       const diffInDays = Math.floor(
-        (currentDate - partnerDate) / (1000 * 60 * 60 * 24)
+        (currentDate - partnerDate) / (1000 * 60 * 60 * 24),
       );
       context.fillStyle = "#000000";
       context.textAlign = "center";

@@ -36,7 +36,7 @@ module.exports = class ApplyJobList extends Command {
           client,
           ctx,
           "No users with pending job applications.",
-          color
+          color,
         );
       }
 
@@ -48,8 +48,8 @@ module.exports = class ApplyJobList extends Command {
           `**ID:** ${user.userId}\n**Name:** ${
             user.username || "Unknown"
           }\n**Applied Date:** ${new Date(
-            user.work.applyDate
-          ).toLocaleDateString()}\n`
+            user.work.applyDate,
+          ).toLocaleDateString()}\n`,
         );
         return acc;
       }, {});
@@ -67,7 +67,7 @@ module.exports = class ApplyJobList extends Command {
                 position === "it"
                   ? "IT"
                   : client.utils.formatCapitalize(position)
-              }`
+              }`,
             )
             .setDescription(chunk.join("\n\n"))
             .setFooter({
@@ -83,7 +83,7 @@ module.exports = class ApplyJobList extends Command {
         client,
         ctx,
         "An error occurred while fetching the job applications. Please try again later.",
-        color
+        color,
       );
     }
   }

@@ -47,7 +47,7 @@ module.exports = class ApplyJob extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const applyJobMessages = language.locales.get(language.defaultLocale)
       ?.workMessages?.applyJobMessages;
@@ -74,7 +74,7 @@ module.exports = class ApplyJob extends Command {
           client,
           ctx,
           applyJobMessages.invalidPosition,
-          color
+          color,
         );
       }
 
@@ -84,7 +84,7 @@ module.exports = class ApplyJob extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color
+          color,
         );
       }
 
@@ -94,7 +94,7 @@ module.exports = class ApplyJob extends Command {
           client,
           ctx,
           applyJobMessages.alreadyApplied,
-          color
+          color,
         );
       }
 
@@ -116,7 +116,7 @@ module.exports = class ApplyJob extends Command {
         .embed()
         .setColor(color.main)
         .setThumbnail(
-          client.utils.emojiToImage(client.utils.emojiPosition(position))
+          client.utils.emojiToImage(client.utils.emojiPosition(position)),
         )
         .setDescription(
           `${generalMessages.title
@@ -128,32 +128,34 @@ module.exports = class ApplyJob extends Command {
                         ? applyJobMessages.autoApproved
                             .replace(
                               "%{position}",
-                              client.utils.formatCapitalize("Student")
+                              client.utils.formatCapitalize("Student"),
                             )
                             .replace(
                               "%{approvedDate}",
                               new Date(
-                                user.work.approvedDate
-                              ).toLocaleDateString()
+                                user.work.approvedDate,
+                              ).toLocaleDateString(),
                             )
                         : applyJobMessages.success
                             .replace(
                               "%{position}",
                               client.utils.formatCapitalize(
-                                position === "it" ? "IT" : position
-                              )
+                                position === "it" ? "IT" : position,
+                              ),
                             )
                             .replace(
                               "%{applyDate}",
-                              new Date(user.work.applyDate).toLocaleDateString()
+                              new Date(
+                                user.work.applyDate,
+                              ).toLocaleDateString(),
                             )
-                    }`
+                    }`,
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -165,7 +167,7 @@ module.exports = class ApplyJob extends Command {
         client,
         ctx,
         generalMessages.internalError,
-        color
+        color,
       );
     }
   }

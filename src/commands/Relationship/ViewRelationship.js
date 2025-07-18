@@ -55,7 +55,7 @@ module.exports = class ViewRelationship extends Command {
         client,
         ctx,
         `${target.username} is not registered.`,
-        color.main
+        color.main,
       );
     }
 
@@ -72,7 +72,7 @@ module.exports = class ViewRelationship extends Command {
 
     const formatOne = (r) =>
       `• <@${r.userId}> \n  — Since: <t:${Math.floor(
-        new Date(r.date).getTime() / 1000
+        new Date(r.date).getTime() / 1000,
       )}:d>`;
 
     const formatList = (list) =>
@@ -114,7 +114,7 @@ module.exports = class ViewRelationship extends Command {
           client,
           ctx,
           `${target.username} does not have a partner yet.`,
-          color.main
+          color.main,
         );
       }
 
@@ -126,7 +126,7 @@ module.exports = class ViewRelationship extends Command {
           client,
           ctx,
           `Could not generate partner image.`,
-          color.main
+          color.main,
         );
       }
 
@@ -139,8 +139,8 @@ module.exports = class ViewRelationship extends Command {
         `💍 Partner of <@${target.id}>:\n<@${
           rel.partner.userId
         }> (Since <t:${Math.floor(
-          new Date(rel.partner.date).getTime() / 1000
-        )}:d>)`
+          new Date(rel.partner.date).getTime() / 1000,
+        )}:d>)`,
       );
       embed.setImage(`attachment://${fileName}`);
 

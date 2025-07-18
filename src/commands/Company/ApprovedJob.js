@@ -47,7 +47,7 @@ module.exports = class ApprovedJob extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const user = ctx.isInteraction
       ? ctx.interaction.options.getUser("user") || ctx.author
@@ -72,7 +72,7 @@ module.exports = class ApprovedJob extends Command {
         client,
         ctx,
         'Please provide a valid user ID and status ("approved" or "rejected").',
-        color
+        color,
       );
     }
 
@@ -81,7 +81,7 @@ module.exports = class ApprovedJob extends Command {
         client,
         ctx,
         "Please provide a reason for rejecting the job application.",
-        color
+        color,
       );
     }
 
@@ -92,7 +92,7 @@ module.exports = class ApprovedJob extends Command {
           client,
           ctx,
           `No user found with ID: ${userId}`,
-          color
+          color,
         );
       }
 
@@ -102,7 +102,7 @@ module.exports = class ApprovedJob extends Command {
           client,
           ctx,
           "This user has not applied for a job yet.",
-          color
+          color,
         );
       }
 
@@ -132,12 +132,12 @@ module.exports = class ApprovedJob extends Command {
           generalMessages.title
             .replace("%{mainLeft}", emoji.mainLeft)
             .replace("%{title}", "APPROVED JOB")
-            .replace("%{mainRight}", emoji.mainRight) + embedDescription // Use embedDescription here
+            .replace("%{mainRight}", emoji.mainRight) + embedDescription, // Use embedDescription here
         )
         .setFooter({
           text: generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ),
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -149,7 +149,7 @@ module.exports = class ApprovedJob extends Command {
         client,
         ctx,
         "An error occurred while processing the job application status.",
-        color
+        color,
       );
     }
   }

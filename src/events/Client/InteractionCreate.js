@@ -58,7 +58,7 @@ module.exports = class InteractionCreate extends Event {
             // Calculate hours, minutes, and seconds
             const hours = Math.floor(remainingTime / (1000 * 60 * 60));
             const minutes = Math.floor(
-              (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+              (remainingTime % (1000 * 60 * 60)) / (1000 * 60),
             );
             const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
@@ -84,7 +84,7 @@ module.exports = class InteractionCreate extends Event {
                   .setDescription(
                     `You are in timeout for: \`${
                       user.verification.timeout.reason || "No reason provided"
-                    }\`.\nTimeout ends in **${timeString}**.`
+                    }\`.\nTimeout ends in **${timeString}**.`,
                   ),
               ],
             });
@@ -99,7 +99,7 @@ module.exports = class InteractionCreate extends Event {
               .setDescription(
                 `My Name is ${this.client.user.displayName}.\n` +
                   `My prefix for this server is **\`${prefix}\`**.\n\n` +
-                  `Do you need help? please use **\`${prefix}help\`**!!!`
+                  `Do you need help? please use **\`${prefix}help\`**!!!`,
               )
               .setImage(globalGif.mentionBot)
               .setFooter({
@@ -109,7 +109,7 @@ module.exports = class InteractionCreate extends Event {
 
             const clickSuppButton = this.client.utils.linkButton(
               "Click for support",
-              this.client.config.links.support
+              this.client.config.links.support,
             );
 
             const row = this.client.utils.createButtonRow(clickSuppButton);
@@ -139,7 +139,7 @@ module.exports = class InteractionCreate extends Event {
 
             if (
               !interaction.guild.members.me.permissions.has(
-                PermissionFlagsBits.SendMessages
+                PermissionFlagsBits.SendMessages,
               )
             ) {
               return await interaction.member
@@ -151,7 +151,7 @@ module.exports = class InteractionCreate extends Event {
 
             if (
               !interaction.guild.members.me.permissions.has(
-                PermissionFlagsBits.EmbedLinks
+                PermissionFlagsBits.EmbedLinks,
               )
             ) {
               return await interaction.reply({
@@ -163,7 +163,7 @@ module.exports = class InteractionCreate extends Event {
               if (command.permissions.client) {
                 if (
                   !interaction.guild.members.me.permissions.has(
-                    command.permissions.client
+                    command.permissions.client,
                   )
                 ) {
                   return await interaction.reply({
@@ -189,13 +189,13 @@ module.exports = class InteractionCreate extends Event {
             if (!this.client.cooldown.has(interaction.commandName)) {
               this.client.cooldown.set(
                 interaction.commandName,
-                new Collection()
+                new Collection(),
               );
             }
 
             const now = Date.now();
             const timestamps = this.client.cooldown.get(
-              interaction.commandName
+              interaction.commandName,
             );
             const cooldownAmount = Math.floor(command.cooldown || 5) * 1000;
             if (timestamps.has(interaction.user.id)) {
@@ -205,7 +205,7 @@ module.exports = class InteractionCreate extends Event {
               if (now < expirationTime && timeLeft > 0.9) {
                 return await interaction.reply({
                   content: `Please wait \`${timeLeft.toFixed(
-                    1
+                    1,
                   )}\` more second(s) before reusing the **${
                     interaction.commandName
                   }** command.`,
@@ -219,7 +219,7 @@ module.exports = class InteractionCreate extends Event {
               user,
               color,
               emoji,
-              interaction.commandName
+              interaction.commandName,
             );
 
             const balanceCommands = [
@@ -241,7 +241,7 @@ module.exports = class InteractionCreate extends Event {
             let logChannelId;
             if (
               ["admin", "staff", "developer", "guild"].includes(
-                command.category.toLowerCase()
+                command.category.toLowerCase(),
               )
             ) {
               logChannelId = this.client.config.logChannelId[9];
@@ -274,8 +274,8 @@ module.exports = class InteractionCreate extends Event {
                 .setColor(color.blue)
                 .setTitle(
                   `Command - ${this.client.utils.formatCapitalize(
-                    interaction.commandName
-                  )}`
+                    interaction.commandName,
+                  )}`,
                 )
                 .setThumbnail(interaction.guild.iconURL({ extension: "jpeg" }))
                 .addFields([
@@ -310,12 +310,12 @@ module.exports = class InteractionCreate extends Event {
               ctx.args,
               color,
               emoji,
-              language
+              language,
             );
           } catch (error) {
             console.error(
               `Error handling command ${interaction.commandName}:`,
-              error
+              error,
             );
             await interaction.reply({
               content: "An error occurred while processing the command.",
@@ -345,7 +345,7 @@ module.exports = class InteractionCreate extends Event {
                       })
                       .setColor(color.danger)
                       .setDescription(
-                        "An error occurred: Giveaway data not found."
+                        "An error occurred: Giveaway data not found.",
                       ),
                   ],
                   flags: 64,
@@ -355,7 +355,7 @@ module.exports = class InteractionCreate extends Event {
                   this.client,
                   color,
                   emoji,
-                  interaction.message
+                  interaction.message,
                 );
               } else if (data.ended) {
                 return interaction.reply({
@@ -396,7 +396,7 @@ module.exports = class InteractionCreate extends Event {
                       })
                       .setColor(color.pink)
                       .setDescription(
-                        "You are already entered in this giveaway. Would you like to leave?"
+                        "You are already entered in this giveaway. Would you like to leave?",
                       ),
                   ],
                   components: [
@@ -404,7 +404,7 @@ module.exports = class InteractionCreate extends Event {
                       new ButtonBuilder()
                         .setCustomId("leave-giveaway")
                         .setLabel("Leave Giveaway")
-                        .setStyle(ButtonStyle.Danger)
+                        .setStyle(ButtonStyle.Danger),
                     ),
                   ],
                   flags: 64,
@@ -417,7 +417,7 @@ module.exports = class InteractionCreate extends Event {
                   .then(async (int) => {
                     if (int.customId === "leave-giveaway") {
                       data.entered = data.entered.filter(
-                        (id) => id !== interaction.user.id
+                        (id) => id !== interaction.user.id,
                       );
                       await data.save();
 
@@ -431,7 +431,7 @@ module.exports = class InteractionCreate extends Event {
                             })
                             .setColor(color.main)
                             .setDescription(
-                              "You have successfully left the giveaway."
+                              "You have successfully left the giveaway.",
                             ),
                         ],
                         flags: 64,
@@ -457,7 +457,7 @@ module.exports = class InteractionCreate extends Event {
                       })
                       .setColor(color.main)
                       .setDescription(
-                        "You have successfully joined the giveaway."
+                        "You have successfully joined the giveaway.",
                       ),
                   ],
                   flags: 64,
@@ -476,7 +476,7 @@ module.exports = class InteractionCreate extends Event {
                         .setCustomId("giveaway-participants")
                         .setEmoji(globalEmoji.giveaway.participants)
                         .setLabel("Participants")
-                        .setStyle(1)
+                        .setStyle(1),
                     ),
                   ],
                 });
@@ -511,11 +511,11 @@ module.exports = class InteractionCreate extends Event {
                     return null; // Skip this participant if they are not found
                   }
                   return `${index + 1}. <@${id}> (**1** entry)`;
-                })
+                }),
               );
 
               const validParticipants = participants.filter(
-                (participant) => participant !== null
+                (participant) => participant !== null,
               );
 
               const embed = this.client
@@ -524,10 +524,10 @@ module.exports = class InteractionCreate extends Event {
                 .setColor(color.main)
                 .setDescription(
                   `These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
-                    data.prize
+                    data.prize,
                   )}**:\n\n${validParticipants.join(
-                    "\n"
-                  )}\n\nTotal Participants: **${validParticipants.length}**`
+                    "\n",
+                  )}\n\nTotal Participants: **${validParticipants.length}**`,
                 );
 
               await interaction.reply({ embeds: [embed], flags: 64 });
@@ -552,7 +552,7 @@ module.exports = class InteractionCreate extends Event {
                       })
                       .setColor(color.danger)
                       .setDescription(
-                        "An error occurred: Giveaway data not found."
+                        "An error occurred: Giveaway data not found.",
                       ),
                   ],
                   flags: 64,
@@ -562,7 +562,7 @@ module.exports = class InteractionCreate extends Event {
                   this.client,
                   color,
                   emoji,
-                  interaction.message
+                  interaction.message,
                 );
               } else if (data.ended) {
                 return interaction.reply({
@@ -603,7 +603,7 @@ module.exports = class InteractionCreate extends Event {
                       })
                       .setColor(color.pink)
                       .setDescription(
-                        "You are already entered in this giveaway. Would you like to leave?"
+                        "You are already entered in this giveaway. Would you like to leave?",
                       ),
                   ],
                   components: [
@@ -611,7 +611,7 @@ module.exports = class InteractionCreate extends Event {
                       new ButtonBuilder()
                         .setCustomId("leave-giveaway")
                         .setLabel("Leave Giveaway")
-                        .setStyle(ButtonStyle.Danger)
+                        .setStyle(ButtonStyle.Danger),
                     ),
                   ],
                   flags: 64,
@@ -624,7 +624,7 @@ module.exports = class InteractionCreate extends Event {
                   .then(async (int) => {
                     if (int.customId === "leave-giveaway") {
                       data.entered = data.entered.filter(
-                        (id) => id !== interaction.user.id
+                        (id) => id !== interaction.user.id,
                       );
                       await data.save();
 
@@ -638,7 +638,7 @@ module.exports = class InteractionCreate extends Event {
                             })
                             .setColor(color.main)
                             .setDescription(
-                              "You have successfully left the giveaway."
+                              "You have successfully left the giveaway.",
                             ),
                         ],
                         flags: 64,
@@ -664,7 +664,7 @@ module.exports = class InteractionCreate extends Event {
                       })
                       .setColor(color.main)
                       .setDescription(
-                        "You have successfully joined the giveaway."
+                        "You have successfully joined the giveaway.",
                       ),
                   ],
                   flags: 64,
@@ -683,7 +683,7 @@ module.exports = class InteractionCreate extends Event {
                         .setCustomId("giveawayshopitem-participants")
                         .setEmoji(globalEmoji.giveaway.participants)
                         .setLabel("Participants")
-                        .setStyle(1)
+                        .setStyle(1),
                     ),
                   ],
                 });
@@ -718,11 +718,11 @@ module.exports = class InteractionCreate extends Event {
                     return null; // Skip this participant if they are not found
                   }
                   return `${index + 1}. <@${id}> (**1** entry)`;
-                })
+                }),
               );
 
               const validParticipants = participants.filter(
-                (participant) => participant !== null
+                (participant) => participant !== null,
               );
 
               const embed = this.client
@@ -731,10 +731,10 @@ module.exports = class InteractionCreate extends Event {
                 .setColor(color.main)
                 .setDescription(
                   `These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
-                    data.amount
+                    data.amount,
                   )}**:\n\n${validParticipants.join(
-                    "\n"
-                  )}\n\nTotal Participants: **${validParticipants.length}**`
+                    "\n",
+                  )}\n\nTotal Participants: **${validParticipants.length}**`,
                 );
 
               await interaction.reply({ embeds: [embed], flags: 64 });
@@ -751,7 +751,7 @@ module.exports = class InteractionCreate extends Event {
                   client,
                   interaction.user,
                   giveaway,
-                  interaction
+                  interaction,
                 );
 
               if (!meetsRequirements) return;
@@ -780,7 +780,7 @@ module.exports = class InteractionCreate extends Event {
                 const roleID = Data.Role;
                 const veriGuild = await client.guilds.fetch(guild.id);
                 const member = await veriGuild.members.fetch(
-                  interaction.user.id
+                  interaction.user.id,
                 );
                 await member.roles.add(roleID).catch((err) => {
                   interaction.editReply({
@@ -811,7 +811,7 @@ module.exports = class InteractionCreate extends Event {
 
                 await users.findOneAndUpdate(
                   { userId },
-                  { $inc: { "balance.coin": claimedCoins } }
+                  { $inc: { "balance.coin": claimedCoins } },
                 );
 
                 const row = new ActionRowBuilder().addComponents(
@@ -820,7 +820,7 @@ module.exports = class InteractionCreate extends Event {
                     .setLabel("Claimed")
                     .setEmoji("🕔")
                     .setStyle(ButtonStyle.Primary)
-                    .setDisabled(true)
+                    .setDisabled(true),
                 );
 
                 const embed = this.client
@@ -828,8 +828,8 @@ module.exports = class InteractionCreate extends Event {
                   .setColor(this.client.color.main)
                   .setDescription(
                     `Congratulations to <@${userId}> ! Claim successful! ${this.client.utils.formatNumber(
-                      claimedCoins
-                    )} ${this.client.emoji.coin} added to your balance.`
+                      claimedCoins,
+                    )} ${this.client.emoji.coin} added to your balance.`,
                   );
 
                 await interaction.update({

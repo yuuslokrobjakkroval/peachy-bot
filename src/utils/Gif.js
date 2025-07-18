@@ -59,5 +59,5 @@ module.exports = {
     },
   },
 
-  growTree: "https://i.imgur.com/PqPUQK6.png"
+  growTree: "https://i.imgur.com/PqPUQK6.png",
 };

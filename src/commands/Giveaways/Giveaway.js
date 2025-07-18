@@ -115,9 +115,10 @@ module.exports = class Giveaway extends Command {
       durationStr,
       winners,
     );
-   if (!validationResult.success) {
-      const errorMessage = "⚠️ Invalid parameters provided. Please check your input and try again.";
-    
+    if (!validationResult.success) {
+      const errorMessage =
+        "⚠️ Invalid parameters provided. Please check your input and try again.";
+
       return ctx.isInteraction
         ? await ctx.interaction.editReply({
             content: errorMessage,
@@ -239,8 +240,9 @@ module.exports = class Giveaway extends Command {
     });
 
     if (!messageResult.success) {
-      const errorMessage = "❌ Failed to send the giveaway message. Please try again later.";
-    
+      const errorMessage =
+        "❌ Failed to send the giveaway message. Please try again later.";
+
       return ctx.isInteraction
         ? await ctx.interaction.editReply({
             content: errorMessage,

@@ -64,12 +64,10 @@ Follow these simple steps to bring Peachy-Bot to life on your server! 🌸
 Peachy-Bot uses a `.env` file to store configuration settings, which you’ll need to create. Follow these steps to set it up:
 
 - **Create a `.env` File**:
-
   - In the root folder of the project (where `config.js` is), create a new file named `.env`.
   - You can do this in your text editor by right-clicking the folder > New File > name it `.env`.
 
 - **Add Environment Variables**:
-
   - Open the `.env` file and add the following variables. Replace the placeholder values with your own:
     ```
     NODE_ENV=PRODUCTION
@@ -98,7 +96,6 @@ Peachy-Bot uses a `.env` file to store configuration settings, which you’ll ne
     - `KEEP_ALIVE`: Set to `true` to keep the bot running on free hosting (e.g., Replit), `false` otherwise (default is `false`).
 
 - **Optional Channels**:
-
   - The `channel` object in `config.js` lists specific channel IDs for features like welcome messages, logs, and giveaways. You can update these in the `.env` file or directly in `config.js` if needed. Example:
     ```
     WELCOME_CHANNEL=1299416615275987025

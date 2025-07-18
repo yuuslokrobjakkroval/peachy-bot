@@ -38,7 +38,7 @@ module.exports = class ViewTree extends Command {
   async run(client, ctx, args, color, emoji, language) {
     if (!ctx.interaction) {
       return ctx.sendMessage(
-        "⚠️ This command only works with slash commands right now."
+        "⚠️ This command only works with slash commands right now.",
       );
     }
 
@@ -85,7 +85,7 @@ module.exports = class ViewTree extends Command {
       new ButtonBuilder()
         .setCustomId("water_tree")
         .setLabel("💧 Water Tree")
-        .setStyle(ButtonStyle.Primary)
+        .setStyle(ButtonStyle.Primary),
     );
 
     // Edit the deferred reply with the actual content
@@ -153,7 +153,7 @@ module.exports = class ViewTree extends Command {
           .setCustomId("water_tree")
           .setLabel("💧 Water Tree")
           .setStyle(ButtonStyle.Primary)
-          .setDisabled(true)
+          .setDisabled(true),
       );
 
       await message.edit({

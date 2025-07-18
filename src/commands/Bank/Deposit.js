@@ -34,7 +34,7 @@ module.exports = class Deposit extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const depositMessages = language.locales.get(language.defaultLocale)
       ?.bankMessages?.depositMessages;
@@ -46,7 +46,7 @@ module.exports = class Deposit extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color
+          color,
         );
       }
 
@@ -55,15 +55,15 @@ module.exports = class Deposit extends Command {
         const isCooldownExpired = await client.utils.checkCooldown(
           ctx.author.id,
           "rob",
-          cooldownTime
+          cooldownTime,
         );
         if (!isCooldownExpired) {
           const lastCooldownTimestamp = await client.utils.getCooldown(
             ctx.author.id,
-            "rob"
+            "rob",
           );
           const remainingTime = Math.ceil(
-            (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000
+            (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000,
           );
           const duration = moment.duration(remainingTime, "seconds");
           const minutes = Math.floor(duration.asMinutes());
@@ -89,7 +89,7 @@ module.exports = class Deposit extends Command {
           client,
           ctx,
           `You have already started the ${activeCommand} event. Please finish it before using this command.`,
-          color
+          color,
         );
       } else {
         const { coin } = user.balance;
@@ -98,7 +98,7 @@ module.exports = class Deposit extends Command {
             client,
             ctx,
             depositMessages.zeroBalance,
-            color
+            color,
           );
         }
 
@@ -122,7 +122,7 @@ module.exports = class Deposit extends Command {
           color,
           coin,
           amount,
-          depositMessages.invalidAmount
+          depositMessages.invalidAmount,
         );
         if (typeof amount === "object") return;
 
@@ -144,7 +144,7 @@ module.exports = class Deposit extends Command {
             client,
             ctx,
             depositMessages.tooHigh,
-            color
+            color,
           );
         }
 
@@ -165,14 +165,14 @@ module.exports = class Deposit extends Command {
                 .replace("%{mainLeft}", emoji.mainLeft)
                 .replace("%{mainRight}", emoji.mainRight)
                 .replace("%{amount}", client.utils.formatNumber(baseCoins))
-                .replace("%{coinEmote}", emoji.coin)
+                .replace("%{coinEmote}", emoji.coin),
           )
           .setImage(globalGif.banner.depositWithdraw)
           .setFooter({
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName
+                ctx.author.displayName,
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -185,7 +185,7 @@ module.exports = class Deposit extends Command {
         client,
         ctx,
         generalMessages.userFetchError,
-        color
+        color,
       );
     }
   }

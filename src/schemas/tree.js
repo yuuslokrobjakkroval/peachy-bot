@@ -13,7 +13,7 @@ const TreeSchema = new Schema(
       lastWateredBy: { type: String, default: null },
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = model("tree", TreeSchema);

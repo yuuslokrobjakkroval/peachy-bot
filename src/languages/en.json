@@ -1,6 +1,6 @@
 {
   "generalMessages": {
-    "title": "%{mainLeft} **%{title}** %{mainRight}\n\n",
+    "title": "%{mainLeft} **%{title}** %{mainRight}\n",
     "search": "Searching %{loading}",
     "permissionsClientError": "I don't have enough permissions to execute this command.",
     "permissionsUserError": "You don't have enough permissions to use this command.",

@@ -24,7 +24,7 @@ module.exports = class WaterTree extends Command {
   async run(client, ctx, args, color, emoji, language) {
     if (!ctx.interaction) {
       return ctx.sendMessage(
-        "⚠️ This command only works with slash commands right now."
+        "⚠️ This command only works with slash commands right now.",
       );
     }
 

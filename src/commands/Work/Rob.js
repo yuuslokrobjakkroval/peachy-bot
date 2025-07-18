@@ -36,7 +36,7 @@ module.exports = class Rob extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const robMessages = language.locales.get(language.defaultLocale)
       ?.workMessages?.robMessages;
@@ -52,7 +52,7 @@ module.exports = class Rob extends Command {
           client,
           ctx,
           robMessages.invalidTarget,
-          color
+          color,
         );
       }
 
@@ -67,7 +67,7 @@ module.exports = class Rob extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color
+          color,
         );
       }
 
@@ -80,7 +80,7 @@ module.exports = class Rob extends Command {
           client,
           ctx,
           robMessages.cannotRobAsPolice,
-          color
+          color,
         );
       }
 
@@ -94,9 +94,9 @@ module.exports = class Rob extends Command {
           ctx,
           robMessages.protectedByPolice.replace(
             "%{victim}",
-            target.displayName
+            target.displayName,
           ),
-          color
+          color,
         );
       }
 
@@ -105,16 +105,16 @@ module.exports = class Rob extends Command {
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        cooldownTime
+        cooldownTime,
       );
 
       if (!isCooldownExpired) {
         const lastCooldownTimestamp = await client.utils.getCooldown(
           ctx.author.id,
-          this.name.toLowerCase()
+          this.name.toLowerCase(),
         );
         const remainingTime = Math.ceil(
-          (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000
+          (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000,
         );
         const duration = moment.duration(remainingTime, "seconds");
         const minutes = Math.floor(duration.asMinutes());
@@ -137,7 +137,7 @@ module.exports = class Rob extends Command {
           client,
           ctx,
           robMessages.notEnoughCoins.replace("%{victim}", target.displayName),
-          color
+          color,
         );
       }
 
@@ -146,20 +146,29 @@ module.exports = class Rob extends Command {
       let successRate;
 
       // Set success rate based on the coin balance
-      if (victimCoins >= 500000000) successRate = 10; // 500M+ coins
-      else if (victimCoins >= 300000000) successRate = 20; // 300M coins
-      else if (victimCoins >= 200000000) successRate = 30; // 200M coins
-      else if (victimCoins >= 100000000) successRate = 40; // 100M coins
-      else if (victimCoins >= 50000000) successRate = 50; // 50M coins
-      else if (victimCoins >= 20000000) successRate = 60; // 20M coins
-      else if (victimCoins >= 10000000) successRate = 65; // 10M coins
-      else if (victimCoins >= 5000000) successRate = 70; // 5M coins
-      else if (victimCoins >= 1000000) successRate = 75; // 1M coins
+      if (victimCoins >= 500000000)
+        successRate = 10; // 500M+ coins
+      else if (victimCoins >= 300000000)
+        successRate = 20; // 300M coins
+      else if (victimCoins >= 200000000)
+        successRate = 30; // 200M coins
+      else if (victimCoins >= 100000000)
+        successRate = 40; // 100M coins
+      else if (victimCoins >= 50000000)
+        successRate = 50; // 50M coins
+      else if (victimCoins >= 20000000)
+        successRate = 60; // 20M coins
+      else if (victimCoins >= 10000000)
+        successRate = 65; // 10M coins
+      else if (victimCoins >= 5000000)
+        successRate = 70; // 5M coins
+      else if (victimCoins >= 1000000)
+        successRate = 75; // 1M coins
       else successRate = 80; // Below 1M coins
 
       const success = chance.bool({ likelihood: successRate });
       const stolenAmount = Math.floor(
-        victim.balance.coin * (chance.integer({ min: 1, max: 1.5 }) / 100)
+        victim.balance.coin * (chance.integer({ min: 1, max: 1.5 }) / 100),
       );
 
       if (success) {
@@ -172,7 +181,7 @@ module.exports = class Rob extends Command {
         await client.utils.updateCooldown(
           ctx.author.id,
           this.name.toLowerCase(),
-          cooldownTime
+          cooldownTime,
         );
 
         // Send success message
@@ -189,14 +198,14 @@ module.exports = class Rob extends Command {
             robMessages.success
               .replace(
                 "%{stolenAmount}",
-                client.utils.formatNumber(stolenAmount)
+                client.utils.formatNumber(stolenAmount),
               )
-              .replace("%{victim}", target.displayName)
+              .replace("%{victim}", target.displayName),
           )
           .setFooter({
             text: generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ),
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -212,7 +221,7 @@ module.exports = class Rob extends Command {
         await client.utils.updateCooldown(
           ctx.author.id,
           this.name.toLowerCase(),
-          cooldownTime
+          cooldownTime,
         );
 
         const failureEmbed = client
@@ -221,12 +230,12 @@ module.exports = class Rob extends Command {
           .setDescription(
             robMessages.failed
               .replace("%{penalty}", client.utils.formatNumber(penalty))
-              .replace("%{victim}", target.displayName)
+              .replace("%{victim}", target.displayName),
           )
           .setFooter({
             text: generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ),
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -239,7 +248,7 @@ module.exports = class Rob extends Command {
         client,
         ctx,
         generalMessages.internalError,
-        color
+        color,
       );
     }
   }

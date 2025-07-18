@@ -75,7 +75,7 @@ module.exports = class RelationshipCommand extends Command {
         client,
         ctx,
         "You must mention a user.",
-        color
+        color,
       );
     }
 
@@ -84,7 +84,7 @@ module.exports = class RelationshipCommand extends Command {
         client,
         ctx,
         "You cannot choose yourself.",
-        color
+        color,
       );
     }
 
@@ -96,7 +96,7 @@ module.exports = class RelationshipCommand extends Command {
         client,
         ctx,
         "Both users must be registered.",
-        color
+        color,
       );
     }
 
@@ -109,7 +109,7 @@ module.exports = class RelationshipCommand extends Command {
           target,
           mention,
           type,
-          color
+          color,
         );
         break;
       case "remove":
@@ -120,7 +120,7 @@ module.exports = class RelationshipCommand extends Command {
           target,
           mention,
           type,
-          color
+          color,
         );
         break;
       default:
@@ -128,7 +128,7 @@ module.exports = class RelationshipCommand extends Command {
           client,
           ctx,
           "Invalid action provided.",
-          color
+          color,
         );
     }
   }
@@ -142,7 +142,7 @@ module.exports = class RelationshipCommand extends Command {
           client,
           ctx,
           `You already have a partner.`,
-          color
+          color,
         );
       }
       if (mention.relationship?.partner?.userId) {
@@ -150,7 +150,7 @@ module.exports = class RelationshipCommand extends Command {
           client,
           ctx,
           `${target.username} already has a partner.`,
-          color
+          color,
         );
       }
 
@@ -176,7 +176,7 @@ module.exports = class RelationshipCommand extends Command {
           client,
           ctx,
           `You already added ${target.username} as your ${type}.`,
-          color
+          color,
         );
       }
       if (limit && existing.length >= limit) {
@@ -184,7 +184,7 @@ module.exports = class RelationshipCommand extends Command {
           client,
           ctx,
           `You can only have up to ${limit} ${type}s.`,
-          color
+          color,
         );
       }
 
@@ -202,7 +202,7 @@ module.exports = class RelationshipCommand extends Command {
       client,
       ctx,
       `🎉 You are now ${type}s with ${target.username}!`,
-      color
+      color,
     );
   }
 
@@ -213,7 +213,7 @@ module.exports = class RelationshipCommand extends Command {
           client,
           ctx,
           `You are not partners with ${target.username}.`,
-          color
+          color,
         );
       }
       user.relationship.partner = null;
@@ -221,7 +221,7 @@ module.exports = class RelationshipCommand extends Command {
     } else {
       const prevCount = user.relationship[`${type}s`]?.length || 0;
       user.relationship[`${type}s`] = user.relationship[`${type}s`].filter(
-        (rel) => rel.userId !== target.id
+        (rel) => rel.userId !== target.id,
       );
 
       if (user.relationship[`${type}s`].length === prevCount) {
@@ -229,7 +229,7 @@ module.exports = class RelationshipCommand extends Command {
           client,
           ctx,
           `You don't have ${target.username} as your ${type}.`,
-          color
+          color,
         );
       }
     }
@@ -239,7 +239,7 @@ module.exports = class RelationshipCommand extends Command {
       client,
       ctx,
       `💔 ${target.username} has been removed from your ${type}s.`,
-      color
+      color,
     );
   }
 };
