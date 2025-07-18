@@ -7,13 +7,27 @@
   "author": "KYUU",
   "license": "ISC",
   "scripts": {
-    "start:dev": "node src/index.js",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon --watch src --ext js,json --exec node src/index.js",
+    "restart": "npm run stop && npm run start",
+    "stop": "taskkill /F /IM node.exe",
+    "format": "prettier --write .",
+    "prettier": "prettier --write .",
+    "prettier-check": "prettier --check .",
+    "debug": "NODE_ENV=development node --inspect src/index.js"
   },
   "keywords": [
     "discord",
-    "bot"
+    "bot",
+    "discordjs",
+    "discord-bot",
+    "moderation",
+    "economy",
+    "fun",
+    "utility",
+    "community",
+    "slash-commands",
+    "discord-bot-framework"
   ],
   "bugs": "",
   "homepage": "",
@@ -23,7 +37,6 @@
   },
   "dependencies": {
     "@discordjs/builders": "^1.11.2",
-    "@dotenvx/dotenvx": "^1.48.0",
     "@hammerhq/localization": "^2.2.0",
     "axios": "^1.10.0",
     "canvafy": "^7.2.1",
