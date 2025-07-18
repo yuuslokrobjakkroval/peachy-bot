@@ -17,6 +17,7 @@ module.exports = class AddItem extends Command {
       },
       category: "admin",
       aliases: ["ai"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,
@@ -37,7 +38,7 @@ module.exports = class AddItem extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const mention = ctx.isInteraction
       ? ctx.interaction.options.getUser("user") || ctx.author // Default to the author if no user is provided
@@ -53,7 +54,7 @@ module.exports = class AddItem extends Command {
         client,
         ctx,
         generalMessages.botTransfer,
-        color,
+        color
       );
     }
 
@@ -78,7 +79,7 @@ module.exports = class AddItem extends Command {
         client,
         ctx,
         generalMessages.invalidItem.replace("%{itemId}", itemId),
-        color,
+        color
       );
     }
 
@@ -93,7 +94,7 @@ module.exports = class AddItem extends Command {
         client,
         ctx,
         generalMessages.invalidQuantity,
-        color,
+        color
       );
     }
 
@@ -104,7 +105,7 @@ module.exports = class AddItem extends Command {
     if (itemIndex !== -1) {
       await Users.updateOne(
         { userId: userId, "inventory.id": itemId },
-        { $inc: { "inventory.$.quantity": baseQuantity } },
+        { $inc: { "inventory.$.quantity": baseQuantity } }
       ).exec();
     } else {
       await Users.updateOne(
@@ -117,7 +118,7 @@ module.exports = class AddItem extends Command {
               quantity: baseQuantity,
             },
           },
-        },
+        }
       ).exec();
     }
 
@@ -125,7 +126,7 @@ module.exports = class AddItem extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${globalEmoji.result.tick} Added ${itemInfo.emoji} **x${baseQuantity}** ${itemInfo.id} to ${mention}.`,
+        `${globalEmoji.result.tick} Added ${itemInfo.emoji} **x${baseQuantity}** ${itemInfo.id} to ${mention}.`
       );
 
     return ctx.sendMessage({ embeds: [embed] });

@@ -13,6 +13,7 @@ module.exports = class AddMoney extends Command {
       },
       category: "admin",
       aliases: ["addm", "am"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

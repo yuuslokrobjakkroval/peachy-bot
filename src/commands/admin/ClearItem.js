@@ -13,6 +13,7 @@ module.exports = class ClearItem extends Command {
       },
       category: "admin",
       aliases: ["ci"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

@@ -17,6 +17,7 @@ module.exports = class RemoveItem extends Command {
       },
       category: "admin",
       aliases: ["ri"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

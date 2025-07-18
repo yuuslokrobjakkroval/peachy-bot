@@ -13,6 +13,7 @@ module.exports = class ClearMoney extends Command {
       },
       category: "admin",
       aliases: ["cm"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

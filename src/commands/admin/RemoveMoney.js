@@ -13,6 +13,7 @@ module.exports = class RemoveMoney extends Command {
       },
       category: "admin",
       aliases: ["rm"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

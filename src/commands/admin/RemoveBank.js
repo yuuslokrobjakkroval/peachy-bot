@@ -13,6 +13,7 @@ module.exports = class RemoveBank extends Command {
       },
       category: "admin",
       aliases: ["rb"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

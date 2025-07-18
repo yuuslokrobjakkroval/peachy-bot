@@ -13,6 +13,7 @@ module.exports = class AddCredit extends Command {
       },
       category: "admin",
       aliases: ["ac"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

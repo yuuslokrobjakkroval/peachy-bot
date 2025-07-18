@@ -14,7 +14,7 @@ module.exports = class KlaKlouk extends Command {
       },
       category: "gambling",
       aliases: ["kk"],
-      cooldown: 4,
+      cooldown: 3,
       args: true,
       permissions: {
         dev: false,
