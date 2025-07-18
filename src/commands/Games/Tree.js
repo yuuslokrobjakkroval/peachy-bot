@@ -1,5 +1,5 @@
 const { Command } = require("../../structures");
-const generateTreeCanvas = require("../../utils/GenerateTreeCanvas");
+const { generateTreeCanvas } = require("../../utils/GenerateImages");
 const Tree = require("../../schemas/tree");
 
 const {
@@ -36,6 +36,12 @@ module.exports = class ViewTree extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
+    if (!ctx.interaction) {
+      return ctx.sendMessage(
+        "⚠️ This command only works with slash commands right now."
+      );
+    }
+
     const userId = ctx.author.id;
     let userTree = await Tree.findOne({ userId });
 

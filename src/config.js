@@ -1,6 +1,3 @@
-const dotenv = require("dotenv");
-dotenv.config();
-
 // THEME CONFIGURATION
 // Normal
 const normal = {

@@ -9,14 +9,14 @@ module.exports = class Giveaway extends Command {
         content:
           "Start a giveaway with a specified duration, number of winners, and prize.",
         examples: [
-          'giveaway "Win amazing coins!" 1000 1h 2',
-          'giveaway "Weekly giveaway" 10000 12h 5',
+          'gstart "Win amazing coins!" 1000 1h 2',
+          'gstart "Weekly giveaway" 10000 12h 5',
         ],
         usage:
-          "giveaway <description> <prize> <duration> <winners> [image] [thumbnail] [autopay]",
+          "gstart <description> <prize> <duration> <winners> [image] [thumbnail] [autopay]",
       },
       category: "giveaway",
-      aliases: ["gc"],
+      aliases: ["gs"],
       args: true,
       permissions: {
         dev: false,

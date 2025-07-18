@@ -15,7 +15,7 @@ module.exports = class MessageCreate extends Event {
 
   async run(message) {
     if (message.author.bot || message.channel.type === 1) return;
-    if (globalConfig.env === "DEV") {
+    if (globalConfig.env === "development") {
       if (message.guild.id !== "1371280484046344242") return;
     } else {
       if (message.guild.id === "1371280484046344242") return;
