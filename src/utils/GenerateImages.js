@@ -1,7 +1,7 @@
 const { createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas");
 
-GlobalFonts.registerFromPath("./pulice/fonts/Ghibli.otf", "Kelvinch-Roman");
-GlobalFonts.registerFromPath("./pulice/fonts/Ghibli-Bold.otf", "Kelvinch-Bold");
+GlobalFonts.registerFromPath("./pulice/fonts/Ghibli.otf", "Ghibli");
+GlobalFonts.registerFromPath("./pulice/fonts/Ghibli-Bold.otf", "Ghibli-Bold");
 
 async function generateTreeCanvas({ height }) {
   const canvasWidth = 512;
@@ -179,7 +179,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
 
     // USER SECTION
     context.fillStyle = "#4C585B";
-    context.font = "28px Kelvinch-SemiBoldItalic, Arial";
+    context.font = "28px Ghibli, Arial";
     context.fillText(
       client.utils.formatCapitalize(userInfo.username),
       958,
@@ -202,7 +202,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
 
     // PARTNER SECTION
     context.fillStyle = "#4C585B";
-    context.font = "28px Kelvinch-SemiBoldItalic, Arial";
+    context.font = "28px Ghibli, Arial";
     context.fillText(
       client.utils.formatCapitalize(partnerInfo.username),
       958,
@@ -233,7 +233,7 @@ async function generatePartnerCanvas(client, user, targetUser) {
       );
       context.fillStyle = "#000000";
       context.textAlign = "center";
-      context.font = "28px Kelvinch-SemiBoldItalic, Arial";
+      context.font = "28px Ghibli, Arial";
       context.fillText(`${diffInDays + 1} Days`, 380, 656);
     }
     return await canvas.encode("png");
