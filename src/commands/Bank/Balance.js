@@ -134,7 +134,7 @@ module.exports = class Balance extends Command {
       .setDescription(
         titleTemplate
           .replace("%{mainLeft}", emoji.mainLeft || "")
-          .replace("%{title}", `${user.displayName}`)
+          .replace("%{title}", `BALANCE`)
           .replace("%{mainRight}", emoji.mainRight || "") +
           descriptionTemplate
             .replace("%{coinEmote}", emoji.coin || "💰")
