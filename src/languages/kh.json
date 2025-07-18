@@ -1,6 +1,6 @@
 {
   "generalMessages": {
-    "title": "%{mainLeft} **%{title}** %{mainRight}\n",
+    "title": "## %{mainLeft} **%{title}** %{mainRight}\n",
     "search": "កំពុងស្វែងរក %{loading}",
     "permissionsClientError": "ខ្ញុំមិនមានសិទ្ធិគ្រប់គ្រាន់ដើម្បីប្រតិបត្តិបញ្ជានេះទេ។",
     "permissionsUserError": "អ្នកមិនមានសិទ្ធិគ្រប់គ្រាន់ដើម្បីប្រើបញ្ជានេះទេ។",
