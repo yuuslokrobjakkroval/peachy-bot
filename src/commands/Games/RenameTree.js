@@ -33,7 +33,7 @@ module.exports = class RenameTree extends Command {
 
     if (!ctx.interaction) {
       return ctx.sendMessage(
-        "⚠️ This command only works with slash commands right now.",
+        "⚠️ This command only works with slash commands right now."
       );
     }
 
