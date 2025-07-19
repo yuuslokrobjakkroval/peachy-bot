@@ -1,7 +1,6 @@
 const { Command } = require("../../structures");
 const { generateTreeCanvas } = require("../../utils/GenerateImages");
 const Tree = require("../../schemas/tree");
-const globalEmoji = require("../../utils/Emoji");
 
 const {
   ActionRowBuilder,
@@ -37,17 +36,9 @@ module.exports = class ViewTree extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-
-    if (ctx.isInteraction) {
-      await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
-      );
-    } else {
-      await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+    if (!ctx.interaction) {
+      return ctx.sendMessage(
+        "⚠️ This command only works with slash commands right now."
       );
     }
 
@@ -74,6 +65,9 @@ module.exports = class ViewTree extends Command {
       return;
     }
 
+    // Defer reply immediately to avoid unknown interaction on slow operations
+    await ctx.interaction.deferReply();
+
     const buffer = await generateTreeCanvas({
       height: userTree.tree.height,
     });
@@ -94,19 +88,12 @@ module.exports = class ViewTree extends Command {
         .setStyle(ButtonStyle.Primary)
     );
 
-    const message = ctx.isInteraction
-      ? await ctx.interaction.editReply({
-          content: "",
-          embeds: [embed],
-          files: [attachment],
-          components: [row],
-        })
-      : await ctx.editMessage({
-          content: "",
-          embeds: [embed],
-          files: [attachment],
-          components: [row],
-        });
+    // Edit the deferred reply with the actual content
+    const message = await ctx.interaction.editReply({
+      embeds: [embed],
+      files: [attachment],
+      components: [row],
+    });
 
     // Button collector (only for user)
     const collector = message.createMessageComponentCollector({
@@ -116,9 +103,8 @@ module.exports = class ViewTree extends Command {
     });
 
     collector.on("collect", async (interaction) => {
-      await interaction.deferReply({ ephemeral: false });
       const now = Date.now();
-      const cooldown = 60 * 1000;
+      const cooldown = 60 * 1000; // 1 min
       const last = new Date(userTree.tree.lastWatered).getTime();
 
       if (now - last < cooldown) {
@@ -127,7 +113,7 @@ module.exports = class ViewTree extends Command {
           content: `⏳ Please wait **<t:${
             Math.round(Date.now() / 1000) + remaining
           }:R>** before watering again.`,
-          ephemeral: true,
+          flags: 64,
         });
       }
 
@@ -152,16 +138,12 @@ module.exports = class ViewTree extends Command {
         color: color.main,
       };
 
-      await interaction.editReply({
-        content: "",
+      // Update the original message with new embed and image
+      await interaction.update({
         embeds: [newEmbed],
         files: [newAttachment],
         components: [row],
       });
-
-      setTimeout(() => {
-        message.delete();
-      }, 3000);
     });
 
     collector.on("end", async () => {
