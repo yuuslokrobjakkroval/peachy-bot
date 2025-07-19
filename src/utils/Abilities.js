@@ -13,18 +13,16 @@ const LevelingMessagesSchema = require("../schemas/levelingMessage");
 const globalConfig = require("../utils/Config");
 const globalEmoji = require("../utils/Emoji");
 
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-Roman.otf",
-  "Kelvinch-Roman",
-);
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-Bold.otf",
-  "Kelvinch-Bold",
-);
-GlobalFonts.registerFromPath(
-  "./src/data/fonts/Kelvinch-BoldItalic.otf",
-  "Kelvinch-SemiBoldItalic",
-);
+// Register fonts with error handling
+try {
+  GlobalFonts.registerFromPath("./src/data/fonts/Ghibli.otf", "Ghibli");
+  GlobalFonts.registerFromPath(
+    "./src/data/fonts/Ghibli-Bold.otf",
+    "Ghibli-Bold"
+  );
+} catch (error) {
+  console.error("Failed to register fonts:", error);
+}
 
 module.exports = class Ability {
   static async syncInvites(client) {
@@ -68,15 +66,25 @@ module.exports = class Ability {
                   $max: { uses: invite.uses },
                   $setOnInsert: { userId: [] },
                 },
-                { upsert: true },
+                { upsert: true }
               );
-            }),
+            })
           );
         } catch (error) {
           if (error.code === 50013) {
-            continue;
+            console.error(
+              `Missing MANAGE_GUILD permission in guild ${guild.name} (${guild.id})`
+            );
+            await InviteTrackerSchema.updateOne(
+              { id: guild.id, isActive: true },
+              { $set: { isActive: false } }
+            );
+          } else {
+            console.error(
+              `Error syncing invites for guild ${guild.name} (${guild.id}):`,
+              error
+            );
           }
-          continue;
         }
       }
     } catch (error) {
@@ -90,7 +98,7 @@ module.exports = class Ability {
       guildName: invite.guild.name,
       inviteCode: invite.code,
       uses: invite.uses,
-      userId: [], // Populate as needed
+      userId: [],
       inviterId: invite.inviter?.id || "Unknown",
       inviterTag: invite.inviter?.tag || "Unknown",
     };
@@ -99,10 +107,13 @@ module.exports = class Ability {
       await InviteSchema.updateOne(
         { inviteCode: invite.code },
         { $set: data },
-        { upsert: true },
+        { upsert: true }
       );
     } catch (error) {
-      console.error(`Failed to sync created invite: ${invite.code}`, error);
+      console.error(
+        `Failed to sync created invite ${invite.code} for guild ${invite.guild.name} (${invite.guild.id}):`,
+        error
+      );
     }
   }
 
@@ -110,7 +121,10 @@ module.exports = class Ability {
     try {
       await InviteSchema.deleteOne({ inviteCode: invite.code });
     } catch (error) {
-      console.error(`Failed to delete invite from DB: ${invite.code}`, error);
+      console.error(
+        `Failed to delete invite ${invite.code} from DB for guild ${invite.guild.name} (${invite.guild.id}):`,
+        error
+      );
     }
   }
 
@@ -121,24 +135,35 @@ module.exports = class Ability {
         isActive: true,
       });
 
-      if (!levelingMessage) {
-        return;
-      }
+      if (!levelingMessage) return;
 
       const { channel, content } = levelingMessage;
       const levelingChannel = message.member.guild.channels.cache.get(channel);
 
       if (!levelingChannel) {
+        console.warn(
+          `Leveling channel ${channel} not found in guild ${message.guild.name}. Disabling leveling message.`
+        );
+        await LevelingMessagesSchema.updateOne(
+          { id: message.guild.id, isActive: true },
+          { $set: { isActive: false } }
+        );
         return;
       }
 
-      const userInfo = await client.utils.getUser(message.member.id);
+      let userInfo;
+      try {
+        userInfo = await client.utils.getUser(message.member.id);
+      } catch (error) {
+        console.error(`Failed to fetch user ${message.member.id}:`, error);
+        userInfo = null;
+      }
 
       if (!userInfo?.profile?.level) {
         console.warn(`No level data found for user ${message.member.id}`);
       }
 
-      const processedContent = await client.abilities.resultMessage(
+      const processedContent = await this.resultMessage(
         client,
         message.member,
         message.guild,
@@ -146,14 +171,17 @@ module.exports = class Ability {
         null,
         null,
         userInfo,
-        level,
+        level
       );
 
       await levelingChannel.send({
         content: processedContent || "",
       });
     } catch (error) {
-      console.error("Error processing leveling message:", error);
+      console.error(
+        `Error processing leveling message for guild ${message.guild.name} (${message.guild.id}):`,
+        error
+      );
     }
   }
 
@@ -179,55 +207,48 @@ module.exports = class Ability {
 
         if (!welcomeChannel) {
           console.warn(
-            `Welcome channel ${channel} not found in guild ${member.guild.name}.`,
+            `Welcome channel ${channel} not found in guild ${member.guild.name}. Disabling welcome message.`
+          );
+          await WelcomeSchema.updateOne(
+            { id: member.guild.id, isActive: true },
+            { $set: { isActive: false } }
           );
           return;
         }
 
-        if (welcomeChannel) {
-          if (isEmbed) {
-            const welcomeEmbed = await client.abilities.resultMessage(
-              client,
-              member,
-              member.guild,
-              message,
-            );
-            welcomeChannel.send({
-              content: content
-                ? await client.abilities.replacePlaceholders(
-                    client.abilities.getReplacementData(
-                      member,
-                      member.guild,
-                      content,
-                    ),
-                  )
-                : "",
-              embeds: welcomeEmbed ? [welcomeEmbed] : [],
-            });
-          } else {
-            const files = isCustomImage
-              ? await client.abilities.getBackgroundCustom(
-                  client,
-                  member,
-                  image,
-                )
-              : await client.abilities.getBackgroundNormal(
-                  client,
-                  member,
-                  image,
-                );
-            welcomeChannel.send({
-              content: content
-                ? await client.abilities.resultMessage(
-                    client,
+        if (isEmbed) {
+          const welcomeEmbed = await this.resultMessage(
+            client,
+            member,
+            member.guild,
+            message
+          );
+          await welcomeChannel.send({
+            content: content
+              ? await this.replacePlaceholders(
+                  this.getReplacementData(
                     member,
                     member.guild,
-                    content,
-                  )
-                : "",
-              files: files ? [files] : [],
-            });
-          }
+                    null,
+                    null,
+                    null,
+                    null
+                  ),
+                  content
+                )
+              : "",
+            embeds: welcomeEmbed ? [welcomeEmbed] : [],
+          });
+        } else {
+          const files = isCustomImage
+            ? await this.getBackgroundCustom(client, member, image)
+            : await this.getBackgroundNormal(client, member, image);
+          await welcomeChannel.send({
+            content: content
+              ? await this.resultMessage(client, member, member.guild, content)
+              : "",
+            files: files ? [files] : [],
+          });
         }
       }
 
@@ -235,43 +256,50 @@ module.exports = class Ability {
         const { userRoles, botRoles } = joinRoles;
         const rolesToAssign = member.user.bot ? botRoles : userRoles;
 
-        if (!rolesToAssign) {
-          return;
-        }
-
-        await Promise.all(
-          rolesToAssign.map(async (roleId) => {
-            const role = member.guild.roles.cache.get(roleId);
-
-            if (!role) {
-              console.warn(
-                `Role with ID ${roleId} not found in guild ${member.guild.name}`,
-              );
-              return;
-            }
-
-            if (role) {
+        if (rolesToAssign) {
+          await Promise.all(
+            rolesToAssign.map(async (roleId) => {
+              const role = member.guild.roles.cache.get(roleId);
+              if (!role) {
+                console.warn(
+                  `Role with ID ${roleId} not found in guild ${member.guild.name}`
+                );
+                return;
+              }
               try {
                 await member.roles.add(role);
               } catch (error) {
                 console.error(
                   `Failed to assign role ${role.name} to ${member.user.tag} in guild ${member.guild.name}:`,
-                  error,
+                  error
                 );
               }
-            } else {
-              console.warn(
-                `Role with ID ${roleId} not found in guild ${member.guild.name}`,
-              );
-            }
-          }),
-        );
+            })
+          );
+        }
       }
 
-      if (inviteTracker) {
+      if (
+        inviteTracker &&
+        globalConfig.guildId &&
+        member.guild.id === globalConfig.guildId
+      ) {
         try {
           const { channel, content, message, image, isEmbed, isCustomImage } =
             inviteTracker;
+          const trackingChannel = member.guild.channels.cache.get(channel);
+
+          if (!trackingChannel) {
+            console.warn(
+              `Invite tracker channel ${channel} not found in guild ${member.guild.name}. Disabling invite tracker.`
+            );
+            await InviteTrackerSchema.updateOne(
+              { id: member.guild.id, isActive: true },
+              { $set: { isActive: false } }
+            );
+            return;
+          }
+
           const currentInvites = await member.guild.invites.fetch();
 
           for (const invite of currentInvites.values()) {
@@ -282,102 +310,88 @@ module.exports = class Ability {
 
             const previousUses = previousInvite ? previousInvite.uses : 0;
 
-            if (invite.uses > previousUses) {
+            if (invite.uses > previousUses && invite.inviter) {
               await InviteSchema.updateOne(
                 { guildId: member.guild.id, inviteCode: invite.code },
                 { $set: { uses: invite.uses, guildName: member.guild.name } },
-                { upsert: true },
+                { upsert: true }
               );
 
               const inviter = invite.inviter;
-              const trackingChannel = member.guild.channels.cache.get(channel);
-              if (trackingChannel) {
-                if (isEmbed) {
-                  const trackerEmbed = await client.abilities.resultMessage(
-                    client,
-                    member,
-                    member.guild,
-                    message,
-                    invite,
-                    inviter,
-                  );
-                  trackingChannel.send({
-                    content: content
-                      ? await client.abilities.resultMessage(
-                          client,
-                          member,
-                          member.guild,
-                          content,
-                        )
-                      : "",
-                    embeds: trackerEmbed ? [trackerEmbed] : [],
-                  });
-                } else {
-                  const files = isCustomImage
-                    ? await client.abilities.getBackgroundCustom(
+              if (isEmbed) {
+                const trackerEmbed = await this.resultMessage(
+                  client,
+                  member,
+                  member.guild,
+                  message,
+                  invite,
+                  inviter
+                );
+                await trackingChannel.send({
+                  content: content
+                    ? await this.resultMessage(
                         client,
                         member,
-                        image,
+                        member.guild,
+                        content,
+                        invite,
+                        inviter
                       )
-                    : await client.abilities.getBackgroundNormal(
+                    : "",
+                  embeds: trackerEmbed ? [trackerEmbed] : [],
+                });
+              } else {
+                const files = isCustomImage
+                  ? await this.getBackgroundCustom(client, member, image)
+                  : await this.getBackgroundNormal(client, member, image);
+                await trackingChannel.send({
+                  content: content
+                    ? await this.resultMessage(
                         client,
                         member,
-                        image,
-                      );
-                  trackingChannel.send({
-                    content: content
-                      ? await client.abilities.resultMessage(
-                          client,
-                          member,
-                          member.guild,
-                          content,
-                          invite,
-                          inviter,
-                        )
-                      : "",
-                    files: files ? [files] : [],
-                  });
-                }
-
-                if (member.guild.id === globalConfig.guildId) {
-                  client.utils.getUser(inviter?.id).then(async (user) => {
-                    if (!user) {
-                      console.error(
-                        `User not found in database: ${inviter?.id}`,
-                      );
-                      return;
-                    }
-
-                    user.balance.coin += 300000;
-                    await user.save(); // Ensure user data is saved before proceeding
-
-                    await new Promise((resolve) => setTimeout(resolve, 2000)); // Sleep for 2 seconds
-
-                    const inviterMention = `<@${inviter?.id}>`;
-
-                    const giftEmbed = client
-                      .embed()
-                      .setColor(globalConfig.color.main)
-                      .setDescription(
-                        `# ${globalEmoji.giveaway.gift} GIFT FOR INVITER ${
-                          globalEmoji.giveaway.gift
-                        }\n${inviterMention} got reward **${client.utils.formatNumber(
-                          300000,
-                        )}** ${
-                          globalEmoji.coin
-                        }\Thanks for inviting a new member to the server! We apprecite your help in growing our community!`,
+                        member.guild,
+                        content,
+                        invite,
+                        inviter
                       )
-                      .setFooter({
-                        text: "Enjoy your reward!",
-                        iconURL: client.utils.emojiToImage(
-                          globalEmoji.timestamp,
-                        ),
-                      })
-                      .setTimestamp();
+                    : "",
+                  files: files ? [files] : [],
+                });
+              }
 
-                    trackingChannel.send({ embeds: [giftEmbed] });
-                  });
+              try {
+                const user = await client.utils.getUser(inviter.id);
+                if (!user) {
+                  console.error(`User not found in database: ${inviter.id}`);
+                  continue;
                 }
+                user.balance.coin += 300000;
+                await user.save();
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+                const inviterMention = `<@${inviter.id}>`;
+                const giftEmbed = client
+                  .embed()
+                  .setColor(globalConfig.color.main)
+                  .setDescription(
+                    `# ${globalEmoji.giveaway.gift} GIFT FOR INVITER ${
+                      globalEmoji.giveaway.gift
+                    }\n${inviterMention} got reward **${client.utils.formatNumber(
+                      300000
+                    )}** ${
+                      globalEmoji.coin
+                    }\nThanks for inviting a new member to the server! We appreciate your help in growing our community!`
+                  )
+                  .setFooter({
+                    text: "Enjoy your reward!",
+                    iconURL: client.utils.emojiToImage(globalEmoji.timestamp),
+                  })
+                  .setTimestamp();
+                await trackingChannel.send({ embeds: [giftEmbed] });
+              } catch (error) {
+                console.error(
+                  `Failed to process invite reward for ${inviter.id}:`,
+                  error
+                );
               }
               break;
             }
@@ -387,23 +401,26 @@ module.exports = class Ability {
             await InviteSchema.updateOne(
               { guildId: member.guild.id, inviteCode: invite.code },
               { $set: { uses: invite.uses, guildName: member.guild.name } },
-              { upsert: true },
+              { upsert: true }
             );
           }
         } catch (error) {
           console.error(
-            `Failed to fetch or update invites for guild ${member.guild.name}:`,
-            error,
+            `Failed to fetch or update invites for guild ${member.guild.name} (${member.guild.id}):`,
+            error
           );
           if (error.code === 50013) {
             console.error(
-              "Missing Permissions: Ensure the bot has the Manage Server permission.",
+              "Missing Permissions: Ensure the bot has the Manage Server permission."
             );
           }
         }
       }
     } catch (error) {
-      console.error("Error processing message:", error);
+      console.error(
+        `Error processing welcome message for guild ${member.guild.name} (${member.guild.id}):`,
+        error
+      );
     }
   }
 
@@ -420,21 +437,22 @@ module.exports = class Ability {
 
       const matchingResponses = autoresponse.filter(
         (response) =>
-          response.trigger.toLowerCase() === message.content.toLowerCase(),
+          response.trigger.trim().toLowerCase() ===
+          message.content.trim().toLowerCase()
       );
 
       if (!matchingResponses || matchingResponses.length === 0) return;
 
       const randomResponse =
         matchingResponses[Math.floor(Math.random() * matchingResponses.length)];
-      if (!randomResponse?.response) {
-        return;
-      }
+      if (!randomResponse?.response) return;
 
-      const userInfo = await client.utils.getUser(message.author.id);
-      if (!userInfo) {
-        await message.reply(randomResponse.response);
-        return;
+      let userInfo;
+      try {
+        userInfo = await client.utils.getUser(message.author.id);
+      } catch (error) {
+        console.error(`Failed to fetch user ${message.author.id}:`, error);
+        userInfo = null;
       }
 
       const processedContent = await this.resultMessage(
@@ -445,21 +463,21 @@ module.exports = class Ability {
         null,
         null,
         userInfo,
-        message.content,
+        message.content
       );
 
       if (processedContent) {
         await message.reply(processedContent);
       } else {
         console.warn(
-          `Failed to process response for trigger: ${message.content}`,
+          `Failed to process response for trigger: ${message.content} in guild ${message.guild.name}`
         );
         await message.reply(randomResponse.response); // Fallback to raw response
       }
     } catch (error) {
       console.error(
-        `Error processing auto-responses for guild ${message.guild.id}:`,
-        error,
+        `Error processing auto-responses for guild ${message.guild.name} (${message.guild.id}):`,
+        error
       );
     }
   }
@@ -470,66 +488,62 @@ module.exports = class Ability {
         id: member.guild.id,
         isActive: true,
       });
-      if (boosterMessage) {
-        const { channel, content, message, image, isEmbed, isCustomImage } =
-          boosterMessage;
-        const boosterChannel = member.guild.channels.cache.get(channel);
+      if (!boosterMessage) return;
 
-        if (!boosterChannel) {
-          console.warn(
-            `Booster channel ${channel} not found in guild ${member.guild.name}.`,
-          );
-          return;
-        }
+      const { channel, content, message, image, isEmbed, isCustomImage } =
+        boosterMessage;
+      const boosterChannel = member.guild.channels.cache.get(channel);
 
-        if (boosterChannel) {
-          if (isEmbed) {
-            const boosterEmbed = await client.abilities.resultMessage(
-              client,
-              member,
-              member.guild,
-              message,
-            );
-            boosterChannel.send({
-              content: content
-                ? await client.abilities.replacePlaceholders(
-                    client.abilities.getReplacementData(
-                      member,
-                      member.guild,
-                      content,
-                    ),
-                  )
-                : "",
-              embeds: boosterEmbed ? [boosterEmbed] : [],
-            });
-          } else {
-            const files = isCustomImage
-              ? await client.abilities.getBackgroundCustom(
-                  client,
+      if (!boosterChannel) {
+        console.warn(
+          `Booster channel ${channel} not found in guild ${member.guild.name}. Disabling booster message.`
+        );
+        await BoosterSchema.updateOne(
+          { id: member.guild.id, isActive: true },
+          { $set: { isActive: false } }
+        );
+        return;
+      }
+
+      if (isEmbed) {
+        const boosterEmbed = await this.resultMessage(
+          client,
+          member,
+          member.guild,
+          message
+        );
+        await boosterChannel.send({
+          content: content
+            ? await this.replacePlaceholders(
+                this.getReplacementData(
                   member,
-                  image,
-                )
-              : await client.abilities.getBackgroundNormal(
-                  client,
-                  member,
-                  image,
-                );
-            boosterChannel.send({
-              content: content
-                ? await client.abilities.resultMessage(
-                    client,
-                    member,
-                    member.guild,
-                    content,
-                  )
-                : "",
-              files: files ? [files] : [],
-            });
-          }
-        }
+                  member.guild,
+                  null,
+                  null,
+                  null,
+                  null
+                ),
+                content
+              )
+            : "",
+          embeds: boosterEmbed ? [boosterEmbed] : [],
+        });
+      } else {
+        const files = isCustomImage
+          ? await this.getBackgroundCustom(client, member, image)
+          : await this.getBackgroundNormal(client, member, image);
+        await boosterChannel.send({
+          content: content
+            ? await this.resultMessage(client, member, member.guild, content)
+            : "",
+          files: files ? [files] : [],
+        });
       }
     } catch (error) {
-      console.error("Error processing message:", error);
+      console.error(
+        `Error processing booster message for guild ${member.guild.name} (${member.guild.id}):`,
+        error
+      );
     }
   }
 
@@ -539,84 +553,94 @@ module.exports = class Ability {
         id: member.guild.id,
         isActive: true,
       });
+      if (!goodByeMessage) return;
 
-      if (goodByeMessage) {
-        const { channel, content, message, image, isEmbed, isCustomImage } =
-          goodByeMessage;
-        const goodbyeChannel = member.guild.channels.cache.get(channel);
+      const { channel, content, message, image, isEmbed, isCustomImage } =
+        goodByeMessage;
+      const goodbyeChannel = member.guild.channels.cache.get(channel);
 
-        if (goodbyeChannel) {
-          if (isEmbed) {
-            const goodByeEmbed = await client.abilities.resultMessage(
-              client,
-              member,
-              member.guild,
-              message,
-            );
-            goodbyeChannel.send({
-              content: content
-                ? await client.abilities.resultMessage(
-                    client,
-                    member,
-                    member.guild,
-                    content,
-                  )
-                : "",
-              embeds: goodByeEmbed ? [goodByeEmbed] : [],
-            });
-          } else {
-            const files = isCustomImage
-              ? await client.abilities.getBackgroundCustom(
-                  client,
-                  member,
-                  image,
-                )
-              : await client.abilities.getBackgroundNormal(
-                  client,
-                  member,
-                  image,
-                );
-            goodbyeChannel.send({
-              content: content
-                ? await client.abilities.resultMessage(
-                    client,
-                    member,
-                    member.guild,
-                    content,
-                  )
-                : "",
-              files: files ? [files] : [],
-            });
-          }
-        }
+      if (!goodbyeChannel) {
+        console.warn(
+          `Goodbye channel ${channel} not found in guild ${member.guild.name}. Disabling goodbye message.`
+        );
+        await GoodByeMessagesSchema.updateOne(
+          { id: member.guild.id, isActive: true },
+          { $set: { isActive: false } }
+        );
+        return;
+      }
+
+      if (isEmbed) {
+        const goodByeEmbed = await this.resultMessage(
+          client,
+          member,
+          member.guild,
+          message
+        );
+        await goodbyeChannel.send({
+          content: content
+            ? await this.resultMessage(client, member, member.guild, content)
+            : "",
+          embeds: goodByeEmbed ? [goodByeEmbed] : [],
+        });
+      } else {
+        const files = isCustomImage
+          ? await this.getBackgroundCustom(client, member, image)
+          : await this.getBackgroundNormal(client, member, image);
+        await goodbyeChannel.send({
+          content: content
+            ? await this.resultMessage(client, member, member.guild, content)
+            : "",
+          files: files ? [files] : [],
+        });
       }
     } catch (error) {
-      console.error("Error processing goodbye message:", error);
+      console.error(
+        `Error processing goodbye message for guild ${member.guild.name} (${member.guild.id}):`,
+        error
+      );
     }
   }
 
   static async getSendMessage(client) {
+    const session = await SendMessageSchema.startSession();
     try {
-      const sendMessage = await SendMessageSchema.findOne({ isActive: true });
+      session.startTransaction();
+      const sendMessage = await SendMessageSchema.findOneAndUpdate(
+        { isActive: true },
+        { $set: { isActive: false } },
+        { new: true, session }
+      );
       if (!sendMessage) {
+        await session.abortTransaction();
+        session.endSession();
         return;
       }
-      sendMessage.isActive = false;
-      await sendMessage.save();
+
       const { guild, userId, feature } = sendMessage;
-      let server = client.guilds.cache.get(guild);
+      const server = client.guilds.cache.get(guild);
       if (!server) {
+        console.warn(`Guild ${guild} not found for send message.`);
+        await session.abortTransaction();
+        session.endSession();
         return;
       }
 
       const member = server.members.cache.get(userId);
       if (!member) {
+        console.warn(`Member ${userId} not found in guild ${server.name}.`);
+        await session.abortTransaction();
+        session.endSession();
         return;
       }
 
-      return await await client.abilities.SendMessage(client, member, feature);
+      await this.SendMessage(client, member, feature);
+      await session.commitTransaction();
+      session.endSession();
     } catch (error) {
-      console.error("Error processing message:", error);
+      await session.abortTransaction();
+      session.endSession();
+      console.error("Error processing send message:", error);
     }
   }
 
@@ -626,22 +650,18 @@ module.exports = class Ability {
         id: member.guild.id,
         isActive: true,
       });
-
       const boosterMessage = await BoosterSchema.findOne({
         id: member.guild.id,
         isActive: true,
       });
-
       const inviteTracker = await InviteTrackerSchema.findOne({
         id: member.guild.id,
         isActive: true,
       });
-
       const goodByeMessage = await GoodByeMessagesSchema.findOne({
         id: member.guild.id,
         isActive: true,
       });
-
       const levelingMessage = await LevelingMessagesSchema.findOne({
         id: member.guild.id,
         isActive: true,
@@ -654,55 +674,48 @@ module.exports = class Ability {
 
         if (!welcomeChannel) {
           console.warn(
-            `Welcome channel ${channel} not found in guild ${member.guild.name}.`,
+            `Welcome channel ${channel} not found in guild ${member.guild.name}. Disabling welcome message.`
+          );
+          await WelcomeSchema.updateOne(
+            { id: member.guild.id, isActive: true },
+            { $set: { isActive: false } }
           );
           return;
         }
 
-        if (welcomeChannel) {
-          if (isEmbed) {
-            const welcomeEmbed = await client.abilities.resultMessage(
-              client,
-              member,
-              member.guild,
-              message,
-            );
-            welcomeChannel.send({
-              content: content
-                ? await client.abilities.replacePlaceholders(
-                    client.abilities.getReplacementData(
-                      member,
-                      member.guild,
-                      content,
-                    ),
-                  )
-                : "",
-              embeds: welcomeEmbed ? [welcomeEmbed] : [],
-            });
-          } else {
-            const files = isCustomImage
-              ? await client.abilities.getBackgroundCustom(
-                  client,
-                  member,
-                  image,
-                )
-              : await client.abilities.getBackgroundNormal(
-                  client,
-                  member,
-                  image,
-                );
-            welcomeChannel.send({
-              content: content
-                ? await client.abilities.resultMessage(
-                    client,
+        if (isEmbed) {
+          const welcomeEmbed = await this.resultMessage(
+            client,
+            member,
+            member.guild,
+            message
+          );
+          await welcomeChannel.send({
+            content: content
+              ? await this.replacePlaceholders(
+                  this.getReplacementData(
                     member,
                     member.guild,
-                    content,
-                  )
-                : "",
-              files: files ? [files] : [],
-            });
-          }
+                    null,
+                    null,
+                    null,
+                    null
+                  ),
+                  content
+                )
+              : "",
+            embeds: welcomeEmbed ? [welcomeEmbed] : [],
+          });
+        } else {
+          const files = isCustomImage
+            ? await this.getBackgroundCustom(client, member, image)
+            : await this.getBackgroundNormal(client, member, image);
+          await welcomeChannel.send({
+            content: content
+              ? await this.resultMessage(client, member, member.guild, content)
+              : "",
+            files: files ? [files] : [],
+          });
         }
       }
 
@@ -713,55 +726,48 @@ module.exports = class Ability {
 
         if (!boosterChannel) {
           console.warn(
-            `Booster channel ${channel} not found in guild ${member.guild.name}.`,
+            `Booster channel ${channel} not found in guild ${member.guild.name}. Disabling booster message.`
+          );
+          await BoosterSchema.updateOne(
+            { id: member.guild.id, isActive: true },
+            { $set: { isActive: false } }
           );
           return;
         }
 
-        if (boosterChannel) {
-          if (isEmbed) {
-            const boosterEmbed = await client.abilities.resultMessage(
-              client,
-              member,
-              member.guild,
-              message,
-            );
-            boosterChannel.send({
-              content: content
-                ? await client.abilities.replacePlaceholders(
-                    client.abilities.getReplacementData(
-                      member,
-                      member.guild,
-                      content,
-                    ),
-                  )
-                : "",
-              embeds: boosterEmbed ? [boosterEmbed] : [],
-            });
-          } else {
-            const files = isCustomImage
-              ? await client.abilities.getBackgroundCustom(
-                  client,
-                  member,
-                  image,
-                )
-              : await client.abilities.getBackgroundNormal(
-                  client,
-                  member,
-                  image,
-                );
-            boosterChannel.send({
-              content: content
-                ? await client.abilities.resultMessage(
-                    client,
+        if (isEmbed) {
+          const boosterEmbed = await this.resultMessage(
+            client,
+            member,
+            member.guild,
+            message
+          );
+          await boosterChannel.send({
+            content: content
+              ? await this.replacePlaceholders(
+                  this.getReplacementData(
                     member,
                     member.guild,
-                    content,
-                  )
-                : "",
-              files: files ? [files] : [],
-            });
-          }
+                    null,
+                    null,
+                    null,
+                    null
+                  ),
+                  content
+                )
+              : "",
+            embeds: boosterEmbed ? [boosterEmbed] : [],
+          });
+        } else {
+          const files = isCustomImage
+            ? await this.getBackgroundCustom(client, member, image)
+            : await this.getBackgroundNormal(client, member, image);
+          await boosterChannel.send({
+            content: content
+              ? await this.resultMessage(client, member, member.guild, content)
+              : "",
+            files: files ? [files] : [],
+          });
         }
       }
 
@@ -769,6 +775,19 @@ module.exports = class Ability {
         try {
           const { channel, content, message, image, isEmbed, isCustomImage } =
             inviteTracker;
+          const trackingChannel = member.guild.channels.cache.get(channel);
+
+          if (!trackingChannel) {
+            console.warn(
+              `Invite tracker channel ${channel} not found in guild ${member.guild.name}. Disabling invite tracker.`
+            );
+            await InviteTrackerSchema.updateOne(
+              { id: member.guild.id, isActive: true },
+              { $set: { isActive: false } }
+            );
+            return;
+          }
+
           const currentInvites = await member.guild.invites.fetch();
 
           for (const invite of currentInvites.values()) {
@@ -779,64 +798,54 @@ module.exports = class Ability {
 
             const previousUses = previousInvite ? previousInvite.uses : 0;
 
-            if (invite.uses > previousUses) {
+            if (invite.uses > previousUses && invite.inviter) {
               await InviteSchema.updateOne(
                 { guildId: member.guild.id, inviteCode: invite.code },
                 { $set: { uses: invite.uses, guildName: member.guild.name } },
-                { upsert: true },
+                { upsert: true }
               );
 
               const inviter = invite.inviter;
-              const trackingChannel = member.guild.channels.cache.get(channel);
-              if (trackingChannel) {
-                if (isEmbed) {
-                  const trackerEmbed = await client.abilities.resultMessage(
-                    client,
-                    member,
-                    member.guild,
-                    message,
-                    invite,
-                    inviter,
-                  );
-                  trackingChannel.send({
-                    content: content
-                      ? await client.abilities.resultMessage(
-                          client,
-                          member,
-                          member.guild,
-                          content,
-                        )
-                      : "",
-                    embeds: trackerEmbed ? [trackerEmbed] : [],
-                  });
-                } else {
-                  const files = isCustomImage
-                    ? await client.abilities.getBackgroundCustom(
+              if (isEmbed) {
+                const trackerEmbed = await this.resultMessage(
+                  client,
+                  member,
+                  member.guild,
+                  message,
+                  invite,
+                  inviter
+                );
+                await trackingChannel.send({
+                  content: content
+                    ? await this.resultMessage(
                         client,
                         member,
-                        image,
+                        member.guild,
+                        content,
+                        invite,
+                        inviter
                       )
-                    : await client.abilities.getBackgroundNormal(
+                    : "",
+                  embeds: trackerEmbed ? [trackerEmbed] : [],
+                });
+              } else {
+                const files = isCustomImage
+                  ? await this.getBackgroundCustom(client, member, image)
+                  : await this.getBackgroundNormal(client, member, image);
+                await trackingChannel.send({
+                  content: content
+                    ? await this.resultMessage(
                         client,
                         member,
-                        image,
-                      );
-                  trackingChannel.send({
-                    content: content
-                      ? await client.abilities.resultMessage(
-                          client,
-                          member,
-                          member.guild,
-                          content,
-                          invite,
-                          inviter,
-                        )
-                      : "",
-                    files: files ? [files] : [],
-                  });
-                }
+                        member.guild,
+                        content,
+                        invite,
+                        inviter
+                      )
+                    : "",
+                  files: files ? [files] : [],
+                });
               }
-
               break;
             }
           }
@@ -845,17 +854,17 @@ module.exports = class Ability {
             await InviteSchema.updateOne(
               { guildId: member.guild.id, inviteCode: invite.code },
               { $set: { uses: invite.uses, guildName: member.guild.name } },
-              { upsert: true },
+              { upsert: true }
             );
           }
         } catch (error) {
           console.error(
-            `Failed to fetch or update invites for guild ${member.guild.name}:`,
-            error,
+            `Failed to fetch or update invites for guild ${member.guild.name} (${member.guild.id}):`,
+            error
           );
           if (error.code === 50013) {
             console.error(
-              "Missing Permissions: Ensure the bot has the Manage Server permission.",
+              "Missing Permissions: Ensure the bot has the Manage Server permission."
             );
           }
         }
@@ -866,113 +875,126 @@ module.exports = class Ability {
           goodByeMessage;
         const goodbyeChannel = member.guild.channels.cache.get(channel);
 
-        if (goodbyeChannel) {
-          if (isEmbed) {
-            const goodByeEmbed = await client.abilities.resultMessage(
-              client,
-              member,
-              member.guild,
-              message,
-            );
-            goodbyeChannel.send({
-              content: content
-                ? await client.abilities.resultMessage(
-                    client,
-                    member,
-                    member.guild,
-                    content,
-                  )
-                : "",
-              embeds: goodByeEmbed ? [goodByeEmbed] : [],
-            });
-          } else {
-            const files = isCustomImage
-              ? await client.abilities.getBackgroundCustom(
-                  client,
-                  member,
-                  image,
-                )
-              : await client.abilities.getBackgroundNormal(
-                  client,
-                  member,
-                  image,
-                );
-            goodbyeChannel.send({
-              content: content
-                ? await client.abilities.resultMessage(
-                    client,
-                    member,
-                    member.guild,
-                    content,
-                  )
-                : "",
-              files: files ? [files] : [],
-            });
-          }
+        if (!goodbyeChannel) {
+          console.warn(
+            `Goodbye channel ${channel} not found in guild ${member.guild.name}. Disabling goodbye message.`
+          );
+          await GoodByeMessagesSchema.updateOne(
+            { id: member.guild.id, isActive: true },
+            { $set: { isActive: false } }
+          );
+          return;
+        }
+
+        if (isEmbed) {
+          const goodByeEmbed = await this.resultMessage(
+            client,
+            member,
+            member.guild,
+            message
+          );
+          await goodbyeChannel.send({
+            content: content
+              ? await this.resultMessage(client, member, member.guild, content)
+              : "",
+            embeds: goodByeEmbed ? [goodByeEmbed] : [],
+          });
+        } else {
+          const files = isCustomImage
+            ? await this.getBackgroundCustom(client, member, image)
+            : await this.getBackgroundNormal(client, member, image);
+          await goodbyeChannel.send({
+            content: content
+              ? await this.resultMessage(client, member, member.guild, content)
+              : "",
+            files: files ? [files] : [],
+          });
         }
       }
 
       if (levelingMessage && feature === "leveling-system") {
         const { channel, content } = levelingMessage;
         const levelingChannel = member.guild.channels.cache.get(channel);
-        const userInfo = await client.utils.getUser(member.id);
-        if (levelingChannel) {
-          levelingChannel.send({
-            content: content
-              ? await client.abilities.resultMessage(
-                  client,
-                  member,
-                  member.guild,
-                  content,
-                  null,
-                  null,
-                  userInfo,
-                )
-              : "",
-          });
+
+        if (!levelingChannel) {
+          console.warn(
+            `Leveling channel ${channel} not found in guild ${member.guild.name}. Disabling leveling message.`
+          );
+          await LevelingMessagesSchema.updateOne(
+            { id: member.guild.id, isActive: true },
+            { $set: { isActive: false } }
+          );
+          return;
         }
+
+        let userInfo;
+        try {
+          userInfo = await client.utils.getUser(member.id);
+        } catch (error) {
+          console.error(`Failed to fetch user ${member.id}:`, error);
+          userInfo = null;
+        }
+
+        await levelingChannel.send({
+          content: content
+            ? await this.resultMessage(
+                client,
+                member,
+                member.guild,
+                content,
+                null,
+                null,
+                userInfo
+              )
+            : "",
+        });
       }
     } catch (error) {
-      console.error("Error processing message:", error);
+      console.error(
+        `Error processing send message for guild ${member.guild.name} (${member.guild.id}):`,
+        error
+      );
     }
   }
 
   static replacePlaceholders(str, data) {
-    if (!str || typeof str !== "string") return str; // Return the input if it's not a string
-    return str.replace(/\${(.*?)}/g, (_, key) => data[key] || `\${${key}}`); // Replace placeholders with data values
+    if (!str || typeof str !== "string") return str; // Return input if not a string
+    return str.replace(/\${(.*?)}/g, (_, key) => data[key] || `\${${key}}`);
   }
 
   static getReplacementData(member, guild, invite, inviter, user, level) {
-    const accountCreationDate = moment(member.user.createdAt).fromNow();
-    const guildTotalBoosts = guild.premiumSubscriptionCount || 0;
-    const guildBoostLevel = guild.premiumTier || 0;
+    const accountCreationDate = member.user?.createdAt
+      ? moment(member.user.createdAt).fromNow()
+      : "Unknown";
+    const guildTotalBoosts = guild?.premiumSubscriptionCount || 0;
+    const guildBoostLevel = guild?.premiumTier || 0;
     const boostsMissingForNext =
       [2, 7, 14][guildBoostLevel] - guildTotalBoosts || 0;
     const nextBoostLevel = guildBoostLevel < 3 ? guildBoostLevel + 1 : "Max";
 
     return {
       // User
-      userid: member.id,
-      usertag: member.user.tag,
-      username: member.user.username,
-      userglobalnickname: member.user.globalName,
-      usermention: `<@${member.id}>`,
-      useravatarurl: member.user.displayAvatarURL(),
-      userserveravatarurl: member.displayAvatarURL(),
-      usernickname: member.nickname,
-      userdisplayname: member.displayName,
+      userid: member.id || "Unknown",
+      usertag: member.user?.tag || "Unknown",
+      username: member.user?.username || "Unknown",
+      userglobalnickname: member.user?.globalName || "Unknown",
+      usermention: member.id ? `<@${member.id}>` : "Unknown",
+      useravatarurl: member.user?.displayAvatarURL() || "N/A",
+      userserveravatarurl: member.displayAvatarURL() || "N/A",
+      usernickname: member.nickname || "None",
+      userdisplayname: member.displayName || "Unknown",
       usercreatedat: accountCreationDate,
-      usercreatedtimestamp: member.user.createdTimestamp,
-      userjoinedat: member.joinedAt?.toLocaleString(),
-      userjoinedtimestamp: member.joinedTimestamp,
+      usercreatedtimestamp: member.user?.createdTimestamp || 0,
+      userjoinedat: member.joinedAt?.toLocaleString() || "Unknown",
+      userjoinedtimestamp: member.joinedTimestamp || 0,
 
       // Guild
-      guildid: guild.id,
-      guildname: guild.name,
-      guildiconurl: guild.iconURL(),
-      guildbannerurl: guild.bannerURL(),
-      guildmembercount: guild.memberCount,
-      guildvanitycode: guild.vanityURLCode,
+      guildid: guild?.id || "Unknown",
+      guildname: guild?.name || "Unknown",
+      guildiconurl: guild?.iconURL() || "N/A",
+      guildbannerurl: guild?.bannerURL() || "N/A",
+      guildmembercount: guild?.memberCount || 0,
+      guildvanitycode: guild?.vanityURLCode || "N/A",
 
       // Boost
       guildtotalboosts: guildTotalBoosts,
@@ -991,7 +1013,7 @@ module.exports = class Ability {
       inviterid: inviter?.id || "Unknown",
       invitertag: inviter?.tag || "Unknown",
       invitername: inviter?.username || "Unknown",
-      invitermention: inviter ? `<@${inviter.id}>` : "N/A",
+      invitermention: inviter?.id ? `<@${inviter.id}>` : "N/A",
       inviteravatarurl: inviter?.displayAvatarURL() || "N/A",
       invitertotalinvites: inviter?.totalInvites || 0,
       inviterfakeinvites: inviter?.fakeInvites || 0,
@@ -1017,121 +1039,104 @@ module.exports = class Ability {
     invite,
     inviter,
     userInfo,
-    level,
+    level
   ) {
-    const data = client.abilities.getReplacementData(
+    const data = this.getReplacementData(
       member,
       guild,
       invite,
       inviter,
       userInfo,
-      level,
+      level
     );
 
     if (typeof result !== "object") {
-      return client.abilities.replacePlaceholders(result, data);
+      return this.replacePlaceholders(result, data);
     } else {
-      const embed = client.embed().setColor(result.message?.color || "#F582AE"); // Set default color
+      const embed = client.embed().setColor(result.message?.color || "#F582AE");
 
-      // Only set title if it's not null or empty
       if (result.message?.title) {
-        embed.setTitle(
-          client.abilities.replacePlaceholders(result.message.title, data),
-        );
+        embed.setTitle(this.replacePlaceholders(result.message.title, data));
       }
 
-      // Only set description if it's not null or empty
       if (result.message?.description) {
         embed.setDescription(
-          client.abilities.replacePlaceholders(
-            result.message.description,
-            data,
-          ),
+          this.replacePlaceholders(result.message.description, data)
         );
       }
 
-      // Only set thumbnail if it's not null or empty
       if (result.message?.thumbnail) {
         embed.setThumbnail(
-          client.abilities.replacePlaceholders(result.message.thumbnail, data),
+          this.replacePlaceholders(result.message.thumbnail, data)
         );
       }
 
-      // Only set image if it's not null or empty
       if (result.message?.image) {
-        embed.setImage(
-          client.abilities.replacePlaceholders(result.message.image, data),
-        );
+        embed.setImage(this.replacePlaceholders(result.message.image, data));
       }
 
-      // Only set footer if there's footer text or iconURL
       if (result.message?.footer) {
-        const footerText = client.abilities.replacePlaceholders(
-          result.message.footer.text,
-          data,
-        );
-        const footerIconURL = client.abilities.replacePlaceholders(
-          result.message.footer.iconURL,
-          data,
-        );
+        const footerText = result.message.footer.text
+          ? this.replacePlaceholders(result.message.footer.text, data)
+          : null;
+        const footerIconURL = result.message.footer.iconURL
+          ? this.replacePlaceholders(result.message.footer.iconURL, data)
+          : null;
 
         if (footerText || footerIconURL) {
-          // Only set if there is valid content
-          embed.setFooter(footerText, footerIconURL);
+          embed.setFooter({ text: footerText, iconURL: footerIconURL });
         }
       }
 
-      // Add fields if they exist and are not empty
       if (result.message?.fields && result.message.fields.length > 0) {
         result.message.fields.forEach((field) => {
           if (field.name && field.value) {
-            // Ensure both name and value are not null, undefined or empty
             embed.addFields({
-              name: client.abilities.replacePlaceholders(field.name, data),
-              value: client.abilities.replacePlaceholders(field.value, data),
-              inline: field.inline ?? false, // Default to false if inline is not defined
+              name: this.replacePlaceholders(field.name, data),
+              value: this.replacePlaceholders(field.value, data),
+              inline: field.inline ?? false,
             });
           }
         });
       }
 
       embed.setTimestamp();
-
       return embed;
     }
   }
 
   static async getBackgroundNormal(client, member, data) {
-    if (data.backgroundImage) {
-      return data.backgroundImage;
-    } else {
-      return "https://i.imgur.com/fFqwcK2.gif";
-    }
+    return data.backgroundImage || "https://i.imgur.com/fFqwcK2.gif";
   }
 
   static async getBackgroundCustom(client, member, data) {
-    const width = 800; // Set canvas width
-    const height = 450; // Set canvas height
+    const width = 800;
+    const height = 450;
 
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext("2d");
 
-    let background;
-    if (data.backgroundImage) {
-      background = await loadImage(data.backgroundImage);
+    try {
+      const background = data.backgroundImage
+        ? await loadImage(data.backgroundImage)
+        : null;
       if (background) {
         ctx.drawImage(background, 0, 0, width, height);
       } else {
         ctx.fillStyle = "#DFF2EB";
         ctx.fillRect(0, 0, width, height);
       }
-    } else {
+    } catch (error) {
+      console.error(
+        `Failed to load background image ${data.backgroundImage}:`,
+        error
+      );
       ctx.fillStyle = "#DFF2EB";
       ctx.fillRect(0, 0, width, height);
     }
 
     const avatar = await loadImage(
-      member.displayAvatarURL({ format: "png", size: 256 }),
+      member.displayAvatarURL({ format: "png", size: 256 })
     );
     const userAvatarSize = 128;
     const userAvatarX = width / 2 - userAvatarSize / 2;
@@ -1139,32 +1144,27 @@ module.exports = class Ability {
 
     ctx.textAlign = "center";
 
-    // Apply shadow for text
     ctx.shadowColor = "rgba(0, 0, 0, 1)";
     ctx.shadowBlur = 6;
     ctx.shadowOffsetX = 1;
     ctx.shadowOffsetY = 1;
 
-    // FEATURE Text
-    ctx.font = "Bold 72px Kelvinch-Bold, Arial";
-    ctx.fillStyle = data.featureColor;
-    ctx.fillText(data.feature, width / 2, 300);
+    ctx.font = "72px Ghibli-Bold, Arial";
+    ctx.fillStyle = data.featureColor || "#FFFFFF";
+    ctx.fillText(data.feature || "Welcome", width / 2, 300);
 
-    // Username
-    ctx.font = "32px Kelvinch-Bold, Arial";
-    ctx.fillStyle = data.usernameColor;
+    ctx.font = "32px Ghibli-Bold, Arial";
+    ctx.fillStyle = data.usernameColor || "#FFFFFF";
     ctx.fillText(
-      client.utils.formatUpperCase(member.user.username),
+      client.utils.formatUpperCase(member.user?.username || "Unknown"),
       width / 2,
-      340,
+      340
     );
 
-    // Message
-    ctx.font = "28px Kelvinch-Bold, Arial";
-    ctx.fillStyle = data.messageColor;
-    ctx.fillText(data.message, width / 2, 380);
+    ctx.font = "28px Ghibli-Bold, Arial";
+    ctx.fillStyle = data.messageColor || "#FFFFFF";
+    ctx.fillText(data.message || "", width / 2, 380);
 
-    // Reset shadow settings
     ctx.shadowColor = "transparent";
     ctx.shadowBlur = 0;
     ctx.shadowOffsetX = 0;
@@ -1180,18 +1180,18 @@ module.exports = class Ability {
         userAvatarY,
         userAvatarX + userAvatarSize,
         userAvatarY + borderRadius,
-        borderRadius,
+        borderRadius
       );
       ctx.lineTo(
         userAvatarX + userAvatarSize,
-        userAvatarY + userAvatarSize - borderRadius,
+        userAvatarY + userAvatarSize - borderRadius
       );
       ctx.arcTo(
         userAvatarX + userAvatarSize,
         userAvatarY + userAvatarSize,
         userAvatarX + userAvatarSize - borderRadius,
         userAvatarY + userAvatarSize,
-        borderRadius,
+        borderRadius
       );
       ctx.lineTo(userAvatarX + borderRadius, userAvatarY + userAvatarSize);
       ctx.arcTo(
@@ -1199,7 +1199,7 @@ module.exports = class Ability {
         userAvatarY + userAvatarSize,
         userAvatarX,
         userAvatarY + userAvatarSize - borderRadius,
-        borderRadius,
+        borderRadius
       );
       ctx.lineTo(userAvatarX, userAvatarY + borderRadius);
       ctx.arcTo(
@@ -1207,12 +1207,12 @@ module.exports = class Ability {
         userAvatarY,
         userAvatarX + borderRadius,
         userAvatarY,
-        borderRadius,
+        borderRadius
       );
       ctx.closePath();
 
       ctx.lineWidth = 8;
-      ctx.strokeStyle = data.circleColor;
+      ctx.strokeStyle = data.circleColor || "#FFFFFF";
       ctx.stroke();
 
       ctx.clip();
@@ -1221,7 +1221,7 @@ module.exports = class Ability {
         userAvatarX,
         userAvatarY,
         userAvatarSize,
-        userAvatarSize,
+        userAvatarSize
       );
     } else {
       ctx.beginPath();
@@ -1231,11 +1231,11 @@ module.exports = class Ability {
         userAvatarSize / 2 + 2,
         0,
         Math.PI * 2,
-        true,
-      ); // Slightly larger circle
+        true
+      );
 
       ctx.lineWidth = 8;
-      ctx.strokeStyle = data.circleColor;
+      ctx.strokeStyle = data.circleColor || "#FFFFFF";
       ctx.stroke();
       ctx.clip();
       ctx.drawImage(
@@ -1243,12 +1243,12 @@ module.exports = class Ability {
         userAvatarX,
         userAvatarY,
         userAvatarSize,
-        userAvatarSize,
+        userAvatarSize
       );
     }
 
     return new AttachmentBuilder(canvas.toBuffer("image/png"), {
-      name: `${data.feature}.png`,
+      name: `${data.feature || "image"}.png`,
     });
   }
 };
