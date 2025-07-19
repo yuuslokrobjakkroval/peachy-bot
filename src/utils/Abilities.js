@@ -1120,6 +1120,8 @@ module.exports = class Ability {
       const background = data.backgroundImage
         ? await loadImage(data.backgroundImage)
         : null;
+      console.log(background);
+
       if (background) {
         ctx.drawImage(background, 0, 0, width, height);
       } else {
