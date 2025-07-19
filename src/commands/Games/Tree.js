@@ -55,7 +55,6 @@ module.exports = class ViewTree extends Command {
     let userTree = await Tree.findOne({ userId });
 
     if (!userTree) {
-      // Show modal for new tree name, this is an interaction response
       const modal = new ModalBuilder()
         .setTitle("Name Your Tree")
         .setCustomId(`tree-name-modal-${userId}`);
@@ -77,12 +76,6 @@ module.exports = class ViewTree extends Command {
     const buffer = await generateTreeCanvas({
       height: userTree.tree.height,
     });
-
-    if (ctx.isInteraction) {
-      await ctx.interaction.deferReply();
-    } else {
-      await ctx.sendDeferMessage();
-    }
 
     const attachment = new AttachmentBuilder(buffer, { name: "tree.png" });
 
