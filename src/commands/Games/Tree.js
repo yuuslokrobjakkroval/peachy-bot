@@ -123,7 +123,7 @@ module.exports = class ViewTree extends Command {
 
       if (now - last < cooldown) {
         const remaining = Math.ceil((cooldown - (now - last)) / 1000);
-        return interaction.reply({
+        return interaction.followUp({
           content: `⏳ Please wait **<t:${
             Math.round(Date.now() / 1000) + remaining
           }:R>** before watering again.`,
