@@ -115,6 +115,8 @@ module.exports = class ViewTree extends Command {
     });
 
     collector.on("collect", async (interaction) => {
+      await interaction.deferUpdate();
+
       const now = Date.now();
       const cooldown = 60 * 1000;
       const last = new Date(userTree.tree.lastWatered).getTime();
@@ -156,10 +158,6 @@ module.exports = class ViewTree extends Command {
         files: [newAttachment],
         components: [row],
       });
-
-      setTimeout(() => {
-        message.delete();
-      }, 3000);
     });
 
     collector.on("end", async () => {
