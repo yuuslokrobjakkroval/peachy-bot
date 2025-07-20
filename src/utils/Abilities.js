@@ -1112,140 +1112,160 @@ module.exports = class Ability {
   static async getBackgroundCustom(client, member, data) {
     const width = 800;
     const height = 450;
+    const defaultBackgroundUrl = "https://i.imgur.com/fFqwcK2.gif";
 
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext("2d");
 
     try {
-      const background = data.backgroundImage
-        ? await loadImage(data.backgroundImage)
-        : null;
-      console.log(`background error`, background);
-
-      if (background) {
-        ctx.drawImage(background, 0, 0, width, height);
+      let background = null;
+      if (data.backgroundImage) {
+        try {
+          background = await loadImage(data.backgroundImage);
+          console.log(`Loaded background image: ${data.backgroundImage}`);
+        } catch (error) {
+          console.error(
+            `Failed to load background image ${data.backgroundImage}:`,
+            error
+          );
+          background = await loadImage(defaultBackgroundUrl);
+          console.log(
+            `Loaded default background image: ${defaultBackgroundUrl}`
+          );
+        }
       } else {
-        ctx.fillStyle = "#DFF2EB";
-        ctx.fillRect(0, 0, width, height);
+        background = await loadImage(defaultBackgroundUrl);
+        console.log(
+          `No background provided, using default: ${defaultBackgroundUrl}`
+        );
       }
+
+      ctx.drawImage(background, 0, 0, width, height);
     } catch (error) {
       console.error(
-        `Failed to load background image ${data.backgroundImage}:`,
+        `Failed to load default background image ${defaultBackgroundUrl}:`,
         error
       );
       ctx.fillStyle = "#DFF2EB";
       ctx.fillRect(0, 0, width, height);
     }
 
-    const avatar = await loadImage(
-      member.displayAvatarURL({ format: "png", size: 256 })
-    );
-    const userAvatarSize = 128;
-    const userAvatarX = width / 2 - userAvatarSize / 2;
-    const userAvatarY = 100;
-
-    ctx.textAlign = "center";
-
-    ctx.shadowColor = "rgba(0, 0, 0, 1)";
-    ctx.shadowBlur = 6;
-    ctx.shadowOffsetX = 1;
-    ctx.shadowOffsetY = 1;
-
-    ctx.font = "72px Ghibli-Bold, Arial";
-    ctx.fillStyle = data.featureColor || "#FFFFFF";
-    ctx.fillText(data.feature || "Welcome", width / 2, 300);
-
-    ctx.font = "32px Ghibli-Bold, Arial";
-    ctx.fillStyle = data.usernameColor || "#FFFFFF";
-    ctx.fillText(
-      client.utils.formatUpperCase(member.user?.username || "Unknown"),
-      width / 2,
-      340
-    );
-
-    ctx.font = "28px Ghibli-Bold, Arial";
-    ctx.fillStyle = data.messageColor || "#FFFFFF";
-    ctx.fillText(data.message || "", width / 2, 380);
-
-    ctx.shadowColor = "transparent";
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 0;
-
-    if (data.avatarShape === "Square") {
-      const borderRadius = 16;
-      ctx.beginPath();
-      ctx.moveTo(userAvatarX + borderRadius, userAvatarY);
-      ctx.lineTo(userAvatarX + userAvatarSize - borderRadius, userAvatarY);
-      ctx.arcTo(
-        userAvatarX + userAvatarSize,
-        userAvatarY,
-        userAvatarX + userAvatarSize,
-        userAvatarY + borderRadius,
-        borderRadius
+    try {
+      const avatar = await loadImage(
+        member.displayAvatarURL({ format: "png", size: 256 })
       );
-      ctx.lineTo(
-        userAvatarX + userAvatarSize,
-        userAvatarY + userAvatarSize - borderRadius
-      );
-      ctx.arcTo(
-        userAvatarX + userAvatarSize,
-        userAvatarY + userAvatarSize,
-        userAvatarX + userAvatarSize - borderRadius,
-        userAvatarY + userAvatarSize,
-        borderRadius
-      );
-      ctx.lineTo(userAvatarX + borderRadius, userAvatarY + userAvatarSize);
-      ctx.arcTo(
-        userAvatarX,
-        userAvatarY + userAvatarSize,
-        userAvatarX,
-        userAvatarY + userAvatarSize - borderRadius,
-        borderRadius
-      );
-      ctx.lineTo(userAvatarX, userAvatarY + borderRadius);
-      ctx.arcTo(
-        userAvatarX,
-        userAvatarY,
-        userAvatarX + borderRadius,
-        userAvatarY,
-        borderRadius
-      );
-      ctx.closePath();
+      const userAvatarSize = 128;
+      const userAvatarX = width / 2 - userAvatarSize / 2;
+      const userAvatarY = 100;
 
-      ctx.lineWidth = 8;
-      ctx.strokeStyle = data.circleColor || "#FFFFFF";
-      ctx.stroke();
+      ctx.textAlign = "center";
 
-      ctx.clip();
-      ctx.drawImage(
-        avatar,
-        userAvatarX,
-        userAvatarY,
-        userAvatarSize,
-        userAvatarSize
-      );
-    } else {
-      ctx.beginPath();
-      ctx.arc(
-        userAvatarX + userAvatarSize / 2,
-        userAvatarY + userAvatarSize / 2,
-        userAvatarSize / 2 + 2,
-        0,
-        Math.PI * 2,
-        true
+      ctx.shadowColor = "rgba(0, 0, 0, 1)";
+      ctx.shadowBlur = 6;
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 1;
+
+      ctx.font = "72px Ghibli-Bold, Arial";
+      ctx.fillStyle = data.featureColor || "#FFFFFF";
+      ctx.fillText(data.feature || "Welcome", width / 2, 300);
+
+      ctx.font = "32px Ghibli-Bold, Arial";
+      ctx.fillStyle = data.usernameColor || "#FFFFFF";
+      ctx.fillText(
+        client.utils.formatUpperCase(member.user?.username || "Unknown"),
+        width / 2,
+        340
       );
 
-      ctx.lineWidth = 8;
-      ctx.strokeStyle = data.circleColor || "#FFFFFF";
-      ctx.stroke();
-      ctx.clip();
-      ctx.drawImage(
-        avatar,
-        userAvatarX,
-        userAvatarY,
-        userAvatarSize,
-        userAvatarSize
+      ctx.font = "28px Ghibli-Bold, Arial";
+      ctx.fillStyle = data.messageColor || "#FFFFFF";
+      ctx.fillText(data.message || "", width / 2, 380);
+
+      ctx.shadowColor = "transparent";
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+
+      if (data.avatarShape === "Square") {
+        const borderRadius = 16;
+        ctx.beginPath();
+        ctx.moveTo(userAvatarX + borderRadius, userAvatarY);
+        ctx.lineTo(userAvatarX + userAvatarSize - borderRadius, userAvatarY);
+        ctx.arcTo(
+          userAvatarX + userAvatarSize,
+          userAvatarY,
+          userAvatarX + userAvatarSize,
+          userAvatarY + borderRadius,
+          borderRadius
+        );
+        ctx.lineTo(
+          userAvatarX + userAvatarSize,
+          userAvatarY + userAvatarSize - borderRadius
+        );
+        ctx.arcTo(
+          userAvatarX + userAvatarSize,
+          userAvatarY + userAvatarSize,
+          userAvatarX + userAvatarSize - borderRadius,
+          userAvatarY + userAvatarSize,
+          borderRadius
+        );
+        ctx.lineTo(userAvatarX + borderRadius, userAvatarY + userAvatarSize);
+        ctx.arcTo(
+          userAvatarX,
+          userAvatarY + userAvatarSize,
+          userAvatarX,
+          userAvatarY + userAvatarSize - borderRadius,
+          borderRadius
+        );
+        ctx.lineTo(userAvatarX, userAvatarY + borderRadius);
+        ctx.arcTo(
+          userAvatarX,
+          userAvatarY,
+          userAvatarX + borderRadius,
+          userAvatarY,
+          borderRadius
+        );
+        ctx.closePath();
+
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = data.circleColor || "#FFFFFF";
+        ctx.stroke();
+
+        ctx.clip();
+        ctx.drawImage(
+          avatar,
+          userAvatarX,
+          userAvatarY,
+          userAvatarSize,
+          userAvatarSize
+        );
+      } else {
+        ctx.beginPath();
+        ctx.arc(
+          userAvatarX + userAvatarSize / 2,
+          userAvatarY + userAvatarSize / 2,
+          userAvatarSize / 2 + 2,
+          0,
+          Math.PI * 2,
+          true
+        );
+
+        ctx.lineWidth = 8;
+        ctx.strokeStyle = data.circleColor || "#FFFFFF";
+        ctx.stroke();
+        ctx.clip();
+        ctx.drawImage(
+          avatar,
+          userAvatarX,
+          userAvatarY,
+          userAvatarSize,
+          userAvatarSize
+        );
+      }
+    } catch (error) {
+      console.error(
+        `Error processing avatar or text for member ${member.user.id}:`,
+        error
       );
     }
 

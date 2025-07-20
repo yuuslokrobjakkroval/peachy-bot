@@ -38,16 +38,16 @@ module.exports = class ViewTree extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     }
 
@@ -90,7 +90,7 @@ module.exports = class ViewTree extends Command {
       new ButtonBuilder()
         .setCustomId("water_tree")
         .setLabel("💧 Water Tree")
-        .setStyle(ButtonStyle.Primary)
+        .setStyle(ButtonStyle.Primary),
     );
 
     const message = ctx.isInteraction
@@ -167,7 +167,7 @@ module.exports = class ViewTree extends Command {
           .setCustomId("water_tree")
           .setLabel("💧 Water Tree")
           .setStyle(ButtonStyle.Primary)
-          .setDisabled(true)
+          .setDisabled(true),
       );
 
       await message.edit({

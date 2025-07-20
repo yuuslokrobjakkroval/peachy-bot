@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const { MessageFlags } = require("discord.js");
 const GiveawaySchema = require("../../schemas/giveaway.js");
 
 module.exports = class Giveaway extends Command {
@@ -77,13 +78,19 @@ module.exports = class Giveaway extends Command {
       language.defaultLocale,
     )?.generalMessages;
 
-    if (ctx.isInteraction) {
-      await ctx.interaction.deferReply();
-    } else {
-      await ctx.sendDeferMessage(`${client.user.username} is thinking...`);
+    // Defer reply
+    try {
+      if (ctx.isInteraction) {
+        await ctx.interaction.deferReply();
+      } else {
+        await ctx.sendDeferMessage(`${client.user.username} is thinking...`);
+      }
+    } catch (error) {
+      console.error("Error deferring reply:", error);
+      return;
     }
 
-    // Parse command arguments in the new order
+    // Parse command arguments
     const description = ctx.isInteraction
       ? ctx.interaction.options.getString("description")
       : args[0];
@@ -118,15 +125,14 @@ module.exports = class Giveaway extends Command {
     if (!validationResult.success) {
       const errorMessage =
         "⚠️ Invalid parameters provided. Please check your input and try again.";
-
       return ctx.isInteraction
         ? await ctx.interaction.editReply({
             content: errorMessage,
-            fetchReply: true,
+            flags: MessageFlags.Ephemeral,
           })
         : await ctx.editMessage({
             content: errorMessage,
-            fetchReply: true,
+            flags: MessageFlags.Ephemeral,
           });
     }
 
@@ -138,15 +144,15 @@ module.exports = class Giveaway extends Command {
       return ctx.isInteraction
         ? ctx.interaction.editReply({
             content: "Only the bot owner can enable autopay for giveaways.",
-            flags: 64,
+            flags: MessageFlags.Ephemeral,
           })
         : ctx.editMessage({
             content: "Only the bot owner can enable autopay for giveaways.",
-            flags: 64,
+            flags: MessageFlags.Ephemeral,
           });
     }
 
-    // Validate prize
+    // Validate and parse prize
     if (prize.toString().startsWith("-")) {
       return ctx.sendMessage({
         embeds: [
@@ -155,33 +161,46 @@ module.exports = class Giveaway extends Command {
             .setColor(color.danger)
             .setDescription(generalMessages.invalidAmount),
         ],
+        flags: MessageFlags.Ephemeral,
       });
     }
 
-    // Process prize amount with multipliers
-    if (
-      isNaN(prize) ||
-      prize <= 0 ||
-      prize.toString().includes(".") ||
-      prize.toString().includes(",")
-    ) {
-      const multipliers = {
-        k: 1000,
-        m: 1000000,
-        b: 1000000000,
-        t: 1000000000000,
-        q: 1000000000000000,
-      };
-
-      if (prize.match(/\d+[kmbtq]/i)) {
-        const unit = prize.slice(-1).toLowerCase();
-        const number = Number.parseInt(prize);
-        prize = number * (multipliers[unit] || 1);
-      } else if (
-        prize.toString().includes(".") ||
-        prize.toString().includes(",")
-      ) {
-        prize = Number.parseInt(prize.replace(/,/g, ""));
+    const multipliers = {
+      k: 1000,
+      m: 1000000,
+      b: 1000000000,
+      t: 1000000000000,
+      q: 1000000000000000,
+    };
+    if (typeof prize === "string" && prize.match(/\d+[kmbtq]/i)) {
+      const unit = prize.slice(-1).toLowerCase();
+      const number = Number.parseInt(prize);
+      if (isNaN(number)) {
+        return ctx.sendMessage({
+          embeds: [
+            client
+              .embed()
+              .setColor(color.danger)
+              .setDescription(
+                "Invalid prize format. Please provide a valid number or multiplier (e.g., 1k, 1m).",
+              ),
+          ],
+          flags: MessageFlags.Ephemeral,
+        });
+      }
+      prize = number * (multipliers[unit] || 1);
+    } else {
+      prize = Number.parseInt(prize.replace(/,/g, ""));
+      if (isNaN(prize) || prize <= 0) {
+        return ctx.sendMessage({
+          embeds: [
+            client
+              .embed()
+              .setColor(color.danger)
+              .setDescription("Prize must be a positive integer."),
+          ],
+          flags: MessageFlags.Ephemeral,
+        });
       }
     }
 
@@ -190,11 +209,9 @@ module.exports = class Giveaway extends Command {
       .embed()
       .setColor(color.main)
       .setTitle(
-        `${
-          description
-            ? `${description}`
-            : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`
-        }`,
+        description
+          ? `${description}`
+          : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`,
       )
       .setDescription(
         `Click ${
@@ -242,17 +259,17 @@ module.exports = class Giveaway extends Command {
     if (!messageResult.success) {
       const errorMessage =
         "❌ Failed to send the giveaway message. Please try again later.";
-
       return ctx.isInteraction
         ? await ctx.interaction.editReply({
             content: errorMessage,
-            fetchReply: true,
+            flags: MessageFlags.Ephemeral,
           })
         : await ctx.editMessage({
             content: errorMessage,
-            fetchReply: true,
+            flags: MessageFlags.Ephemeral,
           });
     }
+
     // Save giveaway to database
     try {
       await GiveawaySchema.create({
@@ -261,7 +278,7 @@ module.exports = class Giveaway extends Command {
         messageId: messageResult.message.id,
         hostedBy: ctx.author.id,
         winners: winners,
-        prize: Number.parseInt(prize),
+        prize: prize,
         endTime: endTime,
         paused: false,
         ended: false,
@@ -273,8 +290,8 @@ module.exports = class Giveaway extends Command {
         description: description || "",
       });
     } catch (error) {
-      console.error("Error creating giveaway:", error);
-      await ctx.channel.send({
+      console.error(`Error creating giveaway in guild ${ctx.guild.id}:`, error);
+      return ctx.channel.send({
         embeds: [
           client
             .embed()
@@ -283,7 +300,18 @@ module.exports = class Giveaway extends Command {
               "There was an error saving the giveaway. Please try again.",
             ),
         ],
+        flags: MessageFlags.Ephemeral,
       });
     }
+
+    return ctx.isInteraction
+      ? await ctx.interaction.editReply({
+          content: "Giveaway started successfully!",
+          flags: MessageFlags.Ephemeral,
+        })
+      : await ctx.editMessage({
+          content: "Giveaway started successfully!",
+          flags: MessageFlags.Ephemeral,
+        });
   }
 };
