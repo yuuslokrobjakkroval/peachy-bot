@@ -7,12 +7,13 @@ module.exports = class Announce extends Command {
     super(client, {
       name: "announce",
       description: {
-        content: "Send an announcement or text message to a specified channel.",
+        content:
+          "Send an announcement or text message to a specified channel, optionally mentioning a role.",
         examples: [
-          "announce #general announce Server maintenance at 8 PM!",
-          "announce #updates text New feature released!",
+          "announce #general announce Server maintenance at 8 PM! @everyone",
+          "announce #updates text New feature released! @Moderators",
         ],
-        usage: "announce [channel] <type> <message>",
+        usage: "announce [channel] <type> <message> [role]",
       },
       category: "admin",
       aliases: ["an", "broadcast"],
@@ -48,6 +49,12 @@ module.exports = class Announce extends Command {
           type: 3,
           required: true,
         },
+        {
+          name: "role",
+          description: "The role to mention in the message.",
+          type: 8,
+          required: false,
+        },
       ],
     });
   }
@@ -58,12 +65,13 @@ module.exports = class Announce extends Command {
     )?.generalMessages;
 
     // Parse command arguments
-    let channel, type, messageContent;
+    let channel, type, messageContent, role;
 
     if (ctx.isInteraction) {
       type = ctx.interaction.options.getString("type");
       channel = ctx.interaction.options.getChannel("channel");
       messageContent = ctx.interaction.options.getString("message");
+      role = ctx.interaction.options.getRole("role");
     } else {
       channel =
         ctx.message.mentions.channels.first() ||
@@ -77,6 +85,16 @@ module.exports = class Announce extends Command {
       }
       type = args[0]?.toLowerCase();
       args.shift(); // Remove type from args
+      // Check for role mention in args
+      role =
+        ctx.message.mentions.roles.first() ||
+        ctx.guild.roles.cache.get(args[args.length - 1]);
+      if (
+        ctx.message.mentions.roles.first() ||
+        ctx.guild.roles.cache.get(args[args.length - 1])
+      ) {
+        args.pop(); // Remove role from args
+      }
       messageContent = args.join(" ");
     }
 
@@ -132,22 +150,45 @@ module.exports = class Announce extends Command {
       );
     }
 
-    // Prepare and send the message based on type
+    // Validate role
+    if (role) {
+      try {
+        role = await ctx.guild.roles.fetch(role.id || role, { cache: true });
+      } catch (error) {
+        console.error("Error fetching role:", error);
+        return await client.utils.sendErrorMessage(
+          client,
+          ctx,
+          generalMessages?.invalidRole || "Could not find the specified role.",
+          color
+        );
+      }
+    }
+
+    // Prepare message content with role mention if provided
+    const finalMessage = role
+      ? `${role.toString()} ${messageContent}`
+      : messageContent;
+
+    // Send the message based on type
     try {
       if (type === "announce") {
         const embed = client
           .embed()
           .setColor(color.main)
           .setTitle("📢 Announcement")
-          .setDescription(messageContent)
+          .setDescription(messageContent) // Only message content in embed
           .setTimestamp()
           .setFooter({
             text: `Announced by ${ctx.author.tag}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
-        await channel.send({ embeds: [embed] });
+        await channel.send({
+          content: role ? role.toString() : null,
+          embeds: [embed],
+        });
       } else {
-        await channel.send(messageContent);
+        await channel.send(finalMessage);
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -165,7 +206,8 @@ module.exports = class Announce extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${globalEmoji.result.tick} ${type.charAt(0).toUpperCase() + type.slice(1)} sent to ${channel.toString()} successfully!`
+        `${globalEmoji.result.tick} ${type.charAt(0).toUpperCase() + type.slice(1)} sent to ${channel.toString()} successfully!` +
+          (role ? ` Mentioned role: ${role.name}` : "")
       );
 
     return await ctx.sendMessage({ embeds: [confirmationEmbed] });
