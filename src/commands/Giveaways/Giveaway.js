@@ -198,6 +198,10 @@ module.exports = class Giveaway extends Command {
       if (!(await client.utils.hasSpecialPermission(ctx.author.id))) {
         const totalPrize = prize * winners;
         const getUser = await client.utils.getUser({ userId: ctx.author.id });
+        console.log(
+          `Checking balance for user ${ctx.author.id}:`,
+          getUser.balance.coin
+        );
 
         if (!getUser || getUser.balance.coin < totalPrize) {
           const errorMessage = `❌ Insufficient coin balance. You need ${client.utils.formatNumber(totalPrize)} coins, but you have ${client.utils.formatNumber(getUser?.balance.coin || 0)} coins.`;
