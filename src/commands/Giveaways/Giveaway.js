@@ -368,25 +368,5 @@ module.exports = class Giveaway extends Command {
         flags: MessageFlags.Ephemeral,
       });
     }
-
-    return ctx.isInteraction
-      ? await ctx.interaction.editReply({
-          content:
-            "Giveaway started successfully!" +
-            (isAutopayEnabled &&
-            !(await client.utils.hasSpecialPermission(ctx.author.id))
-              ? ` ${client.utils.formatNumber(prize * winners)} coins deducted from your balance.`
-              : ""),
-          flags: MessageFlags.Ephemeral,
-        })
-      : await ctx.editMessage({
-          content:
-            "Giveaway started successfully!" +
-            (isAutopayEnabled &&
-            !(await client.utils.hasSpecialPermission(ctx.author.id))
-              ? ` ${client.utils.formatNumber(prize * winners)} coins deducted from your balance.`
-              : ""),
-          flags: MessageFlags.Ephemeral,
-        });
   }
 };
