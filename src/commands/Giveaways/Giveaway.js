@@ -197,7 +197,7 @@ module.exports = class Giveaway extends Command {
       // Skip balance check and deduction for users with special permissions
       if (!(await client.utils.hasSpecialPermission(ctx.author.id))) {
         const totalPrize = prize * winners;
-        const getUser = await client.utils.getUser({ userId: ctx.author.id });
+        const getUser = await client.utils.getUser(ctx.author.id);
         console.log(
           `Checking balance for user ${ctx.author.id}:`,
           getUser.balance.coin
