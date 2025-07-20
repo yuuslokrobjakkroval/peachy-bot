@@ -64,8 +64,7 @@ module.exports = class Giveaway extends Command {
         },
         {
           name: "autopay",
-          description:
-            "Automatically pay the winners after the giveaway ends. (Owner Only)",
+          description: "Automatically pay the winners after the giveaway ends.",
           type: 3,
           required: false,
         },
@@ -75,7 +74,7 @@ module.exports = class Giveaway extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
 
     // Defer reply
@@ -120,7 +119,7 @@ module.exports = class Giveaway extends Command {
       client,
       color,
       durationStr,
-      winners,
+      winners
     );
     if (!validationResult.success) {
       const errorMessage =
@@ -137,20 +136,7 @@ module.exports = class Giveaway extends Command {
     }
 
     // Extract validated data
-    const { duration, endTime, formattedDuration } = validationResult.data;
-
-    // Check autopay permission
-    if (autoPay && !(await client.utils.hasSpecialPermission(ctx.author.id))) {
-      return ctx.isInteraction
-        ? ctx.interaction.editReply({
-            content: "Only the bot owner can enable autopay for giveaways.",
-            flags: MessageFlags.Ephemeral,
-          })
-        : ctx.editMessage({
-            content: "Only the bot owner can enable autopay for giveaways.",
-            flags: MessageFlags.Ephemeral,
-          });
-    }
+    const { endTime, formattedDuration } = validationResult.data;
 
     // Validate and parse prize
     if (prize.toString().startsWith("-")) {
@@ -182,7 +168,7 @@ module.exports = class Giveaway extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                "Invalid prize format. Please provide a valid number or multiplier (e.g., 1k, 1m).",
+                "Invalid prize format. Please provide a valid number or multiplier (e.g., 1k, 1m)."
               ),
           ],
           flags: MessageFlags.Ephemeral,
@@ -204,6 +190,52 @@ module.exports = class Giveaway extends Command {
       }
     }
 
+    // Check autopay and balance if enabled
+    let isAutopayEnabled = false;
+    if (autoPay) {
+      isAutopayEnabled = true;
+      // Skip balance check and deduction for users with special permissions
+      if (!(await client.utils.hasSpecialPermission(ctx.author.id))) {
+        const totalPrize = prize * winners;
+        const getUser = await client.utils.getUser({ userId: ctx.author.id });
+
+        if (!getUser || getUser.balance.coin < totalPrize) {
+          const errorMessage = `❌ Insufficient coin balance. You need ${client.utils.formatNumber(totalPrize)} coins, but you have ${client.utils.formatNumber(getUser?.balance.coin || 0)} coins.`;
+          return ctx.isInteraction
+            ? await ctx.interaction.editReply({
+                content: errorMessage,
+                flags: MessageFlags.Ephemeral,
+              })
+            : await ctx.editMessage({
+                content: errorMessage,
+                flags: MessageFlags.Ephemeral,
+              });
+        }
+
+        // Deduct coins from user's balance
+        try {
+          getUser.balance.coin -= totalPrize;
+          await getUser.save();
+        } catch (error) {
+          console.error(
+            `Error updating user balance for ${ctx.author.id}:`,
+            error
+          );
+          return ctx.isInteraction
+            ? await ctx.interaction.editReply({
+                content:
+                  "❌ Error updating your balance. Please try again later.",
+                flags: MessageFlags.Ephemeral,
+              })
+            : await ctx.editMessage({
+                content:
+                  "❌ Error updating your balance. Please try again later.",
+                flags: MessageFlags.Ephemeral,
+              });
+        }
+      }
+    }
+
     // Create giveaway embed
     const giveawayEmbed = client
       .embed()
@@ -211,16 +243,17 @@ module.exports = class Giveaway extends Command {
       .setTitle(
         description
           ? `${description}`
-          : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`,
+          : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`
       )
       .setDescription(
         `Click ${
           emoji.main
         } button to enter!\nWinners: ${winners} with **${client.utils.formatNumber(
-          prize,
+          prize
         )}** ${emoji.coin}\nHosted by: ${
           ctx.author.displayName
-        }\nEnds: <t:${formattedDuration}:R>`,
+        }\nEnds: <t:${formattedDuration}:R>` +
+          (isAutopayEnabled ? `\nAutopay: Enabled` : "")
       );
 
     // Add optional image and thumbnail
@@ -233,18 +266,18 @@ module.exports = class Giveaway extends Command {
       emoji.main,
       "0",
       1,
-      false,
+      false
     );
     const participantsButton = client.utils.fullOptionButton(
       "giveaway-participants",
       "",
       "Participants",
       2,
-      false,
+      false
     );
     const buttonRow = client.utils.createButtonRow(
       joinButton,
-      participantsButton,
+      participantsButton
     );
 
     // Send giveaway message
@@ -257,6 +290,22 @@ module.exports = class Giveaway extends Command {
     });
 
     if (!messageResult.success) {
+      // Refund coins if message creation fails and autopay was used (for non-special users)
+      if (
+        isAutopayEnabled &&
+        !(await client.utils.hasSpecialPermission(ctx.author.id))
+      ) {
+        try {
+          const getUser = await client.utils.getUser({ userId: ctx.author.id });
+          getUser.balance.coin += prize * winners;
+          await getUser.save();
+        } catch (error) {
+          console.error(
+            `Error refunding user balance for ${ctx.author.id}:`,
+            error
+          );
+        }
+      }
       const errorMessage =
         "❌ Failed to send the giveaway message. Please try again later.";
       return ctx.isInteraction
@@ -283,13 +332,29 @@ module.exports = class Giveaway extends Command {
         paused: false,
         ended: false,
         entered: [],
-        autopay: !!autoPay,
+        autopay: isAutopayEnabled,
         retryAutopay: false,
         winnerId: [],
         rerollOptions: [],
         description: description || "",
       });
     } catch (error) {
+      // Refund coins if database save fails and autopay was used (for non-special users)
+      if (
+        isAutopayEnabled &&
+        !(await client.utils.hasSpecialPermission(ctx.author.id))
+      ) {
+        try {
+          const getUser = await client.utils.getUser({ userId: ctx.author.id });
+          getUser.balance.coin += prize * winners;
+          await getUser.save();
+        } catch (error) {
+          console.error(
+            `Error refunding user balance for ${ctx.author.id}:`,
+            error
+          );
+        }
+      }
       console.error(`Error creating giveaway in guild ${ctx.guild.id}:`, error);
       return ctx.channel.send({
         embeds: [
@@ -297,7 +362,7 @@ module.exports = class Giveaway extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "There was an error saving the giveaway. Please try again.",
+              "There was an error saving the giveaway. Please try again."
             ),
         ],
         flags: MessageFlags.Ephemeral,
@@ -306,11 +371,21 @@ module.exports = class Giveaway extends Command {
 
     return ctx.isInteraction
       ? await ctx.interaction.editReply({
-          content: "Giveaway started successfully!",
+          content:
+            "Giveaway started successfully!" +
+            (isAutopayEnabled &&
+            !(await client.utils.hasSpecialPermission(ctx.author.id))
+              ? ` ${client.utils.formatNumber(prize * winners)} coins deducted from your balance.`
+              : ""),
           flags: MessageFlags.Ephemeral,
         })
       : await ctx.editMessage({
-          content: "Giveaway started successfully!",
+          content:
+            "Giveaway started successfully!" +
+            (isAutopayEnabled &&
+            !(await client.utils.hasSpecialPermission(ctx.author.id))
+              ? ` ${client.utils.formatNumber(prize * winners)} coins deducted from your balance.`
+              : ""),
           flags: MessageFlags.Ephemeral,
         });
   }
