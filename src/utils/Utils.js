@@ -10,6 +10,7 @@ const ms = require("ms");
 const Users = require("../schemas/user");
 const GiveawaySchema = require("../schemas/giveaway");
 const GiveawayShopItemSchema = require("../schemas/giveawayShopItem");
+const GiveawayScheduleSchema = require("../schemas/giveawaySchedule");
 const importantItems = require("../assets/inventory/ImportantItems");
 const shopItems = require("../assets/inventory/ShopItems");
 const inventory = shopItems.flatMap((shop) => shop.inventory);
@@ -2245,6 +2246,159 @@ module.exports = class Utils {
     } catch (error) {
       console.error("Gemini API error:", error.response?.data || error.message);
       throw error;
+    }
+  }
+
+  static async createGiveaway(client) {
+    console.log("Create Giveaway Start");
+
+    try {
+      const getScheduledGiveaways = await GiveawaySchedulesSchema.find({
+        isActive: true,
+      });
+
+      if (getScheduledGiveaways.length === 0) {
+        console.log("No scheduled giveaways found.");
+        return;
+      }
+
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+      const currentDate = now.getDate();
+
+      for (const giveaway of getScheduledGiveaways) {
+        for (const schedule of giveaway.schedules) {
+          if (!schedule.isActive) continue;
+
+          let shouldRun = false;
+          // Determine if the schedule should run based on scheduleType
+          if (schedule.scheduleType === "DAILY") {
+            // Run at 11:45 PM
+            shouldRun = currentHour === 23 && currentMinute === 45;
+          } else if (schedule.scheduleType === "WEEKLY") {
+            // Run on Sundays at 11:45 PM
+            shouldRun =
+              currentDay === 0 && currentHour === 23 && currentMinute === 45;
+          } else if (schedule.scheduleType === "MONTHLY") {
+            // Run on the 1st of the month at 11:45 PM
+            shouldRun =
+              currentDate === 1 && currentHour === 23 && currentMinute === 45;
+          }
+
+          if (!shouldRun) continue;
+
+          // Fetch the channel
+          const channel = await client.channels
+            .fetch(schedule.channelId)
+            .catch(() => null);
+          if (!channel) {
+            console.error(
+              `Channel ${schedule.channelId} not found for guild ${giveaway.guildId}`
+            );
+            continue;
+          }
+
+          // Calculate endTime based on scheduleType
+          let durationMs;
+          if (schedule.scheduleType === "DAILY") {
+            durationMs = 24 * 60 * 60 * 1000; // 24 hours
+          } else if (schedule.scheduleType === "WEEKLY") {
+            durationMs = 7 * 24 * 60 * 60 * 1000; // 7 days
+          } else if (schedule.scheduleType === "MONTHLY") {
+            durationMs = 30 * 24 * 60 * 60 * 1000; // 30 days
+          }
+          const endTime = Math.floor((now.getTime() + durationMs) / 1000);
+          const giveawayEmbed = client
+            .embed()
+            .setColor(client.color.main)
+            .setTitle(
+              schedule.content
+                ? schedule.content
+                : `**${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}`
+            )
+            .setDescription(
+              `Click ${client.emoji.main} button to enter!\n` +
+                `Winners: ${schedule.winners} with **${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}\n` +
+                `Hosted by: ${client.user.displayName}\n` +
+                `Ends: <t:${endTime}:R>`
+            );
+
+          // Create buttons
+          const joinButton = client.utils.fullOptionButton(
+            "giveaway-join",
+            client.emoji.main,
+            "0",
+            1,
+            false
+          );
+          const participantsButton = client.utils.fullOptionButton(
+            "giveaway-participants",
+            "",
+            "Participants",
+            2,
+            false
+          );
+          const buttonRow = client.utils.createButtonRow(
+            joinButton,
+            participantsButton
+          );
+
+          // Send giveaway message
+          const messageResult = await client.utils.createGiveawayMessage(
+            { channel },
+            {
+              client,
+              color: client.color,
+              emoji: client.emoji,
+              embed: giveawayEmbed,
+              buttonRow,
+            }
+          );
+
+          if (!messageResult.success) {
+            console.error(
+              `Failed to send giveaway message for guild ${giveaway.guildId}`
+            );
+            continue;
+          }
+
+          // Save giveaway to database
+          try {
+            await GiveawaySchema.create({
+              guildId: giveaway.guildId,
+              channelId: schedule.channelId,
+              messageId: messageResult.message.id,
+              hostedBy: client.user.id,
+              winners: schedule.winners,
+              prize: schedule.prize,
+              endTime: endTime,
+              paused: false,
+              ended: false,
+              entered: [],
+              autopay: schedule.autopay,
+              retryAutopay: schedule.retryAutopay,
+              winnerId: schedule.winnerId,
+              rerollOptions: schedule.rerollOptions,
+              rerollCount: schedule.rerollCount,
+              rerolledWinners: schedule.rerolledWinners,
+              description: schedule.content || "",
+            });
+            console.log(
+              `Giveaway created successfully in guild ${giveaway.guildId}, channel ${schedule.channelId}`
+            );
+          } catch (error) {
+            console.error(
+              `Error saving giveaway for guild ${giveaway.guildId}:`,
+              error
+            );
+          }
+        }
+      }
+      console.log("Scheduled Giveaway Check Ended");
+    } catch (err) {
+      console.error(`Error in createGiveaway: ${err.message}`);
     }
   }
 };
