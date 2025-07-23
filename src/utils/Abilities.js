@@ -603,17 +603,13 @@ module.exports = class Ability {
   }
 
   static async getSendMessage(client) {
-    const session = await SendMessageSchema.startSession();
     try {
-      session.startTransaction();
       const sendMessage = await SendMessageSchema.findOneAndUpdate(
         { isActive: true },
         { $set: { isActive: false } },
-        { new: true, session }
+        { new: true }
       );
       if (!sendMessage) {
-        await session.abortTransaction();
-        session.endSession();
         return;
       }
 
@@ -621,25 +617,17 @@ module.exports = class Ability {
       const server = client.guilds.cache.get(guild);
       if (!server) {
         console.warn(`Guild ${guild} not found for send message.`);
-        await session.abortTransaction();
-        session.endSession();
         return;
       }
 
       const member = server.members.cache.get(userId);
       if (!member) {
         console.warn(`Member ${userId} not found in guild ${server.name}.`);
-        await session.abortTransaction();
-        session.endSession();
         return;
       }
 
       await this.SendMessage(client, member, feature);
-      await session.commitTransaction();
-      session.endSession();
     } catch (error) {
-      await session.abortTransaction();
-      session.endSession();
       console.error("Error processing send message:", error);
     }
   }

@@ -5,7 +5,7 @@ const ScheduleSchema = new Schema({
     type: String,
     default: () => new mongoose.Types.ObjectId().toString(),
   },
-  channelId: { type: String, default: null },
+  channel: { type: String, default: null },
   isActive: { type: Boolean, default: true },
   content: { type: String, default: "" },
   scheduleType: { type: String, enum: ["DAILY", "WEEKLY", "MONTHLY"] },

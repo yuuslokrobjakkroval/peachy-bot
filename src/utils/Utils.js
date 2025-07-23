@@ -2250,82 +2250,82 @@ module.exports = class Utils {
   }
 
   static async createGiveaway(client) {
-    console.log("Create Giveaway Start");
+    console.log("🔄 [CreateGiveaway] Start");
 
     try {
-      const getScheduledGiveaways = await GiveawaySchedulesSchema.find({
+      const scheduledGiveaways = await GiveawayScheduleSchema.find({
         isActive: true,
       });
+      console.log(
+        `📦 Found ${scheduledGiveaways.length} active scheduled giveaways`
+      );
 
-      if (getScheduledGiveaways.length === 0) {
-        console.log("No scheduled giveaways found.");
-        return;
-      }
+      if (scheduledGiveaways.length === 0) return;
 
       const now = new Date();
-      const currentHour = now.getHours();
-      const currentMinute = now.getMinutes();
-      const currentDay = now.getDay(); // 0 (Sunday) to 6 (Saturday)
-      const currentDate = now.getDate();
 
-      for (const giveaway of getScheduledGiveaways) {
+      for (const giveaway of scheduledGiveaways) {
+        console.log(`🎁 Checking guild: ${giveaway.guildId}`);
+
         for (const schedule of giveaway.schedules) {
-          if (!schedule.isActive) continue;
-
-          let shouldRun = false;
-          // Determine if the schedule should run based on scheduleType
-          if (schedule.scheduleType === "DAILY") {
-            // Run at 11:45 PM
-            shouldRun = currentHour === 23 && currentMinute === 45;
-          } else if (schedule.scheduleType === "WEEKLY") {
-            // Run on Sundays at 11:45 PM
-            shouldRun =
-              currentDay === 0 && currentHour === 23 && currentMinute === 45;
-          } else if (schedule.scheduleType === "MONTHLY") {
-            // Run on the 1st of the month at 11:45 PM
-            shouldRun =
-              currentDate === 1 && currentHour === 23 && currentMinute === 45;
+          if (!schedule.isActive) {
+            console.log(`⏩ Skipping inactive schedule`);
+            continue;
+          }
+          let guild;
+          try {
+            guild = await client.guilds.fetch(giveaway.guildId);
+            console.log(`✅ Fetched guild ${guild.name}`);
+          } catch (e) {
+            console.error(`❌ Failed to fetch guild ${giveaway.guildId}`, e);
+            continue;
           }
 
-          if (!shouldRun) continue;
+          let channel;
+          try {
+            // Fetch the channel
+            channel = await client.channels.fetch(schedule.channel);
 
-          // Fetch the channel
-          const channel = await client.channels
-            .fetch(schedule.channelId)
-            .catch(() => null);
-          if (!channel) {
+            // Make sure it belongs to the right guild
+            if (!channel || channel.guild.id !== giveaway.guildId) {
+              throw new Error(
+                "Channel not found or doesn't belong to this guild."
+              );
+            }
+
+            console.log(`✅ Fetched channel: ${channel.name} (${channel.id})`);
+          } catch (e) {
             console.error(
-              `Channel ${schedule.channelId} not found for guild ${giveaway.guildId}`
+              `❌ Failed to fetch channel ${schedule.channelId}`,
+              e
             );
             continue;
           }
 
-          // Calculate endTime based on scheduleType
-          let durationMs;
-          if (schedule.scheduleType === "DAILY") {
-            durationMs = 24 * 60 * 60 * 1000; // 24 hours
-          } else if (schedule.scheduleType === "WEEKLY") {
-            durationMs = 7 * 24 * 60 * 60 * 1000; // 7 days
-          } else if (schedule.scheduleType === "MONTHLY") {
-            durationMs = 30 * 24 * 60 * 60 * 1000; // 30 days
-          }
+          const durationMs =
+            schedule.scheduleType === "DAILY"
+              ? 24 * 60 * 60 * 1000
+              : schedule.scheduleType === "WEEKLY"
+                ? 7 * 24 * 60 * 60 * 1000
+                : 30 * 24 * 60 * 60 * 1000;
+
           const endTime = Math.floor((now.getTime() + durationMs) / 1000);
-          const giveawayEmbed = client
+
+          const embed = client
             .embed()
             .setColor(client.color.main)
             .setTitle(
-              schedule.content
-                ? schedule.content
-                : `**${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}`
+              schedule.content ||
+                `**${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}`
             )
             .setDescription(
-              `Click ${client.emoji.main} button to enter!\n` +
-                `Winners: ${schedule.winners} with **${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}\n` +
+              `Click ${client.emoji.main} to enter!\n` +
+                `Winners: ${schedule.winners}\n` +
+                `Prize: **${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}\n` +
                 `Hosted by: ${client.user.displayName}\n` +
                 `Ends: <t:${endTime}:R>`
             );
 
-          // Create buttons
           const joinButton = client.utils.fullOptionButton(
             "giveaway-join",
             client.emoji.main,
@@ -2345,31 +2345,27 @@ module.exports = class Utils {
             participantsButton
           );
 
-          // Send giveaway message
-          const messageResult = await client.utils.createGiveawayMessage(
-            { channel },
-            {
-              client,
-              color: client.color,
-              emoji: client.emoji,
-              embed: giveawayEmbed,
-              buttonRow,
-            }
-          );
-
-          if (!messageResult.success) {
+          let message;
+          try {
+            console.log(`📤 Sending giveaway message...`);
+            message = await channel.send({
+              embeds: [embed],
+              components: [buttonRow],
+            });
+            console.log(`✅ Giveaway message sent: ${channel.name}`);
+          } catch (sendErr) {
             console.error(
-              `Failed to send giveaway message for guild ${giveaway.guildId}`
+              `❌ Failed to send message in channel ${channel.id}`,
+              sendErr
             );
             continue;
           }
 
-          // Save giveaway to database
           try {
             await GiveawaySchema.create({
               guildId: giveaway.guildId,
               channelId: schedule.channelId,
-              messageId: messageResult.message.id,
+              messageId: message.id,
               hostedBy: client.user.id,
               winners: schedule.winners,
               prize: schedule.prize,
@@ -2378,27 +2374,21 @@ module.exports = class Utils {
               ended: false,
               entered: [],
               autopay: schedule.autopay,
-              retryAutopay: schedule.retryAutopay,
-              winnerId: schedule.winnerId,
-              rerollOptions: schedule.rerollOptions,
-              rerollCount: schedule.rerollCount,
-              rerolledWinners: schedule.rerolledWinners,
+              retryAutopay: false,
+              winnerId: [],
+              rerolledWinners: [],
               description: schedule.content || "",
             });
-            console.log(
-              `Giveaway created successfully in guild ${giveaway.guildId}, channel ${schedule.channelId}`
-            );
-          } catch (error) {
-            console.error(
-              `Error saving giveaway for guild ${giveaway.guildId}:`,
-              error
-            );
+            console.log(`💾 Giveaway saved to DB for messageId: ${message.id}`);
+          } catch (dbErr) {
+            console.error(`❌ Failed to save giveaway to DB`, dbErr);
           }
         }
       }
-      console.log("Scheduled Giveaway Check Ended");
+
+      console.log("✅ [CreateGiveaway] Finished");
     } catch (err) {
-      console.error(`Error in createGiveaway: ${err.message}`);
+      console.error("💥 Error in createGiveaway:", err);
     }
   }
 };
