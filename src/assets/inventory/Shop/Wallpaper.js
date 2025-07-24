@@ -362,27 +362,10 @@ module.exports = {
       price: { buy: 15e6, sell: 1e7 },
       image: "https://i.imgur.com/MuUCJwA.png",
     },
-    // CHINA NEW YEAR
-    {
-      id: "w168",
-      name: "Fortune Blossoms",
-      description:
-        "Celebrate Chinese New Year with Peachy Cat and Goma as lucky symbols of prosperity and joy in this festive wallpaper adorned with vibrant red and gold hues.",
-      type: "wallpaper",
-      able: {
-        use: true,
-        gift: true,
-        multiple: true,
-      },
-      quantity: 1,
-      emoji: emoji.frame.w168,
-      available: ["use", "gift"],
-      price: { buy: 2e7, sell: 15e6 },
-      image: "https://i.imgur.com/RmfP9ie.png",
-    },
+    
     {
       id: "w22",
-      name: "yamada the gamer",
+      name: "Yamada The Gamer",
       description:
         " A cozy room with a gaming setup, featuring a desk with a computer, gaming chair, and posters on the wall. The room is decorated with soft lighting and gaming-themed items, creating a warm and inviting atmosphere for gamers.",
       type: "wallpaper",
@@ -399,7 +382,7 @@ module.exports = {
     },
     {
       id: "w23",
-      name: "peachy and goma eating",
+      name: "Goma and Peachy Cat Eating Together",
       description:
         "goma and peachy cat are eating together in a cozy room, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -416,7 +399,7 @@ module.exports = {
     },
     {
       id: "w24",
-      name: "peachy and goma piggyback",
+      name: "Peachy Cat and Goma Piggyback Ride",
       description:
         "Peachy Cat and Goma are enjoying a playful piggyback ride in a cozy room, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -433,7 +416,7 @@ module.exports = {
     },
     {
       id: "w25",
-      name: "peachy and goma summerfield",
+      name: "Peachy Cat and Goma Summer Field",
       description:
         "Peachy Cat and Goma are enjoying a sunny day in a summer field, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -450,7 +433,7 @@ module.exports = {
     },
     {
       id: "w26",
-      name: "peachy and goma winter snowfield",
+      name: "Peachy Cat and Goma Winter Day",
       description:
         "Peachy Cat and Goma are enjoying a snowy winter day in a snowfield, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -467,7 +450,7 @@ module.exports = {
     },
     {
       id: "w27",
-      name: "peachy and goma in hot summer",
+      name: "peachy and goma summer day",
       description:
         "Peachy Cat and Goma are enjoying a hot summer day, relaxing in a cozy room with soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -484,7 +467,7 @@ module.exports = {
     },
     {
       id: "w28",
-      name: "peachy and goma yellow flowers",
+      name: "Peachy Cat and Goma Yellow Flowers",
       description:
         "Peachy Cat and Goma are enjoying a sunny day in a field of yellow flowers, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -518,7 +501,7 @@ module.exports = {
     },
     {
       id: "w30",
-      name: "cinnaomon roll",
+      name: "Cinnamon Roll",
       description:
         "cinnamon roll is a cute and cozy wallpaper featuring a warm and inviting atmosphere with soft lighting, perfect for creating a relaxing ambiance.",
       type: "wallpaper",
@@ -535,7 +518,7 @@ module.exports = {
     },
     {
       id: "w31",
-      name: "cinnamon roll blue ",
+      name: "Cinnamon Roll Blue",
       description:
         "cinnmon roll blue is chilling",
       type: "wallpaper",
@@ -549,6 +532,24 @@ module.exports = {
       available: ["use", "gift"],
       price: { buy: 2e7, sell: 15e6 },
       image: "https://i.imgur.com/HkKtQuo.png",
+    },
+    // CHINA NEW YEAR
+    {
+      id: "w168",
+      name: "Fortune Blossoms",
+      description:
+        "Celebrate Chinese New Year with Peachy Cat and Goma as lucky symbols of prosperity and joy in this festive wallpaper adorned with vibrant red and gold hues.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.w168,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/RmfP9ie.png",
     },
   ],
 
