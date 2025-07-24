@@ -362,6 +362,177 @@ module.exports = {
       price: { buy: 15e6, sell: 1e7 },
       image: "https://i.imgur.com/MuUCJwA.png",
     },
+    
+    {
+      id: "w22",
+      name: "Yamada The Gamer",
+      description:
+        " A cozy room with a gaming setup, featuring a desk with a computer, gaming chair, and posters on the wall. The room is decorated with soft lighting and gaming-themed items, creating a warm and inviting atmosphere for gamers.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/0ep1yg3.jpg",
+    },
+    {
+      id: "w23",
+      name: "Eating Together",
+      description:
+        "goma and peachy cat are eating together in a cozy room, surrounded by soft lighting and a warm atmosphere.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/GyNGA78.jpg",
+    },
+    {
+      id: "w24",
+      name: "Piggyback Ride",
+      description:
+        "Peachy Cat and Goma are enjoying a playful piggyback ride in a cozy room, surrounded by soft lighting and a warm atmosphere.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/3gmYKUu.jpg",
+    },
+    {
+      id: "w25",
+      name: "Summer Field",
+      description:
+        "Peachy Cat and Goma are enjoying a sunny day in a summer field, surrounded by soft lighting and a warm atmosphere.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/vmzp8Jj.jpg",
+    },
+    {
+      id: "w26",
+      name: "Winter Day",
+      description:
+        "Peachy Cat and Goma are enjoying a snowy winter day in a snowfield, surrounded by soft lighting and a warm atmosphere.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/qUhGOPg.jpg",
+    },
+    {
+      id: "w27",
+      name: "Summer Day",
+      description:
+        "Peachy Cat and Goma are enjoying a hot summer day, relaxing in a cozy room with soft lighting and a warm atmosphere.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/b2hznmS.jpg",
+    },
+    {
+      id: "w28",
+      name: "Yellow Flowers",
+      description:
+        "Peachy Cat and Goma are enjoying a sunny day in a field of yellow flowers, surrounded by soft lighting and a warm atmosphere.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/aH6iNiT.jpg",
+    },
+    {
+      id: "w29",
+      name: "Kuromi",
+      description:
+        "A pastel pink",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/k8tBVIe.png",
+    },
+    {
+      id: "w30",
+      name: "Cinnamon Roll",
+      description:
+        "cinnamon roll is a cute and cozy wallpaper featuring a warm and inviting atmosphere with soft lighting, perfect for creating a relaxing ambiance.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/aA9Q6CK.jpg",
+    },
+    {
+      id: "w31",
+      name: "Cinnamon Roll Blue",
+      description:
+        "cinnmon roll blue is chilling",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/HkKtQuo.png",
+    },
     // CHINA NEW YEAR
     {
       id: "w168",
@@ -381,4 +552,6 @@ module.exports = {
       image: "https://i.imgur.com/RmfP9ie.png",
     },
   ],
+
 };
+
