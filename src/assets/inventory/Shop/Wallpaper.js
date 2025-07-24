@@ -382,7 +382,7 @@ module.exports = {
     },
     {
       id: "w23",
-      name: "Goma and Peachy Cat Eating Together",
+      name: "Eating Together",
       description:
         "goma and peachy cat are eating together in a cozy room, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -399,7 +399,7 @@ module.exports = {
     },
     {
       id: "w24",
-      name: "Peachy Cat and Goma Piggyback Ride",
+      name: "Piggyback Ride",
       description:
         "Peachy Cat and Goma are enjoying a playful piggyback ride in a cozy room, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -416,7 +416,7 @@ module.exports = {
     },
     {
       id: "w25",
-      name: "Peachy Cat and Goma Summer Field",
+      name: "Summer Field",
       description:
         "Peachy Cat and Goma are enjoying a sunny day in a summer field, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -433,7 +433,7 @@ module.exports = {
     },
     {
       id: "w26",
-      name: "Peachy Cat and Goma Winter Day",
+      name: "Winter Day",
       description:
         "Peachy Cat and Goma are enjoying a snowy winter day in a snowfield, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -450,7 +450,7 @@ module.exports = {
     },
     {
       id: "w27",
-      name: "peachy and goma summer day",
+      name: "Summer Day",
       description:
         "Peachy Cat and Goma are enjoying a hot summer day, relaxing in a cozy room with soft lighting and a warm atmosphere.",
       type: "wallpaper",
@@ -467,7 +467,7 @@ module.exports = {
     },
     {
       id: "w28",
-      name: "Peachy Cat and Goma Yellow Flowers",
+      name: "Yellow Flowers",
       description:
         "Peachy Cat and Goma are enjoying a sunny day in a field of yellow flowers, surrounded by soft lighting and a warm atmosphere.",
       type: "wallpaper",
