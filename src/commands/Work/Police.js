@@ -36,7 +36,7 @@ module.exports = class CatchThief extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const policeMessages = language.locales.get(language.defaultLocale)
       ?.workMessages?.policeMessages;
@@ -52,7 +52,7 @@ module.exports = class CatchThief extends Command {
           client,
           ctx,
           policeMessages.invalidTarget,
-          color
+          color,
         );
       }
 
@@ -67,7 +67,7 @@ module.exports = class CatchThief extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color
+          color,
         );
       }
 
@@ -80,7 +80,7 @@ module.exports = class CatchThief extends Command {
           client,
           ctx,
           policeMessages.notPolice,
-          color
+          color,
         );
       }
 
@@ -90,7 +90,7 @@ module.exports = class CatchThief extends Command {
           client,
           ctx,
           policeMessages.noRobberyToCatch,
-          color
+          color,
         );
       }
 
@@ -126,18 +126,18 @@ module.exports = class CatchThief extends Command {
             policeMessages.success
               .replace(
                 "%{policeReward}",
-                client.utils.formatNumber(policeReward)
+                client.utils.formatNumber(policeReward),
               )
               .replace("%{thief}", target.displayName)
               .replace(
                 "%{stolenAmount}",
-                client.utils.formatNumber(stolenAmount)
-              )
+                client.utils.formatNumber(stolenAmount),
+              ),
           )
           .setFooter({
             text: generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ),
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -156,12 +156,12 @@ module.exports = class CatchThief extends Command {
           .setDescription(
             policeMessages.failed
               .replace("%{penalty}", client.utils.formatNumber(penalty))
-              .replace("%{thief}", target.displayName)
+              .replace("%{thief}", target.displayName),
           )
           .setFooter({
             text: generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ),
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -174,7 +174,7 @@ module.exports = class CatchThief extends Command {
         client,
         ctx,
         generalMessages.internalError,
-        color
+        color,
       );
     }
   }

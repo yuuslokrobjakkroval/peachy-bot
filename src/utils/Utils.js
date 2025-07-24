@@ -10,6 +10,7 @@ const ms = require("ms");
 const Users = require("../schemas/user");
 const GiveawaySchema = require("../schemas/giveaway");
 const GiveawayShopItemSchema = require("../schemas/giveawayShopItem");
+const GiveawayScheduleSchema = require("../schemas/giveawaySchedule");
 const importantItems = require("../assets/inventory/ImportantItems");
 const shopItems = require("../assets/inventory/ShopItems");
 const inventory = shopItems.flatMap((shop) => shop.inventory);
@@ -2245,6 +2246,149 @@ module.exports = class Utils {
     } catch (error) {
       console.error("Gemini API error:", error.response?.data || error.message);
       throw error;
+    }
+  }
+
+  static async createGiveaway(client) {
+    console.log("🔄 [CreateGiveaway] Start");
+
+    try {
+      const scheduledGiveaways = await GiveawayScheduleSchema.find({
+        isActive: true,
+      });
+      console.log(
+        `📦 Found ${scheduledGiveaways.length} active scheduled giveaways`
+      );
+
+      if (scheduledGiveaways.length === 0) return;
+
+      const now = new Date();
+
+      for (const giveaway of scheduledGiveaways) {
+        console.log(`🎁 Checking guild: ${giveaway.guildId}`);
+
+        for (const schedule of giveaway.schedules) {
+          if (!schedule.isActive) {
+            console.log(`⏩ Skipping inactive schedule`);
+            continue;
+          }
+          let guild;
+          try {
+            guild = await client.guilds.fetch(giveaway.guildId);
+            console.log(`✅ Fetched guild ${guild.name}`);
+          } catch (e) {
+            console.error(`❌ Failed to fetch guild ${giveaway.guildId}`, e);
+            continue;
+          }
+
+          let channel;
+          try {
+            // Fetch the channel
+            channel = await client.channels.fetch(schedule.channel);
+
+            // Make sure it belongs to the right guild
+            if (!channel || channel.guild.id !== giveaway.guildId) {
+              throw new Error(
+                "Channel not found or doesn't belong to this guild."
+              );
+            }
+
+            console.log(`✅ Fetched channel: ${channel.name} (${channel.id})`);
+          } catch (e) {
+            console.error(
+              `❌ Failed to fetch channel ${schedule.channelId}`,
+              e
+            );
+            continue;
+          }
+
+          const durationMs =
+            schedule.scheduleType === "DAILY"
+              ? 24 * 60 * 60 * 1000
+              : schedule.scheduleType === "WEEKLY"
+                ? 7 * 24 * 60 * 60 * 1000
+                : 30 * 24 * 60 * 60 * 1000;
+
+          const endTime = Math.floor((now.getTime() + durationMs) / 1000);
+
+          const embed = client
+            .embed()
+            .setColor(client.color.main)
+            .setTitle(
+              schedule.content ||
+                `**${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}`
+            )
+            .setDescription(
+              `Click ${client.emoji.main} to enter!\n` +
+                `Winners: ${schedule.winners}\n` +
+                `Prize: **${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}\n` +
+                `Hosted by: ${client.user.displayName}\n` +
+                `Ends: <t:${endTime}:R>`
+            );
+
+          const joinButton = client.utils.fullOptionButton(
+            "giveaway-join",
+            client.emoji.main,
+            "0",
+            1,
+            false
+          );
+          const participantsButton = client.utils.fullOptionButton(
+            "giveaway-participants",
+            "",
+            "Participants",
+            2,
+            false
+          );
+          const buttonRow = client.utils.createButtonRow(
+            joinButton,
+            participantsButton
+          );
+
+          let message;
+          try {
+            console.log(`📤 Sending giveaway message...`);
+            message = await channel.send({
+              embeds: [embed],
+              components: [buttonRow],
+            });
+            console.log(`✅ Giveaway message sent: ${channel.name}`);
+          } catch (sendErr) {
+            console.error(
+              `❌ Failed to send message in channel ${channel.id}`,
+              sendErr
+            );
+            continue;
+          }
+
+          try {
+            await GiveawaySchema.create({
+              guildId: giveaway.guildId,
+              channelId: schedule.channelId,
+              messageId: message.id,
+              hostedBy: client.user.id,
+              winners: schedule.winners,
+              prize: schedule.prize,
+              endTime: endTime,
+              paused: false,
+              ended: false,
+              entered: [],
+              autopay: schedule.autopay,
+              retryAutopay: false,
+              winnerId: [],
+              rerolledWinners: [],
+              description: schedule.content || "",
+            });
+            console.log(`💾 Giveaway saved to DB for messageId: ${message.id}`);
+          } catch (dbErr) {
+            console.error(`❌ Failed to save giveaway to DB`, dbErr);
+          }
+        }
+      }
+
+      console.log("✅ [CreateGiveaway] Finished");
+    } catch (err) {
+      console.error("💥 Error in createGiveaway:", err);
     }
   }
 };

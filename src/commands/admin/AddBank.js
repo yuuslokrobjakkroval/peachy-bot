@@ -13,6 +13,7 @@ module.exports = class AddBank extends Command {
       },
       category: "admin",
       aliases: ["ab"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

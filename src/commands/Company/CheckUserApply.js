@@ -36,7 +36,7 @@ module.exports = class CheckUserApply extends Command {
         client,
         ctx,
         "No users have applied for a job yet.",
-        color
+        color,
       );
     }
 

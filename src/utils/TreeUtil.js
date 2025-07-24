@@ -25,7 +25,7 @@ function checkWaterCooldown(lastWatered, level) {
 function getCooldownTime(lastWatered, level) {
   const cooldown = getWaterCooldown(level);
   const remaining = moment.duration(
-    cooldown - (Date.now() - new Date(lastWatered).getTime())
+    cooldown - (Date.now() - new Date(lastWatered).getTime()),
   );
   return `${remaining.minutes()}m ${remaining.seconds()}s`;
 }
@@ -44,7 +44,7 @@ function buildWaterButton(lastWatered, level, canWater) {
       new ButtonBuilder()
         .setCustomId("tree_water")
         .setLabel("💧 Water")
-        .setStyle(ButtonStyle.Primary)
+        .setStyle(ButtonStyle.Primary),
     );
   } else {
     const cooldownText = getCooldownTime(lastWatered, level);
@@ -53,7 +53,7 @@ function buildWaterButton(lastWatered, level, canWater) {
         .setCustomId("cooldown_disabled")
         .setLabel(`💧 ${cooldownText}`)
         .setStyle(ButtonStyle.Secondary)
-        .setDisabled(true)
+        .setDisabled(true),
     );
   }
 
@@ -76,7 +76,7 @@ function buildTreeEmbed(client, ctx, color, language) {
           .get(language.defaultLocale)
           ?.generalMessages?.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
       iconURL: ctx.author.displayAvatarURL(),
     });
@@ -90,7 +90,7 @@ function sendNotStartedEmbed(client, ctx, color) {
         .embed()
         .setColor(color.danger)
         .setDescription(
-          "🌱 You haven't planted your tree yet. Use `/starttree`."
+          "🌱 You haven't planted your tree yet. Use `/starttree`.",
         ),
     ],
   });

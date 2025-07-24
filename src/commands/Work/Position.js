@@ -26,7 +26,7 @@ module.exports = class Position extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const positionMessages = language.locales.get(language.defaultLocale)
       ?.workMessages?.positionMessages;
@@ -39,7 +39,7 @@ module.exports = class Position extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color
+          color,
         );
       }
 
@@ -51,7 +51,7 @@ module.exports = class Position extends Command {
           .embed()
           .setColor(color.main)
           .setThumbnail(
-            client.utils.emojiToImage(client.utils.emojiPosition(position))
+            client.utils.emojiToImage(client.utils.emojiPosition(position)),
           )
           .setDescription(
             generalMessages.title
@@ -61,14 +61,14 @@ module.exports = class Position extends Command {
               positionMessages.applyingJob.replace(
                 "%{position}",
                 client.utils.formatCapitalize(
-                  position === "it" ? "IT" : position
-                )
-              )
+                  position === "it" ? "IT" : position,
+                ),
+              ),
           )
           .setFooter({
             text: generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ),
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -81,7 +81,7 @@ module.exports = class Position extends Command {
           client,
           ctx,
           positionMessages.noJob,
-          color
+          color,
         );
       }
 
@@ -89,7 +89,7 @@ module.exports = class Position extends Command {
         .embed()
         .setColor(color.main)
         .setThumbnail(
-          client.utils.emojiToImage(client.utils.emojiPosition(position))
+          client.utils.emojiToImage(client.utils.emojiPosition(position)),
         )
         .setDescription(
           generalMessages.title
@@ -98,12 +98,12 @@ module.exports = class Position extends Command {
             .replace("%{mainRight}", emoji.mainRight) +
             `You are currently working as a **${
               position === "it" ? "IT" : position
-            }**.`
+            }**.`,
         )
         .setFooter({
           text: generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ),
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -116,7 +116,7 @@ module.exports = class Position extends Command {
         ctx,
         generalMessages.internalError ||
           "An error occurred while checking your position.",
-        color
+        color,
       );
     }
   }

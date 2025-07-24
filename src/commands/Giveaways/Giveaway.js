@@ -1,4 +1,5 @@
 const { Command } = require("../../structures/index.js");
+const { MessageFlags } = require("discord.js");
 const GiveawaySchema = require("../../schemas/giveaway.js");
 
 module.exports = class Giveaway extends Command {
@@ -63,8 +64,7 @@ module.exports = class Giveaway extends Command {
         },
         {
           name: "autopay",
-          description:
-            "Automatically pay the winners after the giveaway ends. (Owner Only)",
+          description: "Automatically pay the winners after the giveaway ends.",
           type: 3,
           required: false,
         },
@@ -74,16 +74,22 @@ module.exports = class Giveaway extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
 
-    if (ctx.isInteraction) {
-      await ctx.interaction.deferReply();
-    } else {
-      await ctx.sendDeferMessage(`${client.user.username} is thinking...`);
+    // Defer reply
+    try {
+      if (ctx.isInteraction) {
+        await ctx.interaction.deferReply();
+      } else {
+        await ctx.sendDeferMessage(`${client.user.username} is thinking...`);
+      }
+    } catch (error) {
+      console.error("Error deferring reply:", error);
+      return;
     }
 
-    // Parse command arguments in the new order
+    // Parse command arguments
     const description = ctx.isInteraction
       ? ctx.interaction.options.getString("description")
       : args[0];
@@ -113,39 +119,26 @@ module.exports = class Giveaway extends Command {
       client,
       color,
       durationStr,
-      winners,
+      winners
     );
-   if (!validationResult.success) {
-      const errorMessage = "⚠️ Invalid parameters provided. Please check your input and try again.";
-    
+    if (!validationResult.success) {
+      const errorMessage =
+        "⚠️ Invalid parameters provided. Please check your input and try again.";
       return ctx.isInteraction
         ? await ctx.interaction.editReply({
             content: errorMessage,
-            fetchReply: true,
+            flags: MessageFlags.Ephemeral,
           })
         : await ctx.editMessage({
             content: errorMessage,
-            fetchReply: true,
+            flags: MessageFlags.Ephemeral,
           });
     }
 
     // Extract validated data
-    const { duration, endTime, formattedDuration } = validationResult.data;
+    const { endTime, formattedDuration } = validationResult.data;
 
-    // Check autopay permission
-    if (autoPay && !(await client.utils.hasSpecialPermission(ctx.author.id))) {
-      return ctx.isInteraction
-        ? ctx.interaction.editReply({
-            content: "Only the bot owner can enable autopay for giveaways.",
-            flags: 64,
-          })
-        : ctx.editMessage({
-            content: "Only the bot owner can enable autopay for giveaways.",
-            flags: 64,
-          });
-    }
-
-    // Validate prize
+    // Validate and parse prize
     if (prize.toString().startsWith("-")) {
       return ctx.sendMessage({
         embeds: [
@@ -154,33 +147,96 @@ module.exports = class Giveaway extends Command {
             .setColor(color.danger)
             .setDescription(generalMessages.invalidAmount),
         ],
+        flags: MessageFlags.Ephemeral,
       });
     }
 
-    // Process prize amount with multipliers
-    if (
-      isNaN(prize) ||
-      prize <= 0 ||
-      prize.toString().includes(".") ||
-      prize.toString().includes(",")
-    ) {
-      const multipliers = {
-        k: 1000,
-        m: 1000000,
-        b: 1000000000,
-        t: 1000000000000,
-        q: 1000000000000000,
-      };
+    const multipliers = {
+      k: 1000,
+      m: 1000000,
+      b: 1000000000,
+      t: 1000000000000,
+      q: 1000000000000000,
+    };
+    if (typeof prize === "string" && prize.match(/\d+[kmbtq]/i)) {
+      const unit = prize.slice(-1).toLowerCase();
+      const number = Number.parseInt(prize);
+      if (isNaN(number)) {
+        return ctx.sendMessage({
+          embeds: [
+            client
+              .embed()
+              .setColor(color.danger)
+              .setDescription(
+                "Invalid prize format. Please provide a valid number or multiplier (e.g., 1k, 1m)."
+              ),
+          ],
+          flags: MessageFlags.Ephemeral,
+        });
+      }
+      prize = number * (multipliers[unit] || 1);
+    } else {
+      prize = Number.parseInt(prize.replace(/,/g, ""));
+      if (isNaN(prize) || prize <= 0) {
+        return ctx.sendMessage({
+          embeds: [
+            client
+              .embed()
+              .setColor(color.danger)
+              .setDescription("Prize must be a positive integer."),
+          ],
+          flags: MessageFlags.Ephemeral,
+        });
+      }
+    }
 
-      if (prize.match(/\d+[kmbtq]/i)) {
-        const unit = prize.slice(-1).toLowerCase();
-        const number = Number.parseInt(prize);
-        prize = number * (multipliers[unit] || 1);
-      } else if (
-        prize.toString().includes(".") ||
-        prize.toString().includes(",")
-      ) {
-        prize = Number.parseInt(prize.replace(/,/g, ""));
+    // Check autopay and balance if enabled
+    let isAutopayEnabled = false;
+    if (autoPay) {
+      isAutopayEnabled = true;
+      // Skip balance check and deduction for users with special permissions
+      if (!(await client.utils.hasSpecialPermission(ctx.author.id))) {
+        const totalPrize = prize * winners;
+        const getUser = await client.utils.getUser(ctx.author.id);
+        console.log(
+          `Checking balance for user ${ctx.author.id}:`,
+          getUser.balance.coin
+        );
+
+        if (!getUser || getUser.balance.coin < totalPrize) {
+          const errorMessage = `❌ Insufficient coin balance. You need ${client.utils.formatNumber(totalPrize)} coins, but you have ${client.utils.formatNumber(getUser?.balance.coin || 0)} coins.`;
+          return ctx.isInteraction
+            ? await ctx.interaction.editReply({
+                content: errorMessage,
+                flags: MessageFlags.Ephemeral,
+              })
+            : await ctx.editMessage({
+                content: errorMessage,
+                flags: MessageFlags.Ephemeral,
+              });
+        }
+
+        // Deduct coins from user's balance
+        try {
+          getUser.balance.coin -= totalPrize;
+          await getUser.save();
+        } catch (error) {
+          console.error(
+            `Error updating user balance for ${ctx.author.id}:`,
+            error
+          );
+          return ctx.isInteraction
+            ? await ctx.interaction.editReply({
+                content:
+                  "❌ Error updating your balance. Please try again later.",
+                flags: MessageFlags.Ephemeral,
+              })
+            : await ctx.editMessage({
+                content:
+                  "❌ Error updating your balance. Please try again later.",
+                flags: MessageFlags.Ephemeral,
+              });
+        }
       }
     }
 
@@ -189,20 +245,19 @@ module.exports = class Giveaway extends Command {
       .embed()
       .setColor(color.main)
       .setTitle(
-        `${
-          description
-            ? `${description}`
-            : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`
-        }`,
+        description
+          ? `${description}`
+          : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`
       )
       .setDescription(
         `Click ${
           emoji.main
         } button to enter!\nWinners: ${winners} with **${client.utils.formatNumber(
-          prize,
+          prize
         )}** ${emoji.coin}\nHosted by: ${
           ctx.author.displayName
-        }\nEnds: <t:${formattedDuration}:R>`,
+        }\nEnds: <t:${formattedDuration}:R>` +
+          (isAutopayEnabled ? `\nAutopay: Enabled` : "")
       );
 
     // Add optional image and thumbnail
@@ -215,18 +270,18 @@ module.exports = class Giveaway extends Command {
       emoji.main,
       "0",
       1,
-      false,
+      false
     );
     const participantsButton = client.utils.fullOptionButton(
       "giveaway-participants",
       "",
       "Participants",
       2,
-      false,
+      false
     );
     const buttonRow = client.utils.createButtonRow(
       joinButton,
-      participantsButton,
+      participantsButton
     );
 
     // Send giveaway message
@@ -239,18 +294,35 @@ module.exports = class Giveaway extends Command {
     });
 
     if (!messageResult.success) {
-      const errorMessage = "❌ Failed to send the giveaway message. Please try again later.";
-    
+      // Refund coins if message creation fails and autopay was used (for non-special users)
+      if (
+        isAutopayEnabled &&
+        !(await client.utils.hasSpecialPermission(ctx.author.id))
+      ) {
+        try {
+          const getUser = await client.utils.getUser({ userId: ctx.author.id });
+          getUser.balance.coin += prize * winners;
+          await getUser.save();
+        } catch (error) {
+          console.error(
+            `Error refunding user balance for ${ctx.author.id}:`,
+            error
+          );
+        }
+      }
+      const errorMessage =
+        "❌ Failed to send the giveaway message. Please try again later.";
       return ctx.isInteraction
         ? await ctx.interaction.editReply({
             content: errorMessage,
-            fetchReply: true,
+            flags: MessageFlags.Ephemeral,
           })
         : await ctx.editMessage({
             content: errorMessage,
-            fetchReply: true,
+            flags: MessageFlags.Ephemeral,
           });
     }
+
     // Save giveaway to database
     try {
       await GiveawaySchema.create({
@@ -259,28 +331,45 @@ module.exports = class Giveaway extends Command {
         messageId: messageResult.message.id,
         hostedBy: ctx.author.id,
         winners: winners,
-        prize: Number.parseInt(prize),
+        prize: prize,
         endTime: endTime,
         paused: false,
         ended: false,
         entered: [],
-        autopay: !!autoPay,
+        autopay: isAutopayEnabled,
         retryAutopay: false,
         winnerId: [],
         rerollOptions: [],
         description: description || "",
       });
     } catch (error) {
-      console.error("Error creating giveaway:", error);
-      await ctx.channel.send({
+      // Refund coins if database save fails and autopay was used (for non-special users)
+      if (
+        isAutopayEnabled &&
+        !(await client.utils.hasSpecialPermission(ctx.author.id))
+      ) {
+        try {
+          const getUser = await client.utils.getUser({ userId: ctx.author.id });
+          getUser.balance.coin += prize * winners;
+          await getUser.save();
+        } catch (error) {
+          console.error(
+            `Error refunding user balance for ${ctx.author.id}:`,
+            error
+          );
+        }
+      }
+      console.error(`Error creating giveaway in guild ${ctx.guild.id}:`, error);
+      return ctx.channel.send({
         embeds: [
           client
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "There was an error saving the giveaway. Please try again.",
+              "There was an error saving the giveaway. Please try again."
             ),
         ],
+        flags: MessageFlags.Ephemeral,
       });
     }
   }

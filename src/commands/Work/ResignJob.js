@@ -25,7 +25,7 @@ module.exports = class ResignJob extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const resignJobMessages = language.locales.get(language.defaultLocale)
       ?.workMessages?.resignJobMessages;
@@ -37,7 +37,7 @@ module.exports = class ResignJob extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color
+          color,
         );
       }
 
@@ -47,7 +47,7 @@ module.exports = class ResignJob extends Command {
           client,
           ctx,
           resignJobMessages.noJobToResign,
-          color
+          color,
         );
       }
 
@@ -65,8 +65,8 @@ module.exports = class ResignJob extends Command {
         .setColor(color.main)
         .setThumbnail(
           client.utils.emojiToImage(
-            client.utils.emojiPosition(user.work.position)
-          )
+            client.utils.emojiPosition(user.work.position),
+          ),
         )
         .setDescription(
           `${generalMessages.title
@@ -75,14 +75,14 @@ module.exports = class ResignJob extends Command {
             .replace("%{mainRight}", emoji.mainRight)}
                     ${resignJobMessages.success.replace(
                       "%{username}",
-                      ctx.author.displayName
-                    )}`
+                      ctx.author.displayName,
+                    )}`,
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -94,7 +94,7 @@ module.exports = class ResignJob extends Command {
         client,
         ctx,
         generalMessages.internalError,
-        color
+        color,
       );
     }
   }

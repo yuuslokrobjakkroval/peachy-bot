@@ -72,7 +72,7 @@ module.exports = class VoiceStateUpdate extends Event {
           let user = await Users.findOne({ userId });
           if (!user) {
             console.log(
-              `[Voice XP] No DB record for user: ${member.user.tag}, creating a new one with 500,000 coins.`
+              `[Voice XP] No DB record for user: ${member.user.tag}, creating a new one with 500,000 coins.`,
             );
 
             user = new Users({
@@ -87,28 +87,27 @@ module.exports = class VoiceStateUpdate extends Event {
             try {
               await user.save();
               console.log(
-                `[Voice XP] Created new user document for ${member.user.tag} with 500,000 coins.`
+                `[Voice XP] Created new user document for ${member.user.tag} with 500,000 coins.`,
               );
             } catch (error) {
               console.error(
                 `[Voice XP] Error creating user for ${member.user.tag}:`,
-                error
+                error,
               );
               continue; // Skip processing for this user if creation fails
             }
           }
 
           // Get color and emoji per user (async)
-          const { color, emoji } = await this.client.setColorBasedOnTheme(
-            userId
-          );
+          const { color, emoji } =
+            await this.client.setColorBasedOnTheme(userId);
 
           await this.client.utils.getVoiceCheckingUser(
             this.client,
             member,
             user,
             color,
-            emoji
+            emoji,
           );
         } catch (error) {
           console.error(`[Voice XP] Error processing user ${userId}:`, error);

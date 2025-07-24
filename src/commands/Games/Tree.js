@@ -1,6 +1,7 @@
 const { Command } = require("../../structures");
 const { generateTreeCanvas } = require("../../utils/GenerateImages");
 const Tree = require("../../schemas/tree");
+const globalEmoji = require("../../utils/Emoji");
 
 const {
   ActionRowBuilder,
@@ -36,9 +37,17 @@ module.exports = class ViewTree extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    if (!ctx.interaction) {
-      return ctx.sendMessage(
-        "⚠️ This command only works with slash commands right now."
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
+
+    if (ctx.isInteraction) {
+      await ctx.interaction.reply(
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+      );
+    } else {
+      await ctx.sendDeferMessage(
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     }
 
@@ -46,7 +55,6 @@ module.exports = class ViewTree extends Command {
     let userTree = await Tree.findOne({ userId });
 
     if (!userTree) {
-      // Show modal for new tree name, this is an interaction response
       const modal = new ModalBuilder()
         .setTitle("Name Your Tree")
         .setCustomId(`tree-name-modal-${userId}`);
@@ -65,9 +73,6 @@ module.exports = class ViewTree extends Command {
       return;
     }
 
-    // Defer reply immediately to avoid unknown interaction on slow operations
-    await ctx.interaction.deferReply();
-
     const buffer = await generateTreeCanvas({
       height: userTree.tree.height,
     });
@@ -85,15 +90,22 @@ module.exports = class ViewTree extends Command {
       new ButtonBuilder()
         .setCustomId("water_tree")
         .setLabel("💧 Water Tree")
-        .setStyle(ButtonStyle.Primary)
+        .setStyle(ButtonStyle.Primary),
     );
 
-    // Edit the deferred reply with the actual content
-    const message = await ctx.interaction.editReply({
-      embeds: [embed],
-      files: [attachment],
-      components: [row],
-    });
+    const message = ctx.isInteraction
+      ? await ctx.interaction.editReply({
+          content: "",
+          embeds: [embed],
+          files: [attachment],
+          components: [row],
+        })
+      : await ctx.editMessage({
+          content: "",
+          embeds: [embed],
+          files: [attachment],
+          components: [row],
+        });
 
     // Button collector (only for user)
     const collector = message.createMessageComponentCollector({
@@ -103,17 +115,19 @@ module.exports = class ViewTree extends Command {
     });
 
     collector.on("collect", async (interaction) => {
+      await interaction.deferUpdate();
+
       const now = Date.now();
-      const cooldown = 60 * 1000; // 1 min
+      const cooldown = 60 * 1000;
       const last = new Date(userTree.tree.lastWatered).getTime();
 
       if (now - last < cooldown) {
         const remaining = Math.ceil((cooldown - (now - last)) / 1000);
-        return interaction.reply({
+        return interaction.followUp({
           content: `⏳ Please wait **<t:${
             Math.round(Date.now() / 1000) + remaining
           }:R>** before watering again.`,
-          flags: 64,
+          ephemeral: true,
         });
       }
 
@@ -138,8 +152,8 @@ module.exports = class ViewTree extends Command {
         color: color.main,
       };
 
-      // Update the original message with new embed and image
-      await interaction.update({
+      await interaction.editReply({
+        content: "",
         embeds: [newEmbed],
         files: [newAttachment],
         components: [row],
@@ -153,7 +167,7 @@ module.exports = class ViewTree extends Command {
           .setCustomId("water_tree")
           .setLabel("💧 Water Tree")
           .setStyle(ButtonStyle.Primary)
-          .setDisabled(true)
+          .setDisabled(true),
       );
 
       await message.edit({

@@ -12,7 +12,7 @@ module.exports = class AdminHelp extends Command {
       },
       category: "admin",
       aliases: ["ah"],
-      cooldown: 3,
+      cooldown: 1,
       args: false,
       player: {
         voice: false,

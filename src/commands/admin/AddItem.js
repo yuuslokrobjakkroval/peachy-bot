@@ -17,6 +17,7 @@ module.exports = class AddItem extends Command {
       },
       category: "admin",
       aliases: ["ai"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

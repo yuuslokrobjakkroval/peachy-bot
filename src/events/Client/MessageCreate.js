@@ -650,7 +650,7 @@ module.exports = class MessageCreate extends Event {
                     .setThumbnail(message.guild.iconURL({ extension: "jpeg" }))
                     .addFields([
                       {
-                        name: "Author",
+                        name: "User Info",
                         value: `**ID:** ${message.author.id}\n**Name:** ${message.author.displayName}\n**Channel:** ${message.channel.name}`,
                         inline: true,
                       },

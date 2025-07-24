@@ -13,6 +13,7 @@ module.exports = class RemoveCredit extends Command {
       },
       category: "admin",
       aliases: ["rc"],
+      cooldown: 1,
       args: true,
       permissions: {
         dev: true,

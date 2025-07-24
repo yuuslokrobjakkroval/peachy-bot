@@ -96,8 +96,23 @@ client.once("ready", async () => {
     }
   );
   client.logger.info(
-    "Booster/Sponsor check scheduled at 10:10 PM Asia/Bangkok"
+    "Booster/Sponsor check scheduled at 10:01 PM Asia/Bangkok"
   );
+
+  cron.schedule(
+    "01 19 * * *",
+    () => {
+      client.utils
+        .createGiveaway(client)
+        .then(() => console.log("Giveaway was create sucessfully."))
+        .catch((err) => console.error("Error in Giveaway function:", err));
+    },
+    {
+      scheduled: true,
+      timezone: "Asia/Bangkok",
+    }
+  );
+  client.logger.info("Giveaway check scheduled at 7PM Asia/Bangkok");
 
   return await client.abilities.syncInvites(client);
 });
@@ -274,13 +289,16 @@ client.on(
   async (invite) => await client.abilities.getInviteCreate(invite)
 );
 
-setInterval(async () => {
-  try {
-    await client.utils.getResetThief(client);
-  } catch (error) {
-    console.error("Error resetting rob status:", error);
-  }
-}, 3 * 60 * 1000);
+setInterval(
+  async () => {
+    try {
+      await client.utils.getResetThief(client);
+    } catch (error) {
+      console.error("Error resetting rob status:", error);
+    }
+  },
+  3 * 60 * 1000
+);
 
 setInterval(async () => {
   return await client.abilities.getSendMessage(client);
@@ -462,12 +480,17 @@ setTimeout(() => {
     .catch((err) => console.error("Error in checkBirthdays function:", err));
 
   // Repeat every 24 hours after the initial execution
-  setInterval(() => {
-    client.utils
-      .checkBirthdays(client)
-      .then(() => console.log("Birthday check completed."))
-      .catch((err) => console.error("Error in checkBirthdays function:", err));
-  }, 24 * 60 * 60 * 1000); // 24 hours
+  setInterval(
+    () => {
+      client.utils
+        .checkBirthdays(client)
+        .then(() => console.log("Birthday check completed."))
+        .catch((err) =>
+          console.error("Error in checkBirthdays function:", err)
+        );
+    },
+    24 * 60 * 60 * 1000
+  ); // 24 hours
 }, client.utils.getDelayUntil7PM());
 
 client.start(globalConfig.token);
