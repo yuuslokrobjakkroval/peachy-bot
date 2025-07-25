@@ -1,5 +1,5 @@
 const { Command } = require("../../structures/index.js");
-const globalEmoji = require("../../utils/Emoji");
+const globalEmoji = require("../../utils/Emoji.js");
 
 module.exports = class QuoteCommand extends Command {
   constructor(client) {

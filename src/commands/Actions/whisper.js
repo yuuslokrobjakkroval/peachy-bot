@@ -1,6 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const globalEmoji = require("../../utils/Emoji");
+const globalEmoji = require("../../utils/Emoji.js");
 
 module.exports = class Whisper extends Command {
   constructor(client) {
@@ -17,7 +17,12 @@ module.exports = class Whisper extends Command {
       args: true,
       permissions: {
         dev: false,
-        client: ["SendMessages", "ViewChannel", "EmbedLinks", "ReadMessageHistory"],
+        client: [
+          "SendMessages",
+          "ViewChannel",
+          "EmbedLinks",
+          "ReadMessageHistory",
+        ],
         user: [],
       },
       slashCommand: true,
@@ -40,7 +45,8 @@ module.exports = class Whisper extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     try {
-      const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages || {
+      const generalMessages = language.locales.get(language.defaultLocale)
+        ?.generalMessages || {
         title: "%{mainLeft} %{title} %{mainRight}",
         requestedBy: "Requested by %{username}",
       };
@@ -48,22 +54,38 @@ module.exports = class Whisper extends Command {
       // Get target user and message from options or args
       const target = ctx.isInteraction
         ? ctx.interaction.options.getUser("user")
-        : ctx.message.mentions.users.first() || (await client.users.fetch(args[0]).catch(() => null));
+        : ctx.message.mentions.users.first() ||
+          (await client.users.fetch(args[0]).catch(() => null));
 
       const whisperMessage = ctx.isInteraction
         ? ctx.interaction.options.getString("message")
         : args.slice(1).join(" ");
 
       if (!target) {
-        return await client.utils.sendErrorMessage(client, ctx, "You must mention a user to whisper to.", color);
+        return await client.utils.sendErrorMessage(
+          client,
+          ctx,
+          "You must mention a user to whisper to.",
+          color
+        );
       }
 
       if (!whisperMessage) {
-        return await client.utils.sendErrorMessage(client, ctx, "Please provide a message to whisper.", color);
+        return await client.utils.sendErrorMessage(
+          client,
+          ctx,
+          "Please provide a message to whisper.",
+          color
+        );
       }
 
       if (target.id === ctx.author.id) {
-        return await client.utils.sendErrorMessage(client, ctx, "You can't whisper to yourself!", color);
+        return await client.utils.sendErrorMessage(
+          client,
+          ctx,
+          "You can't whisper to yourself!",
+          color
+        );
       }
 
       // Create embed to send initially (hidden message)
@@ -75,12 +97,14 @@ module.exports = class Whisper extends Command {
             .replace("%{mainLeft}", emoji.mainLeft || "🤫")
             .replace("%{title}", "WHISPER")
             .replace("%{mainRight}", emoji.mainRight || "🤫") +
-          `\n\n**${target.username}**, you have a whisper from **${ctx.author.username}**! Click the button below to reveal it.`
+            `\n\n**${target.username}**, you have a whisper from **${ctx.author.username}**! Click the button below to reveal it.`
         )
         .setFooter({
           text:
-            generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) ||
-            `Requested by ${ctx.author.displayName}`,
+            generalMessages.requestedBy.replace(
+              "%{username}",
+              ctx.author.displayName
+            ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
@@ -104,7 +128,10 @@ module.exports = class Whisper extends Command {
       const collector = message.createMessageComponentCollector({
         filter: (i) => {
           if (i.user.id !== target.id) {
-            i.reply({ content: "Only the whispered user can reveal this message!", ephemeral: true });
+            i.reply({
+              content: "Only the whispered user can reveal this message!",
+              ephemeral: true,
+            });
             return false;
           }
           return true;
@@ -122,7 +149,7 @@ module.exports = class Whisper extends Command {
               .replace("%{mainLeft}", emoji.mainLeft || "🤫")
               .replace("%{title}", "WHISPER REVEALED")
               .replace("%{mainRight}", emoji.mainRight || "🤫") +
-            `\n\n**${ctx.author.username}** whispered to **${target.username}**:\n\n> ${whisperMessage}`
+              `\n\n**${ctx.author.username}** whispered to **${target.username}**:\n\n> ${whisperMessage}`
           )
           .setFooter({
             text: `Whisper revealed by ${target.username}`,
@@ -132,10 +159,13 @@ module.exports = class Whisper extends Command {
 
         // Disable button after reveal
         const disabledRow = new ActionRowBuilder().addComponents(
-          ButtonBuilder.from(revealButton).setDisabled(true),
+          ButtonBuilder.from(revealButton).setDisabled(true)
         );
 
-        await interaction.update({ embeds: [revealEmbed], components: [disabledRow] });
+        await interaction.update({
+          embeds: [revealEmbed],
+          components: [disabledRow],
+        });
 
         collector.stop();
       });
@@ -144,7 +174,7 @@ module.exports = class Whisper extends Command {
         if (reason === "time" && message.editable) {
           // Disable button after timeout
           const disabledRow = new ActionRowBuilder().addComponents(
-            ButtonBuilder.from(revealButton).setDisabled(true),
+            ButtonBuilder.from(revealButton).setDisabled(true)
           );
           try {
             await message.edit({ components: [disabledRow] });
@@ -155,7 +185,12 @@ module.exports = class Whisper extends Command {
       });
     } catch (error) {
       console.error("Failed to send whisper message:", error);
-      await client.utils.sendErrorMessage(client, ctx, "An error occurred while executing the command.", color);
+      await client.utils.sendErrorMessage(
+        client,
+        ctx,
+        "An error occurred while executing the command.",
+        color
+      );
     }
   }
 };
