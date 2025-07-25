@@ -1,6 +1,5 @@
 const { Command } = require("../../structures/index.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const globalEmoji = require("../../utils/Emoji.js");
 
 module.exports = class Whisper extends Command {
   constructor(client) {
