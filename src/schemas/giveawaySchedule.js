@@ -12,6 +12,9 @@ const ScheduleSchema = new Schema({
   winners: { type: Number, default: 1 },
   prize: { type: Number, default: 0 },
   autopay: { type: Boolean, default: false },
+  roles: { type: Array, default: [] },
+  image: { type: String, default: null },
+  createdBy: { type: String, default: null },
 });
 
 const GiveawaySchedulesSchema = new Schema(
@@ -20,7 +23,6 @@ const GiveawaySchedulesSchema = new Schema(
     feature: { type: String, default: null },
     schedules: { type: [ScheduleSchema], default: [] },
     isActive: { type: Boolean, default: true },
-    createdBy: { type: String, default: null },
   },
   { timestamps: { createdAt: true, updatedAt: true } }
 );

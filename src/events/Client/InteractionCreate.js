@@ -319,6 +319,9 @@ module.exports = class InteractionCreate extends Event {
         switch (interaction.customId) {
           case "giveaway-join": {
             try {
+              console.log(
+                `🔍 Querying GiveawaySchema with guildId: ${interaction.guild.id}, channelId: ${interaction.channel.id}, messageId: ${interaction.message.id}`
+              );
               const data = await GiveawaySchema.findOne({
                 guildId: interaction.guild.id,
                 channelId: interaction.channel.id,

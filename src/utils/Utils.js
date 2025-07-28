@@ -2262,8 +2262,6 @@ module.exports = class Utils {
 
       if (scheduledGiveaways.length === 0) return;
 
-      const now = new Date();
-
       for (const giveaway of scheduledGiveaways) {
         console.log(`🎁 Checking guild: ${giveaway.guildId}`);
 
@@ -2283,22 +2281,15 @@ module.exports = class Utils {
 
           let channel;
           try {
-            // Fetch the channel
-            channel = await client.channels.fetch(schedule.channel);
-
-            // Make sure it belongs to the right guild
+            channel = await client.channels.fetch(schedule.channel); // Use schedule.channel
             if (!channel || channel.guild.id !== giveaway.guildId) {
               throw new Error(
                 "Channel not found or doesn't belong to this guild."
               );
             }
-
             console.log(`✅ Fetched channel: ${channel.name} (${channel.id})`);
           } catch (e) {
-            console.error(
-              `❌ Failed to fetch channel ${schedule.channelId}`,
-              e
-            );
+            console.error(`❌ Failed to fetch channel ${schedule.channel}`, e);
             continue;
           }
 
@@ -2308,8 +2299,8 @@ module.exports = class Utils {
               : schedule.scheduleType === "WEEKLY"
                 ? 7 * 24 * 60 * 60 * 1000
                 : 30 * 24 * 60 * 60 * 1000;
-
-          const endTime = Math.floor((now.getTime() + durationMs) / 1000);
+          const endTime = Date.now() + durationMs;
+          const formattedDuration = Math.floor(endTime / 1000);
 
           const embed = client
             .embed()
@@ -2322,8 +2313,13 @@ module.exports = class Utils {
               `Click ${client.emoji.main} to enter!\n` +
                 `Winners: ${schedule.winners}\n` +
                 `Prize: **${client.utils.formatNumber(schedule.prize)}** ${client.emoji.coin}\n` +
-                `Hosted by: ${client.user.displayName}\n` +
-                `Ends: <t:${endTime}:R>`
+                `Hosted by: ${schedule.createdBy ? `<@${schedule.createdBy}>` : client.user.displayName}\n` +
+                `Ends: <t:${formattedDuration}:R>`
+            )
+            .setImage(
+              schedule?.image
+                ? schedule.image
+                : "https://i.imgur.com/khmmAUe.gifv"
             );
 
           const joinButton = client.utils.fullOptionButton(
@@ -2349,10 +2345,26 @@ module.exports = class Utils {
           try {
             console.log(`📤 Sending giveaway message...`);
             message = await channel.send({
+              content: "",
               embeds: [embed],
               components: [buttonRow],
+              fetchReply: true,
             });
             console.log(`✅ Giveaway message sent: ${channel.name}`);
+            setTimeout(async () => {
+              try {
+                const content = `<@everyone> ${schedule.content}`;
+                await channel.send(content);
+                console.log(
+                  `✅ Sent @everyone ping to channel: ${channel.name}`
+                );
+              } catch (err) {
+                console.error(
+                  `❌ Failed to send @everyone ping in channel ${channel.id}`,
+                  err
+                );
+              }
+            }, 2000);
           } catch (sendErr) {
             console.error(
               `❌ Failed to send message in channel ${channel.id}`,
@@ -2362,9 +2374,9 @@ module.exports = class Utils {
           }
 
           try {
-            await GiveawaySchema.create({
+            const newGiveaway = await GiveawaySchema.create({
               guildId: giveaway.guildId,
-              channelId: schedule.channelId,
+              channelId: schedule.channel, // Use schedule.channel
               messageId: message.id,
               hostedBy: client.user.id,
               winners: schedule.winners,
@@ -2376,12 +2388,16 @@ module.exports = class Utils {
               autopay: schedule.autopay,
               retryAutopay: false,
               winnerId: [],
+              rerollOptions: [],
+              rerollCount: 0,
               rerolledWinners: [],
               description: schedule.content || "",
             });
-            console.log(`💾 Giveaway saved to DB for messageId: ${message.id}`);
+            console.log(
+              `💾 Giveaway saved to DB: ${JSON.stringify(newGiveaway)}`
+            );
           } catch (dbErr) {
-            console.error(`❌ Failed to save giveaway to DB`, dbErr);
+            console.error(`❌ Failed to save giveaway to DB:`, dbErr);
           }
         }
       }

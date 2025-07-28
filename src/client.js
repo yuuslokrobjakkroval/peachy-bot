@@ -100,7 +100,7 @@ client.once("ready", async () => {
   );
 
   cron.schedule(
-    "01 19 * * *",
+    "13 23 * * *",
     () => {
       client.utils
         .createGiveaway(client)
