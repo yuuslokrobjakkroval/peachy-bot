@@ -1,15 +1,14 @@
 const { Command } = require("../../structures/index.js");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Happy extends Command {
   constructor(client) {
     super(client, {
-      name: "happy",
+      name: "cheerful",
       description: {
-        content: "Express that you're happy with another user.",
-        examples: ["happy @User"],
-        usage: "happy @User",
+        content: "Express that you're cheerful with another user.",
+        examples: ["cheerful @User"],
+        usage: "cheerful @User",
       },
       category: "actions",
       aliases: ["joy", "cheer", "glad"],
@@ -24,7 +23,7 @@ module.exports = class Happy extends Command {
       options: [
         {
           name: "user",
-          description: "The user you are happy with",
+          description: "The user you are cheerful with",
           type: 6, // USER
           required: true,
         },
@@ -34,7 +33,8 @@ module.exports = class Happy extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     try {
-      const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages || {
+      const generalMessages = language.locales.get(language.defaultLocale)
+        ?.generalMessages || {
         title: "%{mainLeft} %{title} %{mainRight}",
         requestedBy: "Requested by %{username}",
       };
@@ -97,14 +97,25 @@ module.exports = class Happy extends Command {
       // Get target user
       const target = ctx.isInteraction
         ? ctx.interaction.options.getUser("user")
-        : ctx.message.mentions.users.first() || (await client.users.fetch(args[0]).catch(() => null));
+        : ctx.message.mentions.users.first() ||
+          (await client.users.fetch(args[0]).catch(() => null));
 
       if (!target) {
-        return await client.utils.sendErrorMessage(client, ctx, "You must mention a user you’re happy with.", color);
+        return await client.utils.sendErrorMessage(
+          client,
+          ctx,
+          "You must mention a user you’re happy with.",
+          color
+        );
       }
 
       if (target.id === ctx.author.id) {
-        return await client.utils.sendErrorMessage(client, ctx, "You can’t express happiness only to yourself!", color);
+        return await client.utils.sendErrorMessage(
+          client,
+          ctx,
+          "You can’t express happiness only to yourself!",
+          color
+        );
       }
 
       // Pick a random happy sentence
@@ -119,10 +130,14 @@ module.exports = class Happy extends Command {
             .replace("%{mainLeft}", emoji.mainLeft || "😊")
             .replace("%{title}", "HAPPY")
             .replace("%{mainRight}", emoji.mainRight || "😊") +
-          `\n\n**${ctx.author.username}** is happy with **${target.username}**:\n\n> ${randomSentence}`
+            `\n\n**${ctx.author.username}** is happy with **${target.username}**:\n\n> ${randomSentence}`
         )
         .setFooter({
-          text: generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`,
+          text:
+            generalMessages.requestedBy.replace(
+              "%{username}",
+              ctx.author.displayName
+            ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
@@ -146,7 +161,11 @@ module.exports = class Happy extends Command {
       const collector = message.createMessageComponentCollector({
         filter: (i) => {
           if (i.user.id !== target.id) {
-            i.reply({ content: "Only the person you’re happy with can celebrate with you!", ephemeral: true });
+            i.reply({
+              content:
+                "Only the person you’re happy with can celebrate with you!",
+              ephemeral: true,
+            });
             return false;
           }
           return true;
@@ -188,7 +207,10 @@ module.exports = class Happy extends Command {
           ButtonBuilder.from(celebrateButton).setDisabled(true)
         );
 
-        await interaction.update({ embeds: [celebrateEmbed], components: [disabledRow] });
+        await interaction.update({
+          embeds: [celebrateEmbed],
+          components: [disabledRow],
+        });
         collector.stop();
       });
 
@@ -200,7 +222,10 @@ module.exports = class Happy extends Command {
           try {
             await message.edit({ components: [disabledRow] });
           } catch (err) {
-            console.error("Error disabling celebrate button after timeout:", err);
+            console.error(
+              "Error disabling celebrate button after timeout:",
+              err
+            );
           }
         }
       });

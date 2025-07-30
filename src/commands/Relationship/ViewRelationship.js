@@ -2,6 +2,14 @@ const { Command } = require("../../structures/index.js");
 const { AttachmentBuilder } = require("discord.js");
 const { generatePartnerCanvas } = require("../../utils/GenerateImages.js");
 
+function chunkArray(arr, size) {
+  const result = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
+
 module.exports = class ViewRelationship extends Command {
   constructor(client) {
     super(client, {
@@ -55,66 +63,20 @@ module.exports = class ViewRelationship extends Command {
         client,
         ctx,
         `${target.username} is not registered.`,
-        color.main,
+        color.main
       );
     }
 
     const rel = user.relationship || {};
 
-    const embed = client
-      .embed()
-      .setColor(color.main)
-      .setAuthor({
-        name: `${target.username}'s Relationships`,
-        iconURL: target.displayAvatarURL(),
-      })
-      .setFooter({ text: "Use /relationship to manage them." });
-
-    const formatOne = (r) =>
-      `• <@${r.userId}> \n  — Since: <t:${Math.floor(
-        new Date(r.date).getTime() / 1000,
-      )}:d>`;
-
-    const formatList = (list) =>
-      list?.length ? list.map((r) => formatOne(r)).join("\n\n") : "None";
-
-    const fields = [];
-
-    if (type === "all") {
-      fields.push({
-        name: "💍 Partner",
-        value: rel.partner?.userId ? formatOne(rel.partner) : "None",
-      });
-    }
-
-    if (type === "all" || type === "bestie") {
-      fields.push({
-        name: "💖 Besties",
-        value: formatList(rel.besties || []),
-      });
-    }
-
-    if (type === "all" || type === "brother") {
-      fields.push({
-        name: "👬 Brothers",
-        value: formatList(rel.brothers || []),
-      });
-    }
-
-    if (type === "all" || type === "sister") {
-      fields.push({
-        name: "👭 Sisters",
-        value: formatList(rel.sisters || []),
-      });
-    }
-
+    // === PARTNER VIEW ===
     if (type === "partner") {
       if (!rel.partner?.userId) {
         return client.utils.sendErrorMessage(
           client,
           ctx,
           `${target.username} does not have a partner yet.`,
-          color.main,
+          color.main
         );
       }
 
@@ -126,7 +88,7 @@ module.exports = class ViewRelationship extends Command {
           client,
           ctx,
           `Could not generate partner image.`,
-          color.main,
+          color.main
         );
       }
 
@@ -135,14 +97,22 @@ module.exports = class ViewRelationship extends Command {
         name: fileName,
       });
 
-      embed.setDescription(
-        `💍 Partner of <@${target.id}>:\n<@${
-          rel.partner.userId
-        }> (Since <t:${Math.floor(
-          new Date(rel.partner.date).getTime() / 1000,
-        )}:d>)`,
-      );
-      embed.setImage(`attachment://${fileName}`);
+      const embed = client
+        .embed()
+        .setColor(color.main)
+        .setAuthor({
+          name: `${target.username}'s Partner`,
+          iconURL: target.displayAvatarURL(),
+        })
+        .setDescription(
+          `💍 Partner of <@${target.id}>:\n<@${
+            rel.partner.userId
+          }> (Since <t:${Math.floor(
+            new Date(rel.partner.date).getTime() / 1000
+          )}:d>)`
+        )
+        .setImage(`attachment://${fileName}`)
+        .setFooter({ text: "Use /relationship to manage them." });
 
       return ctx.isInteraction
         ? await ctx.interaction.editReply({
@@ -157,7 +127,77 @@ module.exports = class ViewRelationship extends Command {
           });
     }
 
-    embed.addFields(...fields);
+    // === BESTIE/BROTHER/SISTER PAGINATED ===
+    if (["bestie", "brother", "sister"].includes(type)) {
+      const list = rel[`${type}s`] || [];
+
+      if (!list.length) {
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          `${target.username} does not have any ${type}s.`,
+          color.main
+        );
+      }
+
+      const chunks = chunkArray(list, 10);
+      const embeds = chunks.map((chunk, i) =>
+        client
+          .embed()
+          .setColor(color.main)
+          .setAuthor({
+            name: `${target.username}'s ${type.charAt(0).toUpperCase() + type.slice(1)}s`,
+            iconURL: target.displayAvatarURL(),
+          })
+          .setFooter({ text: `Page ${i + 1}/${chunks.length}` })
+          .setDescription(
+            chunk
+              .map(
+                (r, idx) =>
+                  `**${idx + 1}.** <@${r.userId}> — Since: <t:${Math.floor(
+                    new Date(r.date).getTime() / 1000
+                  )}:d>`
+              )
+              .join("\n\n")
+          )
+      );
+
+      return client.util.paginate(ctx, embeds);
+    }
+
+    // === "ALL" RELATIONSHIPS ===
+    const formatOne = (r) =>
+      `• <@${r.userId}> \n  — Since: <t:${Math.floor(new Date(r.date).getTime() / 1000)}:d>`;
+
+    const formatList = (list) =>
+      list?.length ? list.map((r) => formatOne(r)).join("\n\n") : "None";
+
+    const embed = client
+      .embed()
+      .setColor(color.main)
+      .setAuthor({
+        name: `${target.username}'s Relationships`,
+        iconURL: target.displayAvatarURL(),
+      })
+      .addFields(
+        {
+          name: "💍 Partner",
+          value: rel.partner?.userId ? formatOne(rel.partner) : "None",
+        },
+        {
+          name: "💖 Besties",
+          value: formatList(rel.besties || []),
+        },
+        {
+          name: "👬 Brothers",
+          value: formatList(rel.brothers || []),
+        },
+        {
+          name: "👭 Sisters",
+          value: formatList(rel.sisters || []),
+        }
+      )
+      .setFooter({ text: "Use /relationship to manage them." });
 
     return ctx.sendMessage({ embeds: [embed] });
   }
