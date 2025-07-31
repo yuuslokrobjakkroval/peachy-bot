@@ -4,27 +4,27 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  red: {
+  brightRed: {
     primary: "#D82424",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  hotPink: {
+  bubblegumPink: {
     primary: "#E43C6D",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  lightPink: {
+  babyPink: {
     primary: "#F78CA2",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  purplePink: {
+  pinkPurpleGradient: {
     primary: "#D062AA",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  pastelPink: {
+  bubblegumPink: {
     primary: "#F1A9D0",
     secondary: "#E0E0E0",
     text: "#424242",
@@ -39,7 +39,7 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  goldPurple: {
+  goldPurpleGradient: {
     primary: "#E3AB56",
     secondary: "#E0E0E0",
     text: "#424242",
@@ -49,52 +49,52 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  coral: {
+  coralOrange: {
     primary: "#F27457",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  softCoral: {
+  coralPink: {
     primary: "#F9A58A",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  green: {
+  brightGreen: {
     primary: "#47C265",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  yellowGreen: {
+  yellowGreenGradient: {
     primary: "#C6D95A",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  teal: {
+  tealBlue: {
     primary: "#58D3B0",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  ivory: {
+  mintIvoryGradient: {
     primary: "#EEFBE7",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  rainbow: {
+  pastelRainbow: {
     primary: "#FFE871",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  aqua: {
+  aquaBlue: {
     primary: "#3ED0D6",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  aquaLight: {
+  cyanBlue: {
     primary: "#91EDEB",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  turquoise: {
+  turquoiseBlue: {
     primary: "#7BE3DC",
     secondary: "#E0E0E0",
     text: "#424242",
@@ -109,12 +109,12 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  pinkPurple: {
+  pinkPurpleGradient: {
     primary: "#D67CE6",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  navy: {
+  indigoBlue: {
     primary: "#32295C",
     secondary: "#E0E0E0",
     text: "#424242",
@@ -134,17 +134,17 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  softPurple: {
+  lightPurple: {
     primary: "#BD92DB",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  white: {
+  pearlWhite: {
     primary: "#FFFFFF",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  black: {
+  glossyBlack: {
     primary: "#2E2E2E",
     secondary: "#E0E0E0",
     text: "#424242",
