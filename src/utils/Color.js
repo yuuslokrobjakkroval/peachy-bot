@@ -29,6 +29,26 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
+  babyPink: {
+    primary: "#FDC3D2",
+    secondary: "#E0E0E0",
+    text: "#424242",
+  },
+  lavender: {
+    primary: "#C18FE7",
+    secondary: "#E0E0E0",
+    text: "#424242",
+  },
+  goldPurple: {
+    primary: "#E3AB56",
+    secondary: "#E0E0E0",
+    text: "#424242",
+  },
+  goldenYellow: {
+    primary: "#F6C662",
+    secondary: "#E0E0E0",
+    text: "#424242",
+  },
   coral: {
     primary: "#F27457",
     secondary: "#E0E0E0",
@@ -39,23 +59,8 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  peachPink: {
-    primary: "#F5C1B6",
-    secondary: "#E0E0E0",
-    text: "#424242",
-  },
-  peachOrange: {
-    primary: "#F6A665",
-    secondary: "#E0E0E0",
-    text: "#424242",
-  },
-  orangeYellow: {
-    primary: "#FFBD4A",
-    secondary: "#E0E0E0",
-    text: "#424242",
-  },
-  orange: {
-    primary: "#FFA82A",
+  green: {
+    primary: "#47C265",
     secondary: "#E0E0E0",
     text: "#424242",
   },
@@ -64,33 +69,18 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  limeGreen: {
-    primary: "#8ED250",
+  teal: {
+    primary: "#58D3B0",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  green: {
-    primary: "#47C265",
-    secondary: "#E0E0E0",
-    text: "#424242",
-  },
-  mint: {
-    primary: "#B6E372",
-    secondary: "#E0E0E0",
-    text: "#424242",
-  },
-  yellow: {
-    primary: "#F1E15C",
+  ivory: {
+    primary: "#EEFBE7",
     secondary: "#E0E0E0",
     text: "#424242",
   },
   rainbow: {
-    primary: "#FFE871", // Approximated start of gradient
-    secondary: "#E0E0E0",
-    text: "#424242",
-  },
-  teal: {
-    primary: "#58D3B0",
+    primary: "#FFE871",
     secondary: "#E0E0E0",
     text: "#424242",
   },
@@ -99,23 +89,23 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  aquaLavender: {
-    primary: "#92E9F3",
+  aquaLight: {
+    primary: "#91EDEB",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  blue: {
-    primary: "#4694E6",
+  turquoise: {
+    primary: "#7BE3DC",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  lightBlue: {
-    primary: "#A2C6F2",
+  skyBlue: {
+    primary: "#5DD7FB",
     secondary: "#E0E0E0",
     text: "#424242",
   },
-  lavender: {
-    primary: "#C18FE7",
+  lightLavender: {
+    primary: "#B7A9EF",
     secondary: "#E0E0E0",
     text: "#424242",
   },
@@ -134,6 +124,16 @@ module.exports = {
     secondary: "#E0E0E0",
     text: "#424242",
   },
+  violet: {
+    primary: "#A363CC",
+    secondary: "#E0E0E0",
+    text: "#424242",
+  },
+  deepPurple: {
+    primary: "#7936AD",
+    secondary: "#E0E0E0",
+    text: "#424242",
+  },
   softPurple: {
     primary: "#BD92DB",
     secondary: "#E0E0E0",
@@ -141,11 +141,6 @@ module.exports = {
   },
   white: {
     primary: "#FFFFFF",
-    secondary: "#E0E0E0",
-    text: "#424242",
-  },
-  silver: {
-    primary: "#D7D7D7",
     secondary: "#E0E0E0",
     text: "#424242",
   },
