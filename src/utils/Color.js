@@ -147,6 +147,6 @@ module.exports = {
   glossyBlack: {
     primary: "#2E2E2E",
     secondary: "#E0E0E0",
-    text: "#424242",
+    text: "#FFFFFF",
   },
 };

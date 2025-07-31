@@ -109,7 +109,6 @@ module.exports = class Profile extends Command {
           );
           partner = await client.users.fetch(partnerInfo?.userId);
         }
-
         canvas = createCanvas(1920, 1080);
         context = canvas.getContext("2d");
         await this.drawChinaNewYearProfile(
