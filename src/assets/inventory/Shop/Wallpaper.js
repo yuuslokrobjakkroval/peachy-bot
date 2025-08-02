@@ -362,7 +362,7 @@ module.exports = {
       price: { buy: 15e6, sell: 1e7 },
       image: "https://i.imgur.com/MuUCJwA.png",
     },
-    
+
     {
       id: "w22",
       name: "Yamada The Gamer",
@@ -485,8 +485,7 @@ module.exports = {
     {
       id: "w29",
       name: "Kuromi",
-      description:
-        "A pastel pink",
+      description: "A pastel pink",
       type: "wallpaper",
       able: {
         use: true,
@@ -519,8 +518,7 @@ module.exports = {
     {
       id: "w31",
       name: "Cinnamon Roll Blue",
-      description:
-        "cinnmon roll blue is chilling",
+      description: "cinnmon roll blue is chilling",
       type: "wallpaper",
       able: {
         use: true,
@@ -532,6 +530,40 @@ module.exports = {
       available: ["use", "gift"],
       price: { buy: 2e7, sell: 15e6 },
       image: "https://i.imgur.com/HkKtQuo.png",
+    },
+    {
+      id: "w32",
+      name: "Sunset Valley Retreat",
+      description:
+        "A cozy wooden cabin nestled in a valley, bathed in the warm glow of sunset as twilight paints the mountains and sky with dreamy hues.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/jcumKDS.jpg",
+    },
+    {
+      id: "w33",
+      name: "Ghost Ride in Bloom",
+      description:
+        "A whimsical skeleton rides a blue scooter through a rainy, glowing forest—fireflies, flowers, and magic all around in a peaceful afterlife joyride.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/yFjsWnP.jpg",
     },
     // CHINA NEW YEAR
     {
@@ -552,6 +584,4 @@ module.exports = {
       image: "https://i.imgur.com/RmfP9ie.png",
     },
   ],
-
 };
-
