@@ -560,7 +560,18 @@
       "itemSellPrice": "Sell Price",
       "itemDescription": "Description",
       "shopItemListHeader": "Here is the list of all items sorted by type:",
-      "itemListFooter": "Use `shopinfo <id>` to get more details about an item."
+      "itemListFooter": "Use `shopinfo <id>` to get more details about an item.",
+      "errorLoading": "An error occurred while loading shop information.",
+      "categoryOverview": "Category Overview",
+      "totalItems": "Total Items",
+      "priceRange": "Price Range",
+      "averagePrice": "Average Price",
+      "mostExpensive": "Most Expensive",
+      "cheapest": "Cheapest",
+      "backToList": "Back to Overview",
+      "viewDetails": "View Full Details",
+      "shopOverview": "Shop Overview",
+      "categories": "Categories"
     },
     "useMessages": {
       "themeID": "Theme with ID **%{itemId}** not found.",
