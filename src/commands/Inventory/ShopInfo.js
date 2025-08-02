@@ -5,8 +5,19 @@ const {
   ButtonStyle,
   StringSelectMenuBuilder,
 } = require("discord.js");
+const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
-const Shops = [...ShopItems];
+
+// Create a shop structure for ImportantItems
+const ImportantItemsShop = {
+  name: "Important Items",
+  description:
+    "Essential items and tools for your adventure!\n**・** `pbuy {id}` to buy an item",
+  type: "important",
+  inventory: ImportantItems,
+};
+
+const Shops = [...ShopItems, ImportantItemsShop];
 
 module.exports = class ShopInfo extends Command {
   constructor(client) {
@@ -282,7 +293,7 @@ module.exports = class ShopInfo extends Command {
               )
             : 0;
 
-        return `**${index + 1}.** ${shop.name} - ${itemCount} items (Avg: ${client.utils.formatString(avgShopPrice)} ${emoji.coin || "💰"})`;
+        return `**${index + 1}.** ${shop.name} - ${itemCount} items`;
       }).join("\n");
 
       const embed = client
@@ -512,13 +523,16 @@ module.exports = class ShopInfo extends Command {
 
           case "view_item_details":
             if (currentState.selectedItemId) {
+              // Defer the interaction first to avoid timeout
+              await interaction.deferReply({ flags: 64 });
+
               // Show detailed item information in a new message
               await this.showItemInfo(
                 client,
                 {
                   ...ctx,
                   sendMessage: (options) =>
-                    interaction.followUp({ ...options, flags: 64 }),
+                    interaction.editReply({ ...options }),
                 },
                 currentState.selectedItemId,
                 color,
