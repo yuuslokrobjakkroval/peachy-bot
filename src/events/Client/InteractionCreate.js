@@ -979,9 +979,6 @@ module.exports = class InteractionCreate extends Event {
           }
 
           default:
-            console.warn(
-              `Unhandled button interaction: ${interaction.customId}`
-            );
             break;
         }
       } else if (interaction.isModalSubmit()) {

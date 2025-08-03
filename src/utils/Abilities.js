@@ -1101,40 +1101,33 @@ module.exports = class Ability {
     const width = 800;
     const height = 450;
     const defaultBackgroundUrl = "https://i.imgur.com/fFqwcK2.gif";
+    const fallbackBackgroundColor = "#DFF2EB";
 
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext("2d");
 
     try {
-      let background = null;
-      if (data.backgroundImage) {
-        try {
-          background = await loadImage(data.backgroundImage);
-          console.log(`Loaded background image: ${data.backgroundImage}`);
-        } catch (error) {
-          console.error(
-            `Failed to load background image ${data.backgroundImage}:`,
-            error
-          );
-          background = await loadImage(defaultBackgroundUrl);
-          console.log(
-            `Loaded default background image: ${defaultBackgroundUrl}`
-          );
+      // Use the new safe image loading utility
+      const result = await client.utils.safeLoadImage(
+        data.backgroundImage,
+        defaultBackgroundUrl,
+        fallbackBackgroundColor
+      );
+
+      if (result.image) {
+        ctx.drawImage(result.image, 0, 0, width, height);
+        if (result.usedFallback) {
+          console.warn("Used fallback image due to:", result.error);
         }
       } else {
-        background = await loadImage(defaultBackgroundUrl);
-        console.log(
-          `No background provided, using default: ${defaultBackgroundUrl}`
-        );
+        // If all image loading fails, use a solid color background
+        ctx.fillStyle = fallbackBackgroundColor;
+        ctx.fillRect(0, 0, width, height);
       }
-
-      ctx.drawImage(background, 0, 0, width, height);
     } catch (error) {
-      console.error(
-        `Failed to load default background image ${defaultBackgroundUrl}:`,
-        error
-      );
-      ctx.fillStyle = "#DFF2EB";
+      console.error("Unexpected error in background loading:", error);
+      // Final fallback - solid color background
+      ctx.fillStyle = fallbackBackgroundColor;
       ctx.fillRect(0, 0, width, height);
     }
 
