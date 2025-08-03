@@ -85,5 +85,37 @@ module.exports = {
       available: ["use"],
       price: { buy: 15e6, sell: 13e6 },
     },
+    {
+      id: "t06",
+      name: "Kingdom of Frost",
+      description:
+        "Kingdom of Frost is a majestic theme that brings the beauty of winter royalty to your embeds. With icy blues, shimmering silvers, and a touch of frost, it’s perfect for those who want to add a regal touch to their embeds.",
+      type: "theme",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.theme.kingForest,
+      available: ["use"],
+      price: { buy: 15e6, sell: 13e6 },
+    },
+    {
+      id: "t07",
+      name: "Queen of Frost",
+      description:
+        "Queen of Frost is a regal theme that captures the elegance of winter royalty. With icy blues, shimmering silvers, and a touch of frost, it’s perfect for those who want to add a touch of majesty to their embeds.",
+      type: "theme",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.theme.queenForest,
+      available: ["use"],
+      price: { buy: 15e6, sell: 13e6 },
+    },
   ],
 };

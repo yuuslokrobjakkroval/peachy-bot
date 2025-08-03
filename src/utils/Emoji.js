@@ -209,6 +209,8 @@ module.exports = {
     halloweenNew: "<:H2MAIN:1350666886425346109>",
     jingleJolly: "<:CMAIN:1342794896754606091>",
     festiveFrost: "<:CHMAIN:1342797329123508224>",
+    kingForest: "<:KING:1401491037800763471>",
+    queenForest: "<:QUEEN:1401491153320280114>",
   },
   specialTheme: {
     // SPECIAL
