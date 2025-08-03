@@ -890,6 +890,74 @@ module.exports = {
     },
     // CHINA NEW YEAR
     {
+      id: "w53",
+      name: "Luffy Gear 5 ",
+      description:
+        "Luffy in his Gear 5 form, surrounded by a vibrant and dynamic background that captures the essence of his power and determination.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/EE0SCsa.jpg",
+    },
+    {
+      id: "w54",
+      name: "Luffy Gear  5 Version Two  ",
+      description:
+        "Luffy in his Gear 5 form, surrounded by a vibrant and dynamic background that captures the essence of his power and determination.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/nzzrheb.jpg",
+    },
+    {
+      id: "w55",
+      name: "Cinnammon Roll",
+      description:
+        "A cozy and inviting wallpaper featuring a warm, pastel pink background with soft lighting, perfect for creating a relaxing atmosphere.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/HkKtQuo.png",
+    },
+    {
+      id: "w56",
+      name: "Pinguu Family",
+      description:
+        "A heartwarming scene of a penguin family huddled together, surrounded by a snowy landscape and soft pastel colors.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/ifONA0S.png",
+    },
+    {
       id: "w168",
       name: "Fortune Blossoms",
       description:
@@ -906,5 +974,6 @@ module.exports = {
       price: { buy: 2e7, sell: 15e6 },
       image: "https://i.imgur.com/RmfP9ie.png",
     },
+    
   ],
 };
