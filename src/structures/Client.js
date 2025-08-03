@@ -30,6 +30,8 @@ const themeEmojis = {
   t03: require("../theme/BooBash/emojis"),
   t04: require("../theme/Christmas/emojis"),
   t05: require("../theme/FestiveFrost/emojis"),
+  t06: require("../theme/KingFrost/emojis"),
+  t07: require("../theme/QueenFrost/emojis"),
   st01: require("../theme/CelestialGrace/emojis"),
   st02: require("../theme/SakuraSerenity/emojis"),
   st03: require("../theme/BuzzingBliss/emojis"),
@@ -116,7 +118,7 @@ module.exports = class PeachyClient extends Client {
           if (command.aliases && command.aliases.length > 0) {
             // Check if aliases exist
             command.aliases.forEach((alias) =>
-              this.aliases.set(alias, command.name),
+              this.aliases.set(alias, command.name)
             );
           }
 
@@ -132,7 +134,7 @@ module.exports = class PeachyClient extends Client {
               default_member_permissions:
                 command.permissions.user.length > 0
                   ? PermissionsBitField.resolve(
-                      command.permissions.user,
+                      command.permissions.user
                     ).toString()
                   : null,
             };
@@ -142,7 +144,7 @@ module.exports = class PeachyClient extends Client {
         } catch (error) {
           this.logger.error(
             `Failed to load command ${file} in category ${dir}:`,
-            error,
+            error
           );
         }
       }
@@ -155,11 +157,11 @@ module.exports = class PeachyClient extends Client {
         ? Routes.applicationCommands(this.config.clientId ?? "")
         : Routes.applicationGuildCommands(
             this.config.clientId ?? "",
-            this.config.guildId ?? "",
+            this.config.guildId ?? ""
           );
       try {
         const rest = new REST({ version: "10" }).setToken(
-          this.config.token ?? "",
+          this.config.token ?? ""
         );
         await rest.put(applicationCommands, { body: this.body });
         this.logger.info(`Successfully loaded slash commands!`);
@@ -185,7 +187,7 @@ module.exports = class PeachyClient extends Client {
         } catch (error) {
           this.logger.error(
             `Failed to load event ${file} in category ${dir}:`,
-            error,
+            error
           );
         }
       }
@@ -219,7 +221,7 @@ module.exports = class PeachyClient extends Client {
 
       const localePath = path.join(
         userLanguage.directory,
-        `${userLanguage.defaultLocale}.json`,
+        `${userLanguage.defaultLocale}.json`
       );
       if (fs.existsSync(localePath)) {
         const localeData = JSON.parse(fs.readFileSync(localePath, "utf8"));
@@ -231,7 +233,7 @@ module.exports = class PeachyClient extends Client {
       if (!language.locales.size) {
         console.error(
           "No locales loaded for language:",
-          userLanguage.defaultLocale,
+          userLanguage.defaultLocale
         );
       }
 

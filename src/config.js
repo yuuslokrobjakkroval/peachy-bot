@@ -121,7 +121,7 @@ const t05 = {
   },
 };
 
-// Mystic Realms ( T06 )
+// King of Frost ( T06 )
 const t06 = {
   color: {
     light: 0xffffff,
@@ -131,12 +131,12 @@ const t06 = {
     blue: 0x4cc9fe,
     pink: 0xe3a1ad,
     warning: 0xffa500,
-    main: 0xf6ded8,
+    main: 0xbbfbff,
     none: 0x2b2d31,
   },
 };
 
-// Luna Legend ( T07 )
+// Queen of Frost ( T07 )
 const t07 = {
   color: {
     light: 0xffffff,
@@ -146,7 +146,7 @@ const t07 = {
     blue: 0x4cc9fe,
     pink: 0xe3a1ad,
     warning: 0xffa500,
-    main: 0xbe3144,
+    main: 0xfed1ef,
     none: 0x2b2d31,
   },
 };

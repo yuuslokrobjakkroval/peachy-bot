@@ -180,21 +180,6 @@ module.exports = [
     price: { buy: 1e10, sell: 15e6 },
   },
   {
-    id: "st2002",
-    name: "Yara",
-    description: "Sponsor theme",
-    type: "special theme",
-    able: {
-      use: true,
-      gift: true,
-      multiple: false,
-    },
-    quantity: 1,
-    emoji: emoji.specialTheme.yara,
-    available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
-  },
-  {
     id: "st2025",
     name: "Cat Ana",
     description: "Inviter theme",

@@ -125,7 +125,7 @@ module.exports = class Shop extends Command {
         uniqueCategories,
         selectedCategory,
         generalMessages,
-        messages,
+        messages
       );
     } catch (error) {
       console.error("Error in Shop command:", error);
@@ -148,7 +148,7 @@ module.exports = class Shop extends Command {
     categories,
     initialCategory,
     generalMessages,
-    messages,
+    messages
   ) {
     const currentState = {
       category: initialCategory,
@@ -212,7 +212,7 @@ module.exports = class Shop extends Command {
     const getSelectedItem = () => {
       if (!currentState.selectedItemId) return null;
       return getCurrentItems().find(
-        (item) => item.id === currentState.selectedItemId,
+        (item) => item.id === currentState.selectedItemId
       );
     };
 
@@ -240,12 +240,11 @@ module.exports = class Shop extends Command {
       const embed = client
         .embed()
         .setColor(color.main)
-        .setTitle(
-          `${emoji.mainLeft || "🛒"} ${
+        .setDescription(
+          `## ${emoji.mainLeft || "🛒"} ${
             messages.shopTitle
-          }: ${shop.name.toUpperCase()} ${emoji.mainRight || "🛒"}`,
+          } : ${shop.name.toUpperCase()} ${emoji.mainRight || "🛒"}\n\n${shop.description}\n\n${itemList}`
         )
-        .setDescription(`${shop.description}\n\n${itemList}`)
         .setThumbnail(client.utils.emojiToImage(emoji.shop || "🛍️"))
         .setFooter({
           text: `Page ${
@@ -266,11 +265,11 @@ module.exports = class Shop extends Command {
       const embed = client
         .embed()
         .setColor(color.main)
-        .setTitle(`${item.emoji} ${item.name}`)
+        .setDescription(`## ${item.name}`)
         .setThumbnail(
           item.emoji
             ? client.utils.emojiToImage(item.emoji)
-            : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
+            : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
         )
         .addFields([
           {
@@ -320,7 +319,7 @@ module.exports = class Shop extends Command {
           messages.confirmPurchase
             .replace("%{quantity}", quantity.toString())
             .replace("%{item}", item.name)
-            .replace("%{price}", client.utils.formatString(totalPrice)),
+            .replace("%{price}", client.utils.formatString(totalPrice))
         )
         .addFields([
           {
@@ -384,7 +383,7 @@ module.exports = class Shop extends Command {
           label: item.name,
           value: item.id,
           description: `${client.utils.formatString(
-            item.price.buy,
+            item.price.buy
           )} ${emojiStr}`,
           emoji:
             item.emoji && item.emoji.includes(":") ? undefined : item.emoji, // Only use Unicode emojis in dropdown
@@ -441,7 +440,7 @@ module.exports = class Shop extends Command {
           return new ActionRowBuilder().addComponents(
             homeButton,
             prevButton,
-            nextButton,
+            nextButton
           );
         } else {
           return new ActionRowBuilder().addComponents(homeButton);
@@ -501,11 +500,11 @@ module.exports = class Shop extends Command {
       const row1 = new ActionRowBuilder().addComponents(
         decreaseButton,
         quantityButton,
-        increaseButton,
+        increaseButton
       );
       const row2 = new ActionRowBuilder().addComponents(
         confirmButton,
-        cancelButton,
+        cancelButton
       );
 
       return [row1, row2];
@@ -514,7 +513,7 @@ module.exports = class Shop extends Command {
     // Function to update message with current state
     const updateMessage = async (
       interaction = null,
-      skipInteractionUpdate = false,
+      skipInteractionUpdate = false
     ) => {
       try {
         const components = [];
@@ -581,7 +580,7 @@ module.exports = class Shop extends Command {
               .setColor(color.error)
               .setTitle("Error")
               .setDescription(
-                "An error occurred while updating the shop display. Please try again.",
+                "An error occurred while updating the shop display. Please try again."
               );
 
             await msg.edit({ embeds: [errorEmbed], components: [] });
@@ -631,7 +630,7 @@ module.exports = class Shop extends Command {
 
         // Update user's balance and inventory
         const existingItem = user.inventory.find(
-          (invItem) => invItem.id === item.id,
+          (invItem) => invItem.id === item.id
         );
 
         if (existingItem) {
@@ -643,7 +642,7 @@ module.exports = class Shop extends Command {
                 "balance.coin": -totalPrice,
                 "inventory.$.quantity": quantity,
               },
-            },
+            }
           );
         } else {
           // Add new item to inventory
@@ -657,7 +656,7 @@ module.exports = class Shop extends Command {
                   quantity: quantity,
                 },
               },
-            },
+            }
           );
         }
 
@@ -843,12 +842,12 @@ module.exports = class Shop extends Command {
             if (component.type === 3) {
               // Select menu
               newRow.addComponents(
-                StringSelectMenuBuilder.from(component).setDisabled(true),
+                StringSelectMenuBuilder.from(component).setDisabled(true)
               );
             } else if (component.type === 2) {
               // Button
               newRow.addComponents(
-                ButtonBuilder.from(component).setDisabled(true),
+                ButtonBuilder.from(component).setDisabled(true)
               );
             }
           });
