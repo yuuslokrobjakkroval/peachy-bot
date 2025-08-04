@@ -92,38 +92,55 @@ module.exports = class LevelUpGenerator {
 
     if (backgroundImageUrl) {
       try {
-        const backgroundImage = await loadImage(backgroundImageUrl);
-        const scale = Math.max(
-          this.width / backgroundImage.width,
-          this.height / backgroundImage.height
-        );
-        const scaledWidth = backgroundImage.width * scale;
-        const scaledHeight = backgroundImage.height * scale;
-        const offsetX = (this.width - scaledWidth) / 2;
-        const offsetY = (this.height - scaledHeight) / 2;
+        const result =
+          await require("./Utils").safeLoadImage(backgroundImageUrl);
 
-        ctx.drawImage(
-          backgroundImage,
-          offsetX,
-          offsetY,
-          scaledWidth,
-          scaledHeight
-        );
+        if (result.image) {
+          const backgroundImage = result.image;
+          const scale = Math.max(
+            this.width / backgroundImage.width,
+            this.height / backgroundImage.height
+          );
+          const scaledWidth = backgroundImage.width * scale;
+          const scaledHeight = backgroundImage.height * scale;
+          const offsetX = (this.width - scaledWidth) / 2;
+          const offsetY = (this.height - scaledHeight) / 2;
 
-        const overlayGradient = ctx.createRadialGradient(
-          this.width / 2,
-          this.height / 2,
-          0,
-          this.width / 2,
-          this.height / 2,
-          Math.max(this.width, this.height) / 2
-        );
-        overlayGradient.addColorStop(0, `${backgroundColor}85`);
-        overlayGradient.addColorStop(0.7, `${backgroundColor}70`);
-        overlayGradient.addColorStop(1, `${backgroundColor}90`);
+          ctx.drawImage(
+            backgroundImage,
+            offsetX,
+            offsetY,
+            scaledWidth,
+            scaledHeight
+          );
 
-        ctx.fillStyle = overlayGradient;
-        ctx.fillRect(0, 0, this.width, this.height);
+          const overlayGradient = ctx.createRadialGradient(
+            this.width / 2,
+            this.height / 2,
+            0,
+            this.width / 2,
+            this.height / 2,
+            Math.max(this.width, this.height) / 2
+          );
+          overlayGradient.addColorStop(0, `${backgroundColor}85`);
+          overlayGradient.addColorStop(0.7, `${backgroundColor}70`);
+          overlayGradient.addColorStop(1, `${backgroundColor}90`);
+
+          ctx.fillStyle = overlayGradient;
+          ctx.fillRect(0, 0, this.width, this.height);
+
+          if (result.usedFallback) {
+            console.warn(
+              "LevelUpGenerator used fallback image due to:",
+              result.error
+            );
+          }
+        } else {
+          console.warn(
+            "LevelUpGenerator: All images failed, using gradient background"
+          );
+          this.drawGradientBackground(ctx, backgroundColor, borderColor);
+        }
       } catch (bgError) {
         console.warn(
           "Failed to load background image, using gradient:",

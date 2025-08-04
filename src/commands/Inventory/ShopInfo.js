@@ -255,6 +255,8 @@ module.exports = class ShopInfo extends Command {
       viewMode: "overview", // "overview", "category", "item"
       selectedCategory: null,
       selectedItemId: null,
+      currentPage: 0,
+      itemsPerPage: 10,
     };
 
     // Get shop statistics
@@ -341,10 +343,19 @@ module.exports = class ShopInfo extends Command {
       if (!shop) return generateOverviewEmbed();
 
       const items = shop.inventory;
-      const itemList = items
+      const totalPages = Math.ceil(items.length / currentState.itemsPerPage);
+      const startIndex = currentState.currentPage * currentState.itemsPerPage;
+      const endIndex = Math.min(
+        startIndex + currentState.itemsPerPage,
+        items.length
+      );
+      const currentItems = items.slice(startIndex, endIndex);
+
+      const itemList = currentItems
         .map((item, index) => {
           const price = client.utils.formatString(item.price.buy);
-          return `\`${item.id}\` ${item.emoji || "📦"} **${item.name}** - ${price} ${emoji.coin || "💰"}`;
+          const globalIndex = startIndex + index + 1;
+          return `**${globalIndex}.** \`${item.id}\` ${item.emoji || "📦"} **${item.name}** - ${price} ${emoji.coin || "💰"}`;
         })
         .join("\n");
 
@@ -371,7 +382,7 @@ module.exports = class ShopInfo extends Command {
           },
         ])
         .setFooter({
-          text: `Select an item below for detailed information`,
+          text: `Page ${currentState.currentPage + 1} of ${totalPages} • Select an item below for detailed information`,
           iconURL: ctx.author.displayAvatarURL(),
         });
 
@@ -407,8 +418,18 @@ module.exports = class ShopInfo extends Command {
       );
       if (!shop) return null;
 
-      const itemOptions = shop.inventory.slice(0, 25).map((item) => ({
-        label: item.name,
+      const startIndex = currentState.currentPage * currentState.itemsPerPage;
+      const endIndex = Math.min(
+        startIndex + currentState.itemsPerPage,
+        shop.inventory.length
+      );
+      const currentItems = shop.inventory.slice(startIndex, endIndex);
+
+      const itemOptions = currentItems.map((item) => ({
+        label:
+          item.name.length > 100
+            ? item.name.substring(0, 97) + "..."
+            : item.name,
         value: item.id,
         description:
           `${client.utils.formatString(item.price.buy)} ${emoji.coin || "💰"}`.replace(
@@ -418,6 +439,8 @@ module.exports = class ShopInfo extends Command {
         emoji: item.emoji?.includes(":") ? undefined : item.emoji,
         default: item.id === currentState.selectedItemId,
       }));
+
+      if (itemOptions.length === 0) return null;
 
       const dropdown = new StringSelectMenuBuilder()
         .setCustomId("item_select")
@@ -432,12 +455,52 @@ module.exports = class ShopInfo extends Command {
       const buttons = [];
 
       if (currentState.viewMode === "category") {
+        const shop = Shops.find(
+          (shop) => shop.type === currentState.selectedCategory
+        );
+
+        if (shop) {
+          const totalPages = Math.ceil(
+            shop.inventory.length / currentState.itemsPerPage
+          );
+
+          // Previous page button
+          if (currentState.currentPage > 0) {
+            const prevButton = new ButtonBuilder()
+              .setCustomId("prev_page")
+              .setLabel("Previous")
+              .setStyle(ButtonStyle.Primary)
+              .setEmoji("⬅️");
+            buttons.push(prevButton);
+          }
+
+          // Page info button (disabled, shows current page)
+          if (totalPages > 1) {
+            const pageInfoButton = new ButtonBuilder()
+              .setCustomId("page_info")
+              .setLabel(`${currentState.currentPage + 1}/${totalPages}`)
+              .setStyle(ButtonStyle.Secondary)
+              .setDisabled(true);
+            buttons.push(pageInfoButton);
+          }
+
+          // Next page button
+          if (currentState.currentPage < totalPages - 1) {
+            const nextButton = new ButtonBuilder()
+              .setCustomId("next_page")
+              .setLabel("Next")
+              .setStyle(ButtonStyle.Primary)
+              .setEmoji("➡️");
+            buttons.push(nextButton);
+          }
+        }
+
+        // Back to overview button
         const backButton = new ButtonBuilder()
           .setCustomId("back_to_overview")
           .setLabel(messages.backToList || "Back to Overview")
           .setStyle(ButtonStyle.Secondary)
           .setEmoji("🔙");
-
         buttons.push(backButton);
       }
 
@@ -445,9 +508,8 @@ module.exports = class ShopInfo extends Command {
         const detailsButton = new ButtonBuilder()
           .setCustomId("view_item_details")
           .setLabel(messages.viewDetails || "View Full Details")
-          .setStyle(ButtonStyle.Primary)
+          .setStyle(ButtonStyle.Success)
           .setEmoji("🔍");
-
         buttons.push(detailsButton);
       }
 
@@ -509,6 +571,7 @@ module.exports = class ShopInfo extends Command {
             currentState.selectedCategory = interaction.values[0];
             currentState.viewMode = "category";
             currentState.selectedItemId = null;
+            currentState.currentPage = 0; // Reset to first page when switching categories
             break;
 
           case "item_select":
@@ -519,6 +582,29 @@ module.exports = class ShopInfo extends Command {
             currentState.viewMode = "overview";
             currentState.selectedCategory = null;
             currentState.selectedItemId = null;
+            currentState.currentPage = 0;
+            break;
+
+          case "prev_page":
+            if (currentState.currentPage > 0) {
+              currentState.currentPage--;
+              currentState.selectedItemId = null; // Clear selected item when changing pages
+            }
+            break;
+
+          case "next_page":
+            const shop = Shops.find(
+              (shop) => shop.type === currentState.selectedCategory
+            );
+            if (shop) {
+              const totalPages = Math.ceil(
+                shop.inventory.length / currentState.itemsPerPage
+              );
+              if (currentState.currentPage < totalPages - 1) {
+                currentState.currentPage++;
+                currentState.selectedItemId = null; // Clear selected item when changing pages
+              }
+            }
             break;
 
           case "view_item_details":

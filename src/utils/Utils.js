@@ -2407,4 +2407,56 @@ module.exports = class Utils {
       console.error("💥 Error in createGiveaway:", err);
     }
   }
+
+  /**
+   * Safely loads an image with fallback options
+   * @param {string} primaryUrl - Primary image URL to load
+   * @param {string|null} fallbackUrl - Fallback image URL if primary fails
+   * @param {string|null} fallbackColor - Fallback color if all images fail
+   * @returns {Promise<{image: any|null, usedFallback: boolean, error: string|null}>}
+   */
+  static async safeLoadImage(
+    primaryUrl,
+    fallbackUrl = null,
+    fallbackColor = "#DFF2EB"
+  ) {
+    const { loadImage } = require("@napi-rs/canvas");
+
+    // Helper function to attempt image loading
+    const attemptLoad = async (url) => {
+      if (!url) return null;
+      try {
+        const image = await loadImage(url);
+        return image;
+      } catch (error) {
+        console.error(`Failed to load image ${url}:`, error.message);
+        return null;
+      }
+    };
+
+    // Try primary URL
+    let image = await attemptLoad(primaryUrl);
+    if (image) {
+      return { image, usedFallback: false, error: null };
+    }
+
+    // Try fallback URL if provided
+    if (fallbackUrl) {
+      image = await attemptLoad(fallbackUrl);
+      if (image) {
+        return {
+          image,
+          usedFallback: true,
+          error: `Primary URL failed: ${primaryUrl}`,
+        };
+      }
+    }
+
+    // Both URLs failed
+    const errorMsg = fallbackUrl
+      ? `Both primary (${primaryUrl}) and fallback (${fallbackUrl}) URLs failed`
+      : `Primary URL failed: ${primaryUrl}`;
+
+    return { image: null, usedFallback: true, error: errorMsg };
+  }
 };
