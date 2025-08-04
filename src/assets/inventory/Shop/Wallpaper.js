@@ -958,6 +958,40 @@ module.exports = {
       image: "https://i.imgur.com/ifONA0S.png",
     },
     {
+      id: "w57",
+      name: "Giyu",
+      description:
+        "Giyu Tomioka, the Water Hashira from Demon Slayer, stands in a serene forest setting, surrounded by soft pastel colors and gentle lighting.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/yBgMg1n.jpg",
+    },
+    {
+      id: "w58",
+      name: "Tanjiro",
+      description:
+        "Tanjiro Kamado, the protagonist of Demon Slayer, stands in a lush forest with his signature Nichirin sword, surrounded by soft pastel colors and gentle lighting.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/UvRQALR.jpg",
+    },
+    {
       id: "w168",
       name: "Fortune Blossoms",
       description:
