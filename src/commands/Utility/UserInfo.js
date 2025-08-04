@@ -14,7 +14,7 @@ module.exports = class UserInfo extends Command {
       category: "utility",
       aliases: ["user", "whois"],
       cooldown: 3,
-      args: true,
+      args: false,
       permissions: {
         dev: false,
         client: ["SendMessages", "ViewChannel", "EmbedLinks"],
@@ -34,16 +34,16 @@ module.exports = class UserInfo extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     }
 
@@ -54,14 +54,15 @@ module.exports = class UserInfo extends Command {
       : ctx.message.mentions.members.first() ||
         ctx.guild.members.cache.get(args[0]) ||
         ctx.message.mentions.users.first() ||
+        ctx.author ||
         args[0];
 
     if (!target) {
-      return ctx.sendErrorMessage(
+      return client.utils.sendErrorMessage(
         client,
         ctx,
         generalMessages?.userNotFound,
-        color,
+        color
       );
     }
     const { guild } = ctx;
@@ -96,7 +97,7 @@ module.exports = class UserInfo extends Command {
       emoji,
       color,
       generalMessages,
-      globalEmoji,
+      globalEmoji
     );
 
     // Create buttons
@@ -110,7 +111,7 @@ module.exports = class UserInfo extends Command {
         .setCustomId("banner")
         .setLabel("Banner")
         .setStyle(ButtonStyle.Secondary)
-        .setEmoji("🏞️"),
+        .setEmoji("🏞️")
     );
 
     // Send the initial message with buttons
@@ -153,7 +154,7 @@ module.exports = class UserInfo extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName,
+                ctx.author.displayName
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
@@ -170,7 +171,7 @@ module.exports = class UserInfo extends Command {
             .setCustomId("banner")
             .setLabel("Banner")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("🏞️"),
+            .setEmoji("🏞️")
         );
 
         await interaction.update({
@@ -184,13 +185,15 @@ module.exports = class UserInfo extends Command {
           .setColor(color.main)
           .setTitle(`${user.displayName}'s Banner`)
           .setImage(bannerURL)
-          .setFooter({
-            text: fetchedUser?.bannerURL()
-              ? ""
-              : "This user does not have a custom banner.",
-            iconURL: ctx.author.displayAvatarURL(),
-          })
           .setTimestamp();
+
+        // Only set footer if user doesn't have a custom banner
+        if (!fetchedUser?.bannerURL()) {
+          bannerEmbed.setFooter({
+            text: "This user does not have a custom banner.",
+            iconURL: ctx.author.displayAvatarURL(),
+          });
+        }
 
         // Create buttons for banner view
         const bannerRow = new ActionRowBuilder().addComponents(
@@ -203,7 +206,7 @@ module.exports = class UserInfo extends Command {
             .setCustomId("avatar")
             .setLabel("Avatar")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("🖼️"),
+            .setEmoji("🖼️")
         );
 
         await interaction.update({
@@ -230,7 +233,7 @@ module.exports = class UserInfo extends Command {
           .setLabel("Banner")
           .setStyle(ButtonStyle.Secondary)
           .setEmoji("🏞️")
-          .setDisabled(true),
+          .setDisabled(true)
       );
 
       // Try to update the message with disabled buttons
@@ -256,7 +259,7 @@ module.exports = class UserInfo extends Command {
     emoji,
     color,
     generalMessages,
-    globalEmoji,
+    globalEmoji
   ) {
     return client
       .embed()
@@ -266,7 +269,11 @@ module.exports = class UserInfo extends Command {
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", "USER INFO")
-          .replace("%{mainRight}", emoji.mainRight),
+          .replace("%{mainRight}", emoji.mainRight)
+      )
+      .setImage(
+        user.bannerURL({ format: "png", size: 1024 }) ||
+          client.config.links.banner
       )
       .addFields([
         {
@@ -276,7 +283,7 @@ module.exports = class UserInfo extends Command {
         },
         {
           name: `📛 Name`,
-          value: `${globalEmoji.arrow} **${user.displayName}** (**${user.username}**)`,
+          value: `${globalEmoji.arrow} **<@${user.id}>** (**${user.username}**)`,
           inline: false,
         },
         {
@@ -285,7 +292,7 @@ module.exports = class UserInfo extends Command {
             guildMember?.joinedTimestamp
               ? `${Math.floor(
                   (Date.now() - guildMember.joinedTimestamp) /
-                    (1000 * 60 * 60 * 24),
+                    (1000 * 60 * 60 * 24)
                 )} days ago`
               : "N/A"
           }**`,
@@ -313,7 +320,7 @@ module.exports = class UserInfo extends Command {
         {
           name: "📅 Created At",
           value: `${globalEmoji.arrow} **${Math.floor(
-            (Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365),
+            (Date.now() - user.createdTimestamp) / (1000 * 60 * 60 * 24 * 365)
           )}** years ago`,
           inline: false,
         },
@@ -322,7 +329,7 @@ module.exports = class UserInfo extends Command {
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName,
+            ctx.author.displayName
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })
