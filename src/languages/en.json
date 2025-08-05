@@ -317,6 +317,18 @@
       "playerWin": "You won!",
       "playerLose": "You lost!",
       "tie": "It's a tie!"
+    },
+    "horseRacingMessages": {
+      "title": "ANIMAL RACING",
+      "noHorseSelected": "Please select an animal to bet on (1-8, name, or 'lucky').",
+      "invalidHorse": "Invalid animal selection. Choose 1-8, animal name, or 'lucky'.",
+      "raceStarting": "Race starting soon...",
+      "raceInProgress": "Race in progress...",
+      "timeout": "Race cancelled! No coins were lost.",
+      "winner": "Winner",
+      "congratulations": "Congratulations! Your animal won!",
+      "betLost": "Your animal didn't win this time.",
+      "yourPick": "Your pick"
     }
   },
   "gameMessages": {
