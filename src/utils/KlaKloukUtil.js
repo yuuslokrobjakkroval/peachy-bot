@@ -41,7 +41,7 @@ async function klakloukStarting(
   userCoin,
   betCoin,
   generalMessages,
-  klaKloukMessages,
+  klaKloukMessages
 ) {
   const startEmbed = client
     .embed()
@@ -53,13 +53,13 @@ async function klakloukStarting(
         .replace("%{mainRight}", emoji.mainRight) +
         klaKloukMessages.startGame
           .replace("%{betCoin}", client.utils.formatNumber(betCoin))
-          .replace("%{coinEmote}", emoji.coin),
+          .replace("%{coinEmote}", emoji.coin)
     )
     .setImage(kkGif.kda)
     .setFooter({
       text: generalMessages.gameStart.replace(
         "%{user}",
-        ctx.author.displayName,
+        ctx.author.displayName
       ),
       iconURL: kkGif.ball,
     });
@@ -204,7 +204,7 @@ async function klakloukStarting(
         int.customId !== "start"
       ) {
         const selected = [...firstRow.components, ...secondRow.components].find(
-          (b) => b.data.custom_id === int.customId,
+          (b) => b.data.custom_id === int.customId
         );
         if (!selectedButton.includes(int.customId)) {
           if (selectedButton.length >= maxSelectable) {
@@ -215,8 +215,8 @@ async function klakloukStarting(
                 .replace(
                   "%{needed}",
                   client.utils.formatNumber(
-                    (selectedButton.length + 1) * buttonCost,
-                  ),
+                    (selectedButton.length + 1) * buttonCost
+                  )
                 )
                 .replace("%{coinEmote}", emoji.coin),
               flags: 64,
@@ -279,13 +279,13 @@ async function klakloukStarting(
                   .replace("%{betCoin}", client.utils.formatNumber(betCoin))
                   .replace("%{coinEmote}", emoji.coin)
                   .replace("%{totalCoin}", client.utils.formatNumber(totalCoin))
-                  .replace("%{coinEmote}", emoji.coin),
+                  .replace("%{coinEmote}", emoji.coin)
             )
             .setImage(kkGif.klok)
             .setFooter({
               text: generalMessages.gameInProgress.replace(
                 "%{user}",
-                ctx.author.displayName,
+                ctx.author.displayName
               ),
               iconURL: kkGif.ball,
             });
@@ -316,23 +316,13 @@ async function klakloukStarting(
 
           let winCash = 0;
           if (winKK > 0) {
-            // Updated logic for calculating winCash
-            if (selectedButton.length === 1) {
-              winCash = betCoin * winKK * 2; // Double winnings for a single selection
-            } else if (selectedButton.length === 2) {
-              if (winKK === 1) {
-                winCash = totalBet; // Return total bet for one match
-              } else {
-                winCash = betCoin * winKK; // Winnings are based on the number of matches
-              }
-            } else if (selectedButton.length > 2) {
-              winCash = betCoin * winKK; // Winnings for more than two selections
-            }
+            // Fixed logic for calculating winnings
+            // Each correct guess pays 1x the bet per animal (1:1 payout)
+            winCash = betCoin * winKK;
 
-            // Update user's coin and save
-            userCoin += winCash - totalBet;
-            user.balance.coin = userCoin;
-            user.balance.klaklouk += totalBet;
+            // Add winnings to user's balance (totalBet was already deducted during betting)
+            user.balance.coin += winCash;
+            user.balance.klaklouk += winCash; // Track total winnings, not bets
             user.validation.isKlaKlouk = false;
             await user.save();
 
@@ -344,21 +334,25 @@ async function klakloukStarting(
                   .replace("%{mainLeft}", emoji.mainLeft)
                   .replace("%{title}", klaKloukMessages.title)
                   .replace("%{mainRight}", emoji.mainRight) +
-                  `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
-                  `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
+                  `**Dealer Result**\n` +
+                  `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n` +
+                  `**${ctx.author.displayName} Choose**\n` +
                   `## ${selectedButton
                     .map((id) => kkEmoji[id])
-                    .join(" `|` ")}\n\n\n𝑩𝒆𝒕 **${client.utils.formatNumber(
-                    totalBet,
-                  )}** ${emoji.coin}\n𝑾𝒐𝒏 **${client.utils.formatNumber(
-                    winCash,
-                  )}** ${emoji.coin}`,
+                    .join(" `|` ")}\n\n` +
+                  `**Bet:** ${client.utils.formatNumber(
+                    totalBet
+                  )} ${emoji.coin}\n` +
+                  `**Won:** ${client.utils.formatNumber(
+                    winCash
+                  )} ${emoji.coin}\n` +
+                  `**Matches:** ${winKK}/3`
               )
               .setImage("attachment://result.png")
               .setFooter({
                 text: `${generalMessages.gameOver.replace(
                   "%{user}",
-                  ctx.author.displayName,
+                  ctx.author.displayName
                 )}`,
                 iconURL: ctx.author.displayAvatarURL(),
               });
@@ -368,8 +362,7 @@ async function klakloukStarting(
               files: [attachment],
             });
           } else {
-            // Handle Lose
-            user.balance.klaklouk += totalBet;
+            // Handle Lose - don't track losses in klaklouk balance
             user.validation.isKlaKlouk = false;
             await user.save();
 
@@ -381,21 +374,25 @@ async function klakloukStarting(
                   .replace("%{mainLeft}", emoji.mainLeft)
                   .replace("%{title}", klaKloukMessages.title)
                   .replace("%{mainRight}", emoji.mainRight) +
-                  `𝑫𝒆𝒂𝒍𝒆𝒓 𝑹𝒆𝒔𝒖𝒍𝒕\n` +
-                  `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n\n${ctx.author.displayName} 𝑪𝒉𝒐𝒐𝒔𝒆\n` +
+                  `**Dealer Result**\n` +
+                  `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n` +
+                  `**${ctx.author.displayName} Choose**\n` +
                   `## ${selectedButton
                     .map((id) => kkEmoji[id])
-                    .join(" `|` ")}\n\n\n𝑩𝒆𝒕 **${client.utils.formatNumber(
-                    totalBet,
-                  )}** ${emoji.coin}\n𝑳𝒐𝒔𝒕 **${client.utils.formatNumber(
-                    totalBet,
-                  )}** ${emoji.coin}`,
+                    .join(" `|` ")}\n\n` +
+                  `**Bet:** ${client.utils.formatNumber(
+                    totalBet
+                  )} ${emoji.coin}\n` +
+                  `**Lost:** ${client.utils.formatNumber(
+                    totalBet
+                  )} ${emoji.coin}\n` +
+                  `**Matches:** 0/3`
               )
               .setImage("attachment://result.png")
               .setFooter({
                 text: `${generalMessages.gameOver.replace(
                   "%{user}",
-                  ctx.author.displayName,
+                  ctx.author.displayName
                 )}`,
                 iconURL: ctx.author.displayAvatarURL(),
               });
@@ -422,12 +419,12 @@ async function klakloukStarting(
             .replace("%{mainLeft}", emoji.mainLeft)
             .replace("%{title}", klaKloukMessages.title)
             .replace("%{mainRight}", emoji.mainRight) +
-            `⏳ 𝑻𝒊𝒎𝒆 𝒊𝒔 𝒖𝒑 !!! 𝒀𝒐𝒖 𝒅𝒊𝒅𝒏'𝒕 𝒄𝒍𝒊𝒄𝒌 𝒕𝒉𝒆 𝒃𝒖𝒕𝒕𝒐𝒏 𝒔𝒕𝒂𝒓𝒕 𝒊𝒏 𝒕𝒉𝒆 𝒈𝒂𝒎𝒆.`,
+            `⏳ **Time is up!** You didn't click the start button in the game.`
         )
         .setFooter({
           text: `${generalMessages.pleaseStartAgain.replace(
             "%{user}",
-            ctx.author.displayName,
+            ctx.author.displayName
           )}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
