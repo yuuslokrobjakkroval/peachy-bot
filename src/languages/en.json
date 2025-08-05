@@ -298,6 +298,25 @@
       "selected": "You have choose %{selectedButton} for bet each of button for **%{betCoin}** %{coinEmote}\ntotal **%{totalCoin}** %{coinEmote}",
       "notSelected": "You haven't chosen a button for your bet. You can't start the game.",
       "notEnoughCoins": "You don't have enough coins! You currently have **%{coin}** %{coinEmote}, but you need at least **%{needed}** %{coinEmote} to make this selection."
+    },
+    "rpsMessages": {
+      "title": "ROCK PAPER SCISSORS",
+      "noOpponent": "Please specify 'bot' or mention a user to challenge.",
+      "userNotFound": "User not found. Please mention a valid user or use 'bot'.",
+      "selfChallenge": "You cannot challenge yourself!",
+      "opponentInsufficientFunds": "The challenged player doesn't have enough coins for this bet!",
+      "botGameDescription": "You're playing against the bot!\nBet: **%{coin}** %{coinEmote}\n\nChoose your move:",
+      "challengeDescription": "%{challenger} has challenged %{target} to Rock Paper Scissors!\n\nBet: **%{coin}** %{coinEmote}\n\n%{target}, do you accept?",
+      "challengeDeclined": "%{target} declined the challenge.",
+      "challengeTimeout": "Challenge timed out. %{target} didn't respond in time.",
+      "pvpGameDescription": "**%{player1}** vs **%{player2}**\n\nBet: **%{coin}** %{coinEmote} each\n\nBoth players choose your moves! Choices are hidden until both have selected.",
+      "alreadyChosen": "You have already made your choice!",
+      "choiceMade": "You chose **%{choice}**! Waiting for the other player...",
+      "pvpTimeout": "Game timed out! Not all players made their choices. No coins were lost.",
+      "timeout": "Game timed out! No coins were lost.",
+      "playerWin": "You won!",
+      "playerLose": "You lost!",
+      "tie": "It's a tie!"
     }
   },
   "gameMessages": {
