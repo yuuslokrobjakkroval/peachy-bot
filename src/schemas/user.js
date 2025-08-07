@@ -218,6 +218,79 @@ const userSchema = new Schema(
     equip: { type: [EquipItemSchema], default: [] },
     consumedItems: { type: [ConsumedItemSchema], default: [] },
     cooldowns: { type: [CooldownSchema], default: [] },
+    // Credit Banking System
+    creditBank: {
+      balance: { type: Number, default: 0 },
+      lastInterest: { type: Date, default: Date.now },
+      totalInterestEarned: { type: Number, default: 0 },
+      depositHistory: [
+        {
+          type: { type: String }, // "deposit", "withdrawal", "interest"
+          amount: { type: Number },
+          date: { type: Date, default: Date.now },
+          balance: { type: Number },
+        },
+      ],
+    },
+    // Expense Tracking System
+    expenses: {
+      transactions: [
+        {
+          category: { type: String },
+          amount: { type: Number },
+          description: { type: String },
+          date: { type: Date, default: Date.now },
+          id: { type: String },
+        },
+      ],
+      monthlyBudget: { type: Number, default: 0 },
+      categories: {
+        type: [String],
+        default: [
+          "food",
+          "entertainment",
+          "shopping",
+          "transport",
+          "bills",
+          "other",
+        ],
+      },
+    },
+    // Investment Portfolio
+    investments: {
+      portfolio: [
+        {
+          type: { type: String }, // "bonds", "stocks", "crypto", "realestate"
+          amount: { type: Number },
+          purchasePrice: { type: Number },
+          currentValue: { type: Number },
+          date: { type: Date, default: Date.now },
+          status: { type: String, default: "active" }, // "active", "sold"
+        },
+      ],
+      totalInvested: { type: Number, default: 0 },
+      totalReturns: { type: Number, default: 0 },
+      successfulInvestments: { type: Number, default: 0 },
+      failedInvestments: { type: Number, default: 0 },
+    },
+    // Credit Mining System
+    creditMining: {
+      level: { type: Number, default: 1 },
+      experience: { type: Number, default: 0 },
+      equipment: {
+        pickaxe: { type: Number, default: 1 },
+        drill: { type: Number, default: 0 },
+        explosives: { type: Number, default: 0 },
+      },
+      totalMined: { type: Number, default: 0 },
+      lastMine: { type: Date, default: null },
+      successfulMines: { type: Number, default: 0 },
+      upgradeCosts: {
+        pickaxe: { type: Number, default: 100 },
+        drill: { type: Number, default: 500 },
+        explosives: { type: Number, default: 1500 },
+      },
+    },
     social: {
       facebook: {
         name: { type: String, default: null },
@@ -253,7 +326,7 @@ const userSchema = new Schema(
       slime: { type: Boolean, default: false },
     },
   },
-  { timestamps: { createdAt: true, updatedAt: true } },
+  { timestamps: { createdAt: true, updatedAt: true } }
 );
 
 module.exports = model("user", userSchema);
