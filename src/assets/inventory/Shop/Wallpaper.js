@@ -992,10 +992,10 @@ module.exports = {
       image: "https://i.imgur.com/UvRQALR.jpg",
     },
     {
-      id: "w168",
-      name: "Fortune Blossoms",
+      id: "w59",
+      name: "Girl on Raft",
       description:
-        "Celebrate Chinese New Year with Peachy Cat and Goma as lucky symbols of prosperity and joy in this festive wallpaper adorned with vibrant red and gold hues.",
+        "A serene scene of a girl relaxing on a wooden raft floating over a clear, flowing stream surrounded by lush greenery and dappled sunlight.",
       type: "wallpaper",
       able: {
         use: true,
@@ -1003,11 +1003,27 @@ module.exports = {
         multiple: true,
       },
       quantity: 1,
-      emoji: emoji.frame.w168,
+      emoji: emoji.frame.default,
       available: ["use", "gift"],
       price: { buy: 2e7, sell: 15e6 },
-      image: "https://i.imgur.com/RmfP9ie.png",
+      image: "https://i.imgur.com/ICsalqA.png",
     },
-    
+    {
+      id: "w60",
+      name: "Enchanted Forest Shrine",
+      description:
+        "A mystical forest scene featuring a girl with fox ears sitting by a lantern, with another girl holding a lantern near a traditional shrine gate, surrounded by glowing fireflies and lush greenery.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/U8DYqu6.png",
+    },
   ],
 };

@@ -5,9 +5,9 @@ module.exports = class ChangeProfile extends Command {
     super(client, {
       name: "changeprofile",
       description: {
-        content: "𝑪𝒉𝒂𝒏𝒈𝒆𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒑𝒊𝒄𝒕𝒖𝒓𝒆.",
-        examples: ["𝒄𝒉𝒂𝒏𝒈𝒆𝒑𝒓𝒐𝒇𝒊𝒍𝒆 (attach an image)"],
-        usage: "𝒄𝒉𝒂𝒏𝒈𝒆𝒑𝒓𝒐𝒇𝒊𝒍𝒆 (attach an image)",
+        content: "Changes the bot's profile picture.",
+        examples: ["changeprofile (attach an image)"],
+        usage: "changeprofile (attach an image)",
       },
       category: "staff",
       aliases: ["setavatar", "botavatar"],
@@ -32,15 +32,15 @@ module.exports = class ChangeProfile extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", emoji.searching),
+        generalMessages.search.replace("%{loading}", emoji.searching)
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", emoji.searching),
+        generalMessages.search.replace("%{loading}", emoji.searching)
       );
     }
 
@@ -53,7 +53,7 @@ module.exports = class ChangeProfile extends Command {
         client,
         ctx,
         "Please attach an image.",
-        color,
+        color
       );
     }
 
@@ -66,8 +66,8 @@ module.exports = class ChangeProfile extends Command {
         .setDescription(
           generalMessages.title
             .replace("%{mainLeft}", emoji.mainLeft)
-            .replace("%{title}", "𝐏𝐑𝐎𝐅𝐈𝐋𝐄 !")
-            .replace("%{mainRight}", emoji.mainRight),
+            .replace("%{title}", "PROFILE!")
+            .replace("%{mainRight}", emoji.mainRight)
         )
         .setImage(imageAttachment.url)
         .setTimestamp();
@@ -81,7 +81,7 @@ module.exports = class ChangeProfile extends Command {
         client,
         ctx,
         "Failed to update the bot's profile picture.",
-        color,
+        color
       );
     }
   }
