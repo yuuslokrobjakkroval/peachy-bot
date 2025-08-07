@@ -5,9 +5,9 @@ module.exports = class ResetProfile extends Command {
     super(client, {
       name: "resetprofile",
       description: {
-        content: "𝑹𝒆𝒔𝒆𝒕𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒂𝒗𝒂𝒕𝒂𝒓 𝒂𝒏𝒅 𝒃𝒂𝒏𝒏𝒆𝒓.",
-        examples: ["𝒓𝒆𝒔𝒆𝒕𝒑𝒓𝒐𝒇𝒊𝒍𝒆"],
-        usage: "𝒓𝒆𝒔𝒆𝒕𝒑𝒓𝒐𝒇𝒊𝒍𝒆",
+        content: "Resets the bot's avatar and banner.",
+        examples: ["resetprofile"],
+        usage: "resetprofile",
       },
       category: "staff",
       aliases: ["resetbot"],
@@ -25,16 +25,16 @@ module.exports = class ResetProfile extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", emoji.searching),
+        generalMessages.search.replace("%{loading}", emoji.searching)
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", emoji.searching),
+        generalMessages.search.replace("%{loading}", emoji.searching)
       );
     }
 
@@ -48,21 +48,21 @@ module.exports = class ResetProfile extends Command {
         .setDescription(
           generalMessages.title
             .replace("%{mainLeft}", emoji.mainLeft)
-            .replace("%{title}", "𝐏𝐅 𝐑𝐄𝐒𝐄𝐓")
-            .replace("%{mainRight}", emoji.mainRight),
+            .replace("%{title}", "PROFILE RESET")
+            .replace("%{mainRight}", emoji.mainRight)
         )
         .setImage(
           client.user.displayAvatarURL({
             dynamic: true,
             extension: "png",
             size: 1024,
-          }),
+          })
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName,
+              ctx.author.displayName
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
@@ -77,7 +77,7 @@ module.exports = class ResetProfile extends Command {
         client,
         ctx,
         "Failed to reset bot profile. Ensure the bot has Nitro for banner reset.",
-        color,
+        color
       );
     }
   }

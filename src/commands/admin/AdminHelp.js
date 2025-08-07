@@ -39,70 +39,82 @@ module.exports = class AdminHelp extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const helpMessages = language.locales.get(language.defaultLocale)
       ?.informationMessages?.helpMessages;
     const categoriesMessages = language.locales.get(language.defaultLocale)
       ?.informationMessages?.helpMessages?.categoriesMessages;
     const prefix = client.config.prefix;
+
+    // Enhanced admin categories with emojis
     const adminCategory = [
-      "admin",
-      "company",
-      "developer",
-      "guild",
-      "owner",
-      "staff",
+      { name: "admin", emoji: "🛡️" },
+      { name: "company", emoji: "🏢" },
+      { name: "developer", emoji: "💻" },
+      { name: "guild", emoji: "🏰" },
+      { name: "owner", emoji: emoji.rank.owner || "👑" },
+      { name: "staff", emoji: "👥" },
     ];
+
     const commands = client.commands.filter((cmd) =>
-      adminCategory.includes(cmd.category.toLowerCase()),
+      adminCategory.some((cat) => cat.name === cmd.category.toLowerCase())
     );
-    const selectedItemIndex = null;
+    let selectedCategories = [];
 
     if (!args[0]) {
       const messageOptions = () => {
         const helpEmbed = client
           .embed()
           .setColor(color.main)
+          .setTitle("🌸 Admin Command Center 🌸")
           .setDescription(
-            generalMessages.title
-              .replace("%{mainLeft}", emoji.mainLeft)
-              .replace("%{title}", "ADMIN")
-              .replace("%{mainRight}", emoji.mainRight) +
-              `${helpMessages.description} **${prefix}adminhelp [command]**\n` +
-              `${helpMessages.examples} **${prefix}adminhelp ban**\n\n` +
-              `${helpMessages.note}`,
+            `${emoji.mainLeft} Welcome to the Admin Hub! ${emoji.mainRight}\n\n` +
+              `📋 Usage: \`${prefix}adminhelp [command]\`\n` +
+              `💡 Example: \`${prefix}adminhelp ban\`\n\n` +
+              `🔽 Select categories below to explore commands!\n` +
+              `✨ *You can select multiple categories at once*`
           )
           .addFields([
             {
-              name: `${emoji.help.category ? emoji.help.category : "📚"} __𝐂𝐀𝐓𝐄𝐆𝐎𝐑𝐈𝐄𝐒__`,
+              name: `${emoji.help.category || "📚"} Available Categories`,
               value: adminCategory
                 .map(
                   (category) =>
-                    `- ${client.utils.formatCapitalize(categoriesMessages[category.toLowerCase()] || category)}`,
+                    `${category.emoji} ${client.utils.formatCapitalize(categoriesMessages[category.name.toLowerCase()] || category.name)}`
                 )
                 .join("\n"),
-              inline: false,
+              inline: true,
+            },
+            {
+              name: `📊 Command Stats`,
+              value: `🔢 Total Commands: ${commands.size}\n⚡ Categories: ${adminCategory.length}\n🎯 Access Level: Admin Only`,
+              inline: true,
             },
           ])
           .setImage(client.config.links.banner)
           .setFooter({
-            text: helpMessages.footer,
+            text: `${helpMessages.footer} • Use the dropdown menu below! 💝`,
             iconURL: client.user.displayAvatarURL(),
-          });
+          })
+          .setTimestamp();
 
         const categoryOptions = adminCategory.map((category) => ({
-          label: `${categoriesMessages[category.toLowerCase()] || category}`,
-          value: category.toLowerCase(),
-          default: selectedItemIndex === category.toLowerCase(), // Only true if matched
+          label: `${categoriesMessages[category.name.toLowerCase()] || client.utils.formatCapitalize(category.name)}`,
+          value: category.name.toLowerCase(),
+          emoji: category.emoji,
+          description: `View all ${category.name} commands`,
+          default: selectedCategories.includes(category.name.toLowerCase()),
         }));
 
-        const categorySelectButton = new StringSelectMenuBuilder()
+        const categorySelectMenu = new StringSelectMenuBuilder()
           .setCustomId("category_select")
-          .setPlaceholder("Select a category")
+          .setPlaceholder("🎯 Select one or more categories... 🌟")
+          .setMinValues(1)
+          .setMaxValues(adminCategory.length)
           .addOptions(categoryOptions);
 
-        const row = client.utils.createButtonRow(categorySelectButton);
+        const row = client.utils.createButtonRow(categorySelectMenu);
 
         return { embeds: [helpEmbed], components: [row] };
       };
@@ -119,59 +131,79 @@ module.exports = class AdminHelp extends Command {
       });
 
       collector.on("collect", async (interaction) => {
-        const selectedCategory = interaction.values[0];
-        const categoryCommands = commands.filter(
-          (cmd) =>
-            cmd.category.toLowerCase() === selectedCategory.toLowerCase(),
+        selectedCategories = interaction.values;
+        const categoryCommands = commands.filter((cmd) =>
+          selectedCategories.includes(cmd.category.toLowerCase())
         );
 
-        const commandNames =
-          categoryCommands.size > 0
-            ? Array.from(categoryCommands.values())
-                .map(
-                  (cmd) =>
-                    `- ${client.utils.formatCapitalize(cmd.name)}\n${cmd.description.examples}`,
-                ) // Limit description to 100 chars
-                .join("\n")
-            : "No Commands found in this category.";
+        let commandsDisplay = "";
+        let totalCommands = 0;
+
+        // Group commands by category for better display
+        selectedCategories.forEach((selectedCategory) => {
+          const catCommands = commands.filter(
+            (cmd) => cmd.category.toLowerCase() === selectedCategory
+          );
+
+          if (catCommands.size > 0) {
+            const categoryInfo = adminCategory.find(
+              (cat) => cat.name === selectedCategory
+            );
+            commandsDisplay += `\n${categoryInfo.emoji} ${client.utils.formatCapitalize(categoriesMessages[selectedCategory] || selectedCategory)}\n`;
+
+            Array.from(catCommands.values()).forEach((cmd) => {
+              commandsDisplay += `├ \`${cmd.name}\` - ${cmd.description.content.slice(0, 50)}${cmd.description.content.length > 50 ? "..." : ""}\n`;
+              totalCommands++;
+            });
+          }
+        });
+
+        if (commandsDisplay === "") {
+          commandsDisplay = "❌ No commands found in the selected categories.";
+        }
 
         const selectedEmbed = client
           .embed()
           .setColor(color.main)
+          .setTitle(`🎯 Selected Categories (${selectedCategories.length}) 🎯`)
           .setDescription(
-            generalMessages.title
-              .replace("%{mainLeft}", emoji.mainLeft)
-              .replace("%{title}", "ADMIN")
-              .replace("%{mainRight}", emoji.mainRight) +
-              `${helpMessages.description} **${prefix}adminhelp [command]**\n` +
-              `${helpMessages.examples} **${prefix}adminhelp ban**\n\n` +
-              `${helpMessages.note}`,
+            `${emoji.mainLeft} Admin Commands Overview ${emoji.mainRight}\n\n` +
+              `📊 Showing ${totalCommands} commands from your selection\n` +
+              `💡 Usage: \`${prefix}adminhelp [command]\` for detailed info\n` +
+              `🔄 Change selection using the dropdown below`
           )
           .addFields([
             {
-              name: `${client.utils.formatCapitalize(categoriesMessages[selectedCategory.toLowerCase()] || selectedCategory)}`,
+              name: `📋 Commands List`,
               value:
-                commandNames.length > 1024
-                  ? commandNames.slice(0, 1021) + "..."
-                  : commandNames,
+                commandsDisplay.length > 1024
+                  ? commandsDisplay.slice(0, 1021) + "..."
+                  : commandsDisplay || "No commands available",
               inline: false,
             },
           ])
           .setImage(client.config.links.banner)
           .setFooter({
-            text: helpMessages.footer,
+            text: `${helpMessages.footer} • Selected: ${selectedCategories.join(", ")} 💖`,
             iconURL: client.user.displayAvatarURL(),
-          });
+          })
+          .setTimestamp();
 
         const categoryOptions = adminCategory.map((category) => ({
-          label: `${client.utils.formatCapitalize(categoriesMessages[category.toLowerCase()] || category)}`,
-          value: category.toLowerCase(),
-          default: category.toLowerCase() === selectedCategory.toLowerCase(),
+          label: `${categoriesMessages[category.name.toLowerCase()] || client.utils.formatCapitalize(category.name)}`,
+          value: category.name.toLowerCase(),
+          emoji: category.emoji,
+          description: `View all ${category.name} commands`,
+          default: selectedCategories.includes(category.name.toLowerCase()),
         }));
 
         const categorySelectMenu = new StringSelectMenuBuilder()
           .setCustomId("category_select")
-          .setPlaceholder("Select a category")
+          .setPlaceholder(
+            `🎯 ${selectedCategories.length} selected • Choose more... ✨`
+          )
+          .setMinValues(1)
+          .setMaxValues(adminCategory.length)
           .addOptions(categoryOptions);
 
         const row = client.utils.createButtonRow(categorySelectMenu);
@@ -193,48 +225,74 @@ module.exports = class AdminHelp extends Command {
             client
               .embed()
               .setColor(color.danger)
-              .setDescription(`${helpMessages.commandNotFound} \`${args[0]}\``),
+              .setTitle("❌ Command Not Found")
+              .setDescription(
+                `🔍 Could not find command: \`${args[0]}\`\n\n💡 Tip: Use \`${prefix}adminhelp\` to see all available commands! 🌸`
+              )
+              .setFooter({
+                text: "Make sure you typed the command name correctly 💭",
+                iconURL: client.user.displayAvatarURL(),
+              })
+              .setTimestamp(),
           ],
         });
+
+      // Get category emoji
+      const categoryInfo = adminCategory.find(
+        (cat) => cat.name === command.category.toLowerCase()
+      );
+      const categoryEmoji = categoryInfo ? categoryInfo.emoji : "📁";
 
       const helpEmbed = client
         .embed()
         .setColor(color.main)
-        .setTitle(`${helpMessages.title} - ${command.name}`)
-        .setDescription(command.description.content)
+        .setTitle(
+          `${categoryEmoji} ${client.utils.formatCapitalize(command.name)} Command`
+        )
+        .setDescription(`✨ ${command.description.content}`)
         .addFields([
           {
-            name: `${helpMessages.category}`,
-            value: `${command.category}`,
+            name: `${categoryEmoji} Category`,
+            value: `\`${client.utils.formatCapitalize(command.category)}\``,
+            inline: true,
+          },
+          {
+            name: `🏷️ Aliases`,
+            value:
+              command.aliases.length > 0
+                ? command.aliases.map((alias) => `\`${alias}\``).join(", ")
+                : "`None`",
+            inline: true,
+          },
+          {
+            name: `⏱️ Cooldown`,
+            value: `\`${client.utils.formatTime(command.cooldown)}\``,
+            inline: true,
+          },
+          {
+            name: `🔐 Bot Permissions`,
+            value:
+              command.permissions.client.length > 0
+                ? command.permissions.client
+                    .map((perm) => `\`${perm}\``)
+                    .join(", ")
+                : "`None required`",
             inline: false,
           },
           {
-            name: `${helpMessages.aliases}`,
-            value: `${command.aliases
-              .map((alias) => `\`${alias}\``)
-              .join(", ")}`,
-            inline: false,
-          },
-          {
-            name: `${helpMessages.cooldown}`,
-            value: `[${client.utils.formatTime(command.cooldown)}]`,
-            inline: false,
-          },
-          {
-            name: `${helpMessages.permissions}`,
-            value: `${command.permissions.client
-              .map((perm) => `\`${perm}\``)
-              .join(", ")}`,
-            inline: false,
-          },
-          {
-            name: `${helpMessages.examples}`,
-            value: `\`\`\`arm\n${command.description.examples
-              .map((example) => `${prefix.prefix}${example}`)
+            name: `📝 Usage Examples`,
+            value: `\`\`\`yaml\n${command.description.examples
+              .map((example) => `${prefix}${example}`)
               .join("\n")}\n\`\`\``,
             inline: false,
           },
-        ]);
+        ])
+        .setFooter({
+          text: `Requested by ${ctx.author.username} • Admin Command 💫`,
+          iconURL: ctx.author.displayAvatarURL(),
+        })
+        .setTimestamp();
+
       await ctx.sendMessage({ embeds: [helpEmbed] });
     }
   }

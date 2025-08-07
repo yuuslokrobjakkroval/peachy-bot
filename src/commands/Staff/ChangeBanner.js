@@ -5,9 +5,9 @@ module.exports = class ChangeBanner extends Command {
     super(client, {
       name: "changebanner",
       description: {
-        content: "𝑪𝒉𝒂𝒏𝒈𝒆𝒔 𝒕𝒉𝒆 𝒃𝒐𝒕'𝒔 𝒑𝒓𝒐𝒇𝒊𝒍𝒆 𝒃𝒂𝒏𝒏𝒆𝒓.",
-        examples: ["𝒄𝒉𝒂𝒏𝒈𝒆𝒃𝒂𝒏𝒏𝒆𝒓 (attach an image)"],
-        usage: "𝒄𝒉𝒂𝒏𝒈𝒆𝒃𝒂𝒏𝒏𝒆𝒓 (attach an image)",
+        content: "Changes the bot's profile banner.",
+        examples: ["changebanner (attach an image)"],
+        usage: "changebanner (attach an image)",
       },
       category: "staff",
       aliases: ["setbanner", "botbanner"],
@@ -32,15 +32,15 @@ module.exports = class ChangeBanner extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", emoji.searching),
+        generalMessages.search.replace("%{loading}", emoji.searching)
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", emoji.searching),
+        generalMessages.search.replace("%{loading}", emoji.searching)
       );
     }
 
@@ -53,7 +53,7 @@ module.exports = class ChangeBanner extends Command {
         client,
         ctx,
         "Please attach an image.",
-        color,
+        color
       );
     }
 
@@ -66,8 +66,8 @@ module.exports = class ChangeBanner extends Command {
         .setDescription(
           generalMessages.title
             .replace("%{mainLeft}", emoji.mainLeft)
-            .replace("%{title}", "𝐁𝐀𝐍𝐍𝐄𝐑 !")
-            .replace("%{mainRight}", emoji.mainRight),
+            .replace("%{title}", "BANNER!")
+            .replace("%{mainRight}", emoji.mainRight)
         )
         .setImage(imageAttachment.url)
         .setTimestamp();
@@ -81,7 +81,7 @@ module.exports = class ChangeBanner extends Command {
         client,
         ctx,
         "Failed to update the bot's profile banner.",
-        color,
+        color
       );
     }
   }
