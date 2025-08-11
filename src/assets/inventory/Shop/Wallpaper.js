@@ -1025,5 +1025,56 @@ module.exports = {
       price: { buy: 2e7, sell: 15e6 },
       image: "https://i.imgur.com/U8DYqu6.png",
     },
+    {
+      id: "w61",
+      name: "Enchanted Forest Shrine",
+      description:
+        "A mystical forest scene featuring a girl with fox ears sitting by a lantern, with another girl holding a lantern near a traditional shrine gate, surrounded by glowing fireflies and lush greenery.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/focdsFx.jpg",
+    },
+    {
+      id: "w62",
+      name: "Coder's Haven",
+      description:
+        "A vibrant workspace with a coder immersed in multiple screens displaying code and graphs, surrounded by plants and a bright, open window with a scenic sky.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/9V4l7cM.jpg",
+    },
+    {
+      id: "w63",
+      name: "Mountain Horizon",
+      description:
+        "A breathtaking view of a lone figure standing on a cliff, gazing at towering mountains and a sea of clouds under a radiant sky.",
+      type: "wallpaper",
+      able: {
+        use: true,
+        gift: true,
+        multiple: true,
+      },
+      quantity: 1,
+      emoji: emoji.frame.default,
+      available: ["use", "gift"],
+      price: { buy: 2e7, sell: 15e6 },
+      image: "https://i.imgur.com/KF47pPx.jpg",
+    },
   ],
 };
