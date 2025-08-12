@@ -80,7 +80,29 @@ module.exports = class ViewRelationship extends Command {
         );
       }
 
-      if (ctx.isInteraction) await ctx.interaction.deferReply();
+      // Show loading embed like Level.js
+      const loadingEmbed = client
+        .embed()
+        .setColor(color.main)
+        .setDescription(
+          `# 💕 RELATIONSHIP CARD 💕
+    
+Creating a stunning premium relationship card just for you! ✨
+Please wait a moment while we craft your personalized love story display...`
+        )
+        .setImage("https://i.imgur.com/UCsKa6Z.gif");
+
+      let loadingMessage;
+      if (ctx.isInteraction) {
+        await ctx.interaction.deferReply();
+        loadingMessage = await ctx.interaction.followUp({
+          embeds: [loadingEmbed],
+        });
+      } else {
+        loadingMessage = await ctx.sendMessage({
+          embeds: [loadingEmbed],
+        });
+      }
 
       const canvas = await generatePartnerCanvas(client, user, target);
       if (!canvas) {
@@ -114,17 +136,20 @@ module.exports = class ViewRelationship extends Command {
         .setImage(`attachment://${fileName}`)
         .setFooter({ text: "Use /relationship to manage them." });
 
-      return ctx.isInteraction
-        ? await ctx.interaction.editReply({
-            content: "",
-            embeds: [embed],
-            files: [attachment],
-          })
-        : await ctx.sendMessage({
-            content: "",
-            embeds: [embed],
-            files: [attachment],
-          });
+      // Update the loading message with the final result
+      if (ctx.isInteraction) {
+        return await ctx.interaction.editReply({
+          content: "",
+          embeds: [embed],
+          files: [attachment],
+        });
+      } else {
+        return await loadingMessage.edit({
+          content: "",
+          embeds: [embed],
+          files: [attachment],
+        });
+      }
     }
 
     // === BESTIE/BROTHER/SISTER PAGINATED ===
