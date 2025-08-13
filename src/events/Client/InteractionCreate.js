@@ -317,6 +317,198 @@ module.exports = class InteractionCreate extends Event {
         );
 
         switch (interaction.customId) {
+          // --- Social Profile Buttons ---
+          case "social_setup": {
+            // Show the setup guide embed
+            const { color, emoji, language } =
+              await this.client.setColorBasedOnTheme(interaction.user.id);
+            const socialsCmd = this.client.commands.get("socials");
+            if (socialsCmd && socialsCmd.showSetupGuide) {
+              await socialsCmd.showSetupGuide(
+                this.client,
+                interaction,
+                color,
+                emoji,
+                language.locales.get(language.defaultLocale)?.socialMessages
+                  ?.smMessages
+              );
+              if (!interaction.replied && !interaction.deferred)
+                await interaction.deferUpdate().catch(() => {});
+            }
+            break;
+          }
+          case "view_socials": {
+            // Show the main socials embed
+            const { color, emoji, language } =
+              await this.client.setColorBasedOnTheme(interaction.user.id);
+            const socialsCmd = this.client.commands.get("socials");
+            if (socialsCmd && socialsCmd.run) {
+              await socialsCmd.run(
+                this.client,
+                interaction,
+                [],
+                color,
+                emoji,
+                language
+              );
+              if (!interaction.replied && !interaction.deferred)
+                await interaction.deferUpdate().catch(() => {});
+            }
+            break;
+          }
+          // Facebook
+          case "social_facebook":
+          case "facebook_set_name":
+          case "facebook_set_link":
+          case "facebook_clear": {
+            const { color, emoji, language } =
+              await this.client.setColorBasedOnTheme(interaction.user.id);
+            const fbCmd = this.client.commands.get("facebook");
+            if (fbCmd) {
+              if (interaction.customId === "facebook_set_name") {
+                await fbCmd.showHelpMessage(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.fbMessages
+                );
+              } else if (interaction.customId === "facebook_set_link") {
+                await fbCmd.showHelpMessage(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.fbMessages
+                );
+              } else if (interaction.customId === "facebook_clear") {
+                await fbCmd.clearFacebookProfile(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.fbMessages
+                );
+              } else {
+                await fbCmd.run(
+                  this.client,
+                  interaction,
+                  [],
+                  color,
+                  emoji,
+                  language
+                );
+              }
+              if (!interaction.replied && !interaction.deferred)
+                await interaction.deferUpdate().catch(() => {});
+            }
+            break;
+          }
+          // Instagram
+          case "social_instagram":
+          case "instagram_set_name":
+          case "instagram_set_link":
+          case "instagram_clear": {
+            const { color, emoji, language } =
+              await this.client.setColorBasedOnTheme(interaction.user.id);
+            const igCmd = this.client.commands.get("instagram");
+            if (igCmd) {
+              if (interaction.customId === "instagram_set_name") {
+                await igCmd.showHelpMessage(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.igMessages
+                );
+              } else if (interaction.customId === "instagram_set_link") {
+                await igCmd.showHelpMessage(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.igMessages
+                );
+              } else if (interaction.customId === "instagram_clear") {
+                await igCmd.clearInstagramProfile(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.igMessages
+                );
+              } else {
+                await igCmd.run(
+                  this.client,
+                  interaction,
+                  [],
+                  color,
+                  emoji,
+                  language
+                );
+              }
+              if (!interaction.replied && !interaction.deferred)
+                await interaction.deferUpdate().catch(() => {});
+            }
+            break;
+          }
+          // TikTok
+          case "social_tiktok":
+          case "tiktok_set_name":
+          case "tiktok_set_link":
+          case "tiktok_clear": {
+            const { color, emoji, language } =
+              await this.client.setColorBasedOnTheme(interaction.user.id);
+            const ttCmd = this.client.commands.get("tiktok");
+            if (ttCmd) {
+              if (interaction.customId === "tiktok_set_name") {
+                await ttCmd.showHelpMessage(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.ttMessages
+                );
+              } else if (interaction.customId === "tiktok_set_link") {
+                await ttCmd.showHelpMessage(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.ttMessages
+                );
+              } else if (interaction.customId === "tiktok_clear") {
+                await ttCmd.clearTikTokProfile(
+                  this.client,
+                  interaction,
+                  color,
+                  emoji,
+                  language.locales.get(language.defaultLocale)?.socialMessages
+                    ?.ttMessages
+                );
+              } else {
+                await ttCmd.run(
+                  this.client,
+                  interaction,
+                  [],
+                  color,
+                  emoji,
+                  language
+                );
+              }
+              if (!interaction.replied && !interaction.deferred)
+                await interaction.deferUpdate().catch(() => {});
+            }
+            break;
+          }
           case "giveaway-join": {
             try {
               console.log(
