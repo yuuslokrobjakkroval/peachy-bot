@@ -207,7 +207,7 @@ module.exports = class Slots extends Command {
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
             globalEmoji.romdoul
-          } «• ═╗\n ## **   「${emoji.slots.spin} ${emoji.slots.spin} ${
+          } «• ══╗\n ## **   「${emoji.slots.spin} ${emoji.slots.spin} ${
             emoji.slots.spin
           }」 **\n ### ╚═ •» ${
             globalEmoji.romdoul
@@ -240,7 +240,7 @@ module.exports = class Slots extends Command {
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
             globalEmoji.romdoul
-          } «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${
+          } «• ══╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${
             emoji.slots.spin
           }」 **\n ### ╚═ •» ${
             globalEmoji.romdoul
@@ -265,7 +265,7 @@ module.exports = class Slots extends Command {
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
             globalEmoji.romdoul
-          } «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${
+          } «• ══╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${
             rslots[2]
           }」 **\n ### ╚═ •» ${
             globalEmoji.romdoul
@@ -300,7 +300,7 @@ module.exports = class Slots extends Command {
         .setDescription(
           `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
             globalEmoji.romdoul
-          } «• ═╗\n ## **   「${rslots[0]} ${rslots[1]} ${
+          } «• ══╗\n ## **   「${rslots[0]} ${rslots[1]} ${
             rslots[2]
           }」 **\n ### ╚═ •» ${
             globalEmoji.romdoul
