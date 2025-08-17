@@ -20,6 +20,10 @@ module.exports = {
     pink: "<a:PINKCARD:1368254505979871374>",
   },
 
+  decoration: {
+    main: "<a:Star:1406648660779077754>",
+  },
+
   rarity: {
     common: "<:BBRONE:1356307376470364321>", // Common
     uncommon: "<:BSILVER:1356307368429883524>", // Uncommon
