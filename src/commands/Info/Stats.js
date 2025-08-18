@@ -27,25 +27,29 @@ module.exports = class Stats extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const statsMessages = language.locales.get(language.defaultLocale)
       ?.informationMessages?.statsMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     }
 
-    const users = await Users.find();
     const guildCount = client.guilds.cache.size;
-    const userCount = users ? users.length : client.users.cache.size;
-    const channelCount = client.channels.cache.size;
+    let userCount = client.users?.cache?.size || 0;
+
+    try {
+      userCount = await Users.estimatedDocumentCount();
+    } catch {
+      userCount = await Users.countDocuments({});
+    }
 
     // Calculate uptime in days, hours, and minutes
     const totalSeconds = Math.floor(client.uptime / 1000);
@@ -56,9 +60,9 @@ module.exports = class Stats extends Command {
     // Replace placeholders in the uptime string
     const uptimeString = statsMessages.fields.uptime
       .replace("{arrow}", globalEmoji.arrow)
-      .replace("{days}", days)
-      .replace("{hours}", hours)
-      .replace("{minutes}", minutes);
+      .replace("{days}", String(days))
+      .replace("{hours}", String(hours))
+      .replace("{minutes}", String(minutes));
 
     const embed = client
       .embed()
@@ -67,7 +71,7 @@ module.exports = class Stats extends Command {
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", statsMessages.title)
-          .replace("%{mainRight}", emoji.mainRight) + statsMessages.description,
+          .replace("%{mainRight}", emoji.mainRight) + statsMessages.description
       )
       .addFields([
         {
@@ -80,7 +84,7 @@ module.exports = class Stats extends Command {
         {
           name: statsMessages.fields.users
             .replace("{arrow}", globalEmoji.arrow)
-            .replace("{userCount}", userCount),
+            .replace("{userCount}", String(userCount)),
           value: "\u200b",
           inline: false,
         },
@@ -90,11 +94,11 @@ module.exports = class Stats extends Command {
 
     const supportButton = client.utils.linkButton(
       generalMessages.supportButton,
-      client.config.links.support,
+      client.config.links.support
     );
     const inviteButton = client.utils.linkButton(
       generalMessages.inviteButton,
-      client.config.links.invite,
+      client.config.links.invite
     );
     const row = client.utils.createButtonRow(supportButton, inviteButton);
 

@@ -4,17 +4,17 @@ const chance = require("chance").Chance();
 const moment = require("moment-timezone");
 const globalGif = require("../../utils/Gif");
 
-module.exports = class Weekly extends Command {
+module.exports = class Monthly extends Command {
   constructor(client) {
     super(client, {
-      name: "weekly",
+      name: "monthly",
       description: {
-        content: "Earn some coins weekly.",
-        examples: ["weekly"],
-        usage: "weekly",
+        content: "Earn some coins monthly.",
+        examples: ["monthly"],
+        usage: "monthly",
       },
       category: "economy",
-      aliases: ["week"],
+      aliases: ["month"],
       cooldown: 3,
       args: false,
       permissions: {
@@ -31,11 +31,10 @@ module.exports = class Weekly extends Command {
     const generalMessages = language.locales.get(
       language.defaultLocale
     )?.generalMessages;
-    const weeklyMessages = language.locales.get(language.defaultLocale)
-      ?.economyMessages?.weeklyMessages;
+    const monthlyMessages = language.locales.get(language.defaultLocale)
+      ?.economyMessages?.monthlyMessages;
 
     try {
-      // Get user data using client.utils
       const user = await client.utils.getUser(ctx.author.id);
       if (!user) {
         return client.utils.sendErrorMessage(
@@ -46,8 +45,8 @@ module.exports = class Weekly extends Command {
         );
       }
 
-      const baseCoins = chance.integer({ min: 500000, max: 1000000 });
-      const baseExp = chance.integer({ min: 200, max: 250 });
+      const baseCoins = chance.integer({ min: 2000000, max: 5000000 });
+      const baseExp = chance.integer({ min: 500, max: 1000 });
 
       const verify = user.verification.verify.status === "verified";
 
@@ -65,15 +64,14 @@ module.exports = class Weekly extends Command {
       const newExp = user.profile.xp + totalExp;
 
       const now = moment().tz("Asia/Bangkok");
-      const nextWeekly = moment(now).add(1, "week").toDate();
+      const nextMonthly = moment(now).add(1, "month").toDate();
 
-      const timeUntilNextWeekly = nextWeekly - now.toDate();
+      const timeUntilNextMonthly = nextMonthly - now.toDate();
 
-      // Check cooldown
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNextWeekly
+        timeUntilNextMonthly
       );
       if (!isCooldownExpired) {
         const lastCooldownTimestamp = await client.utils.getCooldown(
@@ -81,13 +79,13 @@ module.exports = class Weekly extends Command {
           this.name.toLowerCase()
         );
         const remainingTime = Math.ceil(
-          (lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000
+          (lastCooldownTimestamp + timeUntilNextMonthly - Date.now()) / 1000
         );
         const cooldownMessage = this.getCooldownMessage(
           remainingTime,
           client,
           language,
-          weeklyMessages
+          monthlyMessages
         );
 
         const cooldownEmbed = client
@@ -97,7 +95,6 @@ module.exports = class Weekly extends Command {
         return ctx.sendMessage({ embeds: [cooldownEmbed] });
       }
 
-      // Update user balance and experience
       await Users.updateOne(
         { userId: user.userId },
         {
@@ -108,11 +105,10 @@ module.exports = class Weekly extends Command {
         }
       );
 
-      // Update cooldown
       await client.utils.updateCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNextWeekly
+        timeUntilNextMonthly
       );
 
       let bonusMessage = "";
@@ -127,24 +123,24 @@ module.exports = class Weekly extends Command {
         totalCoins,
         totalExp,
         now,
-        weeklyMessages,
+        monthlyMessages,
         generalMessages,
         bonusMessage
       );
 
       return ctx.sendMessage({ embeds: [embed] });
     } catch (error) {
-      console.error("Error processing weekly command:", error);
+      console.error("Error processing monthly command:", error);
       return client.utils.sendErrorMessage(
         client,
         ctx,
-        weeklyMessages.error,
+        monthlyMessages.error,
         color
       );
     }
   }
 
-  getCooldownMessage(remainingTime, client, language, weeklyMessages) {
+  getCooldownMessage(remainingTime, client, language, monthlyMessages) {
     const days = Math.floor(remainingTime / 86400);
     const hours = Math.floor((remainingTime % 86400) / 3600);
     const minutes = Math.floor((remainingTime % 3600) / 60);
@@ -156,19 +152,19 @@ module.exports = class Weekly extends Command {
     const secondsString = seconds > 1 ? `${seconds} secs` : `${seconds} sec`;
 
     if (days > 1) {
-      return weeklyMessages.cooldown.multipleDays
+      return monthlyMessages.cooldown.multipleDays
         .replace("%{days}", daysString)
         .replace("%{hours}", hoursString)
         .replace("%{minutes}", minutesString)
         .replace("%{seconds}", secondsString);
     } else if (days === 1) {
-      return weeklyMessages.cooldown.singleDay
+      return monthlyMessages.cooldown.singleDay
         .replace("%{days}", daysString)
         .replace("%{hours}", hoursString)
         .replace("%{minutes}", minutesString)
         .replace("%{seconds}", secondsString);
     } else {
-      return weeklyMessages.cooldown.noDays
+      return monthlyMessages.cooldown.noDays
         .replace("%{hours}", hoursString)
         .replace("%{minutes}", minutesString)
         .replace("%{seconds}", secondsString);
@@ -182,7 +178,7 @@ module.exports = class Weekly extends Command {
     totalCoins,
     totalExp,
     now,
-    weeklyMessages,
+    monthlyMessages,
     generalMessages,
     bonusMessage
   ) {
@@ -197,16 +193,16 @@ module.exports = class Weekly extends Command {
       .setDescription(
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
-          .replace("%{title}", "WEEKLY")
+          .replace("%{title}", "MONTHLY")
           .replace("%{mainRight}", emoji.mainRight) +
-          weeklyMessages.success
+          monthlyMessages.success
             .replace("%{coin}", client.utils.formatNumber(totalCoins))
             .replace("%{coinEmote}", emoji.coin)
             .replace("%{expEmote}", emoji.exp)
             .replace("%{exp}", client.utils.formatNumber(totalExp))
             .replace("%{bonusMessage}", bonusMessage)
       )
-      .setImage(globalGif.banner.weeklyReminder)
+      .setImage(globalGif.banner.monthlyReminder)
       .setFooter({
         text:
           generalMessages.requestedBy.replace(

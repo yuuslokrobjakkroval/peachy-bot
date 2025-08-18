@@ -3,14 +3,15 @@ const { AttachmentBuilder } = require("discord.js");
 const { createCanvas, loadImage, GlobalFonts } = require("@napi-rs/canvas");
 const moment = require("moment");
 const ShopItems = require("../../assets/inventory/ShopItems");
-const ColorUtils = require("../../utils/Color");
 const inventory = ShopItems.flatMap((shop) => shop.inventory);
+const Decoration = inventory.filter((value) => value.type === "decoration");
 const Wallpapers = inventory.filter((value) => value.type === "wallpaper");
 const Colors = inventory.filter((value) => value.type === "color");
 
 GlobalFonts.registerFromPath("./public/fonts/Ghibli.otf", "Kelvinch-Roman");
 GlobalFonts.registerFromPath("./public/fonts/Ghibli-Bold.otf", "Kelvinch-Bold");
 
+const defaultDecoration = "https://i.imgur.com/wBcmTih.jpg";
 const defaultBanner = "https://i.imgur.com/8rZFeWI.jpg";
 const chinaNewYearBanner = "https://i.imgur.com/RmfP9ie.png";
 module.exports = class Profile extends Command {
@@ -65,17 +66,30 @@ module.exports = class Profile extends Command {
         console.error(error);
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+      // await new Promise((resolve) => setTimeout(resolve, 4000));
 
+      const equippedDecoration = userInfo.equip.find((equippedItem) =>
+        equippedItem.id.startsWith("d")
+      );
       const equippedWallpaper = userInfo.equip.find((equippedItem) =>
         equippedItem.id.startsWith("w")
       );
       const equippedColor = userInfo.equip.find((equippedItem) =>
         equippedItem.id.startsWith("p")
       );
+
       const chinaNewYear = userInfo.equip.find(
         (equippedItem) => equippedItem.id === "w168"
       );
+
+      let decorationImage;
+      if (equippedDecoration) {
+        decorationImage = Decoration.find(
+          (decorationItem) => decorationItem.id === equippedDecoration.id
+        )?.image;
+      } else {
+        decorationImage = defaultDecoration;
+      }
 
       let bannerImage;
       if (chinaNewYear) {
@@ -131,7 +145,8 @@ module.exports = class Profile extends Command {
           color,
           backgroundColor,
           emoji,
-          bannerImage
+          bannerImage,
+          decorationImage
         );
       }
 
@@ -658,7 +673,8 @@ module.exports = class Profile extends Command {
     color,
     backgroundColor,
     emoji,
-    banner
+    banner,
+    decorationImage
   ) {
     // Draw the background with gradient support
     if (backgroundColor) {
@@ -769,14 +785,20 @@ module.exports = class Profile extends Command {
       context.restore();
     }
 
-    // Draw the avatar as a circular image
+    // Draw the decoration image as a frame around the avatar (if available)
     const userAvatar = await loadImage(
       targetUser.displayAvatarURL({ format: "png", size: 256 })
     );
-    const userAvatarX = 1200;
-    const userAvatarY = 34;
-    const userAvatarSize = 40;
+    const userAvatarSize = 128;
+    const wallpaperX = 15;
+    const wallpaperY = 100;
+    const wallpaperHeight = 538;
+    const avatarPadding = 24;
+    const userAvatarX = wallpaperX + avatarPadding;
+    const userAvatarY =
+      wallpaperY + wallpaperHeight - userAvatarSize - avatarPadding;
 
+    // Draw avatar image clipped in a circle (drawn first, behind decoration)
     context.save();
     context.beginPath();
     context.arc(
@@ -798,19 +820,36 @@ module.exports = class Profile extends Command {
     );
     context.restore();
 
-    // Add Avatar Decoration
-    context.beginPath();
-    context.arc(
-      userAvatarX + userAvatarSize / 2,
-      userAvatarY + userAvatarSize / 2,
-      userAvatarSize / 2 + 2,
-      0,
-      Math.PI * 2,
-      true
-    ); // Slightly larger circle
-    context.lineWidth = 1;
-    context.strokeStyle = color.main;
-    context.stroke();
+    // Draw decoration image on top of avatar, centered and slightly larger
+    if (decorationImage) {
+      try {
+        const decoration = await loadImage(decorationImage);
+        const decorationSize = 158; // 10px border around avatar
+        const decorationX = userAvatarX + (userAvatarSize - decorationSize) / 2;
+        const decorationY = userAvatarY + (userAvatarSize - decorationSize) / 2;
+        context.save();
+        context.beginPath();
+        context.arc(
+          userAvatarX + userAvatarSize / 2,
+          userAvatarY + userAvatarSize / 2,
+          decorationSize / 2,
+          0,
+          Math.PI * 2,
+          true
+        );
+        context.closePath();
+        context.drawImage(
+          decoration,
+          decorationX,
+          decorationY,
+          decorationSize,
+          decorationSize
+        );
+        context.restore();
+      } catch (e) {
+        // If decoration image fails to load, ignore
+      }
+    }
 
     // Draw each setting item text and switch
     const userInfoDetail = [

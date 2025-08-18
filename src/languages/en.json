@@ -180,6 +180,15 @@
         "singleDay": "Weekly is on cooldown!\nTry again after **%{days}**, **%{hours}**, **%{minutes}**, and **%{seconds}**.",
         "noDays": "Weekly is on cooldown!\nTry again after **%{hours}**, **%{minutes}**, and **%{seconds}**."
       }
+    },
+    "monthlyMessages": {
+      "success": "\nYou claimed your monthly reward!\n%{coinEmote} **+%{coin}** coins\n%{expEmote} **+%{exp}** xp%{bonusMessage}",
+      "error": "An error occurred while processing your monthly reward. Please try again later.",
+      "cooldown": {
+        "multipleDays": "You have already claimed your monthly reward!\nPlease wait **%{days} %{hours} %{minutes} %{seconds}** before claiming again.",
+        "singleDay": "You have already claimed your monthly reward!\nPlease wait **%{days} %{hours} %{minutes} %{seconds}** before claiming again.",
+        "noDays": "You have already claimed your monthly reward!\nPlease wait **%{hours} %{minutes} %{seconds}** before claiming again."
+      }
     }
   },
   "emoteMessages": {

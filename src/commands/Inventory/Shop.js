@@ -184,7 +184,11 @@ module.exports = class Shop extends Command {
           } else if (currentState.filter === "consumable") {
             return item.type === "food" || item.type === "drink";
           } else if (currentState.filter === "decorative") {
-            return item.type === "wallpaper" || item.type === "color";
+            return (
+              item.type === "color" ||
+              item.type === "decoration" ||
+              item.type === "wallpaper"
+            );
           } else if (currentState.filter === "rare") {
             return item.rarity === "rare" || item.rarity === "legendary";
           }

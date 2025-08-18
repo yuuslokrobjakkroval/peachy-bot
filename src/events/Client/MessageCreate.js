@@ -616,7 +616,7 @@ module.exports = class MessageCreate extends Event {
                 } else if (["work"].includes(command.category.toLowerCase())) {
                   logChannelId = this.client.config.logChannelId[7];
                 } else if (
-                  ["giveaway"].includes(command.category.toLowerCase())
+                  ["giveaways"].includes(command.category.toLowerCase())
                 ) {
                   logChannelId = this.client.config.logChannelId[6];
                 } else if (

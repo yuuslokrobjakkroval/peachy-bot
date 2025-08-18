@@ -4,8 +4,9 @@ const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems");
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Themes = Inventory.filter(
-  (value) => value.type === "theme" || value.type === "special theme",
+  (value) => value.type === "theme" || value.type === "special theme"
 ).sort((a, b) => a.price.buy - b.price.buy);
+const Decoration = Inventory.filter((value) => value.type === "decoration");
 const Wallpapers = Inventory.filter((value) => value.type === "wallpaper");
 const Colors = Inventory.filter((value) => value.type === "color");
 const Tools = Inventory.filter((value) => value.type === "tool");
@@ -52,11 +53,12 @@ module.exports = class Use extends Command {
         ? ctx.interaction.options.data[0]?.value.toString().toLowerCase()
         : args[0].toLowerCase();
       const itemInfo = ImportantItems.concat(
-        Wallpapers,
-        Themes,
         Colors,
+        Decoration,
+        Themes,
         Tools,
-        Inventory.filter((value) => value.type === "potion"),
+        Wallpapers,
+        Inventory.filter((value) => value.type === "potion")
       ).find((item) => item.id === itemId);
       const inventoryItem = user.inventory.find((item) => item.id === itemId);
       if (!inventoryItem) {
@@ -64,7 +66,7 @@ module.exports = class Use extends Command {
           client,
           ctx,
           useMessages?.notInInventory.replace("%{itemId}", itemId),
-          color,
+          color
         );
       }
 
@@ -76,7 +78,7 @@ module.exports = class Use extends Command {
             useMessages?.unavailable
               .replace("%{itemEmote}", itemInfo.emoji)
               .replace("%{itemName}", itemInfo.name),
-            color,
+            color
           );
         }
 
@@ -88,17 +90,17 @@ module.exports = class Use extends Command {
             useMessages?.alreadyEquipped
               .replace("%{itemEmote}", itemInfo.emoji)
               .replace("%{itemName}", itemInfo.name),
-            color,
+            color
           );
         }
 
         if (currentTheme) {
           await Users.updateOne(
             { userId },
-            { $set: { "preferences.theme": null } },
+            { $set: { "preferences.theme": null } }
           );
           const existingInventoryItem = user.inventory.find(
-            (item) => item.id === currentTheme,
+            (item) => item.id === currentTheme
           );
           if (existingInventoryItem) {
             existingInventoryItem.quantity += 1;
@@ -111,7 +113,7 @@ module.exports = class Use extends Command {
         }
 
         const inventoryItemIndex = user.inventory.findIndex(
-          (invItem) => invItem.id === itemId,
+          (invItem) => invItem.id === itemId
         );
         if (inventoryItemIndex > -1) {
           if (user.inventory[inventoryItemIndex].quantity > 1) {
@@ -123,12 +125,12 @@ module.exports = class Use extends Command {
 
         const equippedTheme = user.equip.find(
           (equippedItem) =>
-            equippedItem.id.startsWith("t") || equippedItem.id.startsWith("st"),
+            equippedItem.id.startsWith("t") || equippedItem.id.startsWith("st")
         );
         if (equippedTheme) {
           await Users.updateOne(
             { userId },
-            { $pull: { equip: { id: equippedTheme.id } } },
+            { $pull: { equip: { id: equippedTheme.id } } }
           );
         }
 
@@ -140,7 +142,7 @@ module.exports = class Use extends Command {
               "preferences.theme": itemInfo.id,
               inventory: user.inventory,
             },
-          },
+          }
         );
 
         const embed = client
@@ -150,7 +152,82 @@ module.exports = class Use extends Command {
             useMessages?.applied
               .replace("%{type}", "theme")
               .replace("%{itemEmote}", itemInfo.emoji)
+              .replace("%{itemName}", itemInfo.name)
+          );
+
+        return await ctx.sendMessage({ embeds: [embed] });
+      } else if (itemInfo.type === "decoration") {
+        if (!itemInfo.able.use) {
+          return await client.utils.sendErrorMessage(
+            client,
+            ctx,
+            useMessages?.unavailable
+              .replace("%{itemEmote}", itemInfo.emoji)
               .replace("%{itemName}", itemInfo.name),
+            color
+          );
+        }
+
+        const equippedDecoration = user.equip.find((equippedItem) =>
+          equippedItem.id.startsWith("d")
+        );
+        if (equippedDecoration && equippedDecoration.id === itemInfo.id) {
+          return await client.utils.sendErrorMessage(
+            client,
+            ctx,
+            useMessages?.alreadyEquipped
+              .replace("%{itemEmote}", itemInfo.emoji)
+              .replace("%{itemName}", itemInfo.name),
+            color
+          );
+        }
+
+        const inventoryItemIndex = user.inventory.findIndex(
+          (invItem) => invItem.id === itemId
+        );
+        if (equippedDecoration) {
+          await Users.updateOne(
+            { userId },
+            { $pull: { equip: { id: equippedDecoration.id } } }
+          );
+
+          const existingInventoryItem = user.inventory.find(
+            (item) => item.id === equippedDecoration.id
+          );
+          if (existingInventoryItem) {
+            existingInventoryItem.quantity += 1;
+          } else {
+            user.inventory.push({
+              id: equippedDecoration.id,
+              quantity: 1,
+            });
+          }
+        }
+
+        if (inventoryItemIndex > -1) {
+          if (user.inventory[inventoryItemIndex].quantity > 1) {
+            user.inventory[inventoryItemIndex].quantity -= 1;
+          } else {
+            user.inventory.splice(inventoryItemIndex, 1);
+          }
+        }
+
+        await Users.updateOne(
+          { userId },
+          {
+            $addToSet: { equip: { id: itemInfo.id, quantity: 1 } },
+            $set: { inventory: user.inventory },
+          }
+        );
+
+        const embed = client
+          .embed()
+          .setColor(color.main)
+          .setDescription(
+            useMessages?.applied
+              .replace("%{type}", "decoration")
+              .replace("%{itemEmote}", itemInfo.emoji)
+              .replace("%{itemName}", itemInfo.name)
           );
 
         return await ctx.sendMessage({ embeds: [embed] });
@@ -162,12 +239,12 @@ module.exports = class Use extends Command {
             useMessages?.unavailable
               .replace("%{itemEmote}", itemInfo.emoji)
               .replace("%{itemName}", itemInfo.name),
-            color,
+            color
           );
         }
 
         const equippedWallpaper = user.equip.find((equippedItem) =>
-          equippedItem.id.startsWith("w"),
+          equippedItem.id.startsWith("w")
         );
         if (equippedWallpaper && equippedWallpaper.id === itemInfo.id) {
           return await client.utils.sendErrorMessage(
@@ -176,21 +253,21 @@ module.exports = class Use extends Command {
             useMessages?.alreadyEquipped
               .replace("%{itemEmote}", itemInfo.emoji)
               .replace("%{itemName}", itemInfo.name),
-            color,
+            color
           );
         }
 
         const inventoryItemIndex = user.inventory.findIndex(
-          (invItem) => invItem.id === itemId,
+          (invItem) => invItem.id === itemId
         );
         if (equippedWallpaper) {
           await Users.updateOne(
             { userId },
-            { $pull: { equip: { id: equippedWallpaper.id } } },
+            { $pull: { equip: { id: equippedWallpaper.id } } }
           );
 
           const existingInventoryItem = user.inventory.find(
-            (item) => item.id === equippedWallpaper.id,
+            (item) => item.id === equippedWallpaper.id
           );
           if (existingInventoryItem) {
             existingInventoryItem.quantity += 1;
@@ -215,7 +292,7 @@ module.exports = class Use extends Command {
           {
             $addToSet: { equip: { id: itemInfo.id, quantity: 1 } },
             $set: { inventory: user.inventory },
-          },
+          }
         );
 
         const embed = client
@@ -225,7 +302,7 @@ module.exports = class Use extends Command {
             useMessages?.applied
               .replace("%{type}", "wallpaper")
               .replace("%{itemEmote}", itemInfo.emoji)
-              .replace("%{itemName}", itemInfo.name),
+              .replace("%{itemName}", itemInfo.name)
           );
 
         return await ctx.sendMessage({ embeds: [embed] });
@@ -237,12 +314,12 @@ module.exports = class Use extends Command {
             useMessages?.unavailable
               .replace("%{itemEmote}", itemInfo.emoji)
               .replace("%{itemName}", itemInfo.name),
-            color,
+            color
           );
         }
 
         const equippedColor = user.equip.find((equippedItem) =>
-          equippedItem.id.startsWith("p"),
+          equippedItem.id.startsWith("p")
         );
         if (equippedColor && equippedColor.id === itemInfo.id) {
           return await client.utils.sendErrorMessage(
@@ -251,21 +328,21 @@ module.exports = class Use extends Command {
             useMessages?.alreadyEquipped
               .replace("%{itemEmote}", itemInfo.emoji)
               .replace("%{itemName}", itemInfo.name),
-            color,
+            color
           );
         }
 
         const inventoryItemIndex = user.inventory.findIndex(
-          (invItem) => invItem.id === itemId,
+          (invItem) => invItem.id === itemId
         );
         if (equippedColor) {
           await Users.updateOne(
             { userId },
-            { $pull: { equip: { id: equippedColor.id } } },
+            { $pull: { equip: { id: equippedColor.id } } }
           );
 
           const existingInventoryItem = user.inventory.find(
-            (item) => item.id === equippedColor.id,
+            (item) => item.id === equippedColor.id
           );
           if (existingInventoryItem) {
             existingInventoryItem.quantity += 1;
@@ -290,7 +367,7 @@ module.exports = class Use extends Command {
           {
             $addToSet: { equip: { id: itemInfo.id, quantity: 1 } },
             $set: { inventory: user.inventory },
-          },
+          }
         );
 
         const embed = client
@@ -300,20 +377,20 @@ module.exports = class Use extends Command {
             useMessages?.applied
               .replace("%{type}", "color")
               .replace("%{itemEmote}", itemInfo.emoji)
-              .replace("%{itemName}", itemInfo.name),
+              .replace("%{itemName}", itemInfo.name)
           );
 
         return await ctx.sendMessage({ embeds: [embed] });
       } else if (itemInfo.type === "tool") {
         const hasTools = user.equip.find(
-          (eq) => eq.id.toLowerCase() === itemId,
+          (eq) => eq.id.toLowerCase() === itemId
         );
         if (hasTools) {
           const embed = client
             .embed()
             .setColor(client.color.main)
             .setDescription(
-              `You already have ${itemInfo.emoji} **${itemInfo.name}** equipped. Do you want to change?`,
+              `You already have ${itemInfo.emoji} **${itemInfo.name}** equipped. Do you want to change?`
             );
 
           const yesButton = client.utils.labelButton("accept", "Yes", 3);
@@ -340,7 +417,7 @@ module.exports = class Use extends Command {
                 .embed()
                 .setColor(client.color.main)
                 .setDescription(
-                  `You have successfully changed to ${itemInfo.emoji} **${itemInfo.name}**.`,
+                  `You have successfully changed to ${itemInfo.emoji} **${itemInfo.name}**.`
                 );
 
               try {
@@ -349,7 +426,7 @@ module.exports = class Use extends Command {
                   {
                     $pull: { equip: { id: itemInfo.id } },
                     $inc: { "inventory.$.quantity": -1 },
-                  },
+                  }
                 );
 
                 await Users.updateOne(
@@ -358,12 +435,12 @@ module.exports = class Use extends Command {
                     $push: {
                       equip: { id: itemInfo.id, quantity: itemInfo.quantity },
                     },
-                  },
+                  }
                 );
 
                 await Users.updateOne(
                   { userId: ctx.author.id, "inventory.quantity": 0 },
-                  { $pull: { inventory: { quantity: 0 } } },
+                  { $pull: { inventory: { quantity: 0 } } }
                 );
 
                 int.editReply({ embeds: [embed], components: [] });
@@ -375,7 +452,7 @@ module.exports = class Use extends Command {
                       .embed()
                       .setColor(client.color.red)
                       .setDescription(
-                        "Failed to update your equipment. Please try again.",
+                        "Failed to update your equipment. Please try again."
                       ),
                   ],
                   components: [],
@@ -392,21 +469,21 @@ module.exports = class Use extends Command {
           });
         } else {
           const hasItems = user.inventory.find(
-            (inv) => inv.id.toLowerCase() === itemId,
+            (inv) => inv.id.toLowerCase() === itemId
           );
           if (!hasItems) {
             return await client.utils.sendErrorMessage(
               client,
               ctx,
               `You don't have ${itemInfo.emoji} **${itemInfo.name}** in your inventory.`,
-              color,
+              color
             );
           } else {
             const embed = client
               .embed()
               .setColor(client.color.main)
               .setDescription(
-                `You have successfully used ${itemInfo.emoji} **${itemInfo.name}**.`,
+                `You have successfully used ${itemInfo.emoji} **${itemInfo.name}**.`
               );
             await Promise.all([
               Users.updateOne(
@@ -418,7 +495,7 @@ module.exports = class Use extends Command {
                       quantity: itemInfo.quantity,
                     },
                   },
-                },
+                }
               ),
 
               Users.updateOne(
@@ -426,12 +503,12 @@ module.exports = class Use extends Command {
                   userId: ctx.author.id,
                   "inventory.id": itemInfo.id,
                 },
-                { $inc: { "inventory.$.quantity": -1 } },
+                { $inc: { "inventory.$.quantity": -1 } }
               ),
 
               Users.updateOne(
                 { userId: ctx.author.id, "inventory.quantity": 0 },
-                { $pull: { inventory: { quantity: 0 } } },
+                { $pull: { inventory: { quantity: 0 } } }
               ),
             ]);
             return ctx.sendMessage({ embeds: [embed] });
@@ -445,12 +522,12 @@ module.exports = class Use extends Command {
             useMessages?.unavailable
               .replace("%{itemEmote}", itemInfo.emoji)
               .replace("%{itemName}", itemInfo.name),
-            color,
+            color
           );
         }
 
         const inventoryItemIndex = user.inventory.findIndex(
-          (invItem) => invItem.id === itemId,
+          (invItem) => invItem.id === itemId
         );
         if (inventoryItemIndex > -1) {
           if (user.inventory[inventoryItemIndex].quantity > 1) {
@@ -474,13 +551,13 @@ module.exports = class Use extends Command {
         console.log(
           `User ${ctx.author.displayName} used potion ${itemInfo.name}: Boost ${
             itemInfo.luckBoost * 100
-          }% for ${itemInfo.luckDuration / 1000} seconds`,
+          }% for ${itemInfo.luckDuration / 1000} seconds`
         );
 
         // Update inventory
         await Users.updateOne(
           { userId },
-          { $set: { inventory: user.inventory } },
+          { $set: { inventory: user.inventory } }
         );
 
         const embed = client
@@ -492,8 +569,8 @@ module.exports = class Use extends Command {
             }**! Your gambling luck is boosted by ${(
               itemInfo.luckBoost * 100
             ).toFixed(0)}% for approximately ${Math.round(
-              itemInfo.luckDuration / 60000,
-            )} minute(s)! 🍀`,
+              itemInfo.luckDuration / 60000
+            )} minute(s)! 🍀`
           );
 
         return await ctx.sendMessage({ embeds: [embed] });
@@ -504,7 +581,7 @@ module.exports = class Use extends Command {
         client,
         ctx,
         "An error occurred while processing your request.",
-        color,
+        color
       );
     }
   }

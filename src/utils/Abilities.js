@@ -163,7 +163,7 @@ module.exports = class Ability {
         console.warn(`No level data found for user ${message.member.id}`);
       }
 
-      const processedContent = await this.resultMessage(
+      const processedContent = await Ability.resultMessage(
         client,
         message.member,
         message.guild,
@@ -217,7 +217,7 @@ module.exports = class Ability {
         }
 
         if (isEmbed) {
-          const welcomeEmbed = await this.resultMessage(
+          const welcomeEmbed = await Ability.resultMessage(
             client,
             member,
             member.guild,
@@ -225,27 +225,32 @@ module.exports = class Ability {
           );
           await welcomeChannel.send({
             content: content
-              ? await this.replacePlaceholders(
-                  this.getReplacementData(
+              ? await Ability.replacePlaceholders(
+                  content,
+                  Ability.getReplacementData(
                     member,
                     member.guild,
                     null,
                     null,
                     null,
                     null
-                  ),
-                  content
+                  )
                 )
               : "",
             embeds: welcomeEmbed ? [welcomeEmbed] : [],
           });
         } else {
           const files = isCustomImage
-            ? await this.getBackgroundCustom(client, member, image)
-            : await this.getBackgroundNormal(client, member, image);
+            ? await Ability.getBackgroundCustom(client, member, image)
+            : await Ability.getBackgroundNormal(client, member, image);
           await welcomeChannel.send({
             content: content
-              ? await this.resultMessage(client, member, member.guild, content)
+              ? await Ability.resultMessage(
+                  client,
+                  member,
+                  member.guild,
+                  content
+                )
               : "",
             files: files ? [files] : [],
           });
@@ -319,7 +324,7 @@ module.exports = class Ability {
 
               const inviter = invite.inviter;
               if (isEmbed) {
-                const trackerEmbed = await this.resultMessage(
+                const trackerEmbed = await Ability.resultMessage(
                   client,
                   member,
                   member.guild,
@@ -329,7 +334,7 @@ module.exports = class Ability {
                 );
                 await trackingChannel.send({
                   content: content
-                    ? await this.resultMessage(
+                    ? await Ability.resultMessage(
                         client,
                         member,
                         member.guild,
@@ -342,11 +347,11 @@ module.exports = class Ability {
                 });
               } else {
                 const files = isCustomImage
-                  ? await this.getBackgroundCustom(client, member, image)
-                  : await this.getBackgroundNormal(client, member, image);
+                  ? await Ability.getBackgroundCustom(client, member, image)
+                  : await Ability.getBackgroundNormal(client, member, image);
                 await trackingChannel.send({
                   content: content
-                    ? await this.resultMessage(
+                    ? await Ability.resultMessage(
                         client,
                         member,
                         member.guild,
@@ -455,7 +460,7 @@ module.exports = class Ability {
         userInfo = null;
       }
 
-      const processedContent = await this.resultMessage(
+      const processedContent = await Ability.resultMessage(
         client,
         message.member,
         message.guild,
@@ -506,7 +511,7 @@ module.exports = class Ability {
       }
 
       if (isEmbed) {
-        const boosterEmbed = await this.resultMessage(
+        const boosterEmbed = await Ability.resultMessage(
           client,
           member,
           member.guild,
@@ -514,27 +519,27 @@ module.exports = class Ability {
         );
         await boosterChannel.send({
           content: content
-            ? await this.replacePlaceholders(
-                this.getReplacementData(
+            ? await Ability.replacePlaceholders(
+                content,
+                Ability.getReplacementData(
                   member,
                   member.guild,
                   null,
                   null,
                   null,
                   null
-                ),
-                content
+                )
               )
             : "",
           embeds: boosterEmbed ? [boosterEmbed] : [],
         });
       } else {
         const files = isCustomImage
-          ? await this.getBackgroundCustom(client, member, image)
-          : await this.getBackgroundNormal(client, member, image);
+          ? await Ability.getBackgroundCustom(client, member, image)
+          : await Ability.getBackgroundNormal(client, member, image);
         await boosterChannel.send({
           content: content
-            ? await this.resultMessage(client, member, member.guild, content)
+            ? await Ability.resultMessage(client, member, member.guild, content)
             : "",
           files: files ? [files] : [],
         });
@@ -571,7 +576,7 @@ module.exports = class Ability {
       }
 
       if (isEmbed) {
-        const goodByeEmbed = await this.resultMessage(
+        const goodByeEmbed = await Ability.resultMessage(
           client,
           member,
           member.guild,
@@ -579,17 +584,17 @@ module.exports = class Ability {
         );
         await goodbyeChannel.send({
           content: content
-            ? await this.resultMessage(client, member, member.guild, content)
-            : "",
-          embeds: goodByeEmbed ? [goodByeEmbed] : [],
-        });
-      } else {
-        const files = isCustomImage
-          ? await this.getBackgroundCustom(client, member, image)
-          : await this.getBackgroundNormal(client, member, image);
-        await goodbyeChannel.send({
-          content: content
-            ? await this.resultMessage(client, member, member.guild, content)
+            ? await Ability.replacePlaceholders(
+                content,
+                Ability.getReplacementData(
+                  member,
+                  member.guild,
+                  null,
+                  null,
+                  null,
+                  null
+                )
+              )
             : "",
           files: files ? [files] : [],
         });
@@ -672,7 +677,7 @@ module.exports = class Ability {
         }
 
         if (isEmbed) {
-          const welcomeEmbed = await this.resultMessage(
+          const welcomeEmbed = await Ability.resultMessage(
             client,
             member,
             member.guild,
@@ -680,27 +685,32 @@ module.exports = class Ability {
           );
           await welcomeChannel.send({
             content: content
-              ? await this.replacePlaceholders(
-                  this.getReplacementData(
+              ? await Ability.replacePlaceholders(
+                  content,
+                  Ability.getReplacementData(
                     member,
                     member.guild,
                     null,
                     null,
                     null,
                     null
-                  ),
-                  content
+                  )
                 )
               : "",
             embeds: welcomeEmbed ? [welcomeEmbed] : [],
           });
         } else {
           const files = isCustomImage
-            ? await this.getBackgroundCustom(client, member, image)
-            : await this.getBackgroundNormal(client, member, image);
+            ? await Ability.getBackgroundCustom(client, member, image)
+            : await Ability.getBackgroundNormal(client, member, image);
           await welcomeChannel.send({
             content: content
-              ? await this.resultMessage(client, member, member.guild, content)
+              ? await Ability.resultMessage(
+                  client,
+                  member,
+                  member.guild,
+                  content
+                )
               : "",
             files: files ? [files] : [],
           });
@@ -724,7 +734,7 @@ module.exports = class Ability {
         }
 
         if (isEmbed) {
-          const boosterEmbed = await this.resultMessage(
+          const boosterEmbed = await Ability.resultMessage(
             client,
             member,
             member.guild,
@@ -732,27 +742,32 @@ module.exports = class Ability {
           );
           await boosterChannel.send({
             content: content
-              ? await this.replacePlaceholders(
-                  this.getReplacementData(
+              ? await Ability.replacePlaceholders(
+                  content,
+                  Ability.getReplacementData(
                     member,
                     member.guild,
                     null,
                     null,
                     null,
                     null
-                  ),
-                  content
+                  )
                 )
               : "",
             embeds: boosterEmbed ? [boosterEmbed] : [],
           });
         } else {
           const files = isCustomImage
-            ? await this.getBackgroundCustom(client, member, image)
-            : await this.getBackgroundNormal(client, member, image);
+            ? await Ability.getBackgroundCustom(client, member, image)
+            : await Ability.getBackgroundNormal(client, member, image);
           await boosterChannel.send({
             content: content
-              ? await this.resultMessage(client, member, member.guild, content)
+              ? await Ability.resultMessage(
+                  client,
+                  member,
+                  member.guild,
+                  content
+                )
               : "",
             files: files ? [files] : [],
           });
@@ -795,7 +810,7 @@ module.exports = class Ability {
 
               const inviter = invite.inviter;
               if (isEmbed) {
-                const trackerEmbed = await this.resultMessage(
+                const trackerEmbed = await Ability.resultMessage(
                   client,
                   member,
                   member.guild,
@@ -805,7 +820,7 @@ module.exports = class Ability {
                 );
                 await trackingChannel.send({
                   content: content
-                    ? await this.resultMessage(
+                    ? await Ability.resultMessage(
                         client,
                         member,
                         member.guild,
@@ -818,11 +833,11 @@ module.exports = class Ability {
                 });
               } else {
                 const files = isCustomImage
-                  ? await this.getBackgroundCustom(client, member, image)
-                  : await this.getBackgroundNormal(client, member, image);
+                  ? await Ability.getBackgroundCustom(client, member, image)
+                  : await Ability.getBackgroundNormal(client, member, image);
                 await trackingChannel.send({
                   content: content
-                    ? await this.resultMessage(
+                    ? await Ability.resultMessage(
                         client,
                         member,
                         member.guild,
@@ -875,7 +890,7 @@ module.exports = class Ability {
         }
 
         if (isEmbed) {
-          const goodByeEmbed = await this.resultMessage(
+          const goodByeEmbed = await Ability.resultMessage(
             client,
             member,
             member.guild,
@@ -883,17 +898,27 @@ module.exports = class Ability {
           );
           await goodbyeChannel.send({
             content: content
-              ? await this.resultMessage(client, member, member.guild, content)
+              ? await Ability.resultMessage(
+                  client,
+                  member,
+                  member.guild,
+                  content
+                )
               : "",
             embeds: goodByeEmbed ? [goodByeEmbed] : [],
           });
         } else {
           const files = isCustomImage
-            ? await this.getBackgroundCustom(client, member, image)
-            : await this.getBackgroundNormal(client, member, image);
+            ? await Ability.getBackgroundCustom(client, member, image)
+            : await Ability.getBackgroundNormal(client, member, image);
           await goodbyeChannel.send({
             content: content
-              ? await this.resultMessage(client, member, member.guild, content)
+              ? await Ability.resultMessage(
+                  client,
+                  member,
+                  member.guild,
+                  content
+                )
               : "",
             files: files ? [files] : [],
           });
@@ -925,7 +950,7 @@ module.exports = class Ability {
 
         await levelingChannel.send({
           content: content
-            ? await this.resultMessage(
+            ? await Ability.resultMessage(
                 client,
                 member,
                 member.guild,
@@ -1029,7 +1054,7 @@ module.exports = class Ability {
     userInfo,
     level
   ) {
-    const data = this.getReplacementData(
+    const data = Ability.getReplacementData(
       member,
       guild,
       invite,
@@ -1039,36 +1064,36 @@ module.exports = class Ability {
     );
 
     if (typeof result !== "object") {
-      return this.replacePlaceholders(result, data);
+      return Ability.replacePlaceholders(result, data);
     } else {
       const embed = client.embed().setColor(result.message?.color || "#F582AE");
 
       if (result.message?.title) {
-        embed.setTitle(this.replacePlaceholders(result.message.title, data));
+        embed.setTitle(Ability.replacePlaceholders(result.message.title, data));
       }
 
       if (result.message?.description) {
         embed.setDescription(
-          this.replacePlaceholders(result.message.description, data)
+          Ability.replacePlaceholders(result.message.description, data)
         );
       }
 
       if (result.message?.thumbnail) {
         embed.setThumbnail(
-          this.replacePlaceholders(result.message.thumbnail, data)
+          Ability.replacePlaceholders(result.message.thumbnail, data)
         );
       }
 
       if (result.message?.image) {
-        embed.setImage(this.replacePlaceholders(result.message.image, data));
+        embed.setImage(Ability.replacePlaceholders(result.message.image, data));
       }
 
       if (result.message?.footer) {
         const footerText = result.message.footer.text
-          ? this.replacePlaceholders(result.message.footer.text, data)
+          ? Ability.replacePlaceholders(result.message.footer.text, data)
           : null;
         const footerIconURL = result.message.footer.iconURL
-          ? this.replacePlaceholders(result.message.footer.iconURL, data)
+          ? Ability.replacePlaceholders(result.message.footer.iconURL, data)
           : null;
 
         if (footerText || footerIconURL) {
@@ -1080,8 +1105,8 @@ module.exports = class Ability {
         result.message.fields.forEach((field) => {
           if (field.name && field.value) {
             embed.addFields({
-              name: this.replacePlaceholders(field.name, data),
-              value: this.replacePlaceholders(field.value, data),
+              name: Ability.replacePlaceholders(field.name, data),
+              value: Ability.replacePlaceholders(field.value, data),
               inline: field.inline ?? false,
             });
           }

@@ -1015,129 +1015,65 @@ module.exports = class Utils {
     switch (type) {
       case "sponsor":
         return await Users.aggregate([
-          {
-            $match: {
-              "balance.sponsor": { $gt: 0 },
-            },
-          },
-          {
-            $project: {
-              total: "$balance.sponsor",
-              username: "$username",
-            },
-          },
+          { $match: { "balance.sponsor": { $gt: 0 } } },
+          { $project: { total: "$balance.sponsor", username: "$username" } },
           { $sort: { total: -1 } },
+          { $limit: 100 },
         ]).exec();
       case "slots":
       case "slot":
         return await Users.aggregate([
-          {
-            $match: {
-              "balance.slots": { $gt: 0 },
-            },
-          },
-          {
-            $project: {
-              total: "$balance.slots",
-              username: "$username",
-            },
-          },
+          { $match: { "balance.slots": { $gt: 0 } } },
+          { $project: { total: "$balance.slots", username: "$username" } },
           { $sort: { total: -1 } },
+          { $limit: 100 },
         ]).exec();
       case "blackjack":
       case "bj":
         return await Users.aggregate([
-          {
-            $match: {
-              "balance.blackjack": { $gt: 0 },
-            },
-          },
-          {
-            $project: {
-              total: "$balance.blackjack",
-              username: "$username",
-            },
-          },
+          { $match: { "balance.blackjack": { $gt: 0 } } },
+          { $project: { total: "$balance.blackjack", username: "$username" } },
           { $sort: { total: -1 } },
+          { $limit: 100 },
         ]).exec();
       case "coinflip":
       case "cf":
         return await Users.aggregate([
-          {
-            $match: {
-              "balance.coinflip": { $gt: 0 },
-            },
-          },
-          {
-            $project: {
-              total: "$balance.coinflip",
-              username: "$username",
-            },
-          },
+          { $match: { "balance.coinflip": { $gt: 0 } } },
+          { $project: { total: "$balance.coinflip", username: "$username" } },
           { $sort: { total: -1 } },
+          { $limit: 100 },
         ]).exec();
       case "klaklouk":
       case "kk":
         return await Users.aggregate([
-          {
-            $match: {
-              "balance.klaklouk": { $gt: 0 },
-            },
-          },
-          {
-            $project: {
-              total: "$balance.klaklouk",
-              username: "$username",
-            },
-          },
+          { $match: { "balance.klaklouk": { $gt: 0 } } },
+          { $project: { total: "$balance.klaklouk", username: "$username" } },
           { $sort: { total: -1 } },
+          { $limit: 100 },
         ]).exec();
       case "peach":
       case "p":
         return await Users.aggregate([
-          {
-            $match: {
-              "peachy.streak": { $gt: 0 },
-            },
-          },
-          {
-            $project: {
-              username: "$username",
-              total: "$peachy.streak",
-            },
-          },
+          { $match: { "peachy.streak": { $gt: 0 } } },
+          { $project: { username: "$username", total: "$peachy.streak" } },
           { $sort: { total: -1 } },
+          { $limit: 100 },
         ]).exec();
       case "goma":
       case "g":
         return await Users.aggregate([
-          {
-            $match: {
-              "goma.streak": { $gt: 0 },
-            },
-          },
-          {
-            $project: {
-              username: "$username",
-              total: "$goma.streak",
-            },
-          },
+          { $match: { "goma.streak": { $gt: 0 } } },
+          { $project: { username: "$username", total: "$goma.streak" } },
           { $sort: { total: -1 } },
+          { $limit: 100 },
         ]).exec();
       default:
         return await Users.aggregate([
-          {
-            $match: {
-              "balance.coin": { $gt: 0 },
-            },
-          },
-          {
-            $project: {
-              total: "$balance.coin",
-              username: "$username",
-            },
-          },
+          { $match: { "balance.coin": { $gt: 0 } } },
+          { $project: { total: "$balance.coin", username: "$username" } },
           { $sort: { total: -1 } },
+          { $limit: 100 },
         ]).exec();
     }
   }
@@ -1174,7 +1110,7 @@ module.exports = class Utils {
 
   static typeRanking(type, emoji) {
     if (["peach", "goma", "p", "g"].includes(type)) {
-      return "𝒔𝒕𝒓𝒆𝒂𝒌";
+      return "streak";
     } else {
       return emoji.coin;
     }

@@ -1,6 +1,7 @@
 const { Event } = require("../../structures/index.js");
 const { ChannelType, PermissionFlagsBits } = require("discord.js");
-const Guild = require("../../schemas/guild"); // Assuming the guild model is in a schemas folder
+const globalConfig = require("../../utils/Config");
+const Guild = require("../../schemas/guild");
 
 module.exports = class GuildCreate extends Event {
   constructor(client, file) {
@@ -13,19 +14,19 @@ module.exports = class GuildCreate extends Event {
     // Check if guild ID matches the specific ID to auto-leave
     if (guild.id === "1370047480460214323") {
       const logChannel = this.client.channels.cache.get(
-        this.client.config.channel.log,
+        this.client.config.channel.log
       );
       if (logChannel) {
         await logChannel
           .send(
-            `Auto-leaving guild **${guild.name}** (ID: ${guild.id}) due to specific ID match.`,
+            `Auto-leaving guild **${guild.name}** (ID: ${guild.id}) due to specific ID match.`
           )
           .catch(console.error);
       }
       await guild
         .leave()
         .catch((err) =>
-          console.error(`Failed to leave guild ${guild.id}:`, err),
+          console.error(`Failed to leave guild ${guild.id}:`, err)
         );
       return; // Exit the event after leaving
     }
@@ -46,7 +47,7 @@ module.exports = class GuildCreate extends Event {
     await guildData.save();
 
     const logChannel = this.client.channels.cache.get(
-      this.client.config.channel.log,
+      this.client.config.channel.log
     );
 
     // Check if guild is banned
@@ -54,14 +55,14 @@ module.exports = class GuildCreate extends Event {
       if (logChannel) {
         await logChannel
           .send(
-            `Leaving guild **${guild.name}** (ID: ${guild.id}) because it is blacklisted.`,
+            `Leaving guild **${guild.name}** (ID: ${guild.id}) because it is blacklisted.`
           )
           .catch(console.error);
       }
       await guild
         .leave()
         .catch((err) =>
-          console.error(`Failed to leave guild ${guild.id}:`, err),
+          console.error(`Failed to leave guild ${guild.id}:`, err)
         );
       return; // Exit the event after leaving
     }
@@ -71,14 +72,14 @@ module.exports = class GuildCreate extends Event {
       if (logChannel) {
         await logChannel
           .send(
-            `Leaving guild **${guild.name}** (ID: ${guild.id}) due to excessive joins (${guildData.joinCount}).`,
+            `Leaving guild **${guild.name}** (ID: ${guild.id}) due to excessive joins (${guildData.joinCount}).`
           )
           .catch(console.error);
       }
       await guild
         .leave()
         .catch((err) =>
-          console.error(`Failed to leave guild ${guild.id}:`, err),
+          console.error(`Failed to leave guild ${guild.id}:`, err)
         );
       return; // Exit the event after leaving
     }
@@ -89,8 +90,27 @@ module.exports = class GuildCreate extends Event {
       try {
         owner = await guild.fetchOwner();
       } catch {
-        owner = { user: { tag: "Unknown#0000" } };
+        owner = { user: { tag: "Unknown#0000", id: guild.ownerId } };
       }
+    }
+
+    const isDevServer = globalConfig.owners.includes(guild.ownerId);
+
+    // Auto-leave if member count is less than 50, unless it's a dev/testing server
+    if (!isDevServer && guild.memberCount < 50) {
+      if (logChannel) {
+        await logChannel
+          .send(
+            `Leaving guild **${guild.name}** (ID: ${guild.id}) because it has less than 50 members (${guild.memberCount}).`
+          )
+          .catch(console.error);
+      }
+      await guild
+        .leave()
+        .catch((err) =>
+          console.error(`Failed to leave guild ${guild.id}:`, err)
+        );
+      return; // Exit the event after leaving
     }
 
     // Send guild info to log channel
@@ -99,7 +119,7 @@ module.exports = class GuildCreate extends Event {
 
   async sendGuildInfo(guild, owner) {
     const channel = this.client.channels.cache.get(
-      this.client.config.channel.log,
+      this.client.config.channel.log
     );
     if (!channel) {
       console.log("Log channel not found!");
@@ -126,7 +146,7 @@ module.exports = class GuildCreate extends Event {
     ) {
       return channel
         .send(
-          "I don’t have permission to create an invite link in this channel.",
+          "I don’t have permission to create an invite link in this channel."
         )
         .catch(console.error);
     }
