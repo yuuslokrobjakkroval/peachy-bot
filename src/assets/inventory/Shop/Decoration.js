@@ -276,7 +276,7 @@ module.exports = {
     },
     {
       id: "d17",
-      name: "ghost",
+      name: "Ghost",
       description:
         "A spooky ghost decoration that adds a playful and eerie vibe to your avatar.",
       type: "decoration",
@@ -293,7 +293,7 @@ module.exports = {
     },
     {
       id: "d18",
-      name: "frag",
+      name: "Frag",
       description:
         "A frag grenade decoration that adds a touch of explosive style to your avatar.",
       type: "decoration",
@@ -310,7 +310,7 @@ module.exports = {
     },
     {
       id: "d19",
-      name: "hackclaw",
+      name: "Hackclaw",
       description:
         "A hackclaw decoration that adds a fierce and edgy touch to your avatar.",
       type: "decoration",
@@ -344,7 +344,7 @@ module.exports = {
     },
     {
       id: "d21",
-      name: "magicportal",
+      name: "Magic Portal",
       description:
         "A magic portal decoration that adds a mystical and enchanting touch to your avatar.",
       type: "decoration",
@@ -361,7 +361,7 @@ module.exports = {
     },
     {
       id: "d22",
-      name: "openbeta",
+      name: "Open Beta",
       description:
         "A decoration celebrating the open beta phase, adding a touch of nostalgia and excitement.",
       type: "decoration",
@@ -378,7 +378,7 @@ module.exports = {
     },
     {
       id: "d23",
-      name: "rocketpunch",
+      name: "Rocket Punch",
       description:
         "A rocket punch decoration that adds a dynamic and powerful touch to your avatar.",
       type: "decoration",
@@ -395,7 +395,7 @@ module.exports = {
     },
     {
       id: "d24",
-      name: "splitbloom",
+      name: "Split Bloom",
       description:
         "A splitbloom decoration that adds a unique and artistic flair to your avatar.",
       type: "decoration",
@@ -412,7 +412,7 @@ module.exports = {
     },
     {
       id: "d25",
-      name: "spiritbloom",
+      name: "Spirit Bloom",
       description:
         "A spiritbloom decoration that adds a mystical and ethereal touch to your avatar.",
       type: "decoration",
@@ -429,7 +429,7 @@ module.exports = {
     },
     {
       id: "d26",
-      name: "spriritember",
+      name: "Spririt Ember",
       description:
         "A spriritember decoration that adds a warm and glowing touch to your avatar.",
       type: "decoration",
@@ -445,7 +445,7 @@ module.exports = {
       image: "https://i.imgur.com/z0plcPk.jpg",
     },{
       id: "d27",
-      name: "cat_onesie",
+      name: "Cat Onesie",
       description:
         "A cozy cat onesie that adds a cute and playful touch to your avatar.",
       type: "decoration",
@@ -462,7 +462,7 @@ module.exports = {
     },
     {
       id: "d28",
-      name: "cyberkatana",
+      name: "Cyber Katana",
       description:
         "cyberkatana is a sleek and futuristic sword that adds a high-tech edge to your avatar.",
       type: "decoration",
@@ -479,7 +479,7 @@ module.exports = {
     },
     {
       id: "d29",
-      name: "digitalsunset",
+      name: "Digital Sunset",
       description:
         "digitalsunset is a vibrant and colorful decoration that captures the beauty of a digital sunset.",
       type: "decoration",
@@ -496,7 +496,7 @@ module.exports = {
     },
     {
       id: "d30",
-      name: "head in_the_clouds",
+      name: "Head In The Clouds",
       description:
         "",
       type: "decoration",
@@ -513,7 +513,7 @@ module.exports = {
     },
     {
       id: "d31",
-      name: "chomp chomp",
+      name: "Chomp Chomp",
       description:
         "chomp chomp is a playful decoration that adds a fun and whimsical touch to your avatar.",
       type: "decoration",
@@ -530,7 +530,7 @@ module.exports = {
     },
     {
       id: "d32",
-      name: "fuchsia agent",
+      name: "Fuchsia Agent",
       description:
         "fuchsia agent is a stylish and sleek decoration that adds a touch of sophistication to your avatar.",
       type: "decoration",
@@ -547,7 +547,7 @@ module.exports = {
     },
     {
       id: "d33",
-      name: "lava blobs",
+      name: "Lava Blobs",
       description:
         " lava blobs is a fiery and dynamic decoration that adds a touch of heat to your avatar.",
       type: "decoration",
@@ -564,7 +564,7 @@ module.exports = {
     },
     {
       id: "34",
-      name: "magic portal",
+      name: "Magic Portal",
       description:
         "magic portal is a mystical and enchanting decoration that adds a touch of fantasy to your avatar.",
       type: "decoration",
@@ -581,7 +581,7 @@ module.exports = {
     },
     {
       id: "d35",
-      name: "radiating energy",
+      name: "Radiating Energy",
       description:
         "radiating energy is a vibrant and powerful decoration that adds a dynamic touch to your avatar.",
       type: "decoration",
@@ -598,7 +598,7 @@ module.exports = {
     },
     {
       id: "d36",
-      name: "shoko todoroki",
+      name: "Shoko Todoroki",
       description:
         "shoko todoroki is a stylish and fierce decoration that adds a touch of coolness to your avatar.",
       type: "decoration",
@@ -615,7 +615,7 @@ module.exports = {
     },
     {
       id: "d37",
-      name: "sakura ink",
+      name: "Sakura Ink",
       description:
         "sakura ink is a beautiful and delicate decoration that adds a touch of elegance to your avatar.",
       type: "decoration",
@@ -632,7 +632,7 @@ module.exports = {
     },
     {
       id: "d38",
-      name: "omen",
+      name: "Omen",
       description:
         "omen is a mysterious and intriguing decoration that adds a touch of enigma to your avatar.",
       type: "decoration",
@@ -646,9 +646,10 @@ module.exports = {
       available: ["use"],
       price: { buy: 3e7, sell: 29e6 },
       image: "https://i.imgur.com/gE9v0og.jpg",
-    },{
+    },
+    {
       id: "d39",
-      name: "solar orbit",
+      name: "Solar Orbit",
       description:
         "solar orbit is a cosmic and celestial decoration that adds a touch of space to your avatar.",
       type: "decoration",
@@ -662,9 +663,10 @@ module.exports = {
       available: ["use"],
       price: { buy: 3e7, sell: 29e6 },
       image: "https://i.imgur.com/D5H7afK.jpg",
-    },{
+    },
+    {
       id: "d40",
-      name: "wallach spaceport",
+      name: "Wallach Spaceport",
       description:
         "wallach spaceport is a futuristic and high-tech decoration that adds a touch of space exploration to your avatar.",
       type: "decoration",
@@ -681,7 +683,7 @@ module.exports = {
     },
     {
       id: "d41",
-      name: "reyna leer",
+      name: "Reyna Leer",
       description:
         "reyna leer is a mystical and enchanting decoration that adds a touch of magic to your avatar.",
       type: "decoration",
@@ -698,7 +700,7 @@ module.exports = {
     },
     {
       id: "d42",
-      name: "spirit bloom",
+      name: "Spirit Bloom",
       description:
         "spirit bloom is a mystical and ethereal decoration that adds a touch of fantasy to your avatar.",
       type: "decoration",
@@ -715,7 +717,7 @@ module.exports = {
     },
     {
       id: "d43",
-      name: "ultron",
+      name: "Ultron",
       description:
         "ultron is a sleek and futuristic decoration that adds a high-tech edge to your avatar.",
       type: "decoration",
@@ -732,7 +734,7 @@ module.exports = {
     },
     {
       id: "d44",
-      name: "split",
+      name: "Split",
       description:
         "split is a unique and artistic decoration that adds a creative flair to your avatar.",
       type: "decoration",
@@ -749,7 +751,7 @@ module.exports = {
     },
     {
       id: "d45",
-      name: "viper poison",
+      name: "Viper Poison",
       description:
         "viper poison is a fierce and edgy decoration that adds a touch of danger to your avatar.",
       type: "decoration",
@@ -766,7 +768,7 @@ module.exports = {
     },
     {
       id: "d46",
-      name: "witch hat",
+      name: "Witch Hat",
       description:
         "witch hat is a classic and stylish decoration that adds a touch of magic to your avatar.",
       type: "decoration",
@@ -783,7 +785,7 @@ module.exports = {
     },
     {
       id: "d47",
-      name: "unicorn horn",
+      name: "Unicorn Horn",
       description:
         "unicorn horn is a magical and enchanting decoration that adds a touch of fantasy to your avatar.",
       type: "decoration",
