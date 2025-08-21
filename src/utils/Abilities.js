@@ -601,7 +601,7 @@ module.exports = class Ability {
         const files = isCustomImage
           ? await Ability.getBackgroundCustom(client, member, image)
           : await Ability.getBackgroundNormal(client, member, image);
-        await boosterChannel.send({
+        await goodbyeChannel.send({
           content: content
             ? await Ability.resultMessage(client, member, member.guild, content)
             : "",
