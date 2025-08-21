@@ -276,7 +276,7 @@ module.exports = {
     },
     {
       id: "d17",
-      name: "ghost",
+      name: "Ghost",
       description:
         "A spooky ghost decoration that adds a playful and eerie vibe to your avatar.",
       type: "decoration",
@@ -293,7 +293,7 @@ module.exports = {
     },
     {
       id: "d18",
-      name: "frag",
+      name: "Frag",
       description:
         "A frag grenade decoration that adds a touch of explosive style to your avatar.",
       type: "decoration",
@@ -310,7 +310,7 @@ module.exports = {
     },
     {
       id: "d19",
-      name: "hackclaw",
+      name: "Hackclaw",
       description:
         "A hackclaw decoration that adds a fierce and edgy touch to your avatar.",
       type: "decoration",
@@ -344,7 +344,7 @@ module.exports = {
     },
     {
       id: "d21",
-      name: "magicportal",
+      name: "Magic Portal",
       description:
         "A magic portal decoration that adds a mystical and enchanting touch to your avatar.",
       type: "decoration",
@@ -361,7 +361,7 @@ module.exports = {
     },
     {
       id: "d22",
-      name: "openbeta",
+      name: "Open Beta",
       description:
         "A decoration celebrating the open beta phase, adding a touch of nostalgia and excitement.",
       type: "decoration",
@@ -378,7 +378,7 @@ module.exports = {
     },
     {
       id: "d23",
-      name: "rocketpunch",
+      name: "Rocket Punch",
       description:
         "A rocket punch decoration that adds a dynamic and powerful touch to your avatar.",
       type: "decoration",
@@ -395,7 +395,7 @@ module.exports = {
     },
     {
       id: "d24",
-      name: "splitbloom",
+      name: "Split Bloom",
       description:
         "A splitbloom decoration that adds a unique and artistic flair to your avatar.",
       type: "decoration",
@@ -412,7 +412,7 @@ module.exports = {
     },
     {
       id: "d25",
-      name: "spiritbloom",
+      name: "Spirit Bloom",
       description:
         "A spiritbloom decoration that adds a mystical and ethereal touch to your avatar.",
       type: "decoration",
@@ -429,7 +429,7 @@ module.exports = {
     },
     {
       id: "d26",
-      name: "spriritember",
+      name: "Spririt Ember",
       description:
         "A spriritember decoration that adds a warm and glowing touch to your avatar.",
       type: "decoration",
@@ -443,6 +443,362 @@ module.exports = {
       available: ["use"],
       price: { buy: 3e7, sell: 29e6 },
       image: "https://i.imgur.com/z0plcPk.jpg",
+    },{
+      id: "d27",
+      name: "Cat Onesie",
+      description:
+        "A cozy cat onesie that adds a cute and playful touch to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/1xw2Kjd.jpg",
+    },
+    {
+      id: "d28",
+      name: "Cyber Katana",
+      description:
+        "cyberkatana is a sleek and futuristic sword that adds a high-tech edge to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/VL10PIp.jpg",
+    },
+    {
+      id: "d29",
+      name: "Digital Sunset",
+      description:
+        "digitalsunset is a vibrant and colorful decoration that captures the beauty of a digital sunset.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/vud7kvI.jpg",
+    },
+    {
+      id: "d30",
+      name: "Head In The Clouds",
+      description:
+        "",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/Hr3WxjY.jpg",
+    },
+    {
+      id: "d31",
+      name: "Chomp Chomp",
+      description:
+        "chomp chomp is a playful decoration that adds a fun and whimsical touch to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/GBriTfJ.jpg",
+    },
+    {
+      id: "d32",
+      name: "Fuchsia Agent",
+      description:
+        "fuchsia agent is a stylish and sleek decoration that adds a touch of sophistication to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/nZQlUFm.jpg",
+    },
+    {
+      id: "d33",
+      name: "Lava Blobs",
+      description:
+        " lava blobs is a fiery and dynamic decoration that adds a touch of heat to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/3M8VY4G.jpg",
+    },
+    {
+      id: "34",
+      name: "Magic Portal",
+      description:
+        "magic portal is a mystical and enchanting decoration that adds a touch of fantasy to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/DKyDGwc.jpg",
+    },
+    {
+      id: "d35",
+      name: "Radiating Energy",
+      description:
+        "radiating energy is a vibrant and powerful decoration that adds a dynamic touch to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/6mU4wLX.jpg",
+    },
+    {
+      id: "d36",
+      name: "Shoko Todoroki",
+      description:
+        "shoko todoroki is a stylish and fierce decoration that adds a touch of coolness to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/dUwkgv8.jpg",
+    },
+    {
+      id: "d37",
+      name: "Sakura Ink",
+      description:
+        "sakura ink is a beautiful and delicate decoration that adds a touch of elegance to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/auNA4nB.jpg",
+    },
+    {
+      id: "d38",
+      name: "Omen",
+      description:
+        "omen is a mysterious and intriguing decoration that adds a touch of enigma to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/gE9v0og.jpg",
+    },
+    {
+      id: "d39",
+      name: "Solar Orbit",
+      description:
+        "solar orbit is a cosmic and celestial decoration that adds a touch of space to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/D5H7afK.jpg",
+    },
+    {
+      id: "d40",
+      name: "Wallach Spaceport",
+      description:
+        "wallach spaceport is a futuristic and high-tech decoration that adds a touch of space exploration to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/NfRc17Q.jpg",
+    },
+    {
+      id: "d41",
+      name: "Reyna Leer",
+      description:
+        "reyna leer is a mystical and enchanting decoration that adds a touch of magic to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/YrwsWEy.jpg",
+    },
+    {
+      id: "d42",
+      name: "Spirit Bloom",
+      description:
+        "spirit bloom is a mystical and ethereal decoration that adds a touch of fantasy to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/SrEnlfW.jpg",
+    },
+    {
+      id: "d43",
+      name: "Ultron",
+      description:
+        "ultron is a sleek and futuristic decoration that adds a high-tech edge to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/v0cWwDo.jpg",
+    },
+    {
+      id: "d44",
+      name: "Split",
+      description:
+        "split is a unique and artistic decoration that adds a creative flair to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/3vASO7H.jpg",
+    },
+    {
+      id: "d45",
+      name: "Viper Poison",
+      description:
+        "viper poison is a fierce and edgy decoration that adds a touch of danger to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/H8QGRuo.jpg",
+    },
+    {
+      id: "d46",
+      name: "Witch Hat",
+      description:
+        "witch hat is a classic and stylish decoration that adds a touch of magic to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/WFbijRh.jpg",
+    },
+    {
+      id: "d47",
+      name: "Unicorn Horn",
+      description:
+        "unicorn horn is a magical and enchanting decoration that adds a touch of fantasy to your avatar.",
+      type: "decoration",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.decoration.main,
+      available: ["use"],
+      price: { buy: 3e7, sell: 29e6 },
+      image: "https://i.imgur.com/Kal5ouy.jpg",
     },
   ],
 };
