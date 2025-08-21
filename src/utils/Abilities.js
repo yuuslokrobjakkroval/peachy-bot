@@ -574,7 +574,6 @@ module.exports = class Ability {
         );
         return;
       }
-
       if (isEmbed) {
         const goodByeEmbed = await Ability.resultMessage(
           client,
@@ -595,6 +594,16 @@ module.exports = class Ability {
                   null
                 )
               )
+            : "",
+          embeds: goodByeEmbed ? [goodByeEmbed] : [],
+        });
+      } else {
+        const files = isCustomImage
+          ? await Ability.getBackgroundCustom(client, member, image)
+          : await Ability.getBackgroundNormal(client, member, image);
+        await boosterChannel.send({
+          content: content
+            ? await Ability.resultMessage(client, member, member.guild, content)
             : "",
           files: files ? [files] : [],
         });
