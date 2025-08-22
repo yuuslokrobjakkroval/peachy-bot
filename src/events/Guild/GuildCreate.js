@@ -98,13 +98,24 @@ module.exports = class GuildCreate extends Event {
 
     // Auto-leave if member count is less than 50, unless it's a dev/testing server
     if (!isDevServer && guild.memberCount < 50) {
+      const leaveMsg = `Leaving guild **${guild.name}** (ID: ${guild.id}) because it has less than 50 members (${guild.memberCount}).`;
       if (logChannel) {
-        await logChannel
-          .send(
-            `Leaving guild **${guild.name}** (ID: ${guild.id}) because it has less than 50 members (${guild.memberCount}).`
-          )
-          .catch(console.error);
+        await logChannel.send(leaveMsg).catch(console.error);
       }
+      // Try to DM the owner
+      let ownerUser = null;
+      try {
+        if (guild.ownerId) {
+          ownerUser = await this.client.users.fetch(guild.ownerId);
+        }
+      } catch (e) {
+        ownerUser = null;
+      }
+      if (ownerUser) {
+        ownerUser.send(leaveMsg).catch(() => {});
+      }
+      // Optionally, try to DM the inviter if available (not always possible)
+      // If you want to DM the inviter, you can add logic here to fetch the inviter from audit logs or similar.
       await guild
         .leave()
         .catch((err) =>
