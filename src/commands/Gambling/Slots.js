@@ -161,33 +161,33 @@ module.exports = class Slots extends Command {
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
       } else {
-        // 75% win chance (excluding x10), x10 stays rare, 25% lose
-        if (rand <= 30) {
-          // 30% for x1
+        // 45% win chance (excluding x10), x10 stays rare, 55% lose
+        if (rand <= 18) {
+          // 18% for x1
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-        } else if (rand <= 50) {
-          // 20% for x2
+        } else if (rand <= 30) {
+          // 12% for x2
           win = baseCoins * 2;
           rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-        } else if (rand <= 62) {
-          // 12% for x3
+        } else if (rand <= 37) {
+          // 7% for x3
           win = baseCoins * 3;
           rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-        } else if (rand <= 69) {
-          // 7% for x4
+        } else if (rand <= 41) {
+          // 4% for x4
           win = baseCoins * 4;
           rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-        } else if (rand <= 74) {
-          // 5% for x5
+        } else if (rand <= 44) {
+          // 3% for x5
           win = baseCoins * 5;
           rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-        } else if (rand <= 76) {
-          // 2% for x10 (rare)
+        } else if (rand === 45) {
+          // 1% for x10 (rare)
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
         } else {
-          // 24% lose
+          // 55% lose
           const slot1 = Math.floor(Math.random() * SLOTS.length);
           let slot2 = Math.floor(Math.random() * SLOTS.length);
           let slot3 = Math.floor(Math.random() * SLOTS.length);
