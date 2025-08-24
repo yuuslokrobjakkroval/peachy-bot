@@ -126,6 +126,15 @@ module.exports = class Slots extends Command {
       const rand = client.utils.getRandomNumber(1, 100);
       let win = 0;
 
+      // Add this before the win/lose logic
+      const luckyChannel = [
+        "1407290922181591061",
+        "1370318529706065961",
+        "1370318538161782826",
+        "1376910445453250660",
+      ];
+      const isLuckyChannel = luckyChannel.includes(ctx.channel?.id);
+
       if (user.verification.isBlacklist) {
         // Reduced win rates for blacklisted users (total: 12% win rate)
         if (rand <= 5) {
@@ -161,33 +170,35 @@ module.exports = class Slots extends Command {
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
       } else {
-        // 45% win chance (excluding x10), x10 stays rare, 55% lose
-        if (rand <= 18) {
-          // 18% for x1
+        // 45% winrate for luckyChannel, 40% for normal
+        const winRate = isLuckyChannel ? 45 : 40;
+
+        if (rand <= Math.floor(winRate * 0.4)) {
+          // 40% of winRate for x1
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-        } else if (rand <= 30) {
-          // 12% for x2
+        } else if (rand <= Math.floor(winRate * 0.67)) {
+          // 27% of winRate for x2
           win = baseCoins * 2;
           rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-        } else if (rand <= 37) {
-          // 7% for x3
+        } else if (rand <= Math.floor(winRate * 0.82)) {
+          // 15% of winRate for x3
           win = baseCoins * 3;
           rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-        } else if (rand <= 41) {
-          // 4% for x4
+        } else if (rand <= Math.floor(winRate * 0.92)) {
+          // 10% of winRate for x4
           win = baseCoins * 4;
           rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-        } else if (rand <= 44) {
-          // 3% for x5
+        } else if (rand <= Math.floor(winRate * 0.98)) {
+          // 6% of winRate for x5
           win = baseCoins * 5;
           rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-        } else if (rand === 45) {
-          // 1% for x10 (rare)
+        } else if (rand <= winRate) {
+          // 2% of winRate for x10
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
         } else {
-          // 55% lose
+          // Lose
           const slot1 = Math.floor(Math.random() * SLOTS.length);
           let slot2 = Math.floor(Math.random() * SLOTS.length);
           let slot3 = Math.floor(Math.random() * SLOTS.length);
@@ -279,7 +290,7 @@ module.exports = class Slots extends Command {
             globalEmoji.romdoul
           } «•« ══╝\n\n${slotMessages.bet
             .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote}", emoji.coin)}\n`
+            .replace("%{coinEmote", emoji.coin)}\n`
         )
         .setFooter({
           text: `${generalMessages.gameInProgress.replace(
