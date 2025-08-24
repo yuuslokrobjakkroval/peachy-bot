@@ -290,7 +290,7 @@ module.exports = class Slots extends Command {
             globalEmoji.romdoul
           } «•« ══╝\n\n${slotMessages.bet
             .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote", emoji.coin)}\n`
+            .replace("%{coinEmote}", emoji.coin)}\n`
         )
         .setFooter({
           text: `${generalMessages.gameInProgress.replace(
