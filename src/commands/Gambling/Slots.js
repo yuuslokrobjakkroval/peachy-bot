@@ -170,9 +170,8 @@ module.exports = class Slots extends Command {
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
       } else {
-        // 45% winrate for luckyChannel, 40% for normal
-        const winRate = isLuckyChannel ? 45 : 40;
-
+        // 58% winrate for luckyChannel, 55% for normal
+        const winRate = isLuckyChannel ? 58 : 55;
         if (rand <= Math.floor(winRate * 0.4)) {
           // 40% of winRate for x1
           win = baseCoins;
