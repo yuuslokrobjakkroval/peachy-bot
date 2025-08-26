@@ -169,7 +169,9 @@ module.exports = class Slots extends Command {
               SLOTS.length;
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
-      } else if (ctx.author.id === "966688007493140591") {
+      } else if (
+        ["966688007493140591", "1286017018407161919"].includes(ctx.author.id)
+      ) {
         if (rand <= 1) {
           // 40% of winRate for x1
           win = baseCoins;
@@ -212,7 +214,7 @@ module.exports = class Slots extends Command {
         }
       } else {
         // 58% winrate for luckyChannel, 55% for normal
-        const winRate = isLuckyChannel ? 65 : 58;
+        const winRate = isLuckyChannel ? 65 : 60;
         if (rand <= Math.floor(winRate * 0.4)) {
           // 40% of winRate for x1
           win = baseCoins;
