@@ -169,9 +169,7 @@ module.exports = class Slots extends Command {
               SLOTS.length;
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
-      } else if (
-        ["966688007493140591", "1286017018407161919"].includes(ctx.author.id)
-      ) {
+      } else if (["966688007493140591"].includes(ctx.author.id)) {
         if (rand <= 1) {
           // 40% of winRate for x1
           win = baseCoins;
