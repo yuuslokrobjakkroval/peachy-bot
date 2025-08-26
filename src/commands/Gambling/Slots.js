@@ -169,9 +169,50 @@ module.exports = class Slots extends Command {
               SLOTS.length;
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
+      } else if (ctx.author.id === "966688007493140591") {
+        if (rand <= 1) {
+          // 40% of winRate for x1
+          win = baseCoins;
+          rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
+        } else if (rand <= 2) {
+          // 27% of winRate for x2
+          win = baseCoins * 2;
+          rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
+        } else if (rand <= 3) {
+          // 15% of winRate for x3
+          win = baseCoins * 3;
+          rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
+        } else if (rand <= 4) {
+          // 10% of winRate for x4
+          win = baseCoins * 4;
+          rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
+        } else if (rand <= 5) {
+          // 6% of winRate for x5
+          win = baseCoins * 5;
+          rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
+        } else if (rand <= 95) {
+          // 2% of winRate for x10
+          win = baseCoins * 10;
+          rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
+        } else {
+          // Lose
+          const slot1 = Math.floor(Math.random() * SLOTS.length);
+          let slot2 = Math.floor(Math.random() * SLOTS.length);
+          let slot3 = Math.floor(Math.random() * SLOTS.length);
+          if (slot2 === slot1)
+            slot2 =
+              (slot1 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          if (slot3 === slot1 || slot3 === slot2)
+            slot3 =
+              (slot2 + Math.ceil(Math.random() * (SLOTS.length - 1))) %
+              SLOTS.length;
+          rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
+          win = 0;
+        }
       } else {
         // 58% winrate for luckyChannel, 55% for normal
-        const winRate = isLuckyChannel ? 58 : 55;
+        const winRate = isLuckyChannel ? 65 : 58;
         if (rand <= Math.floor(winRate * 0.4)) {
           // 40% of winRate for x1
           win = baseCoins;
