@@ -32,16 +32,16 @@ module.exports = class QuoteCommand extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     }
 
@@ -107,13 +107,13 @@ module.exports = class QuoteCommand extends Command {
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", `QUOTE`)
           .replace("%{mainRight}", emoji.mainRight) +
-          `\n\n📜 **${randomQuote}**`
+          `\n\n📜 **${randomQuote}**`,
       )
       .setFooter({
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })

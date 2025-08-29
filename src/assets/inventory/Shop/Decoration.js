@@ -443,7 +443,8 @@ module.exports = {
       available: ["use"],
       price: { buy: 3e7, sell: 29e6 },
       image: "https://i.imgur.com/z0plcPk.jpg",
-    },{
+    },
+    {
       id: "d27",
       name: "Cat Onesie",
       description:
@@ -497,8 +498,7 @@ module.exports = {
     {
       id: "d30",
       name: "Head In The Clouds",
-      description:
-        "",
+      description: "",
       type: "decoration",
       able: {
         use: true,

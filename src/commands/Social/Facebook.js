@@ -105,7 +105,7 @@ module.exports = class Facebook extends Command {
           args,
           color,
           emoji,
-          fbMessages
+          fbMessages,
         );
       case "link":
         return this.setFacebookLink(
@@ -114,7 +114,7 @@ module.exports = class Facebook extends Command {
           args,
           color,
           emoji,
-          fbMessages
+          fbMessages,
         );
       case "view":
         return this.viewFacebookProfile(
@@ -123,7 +123,7 @@ module.exports = class Facebook extends Command {
           mentionedUser,
           color,
           emoji,
-          fbMessages
+          fbMessages,
         );
       case "clear":
         return this.clearFacebookProfile(client, ctx, color, emoji, fbMessages);
@@ -136,7 +136,7 @@ module.exports = class Facebook extends Command {
           mentionedUser,
           color,
           emoji,
-          fbMessages
+          fbMessages,
         );
     }
   }
@@ -152,7 +152,7 @@ module.exports = class Facebook extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.facebook} Facebook Name Error`)
         .setDescription(
-          "❌ **Invalid Facebook name!**\n\n📝 **Requirements:**\n• Length: 2-50 characters\n• Use your real name or display name\n• No special characters"
+          "❌ **Invalid Facebook name!**\n\n📝 **Requirements:**\n• Length: 2-50 characters\n• Use your real name or display name\n• No special characters",
         )
         .addFields([
           {
@@ -170,7 +170,7 @@ module.exports = class Facebook extends Command {
       await Users.updateOne(
         { userId: ctx.author.id },
         { $set: { "social.facebook.name": name } },
-        { upsert: true }
+        { upsert: true },
       );
 
       const embed = client
@@ -204,7 +204,7 @@ module.exports = class Facebook extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -213,7 +213,7 @@ module.exports = class Facebook extends Command {
         client,
         ctx,
         color,
-        "Failed to update Facebook name. Please try again later."
+        "Failed to update Facebook name. Please try again later.",
       );
     }
   }
@@ -233,7 +233,7 @@ module.exports = class Facebook extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.facebook} Facebook Link Error`)
         .setDescription(
-          "❌ **Invalid Facebook link!**\n\n🔗 **Accepted formats:**"
+          "❌ **Invalid Facebook link!**\n\n🔗 **Accepted formats:**",
         )
         .addFields([
           {
@@ -263,7 +263,7 @@ module.exports = class Facebook extends Command {
       await Users.updateOne(
         { userId: ctx.author.id },
         { $set: { "social.facebook.link": link } },
-        { upsert: true }
+        { upsert: true },
       );
 
       const embed = client
@@ -311,7 +311,7 @@ module.exports = class Facebook extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -320,7 +320,7 @@ module.exports = class Facebook extends Command {
         client,
         ctx,
         color,
-        "Failed to update Facebook link. Please try again later."
+        "Failed to update Facebook link. Please try again later.",
       );
     }
   }
@@ -331,7 +331,7 @@ module.exports = class Facebook extends Command {
     mentionedUser,
     color,
     emoji,
-    fbMessages
+    fbMessages,
   ) {
     const targetUser = mentionedUser || ctx.author;
     const isOwnProfile = targetUser.id === ctx.author.id;
@@ -344,7 +344,7 @@ module.exports = class Facebook extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.facebook} User Not Found`)
         .setDescription(
-          `❌ ${fbMessages?.userNotFound || "User not found in our database."}`
+          `❌ ${fbMessages?.userNotFound || "User not found in our database."}`,
         )
         .setFooter({ text: "💡 User needs to interact with the bot first!" });
       return ctx.sendMessage({ embeds: [embed] });
@@ -366,7 +366,7 @@ module.exports = class Facebook extends Command {
     if (isConfigured) {
       embed
         .setDescription(
-          `🎉 **Facebook Profile Active!**\n\n${emoji.social.facebook} **Name:** \`${fbName}\`\n🔗 **Link:** [Visit Profile](${fbLink})`
+          `🎉 **Facebook Profile Active!**\n\n${emoji.social.facebook} **Name:** \`${fbName}\`\n🔗 **Link:** [Visit Profile](${fbLink})`,
         )
         .setURL(fbLink)
         .addFields([
@@ -379,7 +379,7 @@ module.exports = class Facebook extends Command {
     } else {
       embed
         .setDescription(
-          `${emoji.social.facebook} **Facebook Profile**\n\n📝 **Name:** ${fbName || "Not set"}\n🔗 **Link:** ${fbLink || "Not set"}`
+          `${emoji.social.facebook} **Facebook Profile**\n\n📝 **Name:** ${fbName || "Not set"}\n🔗 **Link:** ${fbLink || "Not set"}`,
         )
         .addFields([
           {
@@ -409,7 +409,7 @@ module.exports = class Facebook extends Command {
             .setCustomId("facebook_set_name")
             .setLabel("Set Name")
             .setEmoji("📝")
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(ButtonStyle.Primary),
         );
       }
 
@@ -419,7 +419,7 @@ module.exports = class Facebook extends Command {
             .setCustomId("facebook_set_link")
             .setLabel("Set Link")
             .setEmoji("🔗")
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(ButtonStyle.Primary),
         );
       }
 
@@ -434,7 +434,7 @@ module.exports = class Facebook extends Command {
             .setCustomId("facebook_clear")
             .setLabel("Clear")
             .setEmoji("🗑️")
-            .setStyle(ButtonStyle.Danger)
+            .setStyle(ButtonStyle.Danger),
         );
       }
 
@@ -443,7 +443,7 @@ module.exports = class Facebook extends Command {
           .setCustomId("view_socials")
           .setLabel("All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       if (actionRow.components.length > 0) {
@@ -463,7 +463,7 @@ module.exports = class Facebook extends Command {
             "social.facebook.name": "",
             "social.facebook.link": "",
           },
-        }
+        },
       );
 
       const embed = client
@@ -471,7 +471,7 @@ module.exports = class Facebook extends Command {
         .setColor(color.warning)
         .setTitle(`${emoji.social.facebook} Facebook Profile Cleared`)
         .setDescription(
-          "🧹 **Your Facebook information has been cleared successfully!**"
+          "🧹 **Your Facebook information has been cleared successfully!**",
         )
         .addFields([
           {
@@ -495,7 +495,7 @@ module.exports = class Facebook extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -504,7 +504,7 @@ module.exports = class Facebook extends Command {
         client,
         ctx,
         color,
-        "Failed to clear Facebook profile. Please try again later."
+        "Failed to clear Facebook profile. Please try again later.",
       );
     }
   }
@@ -515,7 +515,7 @@ module.exports = class Facebook extends Command {
       .setColor(color.main)
       .setTitle(`${emoji.social.facebook} Facebook Command Help`)
       .setDescription(
-        "🚀 **Master your Facebook profile management!**\n\nHere's everything you can do with the Facebook command:"
+        "🚀 **Master your Facebook profile management!**\n\nHere's everything you can do with the Facebook command:",
       )
       .addFields([
         {
@@ -574,7 +574,7 @@ module.exports = class Facebook extends Command {
         .setCustomId("view_socials")
         .setLabel("View All Socials")
         .setEmoji("📱")
-        .setStyle(ButtonStyle.Secondary)
+        .setStyle(ButtonStyle.Secondary),
     );
 
     return ctx.sendMessage({ embeds: [embed], components: [actionRow] });

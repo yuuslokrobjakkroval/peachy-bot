@@ -36,7 +36,7 @@ module.exports = class UserBalance extends Command {
   async run(client, ctx, args, color, emoji, language) {
     try {
       const generalMessages = language.locales.get(
-        language.defaultLocale
+        language.defaultLocale,
       )?.generalMessages;
       const balanceMessages = language.locales.get(language.defaultLocale)
         ?.economyMessages?.balanceMessages;
@@ -60,7 +60,7 @@ module.exports = class UserBalance extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName
+                ctx.author.displayName,
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -79,7 +79,7 @@ module.exports = class UserBalance extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName
+                ctx.author.displayName,
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -97,7 +97,7 @@ module.exports = class UserBalance extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName
+                ctx.author.displayName,
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -113,7 +113,7 @@ module.exports = class UserBalance extends Command {
         .setThumbnail(
           globalGif.balanceThumbnail
             ? globalGif.balanceThumbnail
-            : client.utils.emojiToImage(emoji.main)
+            : client.utils.emojiToImage(emoji.main),
         )
         .setDescription(
           generalMessages.title
@@ -124,14 +124,14 @@ module.exports = class UserBalance extends Command {
               .replace("%{coinEmote}", emoji.coin)
               .replace("%{coin}", client.utils.formatNumber(coin))
               .replace("%{bankEmote}", emoji.bank)
-              .replace("%{bank}", client.utils.formatNumber(bank))
+              .replace("%{bank}", client.utils.formatNumber(bank)),
         )
         .setImage(globalGif.balanceBanner)
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -147,7 +147,7 @@ module.exports = class UserBalance extends Command {
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });

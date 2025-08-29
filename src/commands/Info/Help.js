@@ -168,7 +168,7 @@ module.exports = class Help extends Command {
     ];
 
     const commands = client.commands.filter(
-      (cmd) => !adminCategory.includes(cmd.category)
+      (cmd) => !adminCategory.includes(cmd.category),
     );
     let selectedCategories = [];
 
@@ -179,7 +179,7 @@ module.exports = class Help extends Command {
     // Calculate pages for each category
     categories.forEach((category) => {
       const categoryCommands = commands.filter(
-        (cmd) => cmd.category.toLowerCase() === category.name.toLowerCase()
+        (cmd) => cmd.category.toLowerCase() === category.name.toLowerCase(),
       );
       categoryPages[category.name] =
         Math.ceil(categoryCommands.size / COMMANDS_PER_PAGE) || 1;
@@ -190,7 +190,7 @@ module.exports = class Help extends Command {
       const messageOptions = () => {
         const totalCommands = categories.reduce((sum, category) => {
           const categoryCommands = commands.filter(
-            (cmd) => cmd.category.toLowerCase() === category.name.toLowerCase()
+            (cmd) => cmd.category.toLowerCase() === category.name.toLowerCase(),
           );
           return sum + categoryCommands.size;
         }, 0);
@@ -203,10 +203,10 @@ module.exports = class Help extends Command {
               `📖 **Usage:** \`${prefix}help [command]\` for detailed info\n` +
               `💡 **Example:** \`${prefix}help balance\`\n` +
               `🎯 **Quick Tip:** Select multiple categories below!\n\n` +
-              `🔥 **What's New:** Enhanced multi-select interface for better browsing!`
+              `🔥 **What's New:** Enhanced multi-select interface for better browsing!`,
           )
           .setThumbnail(
-            client.user.displayAvatarURL({ dynamic: true, size: 512 })
+            client.user.displayAvatarURL({ dynamic: true, size: 512 }),
           )
           .setImage(client.config.links.banner)
           .setFooter({
@@ -224,13 +224,15 @@ module.exports = class Help extends Command {
             "games",
             "social",
             "relationship",
-          ].includes(cat.name)
+          ].includes(cat.name),
         );
         const economyCategories = categories.filter((cat) =>
-          ["bank", "economy", "gambling", "inventory"].includes(cat.name)
+          ["bank", "economy", "gambling", "inventory"].includes(cat.name),
         );
         const utilityCategories = categories.filter((cat) =>
-          ["giveaways", "info", "profile", "rank", "utility"].includes(cat.name)
+          ["giveaways", "info", "profile", "rank", "utility"].includes(
+            cat.name,
+          ),
         );
 
         if (entertainmentCategories.length > 0) {
@@ -240,7 +242,7 @@ module.exports = class Help extends Command {
               .map((category) => {
                 const categoryCommandCount = commands.filter(
                   (cmd) =>
-                    cmd.category.toLowerCase() === category.name.toLowerCase()
+                    cmd.category.toLowerCase() === category.name.toLowerCase(),
                 ).size;
                 return `${category.emoji} **${
                   categoriesMessages[category.name.toLowerCase()] ||
@@ -259,7 +261,7 @@ module.exports = class Help extends Command {
               .map((category) => {
                 const categoryCommandCount = commands.filter(
                   (cmd) =>
-                    cmd.category.toLowerCase() === category.name.toLowerCase()
+                    cmd.category.toLowerCase() === category.name.toLowerCase(),
                 ).size;
                 return `${category.emoji} **${
                   categoriesMessages[category.name.toLowerCase()] ||
@@ -278,7 +280,7 @@ module.exports = class Help extends Command {
               .map((category) => {
                 const categoryCommandCount = commands.filter(
                   (cmd) =>
-                    cmd.category.toLowerCase() === category.name.toLowerCase()
+                    cmd.category.toLowerCase() === category.name.toLowerCase(),
                 ).size;
                 return `${category.emoji} **${
                   categoriesMessages[category.name.toLowerCase()] ||
@@ -293,7 +295,7 @@ module.exports = class Help extends Command {
         // Enhanced multi-select dropdown
         const categoryOptions = categories.map((category) => {
           const categoryCommandCount = commands.filter(
-            (cmd) => cmd.category.toLowerCase() === category.name.toLowerCase()
+            (cmd) => cmd.category.toLowerCase() === category.name.toLowerCase(),
           ).size;
           return {
             emoji: emoji.help[category.name.toLowerCase()]
@@ -332,17 +334,17 @@ module.exports = class Help extends Command {
           .setLabel("Support")
           .setStyle(ButtonStyle.Link)
           .setURL(
-            client.config.links.support || "https://discord.gg/peachyganggg"
+            client.config.links.support || "https://discord.gg/peachyganggg",
           )
           .setEmoji("❓");
 
         const selectRow = new ActionRowBuilder().addComponents(
-          categorySelectMenu
+          categorySelectMenu,
         );
         const buttonRow = new ActionRowBuilder().addComponents(
           homeButton,
           dashboardButton,
-          supportButton
+          supportButton,
         );
 
         return {
@@ -406,7 +408,7 @@ module.exports = class Help extends Command {
               emoji,
               categoriesMessages,
               prefix,
-              categories
+              categories,
             );
             return;
           }
@@ -431,7 +433,7 @@ module.exports = class Help extends Command {
               emoji,
               categoriesMessages,
               prefix,
-              categories
+              categories,
             );
           }
 
@@ -458,14 +460,14 @@ module.exports = class Help extends Command {
           row.components.forEach((component) => {
             if (component.type === 3) {
               newRow.addComponents(
-                StringSelectMenuBuilder.from(component).setDisabled(true)
+                StringSelectMenuBuilder.from(component).setDisabled(true),
               );
             } else if (
               component.type === 2 &&
               component.style !== ButtonStyle.Link
             ) {
               newRow.addComponents(
-                ButtonBuilder.from(component).setDisabled(true)
+                ButtonBuilder.from(component).setDisabled(true),
               );
             } else {
               newRow.addComponents(component);
@@ -504,7 +506,7 @@ module.exports = class Help extends Command {
                   `💡 **Suggestions:**\n` +
                   `• Check the spelling of the command\n` +
                   `• Use \`${prefix}help\` to browse all available commands\n` +
-                  `• Try searching for similar commands 🔎`
+                  `• Try searching for similar commands 🔎`,
               )
               .setFooter({
                 text: "Tip: Commands are case-sensitive! 💭",
@@ -516,7 +518,7 @@ module.exports = class Help extends Command {
 
       // Find category info for enhanced display
       const categoryInfo = categories.find(
-        (cat) => cat.name === command.category.toLowerCase()
+        (cat) => cat.name === command.category.toLowerCase(),
       );
       const categoryEmoji = categoryInfo
         ? emoji.help[categoryInfo.name.toLowerCase()]
@@ -531,10 +533,10 @@ module.exports = class Help extends Command {
       const helpEmbed = new EmbedBuilder()
         .setColor(color.main)
         .setTitle(
-          `${categoryEmoji} ${client.utils.formatCapitalize(command.name)} Command`
+          `${categoryEmoji} ${client.utils.formatCapitalize(command.name)} Command`,
         )
         .setDescription(
-          `✨ **${command.description.content}**\n\n🎯 *${categoryDesc}*`
+          `✨ **${command.description.content}**\n\n🎯 *${categoryDesc}*`,
         )
         .addFields([
           {
@@ -582,7 +584,7 @@ module.exports = class Help extends Command {
           },
         ])
         .setThumbnail(
-          client.user.displayAvatarURL({ dynamic: true, size: 512 })
+          client.user.displayAvatarURL({ dynamic: true, size: 512 }),
         )
         .setFooter({
           text: `💫 Requested by ${ctx.author.username} • Use ${prefix}help for more commands`,
@@ -604,12 +606,12 @@ module.exports = class Help extends Command {
         .setEmoji(
           emoji.help[command.category.toLowerCase()]
             ? emoji.help[command.category.toLowerCase()]
-            : globalEmoji.help[command.category.toLowerCase()]
+            : globalEmoji.help[command.category.toLowerCase()],
         );
 
       const row = new ActionRowBuilder().addComponents(
         backButton,
-        categoryButton
+        categoryButton,
       );
 
       const replyMessage = await ctx.sendMessage({
@@ -644,7 +646,7 @@ module.exports = class Help extends Command {
             emoji,
             categoriesMessages,
             prefix,
-            categories
+            categories,
           );
         }
       });
@@ -652,7 +654,7 @@ module.exports = class Help extends Command {
       collector.on("end", () => {
         const disabledRow = new ActionRowBuilder().addComponents(
           ButtonBuilder.from(backButton).setDisabled(true),
-          ButtonBuilder.from(categoryButton).setDisabled(true)
+          ButtonBuilder.from(categoryButton).setDisabled(true),
         );
         replyMessage
           .edit({
@@ -685,7 +687,7 @@ module.exports = class Help extends Command {
     emoji,
     categoriesMessages,
     prefix,
-    categories
+    categories,
   ) {
     // let allCommands = [];
     let totalCommands = 0;
@@ -739,12 +741,12 @@ module.exports = class Help extends Command {
     // Group commands by category for display
     selectedCategories.forEach((categoryName) => {
       const categoryCommands = commands.filter(
-        (cmd) => cmd.category.toLowerCase() === categoryName.toLowerCase()
+        (cmd) => cmd.category.toLowerCase() === categoryName.toLowerCase(),
       );
 
       if (categoryCommands.size > 0) {
         const categoryInfo = categories.find(
-          (cat) => cat.name === categoryName
+          (cat) => cat.name === categoryName,
         );
         const categoryEmoji = categoryInfo
           ? emoji.help[categoryInfo.name.toLowerCase()]
@@ -762,7 +764,7 @@ module.exports = class Help extends Command {
           .slice(0, commandsToShow)
           .map(
             (cmd) =>
-              `├ \`${cmd.name}\` - ${cmd.description.content.slice(0, 40)}${cmd.description.content.length > 40 ? "..." : ""}`
+              `├ \`${cmd.name}\` - ${cmd.description.content.slice(0, 40)}${cmd.description.content.length > 40 ? "..." : ""}`,
           )
           .join("\n");
 
@@ -782,7 +784,7 @@ module.exports = class Help extends Command {
     // Enhanced multi-select dropdown with current selection
     const categoryOptions = categories.map((category) => {
       const categoryCommandCount = commands.filter(
-        (cmd) => cmd.category.toLowerCase() === category.name.toLowerCase()
+        (cmd) => cmd.category.toLowerCase() === category.name.toLowerCase(),
       ).size;
       return {
         emoji: emoji.help[category.name.toLowerCase()]
@@ -800,7 +802,7 @@ module.exports = class Help extends Command {
     const categorySelectMenu = new StringSelectMenuBuilder()
       .setCustomId("category_select")
       .setPlaceholder(
-        `🎯 ${selectedCategories.length} selected • Modify selection... ✨`
+        `🎯 ${selectedCategories.length} selected • Modify selection... ✨`,
       )
       .setMinValues(1)
       .setMaxValues(Math.min(categories.length, 25))
@@ -822,7 +824,7 @@ module.exports = class Help extends Command {
     const selectRow = new ActionRowBuilder().addComponents(categorySelectMenu);
     const buttonRow = new ActionRowBuilder().addComponents(
       homeButton,
-      clearButton
+      clearButton,
     );
 
     await interaction.update({
@@ -844,10 +846,10 @@ module.exports = class Help extends Command {
     emoji,
     categoriesMessages,
     prefix,
-    categories
+    categories,
   ) {
     const categoryCommands = commands.filter(
-      (cmd) => cmd.category.toLowerCase() === category.toLowerCase()
+      (cmd) => cmd.category.toLowerCase() === category.toLowerCase(),
     );
 
     // Calculate start and end indices for the current page
@@ -857,7 +859,7 @@ module.exports = class Help extends Command {
     // Get commands for the current page
     const pageCommands = Array.from(categoryCommands.values()).slice(
       startIdx,
-      endIdx
+      endIdx,
     );
 
     // Find category info for enhanced display
@@ -878,13 +880,13 @@ module.exports = class Help extends Command {
         `${categoryEmoji} ${
           categoriesMessages[category.toLowerCase()] ||
           client.utils.formatCapitalize(category)
-        } Commands`
+        } Commands`,
       )
       .setDescription(
         `✨ **${categoryDesc}**\n\n` +
           `📚 Browse all commands in this category below.\n` +
           `💡 Use \`${prefix}help [command]\` for detailed information.\n` +
-          `🎯 *Showing ${pageCommands.length} out of ${categoryCommands.size} total commands*`
+          `🎯 *Showing ${pageCommands.length} out of ${categoryCommands.size} total commands*`,
       )
       .setThumbnail(client.user.displayAvatarURL({ dynamic: true, size: 512 }))
       .setFooter({
@@ -935,7 +937,7 @@ module.exports = class Help extends Command {
     // Enhanced dropdown with current category selected
     const categoryOptions = categories.map((cat) => {
       const categoryCommandCount = commands.filter(
-        (cmd) => cmd.category.toLowerCase() === cat.name.toLowerCase()
+        (cmd) => cmd.category.toLowerCase() === cat.name.toLowerCase(),
       ).size;
       return {
         emoji: emoji.help[cat.name.toLowerCase()]
@@ -956,7 +958,7 @@ module.exports = class Help extends Command {
         `📚 Currently viewing: ${
           categoriesMessages[category.toLowerCase()] ||
           client.utils.formatCapitalize(category)
-        }`
+        }`,
       )
       .setMinValues(1)
       .setMaxValues(Math.min(categories.length, 25))
@@ -998,7 +1000,7 @@ module.exports = class Help extends Command {
         prevButton,
         pageIndicator,
         nextButton,
-        homeButton
+        homeButton,
       );
     } else {
       buttonRow = new ActionRowBuilder().addComponents(homeButton);

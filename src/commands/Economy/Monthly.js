@@ -29,7 +29,7 @@ module.exports = class Monthly extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const monthlyMessages = language.locales.get(language.defaultLocale)
       ?.economyMessages?.monthlyMessages;
@@ -41,7 +41,7 @@ module.exports = class Monthly extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color
+          color,
         );
       }
 
@@ -71,21 +71,21 @@ module.exports = class Monthly extends Command {
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNextMonthly
+        timeUntilNextMonthly,
       );
       if (!isCooldownExpired) {
         const lastCooldownTimestamp = await client.utils.getCooldown(
           ctx.author.id,
-          this.name.toLowerCase()
+          this.name.toLowerCase(),
         );
         const remainingTime = Math.ceil(
-          (lastCooldownTimestamp + timeUntilNextMonthly - Date.now()) / 1000
+          (lastCooldownTimestamp + timeUntilNextMonthly - Date.now()) / 1000,
         );
         const cooldownMessage = this.getCooldownMessage(
           remainingTime,
           client,
           language,
-          monthlyMessages
+          monthlyMessages,
         );
 
         const cooldownEmbed = client
@@ -102,13 +102,13 @@ module.exports = class Monthly extends Command {
             "balance.coin": newBalance,
             "profile.xp": newExp,
           },
-        }
+        },
       );
 
       await client.utils.updateCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNextMonthly
+        timeUntilNextMonthly,
       );
 
       let bonusMessage = "";
@@ -125,7 +125,7 @@ module.exports = class Monthly extends Command {
         now,
         monthlyMessages,
         generalMessages,
-        bonusMessage
+        bonusMessage,
       );
 
       return ctx.sendMessage({ embeds: [embed] });
@@ -135,7 +135,7 @@ module.exports = class Monthly extends Command {
         client,
         ctx,
         monthlyMessages.error,
-        color
+        color,
       );
     }
   }
@@ -180,15 +180,15 @@ module.exports = class Monthly extends Command {
     now,
     monthlyMessages,
     generalMessages,
-    bonusMessage
+    bonusMessage,
   ) {
     return client
       .embed()
       .setColor(client.config.color.main)
       .setThumbnail(
         client.utils.emojiToImage(
-          `${now.hour() >= 6 && now.hour() < 18 ? emoji.time.day : emoji.time.night}`
-        )
+          `${now.hour() >= 6 && now.hour() < 18 ? emoji.time.day : emoji.time.night}`,
+        ),
       )
       .setDescription(
         generalMessages.title
@@ -200,14 +200,14 @@ module.exports = class Monthly extends Command {
             .replace("%{coinEmote}", emoji.coin)
             .replace("%{expEmote}", emoji.exp)
             .replace("%{exp}", client.utils.formatNumber(totalExp))
-            .replace("%{bonusMessage}", bonusMessage)
+            .replace("%{bonusMessage}", bonusMessage),
       )
       .setImage(globalGif.banner.monthlyReminder)
       .setFooter({
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       });

@@ -63,7 +63,7 @@ module.exports = class ViewRelationship extends Command {
         client,
         ctx,
         `${target.username} is not registered.`,
-        color.main
+        color.main,
       );
     }
 
@@ -76,7 +76,7 @@ module.exports = class ViewRelationship extends Command {
           client,
           ctx,
           `${target.username} does not have a partner yet.`,
-          color.main
+          color.main,
         );
       }
 
@@ -88,7 +88,7 @@ module.exports = class ViewRelationship extends Command {
           `# 💕 RELATIONSHIP CARD 💕
     
 Creating a stunning premium relationship card just for you! ✨
-Please wait a moment while we craft your personalized love story display...`
+Please wait a moment while we craft your personalized love story display...`,
         )
         .setImage("https://i.imgur.com/UCsKa6Z.gif");
 
@@ -110,7 +110,7 @@ Please wait a moment while we craft your personalized love story display...`
           client,
           ctx,
           `Could not generate partner image.`,
-          color.main
+          color.main,
         );
       }
 
@@ -130,8 +130,8 @@ Please wait a moment while we craft your personalized love story display...`
           `💍 Partner of <@${target.id}>:\n<@${
             rel.partner.userId
           }> (Since <t:${Math.floor(
-            new Date(rel.partner.date).getTime() / 1000
-          )}:d>)`
+            new Date(rel.partner.date).getTime() / 1000,
+          )}:d>)`,
         )
         .setImage(`attachment://${fileName}`)
         .setFooter({ text: "Use /relationship to manage them." });
@@ -161,7 +161,7 @@ Please wait a moment while we craft your personalized love story display...`
           client,
           ctx,
           `${target.username} does not have any ${type}s.`,
-          color.main
+          color.main,
         );
       }
 
@@ -180,11 +180,11 @@ Please wait a moment while we craft your personalized love story display...`
               .map(
                 (r, idx) =>
                   `**${idx + 1}.** <@${r.userId}> — Since: <t:${Math.floor(
-                    new Date(r.date).getTime() / 1000
-                  )}:d>`
+                    new Date(r.date).getTime() / 1000,
+                  )}:d>`,
               )
-              .join("\n\n")
-          )
+              .join("\n\n"),
+          ),
       );
 
       return client.util.paginate(ctx, embeds);
@@ -220,7 +220,7 @@ Please wait a moment while we craft your personalized love story display...`
         {
           name: "👭 Sisters",
           value: formatList(rel.sisters || []),
-        }
+        },
       )
       .setFooter({ text: "Use /relationship to manage them." });
 

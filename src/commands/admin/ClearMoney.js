@@ -36,20 +36,20 @@ module.exports = class ClearMoney extends Command {
         client,
         ctx,
         client.i18n.get(language, "commands", "mention_to_bot"),
-        color
+        color,
       );
 
     const embed = client
       .embed()
       .setColor(color.main)
       .setDescription(
-        `${globalEmoji.result.tick} Cleared all money from ${user}'s balance.`
+        `${globalEmoji.result.tick} Cleared all money from ${user}'s balance.`,
       );
 
     try {
       await Users.updateOne(
         { userId: user.id },
-        { $set: { "balance.coin": 0, "balance.bank": 0 } }
+        { $set: { "balance.coin": 0, "balance.bank": 0 } },
       ).exec();
 
       return await ctx.sendMessage({ embeds: [embed] });
@@ -58,7 +58,7 @@ module.exports = class ClearMoney extends Command {
         client,
         ctx,
         "An error occurred while clearing the money.",
-        color
+        color,
       );
     }
   }

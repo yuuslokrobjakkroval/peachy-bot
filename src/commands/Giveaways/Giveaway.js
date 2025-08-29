@@ -74,7 +74,7 @@ module.exports = class Giveaway extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     // Defer reply
@@ -119,7 +119,7 @@ module.exports = class Giveaway extends Command {
       client,
       color,
       durationStr,
-      winners
+      winners,
     );
     if (!validationResult.success) {
       const errorMessage =
@@ -168,7 +168,7 @@ module.exports = class Giveaway extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                "Invalid prize format. Please provide a valid number or multiplier (e.g., 1k, 1m)."
+                "Invalid prize format. Please provide a valid number or multiplier (e.g., 1k, 1m).",
               ),
           ],
           flags: MessageFlags.Ephemeral,
@@ -200,7 +200,7 @@ module.exports = class Giveaway extends Command {
         const getUser = await client.utils.getUser(ctx.author.id);
         console.log(
           `Checking balance for user ${ctx.author.id}:`,
-          getUser.balance.coin
+          getUser.balance.coin,
         );
 
         if (!getUser || getUser.balance.coin < totalPrize) {
@@ -223,7 +223,7 @@ module.exports = class Giveaway extends Command {
         } catch (error) {
           console.error(
             `Error updating user balance for ${ctx.author.id}:`,
-            error
+            error,
           );
           return ctx.isInteraction
             ? await ctx.interaction.editReply({
@@ -247,17 +247,17 @@ module.exports = class Giveaway extends Command {
       .setTitle(
         description
           ? `${description}`
-          : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`
+          : `**${client.utils.formatNumber(prize)}** ${emoji.coin}`,
       )
       .setDescription(
         `Click ${
           emoji.main
         } button to enter!\nWinners: ${winners} with **${client.utils.formatNumber(
-          prize
+          prize,
         )}** ${emoji.coin}\nHosted by: ${
           ctx.author.displayName
         }\nEnds: <t:${formattedDuration}:R>` +
-          (isAutopayEnabled ? `\nAutopay: Enabled` : "")
+          (isAutopayEnabled ? `\nAutopay: Enabled` : ""),
       );
 
     // Add optional image and thumbnail
@@ -270,18 +270,18 @@ module.exports = class Giveaway extends Command {
       emoji.main,
       "0",
       1,
-      false
+      false,
     );
     const participantsButton = client.utils.fullOptionButton(
       "giveaway-participants",
       "",
       "Participants",
       2,
-      false
+      false,
     );
     const buttonRow = client.utils.createButtonRow(
       joinButton,
-      participantsButton
+      participantsButton,
     );
 
     // Send giveaway message
@@ -306,7 +306,7 @@ module.exports = class Giveaway extends Command {
         } catch (error) {
           console.error(
             `Error refunding user balance for ${ctx.author.id}:`,
-            error
+            error,
           );
         }
       }
@@ -355,7 +355,7 @@ module.exports = class Giveaway extends Command {
         } catch (error) {
           console.error(
             `Error refunding user balance for ${ctx.author.id}:`,
-            error
+            error,
           );
         }
       }
@@ -366,7 +366,7 @@ module.exports = class Giveaway extends Command {
             .embed()
             .setColor(color.danger)
             .setDescription(
-              "There was an error saving the giveaway. Please try again."
+              "There was an error saving the giveaway. Please try again.",
             ),
         ],
         flags: MessageFlags.Ephemeral,

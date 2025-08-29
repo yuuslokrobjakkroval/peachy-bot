@@ -61,7 +61,7 @@ module.exports = class Announce extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     // Parse command arguments
@@ -105,7 +105,7 @@ module.exports = class Announce extends Command {
         ctx,
         generalMessages?.invalidType ||
           "Invalid type. Please specify 'announce' or 'text'.",
-        color
+        color,
       );
     }
 
@@ -121,14 +121,14 @@ module.exports = class Announce extends Command {
         ctx,
         generalMessages?.invalidChannel ||
           "Could not find the specified channel.",
-        color
+        color,
       );
     }
 
     // Ensure the channel is a text-based channel
     if (
       ![ChannelType.GuildText, ChannelType.GuildAnnouncement].includes(
-        channel.type
+        channel.type,
       )
     ) {
       return await client.utils.sendErrorMessage(
@@ -136,7 +136,7 @@ module.exports = class Announce extends Command {
         ctx,
         generalMessages?.invalidChannelType ||
           "The specified channel must be a text or announcement channel.",
-        color
+        color,
       );
     }
 
@@ -146,7 +146,7 @@ module.exports = class Announce extends Command {
         client,
         ctx,
         generalMessages?.invalidMessage || "Please provide a message to send.",
-        color
+        color,
       );
     }
 
@@ -160,7 +160,7 @@ module.exports = class Announce extends Command {
           client,
           ctx,
           generalMessages?.invalidRole || "Could not find the specified role.",
-          color
+          color,
         );
       }
     }
@@ -197,7 +197,7 @@ module.exports = class Announce extends Command {
         ctx,
         generalMessages?.sendError ||
           "An error occurred while sending the message. Please try again.",
-        color
+        color,
       );
     }
 
@@ -207,7 +207,7 @@ module.exports = class Announce extends Command {
       .setColor(color.main)
       .setDescription(
         `${globalEmoji.result.tick} ${type.charAt(0).toUpperCase() + type.slice(1)} sent to ${channel.toString()} successfully!` +
-          (role ? ` Mentioned role: ${role.name}` : "")
+          (role ? ` Mentioned role: ${role.name}` : ""),
       );
 
     return await ctx.sendMessage({ embeds: [confirmationEmbed] });

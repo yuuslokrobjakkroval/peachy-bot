@@ -267,7 +267,7 @@ const userSchema = new Schema(
       slime: { type: Boolean, default: false },
     },
   },
-  { timestamps: { createdAt: true, updatedAt: true } }
+  { timestamps: { createdAt: true, updatedAt: true } },
 );
 
 module.exports = model("user", userSchema);

@@ -86,7 +86,7 @@ module.exports = class Socials extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.mainLeft} User Not Found ${emoji.mainRight}`)
         .setDescription(
-          `❌ ${smMessages?.userNotFound || "User not found in our database."}`
+          `❌ ${smMessages?.userNotFound || "User not found in our database."}`,
         )
         .setFooter({ text: "💡 User needs to interact with the bot first!" });
       return ctx.sendMessage({ embeds: [embed] });
@@ -110,7 +110,7 @@ module.exports = class Socials extends Command {
 
     // Count configured platforms
     const configuredPlatforms = Object.values(socialData).filter(
-      (platform) => platform.name && platform.link
+      (platform) => platform.name && platform.link,
     ).length;
 
     // Create enhanced embed
@@ -123,7 +123,7 @@ module.exports = class Socials extends Command {
       isOwnProfile,
       color,
       emoji,
-      smMessages
+      smMessages,
     );
 
     // Create action buttons (only for own profile)
@@ -144,7 +144,7 @@ module.exports = class Socials extends Command {
     isOwnProfile,
     color,
     emoji,
-    smMessages
+    smMessages,
   ) {
     const embed = client
       .embed()
@@ -256,7 +256,7 @@ module.exports = class Socials extends Command {
         .setCustomId("social_tiktok")
         .setLabel("TikTok")
         .setEmoji(emoji.social.tiktok)
-        .setStyle(ButtonStyle.Secondary)
+        .setStyle(ButtonStyle.Secondary),
     );
   }
 
@@ -266,7 +266,7 @@ module.exports = class Socials extends Command {
       .setColor(color.main)
       .setTitle(`${emoji.mainLeft} Social Media Setup Guide ${emoji.mainRight}`)
       .setDescription(
-        "🚀 **Welcome to your Social Media Hub!** Follow these steps to set up your profiles:"
+        "🚀 **Welcome to your Social Media Hub!** Follow these steps to set up your profiles:",
       )
       .addFields([
         {
@@ -307,7 +307,7 @@ module.exports = class Socials extends Command {
 
     const socialData = user.social;
     const configuredPlatforms = Object.values(socialData).filter(
-      (platform) => platform.name && platform.link
+      (platform) => platform.name && platform.link,
     ).length;
 
     const completionPercentage = Math.round((configuredPlatforms / 3) * 100);
@@ -316,7 +316,7 @@ module.exports = class Socials extends Command {
       .embed()
       .setColor(color.main)
       .setTitle(
-        `${emoji.mainLeft} Your Social Media Statistics ${emoji.mainRight}`
+        `${emoji.mainLeft} Your Social Media Statistics ${emoji.mainRight}`,
       )
       .setThumbnail(ctx.author.displayAvatarURL({ dynamic: true, size: 256 }))
       .addFields([

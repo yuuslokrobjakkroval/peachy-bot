@@ -24,7 +24,7 @@ const GiveawaySchedulesSchema = new Schema(
     schedules: { type: [ScheduleSchema], default: [] },
     isActive: { type: Boolean, default: true },
   },
-  { timestamps: { createdAt: true, updatedAt: true } }
+  { timestamps: { createdAt: true, updatedAt: true } },
 );
 
 module.exports = model("giveawayschedules", GiveawaySchedulesSchema);

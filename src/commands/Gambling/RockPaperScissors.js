@@ -43,7 +43,7 @@ module.exports = class RockPaperScissors extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const rpsMessages = language.locales.get(language.defaultLocale)
       ?.gamblingMessages?.rpsMessages;
@@ -61,7 +61,7 @@ module.exports = class RockPaperScissors extends Command {
           client,
           ctx,
           `You have already started the ${activeCommand} event. Please finish it before using this command.`,
-          color
+          color,
         );
       }
 
@@ -70,7 +70,7 @@ module.exports = class RockPaperScissors extends Command {
           client,
           ctx,
           generalMessages.zeroBalance,
-          color
+          color,
         );
       }
 
@@ -104,7 +104,7 @@ module.exports = class RockPaperScissors extends Command {
             client,
             ctx,
             generalMessages.invalidAmount,
-            color
+            color,
           );
         }
       }
@@ -116,7 +116,7 @@ module.exports = class RockPaperScissors extends Command {
           client,
           ctx,
           `You don't have enough coins! You have **${client.utils.formatNumber(coin)}** ${emoji.coin} but need **${client.utils.formatNumber(betAmount)}** ${emoji.coin}`,
-          color
+          color,
         );
       }
 
@@ -154,7 +154,7 @@ module.exports = class RockPaperScissors extends Command {
             ctx,
             rpsMessages.userNotFound ||
               "User not found. Please mention a valid user or use 'bot'.",
-            color
+            color,
           );
         }
 
@@ -163,7 +163,7 @@ module.exports = class RockPaperScissors extends Command {
             client,
             ctx,
             generalMessages.botMention,
-            color
+            color,
           );
         }
 
@@ -172,7 +172,7 @@ module.exports = class RockPaperScissors extends Command {
             client,
             ctx,
             rpsMessages.selfChallenge || "You cannot challenge yourself!",
-            color
+            color,
           );
         }
 
@@ -184,7 +184,7 @@ module.exports = class RockPaperScissors extends Command {
             ctx,
             rpsMessages.opponentInsufficientFunds ||
               `${targetMember.displayName} doesn't have enough coins for this bet!`,
-            color
+            color,
           );
         }
       }
@@ -198,7 +198,7 @@ module.exports = class RockPaperScissors extends Command {
           color,
           emoji,
           generalMessages,
-          rpsMessages
+          rpsMessages,
         );
       } else {
         return this.playAgainstPlayer(
@@ -211,7 +211,7 @@ module.exports = class RockPaperScissors extends Command {
           color,
           emoji,
           generalMessages,
-          rpsMessages
+          rpsMessages,
         );
       }
     } catch (error) {
@@ -220,7 +220,7 @@ module.exports = class RockPaperScissors extends Command {
         client,
         ctx,
         "An error occurred while starting the game. Please try again.",
-        color
+        color,
       );
     }
   }
@@ -233,7 +233,7 @@ module.exports = class RockPaperScissors extends Command {
     color,
     emoji,
     generalMessages,
-    rpsMessages
+    rpsMessages,
   ) {
     // Create game buttons
     const gameRow = new ActionRowBuilder().addComponents(
@@ -248,7 +248,7 @@ module.exports = class RockPaperScissors extends Command {
       new ButtonBuilder()
         .setCustomId("rps_scissors")
         .setLabel("✌ Scissors")
-        .setStyle(ButtonStyle.Primary)
+        .setStyle(ButtonStyle.Primary),
     );
 
     const gameEmbed = client
@@ -262,12 +262,12 @@ module.exports = class RockPaperScissors extends Command {
           (rpsMessages.botGameDescription
             .replace("%{coin}", `**${client.utils.formatNumber(betAmount)}**`)
             .replace("%{coinEmote}", emoji.coin) ||
-            `You're playing against the bot!\nBet: **${client.utils.formatNumber(betAmount)}** ${emoji.coin}\n\nChoose your move:`)
+            `You're playing against the bot!\nBet: **${client.utils.formatNumber(betAmount)}** ${emoji.coin}\n\nChoose your move:`),
       )
       .setFooter({
         text: generalMessages.gameInProgress.replace(
           "%{user}",
-          ctx.author.displayName
+          ctx.author.displayName,
         ),
         iconURL: ctx.author.displayAvatarURL(),
       })
@@ -321,7 +321,7 @@ module.exports = class RockPaperScissors extends Command {
             ? color.success
             : result === "lose"
               ? color.danger
-              : color.warning
+              : color.warning,
         )
         .setDescription(
           generalMessages.title
@@ -335,13 +335,13 @@ module.exports = class RockPaperScissors extends Command {
               betAmount,
               winAmount,
               emoji,
-              rpsMessages
-            )
+              rpsMessages,
+            ),
         )
         .setFooter({
           text: generalMessages.gameOver.replace(
             "%{user}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ),
           iconURL: ctx.author.displayAvatarURL(),
         })
@@ -366,12 +366,12 @@ module.exports = class RockPaperScissors extends Command {
               .replace("%{mainLeft}", emoji.mainLeft)
               .replace("%{title}", rpsMessages.title || "ROCK PAPER SCISSORS")
               .replace("%{mainRight}", emoji.mainRight) +
-              (rpsMessages.timeout || "Game timed out! No coins were lost.")
+              (rpsMessages.timeout || "Game timed out! No coins were lost."),
           )
           .setFooter({
             text: generalMessages.gameOver.replace(
               "%{user}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ),
             iconURL: ctx.author.displayAvatarURL(),
           });
@@ -398,7 +398,7 @@ module.exports = class RockPaperScissors extends Command {
     color,
     emoji,
     generalMessages,
-    rpsMessages
+    rpsMessages,
   ) {
     // Create challenge embed for the target
     const challengeEmbed = client
@@ -415,7 +415,7 @@ module.exports = class RockPaperScissors extends Command {
             .replace("%{coin}", `**${client.utils.formatNumber(betAmount)}**`)
             .replace("%{coinEmote}", emoji.coin)
             .replace("%{target}", targetMember.displayName) ||
-            `${ctx.author.displayName} has challenged ${targetMember.displayName} to Rock Paper Scissors!\n\nBet: **${client.utils.formatNumber(betAmount)}** ${emoji.coin}\n\n${targetMember.displayName}, do you accept?`)
+            `${ctx.author.displayName} has challenged ${targetMember.displayName} to Rock Paper Scissors!\n\nBet: **${client.utils.formatNumber(betAmount)}** ${emoji.coin}\n\n${targetMember.displayName}, do you accept?`),
       )
       .setFooter({
         text: `Challenge from ${ctx.author.displayName}`,
@@ -431,7 +431,7 @@ module.exports = class RockPaperScissors extends Command {
       new ButtonBuilder()
         .setCustomId("challenge_decline")
         .setLabel("Decline")
-        .setStyle(ButtonStyle.Danger)
+        .setStyle(ButtonStyle.Danger),
     );
 
     const challengeMessage = await ctx.sendMessage({
@@ -443,7 +443,7 @@ module.exports = class RockPaperScissors extends Command {
     const challengeCollector = challengeMessage.createMessageComponentCollector(
       {
         time: 60000, // 60 seconds to accept
-      }
+      },
     );
 
     challengeCollector.on("collect", async (interaction) => {
@@ -466,8 +466,8 @@ module.exports = class RockPaperScissors extends Command {
               .replace("%{mainRight}", emoji.mainRight) +
               (rpsMessages.challengeDeclined.replace(
                 "%{target}",
-                targetMember.displayName
-              ) || `${targetMember.displayName} declined the challenge.`)
+                targetMember.displayName,
+              ) || `${targetMember.displayName} declined the challenge.`),
           );
 
         await interaction.update({
@@ -492,7 +492,7 @@ module.exports = class RockPaperScissors extends Command {
           color,
           emoji,
           generalMessages,
-          rpsMessages
+          rpsMessages,
         );
       }
     });
@@ -509,9 +509,9 @@ module.exports = class RockPaperScissors extends Command {
               .replace("%{mainRight}", emoji.mainRight) +
               (rpsMessages.challengeTimeout.replace(
                 "%{target}",
-                targetMember.displayName
+                targetMember.displayName,
               ) ||
-                `Challenge timed out. ${targetMember.displayName} didn't respond in time.`)
+                `Challenge timed out. ${targetMember.displayName} didn't respond in time.`),
           );
 
         try {
@@ -538,7 +538,7 @@ module.exports = class RockPaperScissors extends Command {
     color,
     emoji,
     generalMessages,
-    rpsMessages
+    rpsMessages,
   ) {
     const gameChoices = new Map();
 
@@ -555,7 +555,7 @@ module.exports = class RockPaperScissors extends Command {
             .replace("%{player2}", `**${targetMember.displayName}**`)
             .replace("%{coin}", `**${client.utils.formatNumber(betAmount)}**`)
             .replace("%{coinEmote}", emoji.coin) ||
-            `**${ctx.author.displayName}** vs **${targetMember.displayName}**\n\nBet: **${client.utils.formatNumber(betAmount)}** ${emoji.coin} each\n\nBoth players choose your moves! Choices are hidden until both have selected.`)
+            `**${ctx.author.displayName}** vs **${targetMember.displayName}**\n\nBet: **${client.utils.formatNumber(betAmount)}** ${emoji.coin} each\n\nBoth players choose your moves! Choices are hidden until both have selected.`),
       )
       .setFooter({
         text: "Waiting for both players to choose...",
@@ -575,7 +575,7 @@ module.exports = class RockPaperScissors extends Command {
       new ButtonBuilder()
         .setCustomId("pvp_scissors")
         .setLabel("✌ Scissors")
-        .setStyle(ButtonStyle.Primary)
+        .setStyle(ButtonStyle.Primary),
     );
 
     await interaction.update({
@@ -631,7 +631,7 @@ module.exports = class RockPaperScissors extends Command {
           color,
           emoji,
           generalMessages,
-          rpsMessages
+          rpsMessages,
         );
       }
     });
@@ -647,7 +647,7 @@ module.exports = class RockPaperScissors extends Command {
               .replace("%{title}", rpsMessages.title || "ROCK PAPER SCISSORS")
               .replace("%{mainRight}", emoji.mainRight) +
               (rpsMessages.pvpTimeout ||
-                "Game timed out! Not all players made their choices. No coins were lost.")
+                "Game timed out! Not all players made their choices. No coins were lost."),
           );
 
         try {
@@ -674,7 +674,7 @@ module.exports = class RockPaperScissors extends Command {
     color,
     emoji,
     generalMessages,
-    rpsMessages
+    rpsMessages,
   ) {
     const player1Choice = gameChoices.get(ctx.author.id);
     const player2Choice = gameChoices.get(targetMember.id);
@@ -724,8 +724,8 @@ module.exports = class RockPaperScissors extends Command {
             betAmount,
             winnerText,
             emoji,
-            rpsMessages
-          )
+            rpsMessages,
+          ),
       )
       .setFooter({
         text: generalMessages.gameOver.replace("%{user}", "Game"),
@@ -758,7 +758,7 @@ module.exports = class RockPaperScissors extends Command {
     betAmount,
     winAmount,
     emoji,
-    rpsMessages
+    rpsMessages,
   ) {
     const choiceEmojis = {
       rock: "👊",
@@ -792,7 +792,7 @@ module.exports = class RockPaperScissors extends Command {
     betAmount,
     winnerText,
     emoji,
-    rpsMessages 
+    rpsMessages,
   ) {
     const choiceEmojis = {
       rock: "👊",

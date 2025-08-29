@@ -32,15 +32,15 @@ module.exports = class ChangeProfile extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", emoji.searching)
+        generalMessages.search.replace("%{loading}", emoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", emoji.searching)
+        generalMessages.search.replace("%{loading}", emoji.searching),
       );
     }
 
@@ -53,7 +53,7 @@ module.exports = class ChangeProfile extends Command {
         client,
         ctx,
         "Please attach an image.",
-        color
+        color,
       );
     }
 
@@ -67,7 +67,7 @@ module.exports = class ChangeProfile extends Command {
           generalMessages.title
             .replace("%{mainLeft}", emoji.mainLeft)
             .replace("%{title}", "PROFILE!")
-            .replace("%{mainRight}", emoji.mainRight)
+            .replace("%{mainRight}", emoji.mainRight),
         )
         .setImage(imageAttachment.url)
         .setTimestamp();
@@ -81,7 +81,7 @@ module.exports = class ChangeProfile extends Command {
         client,
         ctx,
         "Failed to update the bot's profile picture.",
-        color
+        color,
       );
     }
   }

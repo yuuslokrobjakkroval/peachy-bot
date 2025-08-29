@@ -18,7 +18,7 @@ try {
   GlobalFonts.registerFromPath("./src/data/fonts/Ghibli.otf", "Ghibli");
   GlobalFonts.registerFromPath(
     "./src/data/fonts/Ghibli-Bold.otf",
-    "Ghibli-Bold"
+    "Ghibli-Bold",
   );
 } catch (error) {
   console.error("Failed to register fonts:", error);
@@ -66,23 +66,23 @@ module.exports = class Ability {
                   $max: { uses: invite.uses },
                   $setOnInsert: { userId: [] },
                 },
-                { upsert: true }
+                { upsert: true },
               );
-            })
+            }),
           );
         } catch (error) {
           if (error.code === 50013) {
             console.error(
-              `Missing MANAGE_GUILD permission in guild ${guild.name} (${guild.id})`
+              `Missing MANAGE_GUILD permission in guild ${guild.name} (${guild.id})`,
             );
             await InviteTrackerSchema.updateOne(
               { id: guild.id, isActive: true },
-              { $set: { isActive: false } }
+              { $set: { isActive: false } },
             );
           } else {
             console.error(
               `Error syncing invites for guild ${guild.name} (${guild.id}):`,
-              error
+              error,
             );
           }
         }
@@ -107,12 +107,12 @@ module.exports = class Ability {
       await InviteSchema.updateOne(
         { inviteCode: invite.code },
         { $set: data },
-        { upsert: true }
+        { upsert: true },
       );
     } catch (error) {
       console.error(
         `Failed to sync created invite ${invite.code} for guild ${invite.guild.name} (${invite.guild.id}):`,
-        error
+        error,
       );
     }
   }
@@ -123,7 +123,7 @@ module.exports = class Ability {
     } catch (error) {
       console.error(
         `Failed to delete invite ${invite.code} from DB for guild ${invite.guild.name} (${invite.guild.id}):`,
-        error
+        error,
       );
     }
   }
@@ -142,11 +142,11 @@ module.exports = class Ability {
 
       if (!levelingChannel) {
         console.warn(
-          `Leveling channel ${channel} not found in guild ${message.guild.name}. Disabling leveling message.`
+          `Leveling channel ${channel} not found in guild ${message.guild.name}. Disabling leveling message.`,
         );
         await LevelingMessagesSchema.updateOne(
           { id: message.guild.id, isActive: true },
-          { $set: { isActive: false } }
+          { $set: { isActive: false } },
         );
         return;
       }
@@ -171,7 +171,7 @@ module.exports = class Ability {
         null,
         null,
         userInfo,
-        level
+        level,
       );
 
       await levelingChannel.send({
@@ -180,7 +180,7 @@ module.exports = class Ability {
     } catch (error) {
       console.error(
         `Error processing leveling message for guild ${message.guild.name} (${message.guild.id}):`,
-        error
+        error,
       );
     }
   }
@@ -207,11 +207,11 @@ module.exports = class Ability {
 
         if (!welcomeChannel) {
           console.warn(
-            `Welcome channel ${channel} not found in guild ${member.guild.name}. Disabling welcome message.`
+            `Welcome channel ${channel} not found in guild ${member.guild.name}. Disabling welcome message.`,
           );
           await WelcomeSchema.updateOne(
             { id: member.guild.id, isActive: true },
-            { $set: { isActive: false } }
+            { $set: { isActive: false } },
           );
           return;
         }
@@ -221,7 +221,7 @@ module.exports = class Ability {
             client,
             member,
             member.guild,
-            message
+            message,
           );
           await welcomeChannel.send({
             content: content
@@ -233,8 +233,8 @@ module.exports = class Ability {
                     null,
                     null,
                     null,
-                    null
-                  )
+                    null,
+                  ),
                 )
               : "",
             embeds: welcomeEmbed ? [welcomeEmbed] : [],
@@ -249,7 +249,7 @@ module.exports = class Ability {
                   client,
                   member,
                   member.guild,
-                  content
+                  content,
                 )
               : "",
             files: files ? [files] : [],
@@ -267,7 +267,7 @@ module.exports = class Ability {
               const role = member.guild.roles.cache.get(roleId);
               if (!role) {
                 console.warn(
-                  `Role with ID ${roleId} not found in guild ${member.guild.name}`
+                  `Role with ID ${roleId} not found in guild ${member.guild.name}`,
                 );
                 return;
               }
@@ -276,10 +276,10 @@ module.exports = class Ability {
               } catch (error) {
                 console.error(
                   `Failed to assign role ${role.name} to ${member.user.tag} in guild ${member.guild.name}:`,
-                  error
+                  error,
                 );
               }
-            })
+            }),
           );
         }
       }
@@ -296,11 +296,11 @@ module.exports = class Ability {
 
           if (!trackingChannel) {
             console.warn(
-              `Invite tracker channel ${channel} not found in guild ${member.guild.name}. Disabling invite tracker.`
+              `Invite tracker channel ${channel} not found in guild ${member.guild.name}. Disabling invite tracker.`,
             );
             await InviteTrackerSchema.updateOne(
               { id: member.guild.id, isActive: true },
-              { $set: { isActive: false } }
+              { $set: { isActive: false } },
             );
             return;
           }
@@ -319,7 +319,7 @@ module.exports = class Ability {
               await InviteSchema.updateOne(
                 { guildId: member.guild.id, inviteCode: invite.code },
                 { $set: { uses: invite.uses, guildName: member.guild.name } },
-                { upsert: true }
+                { upsert: true },
               );
 
               const inviter = invite.inviter;
@@ -330,7 +330,7 @@ module.exports = class Ability {
                   member.guild,
                   message,
                   invite,
-                  inviter
+                  inviter,
                 );
                 await trackingChannel.send({
                   content: content
@@ -340,7 +340,7 @@ module.exports = class Ability {
                         member.guild,
                         content,
                         invite,
-                        inviter
+                        inviter,
                       )
                     : "",
                   embeds: trackerEmbed ? [trackerEmbed] : [],
@@ -357,7 +357,7 @@ module.exports = class Ability {
                         member.guild,
                         content,
                         invite,
-                        inviter
+                        inviter,
                       )
                     : "",
                   files: files ? [files] : [],
@@ -381,10 +381,10 @@ module.exports = class Ability {
                     `# ${globalEmoji.giveaway.gift} GIFT FOR INVITER ${
                       globalEmoji.giveaway.gift
                     }\n${inviterMention} got reward **${client.utils.formatNumber(
-                      300000
+                      300000,
                     )}** ${
                       globalEmoji.coin
-                    }\nThanks for inviting a new member to the server! We appreciate your help in growing our community!`
+                    }\nThanks for inviting a new member to the server! We appreciate your help in growing our community!`,
                   )
                   .setFooter({
                     text: "Enjoy your reward!",
@@ -395,7 +395,7 @@ module.exports = class Ability {
               } catch (error) {
                 console.error(
                   `Failed to process invite reward for ${inviter.id}:`,
-                  error
+                  error,
                 );
               }
               break;
@@ -406,17 +406,17 @@ module.exports = class Ability {
             await InviteSchema.updateOne(
               { guildId: member.guild.id, inviteCode: invite.code },
               { $set: { uses: invite.uses, guildName: member.guild.name } },
-              { upsert: true }
+              { upsert: true },
             );
           }
         } catch (error) {
           console.error(
             `Failed to fetch or update invites for guild ${member.guild.name} (${member.guild.id}):`,
-            error
+            error,
           );
           if (error.code === 50013) {
             console.error(
-              "Missing Permissions: Ensure the bot has the Manage Server permission."
+              "Missing Permissions: Ensure the bot has the Manage Server permission.",
             );
           }
         }
@@ -424,7 +424,7 @@ module.exports = class Ability {
     } catch (error) {
       console.error(
         `Error processing welcome message for guild ${member.guild.name} (${member.guild.id}):`,
-        error
+        error,
       );
     }
   }
@@ -443,7 +443,7 @@ module.exports = class Ability {
       const matchingResponses = autoresponse.filter(
         (response) =>
           response.trigger.trim().toLowerCase() ===
-          message.content.trim().toLowerCase()
+          message.content.trim().toLowerCase(),
       );
 
       if (!matchingResponses || matchingResponses.length === 0) return;
@@ -468,21 +468,21 @@ module.exports = class Ability {
         null,
         null,
         userInfo,
-        message.content
+        message.content,
       );
 
       if (processedContent) {
         await message.reply(processedContent);
       } else {
         console.warn(
-          `Failed to process response for trigger: ${message.content} in guild ${message.guild.name}`
+          `Failed to process response for trigger: ${message.content} in guild ${message.guild.name}`,
         );
         await message.reply(randomResponse.response); // Fallback to raw response
       }
     } catch (error) {
       console.error(
         `Error processing auto-responses for guild ${message.guild.name} (${message.guild.id}):`,
-        error
+        error,
       );
     }
   }
@@ -501,11 +501,11 @@ module.exports = class Ability {
 
       if (!boosterChannel) {
         console.warn(
-          `Booster channel ${channel} not found in guild ${member.guild.name}. Disabling booster message.`
+          `Booster channel ${channel} not found in guild ${member.guild.name}. Disabling booster message.`,
         );
         await BoosterSchema.updateOne(
           { id: member.guild.id, isActive: true },
-          { $set: { isActive: false } }
+          { $set: { isActive: false } },
         );
         return;
       }
@@ -515,7 +515,7 @@ module.exports = class Ability {
           client,
           member,
           member.guild,
-          message
+          message,
         );
         await boosterChannel.send({
           content: content
@@ -527,8 +527,8 @@ module.exports = class Ability {
                   null,
                   null,
                   null,
-                  null
-                )
+                  null,
+                ),
               )
             : "",
           embeds: boosterEmbed ? [boosterEmbed] : [],
@@ -547,7 +547,7 @@ module.exports = class Ability {
     } catch (error) {
       console.error(
         `Error processing booster message for guild ${member.guild.name} (${member.guild.id}):`,
-        error
+        error,
       );
     }
   }
@@ -566,11 +566,11 @@ module.exports = class Ability {
 
       if (!goodbyeChannel) {
         console.warn(
-          `Goodbye channel ${channel} not found in guild ${member.guild.name}. Disabling goodbye message.`
+          `Goodbye channel ${channel} not found in guild ${member.guild.name}. Disabling goodbye message.`,
         );
         await GoodByeMessagesSchema.updateOne(
           { id: member.guild.id, isActive: true },
-          { $set: { isActive: false } }
+          { $set: { isActive: false } },
         );
         return;
       }
@@ -579,7 +579,7 @@ module.exports = class Ability {
           client,
           member,
           member.guild,
-          message
+          message,
         );
         await goodbyeChannel.send({
           content: content
@@ -591,8 +591,8 @@ module.exports = class Ability {
                   null,
                   null,
                   null,
-                  null
-                )
+                  null,
+                ),
               )
             : "",
           embeds: goodByeEmbed ? [goodByeEmbed] : [],
@@ -611,7 +611,7 @@ module.exports = class Ability {
     } catch (error) {
       console.error(
         `Error processing goodbye message for guild ${member.guild.name} (${member.guild.id}):`,
-        error
+        error,
       );
     }
   }
@@ -621,7 +621,7 @@ module.exports = class Ability {
       const sendMessage = await SendMessageSchema.findOneAndUpdate(
         { isActive: true },
         { $set: { isActive: false } },
-        { new: true }
+        { new: true },
       );
       if (!sendMessage) {
         return;
@@ -676,11 +676,11 @@ module.exports = class Ability {
 
         if (!welcomeChannel) {
           console.warn(
-            `Welcome channel ${channel} not found in guild ${member.guild.name}. Disabling welcome message.`
+            `Welcome channel ${channel} not found in guild ${member.guild.name}. Disabling welcome message.`,
           );
           await WelcomeSchema.updateOne(
             { id: member.guild.id, isActive: true },
-            { $set: { isActive: false } }
+            { $set: { isActive: false } },
           );
           return;
         }
@@ -690,7 +690,7 @@ module.exports = class Ability {
             client,
             member,
             member.guild,
-            message
+            message,
           );
           await welcomeChannel.send({
             content: content
@@ -702,8 +702,8 @@ module.exports = class Ability {
                     null,
                     null,
                     null,
-                    null
-                  )
+                    null,
+                  ),
                 )
               : "",
             embeds: welcomeEmbed ? [welcomeEmbed] : [],
@@ -718,7 +718,7 @@ module.exports = class Ability {
                   client,
                   member,
                   member.guild,
-                  content
+                  content,
                 )
               : "",
             files: files ? [files] : [],
@@ -733,11 +733,11 @@ module.exports = class Ability {
 
         if (!boosterChannel) {
           console.warn(
-            `Booster channel ${channel} not found in guild ${member.guild.name}. Disabling booster message.`
+            `Booster channel ${channel} not found in guild ${member.guild.name}. Disabling booster message.`,
           );
           await BoosterSchema.updateOne(
             { id: member.guild.id, isActive: true },
-            { $set: { isActive: false } }
+            { $set: { isActive: false } },
           );
           return;
         }
@@ -747,7 +747,7 @@ module.exports = class Ability {
             client,
             member,
             member.guild,
-            message
+            message,
           );
           await boosterChannel.send({
             content: content
@@ -759,8 +759,8 @@ module.exports = class Ability {
                     null,
                     null,
                     null,
-                    null
-                  )
+                    null,
+                  ),
                 )
               : "",
             embeds: boosterEmbed ? [boosterEmbed] : [],
@@ -775,7 +775,7 @@ module.exports = class Ability {
                   client,
                   member,
                   member.guild,
-                  content
+                  content,
                 )
               : "",
             files: files ? [files] : [],
@@ -791,11 +791,11 @@ module.exports = class Ability {
 
           if (!trackingChannel) {
             console.warn(
-              `Invite tracker channel ${channel} not found in guild ${member.guild.name}. Disabling invite tracker.`
+              `Invite tracker channel ${channel} not found in guild ${member.guild.name}. Disabling invite tracker.`,
             );
             await InviteTrackerSchema.updateOne(
               { id: member.guild.id, isActive: true },
-              { $set: { isActive: false } }
+              { $set: { isActive: false } },
             );
             return;
           }
@@ -814,7 +814,7 @@ module.exports = class Ability {
               await InviteSchema.updateOne(
                 { guildId: member.guild.id, inviteCode: invite.code },
                 { $set: { uses: invite.uses, guildName: member.guild.name } },
-                { upsert: true }
+                { upsert: true },
               );
 
               const inviter = invite.inviter;
@@ -825,7 +825,7 @@ module.exports = class Ability {
                   member.guild,
                   message,
                   invite,
-                  inviter
+                  inviter,
                 );
                 await trackingChannel.send({
                   content: content
@@ -835,7 +835,7 @@ module.exports = class Ability {
                         member.guild,
                         content,
                         invite,
-                        inviter
+                        inviter,
                       )
                     : "",
                   embeds: trackerEmbed ? [trackerEmbed] : [],
@@ -852,7 +852,7 @@ module.exports = class Ability {
                         member.guild,
                         content,
                         invite,
-                        inviter
+                        inviter,
                       )
                     : "",
                   files: files ? [files] : [],
@@ -866,17 +866,17 @@ module.exports = class Ability {
             await InviteSchema.updateOne(
               { guildId: member.guild.id, inviteCode: invite.code },
               { $set: { uses: invite.uses, guildName: member.guild.name } },
-              { upsert: true }
+              { upsert: true },
             );
           }
         } catch (error) {
           console.error(
             `Failed to fetch or update invites for guild ${member.guild.name} (${member.guild.id}):`,
-            error
+            error,
           );
           if (error.code === 50013) {
             console.error(
-              "Missing Permissions: Ensure the bot has the Manage Server permission."
+              "Missing Permissions: Ensure the bot has the Manage Server permission.",
             );
           }
         }
@@ -889,11 +889,11 @@ module.exports = class Ability {
 
         if (!goodbyeChannel) {
           console.warn(
-            `Goodbye channel ${channel} not found in guild ${member.guild.name}. Disabling goodbye message.`
+            `Goodbye channel ${channel} not found in guild ${member.guild.name}. Disabling goodbye message.`,
           );
           await GoodByeMessagesSchema.updateOne(
             { id: member.guild.id, isActive: true },
-            { $set: { isActive: false } }
+            { $set: { isActive: false } },
           );
           return;
         }
@@ -903,7 +903,7 @@ module.exports = class Ability {
             client,
             member,
             member.guild,
-            message
+            message,
           );
           await goodbyeChannel.send({
             content: content
@@ -911,7 +911,7 @@ module.exports = class Ability {
                   client,
                   member,
                   member.guild,
-                  content
+                  content,
                 )
               : "",
             embeds: goodByeEmbed ? [goodByeEmbed] : [],
@@ -926,7 +926,7 @@ module.exports = class Ability {
                   client,
                   member,
                   member.guild,
-                  content
+                  content,
                 )
               : "",
             files: files ? [files] : [],
@@ -940,11 +940,11 @@ module.exports = class Ability {
 
         if (!levelingChannel) {
           console.warn(
-            `Leveling channel ${channel} not found in guild ${member.guild.name}. Disabling leveling message.`
+            `Leveling channel ${channel} not found in guild ${member.guild.name}. Disabling leveling message.`,
           );
           await LevelingMessagesSchema.updateOne(
             { id: member.guild.id, isActive: true },
-            { $set: { isActive: false } }
+            { $set: { isActive: false } },
           );
           return;
         }
@@ -966,7 +966,7 @@ module.exports = class Ability {
                 content,
                 null,
                 null,
-                userInfo
+                userInfo,
               )
             : "",
         });
@@ -974,7 +974,7 @@ module.exports = class Ability {
     } catch (error) {
       console.error(
         `Error processing send message for guild ${member.guild.name} (${member.guild.id}):`,
-        error
+        error,
       );
     }
   }
@@ -1061,7 +1061,7 @@ module.exports = class Ability {
     invite,
     inviter,
     userInfo,
-    level
+    level,
   ) {
     const data = Ability.getReplacementData(
       member,
@@ -1069,7 +1069,7 @@ module.exports = class Ability {
       invite,
       inviter,
       userInfo,
-      level
+      level,
     );
 
     if (typeof result !== "object") {
@@ -1083,13 +1083,13 @@ module.exports = class Ability {
 
       if (result.message?.description) {
         embed.setDescription(
-          Ability.replacePlaceholders(result.message.description, data)
+          Ability.replacePlaceholders(result.message.description, data),
         );
       }
 
       if (result.message?.thumbnail) {
         embed.setThumbnail(
-          Ability.replacePlaceholders(result.message.thumbnail, data)
+          Ability.replacePlaceholders(result.message.thumbnail, data),
         );
       }
 
@@ -1145,7 +1145,7 @@ module.exports = class Ability {
       const result = await client.utils.safeLoadImage(
         data.backgroundImage,
         defaultBackgroundUrl,
-        fallbackBackgroundColor
+        fallbackBackgroundColor,
       );
 
       if (result.image) {
@@ -1167,7 +1167,7 @@ module.exports = class Ability {
 
     try {
       const avatar = await loadImage(
-        member.displayAvatarURL({ format: "png", size: 256 })
+        member.displayAvatarURL({ format: "png", size: 256 }),
       );
       const userAvatarSize = 128;
       const userAvatarX = width / 2 - userAvatarSize / 2;
@@ -1189,7 +1189,7 @@ module.exports = class Ability {
       ctx.fillText(
         client.utils.formatUpperCase(member.user?.username || "Unknown"),
         width / 2,
-        340
+        340,
       );
 
       ctx.font = "28px Ghibli-Bold, Arial";
@@ -1211,18 +1211,18 @@ module.exports = class Ability {
           userAvatarY,
           userAvatarX + userAvatarSize,
           userAvatarY + borderRadius,
-          borderRadius
+          borderRadius,
         );
         ctx.lineTo(
           userAvatarX + userAvatarSize,
-          userAvatarY + userAvatarSize - borderRadius
+          userAvatarY + userAvatarSize - borderRadius,
         );
         ctx.arcTo(
           userAvatarX + userAvatarSize,
           userAvatarY + userAvatarSize,
           userAvatarX + userAvatarSize - borderRadius,
           userAvatarY + userAvatarSize,
-          borderRadius
+          borderRadius,
         );
         ctx.lineTo(userAvatarX + borderRadius, userAvatarY + userAvatarSize);
         ctx.arcTo(
@@ -1230,7 +1230,7 @@ module.exports = class Ability {
           userAvatarY + userAvatarSize,
           userAvatarX,
           userAvatarY + userAvatarSize - borderRadius,
-          borderRadius
+          borderRadius,
         );
         ctx.lineTo(userAvatarX, userAvatarY + borderRadius);
         ctx.arcTo(
@@ -1238,7 +1238,7 @@ module.exports = class Ability {
           userAvatarY,
           userAvatarX + borderRadius,
           userAvatarY,
-          borderRadius
+          borderRadius,
         );
         ctx.closePath();
 
@@ -1252,7 +1252,7 @@ module.exports = class Ability {
           userAvatarX,
           userAvatarY,
           userAvatarSize,
-          userAvatarSize
+          userAvatarSize,
         );
       } else {
         ctx.beginPath();
@@ -1262,7 +1262,7 @@ module.exports = class Ability {
           userAvatarSize / 2 + 2,
           0,
           Math.PI * 2,
-          true
+          true,
         );
 
         ctx.lineWidth = 8;
@@ -1274,13 +1274,13 @@ module.exports = class Ability {
           userAvatarX,
           userAvatarY,
           userAvatarSize,
-          userAvatarSize
+          userAvatarSize,
         );
       }
     } catch (error) {
       console.error(
         `Error processing avatar or text for member ${member.user.id}:`,
-        error
+        error,
       );
     }
 

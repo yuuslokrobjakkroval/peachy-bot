@@ -6,7 +6,8 @@ module.exports = class TruthOrDareCommand extends Command {
     super(client, {
       name: "truthordare",
       description: {
-        content: "Play Truth or Dare. Choose randomly or specify 'truth' or 'dare'",
+        content:
+          "Play Truth or Dare. Choose randomly or specify 'truth' or 'dare'",
         examples: ["truthordare", "truthordare truth", "truthordare dare"],
         usage: "truthordare [truth|dare]",
       },
@@ -42,18 +43,20 @@ module.exports = class TruthOrDareCommand extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+    const generalMessages = language.locales.get(
+      language.defaultLocale,
+    )?.generalMessages;
 
     const userChoice = args[0] || ctx.interaction?.options.getString("choice");
     const choice = userChoice ? userChoice.toLowerCase() : null;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching)
+        generalMessages.search.replace("%{loading}", globalEmoji.searching),
       );
     }
 
@@ -162,13 +165,13 @@ module.exports = class TruthOrDareCommand extends Command {
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", title)
           .replace("%{mainRight}", emoji.mainRight) +
-          `\n\n🎲 **${randomItem}**`
+          `\n\n🎲 **${randomItem}**`,
       )
       .setFooter({
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })
