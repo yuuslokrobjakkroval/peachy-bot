@@ -1,11 +1,18 @@
 <h1 align="center">
-  <br>
-  <a href="https://github.com/yuuslokrobjakkroval"><img src="./public/images/banner/main.gif" height="380" alt="Profile"></a>
-  <br>
-    <div style="color:#F582AE">
-        PEACHY
-    </div>
+  <a href="https://github.com/yuuslokrobjakkroval"><img src="./public/images/banner/main.gif" height="380" alt="Peachy Bot Banner"></a>
+  <br />
+  <span style="color:#F582AE;font-size:2.5rem;">PEACHY BOT</span>
 </h1>
+
+<p align="center">
+  <img src="https://img.shields.io/github/stars/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="GitHub stars">
+  <img src="https://img.shields.io/github/license/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/issues/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="Issues">
+  <img src="https://img.shields.io/discord/1271693788548436008?label=Discord&logo=discord&style=for-the-badge" alt="Discord">
+</p>
+
+<p align="center"><b>Peachy Bot</b> is a powerful, feature-rich Discord bot for server management, fun, games, economy, moderation, and more. Built with Discord.js v14, it offers a modern dashboard, hybrid command handling, and a highly customizable experience for your community.</p>
+
 <p align="center">Actions, Bank, Rank, Economy, Inventory, Fun, Games, Gambling, Giveaways, Profile, Social, Utility, Information, and More...</p>
 
 <p align="center">
@@ -165,12 +172,23 @@ If you need any additional help, make sure to join our support server [here](htt
 
 <h1 align="center"> 💌 Support Server </h1>
 
+## 🔒 Security
+
+If you discover a security vulnerability, please follow our [Security Policy](./SECURITY.md) for responsible disclosure and reporting instructions.
+
 ## 😎 OWNER
 
 - [𝐏𝐄𝐀𝐂𝐇𝐘](https://discord.gg/peachygang) - Join us now
   <br>
 
-Peachy is a discord bot mode by [𝐊𝐘𝐔𝐔 🐣💞](https://discord.gg/CmsxPWNEjf)
+Peachy is a Discord bot made by [𝐊𝐘𝐔𝐔 🐣💞](https://discord.gg/CmsxPWNEjf)
 
 <br />
-If you liked this repository, feel free to leave a star ⭐ to help promote !
+
+If you liked this repository, feel free to leave a star ⭐ to help promote!
+
+---
+
+## 📄 License
+
+This project is licensed under the terms of the [PEACHY LICENSE](./LICENSE).
