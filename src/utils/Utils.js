@@ -2018,7 +2018,7 @@ module.exports = class Utils {
       const guildId = "1369956599720054847";
       const roleIds = ["1370318327372714034", "1370299562312335441"];
       const rewardChannelId = "1374630700464210010";
-      const rewardAmount = 1000000;
+      const rewardAmount = 500000;
 
       const guild = await client.guilds.fetch(guildId).catch((err) => {
         console.error(
