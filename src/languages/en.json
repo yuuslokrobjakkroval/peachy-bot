@@ -144,7 +144,7 @@
   },
   "economyMessages": {
     "balanceMessages": {
-      "description": "%{coinEmote} : **%{coin}** coins\n%{bankEmote} : **%{bank}** coins\n%{creditEmote} : **%{credit}** credits"
+      "description": "%{coinEmote} : **%{coin}** coins\n%{bankEmote} : **%{bank}** coins"
     },
     "dailyMessages": {
       "success": "You have claimed your daily reward of %{coinEmote} **+%{coin}** coins and %{expEmote} **+%{exp} xp**\n%{bonusMessage}",
