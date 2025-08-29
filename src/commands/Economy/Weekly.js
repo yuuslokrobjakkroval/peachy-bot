@@ -46,7 +46,7 @@ module.exports = class Weekly extends Command {
         );
       }
 
-      const baseCoins = chance.integer({ min: 500000, max: 1000000 });
+      const baseCoins = chance.integer({ min: 70000, max: 140000 });
       const baseExp = chance.integer({ min: 200, max: 250 });
 
       const verify = user.verification.verify.status === "verified";

@@ -45,7 +45,7 @@ module.exports = class Monthly extends Command {
         );
       }
 
-      const baseCoins = chance.integer({ min: 2000000, max: 5000000 });
+      const baseCoins = chance.integer({ min: 300000, max: 600000 });
       const baseExp = chance.integer({ min: 500, max: 1000 });
 
       const verify = user.verification.verify.status === "verified";

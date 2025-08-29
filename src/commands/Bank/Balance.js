@@ -56,7 +56,7 @@ module.exports = class Balance extends Command {
           client,
           ctx,
           "You are not allowed to check another user's balance.",
-          color,
+          color
         );
       }
 
@@ -66,7 +66,7 @@ module.exports = class Balance extends Command {
           client,
           ctx,
           generalMessages.userNotFound || "User not found.",
-          color,
+          color
         );
       }
 
@@ -76,7 +76,7 @@ module.exports = class Balance extends Command {
       if (client.achievementManager) {
         await client.achievementManager.checkEconomyAchievements(
           ctx.author.id,
-          netWorth,
+          netWorth
         );
       }
 
@@ -88,7 +88,7 @@ module.exports = class Balance extends Command {
         color,
         emoji,
         generalMessages,
-        balanceMessages,
+        balanceMessages
       );
       const components = this.createBalanceButtons(emoji);
       const message = await ctx.sendMessage({ embeds: [embed], components });
@@ -100,7 +100,7 @@ module.exports = class Balance extends Command {
         user,
         color,
         emoji,
-        language,
+        language
       );
     } catch (error) {
       return ctx.sendMessage({
@@ -117,7 +117,7 @@ module.exports = class Balance extends Command {
     color,
     emoji,
     generalMessages,
-    balanceMessages,
+    balanceMessages
   ) {
     const { coin = 0, bank = 0, credit = 0 } = userData.balance || {};
     const titleTemplate = generalMessages?.title;
@@ -129,7 +129,7 @@ module.exports = class Balance extends Command {
       .setThumbnail(
         globalGif.balanceThumbnail
           ? globalGif.balanceThumbnail
-          : client.utils.emojiToImage(emoji.main || "💰"),
+          : client.utils.emojiToImage(emoji.main || "💰")
       )
       .setDescription(
         titleTemplate
@@ -141,8 +141,6 @@ module.exports = class Balance extends Command {
             .replace("%{coin}", client.utils.formatNumber(coin))
             .replace("%{bankEmote}", emoji.bank || "🏦")
             .replace("%{bank}", client.utils.formatNumber(bank))
-            .replace("%{creditEmote}", globalEmoji.card?.apple || "💳")
-            .replace("%{credit}", client.utils.formatNumber(credit)),
       )
       .setImage(globalGif.balanceBanner)
       .setFooter({
@@ -166,7 +164,7 @@ module.exports = class Balance extends Command {
         .setLabel("Withdraw")
         .setEmoji(emoji.coin || "💰")
         .setStyle(ButtonStyle.Success)
-        .setDisabled(disabled),
+        .setDisabled(disabled)
     );
 
     return [row];
@@ -179,10 +177,10 @@ module.exports = class Balance extends Command {
     user,
     color,
     emoji,
-    language,
+    language
   ) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const balanceMessages = language.locales.get(language.defaultLocale)
       ?.economyMessages?.balanceMessages;
@@ -195,7 +193,7 @@ module.exports = class Balance extends Command {
       color,
       emoji,
       language,
-      message,
+      message
     );
 
     const collector = message.createMessageComponentCollector({
@@ -213,7 +211,7 @@ module.exports = class Balance extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                "This balance menu belongs to someone else. Please use the balance command yourself.",
+                "This balance menu belongs to someone else. Please use the balance command yourself."
               ),
           ],
           flags: 64,
@@ -247,7 +245,7 @@ module.exports = class Balance extends Command {
               color,
               emoji,
               language,
-              message,
+              message
             );
             break;
           case "withdraw":
@@ -259,7 +257,7 @@ module.exports = class Balance extends Command {
               color,
               emoji,
               language,
-              message,
+              message
             );
             break;
         }
@@ -271,7 +269,7 @@ module.exports = class Balance extends Command {
                 .embed()
                 .setColor(color.danger)
                 .setDescription(
-                  "An error occurred while processing your request.",
+                  "An error occurred while processing your request."
                 ),
             ],
             flags: 64,
@@ -300,7 +298,7 @@ module.exports = class Balance extends Command {
     color,
     emoji,
     language,
-    message,
+    message
   ) {
     const modalHandler = async (interaction) => {
       if (!interaction.isModalSubmit()) return;
@@ -340,7 +338,7 @@ module.exports = class Balance extends Command {
             color,
             emoji,
             language,
-            message,
+            message
           );
         }
 
@@ -374,7 +372,7 @@ module.exports = class Balance extends Command {
             color,
             emoji,
             language,
-            message,
+            message
           );
         }
       } catch (error) {
@@ -385,7 +383,7 @@ module.exports = class Balance extends Command {
                 .embed()
                 .setColor(color.danger)
                 .setDescription(
-                  "An error occurred while processing your request.",
+                  "An error occurred while processing your request."
                 ),
             ],
             flags: 64,
@@ -414,7 +412,7 @@ module.exports = class Balance extends Command {
     color,
     emoji,
     language,
-    message,
+    message
   ) {
     try {
       if (message) {
@@ -427,7 +425,7 @@ module.exports = class Balance extends Command {
           emoji,
           language?.locales?.get(language.defaultLocale)?.generalMessages || {},
           language?.locales?.get(language.defaultLocale)?.economyMessages
-            ?.balanceMessages || {},
+            ?.balanceMessages || {}
         );
 
         await message
@@ -463,7 +461,7 @@ module.exports = class Balance extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                `${emoji?.error || "❌"} You don't have any coins to deposit.`,
+                `${emoji?.error || "❌"} You don't have any coins to deposit.`
               ),
           ],
           flags: 64,
@@ -477,8 +475,8 @@ module.exports = class Balance extends Command {
         .setTitle(`${emoji?.bank || "🏦"} Deposit Options`)
         .setDescription(
           `Select an option to deposit coins to your bank.\nYou have **${client.utils.formatNumber(
-            user.balance.coin,
-          )}** coins in your wallet.`,
+            user.balance.coin
+          )}** coins in your wallet.`
         );
 
       const uniqueId = Date.now().toString();
@@ -498,7 +496,7 @@ module.exports = class Balance extends Command {
         new ButtonBuilder()
           .setCustomId(cancelId)
           .setLabel("Cancel")
-          .setStyle(ButtonStyle.Danger),
+          .setStyle(ButtonStyle.Danger)
       );
 
       const reply = await interaction.followUp({
@@ -543,7 +541,7 @@ module.exports = class Balance extends Command {
                 .setCustomId(cancelId)
                 .setLabel("Cancel")
                 .setStyle(ButtonStyle.Danger)
-                .setDisabled(false),
+                .setDisabled(false)
             );
 
             await reply
@@ -569,7 +567,7 @@ module.exports = class Balance extends Command {
                 emoji,
                 language,
                 message,
-                reply,
+                reply
               );
             } else if (buttonInteraction.customId === depositHalfId) {
               await this.processDeposit(
@@ -582,7 +580,7 @@ module.exports = class Balance extends Command {
                 emoji,
                 language,
                 message,
-                reply,
+                reply
               );
             }
           } else if (buttonInteraction.customId === cancelId) {
@@ -594,7 +592,7 @@ module.exports = class Balance extends Command {
               .setDescription("The deposit operation has been canceled.");
             const disabledRow = ActionRowBuilder.from(actionRow);
             disabledRow.components.forEach((component) =>
-              component.setDisabled(true),
+              component.setDisabled(true)
             );
             await reply
               .edit({ embeds: [cancelEmbed], components: [disabledRow] })
@@ -609,7 +607,7 @@ module.exports = class Balance extends Command {
                   .embed()
                   .setColor(color.danger)
                   .setDescription(
-                    "An error occurred while processing your request.",
+                    "An error occurred while processing your request."
                   ),
               ],
               flags: 64,
@@ -622,7 +620,7 @@ module.exports = class Balance extends Command {
         if (collected.size === 0) {
           const disabledRow = ActionRowBuilder.from(actionRow);
           disabledRow.components.forEach((component) =>
-            component.setDisabled(true),
+            component.setDisabled(true)
           );
           reply
             .edit({
@@ -644,7 +642,7 @@ module.exports = class Balance extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                "An error occurred while creating deposit options. Please try again.",
+                "An error occurred while creating deposit options. Please try again."
               ),
           ],
           flags: 64,
@@ -661,7 +659,7 @@ module.exports = class Balance extends Command {
     color,
     emoji,
     language,
-    message,
+    message
   ) {
     try {
       if (message) {
@@ -674,7 +672,7 @@ module.exports = class Balance extends Command {
           emoji,
           language?.locales?.get(language.defaultLocale)?.generalMessages || {},
           language?.locales?.get(language.defaultLocale)?.economyMessages
-            ?.balanceMessages || {},
+            ?.balanceMessages || {}
         );
         await message
           .edit({
@@ -702,7 +700,7 @@ module.exports = class Balance extends Command {
                 .setDescription(
                   `${
                     emoji?.error || "❌"
-                  } You don't have any coins in your bank to withdraw.`,
+                  } You don't have any coins in your bank to withdraw.`
                 ),
             ],
             flags: 64,
@@ -717,8 +715,8 @@ module.exports = class Balance extends Command {
         .setTitle(`${emoji?.coin || "💰"} Withdraw Options`)
         .setDescription(
           `Select an option to withdraw coins from your bank.\nYou have **${client.utils.formatNumber(
-            user.balance.bank,
-          )}** coins in your bank.`,
+            user.balance.bank
+          )}** coins in your bank.`
         );
 
       const uniqueId = Date.now().toString();
@@ -738,7 +736,7 @@ module.exports = class Balance extends Command {
         new ButtonBuilder()
           .setCustomId(cancelId)
           .setLabel("Cancel")
-          .setStyle(ButtonStyle.Danger),
+          .setStyle(ButtonStyle.Danger)
       );
 
       const reply = await interaction.followUp({
@@ -783,7 +781,7 @@ module.exports = class Balance extends Command {
                 .setCustomId(cancelId)
                 .setLabel("Cancel")
                 .setStyle(ButtonStyle.Danger)
-                .setDisabled(false),
+                .setDisabled(false)
             );
 
             await reply
@@ -809,7 +807,7 @@ module.exports = class Balance extends Command {
                 emoji,
                 language,
                 message,
-                reply,
+                reply
               );
             } else if (buttonInteraction.customId === withdrawHalfId) {
               await this.processWithdraw(
@@ -822,7 +820,7 @@ module.exports = class Balance extends Command {
                 emoji,
                 language,
                 message,
-                reply,
+                reply
               );
             }
           } else if (buttonInteraction.customId === cancelId) {
@@ -834,7 +832,7 @@ module.exports = class Balance extends Command {
               .setDescription("The withdrawal operation has been canceled.");
             const disabledRow = ActionRowBuilder.from(actionRow);
             disabledRow.components.forEach((component) =>
-              component.setDisabled(true),
+              component.setDisabled(true)
             );
             await reply
               .edit({ embeds: [cancelEmbed], components: [disabledRow] })
@@ -849,7 +847,7 @@ module.exports = class Balance extends Command {
                   .embed()
                   .setColor(color.danger)
                   .setDescription(
-                    "An error occurred while processing your request.",
+                    "An error occurred while processing your request."
                   ),
               ],
               flags: 64,
@@ -862,7 +860,7 @@ module.exports = class Balance extends Command {
         if (collected.size === 0) {
           const disabledRow = ActionRowBuilder.from(actionRow);
           disabledRow.components.forEach((component) =>
-            component.setDisabled(true),
+            component.setDisabled(true)
           );
           reply
             .edit({
@@ -887,7 +885,7 @@ module.exports = class Balance extends Command {
                 .setDescription(
                   `${
                     emoji?.error || "❌"
-                  } You don't have any coins in your bank to withdraw.`,
+                  } You don't have any coins in your bank to withdraw.`
                 ),
             ],
             flags: 64,
@@ -903,7 +901,7 @@ module.exports = class Balance extends Command {
               .embed()
               .setColor(color?.error || "#ff0000")
               .setDescription(
-                "An error occurred while creating withdraw options. Please try again.",
+                "An error occurred while creating withdraw options. Please try again."
               ),
           ],
           flags: 64,
@@ -922,7 +920,7 @@ module.exports = class Balance extends Command {
     emoji,
     language,
     message,
-    originalReply = null,
+    originalReply = null
   ) {
     const depositMessages = language?.locales?.get(language.defaultLocale)
       ?.economyMessages?.depositMessages || {
@@ -948,7 +946,7 @@ module.exports = class Balance extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                depositMessages.errors?.invalidAmount || "Invalid amount.",
+                depositMessages.errors?.invalidAmount || "Invalid amount."
               ),
           ],
           flags: 64,
@@ -966,7 +964,7 @@ module.exports = class Balance extends Command {
               .setColor(color.danger)
               .setDescription(
                 depositMessages.errors?.notEnoughCoins ||
-                  "You don't have enough coins.",
+                  "You don't have enough coins."
               ),
           ],
           flags: 64,
@@ -983,7 +981,7 @@ module.exports = class Balance extends Command {
             "balance.coin": -amount,
             "balance.bank": amount,
           },
-        },
+        }
       );
 
       const updatedUser = await client.utils.getUser(user.userId);
@@ -1009,8 +1007,8 @@ module.exports = class Balance extends Command {
                   .replace("{bankEmote}", emoji?.bank || "🏦")
                   .replace(
                     "{bank}",
-                    client.utils.formatNumber(updatedUser.balance.bank),
-                  ),
+                    client.utils.formatNumber(updatedUser.balance.bank)
+                  )
               ),
           ],
           flags: 0,
@@ -1030,7 +1028,7 @@ module.exports = class Balance extends Command {
           color,
           emoji || {},
           generalMessages,
-          balanceMessages,
+          balanceMessages
         );
         await message
           .edit({
@@ -1047,7 +1045,7 @@ module.exports = class Balance extends Command {
               .embed()
               .setColor(color.error)
               .setDescription(
-                "An error occurred while processing your deposit.",
+                "An error occurred while processing your deposit."
               ),
           ],
           flags: 64,
@@ -1066,7 +1064,7 @@ module.exports = class Balance extends Command {
     emoji,
     language,
     message,
-    originalReply = null,
+    originalReply = null
   ) {
     const withdrawMessages = language?.locales?.get(language.defaultLocale)
       ?.economyMessages?.withdrawMessages || {
@@ -1092,7 +1090,7 @@ module.exports = class Balance extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                withdrawMessages.errors?.invalidAmount || "Invalid amount.",
+                withdrawMessages.errors?.invalidAmount || "Invalid amount."
               ),
           ],
           flags: 64,
@@ -1110,7 +1108,7 @@ module.exports = class Balance extends Command {
               .setColor(color.danger)
               .setDescription(
                 withdrawMessages.errors?.notEnoughCoins ||
-                  "You don't have enough coins in your bank.",
+                  "You don't have enough coins in your bank."
               ),
           ],
           flags: 64,
@@ -1127,7 +1125,7 @@ module.exports = class Balance extends Command {
             "balance.coin": amount,
             "balance.bank": -amount,
           },
-        },
+        }
       );
 
       const updatedUser = await client.utils.getUser(user.userId);
@@ -1153,8 +1151,8 @@ module.exports = class Balance extends Command {
                   .replace("{coinEmote}", emoji?.coin || "💰")
                   .replace(
                     "{coin}",
-                    client.utils.formatNumber(updatedUser.balance.coin),
-                  ),
+                    client.utils.formatNumber(updatedUser.balance.coin)
+                  )
               ),
           ],
           flags: 0,
@@ -1174,7 +1172,7 @@ module.exports = class Balance extends Command {
           color,
           emoji,
           generalMessages,
-          balanceMessages,
+          balanceMessages
         );
         await message
           .edit({
@@ -1191,7 +1189,7 @@ module.exports = class Balance extends Command {
               .embed()
               .setColor(color.danger)
               .setDescription(
-                "An error occurred while processing your withdrawal.",
+                "An error occurred while processing your withdrawal."
               ),
           ],
           flags: 64,
