@@ -15,7 +15,7 @@ module.exports = class Slots extends Command {
       },
       category: "gambling",
       aliases: ["slot", "s"],
-      cooldown: 4,
+      cooldown: 6,
       args: false,
       permissions: {
         dev: false,
@@ -171,7 +171,7 @@ module.exports = class Slots extends Command {
         }
       } else {
         // 58% winrate for luckyChannel, 55% for normal
-        const winRate = isLuckyChannel ? 65 : 60;
+        const winRate = isLuckyChannel ? 45 : 40;
         if (rand <= Math.floor(winRate * 0.4)) {
           // 40% of winRate for x1
           win = baseCoins;
