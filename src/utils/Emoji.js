@@ -215,7 +215,7 @@ module.exports = {
     festiveFrost: "<:CHMAIN:1342797329123508224>",
     kingForest: "<:KING:1401491037800763471>",
     queenForest: "<:QUEEN:1401494423883223151>",
-    gangyu: "<:QUEEN:1401494423883223151>",
+    gangyu: "<:GANGYUCOZY:1416170489222791299>",
   },
   specialTheme: {
     // SPECIAL
