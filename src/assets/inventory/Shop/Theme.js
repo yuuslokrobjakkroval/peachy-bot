@@ -117,5 +117,21 @@ module.exports = {
       available: ["use"],
       price: { buy: 15e6, sell: 13e6 },
     },
+    {
+      id: "t08",
+      name: "Gangyu",
+      description:
+        "Gangyu is a majestic theme that brings the beauty of winter royalty to your embeds. With icy blues, shimmering silvers, and a touch of frost, it’s perfect for those who want to add a regal touch to their embeds.",
+      type: "theme",
+      able: {
+        use: true,
+        gift: false,
+        multiple: false,
+      },
+      quantity: 1,
+      emoji: emoji.theme.gangyu,
+      available: ["use"],
+      price: { buy: 15e6, sell: 13e6 },
+    },
   ],
 };
