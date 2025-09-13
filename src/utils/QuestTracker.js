@@ -47,13 +47,20 @@ class QuestTracker {
   }
 
   static checkQuestCompletion(objective, action, amount, user) {
+    // Check if objective exists and is a string
+    if (!objective || typeof objective !== "string") {
+      return false;
+    }
+
     // Message-based quests
     if (
       objective.includes("Send") &&
       objective.includes("messages") &&
       action === "message"
     ) {
-      const target = parseInt(objective.match(/\d+/)[0]);
+      const match = objective.match(/\d+/);
+      if (!match) return false;
+      const target = parseInt(match[0]);
       return (user.activity?.totalMessagesSent || 0) >= target;
     }
 
@@ -63,8 +70,9 @@ class QuestTracker {
       objective.includes("pet") &&
       action === "pet_train"
     ) {
-      // You'll need to track pet training count in user schema
-      const target = parseInt(objective.match(/\d+/)[0]);
+      const match = objective.match(/\d+/);
+      if (!match) return false;
+      const target = parseInt(match[0]);
       return (user.petTrainingCount || 0) >= target;
     }
 
@@ -74,7 +82,9 @@ class QuestTracker {
       objective.includes("pet quest") &&
       action === "pet_quest_win"
     ) {
-      const target = parseInt(objective.match(/\d+/)[0]);
+      const match = objective.match(/\d+/);
+      if (!match) return false;
+      const target = parseInt(match[0]);
       return (user.petQuestWins || 0) >= target;
     }
 
@@ -84,7 +94,9 @@ class QuestTracker {
       objective.includes("items") &&
       action === "collect_item"
     ) {
-      const target = parseInt(objective.match(/\d+/)[0]);
+      const match = objective.match(/\d+/);
+      if (!match) return false;
+      const target = parseInt(match[0]);
       const totalItems =
         user.inventory?.reduce((sum, item) => sum + item.quantity, 0) || 0;
       return totalItems >= target;
@@ -96,13 +108,17 @@ class QuestTracker {
       objective.includes("messages") &&
       action === "reaction"
     ) {
-      const target = parseInt(objective.match(/\d+/)[0]);
+      const match = objective.match(/\d+/);
+      if (!match) return false;
+      const target = parseInt(match[0]);
       return (user.reactionCount || 0) >= target;
     }
 
     // Pet level
     if (objective.includes("Reach pet level") && action === "pet_level") {
-      const target = parseInt(objective.match(/\d+/)[0]);
+      const match = objective.match(/\d+/);
+      if (!match) return false;
+      const target = parseInt(match[0]);
       // Check if any pet in zoo reached target level
       return user.zoo?.some((pet) => pet.level >= target) || false;
     }
