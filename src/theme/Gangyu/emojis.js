@@ -79,12 +79,12 @@ module.exports = {
   },
   result: {
     win: [
-      "<:GANGYUGASM:1416170524911861840>",
-      "<:GANGYUANGRY:1416170498798387230>",
-    ],
-    lose: [
       "<:GANGYULOVE:1416170554758791270>",
       "<:GANGYUSHY:1416170514585620500>",
+    ],
+    lose: [
+      "<:GANGYUGASM:1416170524911861840>",
+      "<:GANGYUANGRY:1416170498798387230>",
     ],
   },
 };
