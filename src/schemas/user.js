@@ -255,6 +255,23 @@ const userSchema = new Schema(
       lastLogin: { type: Date, default: Date.now },
       totalMessagesSent: { type: Number, default: 0 },
     },
+    // Quest tracking fields
+    petTrainingCount: { type: Number, default: 0 },
+    petQuestWins: { type: Number, default: 0 },
+    reactionCount: { type: Number, default: 0 },
+    // Adventure pet data
+    adventurePet: {
+      petId: { type: String, default: null },
+      level: { type: Number, default: 1 },
+      exp: { type: Number, default: 0 },
+      stats: {
+        strength: { type: Number, default: 1 },
+        agility: { type: Number, default: 1 },
+        intelligence: { type: Number, default: 1 },
+      },
+      evolved: { type: Boolean, default: false },
+      inventory: { type: [String], default: [] },
+    },
     zoo: { type: [AnimalSchema], default: [] },
     sellPetCount: { type: Number, default: 0 }, // Tracks number of pets sold
     feedCount: { type: Number, default: 0 }, // Tracks number of times pets are fed
@@ -266,8 +283,22 @@ const userSchema = new Schema(
       chop: { type: Boolean, default: false },
       slime: { type: Boolean, default: false },
     },
+    quests: {
+      daily: {
+        date: { type: String, default: null },
+        objective: { type: String, default: null },
+        completed: { type: Boolean, default: false },
+        claimed: { type: Boolean, default: false },
+      },
+      weekly: {
+        week: { type: String, default: null },
+        objective: { type: String, default: null },
+        completed: { type: Boolean, default: false },
+        claimed: { type: Boolean, default: false },
+      },
+    },
   },
-  { timestamps: { createdAt: true, updatedAt: true } },
+  { timestamps: { createdAt: true, updatedAt: true } }
 );
 
 module.exports = model("user", userSchema);
