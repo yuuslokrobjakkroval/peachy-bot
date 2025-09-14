@@ -20,7 +20,7 @@ module.exports = class GiveawayShopItem extends Command {
         usage:
           "gshopitem <duration> <winners> <type> <itemID> <amount> <image> <thumbnail> <autoadd> [host] [channel]",
       },
-      category: "giveaway",
+      category: "giveaways",
       aliases: ["gs"],
       args: true,
       permissions: {
@@ -133,7 +133,7 @@ module.exports = class GiveawayShopItem extends Command {
           });
 
     const item = category.find(
-      (i) => i.id.toLowerCase() === itemID.toLowerCase(),
+      (i) => i.id.toLowerCase() === itemID.toLowerCase()
     );
     if (!item)
       return ctx.isInteraction
@@ -161,7 +161,7 @@ module.exports = class GiveawayShopItem extends Command {
             })
             .setColor(color.danger)
             .setDescription(
-              "Invalid input. Please ensure the duration, number of winners, amount, and prize are correctly provided.",
+              "Invalid input. Please ensure the duration, number of winners, amount, and prize are correctly provided."
             ),
         ],
       };
@@ -181,12 +181,12 @@ module.exports = class GiveawayShopItem extends Command {
       .setColor(color.main)
       .setTitle(
         `**ID: \`${item.id}\`\n${item.name} ${client.utils.formatNumber(
-          amount,
-        )}**`,
+          amount
+        )}**`
       )
       .setThumbnail(client.utils.emojiToImage(item.emoji))
       .setDescription(
-        `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`,
+        `Click ${emoji.main} button to enter!\nWinners: ${winners}\nHosted by: ${ctx.author.displayName}\nEnds: <t:${formattedDuration}:R>`
       );
 
     if (image) giveawayEmbed.setImage(image.url);
@@ -196,19 +196,19 @@ module.exports = class GiveawayShopItem extends Command {
       emoji.main,
       "0",
       1,
-      false,
+      false
     );
     const participantsButton = client.utils.fullOptionButton(
       "giveawayshopitem-participants",
       "",
       "Participants",
       2,
-      false,
+      false
     );
 
     const buttonRow = client.utils.createButtonRow(
       joinButton,
-      participantsButton,
+      participantsButton
     );
 
     let giveawayMessage;
