@@ -1170,8 +1170,163 @@ module.exports = class InteractionCreate extends Event {
             break;
           }
 
-          default:
+          case "slots_back_to_betting": {
+            const { color, emoji, language } =
+              await this.client.setColorBasedOnTheme(interaction.user.id);
+            const slotsCmd = this.client.commands.get("slots");
+
+            if (slotsCmd) {
+              const user = await this.client.utils.getUser(interaction.user.id);
+              const ctx = new Context(interaction, []);
+              await slotsCmd.showBettingInterface(
+                this.client,
+                ctx,
+                color,
+                emoji,
+                language,
+                user.balance.coin
+              );
+            }
             break;
+          }
+
+          default: {
+            // Handle slots interactions
+            if (interaction.customId.startsWith("slots_")) {
+              const { color, emoji, language } =
+                await this.client.setColorBasedOnTheme(interaction.user.id);
+              const slotsCmd = this.client.commands.get("slots");
+
+              if (slotsCmd) {
+                if (interaction.customId === "slots_bet_custom") {
+                  // Show modal for custom amount
+                  const modal = slotsCmd.createCustomBetModal();
+                  await interaction.showModal(modal);
+                } else if (interaction.customId === "slots_bet_all") {
+                  // Bet all coins
+                  const user = await this.client.utils.getUser(
+                    interaction.user.id
+                  );
+                  const amount = Math.min(user.balance.coin, 200000);
+                  const ctx = new Context(interaction, []);
+                  await slotsCmd.playSlots(
+                    this.client,
+                    ctx,
+                    amount,
+                    color,
+                    emoji,
+                    language
+                  );
+                } else if (interaction.customId === "slots_new_bet") {
+                  // Show new betting interface
+                  const user = await this.client.utils.getUser(
+                    interaction.user.id
+                  );
+                  const ctx = new Context(interaction, []);
+                  await slotsCmd.showBettingInterface(
+                    this.client,
+                    ctx,
+                    color,
+                    emoji,
+                    language,
+                    user.balance.coin
+                  );
+                } else if (interaction.customId === "slots_stop_auto") {
+                  // Stop auto-spin
+                  if (
+                    this.client.autoSpinSessions &&
+                    this.client.autoSpinSessions.has(interaction.user.id)
+                  ) {
+                    const session = this.client.autoSpinSessions.get(
+                      interaction.user.id
+                    );
+                    session.active = false;
+                    await interaction.reply({
+                      content: "🛑 Auto-spin stopped!",
+                      flags: MessageFlags.Ephemeral,
+                    });
+                  }
+                } else {
+                  // Handle preset amounts, play again buttons, and auto-spin
+                  const betMatch = interaction.customId.match(
+                    /slots_(bet|again|double)_(\d+)/
+                  );
+                  const autoMatch = interaction.customId.match(
+                    /slots_auto_(\d+)_(\d+)/
+                  );
+
+                  if (betMatch) {
+                    const amount = parseInt(betMatch[2]);
+                    const ctx = new Context(interaction, []);
+                    await slotsCmd.playSlots(
+                      this.client,
+                      ctx,
+                      amount,
+                      color,
+                      emoji,
+                      language
+                    );
+                  } else if (autoMatch) {
+                    const spins = parseInt(autoMatch[1]);
+                    const amount = parseInt(autoMatch[2]);
+                    const ctx = new Context(interaction, []);
+                    await slotsCmd.autoSpin(
+                      this.client,
+                      ctx,
+                      amount,
+                      spins,
+                      color,
+                      emoji,
+                      language
+                    );
+                  }
+                }
+              }
+            }
+            break;
+          }
+        }
+      } else if (interaction.isStringSelectMenu()) {
+        // Handle select menu interactions
+        if (interaction.customId === "slots_stats_menu") {
+          const { color, emoji, language } =
+            await this.client.setColorBasedOnTheme(interaction.user.id);
+          const slotsCmd = this.client.commands.get("slots");
+
+          if (slotsCmd) {
+            const selectedValue = interaction.values[0];
+            const ctx = new Context(interaction, []);
+
+            switch (selectedValue) {
+              case "game_stats":
+                await slotsCmd.showGameStats(
+                  this.client,
+                  ctx,
+                  color,
+                  emoji,
+                  language
+                );
+                break;
+              case "financial_stats":
+                await slotsCmd.showFinancialStats(
+                  this.client,
+                  ctx,
+                  color,
+                  emoji,
+                  language
+                );
+                break;
+              case "records_stats":
+                await slotsCmd.showRecordsStats(
+                  this.client,
+                  ctx,
+                  color,
+                  emoji,
+                  language
+                );
+                break;
+            }
+          }
         }
       } else if (interaction.isModalSubmit()) {
         const userId = interaction.user.id;
@@ -1234,6 +1389,58 @@ module.exports = class InteractionCreate extends Event {
                 content: `✅ Your tree has been renamed to **${newName}**!`,
                 flags: MessageFlags.Ephemeral,
               });
+            }
+
+            case interaction.customId === "slots_custom_amount": {
+              const betAmount = interaction.fields
+                .getTextInputValue("bet_amount")
+                .trim();
+              const { color, emoji, language } =
+                await this.client.setColorBasedOnTheme(interaction.user.id);
+              const slotsCmd = this.client.commands.get("slots");
+
+              if (slotsCmd) {
+                const user = await this.client.utils.getUser(
+                  interaction.user.id
+                );
+                let amount = betAmount;
+
+                // Handle special keywords
+                const amountMap = {
+                  all: user.balance.coin,
+                  half: Math.ceil(user.balance.coin / 2),
+                };
+
+                if (amount in amountMap) {
+                  amount = amountMap[amount];
+                } else {
+                  amount = parseInt(amount);
+
+                  if (
+                    isNaN(amount) ||
+                    amount <= 0 ||
+                    amount > user.balance.coin ||
+                    amount > 200000
+                  ) {
+                    return interaction.reply({
+                      content:
+                        "Invalid amount! Please enter a valid number, 'all', or 'half'.",
+                      flags: MessageFlags.Ephemeral,
+                    });
+                  }
+                }
+
+                const ctx = new Context(interaction, []);
+                await slotsCmd.playSlots(
+                  this.client,
+                  ctx,
+                  amount,
+                  color,
+                  emoji,
+                  language
+                );
+              }
+              break;
             }
 
             default:
