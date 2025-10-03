@@ -9,7 +9,7 @@ module.exports = {
     weeklyReminder: "https://i.imgur.com/zAHVXPG.gif",
 
     // BANK BANNER
-    transferPending: "https://i.imgur.com/PrxuKDs.gif",
+    transferPending: "https://i.imgur.com/IUqOnK5.gif",
     transferSuccess: "https://i.imgur.com/lz14kFM.gif",
 
     depositWithdraw: "https://i.imgur.com/qwHBFYk.png",

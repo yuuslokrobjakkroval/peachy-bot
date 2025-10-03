@@ -25,16 +25,16 @@ module.exports = class ResetProfile extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", emoji.searching)
+        generalMessages.search.replace("%{loading}", emoji.searching),
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", emoji.searching)
+        generalMessages.search.replace("%{loading}", emoji.searching),
       );
     }
 
@@ -49,20 +49,20 @@ module.exports = class ResetProfile extends Command {
           generalMessages.title
             .replace("%{mainLeft}", emoji.mainLeft)
             .replace("%{title}", "PROFILE RESET")
-            .replace("%{mainRight}", emoji.mainRight)
+            .replace("%{mainRight}", emoji.mainRight),
         )
         .setImage(
           client.user.displayAvatarURL({
             dynamic: true,
             extension: "png",
             size: 1024,
-          })
+          }),
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName
+              ctx.author.displayName,
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         })
@@ -77,7 +77,7 @@ module.exports = class ResetProfile extends Command {
         client,
         ctx,
         "Failed to reset bot profile. Ensure the bot has Nitro for banner reset.",
-        color
+        color,
       );
     }
   }

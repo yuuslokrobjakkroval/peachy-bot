@@ -16,7 +16,7 @@ module.exports = class Giveaway extends Command {
         usage:
           "gstart <description> <prize> <duration> <winners> [image] [thumbnail] [autopay]",
       },
-      category: "giveaway",
+      category: "giveaways",
       aliases: ["gs"],
       args: true,
       permissions: {

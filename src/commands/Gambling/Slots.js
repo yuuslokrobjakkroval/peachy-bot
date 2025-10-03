@@ -2,7 +2,7 @@ const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const globalEmoji = require("../../utils/Emoji");
 
-const maxAmount = 250000;
+const maxAmount = 200000;
 
 module.exports = class Slots extends Command {
   constructor(client) {
@@ -15,7 +15,7 @@ module.exports = class Slots extends Command {
       },
       category: "gambling",
       aliases: ["slot", "s"],
-      cooldown: 2,
+      cooldown: 3,
       args: false,
       permissions: {
         dev: false,
@@ -126,6 +126,15 @@ module.exports = class Slots extends Command {
       const rand = client.utils.getRandomNumber(1, 100);
       let win = 0;
 
+      // Add this before the win/lose logic
+      const luckyChannel = [
+        "1407290922181591061",
+        "1370318529706065961",
+        "1370318538161782826",
+        "1376910445453250660",
+      ];
+      const isLuckyChannel = luckyChannel.includes(ctx.channel?.id);
+
       if (user.verification.isBlacklist) {
         // Reduced win rates for blacklisted users (total: 12% win rate)
         if (rand <= 5) {
@@ -143,7 +152,7 @@ module.exports = class Slots extends Command {
         } else if (rand <= 10) {
           win = baseCoins * 5;
           rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-        } else if (rand <= 12) {
+        } else if (rand <= 11) {
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
         } else {
@@ -161,33 +170,34 @@ module.exports = class Slots extends Command {
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
       } else {
-        // 75% win chance (excluding x10), x10 stays rare, 25% lose
-        if (rand <= 30) {
-          // 30% for x1
+        // 58% winrate for luckyChannel, 55% for normal
+        const winRate = isLuckyChannel ? 45 : 40;
+        if (rand <= Math.floor(winRate * 0.4)) {
+          // 40% of winRate for x1
           win = baseCoins;
           rslots.push(SLOTS[0], SLOTS[0], SLOTS[0]);
-        } else if (rand <= 50) {
-          // 20% for x2
+        } else if (rand <= Math.floor(winRate * 0.67)) {
+          // 27% of winRate for x2
           win = baseCoins * 2;
           rslots.push(SLOTS[1], SLOTS[1], SLOTS[1]);
-        } else if (rand <= 62) {
-          // 12% for x3
+        } else if (rand <= Math.floor(winRate * 0.82)) {
+          // 15% of winRate for x3
           win = baseCoins * 3;
           rslots.push(SLOTS[2], SLOTS[2], SLOTS[2]);
-        } else if (rand <= 69) {
-          // 7% for x4
+        } else if (rand <= Math.floor(winRate * 0.92)) {
+          // 10% of winRate for x4
           win = baseCoins * 4;
           rslots.push(SLOTS[3], SLOTS[3], SLOTS[3]);
-        } else if (rand <= 74) {
-          // 5% for x5
+        } else if (rand <= Math.floor(winRate * 0.98)) {
+          // 6% of winRate for x5
           win = baseCoins * 5;
           rslots.push(SLOTS[4], SLOTS[4], SLOTS[4]);
-        } else if (rand <= 76) {
-          // 2% for x10 (rare)
+        } else if (rand <= winRate) {
+          // 2% of winRate for x10
           win = baseCoins * 10;
           rslots.push(SLOTS[5], SLOTS[5], SLOTS[5]);
         } else {
-          // 24% lose
+          // Lose
           const slot1 = Math.floor(Math.random() * SLOTS.length);
           let slot2 = Math.floor(Math.random() * SLOTS.length);
           let slot3 = Math.floor(Math.random() * SLOTS.length);

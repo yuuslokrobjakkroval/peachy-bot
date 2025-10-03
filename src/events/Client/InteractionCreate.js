@@ -244,7 +244,7 @@ module.exports = class InteractionCreate extends Event {
             logChannelId = this.client.config.logChannelId[8];
           } else if (["work"].includes(command.category.toLowerCase())) {
             logChannelId = this.client.config.logChannelId[7];
-          } else if (["giveaway"].includes(command.category.toLowerCase())) {
+          } else if (["giveaways"].includes(command.category.toLowerCase())) {
             logChannelId = this.client.config.logChannelId[6];
           } else if (["utility"].includes(command.category.toLowerCase())) {
             logChannelId = this.client.config.logChannelId[5];

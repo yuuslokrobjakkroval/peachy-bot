@@ -44,7 +44,7 @@ module.exports = class Goma extends Command {
         );
       }
 
-      const baseCoins = chance.integer({ min: 400, max: 500 });
+      const baseCoins = chance.integer({ min: 10000, max: 20000 });
       const baseExp = chance.integer({ min: 5, max: 10 });
 
       let bonusCoins = 0;

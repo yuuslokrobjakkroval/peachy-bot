@@ -83,26 +83,6 @@ client.once("ready", async () => {
   client.utils.cacheItems();
   client.logger.info("Item cache initialized!");
 
-  // cron.schedule("0 17 * * 6", client.utils.weeklyReset);
-  cron.schedule(
-    "01 22 * * *",
-    () => {
-      client.utils
-        .checkBooster(client)
-        .then(() => console.log("Booster/Sponsor check completed."))
-        .catch((err) =>
-          console.error("Error in Booster/Sponsor function:", err)
-        );
-    },
-    {
-      scheduled: true,
-      timezone: "Asia/Bangkok",
-    }
-  );
-  client.logger.info(
-    "Booster/Sponsor check scheduled at 10:01 PM Asia/Bangkok"
-  );
-
   cron.schedule(
     "01 18 * * *",
     () => {
@@ -116,7 +96,24 @@ client.once("ready", async () => {
       timezone: "Asia/Bangkok",
     }
   );
-  client.logger.info("Giveaway check scheduled at 7PM Asia/Bangkok");
+  client.logger.info("Giveaway check scheduled at 6PM Asia/Bangkok");
+
+  cron.schedule(
+    "01 19 * * *",
+    () => {
+      client.utils
+        .checkBooster(client)
+        .then(() => console.log("Booster/Sponsor check completed."))
+        .catch((err) =>
+          console.error("Error in Booster/Sponsor function:", err)
+        );
+    },
+    {
+      scheduled: true,
+      timezone: "Asia/Bangkok",
+    }
+  );
+  client.logger.info("Booster/Sponsor check scheduled at 7PM Asia/Bangkok");
 
   return await client.abilities.syncInvites(client);
 });
@@ -388,7 +385,6 @@ setInterval(() => {
       if (!giveaways || giveaways.length === 0) {
         return;
       }
-
       giveaways.forEach((giveaway) => {
         if (giveaway) {
           client.channels.cache

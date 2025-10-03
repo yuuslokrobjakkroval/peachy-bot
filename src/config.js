@@ -151,6 +151,21 @@ const t07 = {
   },
 };
 
+// Gangyu ( T08 )
+const t08 = {
+  color: {
+    light: 0xffffff,
+    dark: 0x000000,
+    danger: 0xff0000,
+    success: 0x00ff00,
+    blue: 0x4cc9fe,
+    pink: 0xe3a1ad,
+    warning: 0xffa500,
+    main: 0xaee4ff,
+    none: 0x2b2d31,
+  },
+};
+
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------- //
 
 // Celestial Grace ( ST01 )
@@ -617,6 +632,7 @@ module.exports = {
   t05,
   t06,
   t07,
+  t08,
 
   // ---------- //
   // SPECIAL THEME

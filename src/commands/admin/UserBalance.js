@@ -124,9 +124,7 @@ module.exports = class UserBalance extends Command {
               .replace("%{coinEmote}", emoji.coin)
               .replace("%{coin}", client.utils.formatNumber(coin))
               .replace("%{bankEmote}", emoji.bank)
-              .replace("%{bank}", client.utils.formatNumber(bank))
-              .replace("%{creditEmote}", globalEmoji.card.apple)
-              .replace("%{credit}", client.utils.formatNumber(credit)),
+              .replace("%{bank}", client.utils.formatNumber(bank)),
         )
         .setImage(globalGif.balanceBanner)
         .setFooter({

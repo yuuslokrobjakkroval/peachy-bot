@@ -41,7 +41,7 @@ async function klakloukStarting(
   userCoin,
   betCoin,
   generalMessages,
-  klaKloukMessages
+  klaKloukMessages,
 ) {
   const startEmbed = client
     .embed()
@@ -53,13 +53,13 @@ async function klakloukStarting(
         .replace("%{mainRight}", emoji.mainRight) +
         klaKloukMessages.startGame
           .replace("%{betCoin}", client.utils.formatNumber(betCoin))
-          .replace("%{coinEmote}", emoji.coin)
+          .replace("%{coinEmote}", emoji.coin),
     )
     .setImage(kkGif.kda)
     .setFooter({
       text: generalMessages.gameStart.replace(
         "%{user}",
-        ctx.author.displayName
+        ctx.author.displayName,
       ),
       iconURL: kkGif.ball,
     });
@@ -204,7 +204,7 @@ async function klakloukStarting(
         int.customId !== "start"
       ) {
         const selected = [...firstRow.components, ...secondRow.components].find(
-          (b) => b.data.custom_id === int.customId
+          (b) => b.data.custom_id === int.customId,
         );
         if (!selectedButton.includes(int.customId)) {
           if (selectedButton.length >= maxSelectable) {
@@ -215,8 +215,8 @@ async function klakloukStarting(
                 .replace(
                   "%{needed}",
                   client.utils.formatNumber(
-                    (selectedButton.length + 1) * buttonCost
-                  )
+                    (selectedButton.length + 1) * buttonCost,
+                  ),
                 )
                 .replace("%{coinEmote}", emoji.coin),
               flags: 64,
@@ -279,13 +279,13 @@ async function klakloukStarting(
                   .replace("%{betCoin}", client.utils.formatNumber(betCoin))
                   .replace("%{coinEmote}", emoji.coin)
                   .replace("%{totalCoin}", client.utils.formatNumber(totalCoin))
-                  .replace("%{coinEmote}", emoji.coin)
+                  .replace("%{coinEmote}", emoji.coin),
             )
             .setImage(kkGif.klok)
             .setFooter({
               text: generalMessages.gameInProgress.replace(
                 "%{user}",
-                ctx.author.displayName
+                ctx.author.displayName,
               ),
               iconURL: kkGif.ball,
             });
@@ -341,18 +341,18 @@ async function klakloukStarting(
                     .map((id) => kkEmoji[id])
                     .join(" `|` ")}\n\n` +
                   `**Bet:** ${client.utils.formatNumber(
-                    totalBet
+                    totalBet,
                   )} ${emoji.coin}\n` +
                   `**Won:** ${client.utils.formatNumber(
-                    winCash
+                    winCash,
                   )} ${emoji.coin}\n` +
-                  `**Matches:** ${winKK}/3`
+                  `**Matches:** ${winKK}/3`,
               )
               .setImage("attachment://result.png")
               .setFooter({
                 text: `${generalMessages.gameOver.replace(
                   "%{user}",
-                  ctx.author.displayName
+                  ctx.author.displayName,
                 )}`,
                 iconURL: ctx.author.displayAvatarURL(),
               });
@@ -381,18 +381,18 @@ async function klakloukStarting(
                     .map((id) => kkEmoji[id])
                     .join(" `|` ")}\n\n` +
                   `**Bet:** ${client.utils.formatNumber(
-                    totalBet
+                    totalBet,
                   )} ${emoji.coin}\n` +
                   `**Lost:** ${client.utils.formatNumber(
-                    totalBet
+                    totalBet,
                   )} ${emoji.coin}\n` +
-                  `**Matches:** 0/3`
+                  `**Matches:** 0/3`,
               )
               .setImage("attachment://result.png")
               .setFooter({
                 text: `${generalMessages.gameOver.replace(
                   "%{user}",
-                  ctx.author.displayName
+                  ctx.author.displayName,
                 )}`,
                 iconURL: ctx.author.displayAvatarURL(),
               });
@@ -419,12 +419,12 @@ async function klakloukStarting(
             .replace("%{mainLeft}", emoji.mainLeft)
             .replace("%{title}", klaKloukMessages.title)
             .replace("%{mainRight}", emoji.mainRight) +
-            `⏳ **Time is up!** You didn't click the start button in the game.`
+            `⏳ **Time is up!** You didn't click the start button in the game.`,
         )
         .setFooter({
           text: `${generalMessages.pleaseStartAgain.replace(
             "%{user}",
-            ctx.author.displayName
+            ctx.author.displayName,
           )}`,
           iconURL: ctx.author.displayAvatarURL(),
         });

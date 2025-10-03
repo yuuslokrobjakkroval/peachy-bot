@@ -29,7 +29,7 @@ module.exports = class Weekly extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale
+      language.defaultLocale,
     )?.generalMessages;
     const weeklyMessages = language.locales.get(language.defaultLocale)
       ?.economyMessages?.weeklyMessages;
@@ -42,11 +42,11 @@ module.exports = class Weekly extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color
+          color,
         );
       }
 
-      const baseCoins = chance.integer({ min: 500000, max: 1000000 });
+      const baseCoins = chance.integer({ min: 70000, max: 140000 });
       const baseExp = chance.integer({ min: 200, max: 250 });
 
       const verify = user.verification.verify.status === "verified";
@@ -73,21 +73,21 @@ module.exports = class Weekly extends Command {
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNextWeekly
+        timeUntilNextWeekly,
       );
       if (!isCooldownExpired) {
         const lastCooldownTimestamp = await client.utils.getCooldown(
           ctx.author.id,
-          this.name.toLowerCase()
+          this.name.toLowerCase(),
         );
         const remainingTime = Math.ceil(
-          (lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000
+          (lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000,
         );
         const cooldownMessage = this.getCooldownMessage(
           remainingTime,
           client,
           language,
-          weeklyMessages
+          weeklyMessages,
         );
 
         const cooldownEmbed = client
@@ -105,14 +105,14 @@ module.exports = class Weekly extends Command {
             "balance.coin": newBalance,
             "profile.xp": newExp,
           },
-        }
+        },
       );
 
       // Update cooldown
       await client.utils.updateCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNextWeekly
+        timeUntilNextWeekly,
       );
 
       let bonusMessage = "";
@@ -129,7 +129,7 @@ module.exports = class Weekly extends Command {
         now,
         weeklyMessages,
         generalMessages,
-        bonusMessage
+        bonusMessage,
       );
 
       return ctx.sendMessage({ embeds: [embed] });
@@ -139,7 +139,7 @@ module.exports = class Weekly extends Command {
         client,
         ctx,
         weeklyMessages.error,
-        color
+        color,
       );
     }
   }
@@ -184,15 +184,15 @@ module.exports = class Weekly extends Command {
     now,
     weeklyMessages,
     generalMessages,
-    bonusMessage
+    bonusMessage,
   ) {
     return client
       .embed()
       .setColor(client.config.color.main)
       .setThumbnail(
         client.utils.emojiToImage(
-          `${now.hour() >= 6 && now.hour() < 18 ? emoji.time.day : emoji.time.night}`
-        )
+          `${now.hour() >= 6 && now.hour() < 18 ? emoji.time.day : emoji.time.night}`,
+        ),
       )
       .setDescription(
         generalMessages.title
@@ -204,14 +204,14 @@ module.exports = class Weekly extends Command {
             .replace("%{coinEmote}", emoji.coin)
             .replace("%{expEmote}", emoji.exp)
             .replace("%{exp}", client.utils.formatNumber(totalExp))
-            .replace("%{bonusMessage}", bonusMessage)
+            .replace("%{bonusMessage}", bonusMessage),
       )
       .setImage(globalGif.banner.weeklyReminder)
       .setFooter({
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName
+            ctx.author.displayName,
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       });

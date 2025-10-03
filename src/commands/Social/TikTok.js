@@ -109,7 +109,7 @@ module.exports = class TikTok extends Command {
           mentionedUser,
           color,
           emoji,
-          ttMessages
+          ttMessages,
         );
       case "clear":
         return this.clearTikTokProfile(client, ctx, color, emoji, ttMessages);
@@ -122,7 +122,7 @@ module.exports = class TikTok extends Command {
           mentionedUser,
           color,
           emoji,
-          ttMessages
+          ttMessages,
         );
     }
   }
@@ -141,7 +141,7 @@ module.exports = class TikTok extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.tiktok} TikTok Username Error`)
         .setDescription(
-          "❌ **Invalid TikTok username!**\n\n📝 **Requirements:**\n• Length: 2-24 characters\n• Can include letters, numbers, periods, and underscores\n• Cannot start with a number or period"
+          "❌ **Invalid TikTok username!**\n\n📝 **Requirements:**\n• Length: 2-24 characters\n• Can include letters, numbers, periods, and underscores\n• Cannot start with a number or period",
         )
         .addFields([
           {
@@ -166,7 +166,7 @@ module.exports = class TikTok extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.tiktok} TikTok Username Error`)
         .setDescription(
-          "❌ **Invalid TikTok username format!**\n\n📝 **TikTok usernames must:**\n• Start with a letter\n• Only contain letters, numbers, periods, and underscores\n• Not start with a number or period"
+          "❌ **Invalid TikTok username format!**\n\n📝 **TikTok usernames must:**\n• Start with a letter\n• Only contain letters, numbers, periods, and underscores\n• Not start with a number or period",
         )
         .addFields([
           {
@@ -184,7 +184,7 @@ module.exports = class TikTok extends Command {
       await Users.updateOne(
         { userId: ctx.author.id },
         { $set: { "social.tiktok.name": `@${username}` } },
-        { upsert: true }
+        { upsert: true },
       );
 
       const embed = client
@@ -220,7 +220,7 @@ module.exports = class TikTok extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -229,7 +229,7 @@ module.exports = class TikTok extends Command {
         client,
         ctx,
         color,
-        "Failed to update TikTok username. Please try again later."
+        "Failed to update TikTok username. Please try again later.",
       );
     }
   }
@@ -249,7 +249,7 @@ module.exports = class TikTok extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.tiktok} TikTok Link Error`)
         .setDescription(
-          "❌ **Invalid TikTok link!**\n\n🔗 **Accepted formats:**"
+          "❌ **Invalid TikTok link!**\n\n🔗 **Accepted formats:**",
         )
         .addFields([
           {
@@ -279,7 +279,7 @@ module.exports = class TikTok extends Command {
       await Users.updateOne(
         { userId: ctx.author.id },
         { $set: { "social.tiktok.link": link } },
-        { upsert: true }
+        { upsert: true },
       );
 
       const embed = client
@@ -328,7 +328,7 @@ module.exports = class TikTok extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -337,7 +337,7 @@ module.exports = class TikTok extends Command {
         client,
         ctx,
         color,
-        "Failed to update TikTok link. Please try again later."
+        "Failed to update TikTok link. Please try again later.",
       );
     }
   }
@@ -348,7 +348,7 @@ module.exports = class TikTok extends Command {
     mentionedUser,
     color,
     emoji,
-    ttMessages
+    ttMessages,
   ) {
     const targetUser = mentionedUser || ctx.author;
     const isOwnProfile = targetUser.id === ctx.author.id;
@@ -361,7 +361,7 @@ module.exports = class TikTok extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.tiktok} User Not Found`)
         .setDescription(
-          `❌ ${ttMessages?.userNotFound || "User not found in our database."}`
+          `❌ ${ttMessages?.userNotFound || "User not found in our database."}`,
         )
         .setFooter({ text: "💡 User needs to interact with the bot first!" });
       return ctx.sendMessage({ embeds: [embed] });
@@ -383,7 +383,7 @@ module.exports = class TikTok extends Command {
     if (isConfigured) {
       embed
         .setDescription(
-          `🎵 **TikTok Profile Active!**\n\n${emoji.social.tiktok} **Username:** \`${ttName}\`\n🔗 **Link:** [Visit Profile](${ttLink})`
+          `🎵 **TikTok Profile Active!**\n\n${emoji.social.tiktok} **Username:** \`${ttName}\`\n🔗 **Link:** [Visit Profile](${ttLink})`,
         )
         .setURL(ttLink)
         .addFields([
@@ -396,7 +396,7 @@ module.exports = class TikTok extends Command {
     } else {
       embed
         .setDescription(
-          `${emoji.social.tiktok} **TikTok Profile**\n\n📝 **Username:** ${ttName || "Not set"}\n🔗 **Link:** ${ttLink || "Not set"}`
+          `${emoji.social.tiktok} **TikTok Profile**\n\n📝 **Username:** ${ttName || "Not set"}\n🔗 **Link:** ${ttLink || "Not set"}`,
         )
         .addFields([
           {
@@ -426,7 +426,7 @@ module.exports = class TikTok extends Command {
             .setCustomId("tiktok_set_name")
             .setLabel("Set Username")
             .setEmoji("📝")
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(ButtonStyle.Primary),
         );
       }
 
@@ -436,7 +436,7 @@ module.exports = class TikTok extends Command {
             .setCustomId("tiktok_set_link")
             .setLabel("Set Link")
             .setEmoji("🔗")
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(ButtonStyle.Primary),
         );
       }
 
@@ -451,7 +451,7 @@ module.exports = class TikTok extends Command {
             .setCustomId("tiktok_clear")
             .setLabel("Clear")
             .setEmoji("🗑️")
-            .setStyle(ButtonStyle.Danger)
+            .setStyle(ButtonStyle.Danger),
         );
       }
 
@@ -460,7 +460,7 @@ module.exports = class TikTok extends Command {
           .setCustomId("view_socials")
           .setLabel("All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       if (actionRow.components.length > 0) {
@@ -480,7 +480,7 @@ module.exports = class TikTok extends Command {
             "social.tiktok.name": "",
             "social.tiktok.link": "",
           },
-        }
+        },
       );
 
       const embed = client
@@ -488,7 +488,7 @@ module.exports = class TikTok extends Command {
         .setColor(color.warning)
         .setTitle(`${emoji.social.tiktok} TikTok Profile Cleared`)
         .setDescription(
-          "🧹 **Your TikTok information has been cleared successfully!**"
+          "🧹 **Your TikTok information has been cleared successfully!**",
         )
         .addFields([
           {
@@ -512,7 +512,7 @@ module.exports = class TikTok extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -521,7 +521,7 @@ module.exports = class TikTok extends Command {
         client,
         ctx,
         color,
-        "Failed to clear TikTok profile. Please try again later."
+        "Failed to clear TikTok profile. Please try again later.",
       );
     }
   }
@@ -532,7 +532,7 @@ module.exports = class TikTok extends Command {
       .setColor(color.main)
       .setTitle(`${emoji.social.tiktok} TikTok Command Help`)
       .setDescription(
-        "🎵 **Master your TikTok profile management!**\n\nHere's everything you can do with the TikTok command:"
+        "🎵 **Master your TikTok profile management!**\n\nHere's everything you can do with the TikTok command:",
       )
       .addFields([
         {
@@ -589,7 +589,7 @@ module.exports = class TikTok extends Command {
         .setCustomId("view_socials")
         .setLabel("View All Socials")
         .setEmoji("📱")
-        .setStyle(ButtonStyle.Secondary)
+        .setStyle(ButtonStyle.Secondary),
     );
 
     return ctx.sendMessage({ embeds: [embed], components: [actionRow] });

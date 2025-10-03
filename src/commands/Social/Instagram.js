@@ -105,7 +105,7 @@ module.exports = class Instagram extends Command {
           args,
           color,
           emoji,
-          igMessages
+          igMessages,
         );
       case "link":
         return this.setInstagramLink(
@@ -114,7 +114,7 @@ module.exports = class Instagram extends Command {
           args,
           color,
           emoji,
-          igMessages
+          igMessages,
         );
       case "view":
         return this.viewInstagramProfile(
@@ -123,7 +123,7 @@ module.exports = class Instagram extends Command {
           mentionedUser,
           color,
           emoji,
-          igMessages
+          igMessages,
         );
       case "clear":
         return this.clearInstagramProfile(
@@ -131,7 +131,7 @@ module.exports = class Instagram extends Command {
           ctx,
           color,
           emoji,
-          igMessages
+          igMessages,
         );
       case "help":
         return this.showHelpMessage(client, ctx, color, emoji, igMessages);
@@ -142,7 +142,7 @@ module.exports = class Instagram extends Command {
           mentionedUser,
           color,
           emoji,
-          igMessages
+          igMessages,
         );
     }
   }
@@ -161,7 +161,7 @@ module.exports = class Instagram extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.instagram} Instagram Username Error`)
         .setDescription(
-          "❌ **Invalid Instagram username!**\n\n📝 **Requirements:**\n• Length: 1-30 characters\n• Can include letters, numbers, periods, and underscores\n• No spaces or special characters"
+          "❌ **Invalid Instagram username!**\n\n📝 **Requirements:**\n• Length: 1-30 characters\n• Can include letters, numbers, periods, and underscores\n• No spaces or special characters",
         )
         .addFields([
           {
@@ -186,7 +186,7 @@ module.exports = class Instagram extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.instagram} Instagram Username Error`)
         .setDescription(
-          "❌ **Invalid Instagram username format!**\n\n📝 **Instagram usernames can only contain:**\n• Letters (a-z, A-Z)\n• Numbers (0-9)\n• Periods (.)\n• Underscores (_)"
+          "❌ **Invalid Instagram username format!**\n\n📝 **Instagram usernames can only contain:**\n• Letters (a-z, A-Z)\n• Numbers (0-9)\n• Periods (.)\n• Underscores (_)",
         )
         .addFields([
           {
@@ -204,7 +204,7 @@ module.exports = class Instagram extends Command {
       await Users.updateOne(
         { userId: ctx.author.id },
         { $set: { "social.instagram.name": `@${username}` } },
-        { upsert: true }
+        { upsert: true },
       );
 
       const embed = client
@@ -238,7 +238,7 @@ module.exports = class Instagram extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -247,7 +247,7 @@ module.exports = class Instagram extends Command {
         client,
         ctx,
         color,
-        "Failed to update Instagram username. Please try again later."
+        "Failed to update Instagram username. Please try again later.",
       );
     }
   }
@@ -267,7 +267,7 @@ module.exports = class Instagram extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.instagram} Instagram Link Error`)
         .setDescription(
-          "❌ **Invalid Instagram link!**\n\n🔗 **Accepted formats:**"
+          "❌ **Invalid Instagram link!**\n\n🔗 **Accepted formats:**",
         )
         .addFields([
           {
@@ -297,7 +297,7 @@ module.exports = class Instagram extends Command {
       await Users.updateOne(
         { userId: ctx.author.id },
         { $set: { "social.instagram.link": link } },
-        { upsert: true }
+        { upsert: true },
       );
 
       const embed = client
@@ -348,7 +348,7 @@ module.exports = class Instagram extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -357,7 +357,7 @@ module.exports = class Instagram extends Command {
         client,
         ctx,
         color,
-        "Failed to update Instagram link. Please try again later."
+        "Failed to update Instagram link. Please try again later.",
       );
     }
   }
@@ -368,7 +368,7 @@ module.exports = class Instagram extends Command {
     mentionedUser,
     color,
     emoji,
-    igMessages
+    igMessages,
   ) {
     const targetUser = mentionedUser || ctx.author;
     const isOwnProfile = targetUser.id === ctx.author.id;
@@ -381,7 +381,7 @@ module.exports = class Instagram extends Command {
         .setColor(color.danger)
         .setTitle(`${emoji.social.instagram} User Not Found`)
         .setDescription(
-          `❌ ${igMessages?.userNotFound || "User not found in our database."}`
+          `❌ ${igMessages?.userNotFound || "User not found in our database."}`,
         )
         .setFooter({ text: "💡 User needs to interact with the bot first!" });
       return ctx.sendMessage({ embeds: [embed] });
@@ -403,7 +403,7 @@ module.exports = class Instagram extends Command {
     if (isConfigured) {
       embed
         .setDescription(
-          `📸 **Instagram Profile Active!**\n\n${emoji.social.instagram} **Username:** \`${igName}\`\n🔗 **Link:** [Visit Profile](${igLink})`
+          `📸 **Instagram Profile Active!**\n\n${emoji.social.instagram} **Username:** \`${igName}\`\n🔗 **Link:** [Visit Profile](${igLink})`,
         )
         .setURL(igLink)
         .addFields([
@@ -416,7 +416,7 @@ module.exports = class Instagram extends Command {
     } else {
       embed
         .setDescription(
-          `${emoji.social.instagram} **Instagram Profile**\n\n📝 **Username:** ${igName || "Not set"}\n🔗 **Link:** ${igLink || "Not set"}`
+          `${emoji.social.instagram} **Instagram Profile**\n\n📝 **Username:** ${igName || "Not set"}\n🔗 **Link:** ${igLink || "Not set"}`,
         )
         .addFields([
           {
@@ -446,7 +446,7 @@ module.exports = class Instagram extends Command {
             .setCustomId("instagram_set_name")
             .setLabel("Set Username")
             .setEmoji("📝")
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(ButtonStyle.Primary),
         );
       }
 
@@ -456,7 +456,7 @@ module.exports = class Instagram extends Command {
             .setCustomId("instagram_set_link")
             .setLabel("Set Link")
             .setEmoji("🔗")
-            .setStyle(ButtonStyle.Primary)
+            .setStyle(ButtonStyle.Primary),
         );
       }
 
@@ -471,7 +471,7 @@ module.exports = class Instagram extends Command {
             .setCustomId("instagram_clear")
             .setLabel("Clear")
             .setEmoji("🗑️")
-            .setStyle(ButtonStyle.Danger)
+            .setStyle(ButtonStyle.Danger),
         );
       }
 
@@ -480,7 +480,7 @@ module.exports = class Instagram extends Command {
           .setCustomId("view_socials")
           .setLabel("All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       if (actionRow.components.length > 0) {
@@ -500,7 +500,7 @@ module.exports = class Instagram extends Command {
             "social.instagram.name": "",
             "social.instagram.link": "",
           },
-        }
+        },
       );
 
       const embed = client
@@ -508,7 +508,7 @@ module.exports = class Instagram extends Command {
         .setColor(color.warning)
         .setTitle(`${emoji.social.instagram} Instagram Profile Cleared`)
         .setDescription(
-          "🧹 **Your Instagram information has been cleared successfully!**"
+          "🧹 **Your Instagram information has been cleared successfully!**",
         )
         .addFields([
           {
@@ -532,7 +532,7 @@ module.exports = class Instagram extends Command {
           .setCustomId("view_socials")
           .setLabel("View All Socials")
           .setEmoji("📱")
-          .setStyle(ButtonStyle.Secondary)
+          .setStyle(ButtonStyle.Secondary),
       );
 
       return ctx.sendMessage({ embeds: [embed], components: [actionRow] });
@@ -541,7 +541,7 @@ module.exports = class Instagram extends Command {
         client,
         ctx,
         color,
-        "Failed to clear Instagram profile. Please try again later."
+        "Failed to clear Instagram profile. Please try again later.",
       );
     }
   }
@@ -552,7 +552,7 @@ module.exports = class Instagram extends Command {
       .setColor(color.main)
       .setTitle(`${emoji.social.instagram} Instagram Command Help`)
       .setDescription(
-        "📸 **Master your Instagram profile management!**\n\nHere's everything you can do with the Instagram command:"
+        "📸 **Master your Instagram profile management!**\n\nHere's everything you can do with the Instagram command:",
       )
       .addFields([
         {
@@ -609,7 +609,7 @@ module.exports = class Instagram extends Command {
         .setCustomId("view_socials")
         .setLabel("View All Socials")
         .setEmoji("📱")
-        .setStyle(ButtonStyle.Secondary)
+        .setStyle(ButtonStyle.Secondary),
     );
 
     return ctx.sendMessage({ embeds: [embed], components: [actionRow] });

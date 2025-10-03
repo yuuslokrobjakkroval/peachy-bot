@@ -28,7 +28,7 @@ module.exports = class LevelUpGenerator {
         ctx,
         backgroundColor,
         borderColor,
-        backgroundImageUrl
+        backgroundImageUrl,
       );
 
       // Draw decorative elements
@@ -45,7 +45,7 @@ module.exports = class LevelUpGenerator {
         avatarX,
         avatarY,
         avatarSize,
-        borderColor
+        borderColor,
       );
 
       // Main content positioning
@@ -61,7 +61,7 @@ module.exports = class LevelUpGenerator {
         username,
         contentX,
         contentY + 25, // Reduced from 35
-        borderColor
+        borderColor,
       );
 
       // Draw level progression boxes
@@ -71,7 +71,7 @@ module.exports = class LevelUpGenerator {
         currentLevel,
         contentX,
         contentY + 45, // Reduced from 64
-        borderColor
+        borderColor,
       );
       return canvas.toBuffer("image/png");
     } catch (error) {
@@ -84,7 +84,7 @@ module.exports = class LevelUpGenerator {
     ctx,
     backgroundColor,
     borderColor,
-    backgroundImageUrl
+    backgroundImageUrl,
   ) {
     ctx.save();
     this.roundRect(ctx, 0, 0, this.width, this.height, this.borderRadius);
@@ -99,7 +99,7 @@ module.exports = class LevelUpGenerator {
           const backgroundImage = result.image;
           const scale = Math.max(
             this.width / backgroundImage.width,
-            this.height / backgroundImage.height
+            this.height / backgroundImage.height,
           );
           const scaledWidth = backgroundImage.width * scale;
           const scaledHeight = backgroundImage.height * scale;
@@ -111,7 +111,7 @@ module.exports = class LevelUpGenerator {
             offsetX,
             offsetY,
             scaledWidth,
-            scaledHeight
+            scaledHeight,
           );
 
           const overlayGradient = ctx.createRadialGradient(
@@ -120,7 +120,7 @@ module.exports = class LevelUpGenerator {
             0,
             this.width / 2,
             this.height / 2,
-            Math.max(this.width, this.height) / 2
+            Math.max(this.width, this.height) / 2,
           );
           overlayGradient.addColorStop(0, `${backgroundColor}85`);
           overlayGradient.addColorStop(0.7, `${backgroundColor}70`);
@@ -132,19 +132,19 @@ module.exports = class LevelUpGenerator {
           if (result.usedFallback) {
             console.warn(
               "LevelUpGenerator used fallback image due to:",
-              result.error
+              result.error,
             );
           }
         } else {
           console.warn(
-            "LevelUpGenerator: All images failed, using gradient background"
+            "LevelUpGenerator: All images failed, using gradient background",
           );
           this.drawGradientBackground(ctx, backgroundColor, borderColor);
         }
       } catch (bgError) {
         console.warn(
           "Failed to load background image, using gradient:",
-          bgError.message
+          bgError.message,
         );
         this.drawGradientBackground(ctx, backgroundColor, borderColor);
       }
@@ -164,13 +164,13 @@ module.exports = class LevelUpGenerator {
       0,
       this.width / 2,
       this.height / 2,
-      Math.max(this.width, this.height) / 1.2
+      Math.max(this.width, this.height) / 1.2,
     );
     gradient.addColorStop(0, backgroundColor);
     gradient.addColorStop(0.4, this.adjustColorBrightness(backgroundColor, -8));
     gradient.addColorStop(
       0.8,
-      this.adjustColorBrightness(backgroundColor, -15)
+      this.adjustColorBrightness(backgroundColor, -15),
     );
     gradient.addColorStop(1, this.adjustColorBrightness(backgroundColor, -25));
 
@@ -189,7 +189,7 @@ module.exports = class LevelUpGenerator {
             j + Math.random() * 7,
             1, // Reduced from 1.5
             0,
-            Math.PI * 2
+            Math.PI * 2,
           );
           ctx.fill();
         }
@@ -202,7 +202,7 @@ module.exports = class LevelUpGenerator {
       0,
       0,
       this.width,
-      this.height
+      this.height,
     );
     borderGradient.addColorStop(0, this.lightenColor(borderColor, 0.3));
     borderGradient.addColorStop(0.3, borderColor);
@@ -217,7 +217,7 @@ module.exports = class LevelUpGenerator {
       this.borderWidth / 2,
       this.width - this.borderWidth,
       this.height - this.borderWidth,
-      this.borderRadius - this.borderWidth / 2
+      this.borderRadius - this.borderWidth / 2,
     );
     ctx.stroke();
 
@@ -229,7 +229,7 @@ module.exports = class LevelUpGenerator {
       this.borderWidth + 0.7,
       this.width - (this.borderWidth + 0.7) * 2,
       this.height - (this.borderWidth + 0.7) * 2,
-      this.borderRadius - this.borderWidth - 0.7
+      this.borderRadius - this.borderWidth - 0.7,
     );
     ctx.stroke();
   }
@@ -244,7 +244,7 @@ module.exports = class LevelUpGenerator {
       this.borderRadius,
       this.width / 2,
       this.height / 2,
-      Math.max(this.width, this.height) / 2
+      Math.max(this.width, this.height) / 2,
     );
     glowGradient.addColorStop(0, "transparent");
     glowGradient.addColorStop(0.8, "transparent");
@@ -257,7 +257,7 @@ module.exports = class LevelUpGenerator {
       this.borderWidth,
       this.width - this.borderWidth * 2,
       this.height - this.borderWidth * 2,
-      this.borderRadius - this.borderWidth
+      this.borderRadius - this.borderWidth,
     );
     ctx.fill();
 
@@ -292,7 +292,7 @@ module.exports = class LevelUpGenerator {
         deco.size,
         color,
         deco.opacity,
-        deco.rotation || 0
+        deco.rotation || 0,
       );
     });
   }
@@ -334,7 +334,7 @@ module.exports = class LevelUpGenerator {
     } catch (avatarError) {
       console.warn(
         "Failed to load avatar, drawing enhanced placeholder:",
-        avatarError.message
+        avatarError.message,
       );
       const placeholderGradient = ctx.createRadialGradient(
         x + size / 2,
@@ -342,12 +342,12 @@ module.exports = class LevelUpGenerator {
         0,
         x + size / 2,
         y + size / 2,
-        size / 2
+        size / 2,
       );
       placeholderGradient.addColorStop(0, this.lightenColor(borderColor, 0.8));
       placeholderGradient.addColorStop(
         0.6,
-        this.lightenColor(borderColor, 0.6)
+        this.lightenColor(borderColor, 0.6),
       );
       placeholderGradient.addColorStop(1, this.lightenColor(borderColor, 0.4));
       ctx.fillStyle = placeholderGradient;
@@ -368,7 +368,7 @@ module.exports = class LevelUpGenerator {
       x + size / 2,
       y + size / 2,
       size / 2 + 7, // Reduced from 10
-      borderColor
+      borderColor,
     );
   }
 
@@ -422,7 +422,7 @@ module.exports = class LevelUpGenerator {
       previousLevel,
       this.lightenColor(color, 0.6),
       "#F8F9FA",
-      "Before"
+      "Before",
     );
 
     const arrowX = x + boxWidth + spacing;
@@ -438,7 +438,7 @@ module.exports = class LevelUpGenerator {
       currentLevel,
       color,
       this.lightenColor(color, 0.85),
-      "Next"
+      "Next",
     );
   }
 
@@ -451,7 +451,7 @@ module.exports = class LevelUpGenerator {
     level,
     borderColor,
     fillColor,
-    label
+    label,
   ) {
     const radius = 12; // Reduced from 18
 
@@ -472,7 +472,7 @@ module.exports = class LevelUpGenerator {
       x,
       y,
       x + width,
-      y + height
+      y + height,
     );
     borderGradient.addColorStop(0, this.lightenColor(borderColor, 0.2));
     borderGradient.addColorStop(1, borderColor);
@@ -552,7 +552,7 @@ module.exports = class LevelUpGenerator {
       y + 0.7,
       width - 1.4,
       height - 1.4,
-      radius - 0.7
+      radius - 0.7,
     );
     ctx.stroke();
 
@@ -563,7 +563,7 @@ module.exports = class LevelUpGenerator {
       x,
       y,
       x + progressWidth,
-      y
+      y,
     );
     progressGradient.addColorStop(0, this.lightenColor(color, 0.2));
     progressGradient.addColorStop(0.3, color);
@@ -620,7 +620,7 @@ module.exports = class LevelUpGenerator {
       x - size,
       y + size / 3,
       x,
-      y + size
+      y + size,
     );
     ctx.bezierCurveTo(
       x + size,
@@ -628,7 +628,7 @@ module.exports = class LevelUpGenerator {
       x + size / 2,
       y - size / 3,
       x,
-      y + size / 3
+      y + size / 3,
     );
     ctx.fill();
   }

@@ -62,7 +62,7 @@ module.exports = {
   owners: process.env.OWNER_IDS ? process.env.OWNER_IDS.split(",") : [],
   bankAccount: process.env.BANKACCOUNT_ID
     ? process.env.BANKACCOUNT_ID
-    : "1260261937292247070",
+    : "966688007493140591",
   color: {
     light: 0xffffff,
     dark: 0x000000,
@@ -86,10 +86,10 @@ module.exports = {
   },
   links: {
     banner: "https://i.imgur.com/fFqwcK2.gif",
-    support: "https://discord.gg/peachygang",
+    support: "https://discord.gg/23xhk8H3wV",
     invite: `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}`,
     vote: `https://top.gg/bot/${process.env.CLIENT_ID}/vote`,
-    dashboard: `https://peachy-gang-dashboard.vercel.app`,
-    facebook: `https://web.facebook.com/profile.php?id=61568712312805`,
+    dashboard: `https://peachyganggg.com`,
+    facebook: `https://web.facebook.com/profile.php?id=61581023813932`,
   },
 };

@@ -59,7 +59,7 @@ module.exports = class Profile extends Command {
           client,
           ctx,
           color,
-          emoji
+          emoji,
         );
       } catch (error) {
         await this.handleError(ctx, loadingMessage);
@@ -69,23 +69,23 @@ module.exports = class Profile extends Command {
       // await new Promise((resolve) => setTimeout(resolve, 4000));
 
       const equippedDecoration = userInfo.equip.find((equippedItem) =>
-        equippedItem.id.startsWith("d")
+        equippedItem.id.startsWith("d"),
       );
       const equippedWallpaper = userInfo.equip.find((equippedItem) =>
-        equippedItem.id.startsWith("w")
+        equippedItem.id.startsWith("w"),
       );
       const equippedColor = userInfo.equip.find((equippedItem) =>
-        equippedItem.id.startsWith("p")
+        equippedItem.id.startsWith("p"),
       );
 
       const chinaNewYear = userInfo.equip.find(
-        (equippedItem) => equippedItem.id === "w168"
+        (equippedItem) => equippedItem.id === "w168",
       );
 
       let decorationImage;
       if (equippedDecoration) {
         decorationImage = Decoration.find(
-          (decorationItem) => decorationItem.id === equippedDecoration.id
+          (decorationItem) => decorationItem.id === equippedDecoration.id,
         )?.image;
       } else {
         decorationImage = defaultDecoration;
@@ -97,7 +97,7 @@ module.exports = class Profile extends Command {
       } else {
         if (equippedWallpaper) {
           bannerImage = Wallpapers.find(
-            (wallpaperItem) => wallpaperItem.id === equippedWallpaper.id
+            (wallpaperItem) => wallpaperItem.id === equippedWallpaper.id,
           )?.image;
         } else {
           bannerImage = defaultBanner;
@@ -107,7 +107,7 @@ module.exports = class Profile extends Command {
       let backgroundColor;
       if (equippedColor) {
         const foundColor = Colors.find(
-          (colorItem) => colorItem.id === equippedColor.id
+          (colorItem) => colorItem.id === equippedColor.id,
         );
         backgroundColor = foundColor?.color;
       }
@@ -121,7 +121,7 @@ module.exports = class Profile extends Command {
 
         if (userInfo?.relationship?.partner?.userId) {
           partnerInfo = await client.utils.getUser(
-            userInfo?.relationship?.partner?.userId
+            userInfo?.relationship?.partner?.userId,
           );
           partner = await client.users.fetch(partnerInfo?.userId);
         }
@@ -134,7 +134,7 @@ module.exports = class Profile extends Command {
           userInfo,
           partner,
           partnerInfo,
-          bannerImage
+          bannerImage,
         );
       } else {
         await this.drawProfile(
@@ -146,7 +146,7 @@ module.exports = class Profile extends Command {
           backgroundColor,
           emoji,
           bannerImage,
-          decorationImage
+          decorationImage,
         );
       }
 
@@ -194,7 +194,7 @@ module.exports = class Profile extends Command {
       .embed()
       .setColor(color.main)
       .setDescription(
-        `# **${emoji.mainLeft} PROFILE ${emoji.mainRight}**\n\n**Generating your profile...**`
+        `# **${emoji.mainLeft} PROFILE ${emoji.mainRight}**\n\n**Generating your profile...**`,
       )
       .setImage("https://i.imgur.com/0BrEHuc.gif");
     return await ctx.sendDeferMessage({
@@ -261,7 +261,7 @@ module.exports = class Profile extends Command {
     height,
     radius,
     colorScheme,
-    intensity = 1
+    intensity = 1,
   ) {
     ctx.save();
 
@@ -275,12 +275,12 @@ module.exports = class Profile extends Command {
     if (this.isGradientColor(colorScheme)) {
       backgroundGradient.addColorStop(
         0,
-        this.lightenColor(colorScheme.primary, 0.1)
+        this.lightenColor(colorScheme.primary, 0.1),
       );
       backgroundGradient.addColorStop(0.5, colorScheme.primary);
       backgroundGradient.addColorStop(
         1,
-        this.adjustColorBrightness(colorScheme.primary, -8)
+        this.adjustColorBrightness(colorScheme.primary, -8),
       );
     } else {
       const baseColor = colorScheme ? colorScheme.primary : "#FFF8F0";
@@ -288,7 +288,7 @@ module.exports = class Profile extends Command {
       backgroundGradient.addColorStop(0.5, baseColor);
       backgroundGradient.addColorStop(
         1,
-        this.adjustColorBrightness(baseColor, -8)
+        this.adjustColorBrightness(baseColor, -8),
       );
     }
 
@@ -318,21 +318,21 @@ module.exports = class Profile extends Command {
       x,
       y,
       x + width,
-      y + height
+      y + height,
     );
     if (this.isGradientColor(colorScheme)) {
       borderGradient.addColorStop(
         0,
-        this.lightenColor(colorScheme.secondary, 0.2)
+        this.lightenColor(colorScheme.secondary, 0.2),
       );
       borderGradient.addColorStop(0.3, colorScheme.secondary);
       borderGradient.addColorStop(
         0.7,
-        this.darkenColor(colorScheme.secondary, 0.1)
+        this.darkenColor(colorScheme.secondary, 0.1),
       );
       borderGradient.addColorStop(
         1,
-        this.lightenColor(colorScheme.secondary, 0.2)
+        this.lightenColor(colorScheme.secondary, 0.2),
       );
     } else {
       const borderColor = colorScheme ? colorScheme.primary : "#FF69B4";
@@ -363,7 +363,7 @@ module.exports = class Profile extends Command {
       x + width - 3,
       y + height - 3,
       x + width - radius - 3,
-      y + height - 3
+      y + height - 3,
     );
     ctx.lineTo(x + radius + 3, y + height - 3);
     ctx.quadraticCurveTo(x + 3, y + height - 3, x + 3, y + height - radius - 3);
@@ -386,7 +386,7 @@ module.exports = class Profile extends Command {
         0,
         width / 2,
         height / 2,
-        Math.max(width, height) / 1.2
+        Math.max(width, height) / 1.2,
       );
       const baseColor = colorScheme ? colorScheme.primary : "#FFF8F0";
       gradient.addColorStop(0, baseColor);
@@ -409,7 +409,7 @@ module.exports = class Profile extends Command {
               j + Math.random() * 10,
               1.5,
               0,
-              Math.PI * 2
+              Math.PI * 2,
             );
             ctx.fill();
           }
@@ -429,7 +429,7 @@ module.exports = class Profile extends Command {
       width,
       height,
       colorScheme,
-      Date.now()
+      Date.now(),
     );
     ctx.fillStyle = mainGradient;
     ctx.fillRect(0, 0, width, height);
@@ -441,7 +441,7 @@ module.exports = class Profile extends Command {
       0,
       width / 2,
       height / 2,
-      Math.max(width, height) / 2
+      Math.max(width, height) / 2,
     );
     overlayGradient.addColorStop(0, `${colorScheme.primary}85`);
     overlayGradient.addColorStop(0.7, `${colorScheme.primary}70`);
@@ -461,7 +461,7 @@ module.exports = class Profile extends Command {
             j + Math.random() * 10,
             1.5,
             0,
-            Math.PI * 2
+            Math.PI * 2,
           );
           ctx.fill();
         }
@@ -492,7 +492,7 @@ module.exports = class Profile extends Command {
     color,
     fontSize = 36,
     fontWeight = "bold",
-    align = "left"
+    align = "left",
   ) {
     // Add LevelUpGenerator style text shadow
     ctx.shadowColor = "rgba(0, 0, 0, 0.15)";
@@ -562,7 +562,7 @@ module.exports = class Profile extends Command {
         x + shift,
         y + shift,
         x + width,
-        y + height
+        y + height,
       );
     } else if (direction === "90deg" || direction === "to right") {
       gradient = ctx.createLinearGradient(x + shift, y, x + width, y);
@@ -575,7 +575,7 @@ module.exports = class Profile extends Command {
         x + shift,
         y + shift,
         x + width,
-        y + height
+        y + height,
       );
     }
 
@@ -583,7 +583,7 @@ module.exports = class Profile extends Command {
     gradient.addColorStop(0, colorScheme.primary);
     gradient.addColorStop(
       0.5,
-      this.blendColors(colorScheme.primary, colorScheme.secondary, 0.5)
+      this.blendColors(colorScheme.primary, colorScheme.secondary, 0.5),
     );
     gradient.addColorStop(1, colorScheme.secondary);
 
@@ -615,15 +615,15 @@ module.exports = class Profile extends Command {
     const hex = color.replace("#", "");
     const r = Math.min(
       255,
-      parseInt(hex.substring(0, 2), 16) + Math.round(255 * amount)
+      parseInt(hex.substring(0, 2), 16) + Math.round(255 * amount),
     );
     const g = Math.min(
       255,
-      parseInt(hex.substring(2, 4), 16) + Math.round(255 * amount)
+      parseInt(hex.substring(2, 4), 16) + Math.round(255 * amount),
     );
     const b = Math.min(
       255,
-      parseInt(hex.substring(4, 6), 16) + Math.round(255 * amount)
+      parseInt(hex.substring(4, 6), 16) + Math.round(255 * amount),
     );
 
     return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
@@ -633,15 +633,15 @@ module.exports = class Profile extends Command {
     const hex = color.replace("#", "");
     const r = Math.max(
       0,
-      parseInt(hex.substring(0, 2), 16) - Math.round(255 * amount)
+      parseInt(hex.substring(0, 2), 16) - Math.round(255 * amount),
     );
     const g = Math.max(
       0,
-      parseInt(hex.substring(2, 4), 16) - Math.round(255 * amount)
+      parseInt(hex.substring(2, 4), 16) - Math.round(255 * amount),
     );
     const b = Math.max(
       0,
-      parseInt(hex.substring(4, 6), 16) - Math.round(255 * amount)
+      parseInt(hex.substring(4, 6), 16) - Math.round(255 * amount),
     );
 
     return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
@@ -651,15 +651,15 @@ module.exports = class Profile extends Command {
     const hex = color.replace("#", "");
     const r = Math.max(
       0,
-      Math.min(255, parseInt(hex.substring(0, 2), 16) + amount)
+      Math.min(255, parseInt(hex.substring(0, 2), 16) + amount),
     );
     const g = Math.max(
       0,
-      Math.min(255, parseInt(hex.substring(2, 4), 16) + amount)
+      Math.min(255, parseInt(hex.substring(2, 4), 16) + amount),
     );
     const b = Math.max(
       0,
-      Math.min(255, parseInt(hex.substring(4, 6), 16) + amount)
+      Math.min(255, parseInt(hex.substring(4, 6), 16) + amount),
     );
 
     return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
@@ -674,7 +674,7 @@ module.exports = class Profile extends Command {
     backgroundColor,
     emoji,
     banner,
-    decorationImage
+    decorationImage,
   ) {
     // Draw the background with gradient support
     if (backgroundColor) {
@@ -703,7 +703,7 @@ module.exports = class Profile extends Command {
         x + width,
         y + height,
         x + width - radius,
-        y + height
+        y + height,
       );
       context.lineTo(x + radius, y + height);
       context.quadraticCurveTo(x, y + height, x, y + height - radius);
@@ -729,7 +729,7 @@ module.exports = class Profile extends Command {
       1250,
       60,
       12,
-      titleBoxColor
+      titleBoxColor,
     );
 
     // Add subtle overlay for gradient backgrounds to improve text readability
@@ -743,7 +743,7 @@ module.exports = class Profile extends Command {
     // Draw "Profile" title with LevelUpGenerator style
     const profileTitleColor = this.getContrastTextColor(
       backgroundColor,
-      client.utils.formatColor(color.dark)
+      client.utils.formatColor(color.dark),
     );
     this.drawEnhancedText(
       context,
@@ -752,7 +752,7 @@ module.exports = class Profile extends Command {
       65,
       profileTitleColor,
       36,
-      "bold"
+      "bold",
     );
 
     // Draw the rounded rectangle for the information box with gradient support
@@ -774,7 +774,7 @@ module.exports = class Profile extends Command {
       385,
       570,
       32,
-      infoBoxColor
+      infoBoxColor,
     );
 
     // Add subtle overlay for gradient backgrounds to improve text readability
@@ -787,7 +787,7 @@ module.exports = class Profile extends Command {
 
     // Draw the decoration image as a frame around the avatar (if available)
     const userAvatar = await loadImage(
-      targetUser.displayAvatarURL({ format: "png", size: 256 })
+      targetUser.displayAvatarURL({ format: "png", size: 256 }),
     );
     const userAvatarSize = 128;
     const wallpaperX = 15;
@@ -807,7 +807,7 @@ module.exports = class Profile extends Command {
       userAvatarSize / 2,
       0,
       Math.PI * 2,
-      true
+      true,
     );
     context.closePath();
     context.clip();
@@ -816,7 +816,7 @@ module.exports = class Profile extends Command {
       userAvatarX,
       userAvatarY,
       userAvatarSize,
-      userAvatarSize
+      userAvatarSize,
     );
     context.restore();
 
@@ -835,7 +835,7 @@ module.exports = class Profile extends Command {
           decorationSize / 2,
           0,
           Math.PI * 2,
-          true
+          true,
         );
         context.closePath();
         context.drawImage(
@@ -843,7 +843,7 @@ module.exports = class Profile extends Command {
           decorationX,
           decorationY,
           decorationSize,
-          decorationSize
+          decorationSize,
         );
         context.restore();
       } catch (e) {
@@ -891,7 +891,7 @@ module.exports = class Profile extends Command {
     userInfoDetail.forEach((info) => {
       const textColor = this.getContrastTextColor(
         backgroundColor,
-        client.utils.formatColor(color.dark)
+        client.utils.formatColor(color.dark),
       );
 
       // Draw label with LevelUpGenerator style
@@ -902,7 +902,7 @@ module.exports = class Profile extends Command {
         info.y,
         textColor,
         28,
-        "bold"
+        "bold",
       );
 
       // Draw description with enhanced info text style
@@ -915,7 +915,7 @@ module.exports = class Profile extends Command {
           info.x,
           info.y + 30 + index * 28,
           textColor,
-          22
+          22,
         );
       });
     });
@@ -924,7 +924,7 @@ module.exports = class Profile extends Command {
     if (userInfo.achievements && userInfo.achievements.length > 0) {
       // Sort achievements by date earned
       const sortedAchievements = [...userInfo.achievements].sort(
-        (a, b) => new Date(b.earnedAt) - new Date(a.earnedAt)
+        (a, b) => new Date(b.earnedAt) - new Date(a.earnedAt),
       );
 
       // Take the 3 most recent achievements
@@ -933,7 +933,7 @@ module.exports = class Profile extends Command {
       // Draw achievements section with LevelUpGenerator style
       const achievementColor = this.getContrastTextColor(
         backgroundColor,
-        client.utils.formatColor(color.dark)
+        client.utils.formatColor(color.dark),
       );
       this.drawEnhancedText(
         context,
@@ -942,7 +942,7 @@ module.exports = class Profile extends Command {
         460,
         achievementColor,
         28,
-        "bold"
+        "bold",
       );
 
       // Draw each achievement with enhanced info text
@@ -953,7 +953,7 @@ module.exports = class Profile extends Command {
           895,
           490 + index * 32,
           achievementColor,
-          22
+          22,
         );
       });
     }
@@ -1000,12 +1000,12 @@ module.exports = class Profile extends Command {
       12,
       backgroundColor
         ? backgroundColor
-        : { primary: "#F7D8DF", secondary: "#F7D8DF" }
+        : { primary: "#F7D8DF", secondary: "#F7D8DF" },
     );
     // Draw the relationship status with LevelUpGenerator style
     const statusColor = this.getContrastTextColor(
       backgroundColor,
-      client.utils.formatColor(color.dark)
+      client.utils.formatColor(color.dark),
     );
     const statusText = !!userInfo?.relationship?.partner?.userId
       ? "Taken"
@@ -1019,7 +1019,7 @@ module.exports = class Profile extends Command {
       statusColor,
       32,
       "bold",
-      "center"
+      "center",
     );
   }
 
@@ -1030,7 +1030,7 @@ module.exports = class Profile extends Command {
     userInfo,
     partner,
     partnerInfo,
-    banner
+    banner,
   ) {
     const wallpaperCNY = await loadImage("https://i.imgur.com/51ycl94.jpg");
     if (wallpaperCNY) {
@@ -1056,7 +1056,7 @@ module.exports = class Profile extends Command {
         x + width,
         y + height,
         x + width - radius,
-        y + height
+        y + height,
       );
       context.lineTo(x + radius, y + height);
       context.quadraticCurveTo(x, y + height, x, y + height - radius);
@@ -1073,7 +1073,7 @@ module.exports = class Profile extends Command {
 
     // Draw the avatar as a circular image
     const userAvatar = await loadImage(
-      user.displayAvatarURL({ format: "png", size: 256 })
+      user.displayAvatarURL({ format: "png", size: 256 }),
     );
     const userAvatarX = 1740;
     const userAvatarY = 850;
@@ -1088,7 +1088,7 @@ module.exports = class Profile extends Command {
         userAvatarSize / 2,
         0,
         Math.PI * 2,
-        true
+        true,
       );
       context.closePath();
       context.clip();
@@ -1097,7 +1097,7 @@ module.exports = class Profile extends Command {
         userAvatarX,
         userAvatarY,
         userAvatarSize,
-        userAvatarSize
+        userAvatarSize,
       );
       context.restore();
     }
@@ -1105,7 +1105,7 @@ module.exports = class Profile extends Command {
     // PARTNER SECTION
     if (partner) {
       const partnerAvatar = await loadImage(
-        partner.displayAvatarURL({ format: "png", size: 256 })
+        partner.displayAvatarURL({ format: "png", size: 256 }),
       );
       const partnerAvatarX = 1525;
       const partnerAvatarY = 967;
@@ -1119,7 +1119,7 @@ module.exports = class Profile extends Command {
           partnerAvatarSize / 2,
           0,
           Math.PI * 2,
-          true
+          true,
         );
         context.closePath();
         context.clip();
@@ -1128,7 +1128,7 @@ module.exports = class Profile extends Command {
           partnerAvatarX,
           partnerAvatarY,
           partnerAvatarSize,
-          partnerAvatarSize
+          partnerAvatarSize,
         );
         context.restore();
       }
@@ -1142,7 +1142,7 @@ module.exports = class Profile extends Command {
       userAvatarSize / 2 + 2,
       0,
       Math.PI * 2,
-      true
+      true,
     ); // Slightly larger circle
     context.lineWidth = 1;
     context.strokeStyle = "#000000";
@@ -1157,7 +1157,7 @@ module.exports = class Profile extends Command {
     context.fillText(
       client.utils.formatUpperCase(userInfo.profile.gender ?? "Not Set"),
       1790,
-      687
+      687,
     );
 
     context.fillText(
@@ -1165,7 +1165,7 @@ module.exports = class Profile extends Command {
         ? moment(userInfo.profile.birthday, "DD-MMM").format("DD MMM")
         : client.utils.formatUpperCase("Not Set"),
       1790,
-      757
+      757,
     );
 
     context.fillText(
@@ -1173,20 +1173,20 @@ module.exports = class Profile extends Command {
         ? client.utils.formatUpperCase(partner.username)
         : client.utils.formatUpperCase("Single"),
       955,
-      1025
+      1025,
     );
 
     if (partner) {
       context.fillText(
         client.utils.formatNumber(userInfo.balance.coin),
         1790,
-        827
+        827,
       );
     } else {
       context.fillText(
         client.utils.formatUpperCase(userInfo.profile.zodiacSign ?? "Not Set"),
         1790,
-        827
+        827,
       );
     }
 
@@ -1194,14 +1194,14 @@ module.exports = class Profile extends Command {
       const partnerDate = new Date(userInfo?.relationship?.partner?.date);
       const currentDate = Date.now();
       const diffInDays = Math.floor(
-        (currentDate - partnerDate) / (1000 * 60 * 60 * 24)
+        (currentDate - partnerDate) / (1000 * 60 * 60 * 24),
       );
       context.fillText(`${diffInDays + 1} Days`, 1350, 1025);
     } else {
       context.fillText(
         client.utils.formatNumber(userInfo.balance.coin),
         1350,
-        1025
+        1025,
       );
     }
   }

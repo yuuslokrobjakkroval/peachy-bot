@@ -6,7 +6,6 @@ const {
   ComponentType,
 } = require("discord.js");
 const Users = require("../../schemas/user");
-const ServerModeManager = require("../../managers/ServerModeManager");
 const globalGif = require("../../utils/Gif");
 const globalEmoji = require("../../utils/Emoji");
 
@@ -35,7 +34,6 @@ module.exports = class Balance extends Command {
 
     this.activeModalHandlers = new Map();
     this.activeCollectors = new Map();
-    this.serverModeManager = new ServerModeManager();
   }
 
   async run(client, ctx, args, color, emoji, language) {
@@ -63,36 +61,17 @@ module.exports = class Balance extends Command {
       }
 
       // Get user data based on server mode
-      const user = await this.serverModeManager.getUserData(
+      const user = await client.serverModeManager.getUserData(
         ctx.author.id,
         ctx.guild?.id
       );
       if (!user) {
-        // Create user if not found
-        const newUser = await this.serverModeManager.saveUserData(
-          ctx.author.id,
-          ctx.guild?.id,
-          {
-            balance: {
-              coin: 25000,
-              bank: 0,
-              credit: 0,
-              sponsor: 0,
-              slots: 0,
-              blackjack: 0,
-              coinflip: 0,
-              klaklouk: 0,
-            },
-          }
+        return client.utils.sendErrorMessage(
+          client,
+          ctx,
+          generalMessages.userNotFound || "User not found.",
+          color
         );
-        if (!newUser) {
-          return client.utils.sendErrorMessage(
-            client,
-            ctx,
-            generalMessages.userNotFound || "User not found.",
-            color
-          );
-        }
       }
 
       const { coin = 0, bank = 0, credit = 0 } = user.balance || {};
@@ -106,7 +85,7 @@ module.exports = class Balance extends Command {
       }
 
       // Get server mode for display
-      const serverMode = await this.serverModeManager.getServerMode(
+      const serverMode = await client.serverModeManager.getServerMode(
         ctx.guild?.id
       );
 
@@ -260,7 +239,10 @@ module.exports = class Balance extends Command {
 
       try {
         await interaction.deferUpdate().catch(() => {});
-        const updatedUser = await client.utils.getUser(ctx.author.id);
+        const updatedUser = await client.serverModeManager.getUserData(
+          ctx.author.id,
+          ctx.guild?.id
+        );
         if (!updatedUser) {
           await interaction.followUp({
             embeds: [
@@ -345,7 +327,10 @@ module.exports = class Balance extends Command {
 
       try {
         await interaction.deferUpdate().catch(() => {});
-        const updatedUser = await client.utils.getUser(ctx.author.id);
+        const updatedUser = await client.serverModeManager.getUserData(
+          ctx.author.id,
+          ctx.guild?.id
+        );
 
         if (interaction.customId.startsWith("deposit_modal_")) {
           const amount = interaction.fields
@@ -1013,17 +998,22 @@ module.exports = class Balance extends Command {
     }
 
     try {
-      await Users.findOneAndUpdate(
-        { userId: user.userId },
-        {
-          $inc: {
-            "balance.coin": -amount,
-            "balance.bank": amount,
-          },
-        }
-      );
+      // Update user balance using ServerModeManager
+      const updatedBalance = {
+        ...user.balance,
+        coin: user.balance.coin - amount,
+        bank: user.balance.bank + amount,
+      };
 
-      const updatedUser = await client.utils.getUser(user.userId);
+      await client.serverModeManager.saveUserData(user.userId, ctx.guild?.id, {
+        ...user,
+        balance: updatedBalance,
+      });
+
+      const updatedUser = await client.serverModeManager.getUserData(
+        user.userId,
+        ctx.guild?.id
+      );
       if (originalReply) {
         try {
           await originalReply.delete();
@@ -1157,17 +1147,22 @@ module.exports = class Balance extends Command {
     }
 
     try {
-      await Users.findOneAndUpdate(
-        { userId: user.userId },
-        {
-          $inc: {
-            "balance.coin": amount,
-            "balance.bank": -amount,
-          },
-        }
-      );
+      // Update user balance using ServerModeManager
+      const updatedBalance = {
+        ...user.balance,
+        coin: user.balance.coin + amount,
+        bank: user.balance.bank - amount,
+      };
 
-      const updatedUser = await client.utils.getUser(user.userId);
+      await client.serverModeManager.saveUserData(user.userId, ctx.guild?.id, {
+        ...user,
+        balance: updatedBalance,
+      });
+
+      const updatedUser = await client.serverModeManager.getUserData(
+        user.userId,
+        ctx.guild?.id
+      );
       if (originalReply) {
         try {
           await originalReply.delete();

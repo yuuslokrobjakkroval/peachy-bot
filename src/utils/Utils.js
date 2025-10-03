@@ -1563,19 +1563,9 @@ module.exports = class Utils {
       for (const winner of winnerIdArray) {
         try {
           await Utils.addCoinsToUser(winner, data.prize);
+          // Send a content message mentioning the winner
           await message.reply({
-            embeds: [
-              client
-                .embed()
-                .setColor(color.main)
-                .setDescription(
-                  `**${
-                    client.user.username
-                  }** has awarded **${client.utils.formatNumber(
-                    data.prize
-                  )}** ${emoji.coin} to <@${winner}>.`
-                ),
-            ],
+            content: `<@${winner}> You have won **${client.utils.formatNumber(data.prize)}** ${emoji.coin}!`,
           });
         } catch (err) {
           console.error(`Error awarding prize to user <@${winner}>:`, err);
@@ -1710,16 +1700,9 @@ module.exports = class Utils {
               });
             }
             await user.save();
-
+            // Send a content message mentioning the winner
             await message.reply({
-              embeds: [
-                client
-                  .embed()
-                  .setColor(color.main)
-                  .setDescription(
-                    `**${client.user.displayName}** has added **${itemInfo.name} ${itemInfo.emoji} \`${data.amount}\`** to <@${winner}>'s inventory.`
-                  ),
-              ],
+              content: `**${client.user.displayName}** has added **${itemInfo.name} ${itemInfo.emoji} \`${data.amount}\`** to <@${winner}>'s inventory.`,
             });
           }
         } catch (err) {
@@ -2034,7 +2017,7 @@ module.exports = class Utils {
       const guildId = "1369956599720054847";
       const roleIds = ["1370318327372714034", "1370299562312335441"];
       const rewardChannelId = "1374630700464210010";
-      const rewardAmount = 1000000;
+      const rewardAmount = 500000;
 
       const guild = await client.guilds.fetch(guildId).catch((err) => {
         console.error(

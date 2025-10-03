@@ -111,7 +111,7 @@ module.exports = class ShopInfo extends Command {
           itemId,
           safeColors,
           emoji,
-          messages
+          messages,
         );
       } else {
         // Show shop overview with interactive browsing
@@ -120,7 +120,7 @@ module.exports = class ShopInfo extends Command {
           ctx,
           safeColors,
           emoji,
-          messages
+          messages,
         );
       }
     } catch (error) {
@@ -205,7 +205,7 @@ module.exports = class ShopInfo extends Command {
       .setThumbnail(
         foundItem.emoji
           ? client.utils.emojiToImage(foundItem.emoji)
-          : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+          : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
       )
       .setFooter({
         text: `Use /buy ${foundItem.id} to purchase this item`,
@@ -262,7 +262,7 @@ module.exports = class ShopInfo extends Command {
     // Get shop statistics
     const totalItems = Shops.reduce(
       (total, shop) => total + shop.inventory.length,
-      0
+      0,
     );
     const allItems = Shops.flatMap((shop) => shop.inventory);
     const prices = allItems
@@ -272,11 +272,11 @@ module.exports = class ShopInfo extends Command {
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
     const avgPrice = Math.round(
-      prices.reduce((sum, price) => sum + price, 0) / prices.length
+      prices.reduce((sum, price) => sum + price, 0) / prices.length,
     );
 
     const mostExpensiveItem = allItems.find(
-      (item) => item.price.buy === maxPrice
+      (item) => item.price.buy === maxPrice,
     );
     const cheapestItem = allItems.find((item) => item.price.buy === minPrice);
 
@@ -291,7 +291,7 @@ module.exports = class ShopInfo extends Command {
           shopPrices.length > 0
             ? Math.round(
                 shopPrices.reduce((sum, price) => sum + price, 0) /
-                  shopPrices.length
+                  shopPrices.length,
               )
             : 0;
 
@@ -303,7 +303,7 @@ module.exports = class ShopInfo extends Command {
         .setColor(color.info)
         .setTitle(`${emoji.shop || "🛍️"} ${messages.shopOverview}`)
         .setDescription(
-          `Welcome to the shop information center! Here you can browse all available items and categories.`
+          `Welcome to the shop information center! Here you can browse all available items and categories.`,
         )
         .addFields([
           {
@@ -338,7 +338,7 @@ module.exports = class ShopInfo extends Command {
     // Function to generate category embed
     const generateCategoryEmbed = () => {
       const shop = Shops.find(
-        (shop) => shop.type === currentState.selectedCategory
+        (shop) => shop.type === currentState.selectedCategory,
       );
       if (!shop) return generateOverviewEmbed();
 
@@ -347,7 +347,7 @@ module.exports = class ShopInfo extends Command {
       const startIndex = currentState.currentPage * currentState.itemsPerPage;
       const endIndex = Math.min(
         startIndex + currentState.itemsPerPage,
-        items.length
+        items.length,
       );
       const currentItems = items.slice(startIndex, endIndex);
 
@@ -366,7 +366,7 @@ module.exports = class ShopInfo extends Command {
       const maxCatPrice = Math.max(...categoryPrices);
       const avgCatPrice = Math.round(
         categoryPrices.reduce((sum, price) => sum + price, 0) /
-          categoryPrices.length
+          categoryPrices.length,
       );
 
       const embed = client
@@ -414,14 +414,14 @@ module.exports = class ShopInfo extends Command {
       if (!currentState.selectedCategory) return null;
 
       const shop = Shops.find(
-        (shop) => shop.type === currentState.selectedCategory
+        (shop) => shop.type === currentState.selectedCategory,
       );
       if (!shop) return null;
 
       const startIndex = currentState.currentPage * currentState.itemsPerPage;
       const endIndex = Math.min(
         startIndex + currentState.itemsPerPage,
-        shop.inventory.length
+        shop.inventory.length,
       );
       const currentItems = shop.inventory.slice(startIndex, endIndex);
 
@@ -434,7 +434,7 @@ module.exports = class ShopInfo extends Command {
         description:
           `${client.utils.formatString(item.price.buy)} ${emoji.coin || "💰"}`.replace(
             /<[^>]*>/g,
-            ""
+            "",
           ),
         emoji: item.emoji?.includes(":") ? undefined : item.emoji,
         default: item.id === currentState.selectedItemId,
@@ -456,12 +456,12 @@ module.exports = class ShopInfo extends Command {
 
       if (currentState.viewMode === "category") {
         const shop = Shops.find(
-          (shop) => shop.type === currentState.selectedCategory
+          (shop) => shop.type === currentState.selectedCategory,
         );
 
         if (shop) {
           const totalPages = Math.ceil(
-            shop.inventory.length / currentState.itemsPerPage
+            shop.inventory.length / currentState.itemsPerPage,
           );
 
           // Previous page button
@@ -594,11 +594,11 @@ module.exports = class ShopInfo extends Command {
 
           case "next_page":
             const shop = Shops.find(
-              (shop) => shop.type === currentState.selectedCategory
+              (shop) => shop.type === currentState.selectedCategory,
             );
             if (shop) {
               const totalPages = Math.ceil(
-                shop.inventory.length / currentState.itemsPerPage
+                shop.inventory.length / currentState.itemsPerPage,
               );
               if (currentState.currentPage < totalPages - 1) {
                 currentState.currentPage++;
@@ -623,7 +623,7 @@ module.exports = class ShopInfo extends Command {
                 currentState.selectedItemId,
                 color,
                 emoji,
-                messages
+                messages,
               );
               return; // Don't update the main message
             }
@@ -644,12 +644,12 @@ module.exports = class ShopInfo extends Command {
             if (component.type === 3) {
               // Select menu
               newRow.addComponents(
-                StringSelectMenuBuilder.from(component).setDisabled(true)
+                StringSelectMenuBuilder.from(component).setDisabled(true),
               );
             } else if (component.type === 2) {
               // Button
               newRow.addComponents(
-                ButtonBuilder.from(component).setDisabled(true)
+                ButtonBuilder.from(component).setDisabled(true),
               );
             }
           });

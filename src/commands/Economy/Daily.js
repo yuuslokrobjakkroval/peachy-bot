@@ -45,7 +45,8 @@ module.exports = class Daily extends Command {
         );
       }
 
-      const baseCoins = chance.integer({ min: 50000, max: 100000 });
+      // Lowered daily coin reward range
+      const baseCoins = chance.integer({ min: 10000, max: 20000 });
       const baseExp = chance.integer({ min: 100, max: 150 });
 
       let bonusCoins = 0;

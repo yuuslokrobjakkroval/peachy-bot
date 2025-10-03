@@ -32,6 +32,7 @@ const themeEmojis = {
   t05: require("../theme/FestiveFrost/emojis"),
   t06: require("../theme/KingFrost/emojis"),
   t07: require("../theme/QueenFrost/emojis"),
+  t08: require("../theme/Gangyu/emojis"),
   st01: require("../theme/CelestialGrace/emojis"),
   st02: require("../theme/SakuraSerenity/emojis"),
   st03: require("../theme/BuzzingBliss/emojis"),
