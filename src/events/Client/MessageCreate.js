@@ -26,7 +26,14 @@ module.exports = class MessageCreate extends Event {
         const generalMessages = language.locales.get(
           language.defaultLocale
         )?.generalMessages;
-        const prefix = globalConfig.prefix;
+
+        // Get user's custom prefix or fall back to global
+        const userPrefix = await this.client.prefixManager.getUserPrefix(
+          message.author.id,
+          message.guild.id
+        );
+        const prefix = userPrefix;
+
         this.client.utils.getCheckingUser(
           this.client,
           message,
@@ -79,13 +86,18 @@ module.exports = class MessageCreate extends Event {
 
         const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
         if (mention.test(message.content)) {
+          const globalPrefix = globalConfig.prefix;
+          const isCustomPrefix = prefix !== globalPrefix;
+
           const embed = this.client
             .embed()
             .setColor(color.main)
             .setTitle(`Heyoo! ${message.author.displayName}`)
             .setDescription(
               `My Name is ${this.client.user.displayName}.\n` +
-                `My prefix for this server is **${prefix}**.\n\n` +
+                (isCustomPrefix
+                  ? `Your personal prefix is **${prefix}** (Server default: **${globalPrefix}**)\n\n`
+                  : `My prefix for this server is **${prefix}**.\n\n`) +
                 `Do you need help? please use **${prefix}help**!!!`
             )
             .setImage(globalGif.mentionBot)
@@ -103,22 +115,15 @@ module.exports = class MessageCreate extends Event {
           return message.reply({ embeds: [embed], components: [row] });
         }
 
-        if (
-          message.content.startsWith(prefix) ||
-          message.content.startsWith(prefix.toLowerCase())
-        ) {
-          const escapeRegex = (str) =>
-            str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-          const prefixRegex = new RegExp(
-            `^(<@!?${this.client.user.id}>|${escapeRegex(prefix)})\\s*`,
-            "i"
-          );
-          const match = prefixRegex.exec(message.content);
-          const [, matchedPrefix] = match;
-          const args = message.content
-            .slice(matchedPrefix.length)
-            .trim()
-            .split(/ +/);
+        // Check for custom prefix or global prefix
+        const prefixCheck = await this.client.prefixManager.checkPrefix(
+          message.content,
+          message.author.id,
+          message.guild.id
+        );
+
+        if (prefixCheck.hasPrefix) {
+          const args = prefixCheck.command.split(/ +/);
           const cmd = args.shift().toLowerCase();
           const command =
             this.client.commands.get(cmd) ||
@@ -137,7 +142,7 @@ module.exports = class MessageCreate extends Event {
             "privacypolicy",
             "stats",
           ];
-          if (match) {
+          if (prefixCheck.hasPrefix) {
             if (!user && !permissionCommand.includes(command.name)) {
               const embed = this.client
                 .embed()
@@ -383,10 +388,10 @@ module.exports = class MessageCreate extends Event {
                     } else if (int.customId === "cancel") {
                       const commandList = `
 **Commands You Can Use:**
-- \`${this.client.config.prefix}register\` - Register for a feature or service.
-- \`${this.client.config.prefix}info\` - Get information about the bot.
-- \`${this.client.config.prefix}help\` - List all available commands.
-- \`${this.client.config.prefix}stats\` - View server or user statistics.
+- \`${prefix}register\` - Register for a feature or service.
+- \`${prefix}info\` - Get information about the bot.
+- \`${prefix}help\` - List all available commands.
+- \`${prefix}stats\` - View server or user statistics.
 `;
                       await int.editReply({
                         embeds: [
@@ -403,7 +408,7 @@ module.exports = class MessageCreate extends Event {
                               `${emoji.mainLeft} THANK YOU ${ctx.author.displayName} ${emoji.mainRight}`
                             )
                             .setDescription(
-                              `Registration has been canceled.\n\nYou can register again by using the command \`${this.client.config.prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`
+                              `Registration has been canceled.\n\nYou can register again by using the command \`${prefix}register\`.\n\nHere are some other commands you might find useful:\n${commandList}`
                             ),
                         ],
                         components: [],

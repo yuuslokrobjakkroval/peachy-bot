@@ -1,9 +1,11 @@
 const Users = require("../schemas/user");
 const BotLog = require("../utils/BotLog");
+const ServerModeManager = require("./ServerModeManager");
 
 class EconomyManager {
   constructor(client) {
     this.client = client;
+    this.serverModeManager = new ServerModeManager();
     this.transactionLog = new Map(); // Store recent transactions for analytics
     this.economyStats = {
       totalCoins: 0,
@@ -22,19 +24,40 @@ class EconomyManager {
   /**
    * Add coins to a user's wallet
    * @param {string} userId - The user ID
+   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount of coins to add
    * @param {string} reason - Reason for adding coins
    * @returns {Promise<Object>} Updated user data
    */
-  async addCoins(userId, amount, reason = "Unknown") {
-    if (!userId || amount <= 0) return null;
+  async addCoins(userId, guildId, amount, reason = "Unknown") {
+    if (!userId || !guildId || amount <= 0) return null;
 
     try {
-      // Update user balance
-      const user = await Users.findOneAndUpdate(
-        { userId },
-        { $inc: { "balance.coin": amount } },
-        { new: true, upsert: true },
+      // Get current user data based on server mode
+      let user = await this.serverModeManager.getUserData(userId, guildId);
+
+      if (!user) {
+        // Create new user with default balance
+        user = await this.serverModeManager.saveUserData(userId, guildId, {
+          balance: {
+            coin: 25000,
+            bank: 0,
+            credit: 0,
+            sponsor: 0,
+            slots: 0,
+            blackjack: 0,
+            coinflip: 0,
+            klaklouk: 0,
+          },
+        });
+      }
+
+      // Update balance
+      user.balance.coin += amount;
+      const updatedUser = await this.serverModeManager.saveUserData(
+        userId,
+        guildId,
+        user
       );
 
       // Log transaction
@@ -44,11 +67,11 @@ class EconomyManager {
       if (this.client.achievementManager) {
         await this.client.achievementManager.checkEconomyAchievements(
           userId,
-          user.balance.coin + user.balance.bank,
+          updatedUser.balance.coin + updatedUser.balance.bank
         );
       }
 
-      return user;
+      return updatedUser;
     } catch (error) {
       console.error(`[ECONOMY] Error adding coins to ${userId}:`, error);
       return null;
@@ -58,23 +81,25 @@ class EconomyManager {
   /**
    * Remove coins from a user's wallet
    * @param {string} userId - The user ID
+   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount of coins to remove
    * @param {string} reason - Reason for removing coins
    * @returns {Promise<Object|null>} Updated user data or null if insufficient funds
    */
-  async removeCoins(userId, amount, reason = "Unknown") {
-    if (!userId || amount <= 0) return null;
+  async removeCoins(userId, guildId, amount, reason = "Unknown") {
+    if (!userId || !guildId || amount <= 0) return null;
 
     try {
-      // Get current balance
-      const user = await Users.findOne({ userId });
+      // Get current user data
+      const user = await this.serverModeManager.getUserData(userId, guildId);
       if (!user || user.balance.coin < amount) return null;
 
       // Update user balance
-      const updatedUser = await Users.findOneAndUpdate(
-        { userId },
-        { $inc: { "balance.coin": -amount } },
-        { new: true },
+      user.balance.coin -= amount;
+      const updatedUser = await this.serverModeManager.saveUserData(
+        userId,
+        guildId,
+        user
       );
 
       // Log transaction
@@ -91,23 +116,43 @@ class EconomyManager {
    * Transfer coins between users
    * @param {string} senderId - Sender's user ID
    * @param {string} receiverId - Receiver's user ID
+   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount to transfer
    * @returns {Promise<boolean>} Success status
    */
-  async transferCoins(senderId, receiverId, amount) {
-    if (!senderId || !receiverId || amount <= 0 || senderId === receiverId)
+  async transferCoins(senderId, receiverId, guildId, amount) {
+    if (
+      !senderId ||
+      !receiverId ||
+      !guildId ||
+      amount <= 0 ||
+      senderId === receiverId
+    )
       return false;
 
     try {
       // Check sender's balance
-      const sender = await Users.findOne({ userId: senderId });
+      const sender = await this.serverModeManager.getUserData(
+        senderId,
+        guildId
+      );
       if (!sender || sender.balance.coin < amount) return false;
 
       // Remove from sender
-      await this.removeCoins(senderId, amount, `Transfer to ${receiverId}`);
+      await this.removeCoins(
+        senderId,
+        guildId,
+        amount,
+        `Transfer to ${receiverId}`
+      );
 
       // Add to receiver
-      await this.addCoins(receiverId, amount, `Transfer from ${senderId}`);
+      await this.addCoins(
+        receiverId,
+        guildId,
+        amount,
+        `Transfer from ${senderId}`
+      );
 
       // Log transaction
       this.logTransaction(senderId, amount, "transfer", `To ${receiverId}`);
@@ -116,7 +161,7 @@ class EconomyManager {
     } catch (error) {
       console.error(
         `[ECONOMY] Error transferring coins from ${senderId} to ${receiverId}:`,
-        error,
+        error
       );
       return false;
     }
@@ -125,27 +170,25 @@ class EconomyManager {
   /**
    * Deposit coins to bank
    * @param {string} userId - User ID
+   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount to deposit
    * @returns {Promise<Object|null>} Updated user data or null if failed
    */
-  async depositCoins(userId, amount) {
-    if (!userId || amount <= 0) return null;
+  async depositCoins(userId, guildId, amount) {
+    if (!userId || !guildId || amount <= 0) return null;
 
     try {
       // Check wallet balance
-      const user = await Users.findOne({ userId });
+      const user = await this.serverModeManager.getUserData(userId, guildId);
       if (!user || user.balance.coin < amount) return null;
 
       // Update balances
-      const updatedUser = await Users.findOneAndUpdate(
-        { userId },
-        {
-          $inc: {
-            "balance.coin": -amount,
-            "balance.bank": amount,
-          },
-        },
-        { new: true },
+      user.balance.coin -= amount;
+      user.balance.bank += amount;
+      const updatedUser = await this.serverModeManager.saveUserData(
+        userId,
+        guildId,
+        user
       );
 
       // Log transaction
@@ -161,27 +204,25 @@ class EconomyManager {
   /**
    * Withdraw coins from bank
    * @param {string} userId - User ID
+   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount to withdraw
    * @returns {Promise<Object|null>} Updated user data or null if failed
    */
-  async withdrawCoins(userId, amount) {
-    if (!userId || amount <= 0) return null;
+  async withdrawCoins(userId, guildId, amount) {
+    if (!userId || !guildId || amount <= 0) return null;
 
     try {
       // Check bank balance
-      const user = await Users.findOne({ userId });
+      const user = await this.serverModeManager.getUserData(userId, guildId);
       if (!user || user.balance.bank < amount) return null;
 
       // Update balances
-      const updatedUser = await Users.findOneAndUpdate(
-        { userId },
-        {
-          $inc: {
-            "balance.coin": amount,
-            "balance.bank": -amount,
-          },
-        },
-        { new: true },
+      user.balance.coin += amount;
+      user.balance.bank -= amount;
+      const updatedUser = await this.serverModeManager.saveUserData(
+        userId,
+        guildId,
+        user
       );
 
       // Log transaction
@@ -308,13 +349,13 @@ class EconomyManager {
         // Item exists, update quantity
         await Users.updateOne(
           { userId, "inventory.id": itemId },
-          { $inc: { "inventory.$.quantity": quantity } },
+          { $inc: { "inventory.$.quantity": quantity } }
         );
       } else {
         // Item doesn't exist, add it
         await Users.updateOne(
           { userId },
-          { $push: { inventory: { id: itemId, quantity } } },
+          { $push: { inventory: { id: itemId, quantity } } }
         );
       }
 
@@ -322,7 +363,7 @@ class EconomyManager {
       BotLog.send(
         this.client,
         `Awarded ${quantity}x ${itemId} to user ${userId} from ${source}`,
-        "info",
+        "info"
       );
 
       // Check for inventory-related achievements

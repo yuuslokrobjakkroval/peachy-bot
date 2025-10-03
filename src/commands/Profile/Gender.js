@@ -62,7 +62,7 @@ module.exports = class Gender extends Command {
     const user = await Users.findOne({ userId: ctx.author.id });
     const embed = client
       .embed()
-      .setTitle(`${emoji.mainLeft} 𝐆𝐄𝐍𝐃𝐄𝐑 ${emoji.mainRight}`)
+      .setTitle(`${emoji.mainLeft} GENDER ${emoji.mainRight}`)
       .setColor(color.main);
 
     const subCommand = ctx.isInteraction
@@ -74,7 +74,7 @@ module.exports = class Gender extends Command {
         embed.setDescription(
           `${
             genderMessages?.usage || "**Usage:**"
-          } \`gender <male || female || reset || help>\`\n\n**Examples:**\n\`gender male\`\n\`gender female\`\n\`gender reset\`\n\`gender help\``,
+          } \`gender <male || female || reset || help>\`\n\n**Examples:**\n\`gender male\`\n\`gender female\`\n\`gender reset\`\n\`gender help\``
         );
 
         await ctx.sendMessage({ embeds: [embed] });
@@ -83,12 +83,12 @@ module.exports = class Gender extends Command {
 
       case "reset": {
         embed.setDescription(
-          genderMessages?.resetSuccess || "Your gender has been reset.",
+          genderMessages?.resetSuccess || "Your gender has been reset."
         );
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "profile.gender": "Not specified" } },
+          { $set: { "profile.gender": "Not specified" } }
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -102,12 +102,12 @@ module.exports = class Gender extends Command {
         embed.setDescription(
           `${
             genderMessages?.setSuccess || "Your gender has been set to"
-          } ${client.utils.formatCapitalize(subCommand)} ${emojiGender}.`,
+          } ${client.utils.formatCapitalize(subCommand)} ${emojiGender}.`
         );
 
         await Users.updateOne(
           { userId: ctx.author.id },
-          { $set: { "profile.gender": subCommand } },
+          { $set: { "profile.gender": subCommand } }
         ).exec();
         await ctx.sendMessage({ embeds: [embed] });
         break;
@@ -127,7 +127,7 @@ module.exports = class Gender extends Command {
             ? `${
                 genderMessages?.current || "Your gender is set to"
               } ${client.utils.formatCapitalize(gender)} ${emojiGender}`
-            : genderMessages?.notSpecified || "Your gender is not specified.",
+            : genderMessages?.notSpecified || "Your gender is not specified."
         );
 
         await ctx.sendMessage({ embeds: [embed] });

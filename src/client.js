@@ -72,7 +72,11 @@ const client = new PeachyClient(clientOptions);
 // Initialize ResourceManager
 client.resourceManager = new ResourceManager(client);
 client.economyManager = new EconomyManager(client);
-client.logger.info("Economy initialized");
+client.serverModeManager = new (require("./managers/ServerModeManager"))();
+client.prefixManager = new (require("./managers/PrefixManager"))(
+  client.serverModeManager
+);
+client.logger.info("Economy, Server Mode, and Prefix Manager initialized");
 client.setMaxListeners(30);
 
 client.once("ready", async () => {
@@ -221,10 +225,14 @@ client.on("messageCreate", async (message) => {
       return;
     }
 
-    if (
-      message.content.startsWith(globalConfig.prefix) ||
-      message.content.startsWith(globalConfig.prefix.toLowerCase())
-    ) {
+    // Check for custom prefix or global prefix
+    const prefixCheck = await client.prefixManager.checkPrefix(
+      message.content,
+      message.author.id,
+      message.guild.id
+    );
+
+    if (prefixCheck.hasPrefix) {
       const channelId = message.channel.id;
       messageCount.set(channelId, (messageCount.get(channelId) || 0) + 1);
       if (messageCount.get(channelId) === 10) {
