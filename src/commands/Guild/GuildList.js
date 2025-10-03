@@ -278,11 +278,6 @@ module.exports = class GuildList extends Command {
           .setCustomId("sort")
           .setLabel("📊 Sort")
           .setStyle(ButtonStyle.Success)
-          .setDisabled(isExpired),
-        new ButtonBuilder()
-          .setCustomId("export")
-          .setLabel("📤 Export")
-          .setStyle(ButtonStyle.Secondary)
           .setDisabled(isExpired)
       );
 
@@ -304,7 +299,10 @@ module.exports = class GuildList extends Command {
 
     collector.on("collect", async (interaction) => {
       try {
-        await interaction.deferUpdate();
+        // Only defer update for navigation buttons and utility buttons (not guild_select)
+        if (!interaction.customId.includes("guild_select")) {
+          await interaction.deferUpdate();
+        }
 
         if (interaction.customId === "first_page") {
           currentPage = 0;
@@ -343,6 +341,7 @@ module.exports = class GuildList extends Command {
 
           return interaction.followUp({
             embeds: [searchEmbed],
+            flags: 64,
           });
         } else if (interaction.customId === "sort") {
           const sortEmbed = client
@@ -360,41 +359,36 @@ module.exports = class GuildList extends Command {
                 "**Usage:** `/guildlist sort:<option>`"
             );
 
-          return interaction.followUp({ embeds: [sortEmbed] });
-        } else if (interaction.customId === "export") {
-          const exportData = sortedGuilds.map((guild) => ({
-            name: guild.name,
-            id: guild.id,
-            owner: guild.ownerId,
-          }));
-
-          const exportText =
-            `Guild List Export (${new Date().toISOString()})\n` +
-            `Total Guilds: ${exportData.length}\n\n` +
-            exportData
-              .map(
-                (g, i) =>
-                  `${i + 1}. ${g.name}\n   ID: ${g.id}\n   Members: ${g.members}\n`
-              )
-              .join("\n");
-
-          return interaction.followUp({
-            content: `\`\`\`\n${exportText.slice(0, 1900)}\n\`\`\``,
-          });
+          return interaction.followUp({ embeds: [sortEmbed], flags: 64 });
         } else if (interaction.customId === "guild_select") {
+          // Defer the interaction first since we'll use followUp in showGuildDetails
+          await interaction.deferReply({ ephemeral: false });
+
           const guildId = interaction.values[0].replace("guild_", "");
           const guild = client.guilds.cache.get(guildId);
 
           if (guild) {
             return this.showGuildDetails(interaction, client, guild, color);
+          } else {
+            // If guild not found, respond with error
+            return interaction.followUp({
+              content: "❌ Guild not found or bot no longer has access to it.",
+              flags: 64,
+            });
           }
         }
 
-        // Update the message with new page
-        await interaction.editReply({
-          embeds: [generateEmbed(currentPage)],
-          components: generateComponents(currentPage),
-        });
+        // Update the message with new page (only for navigation buttons)
+        if (
+          ["first_page", "prev_page", "next_page", "last_page"].includes(
+            interaction.customId
+          )
+        ) {
+          await interaction.editReply({
+            embeds: [generateEmbed(currentPage)],
+            components: generateComponents(currentPage),
+          });
+        }
       } catch (error) {
         console.error("Error handling interaction:", error);
         if (!interaction.replied && !interaction.deferred) {
@@ -480,13 +474,13 @@ module.exports = class GuildList extends Command {
 
     const actionRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
-        .setCustomId(`copy_id_${guild.id}`)
-        .setLabel(`📋 Copy ID: ${guild.id}`)
-        .setStyle(ButtonStyle.Success),
-      new ButtonBuilder()
         .setCustomId("back_to_list")
         .setLabel("← Back to List")
         .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId(`copy_id_${guild.id}`)
+        .setLabel(`📋 Copy ID`)
+        .setStyle(ButtonStyle.Success),
       new ButtonBuilder()
         .setCustomId(`visit_guild_${guild.id}`)
         .setLabel("🔗 Guild Info")
