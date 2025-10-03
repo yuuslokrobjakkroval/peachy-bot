@@ -16,7 +16,7 @@ module.exports = class SetPrefix extends Command {
         usage: "prefix <set <prefix> || reset || help>",
       },
       category: "utility",
-      aliases: [""],
+      aliases: ["refix"],
       cooldown: 5,
       args: false,
       permissions: {

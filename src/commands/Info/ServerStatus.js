@@ -79,7 +79,10 @@ module.exports = class ServerStatus extends Command {
           },
         ])
         .setThumbnail(ctx.guild.iconURL())
-        .setFooter(ctx.author.displayName, ctx.author.displayAvatarURL())
+        .setFooter({
+          text: ctx.author.displayName,
+          iconURL: ctx.author.displayAvatarURL(),
+        })
         .setTimestamp();
 
       if (stats?.lastSwitched) {
