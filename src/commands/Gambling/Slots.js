@@ -48,19 +48,9 @@ module.exports = class Slots extends Command {
     const generalMessages = language.locales.get(
       language.defaultLocale
     )?.generalMessages;
-    const slotMessages = language.locales.get(language.defaultLocale)
-      ?.gamblingMessages?.slotMessages;
 
     try {
       const user = await client.utils.getUser(ctx.author.id);
-      const SLOTS = [
-        emoji.slots.x1,
-        emoji.slots.x2,
-        emoji.slots.x3,
-        emoji.slots.x4,
-        emoji.slots.x5,
-        emoji.slots.x10,
-      ];
       const { coin, bank, slots } = user.balance;
 
       if (user.validation.isKlaKlouk || user.validation.isMultiTransfer) {
@@ -145,12 +135,6 @@ module.exports = class Slots extends Command {
   }
 
   async showBettingInterface(client, ctx, color, emoji, language, coin) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale
-    )?.generalMessages;
-    const slotMessages = language.locales.get(language.defaultLocale)
-      ?.gamblingMessages?.slotMessages;
-
     const bettingEmbed = client
       .embed()
       .setColor(color.main)
@@ -167,7 +151,7 @@ module.exports = class Slots extends Command {
       });
 
     // Create preset amount buttons
-    const presetAmounts = [25, 50, 100];
+    const presetAmounts = [25000, 50000, 100000];
     const buttons = [];
 
     presetAmounts.forEach((amount) => {
@@ -538,7 +522,6 @@ module.exports = class Slots extends Command {
   createPlayAgainButtons(lastBet, currentCoins) {
     const buttons = [];
 
-    // Play again with same bet
     buttons.push(
       new ButtonBuilder()
         .setCustomId(`slots_again_${lastBet}`)
@@ -547,7 +530,6 @@ module.exports = class Slots extends Command {
         .setEmoji("🔄")
     );
 
-    // Auto-spin options
     if (lastBet * 5 <= currentCoins) {
       buttons.push(
         new ButtonBuilder()
