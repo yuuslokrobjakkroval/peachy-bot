@@ -500,8 +500,9 @@ module.exports = class Slots extends Command {
       // Add play again buttons after the game
       setTimeout(async () => {
         const playAgainButtons = this.createPlayAgainButtons(
-          client.utils.formatNumber(baseCoins),
-          coin
+          baseCoins,
+          coin,
+          client
         );
         await message.edit({
           embeds: [resultEmbed],
@@ -519,13 +520,13 @@ module.exports = class Slots extends Command {
     }
   }
 
-  createPlayAgainButtons(lastBet, currentCoins) {
+  createPlayAgainButtons(lastBet, currentCoins, client) {
     const buttons = [];
 
     buttons.push(
       new ButtonBuilder()
         .setCustomId(`slots_again_${lastBet}`)
-        .setLabel(`Spin Again (${lastBet})`)
+        .setLabel(`Spin Again (${client.utils.formatNumber(lastBet)})`)
         .setStyle(ButtonStyle.Success)
         .setEmoji("🔄")
     );
@@ -725,7 +726,8 @@ module.exports = class Slots extends Command {
     // Add play again buttons
     const finalButtons = this.createPlayAgainButtons(
       betAmount,
-      user.balance.coin + totalWon - totalBet
+      user.balance.coin + totalWon - totalBet,
+      client
     );
     await message.edit({ embeds: [finalEmbed], components: finalButtons });
   }

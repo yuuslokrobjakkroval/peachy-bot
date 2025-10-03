@@ -29,7 +29,7 @@ module.exports = class Weekly extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const weeklyMessages = language.locales.get(language.defaultLocale)
       ?.economyMessages?.weeklyMessages;
@@ -42,7 +42,7 @@ module.exports = class Weekly extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color,
+          color
         );
       }
 
@@ -73,21 +73,21 @@ module.exports = class Weekly extends Command {
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNextWeekly,
+        timeUntilNextWeekly
       );
       if (!isCooldownExpired) {
         const lastCooldownTimestamp = await client.utils.getCooldown(
           ctx.author.id,
-          this.name.toLowerCase(),
+          this.name.toLowerCase()
         );
         const remainingTime = Math.ceil(
-          (lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000,
+          (lastCooldownTimestamp + timeUntilNextWeekly - Date.now()) / 1000
         );
         const cooldownMessage = this.getCooldownMessage(
           remainingTime,
           client,
           language,
-          weeklyMessages,
+          weeklyMessages
         );
 
         const cooldownEmbed = client
@@ -97,22 +97,41 @@ module.exports = class Weekly extends Command {
         return ctx.sendMessage({ embeds: [cooldownEmbed] });
       }
 
-      // Update user balance and experience
-      await Users.updateOne(
-        { userId: user.userId },
-        {
-          $set: {
-            "balance.coin": newBalance,
-            "profile.xp": newExp,
-          },
-        },
-      );
+      // Use EconomyManager if available
+      if (client.economyManager) {
+        await client.economyManager.addCoins(
+          ctx.author.id,
+          ctx.guild?.id || "DM",
+          totalCoins,
+          "weekly"
+        );
+        // Update XP separately since EconomyManager doesn't handle XP
+        await Users.updateOne(
+          { userId: user.userId },
+          {
+            $inc: {
+              "profile.xp": totalExp,
+            },
+          }
+        );
+      } else {
+        // Fallback to direct database update
+        await Users.updateOne(
+          { userId: user.userId },
+          {
+            $set: {
+              "balance.coin": newBalance,
+              "profile.xp": newExp,
+            },
+          }
+        );
+      }
 
       // Update cooldown
       await client.utils.updateCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNextWeekly,
+        timeUntilNextWeekly
       );
 
       let bonusMessage = "";
@@ -129,7 +148,7 @@ module.exports = class Weekly extends Command {
         now,
         weeklyMessages,
         generalMessages,
-        bonusMessage,
+        bonusMessage
       );
 
       return ctx.sendMessage({ embeds: [embed] });
@@ -139,7 +158,7 @@ module.exports = class Weekly extends Command {
         client,
         ctx,
         weeklyMessages.error,
-        color,
+        color
       );
     }
   }
@@ -184,15 +203,15 @@ module.exports = class Weekly extends Command {
     now,
     weeklyMessages,
     generalMessages,
-    bonusMessage,
+    bonusMessage
   ) {
     return client
       .embed()
       .setColor(client.config.color.main)
       .setThumbnail(
         client.utils.emojiToImage(
-          `${now.hour() >= 6 && now.hour() < 18 ? emoji.time.day : emoji.time.night}`,
-        ),
+          `${now.hour() >= 6 && now.hour() < 18 ? emoji.time.day : emoji.time.night}`
+        )
       )
       .setDescription(
         generalMessages.title
@@ -204,14 +223,14 @@ module.exports = class Weekly extends Command {
             .replace("%{coinEmote}", emoji.coin)
             .replace("%{expEmote}", emoji.exp)
             .replace("%{exp}", client.utils.formatNumber(totalExp))
-            .replace("%{bonusMessage}", bonusMessage),
+            .replace("%{bonusMessage}", bonusMessage)
       )
       .setImage(globalGif.banner.weeklyReminder)
       .setFooter({
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName,
+            ctx.author.displayName
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       });
