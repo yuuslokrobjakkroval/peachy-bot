@@ -5,7 +5,6 @@ const {
   ButtonStyle,
   ComponentType,
 } = require("discord.js");
-const Users = require("../../schemas/user");
 const globalGif = require("../../utils/Gif");
 const globalEmoji = require("../../utils/Emoji");
 
