@@ -101,6 +101,8 @@ module.exports = class Utils {
         ...require("../assets/inventory/SlimeCatalog"),
         ...require("../assets/inventory/Woods"),
         ...require("../assets/inventory/Minerals"),
+        ...require("../assets/inventory/Fish"),
+        ...require("../assets/inventory/CraftedItems"),
       ];
       this.cache.items = allItems;
     }
