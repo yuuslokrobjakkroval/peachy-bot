@@ -59,11 +59,8 @@ module.exports = class Balance extends Command {
         );
       }
 
-      // Get user data based on server mode
-      const user = await client.serverModeManager.getUserData(
-        ctx.author.id,
-        ctx.guild?.id
-      );
+      // Get user data
+      const user = await client.utils.getUser(ctx.author.id);
       if (!user) {
         return client.utils.sendErrorMessage(
           client,
@@ -83,10 +80,7 @@ module.exports = class Balance extends Command {
         );
       }
 
-      // Get server mode for display
-      const serverMode = await client.serverModeManager.getServerMode(
-        ctx.guild?.id
-      );
+      // Server mode is now always global
 
       const embed = this.createBalanceEmbed(
         client,
@@ -96,8 +90,7 @@ module.exports = class Balance extends Command {
         color,
         emoji,
         generalMessages,
-        balanceMessages,
-        serverMode
+        balanceMessages
       );
       const components = this.createBalanceButtons(emoji);
       const message = await ctx.sendMessage({ embeds: [embed], components });
@@ -126,16 +119,15 @@ module.exports = class Balance extends Command {
     color,
     emoji,
     generalMessages,
-    balanceMessages,
-    serverMode = "global"
+    balanceMessages
   ) {
     const { coin = 0, bank = 0, credit = 0 } = userData.balance || {};
     const titleTemplate = generalMessages?.title;
     const descriptionTemplate = balanceMessages?.description;
 
-    // Add server mode indicator
-    const modeEmoji = serverMode === "global" ? "🌍" : "🏠";
-    const modeText = serverMode === "global" ? "Global Mode" : "Private Mode";
+    // Server is always in global mode
+    const modeEmoji = "🌍";
+    const modeText = "Global Mode";
 
     return client
       .embed()
@@ -157,7 +149,7 @@ module.exports = class Balance extends Command {
             .replace("%{bank}", client.utils.formatNumber(bank))
             .replace("%{creditEmote}", globalEmoji.card?.apple || "💳")
             .replace("%{credit}", client.utils.formatNumber(credit)) +
-          `\n\n${modeEmoji} **${modeText}** ${serverMode === "global" ? "- Data shared across all servers" : "- Data specific to this server"}`
+          `\n\n${modeEmoji} **${modeText}** - Data shared across all servers`
       )
       .setImage(globalGif.balanceBanner)
       .setFooter({
@@ -238,10 +230,7 @@ module.exports = class Balance extends Command {
 
       try {
         await interaction.deferUpdate().catch(() => {});
-        const updatedUser = await client.serverModeManager.getUserData(
-          ctx.author.id,
-          ctx.guild?.id
-        );
+        const updatedUser = await client.utils.getUser(ctx.author.id);
         if (!updatedUser) {
           await interaction.followUp({
             embeds: [
@@ -326,10 +315,7 @@ module.exports = class Balance extends Command {
 
       try {
         await interaction.deferUpdate().catch(() => {});
-        const updatedUser = await client.serverModeManager.getUserData(
-          ctx.author.id,
-          ctx.guild?.id
-        );
+        const updatedUser = await client.utils.getUser(ctx.author.id);
 
         if (interaction.customId.startsWith("deposit_modal_")) {
           const amount = interaction.fields
@@ -997,22 +983,12 @@ module.exports = class Balance extends Command {
     }
 
     try {
-      // Update user balance using ServerModeManager
-      const updatedBalance = {
-        ...user.balance,
-        coin: user.balance.coin - amount,
-        bank: user.balance.bank + amount,
-      };
+      // Update user balance
+      user.balance.coin -= amount;
+      user.balance.bank += amount;
+      await user.save();
 
-      await client.serverModeManager.saveUserData(user.userId, ctx.guild?.id, {
-        ...user,
-        balance: updatedBalance,
-      });
-
-      const updatedUser = await client.serverModeManager.getUserData(
-        user.userId,
-        ctx.guild?.id
-      );
+      const updatedUser = await client.utils.getUser(user.userId);
       if (originalReply) {
         try {
           await originalReply.delete();
@@ -1146,22 +1122,17 @@ module.exports = class Balance extends Command {
     }
 
     try {
-      // Update user balance using ServerModeManager
+      // Update user balance
       const updatedBalance = {
         ...user.balance,
         coin: user.balance.coin + amount,
         bank: user.balance.bank - amount,
       };
 
-      await client.serverModeManager.saveUserData(user.userId, ctx.guild?.id, {
-        ...user,
-        balance: updatedBalance,
-      });
+      user.balance = updatedBalance;
+      await user.save();
 
-      const updatedUser = await client.serverModeManager.getUserData(
-        user.userId,
-        ctx.guild?.id
-      );
+      const updatedUser = await client.utils.getUser(user.userId);
       if (originalReply) {
         try {
           await originalReply.delete();

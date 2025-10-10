@@ -1,11 +1,9 @@
 const Users = require("../schemas/user");
 const BotLog = require("../utils/BotLog");
-const ServerModeManager = require("./ServerModeManager");
 
 class EconomyManager {
   constructor(client) {
     this.client = client;
-    this.serverModeManager = new ServerModeManager();
     this.transactionLog = new Map(); // Store recent transactions for analytics
     this.economyStats = {
       totalCoins: 0,
@@ -24,21 +22,21 @@ class EconomyManager {
   /**
    * Add coins to a user's wallet
    * @param {string} userId - The user ID
-   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount of coins to add
    * @param {string} reason - Reason for adding coins
    * @returns {Promise<Object>} Updated user data
    */
-  async addCoins(userId, guildId, amount, reason = "Unknown") {
-    if (!userId || !guildId || amount <= 0) return null;
+  async addCoins(userId, amount, reason = "Unknown") {
+    if (!userId || amount <= 0) return null;
 
     try {
-      // Get current user data based on server mode
-      let user = await this.serverModeManager.getUserData(userId, guildId);
+      // Get current user data
+      let user = await Users.findOne({ userId });
 
       if (!user) {
         // Create new user with default balance
-        user = await this.serverModeManager.saveUserData(userId, guildId, {
+        user = new Users({
+          userId,
           balance: {
             coin: 25000,
             bank: 0,
@@ -54,11 +52,7 @@ class EconomyManager {
 
       // Update balance
       user.balance.coin += amount;
-      const updatedUser = await this.serverModeManager.saveUserData(
-        userId,
-        guildId,
-        user
-      );
+      const updatedUser = await user.save();
 
       // Log transaction
       this.logTransaction(userId, amount, "add", reason);
@@ -81,26 +75,21 @@ class EconomyManager {
   /**
    * Remove coins from a user's wallet
    * @param {string} userId - The user ID
-   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount of coins to remove
    * @param {string} reason - Reason for removing coins
    * @returns {Promise<Object|null>} Updated user data or null if insufficient funds
    */
-  async removeCoins(userId, guildId, amount, reason = "Unknown") {
-    if (!userId || !guildId || amount <= 0) return null;
+  async removeCoins(userId, amount, reason = "Unknown") {
+    if (!userId || amount <= 0) return null;
 
     try {
       // Get current user data
-      const user = await this.serverModeManager.getUserData(userId, guildId);
+      const user = await Users.findOne({ userId });
       if (!user || user.balance.coin < amount) return null;
 
       // Update user balance
       user.balance.coin -= amount;
-      const updatedUser = await this.serverModeManager.saveUserData(
-        userId,
-        guildId,
-        user
-      );
+      const updatedUser = await user.save();
 
       // Log transaction
       this.logTransaction(userId, amount, "remove", reason);
@@ -116,43 +105,23 @@ class EconomyManager {
    * Transfer coins between users
    * @param {string} senderId - Sender's user ID
    * @param {string} receiverId - Receiver's user ID
-   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount to transfer
    * @returns {Promise<boolean>} Success status
    */
-  async transferCoins(senderId, receiverId, guildId, amount) {
-    if (
-      !senderId ||
-      !receiverId ||
-      !guildId ||
-      amount <= 0 ||
-      senderId === receiverId
-    )
+  async transferCoins(senderId, receiverId, amount) {
+    if (!senderId || !receiverId || amount <= 0 || senderId === receiverId)
       return false;
 
     try {
       // Check sender's balance
-      const sender = await this.serverModeManager.getUserData(
-        senderId,
-        guildId
-      );
+      const sender = await Users.findOne({ userId: senderId });
       if (!sender || sender.balance.coin < amount) return false;
 
       // Remove from sender
-      await this.removeCoins(
-        senderId,
-        guildId,
-        amount,
-        `Transfer to ${receiverId}`
-      );
+      await this.removeCoins(senderId, amount, `Transfer to ${receiverId}`);
 
       // Add to receiver
-      await this.addCoins(
-        receiverId,
-        guildId,
-        amount,
-        `Transfer from ${senderId}`
-      );
+      await this.addCoins(receiverId, amount, `Transfer from ${senderId}`);
 
       // Log transaction
       this.logTransaction(senderId, amount, "transfer", `To ${receiverId}`);
@@ -170,26 +139,21 @@ class EconomyManager {
   /**
    * Deposit coins to bank
    * @param {string} userId - User ID
-   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount to deposit
    * @returns {Promise<Object|null>} Updated user data or null if failed
    */
-  async depositCoins(userId, guildId, amount) {
-    if (!userId || !guildId || amount <= 0) return null;
+  async depositCoins(userId, amount) {
+    if (!userId || amount <= 0) return null;
 
     try {
       // Check wallet balance
-      const user = await this.serverModeManager.getUserData(userId, guildId);
+      const user = await Users.findOne({ userId });
       if (!user || user.balance.coin < amount) return null;
 
       // Update balances
       user.balance.coin -= amount;
       user.balance.bank += amount;
-      const updatedUser = await this.serverModeManager.saveUserData(
-        userId,
-        guildId,
-        user
-      );
+      const updatedUser = await user.save();
 
       // Log transaction
       this.logTransaction(userId, amount, "deposit", "Bank deposit");
@@ -204,26 +168,21 @@ class EconomyManager {
   /**
    * Withdraw coins from bank
    * @param {string} userId - User ID
-   * @param {string} guildId - The guild ID (for server mode detection)
    * @param {number} amount - Amount to withdraw
    * @returns {Promise<Object|null>} Updated user data or null if failed
    */
-  async withdrawCoins(userId, guildId, amount) {
-    if (!userId || !guildId || amount <= 0) return null;
+  async withdrawCoins(userId, amount) {
+    if (!userId || amount <= 0) return null;
 
     try {
       // Check bank balance
-      const user = await this.serverModeManager.getUserData(userId, guildId);
+      const user = await Users.findOne({ userId });
       if (!user || user.balance.bank < amount) return null;
 
       // Update balances
       user.balance.coin += amount;
       user.balance.bank -= amount;
-      const updatedUser = await this.serverModeManager.saveUserData(
-        userId,
-        guildId,
-        user
-      );
+      const updatedUser = await user.save();
 
       // Log transaction
       this.logTransaction(userId, amount, "withdraw", "Bank withdrawal");

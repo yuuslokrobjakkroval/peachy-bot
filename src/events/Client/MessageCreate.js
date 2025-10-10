@@ -30,8 +30,7 @@ module.exports = class MessageCreate extends Event {
 
         // Get user's custom prefix or fall back to global
         const userPrefix = await this.client.prefixManager.getUserPrefix(
-          message.author.id,
-          message.guild.id
+          message.author.id
         );
         const prefix = userPrefix;
 
@@ -130,8 +129,7 @@ module.exports = class MessageCreate extends Event {
         // Check for custom prefix or global prefix
         const prefixCheck = await this.client.prefixManager.checkPrefix(
           message.content,
-          message.author.id,
-          message.guild.id
+          message.author.id
         );
 
         if (prefixCheck.hasPrefix) {
