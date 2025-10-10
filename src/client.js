@@ -76,7 +76,7 @@ client.prefixManager = new (require("./managers/PrefixManager"))();
 client.logger.info("Economy and Prefix Manager initialized");
 client.setMaxListeners(30);
 
-client.once("ready", async () => {
+client.once("clientReady", async () => {
   client.utils.cacheItems();
   client.logger.info("Item cache initialized!");
 
