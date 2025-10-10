@@ -124,11 +124,6 @@ module.exports = class Balance extends Command {
     const { coin = 0, bank = 0, credit = 0 } = userData.balance || {};
     const titleTemplate = generalMessages?.title;
     const descriptionTemplate = balanceMessages?.description;
-
-    // Server is always in global mode
-    const modeEmoji = "🌍";
-    const modeText = "Global Mode";
-
     return client
       .embed()
       .setColor(color.main || "#5865F2")
@@ -148,8 +143,7 @@ module.exports = class Balance extends Command {
             .replace("%{bankEmote}", emoji.bank || "🏦")
             .replace("%{bank}", client.utils.formatNumber(bank))
             .replace("%{creditEmote}", globalEmoji.card?.apple || "💳")
-            .replace("%{credit}", client.utils.formatNumber(credit)) +
-          `\n\n${modeEmoji} **${modeText}** - Data shared across all servers`
+            .replace("%{credit}", client.utils.formatNumber(credit))
       )
       .setImage(globalGif.balanceBanner)
       .setFooter({
