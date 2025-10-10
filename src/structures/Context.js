@@ -1,11 +1,14 @@
-const { ChatInputCommandInteraction, Message } = require("discord.js");
+const {
+  ChatInputCommandInteraction,
+  Message,
+  BaseInteraction,
+} = require("discord.js");
 
 module.exports = class Context {
   constructor(ctx, args) {
     this.channel = null;
     this.ctx = ctx;
-    this.interaction =
-      this.ctx instanceof ChatInputCommandInteraction ? this.ctx : null;
+    this.interaction = this.ctx instanceof BaseInteraction ? this.ctx : null;
     this.message = this.ctx instanceof Message ? this.ctx : null;
     this.channel = this.ctx.channel;
     this.id = ctx.id;
@@ -21,20 +24,24 @@ module.exports = class Context {
   }
 
   get isInteraction() {
-    return this.ctx instanceof ChatInputCommandInteraction;
+    return this.ctx instanceof BaseInteraction;
   }
 
   setArgs(args) {
-    if (this.isInteraction) {
+    if (this.isInteraction && this.ctx instanceof ChatInputCommandInteraction) {
       this.args = args.map((arg) => arg.value);
     } else {
-      this.args = args;
+      this.args = args || [];
     }
   }
 
   async sendMessage(content) {
     if (this.isInteraction) {
-      this.msg = await this.interaction.reply(content);
+      if (this.interaction.replied || this.interaction.deferred) {
+        this.msg = await this.interaction.followUp(content);
+      } else {
+        this.msg = await this.interaction.reply(content);
+      }
       return this.msg;
     } else {
       this.msg = await this.message.channel.send(content);
@@ -57,7 +64,7 @@ module.exports = class Context {
       this.msg = await this.interaction.deferReply({ fetchReply: true });
       return this.msg;
     } else {
-      this.msg = await this.message.channel.send(content);
+      this.msg = await this.channel.send(content);
       return this.msg;
     }
   }
@@ -66,7 +73,7 @@ module.exports = class Context {
     if (this.isInteraction) {
       await this.interaction.followUp(content);
     } else {
-      this.msg = await this.message.channel.send(content);
+      this.msg = await this.channel.send(content);
     }
   }
 

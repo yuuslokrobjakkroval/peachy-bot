@@ -36,7 +36,7 @@ module.exports = class Cmd extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const blackjackMessages = language.locales.get(language.defaultLocale)
       ?.gamblingMessages?.blackjackMessages;
@@ -51,7 +51,7 @@ module.exports = class Cmd extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color,
+          color
         );
       }
 
@@ -63,7 +63,7 @@ module.exports = class Cmd extends Command {
           client,
           ctx,
           `You have already started the ${activeCommand} event. Please finish it before using this command.`,
-          color,
+          color
         );
       }
 
@@ -72,7 +72,7 @@ module.exports = class Cmd extends Command {
           client,
           ctx,
           generalMessages.alreadyInGame,
-          color,
+          color
         );
       }
 
@@ -83,7 +83,7 @@ module.exports = class Cmd extends Command {
           client,
           ctx,
           generalMessages.zeroBalance,
-          color,
+          color
         );
       }
 
@@ -116,7 +116,7 @@ module.exports = class Cmd extends Command {
             client,
             ctx,
             generalMessages.invalidAmount,
-            color,
+            color
           );
         }
       }
@@ -139,7 +139,7 @@ module.exports = class Cmd extends Command {
         emoji,
         baseCoins,
         generalMessages,
-        blackjackMessages,
+        blackjackMessages
       );
     } catch (err) {
       console.error("Error fetching user data:", err);
@@ -147,7 +147,7 @@ module.exports = class Cmd extends Command {
         client,
         ctx,
         generalMessages.userFetchError,
-        color,
+        color
       );
     }
   }
@@ -160,7 +160,7 @@ function initBlackjack(
   emoji,
   bet,
   generalMessages,
-  blackjackMessages,
+  blackjackMessages
 ) {
   let tdeck = deck.slice(0);
   let player = [
@@ -181,7 +181,7 @@ function initBlackjack(
     dealer,
     bet,
     generalMessages,
-    blackjackMessages,
+    blackjackMessages
   );
 }
 
@@ -194,7 +194,7 @@ function blackjack(
   dealer,
   bet,
   generalMessages,
-  blackjackMessages,
+  blackjackMessages
 ) {
   try {
     // First embed with GIF
@@ -222,20 +222,20 @@ function blackjack(
             "",
             "",
             generalMessages,
-            blackjackMessages,
+            blackjackMessages
           );
 
           const hitButton = client.utils.fullOptionButton(
             "hit",
             "",
             blackjackMessages.hit,
-            1,
+            1
           );
           const standButton = client.utils.fullOptionButton(
             "stand",
             "",
             blackjackMessages.stand,
-            2,
+            2
           );
           const row = client.utils.createButtonRow(hitButton, standButton);
 
@@ -274,7 +274,7 @@ function blackjack(
                       bet,
                       collector,
                       generalMessages,
-                      blackjackMessages,
+                      blackjackMessages
                     );
                   });
                 } else if (int.customId === "stand") {
@@ -291,7 +291,7 @@ function blackjack(
                       bet,
                       true,
                       generalMessages,
-                      blackjackMessages,
+                      blackjackMessages
                     );
                   });
                 }
@@ -308,7 +308,7 @@ function blackjack(
                       .replace("%{mainLeft}", emoji.mainLeft)
                       .replace("%{title}", blackjackMessages.title)
                       .replace("%{mainRight}", emoji.mainRight) +
-                      `⏳ **Time is up** !!! You didn't click the button in time.`,
+                      `⏳ **Time is up** !!! You didn't click the button in time.`
                   )
                   .setFooter({
                     text: `${ctx.author.displayName}, ${generalMessages.pleaseStartAgain}`,
@@ -341,7 +341,7 @@ function hit(
   bet,
   collector,
   generalMessages,
-  blackjackMessages,
+  blackjackMessages
 ) {
   let tdeck = bjUtil.initDeck(deck.slice(0), player, dealer);
   let card = bjUtil.randCard(client, tdeck, "f");
@@ -364,7 +364,7 @@ function hit(
       bet,
       true,
       generalMessages,
-      blackjackMessages,
+      blackjackMessages
     );
   } else {
     let embed = bjUtil.generateEmbed(
@@ -378,7 +378,7 @@ function hit(
       "",
       "",
       generalMessages,
-      blackjackMessages,
+      blackjackMessages
     );
     msg.edit({ embeds: [embed] });
   }
@@ -395,7 +395,7 @@ function stop(
   bet,
   fromHit,
   generalMessages,
-  blackjackMessages,
+  blackjackMessages
 ) {
   if (!fromHit) {
     player.forEach((card) => (card.type = "c")); // Reveal all player's cards
@@ -465,7 +465,7 @@ function stop(
         winner,
         bet,
         generalMessages,
-        blackjackMessages,
+        blackjackMessages
       );
 
       activeGames.delete(int.user.id);

@@ -297,6 +297,60 @@ const userSchema = new Schema(
         claimed: { type: Boolean, default: false },
       },
     },
+    gambling: {
+      slots: {
+        // Game Statistics
+        totalGames: { type: Number, default: 0 },
+        totalWins: { type: Number, default: 0 },
+        totalLosses: { type: Number, default: 0 },
+        winRate: { type: Number, default: 0 },
+        currentStreak: { type: Number, default: 0 }, // Positive for wins, negative for losses
+        bestWinStreak: { type: Number, default: 0 },
+        worstLossStreak: { type: Number, default: 0 },
+
+        // Financial Summary
+        totalWagered: { type: Number, default: 0 },
+        totalWon: { type: Number, default: 0 },
+        netProfit: { type: Number, default: 0 },
+        biggestWin: { type: Number, default: 0 },
+        biggestLoss: { type: Number, default: 0 },
+        averageBet: { type: Number, default: 0 },
+        averageWin: { type: Number, default: 0 },
+
+        // Records & Achievements
+        firstGame: { type: Date, default: null },
+        lastGame: { type: Date, default: null },
+        longestSession: { type: Number, default: 0 }, // Games in single session
+        highestBalance: { type: Number, default: 0 },
+        jackpotsHit: { type: Number, default: 0 }, // x10 wins
+
+        // Session tracking
+        sessionGames: { type: Number, default: 0 },
+        sessionStartTime: { type: Date, default: null },
+
+        // Multiplier statistics
+        x1Wins: { type: Number, default: 0 },
+        x2Wins: { type: Number, default: 0 },
+        x3Wins: { type: Number, default: 0 },
+        x4Wins: { type: Number, default: 0 },
+        x5Wins: { type: Number, default: 0 },
+        x10Wins: { type: Number, default: 0 },
+      },
+      blackjack: {
+        totalGames: { type: Number, default: 0 },
+        totalWins: { type: Number, default: 0 },
+        totalWagered: { type: Number, default: 0 },
+        totalWon: { type: Number, default: 0 },
+        bestHand: { type: String, default: null },
+      },
+      coinflip: {
+        totalGames: { type: Number, default: 0 },
+        totalWins: { type: Number, default: 0 },
+        totalWagered: { type: Number, default: 0 },
+        totalWon: { type: Number, default: 0 },
+        longestStreak: { type: Number, default: 0 },
+      },
+    },
   },
   { timestamps: { createdAt: true, updatedAt: true } }
 );

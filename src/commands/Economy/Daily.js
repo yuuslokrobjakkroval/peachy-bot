@@ -29,7 +29,7 @@ module.exports = class Daily extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const dailyMessages = language.locales.get(language.defaultLocale)
       ?.economyMessages?.dailyMessages;
@@ -41,7 +41,7 @@ module.exports = class Daily extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color,
+          color
         );
       }
 
@@ -82,7 +82,7 @@ module.exports = class Daily extends Command {
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNext5PM,
+        timeUntilNext5PM
       );
       if (!isCooldownExpired) {
         const duration = moment.duration(next5PM.diff(now));
@@ -90,7 +90,7 @@ module.exports = class Daily extends Command {
           "%{time}",
           `${Math.floor(duration.asHours())}hrs, ${
             Math.floor(duration.asMinutes()) % 60
-          }mins, and ${Math.floor(duration.asSeconds()) % 60}secs`,
+          }mins, and ${Math.floor(duration.asSeconds()) % 60}secs`
         );
         const cooldownEmbed = client
           .embed()
@@ -103,9 +103,18 @@ module.exports = class Daily extends Command {
       if (client.economyManager) {
         await client.economyManager.addCoins(
           ctx.author.id,
+          ctx.guild?.id || "DM",
           totalCoins,
-          "daily",
-          false,
+          "daily"
+        );
+        // Update XP separately since EconomyManager doesn't handle XP
+        await Users.updateOne(
+          { userId: user.userId },
+          {
+            $inc: {
+              "profile.xp": totalExp,
+            },
+          }
         );
       } else {
         // Fallback to direct database update
@@ -116,14 +125,14 @@ module.exports = class Daily extends Command {
               "balance.coin": newBalance,
               "profile.xp": newExp,
             },
-          },
+          }
         );
       }
 
       await client.utils.updateCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        timeUntilNext5PM,
+        timeUntilNext5PM
       );
 
       let bonusMessage = "";
@@ -140,8 +149,8 @@ module.exports = class Daily extends Command {
         .setColor(color.main)
         .setThumbnail(
           client.utils.emojiToImage(
-            hours >= 6 && hours < 18 ? emoji.time.day : emoji.time.night,
-          ),
+            hours >= 6 && hours < 18 ? emoji.time.day : emoji.time.night
+          )
         )
         .setDescription(
           generalMessages.title
@@ -155,14 +164,14 @@ module.exports = class Daily extends Command {
               .replace("%{coin}", client.utils.formatNumber(baseCoins))
               .replace("%{expEmote}", emoji.exp)
               .replace("%{exp}", client.utils.formatNumber(baseExp))
-              .replace("%{bonusMessage}", bonusMessage),
+              .replace("%{bonusMessage}", bonusMessage)
         )
         .setImage(globalGif.banner.dailyReminder)
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName,
+              ctx.author.displayName
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -175,7 +184,7 @@ module.exports = class Daily extends Command {
           await client.achievementManager.awardAchievement(
             ctx.author.id,
             "daily_devotion",
-            ctx,
+            ctx
           );
         }
 
@@ -188,7 +197,7 @@ module.exports = class Daily extends Command {
         client,
         ctx,
         generalMessages.userFetchError,
-        color,
+        color
       );
     }
   }
