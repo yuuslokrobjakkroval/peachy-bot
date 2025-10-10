@@ -266,21 +266,6 @@ module.exports = class Utils {
     }
   }
 
-  // Server Mode aware user data retrieval
-  static async getUserWithServerMode(userId, guildId) {
-    if (!global.serverModeManager) {
-      // Fallback to original method if ServerModeManager is not available
-      return this.getUser(userId);
-    }
-
-    try {
-      return await global.serverModeManager.getUserData(userId, guildId);
-    } catch (error) {
-      console.log(`Error fetching user data with server mode: ${error}`);
-      return null;
-    }
-  }
-
   // Original getUser method (kept for backward compatibility)
   static getUser(userId) {
     return Users.findOne({ userId })

@@ -153,7 +153,7 @@ module.exports = class PeachyClient extends Client {
 
     this.logger.info(`Loaded a total of ${commandCounter} commands.`);
 
-    this.once("ready", async () => {
+    this.once("clientReady", async () => {
       const applicationCommands = globalConfig.production
         ? Routes.applicationCommands(this.config.clientId ?? "")
         : Routes.applicationGuildCommands(
@@ -164,7 +164,36 @@ module.exports = class PeachyClient extends Client {
         const rest = new REST({ version: "10" }).setToken(
           this.config.token ?? ""
         );
-        await rest.put(applicationCommands, { body: this.body });
+
+        // Get existing commands to check for Entry Point commands
+        const existingCommands = await rest.get(applicationCommands);
+
+        // Filter out Entry Point commands from existing commands
+        const entryPointCommands = existingCommands.filter(
+          (cmd) => cmd.integration_types_config
+        );
+
+        // Combine our commands with any Entry Point commands
+        const commandsToRegister = [...this.body];
+
+        // Add Entry Point commands if they exist and aren't already in our body
+        entryPointCommands.forEach((entryCmd) => {
+          const existsInBody = this.body.find(
+            (cmd) => cmd.name === entryCmd.name
+          );
+          if (!existsInBody) {
+            commandsToRegister.push({
+              name: entryCmd.name,
+              description: entryCmd.description,
+              type: entryCmd.type,
+              options: entryCmd.options,
+              integration_types_config: entryCmd.integration_types_config,
+              contexts: entryCmd.contexts,
+            });
+          }
+        });
+
+        await rest.put(applicationCommands, { body: commandsToRegister });
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
         this.logger.error(error);

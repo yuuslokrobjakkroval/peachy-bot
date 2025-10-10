@@ -1,21 +1,20 @@
 const globalConfig = require("../utils/Config");
+const Users = require("../schemas/user");
 
 class PrefixManager {
-  constructor(serverModeManager) {
-    this.serverModeManager = serverModeManager;
+  constructor() {
     this.prefixCache = new Map(); // Cache user prefixes for performance
   }
 
   /**
    * Get user's custom prefix or fall back to global prefix
    * @param {string} userId - User ID
-   * @param {string} guildId - Guild ID (for server mode detection)
    * @returns {Promise<string>} - User's prefix or global prefix
    */
-  async getUserPrefix(userId, guildId) {
+  async getUserPrefix(userId) {
     try {
       // Check cache first
-      const cacheKey = `${userId}_${guildId}`;
+      const cacheKey = userId;
       if (this.prefixCache.has(cacheKey)) {
         const cached = this.prefixCache.get(cacheKey);
         // Cache for 5 minutes
@@ -25,8 +24,8 @@ class PrefixManager {
         this.prefixCache.delete(cacheKey);
       }
 
-      // Get user data based on server mode
-      const user = await this.serverModeManager.getUserData(userId, guildId);
+      // Get user data
+      const user = await Users.findOne({ userId });
 
       let userPrefix = globalConfig.prefix; // Default fallback
 
@@ -50,11 +49,10 @@ class PrefixManager {
   /**
    * Set user's custom prefix
    * @param {string} userId - User ID
-   * @param {string} guildId - Guild ID (for server mode detection)
    * @param {string} newPrefix - New prefix to set
    * @returns {Promise<boolean>} - Success status
    */
-  async setUserPrefix(userId, guildId, newPrefix) {
+  async setUserPrefix(userId, newPrefix) {
     try {
       // Validate prefix
       if (!this.isValidPrefix(newPrefix)) {
@@ -62,21 +60,23 @@ class PrefixManager {
       }
 
       // Get current user data
-      let user = await this.serverModeManager.getUserData(userId, guildId);
+      let user = await Users.findOne({ userId });
 
       if (!user) {
         // Create user if doesn't exist
-        user = await this.serverModeManager.saveUserData(userId, guildId, {
+        user = new Users({
+          userId,
           prefix: newPrefix,
         });
       } else {
         // Update existing user
         user.prefix = newPrefix;
-        await this.serverModeManager.saveUserData(userId, guildId, user);
       }
 
+      await user.save();
+
       // Clear cache
-      const cacheKey = `${userId}_${guildId}`;
+      const cacheKey = userId;
       this.prefixCache.delete(cacheKey);
 
       return true;
@@ -90,12 +90,11 @@ class PrefixManager {
    * Check if message starts with user's prefix
    * @param {string} content - Message content
    * @param {string} userId - User ID
-   * @param {string} guildId - Guild ID
    * @returns {Promise<{hasPrefix: boolean, prefix: string, command: string}>}
    */
-  async checkPrefix(content, userId, guildId) {
+  async checkPrefix(content, userId) {
     try {
-      const userPrefix = await this.getUserPrefix(userId, guildId);
+      const userPrefix = await this.getUserPrefix(userId);
 
       // Check if message starts with user's prefix (case insensitive)
       if (content.toLowerCase().startsWith(userPrefix.toLowerCase())) {
@@ -157,11 +156,10 @@ class PrefixManager {
   /**
    * Get all available prefixes for a user (user + global)
    * @param {string} userId - User ID
-   * @param {string} guildId - Guild ID
    * @returns {Promise<{userPrefix: string, globalPrefix: string}>}
    */
-  async getAllPrefixes(userId, guildId) {
-    const userPrefix = await this.getUserPrefix(userId, guildId);
+  async getAllPrefixes(userId) {
+    const userPrefix = await this.getUserPrefix(userId);
     return {
       userPrefix: userPrefix,
       globalPrefix: globalConfig.prefix,
@@ -171,10 +169,9 @@ class PrefixManager {
   /**
    * Clear prefix cache for a user
    * @param {string} userId - User ID
-   * @param {string} guildId - Guild ID
    */
-  clearCache(userId, guildId) {
-    const cacheKey = `${userId}_${guildId}`;
+  clearCache(userId) {
+    const cacheKey = userId;
     this.prefixCache.delete(cacheKey);
   }
 

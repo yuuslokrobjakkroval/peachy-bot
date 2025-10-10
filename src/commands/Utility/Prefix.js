@@ -84,7 +84,6 @@ module.exports = class SetPrefix extends Command {
         const globalPrefix = client.config.prefix;
         const success = await client.prefixManager.setUserPrefix(
           ctx.author.id,
-          ctx.guild?.id,
           globalPrefix
         );
 
@@ -146,24 +145,15 @@ module.exports = class SetPrefix extends Command {
 
         const success = await client.prefixManager.setUserPrefix(
           ctx.author.id,
-          ctx.guild?.id,
           newPrefix
         );
 
         if (success) {
-          const serverMode = client.serverModeManager
-            ? await client.serverModeManager.getServerMode(ctx.guild?.id)
-            : "global";
-
           embed.setDescription(
             `${prefixMessages?.setSuccess || "Your personal prefix has been set to:"} \`${newPrefix}\`\n\n` +
               `🎮 **Usage:** Now you can use commands with: \`${newPrefix}command\`\n` +
               `🔄 **Fallback:** You can still use the server prefix: \`${client.config.prefix}\`\n` +
-              `📝 **Note:** ${
-                serverMode === "private"
-                  ? "This prefix is specific to this server only."
-                  : "This prefix works across all servers in global mode."
-              }`
+              `📝 **Note:** This prefix works across all servers in global mode.`
           );
         } else {
           embed.setColor(color.danger);
@@ -180,26 +170,20 @@ module.exports = class SetPrefix extends Command {
       default: {
         // Show current prefix settings
         const prefixes = await client.prefixManager.getAllPrefixes(
-          ctx.author.id,
-          ctx.guild?.id
+          ctx.author.id
         );
-        const serverMode = client.serverModeManager
-          ? await client.serverModeManager.getServerMode(ctx.guild?.id)
-          : "global";
-
-        const modeEmoji = serverMode === "global" ? "🌍" : "🏠";
         const isCustomPrefix = prefixes.userPrefix !== prefixes.globalPrefix;
 
         embed.setDescription(
           isCustomPrefix
             ? `🎯 **Your Current Prefix:** \`${prefixes.userPrefix}\` (Custom)\n` +
                 `🌐 **Server Default Prefix:** \`${prefixes.globalPrefix}\`\n` +
-                `${modeEmoji} **Server Mode:** ${serverMode === "global" ? "Global Mode" : "Private Mode"}\n\n` +
+                `🌍 **Server Mode:** Global Mode\n\n` +
                 `${prefixMessages?.currentCustom || "You have a custom prefix set! You can use either prefix to run commands."}\n\n` +
                 `💡 **Available Actions:**\n• Use \`setprefix set <new_prefix>\` to change your prefix\n• Use \`setprefix reset\` to return to default\n• Both prefixes work for commands`
             : `🎯 **Your Current Prefix:** \`${prefixes.userPrefix}\` (Default)\n` +
                 `🌐 **Server Default Prefix:** \`${prefixes.globalPrefix}\`\n` +
-                `${modeEmoji} **Server Mode:** ${serverMode === "global" ? "Global Mode" : "Private Mode"}\n\n` +
+                `🌍 **Server Mode:** Global Mode\n\n` +
                 `${prefixMessages?.currentDefault || "You're using the default server prefix."}\n\n` +
                 `💡 **Available Actions:**\n• Use \`setprefix set <prefix>\` to set a custom prefix\n• Custom prefixes are 1-5 characters long\n• Examples: \`!\`, \`?\`, \`>>\`, \`~\`, \`.\``
         );
