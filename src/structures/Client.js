@@ -165,38 +165,78 @@ module.exports = class PeachyClient extends Client {
           this.config.token ?? ""
         );
 
-        // Get existing commands to check for Entry Point commands
-        const existingCommands = await rest.get(applicationCommands);
+        // Try to get existing commands and handle Entry Point commands properly
+        let existingCommands = [];
+        try {
+          existingCommands = await rest.get(applicationCommands);
+        } catch (error) {
+          this.logger.warn("Could not fetch existing commands:", error.message);
+        }
 
-        // Filter out Entry Point commands from existing commands
-        const entryPointCommands = existingCommands.filter(
-          (cmd) => cmd.integration_types_config
-        );
+        // Find Entry Point commands that need to be preserved
+        const entryPointCommands = existingCommands.filter((cmd) => {
+          // Check for Entry Point command indicators
+          return (
+            cmd.integration_types_config ||
+            (cmd.contexts && cmd.contexts.length > 0) ||
+            cmd.integration_types
+          );
+        });
 
-        // Combine our commands with any Entry Point commands
+        // Start with our bot commands
         const commandsToRegister = [...this.body];
 
-        // Add Entry Point commands if they exist and aren't already in our body
+        // Preserve Entry Point commands that aren't already in our command list
         entryPointCommands.forEach((entryCmd) => {
           const existsInBody = this.body.find(
             (cmd) => cmd.name === entryCmd.name
           );
           if (!existsInBody) {
+            // Preserve all properties of the Entry Point command
             commandsToRegister.push({
+              ...entryCmd,
+              // Ensure required fields are present
               name: entryCmd.name,
-              description: entryCmd.description,
-              type: entryCmd.type,
-              options: entryCmd.options,
-              integration_types_config: entryCmd.integration_types_config,
-              contexts: entryCmd.contexts,
+              description: entryCmd.description || "Entry Point Command",
+              type: entryCmd.type || 1,
             });
           }
         });
 
+        this.logger.info(
+          `Registering ${commandsToRegister.length} commands (${this.body.length} bot commands + ${entryPointCommands.length} entry point commands)`
+        );
+
         await rest.put(applicationCommands, { body: commandsToRegister });
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
-        this.logger.error(error);
+        this.logger.error("Failed to register slash commands:", error);
+
+        // Fallback: Try to register only our commands without bulk update
+        try {
+          this.logger.info("Attempting fallback registration method...");
+          const rest = new REST({ version: "10" }).setToken(
+            this.config.token ?? ""
+          );
+
+          // Register commands individually to avoid Entry Point conflicts
+          for (const command of this.body) {
+            try {
+              await rest.post(applicationCommands, { body: command });
+            } catch (individualError) {
+              this.logger.warn(
+                `Failed to register command ${command.name}:`,
+                individualError.message
+              );
+            }
+          }
+          this.logger.info("Fallback registration completed");
+        } catch (fallbackError) {
+          this.logger.error(
+            "Fallback registration also failed:",
+            fallbackError
+          );
+        }
       }
     });
   }
