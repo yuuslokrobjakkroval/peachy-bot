@@ -5,7 +5,7 @@ const BotLog = require("../../utils/BotLog.js");
 module.exports = class Ready extends Event {
   constructor(client, file) {
     super(client, file, {
-      name: "ready",
+      name: "clientReady",
     });
   }
 
@@ -23,7 +23,7 @@ module.exports = class Ready extends Event {
     return await BotLog.send(
       this.client,
       `${this.client.user?.tag} is ready!`,
-      "success",
+      "success"
     );
   }
 };
