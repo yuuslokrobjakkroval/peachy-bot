@@ -6,7 +6,7 @@
  */
 
 const { REST, Routes } = require("discord.js");
-const config = require("../config");
+const config = require("../utils/Config");
 
 async function clearAllCommands() {
   try {

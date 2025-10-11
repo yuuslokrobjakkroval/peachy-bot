@@ -262,74 +262,101 @@ module.exports = class PeachyClient extends Client {
           );
         });
 
-        // Start with our bot commands
-        let commandsToRegister = [...this.body];
-        let totalCommands = commandsToRegister.length;
+        // Start with Entry Point commands to ensure they're preserved
+        let commandsToRegister = [];
 
-        // Preserve Entry Point commands that aren't already in our command list
-        const uniqueEntryPointCommands = [];
+        // First, add all Entry Point commands (they must be preserved)
         entryPointCommands.forEach((entryCmd) => {
-          const existsInBody = this.body.find(
-            (cmd) => cmd.name === entryCmd.name
-          );
-          if (!existsInBody && totalCommands < 100) {
-            // Preserve all properties of the Entry Point command
-            uniqueEntryPointCommands.push({
-              ...entryCmd,
-              // Ensure required fields are present
-              name: entryCmd.name,
-              description: entryCmd.description || "Entry Point Command",
-              type: entryCmd.type || 1,
-            });
-            totalCommands++;
-          }
+          commandsToRegister.push({
+            ...entryCmd,
+            // Ensure required fields are present and clean up the object
+            id: undefined, // Remove id to avoid conflicts
+            version: undefined, // Remove version
+            application_id: undefined, // Remove application_id
+            guild_id: undefined, // Remove guild_id
+            name: entryCmd.name,
+            description: entryCmd.description || "Entry Point Command",
+            type: entryCmd.type || 1,
+          });
         });
 
-        // Add Entry Point commands if we haven't hit the limit
-        commandsToRegister = [
-          ...commandsToRegister,
-          ...uniqueEntryPointCommands,
-        ];
+        // Calculate how many bot commands we can add
+        const remainingSlots = 100 - commandsToRegister.length;
+        const botCommandsToAdd = Math.min(this.body.length, remainingSlots);
 
-        // Final safety check - ensure we don't exceed 100 commands
-        if (commandsToRegister.length > 100) {
-          this.logger.warn(
-            `Total commands (${commandsToRegister.length}) exceeds Discord limit. Trimming to 100.`
-          );
-          commandsToRegister = commandsToRegister.slice(0, 100);
-        }
+        // Add our bot commands (up to the remaining limit)
+        const selectedBotCommands = this.body.slice(0, botCommandsToAdd);
+        commandsToRegister = [...commandsToRegister, ...selectedBotCommands];
 
         this.logger.info(
-          `Registering ${commandsToRegister.length} commands (${this.body.length} bot commands + ${uniqueEntryPointCommands.length} entry point commands)`
+          `Registering ${commandsToRegister.length} commands (${botCommandsToAdd} bot commands + ${entryPointCommands.length} entry point commands)`
         );
+
+        if (this.body.length > botCommandsToAdd) {
+          const excludedCount = this.body.length - botCommandsToAdd;
+          this.logger.warn(
+            `${excludedCount} bot commands excluded due to Entry Point commands taking ${entryPointCommands.length} slots.`
+          );
+        }
 
         await rest.put(applicationCommands, { body: commandsToRegister });
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
         this.logger.error("Failed to register slash commands:", error);
-        // Fallback: Try to register only our commands without bulk update
+        // Fallback: Clear and re-register commands to handle Entry Point conflicts
         try {
-          this.logger.info("Attempting fallback registration method...");
+          this.logger.info(
+            "Attempting fallback: clearing and re-registering commands..."
+          );
           const rest = new REST({ version: "10" }).setToken(
             this.config.token ?? ""
           );
-          // Register commands individually to avoid Entry Point conflicts
-          for (const command of this.body) {
-            try {
-              await rest.post(applicationCommands, { body: command });
-            } catch (individualError) {
-              this.logger.warn(
-                `Failed to register command ${command.name}:`,
-                individualError.message
-              );
-            }
-          }
-          this.logger.info("Fallback registration completed");
+
+          // First, try to clear all commands
+          this.logger.info("Clearing existing commands...");
+          await rest.put(applicationCommands, { body: [] });
+
+          // Wait a moment for the clear to process
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          // Then register just our bot commands
+          this.logger.info(
+            `Re-registering ${this.body.length} bot commands...`
+          );
+          await rest.put(applicationCommands, { body: this.body });
+
+          this.logger.info("Fallback registration completed successfully");
         } catch (fallbackError) {
           this.logger.error(
             "Fallback registration also failed:",
             fallbackError
           );
+
+          // Final fallback: register commands one by one
+          try {
+            this.logger.info("Attempting individual command registration...");
+            const rest = new REST({ version: "10" }).setToken(
+              this.config.token ?? ""
+            );
+
+            let successCount = 0;
+            for (const command of this.body) {
+              try {
+                await rest.post(applicationCommands, { body: command });
+                successCount++;
+              } catch (individualError) {
+                this.logger.warn(
+                  `Failed to register command ${command.name}:`,
+                  individualError.message
+                );
+              }
+            }
+            this.logger.info(
+              `Individual registration completed: ${successCount}/${this.body.length} commands registered`
+            );
+          } catch (finalError) {
+            this.logger.error("All registration methods failed:", finalError);
+          }
         }
       }
     });
