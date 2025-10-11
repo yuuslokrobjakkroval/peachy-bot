@@ -7,12 +7,13 @@ module.exports = class ClearRichUsers extends Command {
     super(client, {
       name: "clearrichusers",
       description: {
-        content: "Clear balances for all users with coin or bank > 1 billion.",
+        content:
+          "Clear ALL balances for ALL users (coin, bank, credit, sponsor, gambling balances).",
         examples: ["clearrichusers", "clearrichusers --confirm"],
         usage: "clearrichusers [--confirm]",
       },
       category: "admin",
-      aliases: ["cru", "clearrich"],
+      aliases: ["cru", "clearrich", "clearallmoney"],
       cooldown: 5,
       args: false,
       permissions: {
@@ -33,8 +34,6 @@ module.exports = class ClearRichUsers extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const THRESHOLD = 1000000000; // 1 billion (1000m)
-
     // Parse confirmation argument
     let confirmed = false;
     if (ctx.isInteraction) {
@@ -44,14 +43,20 @@ module.exports = class ClearRichUsers extends Command {
     }
 
     try {
-      // First, get count of users who would be affected
+      // Get ALL users with any balance (excluding those with 0 in all fields)
       const affectedUsers = await Users.find({
         $or: [
-          { "balance.coin": { $gt: THRESHOLD } },
-          { "balance.bank": { $gt: THRESHOLD } },
+          { "balance.coin": { $gt: 0 } },
+          { "balance.bank": { $gt: 0 } },
+          { "balance.credit": { $gt: 0 } },
+          { "balance.sponsor": { $gt: 0 } },
+          { "balance.slots": { $gt: 0 } },
+          { "balance.blackjack": { $gt: 0 } },
+          { "balance.coinflip": { $gt: 0 } },
+          { "balance.klaklouk": { $gt: 0 } },
         ],
       })
-        .select("userId balance.coin balance.bank")
+        .select("userId balance")
         .exec();
 
       if (affectedUsers.length === 0) {
@@ -59,7 +64,7 @@ module.exports = class ClearRichUsers extends Command {
           .embed()
           .setColor(color.main)
           .setDescription(
-            `${globalEmoji.result.tick} No users found with balances over ${client.utils.formatNumber(THRESHOLD)} coins.`
+            `${globalEmoji.result.tick} No users found with any balances to clear.`
           );
         return await ctx.sendMessage({ embeds: [embed] });
       }
@@ -78,9 +83,20 @@ module.exports = class ClearRichUsers extends Command {
             ? member.displayName
             : `User ${user.userId}`;
 
+          const totalBalance =
+            user.balance.coin +
+            user.balance.bank +
+            user.balance.credit +
+            user.balance.sponsor +
+            user.balance.slots +
+            user.balance.blackjack +
+            user.balance.coinflip +
+            user.balance.klaklouk;
+
           previewText += `• **${displayName}** - `;
-          previewText += `Coin: ${client.utils.formatNumber(user.balance.coin)}, `;
-          previewText += `Bank: ${client.utils.formatNumber(user.balance.bank)}\n`;
+          previewText += `Total: ${client.utils.formatNumber(totalBalance)} `;
+          previewText += `(C: ${client.utils.formatNumber(user.balance.coin)}, `;
+          previewText += `B: ${client.utils.formatNumber(user.balance.bank)})\n`;
         }
 
         if (affectedUsers.length > maxPreview) {
@@ -90,63 +106,97 @@ module.exports = class ClearRichUsers extends Command {
         const warningEmbed = client
           .embed()
           .setColor(color.warning || "#FFA500")
-          .setTitle("⚠️ Mass Balance Clear Warning")
+          .setTitle("⚠️ MASS MONEY WIPE WARNING")
           .setDescription(
-            `**${affectedUsers.length}** users found with balances over ${client.utils.formatNumber(THRESHOLD)} coins.\n\n` +
+            `**${affectedUsers.length}** users found with balances to clear.\n\n` +
               "**Affected Users Preview:**\n" +
               previewText +
               "\n\n" +
-              "**⚠️ This action cannot be undone!**\n" +
+              "**⚠️ THIS WILL CLEAR ALL MONEY FROM ALL USERS!**\n" +
+              "**⚠️ This action cannot be undone!**\n\n" +
+              "This will reset ALL balance types to 0:\n" +
+              "• Coins • Bank • Credit • Sponsor\n" +
+              "• Slots • Blackjack • Coinflip • KlaKlouk\n\n" +
               "Use `clearrichusers --confirm` or `/clearrichusers confirm:True` to proceed."
           )
           .setFooter({
-            text: "This will reset both coin and bank balances to 0 for all affected users",
+            text: "⚠️ DANGER: This will reset ALL balances for ALL users to 0 ⚠️",
           });
 
         return await ctx.sendMessage({ embeds: [warningEmbed] });
       }
 
-      // Execute the mass clear
+      // Execute the mass clear - Clear ALL balances for ALL users
       const result = await Users.updateMany(
         {
           $or: [
-            { "balance.coin": { $gt: THRESHOLD } },
-            { "balance.bank": { $gt: THRESHOLD } },
+            { "balance.coin": { $gt: 0 } },
+            { "balance.bank": { $gt: 0 } },
+            { "balance.credit": { $gt: 0 } },
+            { "balance.sponsor": { $gt: 0 } },
+            { "balance.slots": { $gt: 0 } },
+            { "balance.blackjack": { $gt: 0 } },
+            { "balance.coinflip": { $gt: 0 } },
+            { "balance.klaklouk": { $gt: 0 } },
           ],
         },
         {
           $set: {
             "balance.coin": 0,
             "balance.bank": 0,
+            "balance.credit": 0,
+            "balance.sponsor": 0,
+            "balance.slots": 0,
+            "balance.blackjack": 0,
+            "balance.coinflip": 0,
+            "balance.klaklouk": 0,
           },
         }
       ).exec();
 
       // Calculate total money removed
-      const totalCoinsRemoved = affectedUsers.reduce((total, user) => {
-        const coinAmount =
-          user.balance.coin > THRESHOLD ? user.balance.coin : 0;
-        const bankAmount =
-          user.balance.bank > THRESHOLD ? user.balance.bank : 0;
-        return total + coinAmount + bankAmount;
+      const totalMoneyRemoved = affectedUsers.reduce((total, user) => {
+        return (
+          total +
+          user.balance.coin +
+          user.balance.bank +
+          user.balance.credit +
+          user.balance.sponsor +
+          user.balance.slots +
+          user.balance.blackjack +
+          user.balance.coinflip +
+          user.balance.klaklouk
+        );
       }, 0);
 
       const successEmbed = client
         .embed()
         .setColor(color.success || "#00FF00")
-        .setTitle("✅ Mass Balance Clear Completed")
+        .setTitle("💸 MASS MONEY WIPE COMPLETED")
         .setDescription(
-          `Successfully cleared balances for **${result.modifiedCount}** users.\n\n` +
+          `Successfully cleared ALL balances for **${result.modifiedCount}** users.\n\n` +
             `**Statistics:**\n` +
             `• Users affected: ${result.modifiedCount}\n` +
-            `• Total money removed: ${client.utils.formatNumber(totalCoinsRemoved)} ${emoji.coin}\n` +
-            `• Threshold used: ${client.utils.formatNumber(THRESHOLD)} ${emoji.coin}`
+            `• Total money removed: ${client.utils.formatNumber(totalMoneyRemoved)} ${emoji.coin}\n` +
+            `• Balance types cleared: ALL (8 types)`
         )
-        .addFields({
-          name: "📊 Action Summary",
-          value: `Both coin and bank balances have been reset to 0 for all users with either balance exceeding ${client.utils.formatNumber(THRESHOLD)} coins.`,
-          inline: false,
-        })
+        .addFields(
+          {
+            name: "💰 Cleared Balance Types",
+            value: `• Coins\n• Bank\n• Credit\n• Sponsor`,
+            inline: true,
+          },
+          {
+            name: "🎰 Gambling Balances",
+            value: `• Slots\n• Blackjack\n• Coinflip\n• KlaKlouk`,
+            inline: true,
+          },
+          {
+            name: "📊 Action Summary",
+            value: `ALL balance types have been reset to 0 for ALL users with any existing balances. No threshold was applied - everyone's money has been wiped.`,
+            inline: false,
+          }
+        )
         .setFooter({
           text: `Executed by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
@@ -161,7 +211,7 @@ module.exports = class ClearRichUsers extends Command {
         .embed()
         .setColor(color.error || "#FF0000")
         .setDescription(
-          `${globalEmoji.result.cross} An error occurred while clearing rich user balances.\n\n` +
+          `${globalEmoji.result.cross} An error occurred while clearing all user balances.\n\n` +
             `**Error:** ${error.message}`
         );
 
