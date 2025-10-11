@@ -54,7 +54,7 @@ module.exports = class Help extends Command {
     const adminCategory = [
       "admin",
       "company",
-      "dev",
+      "developer",
       "guild",
       "owner",
       "staff",
@@ -75,6 +75,13 @@ module.exports = class Help extends Command {
           ? emoji.help.bank
           : globalEmoji.help.bank || "🏦",
         description: "Banking and money management",
+      },
+      {
+        name: "building",
+        emoji: emoji.help.building
+          ? emoji.help.building
+          : globalEmoji.help.building || "🏗️",
+        description: "Building and construction",
       },
       {
         name: "economy",
@@ -140,18 +147,18 @@ module.exports = class Help extends Command {
         description: "Ranking and leaderboards",
       },
       {
-        name: "social",
-        emoji: emoji.help.social
-          ? emoji.help.social
-          : globalEmoji.help.social || "👥",
-        description: "Social interaction features",
-      },
-      {
         name: "relationship",
         emoji: emoji.help.relationship
           ? emoji.help.relationship
           : globalEmoji.help.relationship || "💕",
         description: "Relationship and dating",
+      },
+      {
+        name: "social",
+        emoji: emoji.help.social
+          ? emoji.help.social
+          : globalEmoji.help.social || "👥",
+        description: "Social interaction features",
       },
       {
         name: "utility",
@@ -190,34 +197,36 @@ module.exports = class Help extends Command {
           return sum + categoryCommands.size;
         }, 0);
 
-        // Create stunning main help embed
+        // Create clean main help embed - categories only
         const helpEmbed = new EmbedBuilder()
           .setColor(color.main)
+          .setTitle("✨ PEACHY Command Center ✨")
           .setDescription(
-            `### ✨ Welcome to PEACHY center! ✨\n\n` +
+            `Welcome to PEACHY! Select categories below to explore commands.\n\n` +
               `📖 **Usage:** \`${prefix}help [command]\` for detailed info\n` +
               `💡 **Example:** \`${prefix}help balance\`\n` +
-              `🎯 **Quick Tip:** Select multiple categories below!\n\n` +
-              `🔥 **What's New:** Enhanced multi-select interface for better browsing!`
+              `🎯 **Tip:** Select multiple categories for quick browsing!`
           )
           .setThumbnail(
             client.user.displayAvatarURL({ dynamic: true, size: 512 })
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: `${totalCommands} amazing commands waiting for you! 💫`,
+            text: `${totalCommands} commands available across ${categories.length} categories 💫`,
             iconURL: client.user.displayAvatarURL(),
           })
           .setTimestamp();
 
-        // Add all categories in a simple, organized way
+        // Group categories in a clean, simple layout
         const entertainmentCategories = categories.filter((cat) =>
           ["actions", "emotes", "games", "social", "relationship"].includes(
             cat.name
           )
         );
         const economyCategories = categories.filter((cat) =>
-          ["bank", "economy", "gambling", "inventory"].includes(cat.name)
+          ["bank", "economy", "gambling", "inventory", "building"].includes(
+            cat.name
+          )
         );
         const utilityCategories = categories.filter((cat) =>
           ["giveaways", "info", "profile", "rank", "utility"].includes(cat.name)
@@ -235,9 +244,9 @@ module.exports = class Help extends Command {
                 return `${category.emoji} **${
                   categoriesMessages[category.name.toLowerCase()] ||
                   client.utils.formatCapitalize(category.name)
-                }** • \`${categoryCommandCount} commands\`\n*${category.description}*`;
+                }** • \`${categoryCommandCount}\``;
               })
-              .join("\n\n"),
+              .join(" • "),
             inline: false,
           });
         }
@@ -254,9 +263,9 @@ module.exports = class Help extends Command {
                 return `${category.emoji} **${
                   categoriesMessages[category.name.toLowerCase()] ||
                   client.utils.formatCapitalize(category.name)
-                }** • \`${categoryCommandCount} commands\`\n*${category.description}*`;
+                }** • \`${categoryCommandCount}\``;
               })
-              .join("\n\n"),
+              .join(" • "),
             inline: false,
           });
         }
@@ -273,9 +282,9 @@ module.exports = class Help extends Command {
                 return `${category.emoji} **${
                   categoriesMessages[category.name.toLowerCase()] ||
                   client.utils.formatCapitalize(category.name)
-                }** • \`${categoryCommandCount} commands\`\n*${category.description}*`;
+                }** • \`${categoryCommandCount}\``;
               })
-              .join("\n\n"),
+              .join(" • "),
             inline: false,
           });
         }
@@ -292,7 +301,7 @@ module.exports = class Help extends Command {
             label:
               categoriesMessages[category.name.toLowerCase()] ||
               client.utils.formatCapitalize(category.name),
-            description: `${category.description} • ${categoryCommandCount} commands`,
+            description: `${categoryCommandCount} commands available`,
             value: category.name.toLowerCase(),
             default: selectedCategories.includes(category.name.toLowerCase()),
           };
@@ -315,7 +324,7 @@ module.exports = class Help extends Command {
         const dashboardButton = new ButtonBuilder()
           .setLabel("Dashboard")
           .setStyle(ButtonStyle.Link)
-          .setURL(client.config.links.dashboard || `https://peachygang.xyz`)
+          .setURL(client.config.links.dashboard || `https://peachyganggg.com`)
           .setEmoji("🌐");
 
         const supportButton = new ButtonBuilder()
@@ -781,7 +790,7 @@ module.exports = class Help extends Command {
         label:
           categoriesMessages[category.name.toLowerCase()] ||
           client.utils.formatCapitalize(category.name),
-        description: `${category.description} • ${categoryCommandCount} commands`,
+        description: `${categoryCommandCount} commands available`,
         value: category.name.toLowerCase(),
         default: selectedCategories.includes(category.name.toLowerCase()),
       };
@@ -934,7 +943,7 @@ module.exports = class Help extends Command {
         label:
           categoriesMessages[cat.name.toLowerCase()] ||
           client.utils.formatCapitalize(cat.name),
-        description: `${cat.description} • ${categoryCommandCount} commands`,
+        description: `${categoryCommandCount} commands available`,
         value: cat.name.toLowerCase(),
         default: cat.name.toLowerCase() === category.toLowerCase(),
       };
