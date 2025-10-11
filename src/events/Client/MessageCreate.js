@@ -5,7 +5,6 @@ const Users = require("../../schemas/user");
 const globalConfig = require("../../utils/Config");
 const globalGif = require("../../utils/Gif");
 const globalEmoji = require("../../utils/Emoji");
-const QuestTracker = require("../../utils/QuestTracker");
 
 module.exports = class MessageCreate extends Event {
   constructor(client, file) {
@@ -45,17 +44,6 @@ module.exports = class MessageCreate extends Event {
 
         if (user?.verification?.isBanned) {
           return;
-        }
-
-        // Track message for quests
-        if (user) {
-          // Update message count
-          await Users.findOneAndUpdate(
-            { userId: message.author.id },
-            { $inc: { "activity.totalMessagesSent": 1 } }
-          );
-          // Check quest progress
-          await QuestTracker.updateQuestProgress(message.author.id, "message");
         }
 
         const now = new Date();
