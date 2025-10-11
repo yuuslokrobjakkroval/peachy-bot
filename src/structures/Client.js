@@ -17,6 +17,7 @@ const Abilities = require("../utils/Abilities");
 const globalConfig = require("../utils/Config");
 const { I18n } = require("@hammerhq/localization");
 const themeConfig = require("../config");
+const slashCommandConfig = require("../config/slashCommandConfig");
 
 // Emojis - Centralized in one object for easier management
 const emojis = require("../emojis");
@@ -104,6 +105,20 @@ module.exports = class PeachyClient extends Client {
     const commandsPath = path.join(__dirname, "../commands");
     const commandDirs = fs.readdirSync(commandsPath);
 
+    // Load configuration for slash command prioritization
+    const {
+      maxSlashCommands,
+      essentialCommands,
+      priorityCategories,
+      mediumPriorityCategories,
+      lowPriorityCategories,
+      excludedCommands,
+      customPriorities,
+    } = slashCommandConfig;
+
+    // Store commands for priority sorting
+    const commandsToRegister = [];
+
     for (const dir of commandDirs) {
       const commandFiles = fs
         .readdirSync(path.join(commandsPath, dir))
@@ -124,6 +139,11 @@ module.exports = class PeachyClient extends Client {
           }
 
           if (command.slashCommand) {
+            // Skip excluded commands
+            if (excludedCommands.includes(command.name.toLowerCase())) {
+              continue; // Skip this command entirely
+            }
+
             const data = {
               name: command.name,
               description: command.description.content,
@@ -139,8 +159,43 @@ module.exports = class PeachyClient extends Client {
                     ).toString()
                   : null,
             };
-            this.body.push(data);
-            commandCounter++;
+
+            // Calculate priority score
+            let priority = 0;
+
+            // Custom priorities override everything
+            if (customPriorities[command.name.toLowerCase()]) {
+              priority = customPriorities[command.name.toLowerCase()];
+            } else {
+              // Essential commands get highest priority
+              if (essentialCommands.includes(command.name.toLowerCase())) {
+                priority += 1000;
+              }
+
+              // Category-based priorities
+              if (priorityCategories.includes(dir)) {
+                priority += 500;
+              } else if (
+                mediumPriorityCategories &&
+                mediumPriorityCategories.includes(dir)
+              ) {
+                priority += 250;
+              } else if (
+                lowPriorityCategories &&
+                lowPriorityCategories.includes(dir.toLowerCase())
+              ) {
+                priority += 50; // Very low priority
+              } else {
+                priority += 100; // Default priority
+              }
+            }
+
+            commandsToRegister.push({
+              data,
+              priority,
+              category: dir,
+              name: command.name,
+            });
           }
         } catch (error) {
           this.logger.error(
@@ -151,7 +206,31 @@ module.exports = class PeachyClient extends Client {
       }
     }
 
-    this.logger.info(`Loaded a total of ${commandCounter} commands.`);
+    // Sort by priority (highest first) and limit to maxSlashCommands
+    commandsToRegister.sort((a, b) => b.priority - a.priority);
+    const selectedCommands = commandsToRegister.slice(0, maxSlashCommands);
+
+    // Add selected commands to body
+    selectedCommands.forEach((cmd) => {
+      this.body.push(cmd.data);
+      commandCounter++;
+    });
+
+    this.logger.info(`Loaded ${this.commands.size} total commands.`);
+    this.logger.info(
+      `Selected ${commandCounter} commands for slash command registration (limit: ${maxSlashCommands}).`
+    );
+
+    // Log which commands were excluded if any
+    if (commandsToRegister.length > maxSlashCommands) {
+      const excluded = commandsToRegister.slice(maxSlashCommands);
+      this.logger.warn(
+        `${excluded.length} commands excluded from slash registration due to Discord's 100 command limit.`
+      );
+      this.logger.info(
+        `Excluded commands: ${excluded.map((c) => c.name).join(", ")}`
+      );
+    }
 
     this.once("clientReady", async () => {
       const applicationCommands = globalConfig.production
@@ -184,27 +263,44 @@ module.exports = class PeachyClient extends Client {
         });
 
         // Start with our bot commands
-        const commandsToRegister = [...this.body];
+        let commandsToRegister = [...this.body];
+        let totalCommands = commandsToRegister.length;
 
         // Preserve Entry Point commands that aren't already in our command list
+        const uniqueEntryPointCommands = [];
         entryPointCommands.forEach((entryCmd) => {
           const existsInBody = this.body.find(
             (cmd) => cmd.name === entryCmd.name
           );
-          if (!existsInBody) {
+          if (!existsInBody && totalCommands < 100) {
             // Preserve all properties of the Entry Point command
-            commandsToRegister.push({
+            uniqueEntryPointCommands.push({
               ...entryCmd,
               // Ensure required fields are present
               name: entryCmd.name,
               description: entryCmd.description || "Entry Point Command",
               type: entryCmd.type || 1,
             });
+            totalCommands++;
           }
         });
 
+        // Add Entry Point commands if we haven't hit the limit
+        commandsToRegister = [
+          ...commandsToRegister,
+          ...uniqueEntryPointCommands,
+        ];
+
+        // Final safety check - ensure we don't exceed 100 commands
+        if (commandsToRegister.length > 100) {
+          this.logger.warn(
+            `Total commands (${commandsToRegister.length}) exceeds Discord limit. Trimming to 100.`
+          );
+          commandsToRegister = commandsToRegister.slice(0, 100);
+        }
+
         this.logger.info(
-          `Registering ${commandsToRegister.length} commands (${this.body.length} bot commands + ${entryPointCommands.length} entry point commands)`
+          `Registering ${commandsToRegister.length} commands (${this.body.length} bot commands + ${uniqueEntryPointCommands.length} entry point commands)`
         );
 
         await rest.put(applicationCommands, { body: commandsToRegister });
