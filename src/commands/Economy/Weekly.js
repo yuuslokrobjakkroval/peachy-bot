@@ -61,8 +61,6 @@ module.exports = class Weekly extends Command {
 
       const totalCoins = baseCoins + bonusCoins;
       const totalExp = baseExp + bonusExp;
-      const newBalance = user.balance.coin + totalCoins;
-      const newExp = user.profile.xp + totalExp;
 
       const now = moment().tz("Asia/Bangkok");
       const nextWeekly = moment(now).add(1, "week").toDate();
@@ -97,35 +95,16 @@ module.exports = class Weekly extends Command {
         return ctx.sendMessage({ embeds: [cooldownEmbed] });
       }
 
-      // Use EconomyManager if available
-      if (client.economyManager) {
-        await client.economyManager.addCoins(
-          ctx.author.id,
-          ctx.guild?.id || "DM",
-          totalCoins,
-          "weekly"
-        );
-        // Update XP separately since EconomyManager doesn't handle XP
-        await Users.updateOne(
-          { userId: user.userId },
-          {
-            $inc: {
-              "profile.xp": totalExp,
-            },
-          }
-        );
-      } else {
-        // Fallback to direct database update
-        await Users.updateOne(
-          { userId: user.userId },
-          {
-            $set: {
-              "balance.coin": newBalance,
-              "profile.xp": newExp,
-            },
-          }
-        );
-      }
+      // Safe incremental update - prevents overflow issues
+      await Users.updateOne(
+        { userId: user.userId },
+        {
+          $inc: {
+            "balance.coin": totalCoins,
+            "profile.xp": totalExp,
+          },
+        }
+      );
 
       // Update cooldown
       await client.utils.updateCooldown(

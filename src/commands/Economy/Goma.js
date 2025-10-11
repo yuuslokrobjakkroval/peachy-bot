@@ -28,7 +28,7 @@ module.exports = class Goma extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const gomaMessages = language.locales.get(language.defaultLocale)
       ?.economyMessages?.gomaMessages;
@@ -40,7 +40,7 @@ module.exports = class Goma extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color,
+          color
         );
       }
 
@@ -58,24 +58,21 @@ module.exports = class Goma extends Command {
 
       const totalCoins = baseCoins + bonusCoins;
       const totalExp = baseExp + bonusExp;
-      const newBalance = user.balance.coin + totalCoins;
-      const newExp = user.profile.xp + totalExp;
-      const newStreak = user.goma.streak + 1;
 
       const cooldownTime = 300000; // 5 minutes cooldown
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        cooldownTime,
+        cooldownTime
       );
 
       if (!isCooldownExpired) {
         const lastCooldownTimestamp = await client.utils.getCooldown(
           ctx.author.id,
-          this.name.toLowerCase(),
+          this.name.toLowerCase()
         );
         const remainingTime = Math.ceil(
-          (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000,
+          (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000
         );
         const duration = moment.duration(remainingTime, "seconds");
         const minutes = Math.floor(duration.asMinutes());
@@ -95,18 +92,18 @@ module.exports = class Goma extends Command {
       await Users.updateOne(
         { userId: user.userId },
         {
-          $set: {
-            "balance.coin": newBalance,
-            "profile.xp": newExp,
-            "goma.streak": newStreak,
+          $inc: {
+            "balance.coin": totalCoins,
+            "profile.xp": totalExp,
+            "goma.streak": 1,
           },
-        },
+        }
       );
 
       await client.utils.updateCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        cooldownTime,
+        cooldownTime
       );
 
       let bonusMessage = "";
@@ -127,13 +124,13 @@ module.exports = class Goma extends Command {
               .replace("%{coin}", client.utils.formatNumber(baseCoins))
               .replace("%{expEmote}", emoji.exp)
               .replace("%{exp}", client.utils.formatNumber(baseExp))
-              .replace("%{bonusMessage}", bonusMessage),
+              .replace("%{bonusMessage}", bonusMessage)
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName,
+              ctx.author.displayName
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -145,7 +142,7 @@ module.exports = class Goma extends Command {
         client,
         ctx,
         generalMessages.userFetchError,
-        color,
+        color
       );
     }
   }
