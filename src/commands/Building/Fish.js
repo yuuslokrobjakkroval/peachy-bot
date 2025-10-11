@@ -1,6 +1,6 @@
 const { Command } = require("../../structures/index.js");
 const FishingTools = require("../../assets/inventory/FishingTools.js");
-const Fish = require("../../assets/inventory/Fish.js");
+const FishList = require("../../assets/inventory/Fish.js");
 
 module.exports = class Fish extends Command {
   constructor(client) {
@@ -135,12 +135,17 @@ module.exports = class Fish extends Command {
   }
 
   async normalFishing(client, ctx, user, tool, color, emoji, language) {
+    // Add debugging to check the FishList
+    console.log("FishList type:", typeof FishList);
+    console.log("FishList is array:", Array.isArray(FishList));
+    console.log("FishList length:", FishList?.length);
+
     // Standard resource gathering using existing system
     return await client.resourceManager.gatherResource(
       ctx,
       "Fish",
       FishingTools,
-      Fish,
+      FishList,
       emoji,
       color,
       language
@@ -375,7 +380,7 @@ module.exports = class Fish extends Command {
 
   generateBonusFish(tool) {
     // Generate better fish for quick game success
-    const fishList = Fish.filter((f) =>
+    const fishList = FishList.filter((f) =>
       ["uncommon", "rare"].includes(f.rarity)
     );
     return fishList[Math.floor(Math.random() * fishList.length)];
@@ -383,7 +388,7 @@ module.exports = class Fish extends Command {
 
   generateRareFish(tool) {
     // Generate rare/legendary fish for puzzle success
-    const fishList = Fish.filter((f) =>
+    const fishList = FishList.filter((f) =>
       ["rare", "legendary", "mythical"].includes(f.rarity)
     );
     return fishList[Math.floor(Math.random() * fishList.length)];
