@@ -154,7 +154,7 @@ module.exports = class PeachyClient extends Client {
     this.logger.info(`Loaded a total of ${commandCounter} commands.`);
 
     this.once("clientReady", async () => {
-      const applicationCommands = globalConfig.production
+      const applicationCommands = Boolen(globalConfig.production)
         ? Routes.applicationCommands(this.config.clientId ?? "")
         : Routes.applicationGuildCommands(
             this.config.clientId ?? "",
@@ -211,14 +211,12 @@ module.exports = class PeachyClient extends Client {
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
         this.logger.error("Failed to register slash commands:", error);
-
         // Fallback: Try to register only our commands without bulk update
         try {
           this.logger.info("Attempting fallback registration method...");
           const rest = new REST({ version: "10" }).setToken(
             this.config.token ?? ""
           );
-
           // Register commands individually to avoid Entry Point conflicts
           for (const command of this.body) {
             try {
