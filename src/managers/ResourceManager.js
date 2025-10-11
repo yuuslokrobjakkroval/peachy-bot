@@ -124,7 +124,7 @@ class ResourceManager {
           (item) =>
             `${item.emoji} **+${
               item.quantity
-            }** ${this.client.utils.formatCapitalize(item.id)}`
+            }** ${this.client.utils.formatCapitalize(item.name)}`
         )
         .join("\n") || `No ${resourceType.toLowerCase()}s found!`;
 
