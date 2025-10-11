@@ -154,7 +154,7 @@ module.exports = class PeachyClient extends Client {
     this.logger.info(`Loaded a total of ${commandCounter} commands.`);
 
     this.once("clientReady", async () => {
-      const applicationCommands = Boolen(globalConfig.production)
+      const applicationCommands = globalConfig.production
         ? Routes.applicationCommands(this.config.clientId ?? "")
         : Routes.applicationGuildCommands(
             this.config.clientId ?? "",
