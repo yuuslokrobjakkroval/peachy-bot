@@ -3,7 +3,6 @@ const emote = {
   sxe: "<:STONEAXE:1355805092607037450>",
   net: "<:NET:1355805034893541376>",
   fishingpole: "<:FISHINGPOLE:1355805017977917562>",
-  net: "🕸️",
   spear: "🔱",
   trap: "🪤",
 };
@@ -74,21 +73,6 @@ module.exports = {
       emoji: emote.fishingpole,
       available: ["use"],
       price: { buy: 10000, sell: 0 },
-    },
-    {
-      id: "net",
-      name: "Fishing Net",
-      description: "A net that can catch multiple fish at once.",
-      type: "tool",
-      able: {
-        use: true,
-        gift: false,
-        multiple: false,
-      },
-      quantity: 10,
-      emoji: emote.net,
-      available: ["use"],
-      price: { buy: 15000, sell: 0 },
     },
     {
       id: "spear",

@@ -86,7 +86,7 @@ module.exports = class Shop extends Command {
       danger: color?.danger || "#ED4245",
     };
 
-    // Get all unique categories
+    // Get all unique categories and handle duplicates
     const categories = Shops.map((shop) => shop.type);
     const categorySet = new Set(categories);
     const uniqueCategories = [...categorySet];
@@ -94,6 +94,17 @@ module.exports = class Shop extends Command {
     try {
       if (categorySet.size !== categories.length) {
         console.error("Duplicate category values found:", categories);
+        // Log which categories are duplicated
+        const duplicates = categories.filter(
+          (item, index) => categories.indexOf(item) !== index
+        );
+        console.error("Duplicated categories:", [...new Set(duplicates)]);
+
+        // Log all shop types and names for debugging
+        console.error(
+          "All shops:",
+          Shops.map((shop) => ({ name: shop.name, type: shop.type }))
+        );
       }
 
       // Get initial category (from args or default to first)
@@ -125,7 +136,7 @@ module.exports = class Shop extends Command {
         uniqueCategories,
         selectedCategory,
         generalMessages,
-        messages,
+        messages
       );
     } catch (error) {
       console.error("Error in Shop command:", error);
@@ -148,7 +159,7 @@ module.exports = class Shop extends Command {
     categories,
     initialCategory,
     generalMessages,
-    messages,
+    messages
   ) {
     const currentState = {
       category: initialCategory,
@@ -216,7 +227,7 @@ module.exports = class Shop extends Command {
     const getSelectedItem = () => {
       if (!currentState.selectedItemId) return null;
       return getCurrentItems().find(
-        (item) => item.id === currentState.selectedItemId,
+        (item) => item.id === currentState.selectedItemId
       );
     };
 
@@ -247,7 +258,7 @@ module.exports = class Shop extends Command {
         .setDescription(
           `## ${emoji.mainLeft || "🛒"} ${
             messages.shopTitle
-          } : ${shop.name.toUpperCase()} ${emoji.mainRight || "🛒"}\n\n${shop.description}\n\n${itemList}`,
+          } : ${shop.name.toUpperCase()} ${emoji.mainRight || "🛒"}\n\n${shop.description}\n\n${itemList}`
         )
         .setThumbnail(client.utils.emojiToImage(emoji.shop || "🛍️"))
         .setFooter({
@@ -273,7 +284,7 @@ module.exports = class Shop extends Command {
         .setThumbnail(
           item.emoji
             ? client.utils.emojiToImage(item.emoji)
-            : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 }),
+            : ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
         )
         .addFields([
           {
@@ -323,7 +334,7 @@ module.exports = class Shop extends Command {
           messages.confirmPurchase
             .replace("%{quantity}", quantity.toString())
             .replace("%{item}", item.name)
-            .replace("%{price}", client.utils.formatString(totalPrice)),
+            .replace("%{price}", client.utils.formatString(totalPrice))
         )
         .addFields([
           {
@@ -355,20 +366,52 @@ module.exports = class Shop extends Command {
 
     // Function to generate category dropdown
     const generateCategoryDropdown = () => {
-      const categoryOptions = categories.map((category) => {
-        const shop = Shops.find((shop) => shop.type === category);
-        return {
-          label: shop.name,
-          value: category,
-          description: `${shop.inventory.length} items`,
-          default: category === currentState.category,
-        };
+      // Create unique category options by filtering out duplicates
+      const uniqueCategories = [...new Set(categories)];
+      const categoryOptions = uniqueCategories
+        .map((category) => {
+          const shop = Shops.find((shop) => shop.type === category);
+          if (!shop) {
+            console.error(`No shop found for category: ${category}`);
+            return null;
+          }
+          return {
+            label: shop.name,
+            value: category,
+            description: `${shop.inventory.length} items`,
+            default: category === currentState.category,
+          };
+        })
+        .filter((option) => option !== null); // Remove null entries
+
+      // Double-check for duplicate values before creating the dropdown
+      const seenValues = new Set();
+      const uniqueOptions = categoryOptions.filter((option) => {
+        if (seenValues.has(option.value)) {
+          console.error(`Duplicate option value found: ${option.value}`);
+          return false;
+        }
+        seenValues.add(option.value);
+        return true;
       });
+
+      // Ensure we don't exceed Discord's limit of 25 options
+      const limitedOptions = uniqueOptions.slice(0, 25);
+
+      // Ensure we have at least one option
+      if (limitedOptions.length === 0) {
+        limitedOptions.push({
+          label: "No categories available",
+          value: "none",
+          description: "No shop categories found",
+          default: false,
+        });
+      }
 
       const dropdown = new StringSelectMenuBuilder()
         .setCustomId("category_select")
         .setPlaceholder("Select a category")
-        .addOptions(categoryOptions);
+        .addOptions(limitedOptions);
 
       return new ActionRowBuilder().addComponents(dropdown);
     };
@@ -377,8 +420,12 @@ module.exports = class Shop extends Command {
     const generateItemDropdown = () => {
       const items = getCurrentItems();
 
-      // Limit options to 25 (Discord's limit)
-      const itemOptions = items.slice(0, 25).map((item) => {
+      // Filter out duplicate items by ID and limit to 25 (Discord's limit)
+      const uniqueItems = items.filter(
+        (item, index, self) => index === self.findIndex((i) => i.id === item.id)
+      );
+
+      const itemOptions = uniqueItems.slice(0, 25).map((item) => {
         const emojiStr =
           typeof emoji.coin === "string"
             ? emoji.coin.replace(/<a?:\w+:(\d+)>/, "")
@@ -387,7 +434,7 @@ module.exports = class Shop extends Command {
           label: item.name,
           value: item.id,
           description: `${client.utils.formatString(
-            item.price.buy,
+            item.price.buy
           )} ${emojiStr}`,
           emoji:
             item.emoji && item.emoji.includes(":") ? undefined : item.emoji, // Only use Unicode emojis in dropdown
@@ -395,10 +442,31 @@ module.exports = class Shop extends Command {
         };
       });
 
+      // Double-check for duplicate values in item options
+      const seenItemValues = new Set();
+      const uniqueItemOptions = itemOptions.filter((option) => {
+        if (seenItemValues.has(option.value)) {
+          console.error(`Duplicate item option value found: ${option.value}`);
+          return false;
+        }
+        seenItemValues.add(option.value);
+        return true;
+      });
+
+      // Ensure we have at least one option to avoid empty dropdown error
+      if (uniqueItemOptions.length === 0) {
+        uniqueItemOptions.push({
+          label: "No items available",
+          value: "none",
+          description: "This category has no items",
+          default: false,
+        });
+      }
+
       const dropdown = new StringSelectMenuBuilder()
         .setCustomId("item_select")
         .setPlaceholder("Select an item for details")
-        .addOptions(itemOptions);
+        .addOptions(uniqueItemOptions);
 
       return new ActionRowBuilder().addComponents(dropdown);
     };
@@ -444,7 +512,7 @@ module.exports = class Shop extends Command {
           return new ActionRowBuilder().addComponents(
             homeButton,
             prevButton,
-            nextButton,
+            nextButton
           );
         } else {
           return new ActionRowBuilder().addComponents(homeButton);
@@ -504,11 +572,11 @@ module.exports = class Shop extends Command {
       const row1 = new ActionRowBuilder().addComponents(
         decreaseButton,
         quantityButton,
-        increaseButton,
+        increaseButton
       );
       const row2 = new ActionRowBuilder().addComponents(
         confirmButton,
-        cancelButton,
+        cancelButton
       );
 
       return [row1, row2];
@@ -517,7 +585,7 @@ module.exports = class Shop extends Command {
     // Function to update message with current state
     const updateMessage = async (
       interaction = null,
-      skipInteractionUpdate = false,
+      skipInteractionUpdate = false
     ) => {
       try {
         const components = [];
@@ -539,14 +607,20 @@ module.exports = class Shop extends Command {
           }
         } else {
           // List view
-          components.push(generateCategoryDropdown());
+          try {
+            components.push(generateCategoryDropdown());
 
-          const items = getCurrentItems();
-          if (items && items.length > 0) {
-            components.push(generateItemDropdown());
+            const items = getCurrentItems();
+            if (items && items.length > 0) {
+              components.push(generateItemDropdown());
+            }
+
+            components.push(generateNavigationButtons());
+          } catch (componentError) {
+            console.error("Error generating components:", componentError);
+            // Fallback: just add navigation buttons
+            components.push(generateNavigationButtons());
           }
-
-          components.push(generateNavigationButtons());
         }
 
         // Generate the appropriate embed
@@ -584,7 +658,7 @@ module.exports = class Shop extends Command {
               .setColor(color.error)
               .setTitle("Error")
               .setDescription(
-                "An error occurred while updating the shop display. Please try again.",
+                "An error occurred while updating the shop display. Please try again."
               );
 
             await msg.edit({ embeds: [errorEmbed], components: [] });
@@ -634,7 +708,7 @@ module.exports = class Shop extends Command {
 
         // Update user's balance and inventory
         const existingItem = user.inventory.find(
-          (invItem) => invItem.id === item.id,
+          (invItem) => invItem.id === item.id
         );
 
         if (existingItem) {
@@ -646,7 +720,7 @@ module.exports = class Shop extends Command {
                 "balance.coin": -totalPrice,
                 "inventory.$.quantity": quantity,
               },
-            },
+            }
           );
         } else {
           // Add new item to inventory
@@ -660,7 +734,7 @@ module.exports = class Shop extends Command {
                   quantity: quantity,
                 },
               },
-            },
+            }
           );
         }
 
@@ -846,12 +920,12 @@ module.exports = class Shop extends Command {
             if (component.type === 3) {
               // Select menu
               newRow.addComponents(
-                StringSelectMenuBuilder.from(component).setDisabled(true),
+                StringSelectMenuBuilder.from(component).setDisabled(true)
               );
             } else if (component.type === 2) {
               // Button
               newRow.addComponents(
-                ButtonBuilder.from(component).setDisabled(true),
+                ButtonBuilder.from(component).setDisabled(true)
               );
             }
           });
