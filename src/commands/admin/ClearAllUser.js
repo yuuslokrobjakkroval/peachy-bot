@@ -165,12 +165,6 @@ module.exports = class ClearAllUser extends Command {
           // Reset progress data
           "peachy.streak": 0,
           "goma.streak": 0,
-          petTrainingCount: 0,
-          petQuestWins: 0,
-          reactionCount: 0,
-          sellPetCount: 0,
-          feedCount: 0,
-          isDailyClaim: false,
 
           // Reset validation flags
           "validation.isMultiTransfer": false,
@@ -178,6 +172,12 @@ module.exports = class ClearAllUser extends Command {
         },
         $unset: {
           // Remove unused/redundant fields to optimize database
+          petTrainingCount: 0,
+          petQuestWins: 0,
+          reactionCount: 0,
+          sellPetCount: 0,
+          feedCount: 0,
+          isDailyClaim: false,
           consumedItems: "",
           cooldowns: "",
           soldPets: "",
