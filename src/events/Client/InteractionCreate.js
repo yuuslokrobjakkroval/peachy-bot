@@ -13,8 +13,6 @@ const {
 const users = require("../../schemas/user");
 const GiveawaySchema = require("../../schemas/giveaway");
 const GiveawayShopItemSchema = require("../../schemas/giveawayShopItem");
-const userCaptcha = require("../../schemas/userCaptcha");
-const verifySchema = require("../../schemas/verificationCaptcha");
 const globalGif = require("../../utils/Gif");
 const globalEmoji = require("../../utils/Emoji");
 const globalConfig = require("../../utils/Config");
@@ -1040,68 +1038,6 @@ module.exports = class InteractionCreate extends Event {
             } catch (error) {
               console.error(
                 `Error in giveaway-join-req handler for message ${interaction.message.id}:`,
-                error
-              );
-              if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({
-                  content: "An error occurred while processing your request.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            break;
-          }
-
-          case "modal": {
-            try {
-              await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-
-              const Data = await verifySchema.findOne({
-                Guild: interaction.guild.id,
-              });
-              const UserData = await userCaptcha.findOne({
-                User: interaction.user.id,
-              });
-
-              if (!UserData) {
-                return await interaction.editReply({
-                  content: "No captcha data found for this user.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              const answer = interaction.fields.getTextInputValue("answer");
-
-              if (answer !== UserData.Captcha) {
-                return await interaction.editReply({
-                  content: "That was wrong! Try again.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              const roleID = Data.Role;
-              const veriGuild = await this.client.guilds.fetch(
-                interaction.guild.id
-              );
-              const member = await veriGuild.members.fetch(interaction.user.id);
-              await member.roles.add(roleID).catch((err) => {
-                console.error(
-                  `Error adding role ${roleID} to user ${interaction.user.id}:`,
-                  err
-                );
-                return interaction.editReply({
-                  content: "There was an error adding the role.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              });
-
-              await interaction.editReply({
-                content: "You have been verified.",
-                flags: MessageFlags.Ephemeral,
-              });
-            } catch (error) {
-              console.error(
-                `Error in modal handler for user ${interaction.user.id}:`,
                 error
               );
               if (!interaction.replied && !interaction.deferred) {
