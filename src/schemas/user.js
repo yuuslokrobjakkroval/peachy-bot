@@ -1,27 +1,6 @@
 const { model, Schema } = require("mongoose");
 const globalConfig = require("../utils/Config");
 
-// AnimalSchema
-const AnimalSchema = new Schema({
-  id: { type: String, required: true },
-  level: { type: Number, default: 1 },
-  levelXp: { type: Number, default: 120 },
-  lastXpGain: { type: Number, default: 0 },
-});
-
-// SoldPetSchema
-const SoldPetSchema = new Schema({
-  id: { type: String, required: true }, // e.g., "bubbles"
-  level: { type: Number, required: true }, // Level at the time of sale
-  soldAt: { type: Date, default: Date.now }, // Timestamp of when the pet was sold
-});
-
-const SponsorTransactionSchema = new Schema({
-  amount: { type: Number, required: true },
-  recipientId: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now },
-});
-
 // InventoryItemSchema
 const InventoryItemSchema = new Schema({
   id: { type: String, required: true },
@@ -199,9 +178,6 @@ const userSchema = new Schema(
       coinflip: { type: Number, default: 0 },
       klaklouk: { type: Number, default: 0 },
     },
-    sponsorRank: { type: Number, default: 0 }, // Added: 1-10 for top sponsors, 0 otherwise
-    sponsorTransactions: { type: [SponsorTransactionSchema], default: [] }, // Added: Tracks sponsor coin transfers
-    lastSponsorReset: { type: Date, default: Date.now }, // Added: Tracks last sponsor reset
     validation: {
       isMultiTransfer: { type: Boolean, default: false },
       isKlaKlouk: { type: Boolean, default: false },
@@ -218,20 +194,6 @@ const userSchema = new Schema(
     equip: { type: [EquipItemSchema], default: [] },
     consumedItems: { type: [ConsumedItemSchema], default: [] },
     cooldowns: { type: [CooldownSchema], default: [] },
-    // Credit Banking System
-    creditBank: {
-      balance: { type: Number, default: 0 },
-      lastInterest: { type: Date, default: Date.now },
-      totalInterestEarned: { type: Number, default: 0 },
-      depositHistory: [
-        {
-          type: { type: String }, // "deposit", "withdrawal", "interest"
-          amount: { type: Number },
-          date: { type: Date, default: Date.now },
-          balance: { type: Number },
-        },
-      ],
-    },
     social: {
       facebook: {
         name: { type: String, default: null },
@@ -250,106 +212,6 @@ const userSchema = new Schema(
       language: { type: String, default: globalConfig.language.defaultLocale },
       notifications: { type: Boolean, default: true },
       theme: { type: String, default: "normal" },
-    },
-    activity: {
-      lastLogin: { type: Date, default: Date.now },
-      totalMessagesSent: { type: Number, default: 0 },
-    },
-    // Quest tracking fields
-    petTrainingCount: { type: Number, default: 0 },
-    petQuestWins: { type: Number, default: 0 },
-    reactionCount: { type: Number, default: 0 },
-    // Adventure pet data
-    adventurePet: {
-      petId: { type: String, default: null },
-      level: { type: Number, default: 1 },
-      exp: { type: Number, default: 0 },
-      stats: {
-        strength: { type: Number, default: 1 },
-        agility: { type: Number, default: 1 },
-        intelligence: { type: Number, default: 1 },
-      },
-      evolved: { type: Boolean, default: false },
-      inventory: { type: [String], default: [] },
-    },
-    zoo: { type: [AnimalSchema], default: [] },
-    sellPetCount: { type: Number, default: 0 }, // Tracks number of pets sold
-    feedCount: { type: Number, default: 0 }, // Tracks number of times pets are fed
-    soldPets: { type: [SoldPetSchema], default: [] }, // Tracks history of sold pets
-    achievements: { type: [AchievementsSchema], default: [] },
-    isDailyClaim: { type: Boolean, default: false },
-    gathering: {
-      mine: { type: Boolean, default: false },
-      chop: { type: Boolean, default: false },
-      slime: { type: Boolean, default: false },
-    },
-    quests: {
-      daily: {
-        date: { type: String, default: null },
-        objective: { type: String, default: null },
-        completed: { type: Boolean, default: false },
-        claimed: { type: Boolean, default: false },
-      },
-      weekly: {
-        week: { type: String, default: null },
-        objective: { type: String, default: null },
-        completed: { type: Boolean, default: false },
-        claimed: { type: Boolean, default: false },
-      },
-    },
-    gambling: {
-      slots: {
-        // Game Statistics
-        totalGames: { type: Number, default: 0 },
-        totalWins: { type: Number, default: 0 },
-        totalLosses: { type: Number, default: 0 },
-        winRate: { type: Number, default: 0 },
-        currentStreak: { type: Number, default: 0 }, // Positive for wins, negative for losses
-        bestWinStreak: { type: Number, default: 0 },
-        worstLossStreak: { type: Number, default: 0 },
-
-        // Financial Summary
-        totalWagered: { type: Number, default: 0 },
-        totalWon: { type: Number, default: 0 },
-        netProfit: { type: Number, default: 0 },
-        biggestWin: { type: Number, default: 0 },
-        biggestLoss: { type: Number, default: 0 },
-        averageBet: { type: Number, default: 0 },
-        averageWin: { type: Number, default: 0 },
-
-        // Records & Achievements
-        firstGame: { type: Date, default: null },
-        lastGame: { type: Date, default: null },
-        longestSession: { type: Number, default: 0 }, // Games in single session
-        highestBalance: { type: Number, default: 0 },
-        jackpotsHit: { type: Number, default: 0 }, // x10 wins
-
-        // Session tracking
-        sessionGames: { type: Number, default: 0 },
-        sessionStartTime: { type: Date, default: null },
-
-        // Multiplier statistics
-        x1Wins: { type: Number, default: 0 },
-        x2Wins: { type: Number, default: 0 },
-        x3Wins: { type: Number, default: 0 },
-        x4Wins: { type: Number, default: 0 },
-        x5Wins: { type: Number, default: 0 },
-        x10Wins: { type: Number, default: 0 },
-      },
-      blackjack: {
-        totalGames: { type: Number, default: 0 },
-        totalWins: { type: Number, default: 0 },
-        totalWagered: { type: Number, default: 0 },
-        totalWon: { type: Number, default: 0 },
-        bestHand: { type: String, default: null },
-      },
-      coinflip: {
-        totalGames: { type: Number, default: 0 },
-        totalWins: { type: Number, default: 0 },
-        totalWagered: { type: Number, default: 0 },
-        totalWon: { type: Number, default: 0 },
-        longestStreak: { type: Number, default: 0 },
-      },
     },
   },
   { timestamps: { createdAt: true, updatedAt: true } }
