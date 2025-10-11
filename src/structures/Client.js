@@ -17,7 +17,6 @@ const Abilities = require("../utils/Abilities");
 const globalConfig = require("../utils/Config");
 const { I18n } = require("@hammerhq/localization");
 const themeConfig = require("../config");
-const slashCommandConfig = require("../config/slashCommandConfig");
 
 // Emojis - Centralized in one object for easier management
 const emojis = require("../emojis");
@@ -105,20 +104,6 @@ module.exports = class PeachyClient extends Client {
     const commandsPath = path.join(__dirname, "../commands");
     const commandDirs = fs.readdirSync(commandsPath);
 
-    // Load configuration for slash command prioritization
-    const {
-      maxSlashCommands,
-      essentialCommands,
-      priorityCategories,
-      mediumPriorityCategories,
-      lowPriorityCategories,
-      excludedCommands,
-      customPriorities,
-    } = slashCommandConfig;
-
-    // Store commands for priority sorting
-    const commandsToRegister = [];
-
     for (const dir of commandDirs) {
       const commandFiles = fs
         .readdirSync(path.join(commandsPath, dir))
@@ -139,11 +124,6 @@ module.exports = class PeachyClient extends Client {
           }
 
           if (command.slashCommand) {
-            // Skip excluded commands
-            if (excludedCommands.includes(command.name.toLowerCase())) {
-              continue; // Skip this command entirely
-            }
-
             const data = {
               name: command.name,
               description: command.description.content,
@@ -159,43 +139,8 @@ module.exports = class PeachyClient extends Client {
                     ).toString()
                   : null,
             };
-
-            // Calculate priority score
-            let priority = 0;
-
-            // Custom priorities override everything
-            if (customPriorities[command.name.toLowerCase()]) {
-              priority = customPriorities[command.name.toLowerCase()];
-            } else {
-              // Essential commands get highest priority
-              if (essentialCommands.includes(command.name.toLowerCase())) {
-                priority += 1000;
-              }
-
-              // Category-based priorities
-              if (priorityCategories.includes(dir)) {
-                priority += 500;
-              } else if (
-                mediumPriorityCategories &&
-                mediumPriorityCategories.includes(dir)
-              ) {
-                priority += 250;
-              } else if (
-                lowPriorityCategories &&
-                lowPriorityCategories.includes(dir.toLowerCase())
-              ) {
-                priority += 50; // Very low priority
-              } else {
-                priority += 100; // Default priority
-              }
-            }
-
-            commandsToRegister.push({
-              data,
-              priority,
-              category: dir,
-              name: command.name,
-            });
+            this.body.push(data);
+            commandCounter++;
           }
         } catch (error) {
           this.logger.error(
@@ -206,31 +151,7 @@ module.exports = class PeachyClient extends Client {
       }
     }
 
-    // Sort by priority (highest first) and limit to maxSlashCommands
-    commandsToRegister.sort((a, b) => b.priority - a.priority);
-    const selectedCommands = commandsToRegister.slice(0, maxSlashCommands);
-
-    // Add selected commands to body
-    selectedCommands.forEach((cmd) => {
-      this.body.push(cmd.data);
-      commandCounter++;
-    });
-
-    this.logger.info(`Loaded ${this.commands.size} total commands.`);
-    this.logger.info(
-      `Selected ${commandCounter} commands for slash command registration (limit: ${maxSlashCommands}).`
-    );
-
-    // Log which commands were excluded if any
-    if (commandsToRegister.length > maxSlashCommands) {
-      const excluded = commandsToRegister.slice(maxSlashCommands);
-      this.logger.warn(
-        `${excluded.length} commands excluded from slash registration due to Discord's 100 command limit.`
-      );
-      this.logger.info(
-        `Excluded commands: ${excluded.map((c) => c.name).join(", ")}`
-      );
-    }
+    this.logger.info(`Loaded a total of ${commandCounter} commands.`);
 
     this.once("clientReady", async () => {
       const applicationCommands = globalConfig.production
@@ -244,120 +165,38 @@ module.exports = class PeachyClient extends Client {
           this.config.token ?? ""
         );
 
-        // Try to get existing commands and handle Entry Point commands properly
-        let existingCommands = [];
-        try {
-          existingCommands = await rest.get(applicationCommands);
-        } catch (error) {
-          this.logger.warn("Could not fetch existing commands:", error.message);
-        }
+        // Get existing commands to check for Entry Point commands
+        const existingCommands = await rest.get(applicationCommands);
 
-        // Find Entry Point commands that need to be preserved
-        const entryPointCommands = existingCommands.filter((cmd) => {
-          // Check for Entry Point command indicators
-          return (
-            cmd.integration_types_config ||
-            (cmd.contexts && cmd.contexts.length > 0) ||
-            cmd.integration_types
-          );
-        });
-
-        // Start with Entry Point commands to ensure they're preserved
-        let commandsToRegister = [];
-
-        // First, add all Entry Point commands (they must be preserved)
-        entryPointCommands.forEach((entryCmd) => {
-          commandsToRegister.push({
-            ...entryCmd,
-            // Ensure required fields are present and clean up the object
-            id: undefined, // Remove id to avoid conflicts
-            version: undefined, // Remove version
-            application_id: undefined, // Remove application_id
-            guild_id: undefined, // Remove guild_id
-            name: entryCmd.name,
-            description: entryCmd.description || "Entry Point Command",
-            type: entryCmd.type || 1,
-          });
-        });
-
-        // Calculate how many bot commands we can add
-        const remainingSlots = 100 - commandsToRegister.length;
-        const botCommandsToAdd = Math.min(this.body.length, remainingSlots);
-
-        // Add our bot commands (up to the remaining limit)
-        const selectedBotCommands = this.body.slice(0, botCommandsToAdd);
-        commandsToRegister = [...commandsToRegister, ...selectedBotCommands];
-
-        this.logger.info(
-          `Registering ${commandsToRegister.length} commands (${botCommandsToAdd} bot commands + ${entryPointCommands.length} entry point commands)`
+        // Filter out Entry Point commands from existing commands
+        const entryPointCommands = existingCommands.filter(
+          (cmd) => cmd.integration_types_config
         );
 
-        if (this.body.length > botCommandsToAdd) {
-          const excludedCount = this.body.length - botCommandsToAdd;
-          this.logger.warn(
-            `${excludedCount} bot commands excluded due to Entry Point commands taking ${entryPointCommands.length} slots.`
+        // Combine our commands with any Entry Point commands
+        const commandsToRegister = [...this.body];
+
+        // Add Entry Point commands if they exist and aren't already in our body
+        entryPointCommands.forEach((entryCmd) => {
+          const existsInBody = this.body.find(
+            (cmd) => cmd.name === entryCmd.name
           );
-        }
+          if (!existsInBody) {
+            commandsToRegister.push({
+              name: entryCmd.name,
+              description: entryCmd.description,
+              type: entryCmd.type,
+              options: entryCmd.options,
+              integration_types_config: entryCmd.integration_types_config,
+              contexts: entryCmd.contexts,
+            });
+          }
+        });
 
         await rest.put(applicationCommands, { body: commandsToRegister });
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
-        this.logger.error("Failed to register slash commands:", error);
-        // Fallback: Clear and re-register commands to handle Entry Point conflicts
-        try {
-          this.logger.info(
-            "Attempting fallback: clearing and re-registering commands..."
-          );
-          const rest = new REST({ version: "10" }).setToken(
-            this.config.token ?? ""
-          );
-
-          // First, try to clear all commands
-          this.logger.info("Clearing existing commands...");
-          await rest.put(applicationCommands, { body: [] });
-
-          // Wait a moment for the clear to process
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-
-          // Then register just our bot commands
-          this.logger.info(
-            `Re-registering ${this.body.length} bot commands...`
-          );
-          await rest.put(applicationCommands, { body: this.body });
-
-          this.logger.info("Fallback registration completed successfully");
-        } catch (fallbackError) {
-          this.logger.error(
-            "Fallback registration also failed:",
-            fallbackError
-          );
-
-          // Final fallback: register commands one by one
-          try {
-            this.logger.info("Attempting individual command registration...");
-            const rest = new REST({ version: "10" }).setToken(
-              this.config.token ?? ""
-            );
-
-            let successCount = 0;
-            for (const command of this.body) {
-              try {
-                await rest.post(applicationCommands, { body: command });
-                successCount++;
-              } catch (individualError) {
-                this.logger.warn(
-                  `Failed to register command ${command.name}:`,
-                  individualError.message
-                );
-              }
-            }
-            this.logger.info(
-              `Individual registration completed: ${successCount}/${this.body.length} commands registered`
-            );
-          } catch (finalError) {
-            this.logger.error("All registration methods failed:", finalError);
-          }
-        }
+        this.logger.error(error);
       }
     });
   }
