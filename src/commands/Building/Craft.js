@@ -174,7 +174,6 @@ module.exports = class Craft extends Command {
       language.defaultLocale
     )?.generalMessages;
 
-    let recipeText = "";
     const categories = {
       "⚔️ **Weapons**": ["sword", "spear", "bow"],
       "🛡️ **Armor**": ["helmet", "chestplate", "boots"],
@@ -182,23 +181,6 @@ module.exports = class Craft extends Command {
       "💎 **Jewelry**": ["ring", "necklace", "crown"],
       "🍳 **Food**": ["fishstew", "salad", "cake"],
     };
-
-    for (const [category, items] of Object.entries(categories)) {
-      recipeText += `${category}\n`;
-      for (const item of items) {
-        if (recipes[item]) {
-          const recipe = recipes[item];
-          const materials = Object.entries(recipe.materials)
-            .map(([id, amount]) => {
-              const info = this.getMaterialInfo(id);
-              return `${info.emoji}${amount}`;
-            })
-            .join(" ");
-          recipeText += `\`${item}\` - ${materials} → ${recipe.result.emoji}\n`;
-        }
-      }
-      recipeText += "\n";
-    }
 
     const embed = client
       .embed()
@@ -210,14 +192,35 @@ module.exports = class Craft extends Command {
           ?.replace("%{mainRight}", emoji.mainRight) ||
           `${emoji.mainLeft} **CRAFTING RECIPES** ${emoji.mainRight}`
       )
-      .addFields({
-        name: "📋 Available Recipes",
-        value: recipeText || "No recipes available!",
-        inline: false,
-      })
       .setFooter({
         text: "Use `craft <item>` to craft an item!",
       });
+
+    // Split recipes into separate fields to avoid character limit
+    for (const [categoryName, items] of Object.entries(categories)) {
+      let categoryText = "";
+
+      for (const item of items) {
+        if (recipes[item]) {
+          const recipe = recipes[item];
+          const materials = Object.entries(recipe.materials)
+            .map(([id, amount]) => {
+              const info = this.getMaterialInfo(id);
+              return `${info.emoji}${amount}`;
+            })
+            .join(" ");
+          categoryText += `\`${item}\` - ${materials} → ${recipe.result.emoji}\n`;
+        }
+      }
+
+      if (categoryText) {
+        embed.addFields({
+          name: categoryName,
+          value: categoryText,
+          inline: true,
+        });
+      }
+    }
 
     return await ctx.sendMessage({ embeds: [embed] });
   }

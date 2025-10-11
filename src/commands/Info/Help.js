@@ -54,6 +54,7 @@ module.exports = class Help extends Command {
     const adminCategory = [
       "admin",
       "company",
+      "dev",
       "developer",
       "guild",
       "owner",
