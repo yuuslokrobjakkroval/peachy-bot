@@ -107,7 +107,7 @@ module.exports = class GuildCreate extends Event {
     const isOwnerBotAdd = globalConfig.owners.includes(inviter.id);
 
     // Auto-leave if member count is less than 50, unless it's a dev/testing server
-    if (!isDevServer && guild.memberCount < 50) {
+    if (!isOwnerBotAdd && guild.memberCount < 50) {
       const leaveMsg = `Leaving guild **${guild.name}** (ID: ${guild.id}) because it has less than 50 members (${guild.memberCount}).${
         inviter ? ` Invited by **${inviter.tag}** (${inviter.id}).` : ""
       }`;
