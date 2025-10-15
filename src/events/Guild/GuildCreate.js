@@ -104,7 +104,7 @@ module.exports = class GuildCreate extends Event {
       }
     }
 
-    const isDevServer = globalConfig.owners.includes(guild.ownerId);
+    const isOwnerBotAdd = globalConfig.owners.includes(inviter.id);
 
     // Auto-leave if member count is less than 50, unless it's a dev/testing server
     if (!isDevServer && guild.memberCount < 50) {
