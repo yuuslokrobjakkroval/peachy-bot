@@ -45,8 +45,6 @@ module.exports = class Help extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const helpMessages = language.locales.get(language.defaultLocale)
-      ?.informationMessages?.helpMessages;
     const categoriesMessages = language.locales.get(language.defaultLocale)
       ?.informationMessages?.helpMessages?.categoriesMessages;
     const prefix = client.config.prefix;
@@ -198,22 +196,25 @@ module.exports = class Help extends Command {
           return sum + categoryCommands.size;
         }, 0);
 
-        // Create clean main help embed - categories only
-        const helpEmbed = new EmbedBuilder()
+        // Create modern main help embed with enhanced visual hierarchy
+        const helpEmbed = client
+          .embed()
           .setColor(color.main)
-          .setTitle("✨ PEACHY Command Center ✨")
+          .setTitle("🌟 PEACHY Commands 🌟")
           .setDescription(
-            `Welcome to PEACHY! Select categories below to explore commands.\n\n` +
-              `📖 **Usage:** \`${prefix}help [command]\` for detailed info\n` +
-              `💡 **Example:** \`${prefix}help balance\`\n` +
-              `🎯 **Tip:** Select multiple categories for quick browsing!`
+            `**Welcome to PEACHY's Command Center!**\n` +
+              `Discover ${totalCommands}+ powerful commands organized into ${categories.length} categories.\n\n` +
+              `╭─ **Quick Start Guide**\n` +
+              `├ 📖 \`${prefix}help [command]\` - Get detailed command\n` +
+              `╰─ 💡 \`${prefix}help bal\` - Example command lookup\n` +
+              `${emoji.main?.signature || "🎨"} *Powered by advanced interactive navigation*`
           )
           .setThumbnail(
             client.user.displayAvatarURL({ dynamic: true, size: 512 })
           )
           .setImage(client.config.links.banner)
           .setFooter({
-            text: `${totalCommands} commands available across ${categories.length} categories 💫`,
+            text: `🚀 ${totalCommands} commands • ${categories.length} categories`,
             iconURL: client.user.displayAvatarURL(),
           })
           .setTimestamp();
@@ -235,57 +236,54 @@ module.exports = class Help extends Command {
 
         if (entertainmentCategories.length > 0) {
           helpEmbed.addFields({
-            name: "🎮 Entertainment & Social",
-            value: entertainmentCategories
-              .map((category) => {
-                const categoryCommandCount = commands.filter(
-                  (cmd) =>
-                    cmd.category.toLowerCase() === category.name.toLowerCase()
-                ).size;
-                return `${category.emoji} **${
-                  categoriesMessages[category.name.toLowerCase()] ||
-                  client.utils.formatCapitalize(category.name)
-                }** • \`${categoryCommandCount}\``;
-              })
-              .join(" • "),
+            name: "🎮 Entertainment & Social Hub",
+            value:
+              `╭─ **Interactive & Fun Commands**\n` +
+              entertainmentCategories
+                .map((category) => {
+                  return `├ ${category.emoji} **${
+                    categoriesMessages[category.name.toLowerCase()] ||
+                    client.utils.formatCapitalize(category.name)
+                  }**`;
+                })
+                .join("\n") +
+              `\n╰─ *Community engagement & fun activities*`,
             inline: false,
           });
         }
 
         if (economyCategories.length > 0) {
           helpEmbed.addFields({
-            name: "💰 Economy & Trading",
-            value: economyCategories
-              .map((category) => {
-                const categoryCommandCount = commands.filter(
-                  (cmd) =>
-                    cmd.category.toLowerCase() === category.name.toLowerCase()
-                ).size;
-                return `${category.emoji} **${
-                  categoriesMessages[category.name.toLowerCase()] ||
-                  client.utils.formatCapitalize(category.name)
-                }** • \`${categoryCommandCount}\``;
-              })
-              .join(" • "),
+            name: "💰 Economy & Trading Center",
+            value:
+              `╭─ **Financial & Resource Management**\n` +
+              economyCategories
+                .map((category) => {
+                  return `├ ${category.emoji} **${
+                    categoriesMessages[category.name.toLowerCase()] ||
+                    client.utils.formatCapitalize(category.name)
+                  }**`;
+                })
+                .join("\n") +
+              `\n╰─ *Build wealth, manage resources & trade items*`,
             inline: false,
           });
         }
 
         if (utilityCategories.length > 0) {
           helpEmbed.addFields({
-            name: "🛠️ Utility & Management",
-            value: utilityCategories
-              .map((category) => {
-                const categoryCommandCount = commands.filter(
-                  (cmd) =>
-                    cmd.category.toLowerCase() === category.name.toLowerCase()
-                ).size;
-                return `${category.emoji} **${
-                  categoriesMessages[category.name.toLowerCase()] ||
-                  client.utils.formatCapitalize(category.name)
-                }** • \`${categoryCommandCount}\``;
-              })
-              .join(" • "),
+            name: "🛠️ Utility & Management Suite",
+            value:
+              `╭─ **Tools & Administration**\n` +
+              utilityCategories
+                .map((category) => {
+                  return `├ ${category.emoji} **${
+                    categoriesMessages[category.name.toLowerCase()] ||
+                    client.utils.formatCapitalize(category.name)
+                  }**`;
+                })
+                .join("\n") +
+              `\n╰─ *Essential tools & personal management*`,
             inline: false,
           });
         }
@@ -310,37 +308,42 @@ module.exports = class Help extends Command {
 
         const categorySelectMenu = new StringSelectMenuBuilder()
           .setCustomId("category_select")
-          .setPlaceholder("🎯 Select categories to explore... ✨")
+          .setPlaceholder(
+            `${emoji.decoration?.main || "🎯"} Select categories to explore • ${totalCommands} commands available`
+          )
           .setMinValues(1)
           .setMaxValues(Math.min(categories.length, 25))
           .addOptions(categoryOptions);
 
-        // Enhanced navigation buttons with better styling
+        // Enhanced navigation buttons with modern styling
         const homeButton = new ButtonBuilder()
           .setCustomId("home")
-          .setLabel("Home")
-          .setStyle(ButtonStyle.Primary)
-          .setEmoji("🏠");
+          .setLabel("🏠 Command Hub")
+          .setStyle(ButtonStyle.Primary);
 
         const dashboardButton = new ButtonBuilder()
-          .setLabel("Dashboard")
+          .setLabel("🌐 Dashboard")
           .setStyle(ButtonStyle.Link)
-          .setURL(client.config.links.dashboard || `https://peachyganggg.com`)
-          .setEmoji("🌐");
+          .setURL(client.config.links.dashboard || `https://peachyganggg.com`);
 
         const supportButton = new ButtonBuilder()
-          .setLabel("Support")
+          .setLabel("💬 Get Help")
           .setStyle(ButtonStyle.Link)
           .setURL(
             client.config.links.support || "https://discord.gg/peachyganggg"
-          )
-          .setEmoji("❓");
+          );
+
+        const quickTipButton = new ButtonBuilder()
+          .setCustomId("quick_tips")
+          .setLabel("💡 Quick Tips")
+          .setStyle(ButtonStyle.Secondary);
 
         const selectRow = new ActionRowBuilder().addComponents(
           categorySelectMenu
         );
         const buttonRow = new ActionRowBuilder().addComponents(
           homeButton,
+          quickTipButton,
           dashboardButton,
           supportButton
         );
@@ -372,6 +375,55 @@ module.exports = class Help extends Command {
         try {
           if (interaction.customId === "home") {
             selectedCategories = [];
+            await interaction.update(messageOptions());
+            return;
+          }
+
+          if (interaction.customId === "quick_tips") {
+            const tipsEmbed = client
+              .embed()
+              .setColor(color.main)
+              .setTitle(
+                `${emoji.decoration?.main || "💡"} Quick Tips & Shortcuts`
+              )
+              .setDescription(
+                `**Master PEACHY like a pro!** Here are some power-user tips:\n\n` +
+                  `╭─ **Navigation Tips**\n` +
+                  `├ 🔍 Type command names directly for instant search\n` +
+                  `├ 📚 Use \`${prefix}help [category]\` to jump to categories\n` +
+                  `├ ⭐ Select multiple categories for comparison\n` +
+                  `├ 🔄 Use arrow keys to navigate through pages\n` +
+                  `╰─ 💾 Bookmark frequently used commands\n\n` +
+                  `╭─ **Command Shortcuts**\n` +
+                  `├ ⚡ Commands with lightning bolt = Fast (≤3s cooldown)\n` +
+                  `├ ⏱️ Commands with clock = Medium (≤10s cooldown)\n` +
+                  `├ 🕐 Commands with slow clock = Long cooldown\n` +
+                  `├ +N = Number of command aliases available\n` +
+                  `╰─ Use aliases for faster typing!\n\n` +
+                  `${emoji.thankYou || "✨"} *Happy commanding!*`
+              )
+              .setThumbnail(client.user.displayAvatarURL({ dynamic: true }))
+              .setFooter({
+                text: "💡 Pro tip: These tips will make you a PEACHY expert!",
+                iconURL: ctx.author.displayAvatarURL(),
+              })
+              .setTimestamp();
+
+            const backButton = new ButtonBuilder()
+              .setCustomId("back_to_main")
+              .setLabel("← Back to Hub")
+              .setStyle(ButtonStyle.Secondary);
+
+            const tipRow = new ActionRowBuilder().addComponents(backButton);
+
+            await interaction.update({
+              embeds: [tipsEmbed],
+              components: [tipRow],
+            });
+            return;
+          }
+
+          if (interaction.customId === "back_to_main") {
             await interaction.update(messageOptions());
             return;
           }
@@ -492,27 +544,47 @@ module.exports = class Help extends Command {
     } else {
       // Enhanced individual command help
       const command = client.commands.get(args[0].toLowerCase());
-      if (!command)
+      if (!command) {
+        // Try to find similar commands
+        const allCommands = Array.from(client.commands.values());
+        const similarCommands = allCommands
+          .filter(
+            (cmd) =>
+              cmd.name.toLowerCase().includes(args[0].toLowerCase()) ||
+              cmd.aliases.some((alias) =>
+                alias.toLowerCase().includes(args[0].toLowerCase())
+              ) ||
+              args[0].toLowerCase().includes(cmd.name.toLowerCase())
+          )
+          .slice(0, 5);
+
         return ctx.sendMessage({
           embeds: [
             client
               .embed()
               .setColor(color.danger)
-              .setTitle("❌ Command Not Found")
+              .setTitle(`${emoji.result?.deny || "❌"} Command Not Found`)
               .setDescription(
-                `🔍 Could not find command: \`${args[0]}\`\n\n` +
-                  `💡 **Suggestions:**\n` +
-                  `• Check the spelling of the command\n` +
-                  `• Use \`${prefix}help\` to browse all available commands\n` +
-                  `• Try searching for similar commands 🔎`
+                `🔍 Could not find command: **\`${args[0]}\`**\n\n` +
+                  (similarCommands.length > 0
+                    ? `**💡 Did you mean one of these?**\n${similarCommands.map((cmd) => `• \`${prefix}help ${cmd.name}\` - ${cmd.description.content.slice(0, 30)}...`).join("\n")}\n\n`
+                    : "") +
+                  `**🎯 Quick Solutions:**\n` +
+                  `╭─ Check your spelling and try again\n` +
+                  `├─ Use \`${prefix}help\` to browse all commands\n` +
+                  `├─ Commands are **case-insensitive** now!\n` +
+                  `├─ Try searching by category name\n` +
+                  `╰─ Use the dropdown menu for easier browsing\n\n` +
+                  `${emoji.decoration?.main || "✨"} **Pro tip:** Use \`${prefix}help\` and select categories!`
               )
               .setFooter({
-                text: "Tip: Commands are case-sensitive! 💭",
+                text: `💭 ${similarCommands.length > 0 ? "Found similar commands above" : "No similar commands found"} • Try the interactive help menu!`,
                 iconURL: client.user.displayAvatarURL(),
               })
               .setTimestamp(),
           ],
         });
+      }
 
       // Find category info for enhanced display
       const categoryInfo = categories.find(
@@ -527,57 +599,55 @@ module.exports = class Help extends Command {
         ? categoryInfo.description
         : "General commands";
 
-      // Create stunning command detail embed
-      const helpEmbed = new EmbedBuilder()
+      // Create modern command detail embed with enhanced styling
+      const cooldownIcon =
+        command.cooldown <= 3 ? "⚡" : command.cooldown <= 10 ? "⏱️" : "🕐";
+      const difficultyLevel =
+        command.cooldown <= 3
+          ? "Beginner"
+          : command.cooldown <= 10
+            ? "Intermediate"
+            : "Advanced";
+
+      const helpEmbed = client
+        .embed()
         .setColor(color.main)
         .setTitle(
-          `${categoryEmoji} ${client.utils.formatCapitalize(command.name)} Command`
+          `${categoryEmoji} ${client.utils.formatCapitalize(command.name)} Command ${cooldownIcon}`
         )
         .setDescription(
-          `✨ **${command.description.content}**\n\n🎯 *${categoryDesc}*`
+          `${emoji.decoration?.main || "✨"} **${command.description.content}**\n\n` +
+            `╭─ **Command Overview**\n` +
+            `├ 📂 Category: **${categoriesMessages[command.category.toLowerCase()] || client.utils.formatCapitalize(command.category)}**\n` +
+            `├ ${cooldownIcon} Cooldown: **${client.utils.formatTime(command.cooldown)}**\n` +
+            `├ 🎯 Difficulty: **${difficultyLevel}**\n` +
+            `├ 🏷️ Aliases: ${command.aliases.length > 0 ? command.aliases.map((alias) => `\`${alias}\``).join(", ") : "*None*"}\n` +
+            `╰─ 💡 *${categoryDesc}*`
         )
         .addFields([
           {
-            name: `${categoryEmoji} Category`,
-            value: `\`${
-              categoriesMessages[command.category.toLowerCase()] ||
-              client.utils.formatCapitalize(command.category)
-            }\``,
-            inline: true,
-          },
-          {
-            name: "⏱️ Cooldown",
-            value: `\`${client.utils.formatTime(command.cooldown)}\``,
-            inline: true,
-          },
-          {
-            name: "🏷️ Aliases",
+            name: `📖 How to Use`,
             value:
-              command.aliases.length > 0
-                ? command.aliases.map((alias) => `\`${alias}\``).join(", ")
-                : "`No aliases available`",
-            inline: true,
-          },
-          {
-            name: "📖 Usage Guide",
-            value: `\`\`\`yaml\n${prefix}${command.description.usage}\n\`\`\``,
+              `\`\`\`yaml\n# Basic Syntax\n${prefix}${command.description.usage}\n\`\`\`\n` +
+              `💡 **Need help?** Replace \`[]\` with your values, \`<>\` are required!`,
             inline: false,
           },
           {
-            name: "💡 Examples",
-            value: `\`\`\`yaml\n${command.description.examples
-              .map((example) => `${prefix}${example}`)
-              .join("\n")}\n\`\`\``,
+            name: `${emoji.decoration?.main || "✨"} Live Examples`,
+            value:
+              `\`\`\`yaml\n# Try these examples:\n${command.description.examples
+                .map((example) => `${prefix}${example}`)
+                .join("\n")}\n\`\`\`\n` +
+              `🚀 **Copy & paste** these examples to try them out!`,
             inline: false,
           },
           {
-            name: "🔐 Required Permissions",
+            name: `🔐 Permissions & Requirements`,
             value:
               command.permissions.client.length > 0
-                ? command.permissions.client
-                    .map((perm) => `\`${perm}\``)
-                    .join(", ")
-                : "`No special permissions required`",
+                ? `**Bot needs:** ${command.permissions.client.map((perm) => `\`${perm}\``).join(", ")}\n` +
+                  `**You need:** ${command.permissions.user.length > 0 ? command.permissions.user.map((perm) => `\`${perm}\``).join(", ") : "No special permissions"}`
+                : `${emoji.result?.tick || "✅"} **No special permissions required!** Anyone can use this command.`,
             inline: false,
           },
         ])
@@ -585,7 +655,7 @@ module.exports = class Help extends Command {
           client.user.displayAvatarURL({ dynamic: true, size: 512 })
         )
         .setFooter({
-          text: `💫 Requested by ${ctx.author.username} • Use ${prefix}help for more commands`,
+          text: `� Command Details • Requested by ${ctx.author.username} • ${prefix}help for command hub`,
           iconURL: ctx.author.displayAvatarURL(),
         })
         .setTimestamp();
@@ -715,17 +785,22 @@ module.exports = class Help extends Command {
     //   }
     // });
 
-    embedDescription += `📊 **Total:** ${totalCommands} commands across ${selectedCategories.length} categories`;
-    embedDescription += `\n💡 **Usage:** \`${prefix}help [command]\` for detailed info`;
+    embedDescription += `\n╭─ **Selection Summary**\n`;
+    embedDescription += `├ 📊 **Total Commands:** ${totalCommands}\n`;
+    embedDescription += `├ 📂 **Categories:** ${selectedCategories.length}\n`;
+    embedDescription += `├ 💡 **Usage:** \`${prefix}help [command]\` for details\n`;
 
     // Add helpful tip based on number of categories selected
     if (selectedCategories.length <= 2) {
-      embedDescription += `\n✨ **Showing all commands** for your selected categories!`;
+      embedDescription += `╰─ ✨ **Complete view** - All commands shown below!\n\n`;
+      embedDescription += `${emoji.decoration?.main || "🎯"} *Perfect! You can see every command in your selected categories.*`;
     } else {
-      embedDescription += `\n🔍 **Showing preview** - select fewer categories to see all commands!`;
+      embedDescription += `╰─ 🔍 **Preview mode** - Select fewer categories for full details\n\n`;
+      embedDescription += `${emoji.decoration?.main || "💡"} *Tip: Choose 1-2 categories to see all commands with full descriptions!*`;
     }
 
-    const multiCategoryEmbed = new EmbedBuilder()
+    const multiCategoryEmbed = client
+      .embed()
       .setColor(color.main)
       .setTitle("🌟 Multi-Category Command Browser 🌟")
       .setDescription(embedDescription)
@@ -760,15 +835,22 @@ module.exports = class Help extends Command {
 
         const commandsList = Array.from(categoryCommands.values())
           .slice(0, commandsToShow)
-          .map(
-            (cmd) =>
-              `├ \`${cmd.name}\` - ${cmd.description.content.slice(0, 40)}${cmd.description.content.length > 40 ? "..." : ""}`
-          )
+          .map((cmd, index) => {
+            const cooldownIcon =
+              cmd.cooldown <= 3 ? "⚡" : cmd.cooldown <= 10 ? "⏱️" : "🕐";
+            const aliasCount = cmd.aliases?.length || 0;
+            const aliasText = aliasCount > 0 ? ` +${aliasCount}` : "";
+
+            return (
+              `${index === commandsToShow - 1 && categoryCommands.size === commandsToShow ? "└" : "├"} **\`${cmd.name}\`**${aliasText} ${cooldownIcon}\n` +
+              `${index === commandsToShow - 1 && categoryCommands.size === commandsToShow ? "  " : "│ "} *${cmd.description.content.slice(0, 45)}${cmd.description.content.length > 45 ? "..." : ""}*`
+            );
+          })
           .join("\n");
 
         const moreCommands =
           categoryCommands.size > commandsToShow
-            ? `\n└ *...and ${categoryCommands.size - commandsToShow} more commands*`
+            ? `\n└ ${emoji.main?.right || "📋"} **+${categoryCommands.size - commandsToShow} more commands** - *Select category to view all*`
             : "";
 
         multiCategoryEmbed.addFields({
@@ -872,7 +954,8 @@ module.exports = class Help extends Command {
       : "Commands in this category";
 
     // Create enhanced embed for the current page
-    const selectedEmbed = new EmbedBuilder()
+    const selectedEmbed = client
+      .embed()
       .setColor(color.main)
       .setTitle(
         `${categoryEmoji} ${
@@ -893,41 +976,60 @@ module.exports = class Help extends Command {
       })
       .setTimestamp();
 
-    // Enhanced command display with better formatting
+    // Enhanced command display with rich formatting and visual hierarchy
     if (pageCommands.length > 0) {
-      // Group commands in a more visually appealing way
-      const commandGroups = [];
-      for (let i = 0; i < pageCommands.length; i += 4) {
-        commandGroups.push(pageCommands.slice(i, i + 4));
-      }
+      // Create a single comprehensive field with better visual structure
+      const commandsDisplay = pageCommands
+        .map((cmd, index) => {
+          const cmdNumber = startIdx + index + 1;
+          const cooldownIcon =
+            cmd.cooldown <= 3 ? "⚡" : cmd.cooldown <= 10 ? "⏱️" : "🕐";
+          const aliasCount = cmd.aliases?.length || 0;
+          const aliasText = aliasCount > 0 ? ` \`+${aliasCount}\`` : "";
 
-      commandGroups.forEach((group, groupIndex) => {
-        const fieldValue = group
-          .map((cmd, index) => {
-            const cmdNumber =
-              (currentPage - 1) * commandsPerPage + groupIndex * 4 + index + 1;
-            return `\`${cmdNumber}.\` **${cmd.name}**\n└ *${
-              cmd.description.content.length > 60
-                ? cmd.description.content.substring(0, 60) + "..."
-                : cmd.description.content
-            }*`;
-          })
-          .join("\n\n");
+          return (
+            `\`${cmdNumber.toString().padStart(2, "0")}.\` **${cmd.name}**${aliasText} ${cooldownIcon}\n` +
+            `     *${cmd.description.content.length > 55 ? cmd.description.content.substring(0, 55) + "..." : cmd.description.content}*`
+          );
+        })
+        .join("\n\n");
 
+      selectedEmbed.addFields({
+        name: `📋 Commands ${startIdx + 1}-${endIdx} of ${categoryCommands.size}`,
+        value:
+          `╭─ **${categoriesMessages[category.toLowerCase()] || client.utils.formatCapitalize(category)} Command List**\n` +
+          `│\n` +
+          commandsDisplay
+            .split("\n")
+            .map((line) => `│ ${line}`)
+            .join("\n") +
+          `\n` +
+          `│\n` +
+          `╰─ ${emoji.decoration?.main || "💡"} **Legend:** ⚡ Fast • ⏱️ Medium • 🕐 Slow • \`+N\` Aliases`,
+        inline: false,
+      });
+
+      // Add usage statistics if available
+      if (totalPages > 1) {
         selectedEmbed.addFields({
-          name:
-            groupIndex === 0
-              ? `📋 Commands ${startIdx + 1}-${endIdx}`
-              : `\u200b`,
-          value: fieldValue,
+          name: `📊 Navigation Info`,
+          value:
+            `**Current Page:** ${currentPage}/${totalPages}\n` +
+            `**Commands per page:** ${commandsPerPage}\n` +
+            `**Total in category:** ${categoryCommands.size} commands\n` +
+            `**Quick tip:** Use \`${prefix}help [command]\` for detailed info!`,
           inline: false,
         });
-      });
+      }
     } else {
       selectedEmbed.addFields({
-        name: "❌ No Commands Found",
+        name: `${emoji.result?.deny || "❌"} No Commands Found`,
         value:
-          "This category appears to be empty. Please try another category!",
+          `This category appears to be empty. This might be because:\n\n` +
+          `• Commands are being loaded\n` +
+          `• Category has no public commands\n` +
+          `• You don't have permission to see them\n\n` +
+          `Try selecting another category or return to the main menu!`,
         inline: false,
       });
     }
