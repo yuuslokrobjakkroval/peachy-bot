@@ -4,7 +4,6 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder,
 } = require("discord.js");
 const globalEmoji = require("../../utils/Emoji");
 
@@ -200,7 +199,7 @@ module.exports = class Help extends Command {
         const helpEmbed = client
           .embed()
           .setColor(color.main)
-          .setTitle("🌟 PEACHY Commands 🌟")
+          .setTitle("🌟 PEACHY 🌟")
           .setDescription(
             `**Welcome to PEACHY's Command Center!**\n` +
               `Discover ${totalCommands}+ powerful commands organized into ${categories.length} categories.\n\n` +
