@@ -1,4 +1,3 @@
-const Users = require("../schemas/user");
 const Chance = require("chance").Chance();
 const ImportantItems = require("../assets/inventory/ImportantItems");
 
@@ -124,7 +123,7 @@ class ResourceManager {
           (item) =>
             `${item.emoji} **+${
               item.quantity
-            }** ${this.client.utils.formatCapitalize(item.name)}`
+            }** ${this.client.utils.formatCapitalize(item.name || item.id)}`
         )
         .join("\n") || `No ${resourceType.toLowerCase()}s found!`;
 
@@ -291,7 +290,13 @@ class ResourceManager {
     const quantity =
       rarity === "legendary" ? 1 : Math.floor(Math.random() * 3) + 1;
 
-    return { id: item.id, emoji: item.emoji, quantity, price: item.price };
+    return {
+      id: item.id,
+      name: item.name,
+      emoji: item.emoji,
+      quantity,
+      price: item.price,
+    };
   }
 
   aggregateItems(items) {
