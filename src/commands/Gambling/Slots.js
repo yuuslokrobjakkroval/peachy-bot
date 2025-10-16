@@ -128,10 +128,10 @@ module.exports = class Slots extends Command {
 
       // Add this before the win/lose logic
       const luckyChannel = [
-        "1407290922181591061",
-        "1370318529706065961",
-        "1370318538161782826",
-        "1376910445453250660",
+        "1428529400579883122",
+        "1370318526199627808",
+        "1370318521401213008",
+        "1370318522907099187",
       ];
       const isLuckyChannel = luckyChannel.includes(ctx.channel?.id);
 
@@ -171,7 +171,7 @@ module.exports = class Slots extends Command {
         }
       } else {
         // 58% winrate for luckyChannel, 55% for normal
-        const winRate = isLuckyChannel ? 50 : 48;
+        const winRate = isLuckyChannel ? 58 : 55;
         if (rand <= Math.floor(winRate * 0.4)) {
           // 40% of winRate for x1
           win = baseCoins;
