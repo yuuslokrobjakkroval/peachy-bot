@@ -1,147 +1,194 @@
-# PEACHY BOT
-
-<p align="center">
-  <a href="https://github.com/yuuslokrobjakkroval"><img src="./public/images/banner/main.gif" height="220" alt="Peachy Bot Banner"></a>
-</p>
+<h1 align="center">
+  <a href="https://github.com/yuuslokrobjakkroval"><img src="./public/images/banner/main.gif" height="380" alt="Peachy Bot Banner"></a>
+  <br />
+  <span style="color:#F582AE;font-size:2.5rem;">PEACHY BOT</span>
+</h1>
 
 <p align="center">
   <img src="https://img.shields.io/github/stars/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="GitHub stars">
-  <img src="https://img.shields.io/github/license/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/license/yuuslokrobjakkroval/peachy-bot/blob/master/LICENSE?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/github/issues/yuuslokrobjakkroval/peachy-bot/issues?style=for-the-badge" alt="Issues">
   <img src="https://img.shields.io/discord/1369956599720054847?label=Discord&logo=discord&style=for-the-badge" alt="Discord">
 </p>
 
-Peachy Bot is a powerful, feature-rich Discord bot for server management, fun, games, economy, moderation, and more. Built with Discord.js v14, it includes a modern dashboard and a wide variety of commands and utilities to help run your server.
+<p align="center"><b>Peachy Bot</b> is a powerful, feature-rich Discord bot for server management, fun, games, economy, moderation, and more. Built with Discord.js v14, it offers a modern dashboard, hybrid command handling, and a highly customizable experience for your community.</p>
 
-- Key systems: Actions, Bank, Rank, Economy, Inventory, Fun, Games, Gambling, Giveaways, Profile, Social, Utility, Information, and more.
+<p align="center">Actions, Bank, Rank, Economy, Inventory, Fun, Games, Gambling, Giveaways, Profile, Social, Utility, Information, and More...</p>
 
-Contents
-- Resource Links
-- Prerequisites
-- Getting Started
-- Unique Features & Highlights
-- Features
-- Contributing
-- Support & Security
-- License
+<p align="center">
+  <a href="#-resource-links">Resource Links</a>
+  •
+  <a href="#-prerequisites">Prerequisites</a>
+  •
+  <a href="#-getting-started">Getting Started</a>
+  •
+  <a href="#-unique-features">Unique Features</a>
+  •
+  <a href="#--features--">Features</a>
+  •
+  <a href="#--contributing--">Contributing</a>
+  •
+  <a href="#--support-server--">Support</a>
+</p>
 
----
+<br>
 
 ## 🔗 Resource Links
 
-- Peachy Dashboard: https://peachy-dashboard.vercel.app
-- Invite Website: https://peachy-website.vercel.app/
-- Demo Bot: https://discord.com/api/oauth2/authorize?client_id=1271693788548436008&permissions=8&integration_type=0&scope=bot+applications.commands
-
----
+- 📂 Peachy Dashboard: [Visit Here](https://peachy-dashboard.vercel.app)
+- 🚀 Invite Website: [Visit Here](https://peachy-website.vercel.app/)
+- 🤖 Demo Bot: [Invite Here](https://discord.com/api/oauth2/authorize?client_id=1271693788548436008&permissions=8&integration_type=0&scope=bot+applications.commands)
 
 ## 📦 Prerequisites
 
-- Git: https://git-scm.com/downloads
-- Node.js: v18.17.1 or higher — https://nodejs.org/
-- MongoDB: v4.4.0 or higher — https://www.mongodb.com/try/download/community
-
----
+- [Git](https://git-scm.com/downloads)
+- ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) [v18.17.1 or higher](https://nodejs.org/en/download/)
+- ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white) [v4.4.0 or higher](https://www.mongodb.com/try/download/community)
 
 ## 🚀 Getting Started
 
-1. Clone the repo and install dependencies:
+- Open the terminal and run the following commands
 
-```bash
+```
 git clone https://github.com/yuuslokrobjakkroval/peachy-bot.git
 cd peachy-bot
 npm install
 ```
 
-2. Configure environment:
-- Copy `.env.example` to `.env` and fill in the required values (bot token, MongoDB URI, etc.).
-- Optionally edit `util/Config.js` for global configuration and `config.js` for theme/color configuration.
+- Wait for all the dependencies to be installed
+- Rename `.env.example` to `.env` and fill the values
+- Optionally edit `util/Config.js for Global Config` and `config.js for config color base on theme`
+- Type `npm run start` to start the bot
 
-3. Start the bot:
+If you need any additional help, make sure to join our support server [here](https://discord.gg/BJT4h55hbg)
 
-```bash
-npm run start
-```
-
-If you need help, join our support server: https://discord.gg/BJT4h55hbg
-
----
+<br>
 
 ## 🔥 Unique Features
 
-- Built on Discord.js v14
-- Hybrid command handling (Slash commands + legacy/prefix commands)
-- Highly configurable and modular
-- Dashboard for server management and settings
+- Developed Discord.js v14
+- Hybrid Command Handling (Slash and Normal Commands)
+- Highly Configurable
+- User-friendly and Easy to Use
 
----
+<h1 align="center"> ✨ Features ✨ </h1>
 
-## ✨ Features (Highlights)
+### 📡 **_*Advanced Dashboard*_**
 
-### Advanced Dashboard
-- Manage server settings per-guild
-- User-friendly controls for configuration
+- Manage your servers and make your server-specific settings!
+- Make custom adjustments easy!
 
-### Powerful Moderation
-- Moderation commands: announce, ban, unban, timeout, blacklist, etc.
-- Multi-function admin commands: addmoney, removemoney, additem, removeitem
+### 🛑 **_*Powerful Moderation:*_**
 
-### Information Gathering
-- Advanced user and server information commands (user, channel, role details)
+- **_*Moderation Commands.*_** <br /> _Commands:_ `announce`, `ban`, `unban`, `timeout`, `blacklist`, ...
+- **_*Multi-Function Commands.*_** <br /> _Commands:_ `addmoney`, `removemoney`, `additem`, `removeitem`, ...
 
-### Giveaways
-- Easy to use, role-specific, customizable, and unlimited giveaways
+[//]: # "### 🤖 **Auto Moderation:**"
+[//]: #
+[//]: # "- **Anti system** <br /> _Commands:_ `anti ghostping`, `anti spam`, `anti massmention`, ..."
+[//]: # "- **Auto Delete system** <br /> _Commands:_ `autodelete attachments`, `autodelete invites`, `autodelete links`, `autodelete maxlines`, ..."
+[//]: # "- **AutoMod system** <br /> _Commands:_ `automod status`, `automod strikes`, `automod action`, `automod debug`, `automod whitelist`, ..."
+[//]: # "### ⚙️ **Admin Configuration:**"
+[//]: #
+[//]: # "- **Let a bot be the server's assistant!** <br /> _Commands:_ `autorole`, `farewell`, `welcome`, `counters`, `flag translation`, `reaction roles`, ..."
+[//]: # "- **Make custom settings for your own server.** <br /> _Commands:_ `setprefix`, `maxwarns`, `modlog`..."
 
-### Social & Fun
-- Social profile and network-related commands (facebook, instagram, tiktok, etc.)
-- Interaction commands: hug, kiss, slap, punch, and more
+### 💁 **_*Information Gathering:*_**
 
-### Stats & Economy
-- Leveling system, leaderboards, and customizable rank messages
-- Economy commands: peach, goma, daily, weekly, balance, deposit, withdraw, transfer
-- Shop system: shop, shopinfo, buy, sell, inventory, use
+- **_*User Context Interactions*_**
+- **_*Advanced Information*_** Get deep information about a user, channel, role, etc.
 
-### Utility
-- Utility commands: avatar, steal emoji, serverinfo, userinfo, language, help, invite, rules, privacypolicy, ping
+[//]: # "### 🎵 **Music:**"
+[//]: #
+[//]: # "- **LossLess Music!** Enjoy high quality lossless music"
+[//]: # "- **Multi-Platform** Play music from YouTube, SoundCloud, Spotify, and more"
+[//]: # "- **Filters** Apply filters to your music and spice it up"
 
-### Anime & Emotes
-- Reaction commands for anime fans and emotes: bite, hug, kiss, slap, cuddle, etc.
+### 🎉 **_*Giveaways:*_**
 
-### Invite Tracking
-- Track who invited new members, create invite ranks, and reward top inviters
+- **_*Easy to use*_** Create giveaways with ease
+- **_*Role Specific*_** giveaways
+- **_*Customizable*_** Customize the giveaway to your liking
+- **_*Limitless*_** Create unlimited giveaways
 
----
+### 🫂 **_*Social Content:*_**
 
-## 🤝 Contributing
+- **_*You Have A CV In Each Server-Specific Bot!*_** <br /> _Commands:_ `facebook`, `instagram`, `tik tok`,...
+- **_*Do You Love Someone?*_** <br /> _Commands:_ `fb name`, `fb link`, `ig name`, `ig link`, ...
 
-Thanks to everyone who enjoys and contributes to Peachy Bot.
+[//]: # "### 🎟 **Ticket System:**"
+[//]: #
+[//]: # "- **Make Supporting Members A Breeze With Tickets!** <br/> Highly customizable ticket system with staff roles"
+[//]: # "- **Multiple Categories** <br/> Don't Want The Tickets To Be Everywhere? Categorize them using select menus"
 
-- Fork the repository, create a feature branch, and submit a pull request.
-- Track planned features: https://github.com/yuuslokrobjakkroval/peachy-bot/projects
-- Make feature requests in our Discord support server.
+### 📉 **_*Stats Tracking:*_**
 
----
+- **_*Levelling*_** Track your server's activity with a level system
+- **_*Leaderboards*_** See who is the most active user in your server
+- **_*Customizable System*_** Configure the levelup message, rank cards to your liking
 
-## 💌 Support Server
+[//]: # "### 🙋‍♂️ **Suggestions:**"
+[//]: #
+[//]: # "- **Get Suggestions From Server Members To Help Your Server Become The Best!** <br /> _Commands:_ `suggest`, `suggestion`..."
+[//]: # "- **Accept Or Decline The Suggestions And Customize Them To The Max!** <br /> _Commands:_ `suggestion status`, `suggestion channel`, `suggestion appch`, `suggestion rejch`, `suggestion approve`, `suggestion staffadd`, `suggestion staffremove`..."
 
-Join the community and get help: https://discord.gg/peachygang
+### ⚒️ **_*Utility Commands:*_**
 
----
+- **_*Need Some Help With Something? Use The Utility Commands To Find Out The Answer To It*_** <br /> _Commands:_ `avatar`, `steal emoji`, `steal stickr`, `serverinfo`, `userinfo`, `language`...
+- **_*Need Help With Some More Stuff?*_** <br /> _Commands:_ `help`, `invite`, `rules`, `privacypolicy`, `ping`...
+
+### ⭐ **_*Anime Content:*_**
+
+- **_*Love Anime? Express You Love To Someone Using The React Commands*_** <br /> _Commands:_ `bite`, `hug`, `kiss`, `kill`, `slap`, `punch`...
+
+### 🪙 **_*Economy System:*_**
+
+- **_*Want To Become Richest? Use The Economy Commands!*_** <br /> _Commands:_ `peach`, `goma`, `daily`, `weekly`...
+- **_*Give People Money, Check Your Balance, Or Just Flex!*_** <br /> _Commands:_ `balance`, `deposit`, `withdraw`, `transfer`...
+- **_*Browse The Shop And Get Detailed Item Information!*_** <br /> _Commands:_ `shop`, `shopinfo`, `buy`, `sell`, `inventory`, `use`...
+
+### 😁 **_*Emotes Commands:*_**
+
+- **_*Have Some Feeling to show In Your Server!*_** <br /> _Commands:_ `angry`, `cry`, `cute`, `happy`, `roar`, `shy`, `scare`...
+
+[//]: # "- **Play Games And Enjoy Yourself** <br /> _Commands:_ `snake`, `together`, `flip coin`, `flip text`, ..."
+
+### 📨 **_*Invite Tracking:*_**
+
+- **_*Track who has been inviting people to your server!*_**
+- **_*Invite Ranks!*_** Inviter can get awesome rewards and be recognised
+- **_*Configure these settings and customize them to your liking!*_** <br /> _Commands:_ `inviters`...
+
+[//]: # "### 📷 **Image Manipulation:**"
+[//]: #
+[//]: # "- **Customize other peoples avatars** <br /> _Commands:_ `blur`, `greyscale`, `invert`, `pixelate`, `blur`, `sepia`, `sharpen`, `ad`, `affect`, `beautiful`, `color`..."
+[//]: # "- **Make some images by yourself or make some art** <br /> _Commands:_ `bobross`, `confusedstonk`, `delete`, `facepalm`, ` hitler`, `jail`, `jokeoverhead`, `karaba`, `mms`, `notstonk`, `poutine`, `rainbow`, `rip`, ` shit`, `stonk`, `tatoo`, `thomas`, `trash`, `wanted`, `wasted`, ..."
+
+<h1 align="center"> 🤝 Contributing 🤝 </h1>
+
+- Thanks to everyone have enjoy with our bot.
+- Feel free to [Fork](https://github.com/yuuslokrobjakkroval/peachy-bot/fork) this repository, create a feature branch and submit a pull request
+- You can keep track of all the planned features [here](https://github.com/yuuslokrobjakkroval/peachy-bot/projects) or make a request for one at our discord
+
+<h1 align="center"> 💌 Support Server </h1>
 
 ## 🔒 Security
 
-If you discover a security vulnerability, please follow our Security Policy and report it as described in SECURITY.md.
+If you discover a security vulnerability, please follow our [Security Policy](./SECURITY.md) for responsible disclosure and reporting instructions.
 
----
+## 😎 OWNER
 
-## 😎 Owner
+- [𝐏𝐄𝐀𝐂𝐇𝐘](https://discord.gg/peachygang) - Join us now
+  <br>
 
-Peachy Bot is maintained by 𝐊𝐘𝐔𝐔 🐣💞 — Join the community: https://discord.gg/CmsxPWNEjf
+Peachy is a Discord bot made by [𝐊𝐘𝐔𝐔 🐣💞](https://discord.gg/CmsxPWNEjf)
 
-If you like this project, please give it a star ⭐!
+<br />
+
+If you liked this repository, feel free to leave a star ⭐ to help promote!
 
 ---
 
 ## 📄 License
 
-This project is licensed under the terms of the PEACHY LICENSE: ./LICENSE
+This project is licensed under the terms of the [PEACHY LICENSE](./LICENSE).
