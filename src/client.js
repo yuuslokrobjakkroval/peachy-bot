@@ -343,8 +343,8 @@ setInterval(() => {
                     inviteCode: invite.code,
                     uses: invite.uses,
                     userId: [],
-                    inviterId: invite.inviter.id,
-                    inviterTag: invite.inviter.tag,
+                    inviterId: invite?.inviter?.id,
+                    inviterTag: invite?.inviter?.tag,
                   });
                   return newInvite
                     .save()

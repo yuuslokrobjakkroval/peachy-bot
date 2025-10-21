@@ -57,6 +57,7 @@ const themeEmojis = {
 };
 
 const Logger = require("./Logger");
+const ServerStatsManager = require("../managers/ServerStatsManager");
 
 module.exports = class PeachyClient extends Client {
   constructor(options) {
@@ -75,6 +76,7 @@ module.exports = class PeachyClient extends Client {
     this.emoji = emojis;
     this.moment = moment;
     this.i18n = new I18n(globalConfig.language);
+    this.serverStatsManager = new ServerStatsManager(this);
   }
 
   embed() {
@@ -245,6 +247,12 @@ module.exports = class PeachyClient extends Client {
             );
           }
         }
+      }
+
+      // Start Server Stats Manager after bot is ready
+      if (this.serverStatsManager) {
+        this.serverStatsManager.start();
+        this.logger.info("Server Stats Manager initialized!");
       }
     });
   }
