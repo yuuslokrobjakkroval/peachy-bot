@@ -1,4 +1,4 @@
-const { REST, Routes } = require("discord.js");
+const { REST, Routes, PermissionsBitField } = require("discord.js");
 require("dotenv").config();
 
 const globalConfig = require("./src/utils/Config");
@@ -43,15 +43,21 @@ async function registerSlashCommands() {
           const command = new CommandClass(mockClient, file);
 
           if (command.slashCommand) {
+            const defaultPerms =
+              command.permissions &&
+              command.permissions.user &&
+              command.permissions.user.length > 0
+                ? PermissionsBitField.resolve(
+                    command.permissions.user
+                  ).toString()
+                : null;
+
             const data = {
               name: command.name,
               description: command.description.content,
               type: 1, // CHAT_INPUT
               options: command.options || [],
-              default_member_permissions:
-                command.permissions.user.length > 0
-                  ? command.permissions.user.join("|")
-                  : null,
+              default_member_permissions: defaultPerms,
             };
 
             commands.push(data);

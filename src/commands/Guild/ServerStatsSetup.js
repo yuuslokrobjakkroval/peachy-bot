@@ -6,6 +6,7 @@ const {
   ButtonStyle,
   ChannelType,
   PermissionFlagsBits,
+  ComponentType,
 } = require("discord.js");
 
 module.exports = class ServerStatsSetup extends Command {
@@ -162,7 +163,10 @@ module.exports = class ServerStatsSetup extends Command {
 
     collector.on("collect", async (interaction) => {
       try {
-        await interaction.deferUpdate();
+        // Check if interaction is already deferred/replied to avoid errors
+        if (!interaction.deferred && !interaction.replied) {
+          await interaction.deferUpdate();
+        }
 
         switch (interaction.customId) {
           case "setup_stats":
@@ -233,12 +237,6 @@ module.exports = class ServerStatsSetup extends Command {
         format: "🚀 Boosts: {count}",
       },
       {
-        label: "😊 Emoji Count",
-        value: "emojis",
-        description: "Custom server emojis",
-        format: "😊 Emojis: {count}",
-      },
-      {
         label: "📝 Text Channels",
         value: "textchannels",
         description: "Number of text channels",
@@ -261,6 +259,12 @@ module.exports = class ServerStatsSetup extends Command {
         value: "roles",
         description: "Server roles count",
         format: "🎭 Roles: {count}",
+      },
+      {
+        label: "😊 Emoji Count",
+        value: "emojis",
+        description: "Custom server emojis",
+        format: "😊 Emojis: {count}",
       },
       {
         label: "🔊 Voice Members",
@@ -316,14 +320,53 @@ module.exports = class ServerStatsSetup extends Command {
     });
 
     const collector = replyMessage.createMessageComponentCollector({
+      componentType: ComponentType.StringSelect,
       filter: (interaction) => interaction.user.id === ctx.author.id,
       time: 300000,
     });
 
+    let isProcessing = false; // Prevent multiple simultaneous executions
+
     collector.on("collect", async (interaction) => {
       try {
-        await interaction.deferUpdate();
+        // Prevent multiple simultaneous executions
+        if (isProcessing) {
+          if (!interaction.deferred && !interaction.replied) {
+            await interaction.deferUpdate();
+          }
+          return;
+        }
+
+        isProcessing = true;
+
+        // Acknowledge quickly; tolerate late/duplicate acknowledgements
+        if (!interaction.deferred && !interaction.replied) {
+          try {
+            await interaction.deferUpdate();
+          } catch (err) {
+            // Ignore expired or already-acknowledged interactions; fallback edits will handle
+            if (err?.code !== 10062 && err?.code !== 40060) {
+              console.warn("deferUpdate failed:", err.message);
+            }
+          }
+        }
         const selectedStats = interaction.values;
+
+        // Send an immediate loading message
+        const loadingEmbed = client
+          .embed()
+          .setColor(color.warning)
+          .setTitle("🔄 Setting up Statistics...")
+          .setDescription(
+            `Please wait while I create ${selectedStats.length} statistics channels.\n\n` +
+              `This may take a few moments...`
+          )
+          .setTimestamp();
+
+        await this.safeEditReply(interaction, ctx, {
+          embeds: [loadingEmbed],
+          components: [],
+        });
 
         // Create a category for stats channels
         let category = ctx.guild.channels.cache.find(
@@ -342,13 +385,40 @@ module.exports = class ServerStatsSetup extends Command {
 
         const createdChannels = [];
         const errors = [];
+        let processedCount = 0;
 
-        // Create channels for each selected stat
+        // Create channels for each selected stat with progress updates
         for (const statType of selectedStats) {
           try {
             const statOption = statsOptions.find(
               (opt) => opt.value === statType
             );
+
+            // Update progress every 2-3 channels
+            if (processedCount > 0 && processedCount % 3 === 0) {
+              const progressEmbed = client
+                .embed()
+                .setColor(color.warning)
+                .setTitle("🔄 Creating Statistics Channels...")
+                .setDescription(
+                  `Progress: ${processedCount}/${selectedStats.length} channels created\n\n` +
+                    `Currently creating: **${statOption.label}**`
+                )
+                .setTimestamp();
+
+              try {
+                await interaction.editReply({ embeds: [progressEmbed] });
+              } catch (progressError) {
+                // Ignore if interaction expires during progress updates
+                if (progressError.code !== 10062) {
+                  console.warn(
+                    "Progress update failed:",
+                    progressError.message
+                  );
+                }
+              }
+            }
+
             const currentValue = await this.getStatValue(ctx.guild, statType);
             const channelName = statOption.format.replace(
               "{count}",
@@ -373,10 +443,13 @@ module.exports = class ServerStatsSetup extends Command {
               type: statType,
               format: statOption.format,
             });
+
+            processedCount++;
           } catch (error) {
             errors.push(
               `${statsOptions.find((opt) => opt.value === statType)?.label}: ${error.message}`
             );
+            processedCount++;
           }
         }
 
@@ -423,7 +496,10 @@ module.exports = class ServerStatsSetup extends Command {
           ]);
         }
 
-        await interaction.editReply({ embeds: [resultEmbed], components: [] });
+        await this.safeEditReply(interaction, ctx, {
+          embeds: [resultEmbed],
+          components: [],
+        });
 
         // The ServerStatsManager will automatically handle updates
       } catch (error) {
@@ -438,7 +514,13 @@ module.exports = class ServerStatsSetup extends Command {
             iconURL: client.user.displayAvatarURL(),
           });
 
-        await interaction.editReply({ embeds: [errorEmbed], components: [] });
+        await this.safeEditReply(interaction, ctx, {
+          embeds: [errorEmbed],
+          components: [],
+        });
+      } finally {
+        // Always reset processing flag
+        isProcessing = false;
       }
     });
 
@@ -566,7 +648,10 @@ module.exports = class ServerStatsSetup extends Command {
 
     collector.on("collect", async (interaction) => {
       try {
-        await interaction.deferUpdate();
+        // Check if interaction is already deferred/replied to avoid errors
+        if (!interaction.deferred && !interaction.replied) {
+          await interaction.deferUpdate();
+        }
 
         if (interaction.customId === "confirm_remove") {
           let deletedCount = 0;
@@ -770,6 +855,35 @@ module.exports = class ServerStatsSetup extends Command {
           .size.toString();
       default:
         return "0";
+    }
+  }
+
+  // Helper method to safely edit interaction replies
+  async safeEditReply(interaction, ctx, options) {
+    try {
+      if (interaction.deferred || interaction.replied) {
+        await interaction.editReply(options);
+      } else {
+        // If not deferred yet, try to reply
+        await interaction.reply({ ...options, ephemeral: true });
+      }
+    } catch (error) {
+      if (error.code === 10062) {
+        // Unknown interaction - interaction expired
+        console.warn("Interaction expired, sending message to channel");
+        try {
+          await ctx.channel.send(options);
+        } catch (channelError) {
+          console.error("Failed to send fallback message:", channelError);
+        }
+      } else if (error.code === 40060) {
+        // Interaction already acknowledged
+        console.warn("Interaction already acknowledged");
+        return;
+      } else {
+        console.error("Error editing interaction reply:", error);
+        throw error;
+      }
     }
   }
 };

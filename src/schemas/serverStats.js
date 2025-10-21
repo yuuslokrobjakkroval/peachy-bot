@@ -29,7 +29,7 @@ const ServerStatsSchema = new Schema(
 );
 
 // Index for efficient queries
-ServerStatsSchema.index({ guildId: 1 });
+// Unique on guildId already creates an index; avoid duplicate index
 ServerStatsSchema.index({ "channels.channelId": 1 });
 
 module.exports = model("ServerStats", ServerStatsSchema);

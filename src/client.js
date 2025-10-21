@@ -337,14 +337,28 @@ setInterval(() => {
             return InviteSchema.findOne({ inviteCode: invite.code })
               .then((existingInvite) => {
                 if (!existingInvite) {
+                  // If there is no inviter (e.g., system/vanity), skip creating a record
+                  if (!invite.inviter) {
+                    return Promise.resolve();
+                  }
+
+                  // Build inviter tag compatible with Discord.js v14
+                  const inviterId = invite.inviter?.id || "unknown";
+                  const discriminator = invite.inviter?.discriminator;
+                  const username = invite.inviter?.username || "unknown";
+                  const inviterTag =
+                    discriminator && discriminator !== "0"
+                      ? `${username}#${discriminator}`
+                      : `${username}`;
+
                   // Save a new invite record if it doesn't exist
                   const newInvite = new InviteSchema({
                     guildId: guild.id,
                     inviteCode: invite.code,
                     uses: invite.uses,
                     userId: [],
-                    inviterId: invite.inviter.id,
-                    inviterTag: invite.inviter.tag,
+                    inviterId,
+                    inviterTag,
                   });
                   return newInvite
                     .save()
