@@ -109,6 +109,18 @@ class ServerStatsManager {
       }
     }
 
+    // Ensure member cache is fresh for accurate counts
+    try {
+      const needsMembers = serverStat.channels?.some((c) =>
+        ["members", "humans", "bots", "voicemembers", "onlinemembers"].includes(c.type)
+      );
+      if (needsMembers) {
+        await guild.members.fetch();
+      }
+    } catch (error) {
+      console.warn(`Could not fetch members for ${guild.name}: ${error.message}`);
+    }
+
     let updatedChannels = 0;
     const channelsToRemove = [];
 
@@ -130,11 +142,17 @@ class ServerStatsManager {
 
         // Only update if name changed (to avoid rate limits)
         if (channel.name !== newName) {
-          await channel.setName(
-            newName,
-            `Server Stats Update - ${channelStat.type}`
-          );
-          updatedChannels++;
+          if (!channel.manageable) {
+            console.warn(
+              `Cannot rename channel ${channel.id} in ${guild.name} (missing permissions)`
+            );
+          } else {
+            await channel.setName(
+              newName,
+              `Server Stats Update - ${channelStat.type}`
+            );
+            updatedChannels++;
+          }
         }
       } catch (error) {
         console.error(
@@ -303,7 +321,10 @@ class ServerStatsManager {
       await this.updateGuildStats(serverStat);
       return true;
     } catch (error) {
-      console.error(`Error force updating guild ${guildId}:`, error);
+      // Reduce noise for non-configured guilds; otherwise log
+      if (error?.message !== "No server stats configuration found") {
+        console.error(`Error force updating guild ${guildId}:`, error);
+      }
       throw error;
     }
   }
@@ -330,9 +351,17 @@ class ServerStatsManager {
     const timeout = setTimeout(async () => {
       this._pendingUpdates.delete(guildId);
       try {
+        // Only update if a configuration exists for this guild
+        const hasConfig = await ServerStats.exists({ guildId });
+        if (!hasConfig) return; // silently ignore non-configured guilds
         await this.forceUpdateGuild(guildId);
       } catch (err) {
-        console.warn(`ServerStats scheduleUpdate failed for ${guildId}:`, err.message);
+        // Suppress noise when guild simply has no configuration
+        if (err?.message === "No server stats configuration found") return;
+        console.warn(
+          `ServerStats scheduleUpdate failed for ${guildId}:`,
+          err.message
+        );
       }
     }, delayMs);
 
