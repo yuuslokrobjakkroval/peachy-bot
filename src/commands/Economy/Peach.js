@@ -27,7 +27,7 @@ module.exports = class Peachy extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
     const peachMessages = language.locales.get(language.defaultLocale)
       ?.economyMessages?.peachMessages;
@@ -40,7 +40,7 @@ module.exports = class Peachy extends Command {
           client,
           ctx,
           generalMessages.userNotFound,
-          color,
+          color
         );
       }
 
@@ -58,24 +58,21 @@ module.exports = class Peachy extends Command {
 
       const totalCoins = baseCoins + bonusCoins;
       const totalExp = baseExp + bonusExp;
-      const newBalance = user.balance.coin + totalCoins;
-      const newExp = user.profile.xp + totalExp;
-      const newStreak = user.peachy.streak + 1;
 
       const cooldownTime = 300000; // 5 minutes cooldown
       const isCooldownExpired = await client.utils.checkCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        cooldownTime,
+        cooldownTime
       );
 
       if (!isCooldownExpired) {
         const lastCooldownTimestamp = await client.utils.getCooldown(
           ctx.author.id,
-          this.name.toLowerCase(),
+          this.name.toLowerCase()
         );
         const remainingTime = Math.ceil(
-          (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000,
+          (lastCooldownTimestamp + cooldownTime - Date.now()) / 1000
         );
         const duration = moment.duration(remainingTime, "seconds");
         const minutes = Math.floor(duration.asMinutes());
@@ -95,18 +92,18 @@ module.exports = class Peachy extends Command {
       await Users.updateOne(
         { userId: user.userId },
         {
-          $set: {
-            "balance.coin": newBalance,
-            "profile.xp": newExp,
-            "peachy.streak": newStreak,
+          $inc: {
+            "balance.coin": totalCoins,
+            "profile.xp": totalExp,
+            "peachy.streak": 1,
           },
-        },
+        }
       );
 
       await client.utils.updateCooldown(
         ctx.author.id,
         this.name.toLowerCase(),
-        cooldownTime,
+        cooldownTime
       );
 
       let bonusMessage = "";
@@ -131,13 +128,13 @@ module.exports = class Peachy extends Command {
               .replace("%{coin}", client.utils.formatNumber(baseCoins))
               .replace("%{expEmote}", emoji.exp)
               .replace("%{exp}", client.utils.formatNumber(baseExp))
-              .replace("%{bonusMessage}", bonusMessage),
+              .replace("%{bonusMessage}", bonusMessage)
         )
         .setFooter({
           text:
             generalMessages.requestedBy.replace(
               "%{username}",
-              ctx.author.displayName,
+              ctx.author.displayName
             ) || `Requested by ${ctx.author.displayName}`,
           iconURL: ctx.author.displayAvatarURL(),
         });
@@ -149,7 +146,7 @@ module.exports = class Peachy extends Command {
         client,
         ctx,
         generalMessages.userFetchError,
-        color,
+        color
       );
     }
   }

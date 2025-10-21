@@ -9,11 +9,13 @@ const ImportantItems = require("../../assets/inventory/ImportantItems.js");
 const ShopItems = require("../../assets/inventory/ShopItems.js");
 const Woods = require("../../assets/inventory/Woods");
 const Minerals = require("../../assets/inventory/Minerals");
+const Fish = require("../../assets/inventory/Fish");
+const CraftedItems = require("../../assets/inventory/CraftedItems");
 const SlimeCategory = require("../../assets/inventory/SlimeCatalog");
 const Tools = require("../../assets/inventory/SlimeTools");
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = Inventory.filter((value) => value.price.buy !== 0).sort(
-  (a, b) => a.price.buy - b.price.buy,
+  (a, b) => a.price.buy - b.price.buy
 );
 
 module.exports = class Inventory extends Command {
@@ -51,7 +53,7 @@ module.exports = class Inventory extends Command {
           client,
           ctx,
           invMessages.noInventory || "No inventory data found for this user.",
-          color,
+          color
         );
       }
 
@@ -89,15 +91,23 @@ module.exports = class Inventory extends Command {
             ImportantItems,
             Woods,
             Minerals,
+            Fish,
+            CraftedItems,
             SlimeCategory,
-            Tools,
+            Tools
           ).find(({ id }) => id.toLowerCase() === item.id.toLowerCase());
 
           if (itemInfo) {
             // Map specific types to "resources"
             let type = itemInfo.type;
-            if (["woods", "minerals", "slime", "tools"].includes(type)) {
+            if (
+              ["woods", "minerals", "fish", "slime", "tools"].includes(type)
+            ) {
               type = "resources";
+            } else if (
+              ["weapon", "armor", "tool", "jewelry", "food"].includes(type)
+            ) {
+              type = "crafted";
             }
             itemList[type] = itemList[type] || [];
 
@@ -192,16 +202,16 @@ module.exports = class Inventory extends Command {
           .setDescription(
             `# ${emoji.mainLeft} ${
               invMessages.inventoryTitle || "INVENTORY"
-            } ${emoji.mainRight}\n\n${inventorySummary}`,
+            } ${emoji.mainRight}\n\n${inventorySummary}`
           )
           .setThumbnail(
-            client.utils.emojiToImage(emoji.inventory || emoji.main),
+            client.utils.emojiToImage(emoji.inventory || emoji.main)
           )
           .setFooter({
             text:
               invMessages.footerText?.replace(
                 "{user}",
-                ctx.author.displayName,
+                ctx.author.displayName
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
@@ -241,12 +251,12 @@ module.exports = class Inventory extends Command {
             `# ${emoji.mainLeft} ${client.utils
               .formatCapitalize(category)
               .toUpperCase()} ${emoji.mainRight}\n\n` +
-              `Total ${items.length} items`,
+              `Total ${items.length} items`
           )
           .setThumbnail(
             client.utils.emojiToImage(
-              categoryIcons[category] || emoji.inventory || emoji.main,
-            ),
+              categoryIcons[category] || emoji.inventory || emoji.main
+            )
           )
           .setFooter({
             text: `Page ${page}/${totalPages} • Use the buttons to navigate`,
@@ -339,7 +349,7 @@ module.exports = class Inventory extends Command {
         return new ActionRowBuilder().addComponents(
           prevButton,
           pageIndicator,
-          nextButton,
+          nextButton
         );
       };
 
@@ -356,7 +366,7 @@ module.exports = class Inventory extends Command {
             .setEmoji(categoryIcons.resources);
 
           components.push(
-            new ActionRowBuilder().addComponents(resourcesButton),
+            new ActionRowBuilder().addComponents(resourcesButton)
           );
         }
 
@@ -435,7 +445,7 @@ module.exports = class Inventory extends Command {
                 generateCategoryDropdown(),
                 generatePaginationButtons(
                   currentView.category,
-                  currentView.page,
+                  currentView.page
                 ),
               ],
             });
@@ -451,7 +461,7 @@ module.exports = class Inventory extends Command {
                 generateCategoryDropdown(),
                 generatePaginationButtons(
                   currentView.category,
-                  currentView.page,
+                  currentView.page
                 ),
               ],
             });
@@ -468,12 +478,12 @@ module.exports = class Inventory extends Command {
               if (component.type === 3) {
                 // Select menu
                 newRow.addComponents(
-                  StringSelectMenuBuilder.from(component).setDisabled(true),
+                  StringSelectMenuBuilder.from(component).setDisabled(true)
                 );
               } else if (component.type === 2) {
                 // Button
                 newRow.addComponents(
-                  ButtonBuilder.from(component).setDisabled(true),
+                  ButtonBuilder.from(component).setDisabled(true)
                 );
               }
             });
@@ -494,7 +504,7 @@ module.exports = class Inventory extends Command {
         ctx,
         invMessages.error ||
           "An error occurred while retrieving your inventory.",
-        color,
+        color
       );
     }
   }

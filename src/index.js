@@ -37,7 +37,7 @@ manager
   });
 
 manager.on("shardCreate", (shard) => {
-  shard.on("ready", () => {
+  shard.on("clientReady", () => {
     logger.start(`[CLIENT] Shard ${shard.id} connected to Discord's Gateway.`);
   });
 });

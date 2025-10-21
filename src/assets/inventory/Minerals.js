@@ -61,7 +61,7 @@ module.exports = [
     price: { sell: 75 },
   },
   {
-    id: "silverbar",
+    id: "silver bar",
     name: "Silver Bar",
     description: "A bar of silver.",
     type: "metalbar",

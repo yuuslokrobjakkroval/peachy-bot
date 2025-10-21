@@ -109,7 +109,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.specialTheme.duckling,
     available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
+    price: { buy: 1, sell: 1 },
   },
   {
     id: "st2707",
@@ -125,7 +125,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.specialTheme.keoyuu,
     available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
+    price: { buy: 1, sell: 1 },
   },
 
   // PHY
@@ -143,7 +143,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.specialTheme.ghastlyGrins,
     available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
+    price: { buy: 1, sell: 1 },
   },
 
   // SELL
@@ -161,7 +161,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.specialTheme.enchantedCatLake,
     available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
+    price: { buy: 1, sell: 1 },
   },
   {
     id: "st2601",
@@ -177,7 +177,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.specialTheme.yuyuzu,
     available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
+    price: { buy: 1, sell: 1 },
   },
   {
     id: "st2025",
@@ -192,7 +192,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.specialTheme.catana,
     available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
+    price: { buy: 1, sell: 1 },
   },
   {
     id: "ct002",
@@ -207,7 +207,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.specialTheme.paoinh,
     available: ["use"],
-    price: { buy: 1e10, sell: 15e6 },
+    price: { buy: 1, sell: 1 },
   },
   {
     id: "w168",
@@ -223,7 +223,7 @@ module.exports = [
     quantity: 1,
     emoji: emoji.frame.w168,
     available: ["use", "gift"],
-    price: { buy: 2e7, sell: 15e6 },
+    price: { buy: 1, sell: 1 },
     image: "https://i.imgur.com/RmfP9ie.png",
   },
 ];
