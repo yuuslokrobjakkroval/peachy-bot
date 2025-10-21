@@ -168,35 +168,83 @@ module.exports = class PeachyClient extends Client {
         // Get existing commands to check for Entry Point commands
         const existingCommands = await rest.get(applicationCommands);
 
-        // Filter out Entry Point commands from existing commands
+        // Filter Entry Point commands (these have integration_types_config)
         const entryPointCommands = existingCommands.filter(
-          (cmd) => cmd.integration_types_config
+          (cmd) =>
+            cmd.integration_types_config &&
+            cmd.integration_types_config !== null
         );
 
-        // Combine our commands with any Entry Point commands
+        // Start with our commands
         const commandsToRegister = [...this.body];
 
-        // Add Entry Point commands if they exist and aren't already in our body
+        // Always include existing Entry Point commands to avoid the error
         entryPointCommands.forEach((entryCmd) => {
           const existsInBody = this.body.find(
             (cmd) => cmd.name === entryCmd.name
           );
           if (!existsInBody) {
+            // Preserve all Entry Point command properties
             commandsToRegister.push({
               name: entryCmd.name,
               description: entryCmd.description,
               type: entryCmd.type,
-              options: entryCmd.options,
+              options: entryCmd.options || [],
               integration_types_config: entryCmd.integration_types_config,
               contexts: entryCmd.contexts,
+              default_member_permissions: entryCmd.default_member_permissions,
+              dm_permission: entryCmd.dm_permission,
+              nsfw: entryCmd.nsfw,
             });
           }
         });
 
+        this.logger.info(
+          `Registering ${commandsToRegister.length} commands (${this.body.length} bot commands + ${entryPointCommands.length} entry point commands)`
+        );
+
         await rest.put(applicationCommands, { body: commandsToRegister });
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
-        this.logger.error(error);
+        this.logger.error("Error registering slash commands:", error);
+
+        // If we still get the Entry Point error, try a different approach
+        if (error.code === 50240) {
+          this.logger.warn(
+            "Entry Point command error detected, attempting alternative registration..."
+          );
+          try {
+            // First, get existing commands again
+            const existingCommands = await rest.get(applicationCommands);
+
+            // Register only our bot commands, keeping all existing ones
+            const allCommands = [...existingCommands];
+
+            // Update or add our commands
+            this.body.forEach((newCmd) => {
+              const existingIndex = allCommands.findIndex(
+                (cmd) => cmd.name === newCmd.name
+              );
+              if (existingIndex >= 0) {
+                // Update existing command
+                allCommands[existingIndex] = newCmd;
+              } else {
+                // Add new command
+                allCommands.push(newCmd);
+              }
+            });
+
+            await rest.put(applicationCommands, { body: allCommands });
+            this.logger.info(
+              `Successfully loaded slash commands using alternative method!`
+            );
+          } catch (secondError) {
+            this.logger.error(
+              "Alternative registration also failed:",
+              secondError
+            );
+          }
+        }
       }
     });
   }
