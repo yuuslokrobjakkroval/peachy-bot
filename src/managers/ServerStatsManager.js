@@ -138,7 +138,26 @@ class ServerStatsManager {
 
         // Get current stat value
         const currentValue = await this.getStatValue(guild, channelStat.type);
-        const newName = channelStat.format.replace(/\{count\}/g, currentValue);
+        // Ensure a valid format containing {count}; fallback to sensible defaults
+        let effectiveFormat = channelStat.format;
+        if (!effectiveFormat || !/\{count\}/.test(effectiveFormat)) {
+          switch (channelStat.type) {
+            case "members":
+              effectiveFormat = "All Members : {count}";
+              break;
+            case "humans":
+              effectiveFormat = "Members : {count}";
+              break;
+            case "boosts":
+              effectiveFormat = "Boosts : {count}";
+              break;
+            default:
+              // If no format present, keep current name prefix and append count
+              effectiveFormat = `${channel.name.replace(/\s*:\s*.*$/, "")} : {count}`;
+              break;
+          }
+        }
+        const newName = effectiveFormat.replace(/\{count\}/g, currentValue);
 
         // Only update if name changed (to avoid rate limits)
         if (channel.name !== newName) {
