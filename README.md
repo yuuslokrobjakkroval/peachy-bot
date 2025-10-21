@@ -6,8 +6,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/stars/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="GitHub stars">
-  <img src="https://img.shields.io/github/license/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/github/issues/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="Issues">
+  <img src="https://img.shields.io/github/license/yuuslokrobjakkroval/peachy-bot/blob/master/LICENSE?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/issues/yuuslokrobjakkroval/peachy-bot/issues?style=for-the-badge" alt="Issues">
   <img src="https://img.shields.io/discord/1369956599720054847?label=Discord&logo=discord&style=for-the-badge" alt="Discord">
 </p>
 
