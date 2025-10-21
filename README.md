@@ -7,8 +7,8 @@
 <p align="center">
   <img src="https://img.shields.io/github/stars/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="GitHub stars">
   <img src="https://img.shields.io/github/license/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/github/issues/yuuslokrobjakkroval/peachy-bot?style=for-the-badge" alt="Issues">
-  <img src="https://img.shields.io/discord/1271693788548436008?label=Discord&logo=discord&style=for-the-badge" alt="Discord">
+  <img src="https://img.shields.io/github/issues/yuuslokrobjakkroval/peachy-bot/issues?style=for-the-badge" alt="Issues">
+  <img src="https://img.shields.io/discord/1369956599720054847?label=Discord&logo=discord&style=for-the-badge" alt="Discord">
 </p>
 
 <p align="center"><b>Peachy Bot</b> is a powerful, feature-rich Discord bot for server management, fun, games, economy, moderation, and more. Built with Discord.js v14, it offers a modern dashboard, hybrid command handling, and a highly customizable experience for your community.</p>
