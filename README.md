@@ -41,7 +41,7 @@
 
 ## 📦 Prerequisites
 
-- [Git](https://git-scm.com/downloads)
+- ![Git](https://img.shields.io/badge/Git-43853D?style=for-the-badge&logo=node.js&logoColor=white)(https://git-scm.com/downloads)
 - ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) [v18.17.1 or higher](https://nodejs.org/en/download/)
 - ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white) [v4.4.0 or higher](https://www.mongodb.com/try/download/community)
 
