@@ -32,7 +32,7 @@ module.exports = class ServerStatsSetup extends Command {
       permissions: {
         dev: false,
         client: ["SendMessages", "ViewChannel", "EmbedLinks", "ManageChannels"],
-        user: ["ManageGuild"],
+        user: ["ManageGuild", "Administrator"],
       },
       slashCommand: true,
       options: [
@@ -237,6 +237,12 @@ module.exports = class ServerStatsSetup extends Command {
         format: "🚀 Boosts: {count}",
       },
       {
+        label: "📁 Categories",
+        value: "categories",
+        description: "Channel categories",
+        format: "📁 Categories: {count}",
+      },
+      {
         label: "📝 Text Channels",
         value: "textchannels",
         description: "Number of text channels",
@@ -247,12 +253,6 @@ module.exports = class ServerStatsSetup extends Command {
         value: "voicechannels",
         description: "Number of voice channels",
         format: "🔊 Voice: {count}",
-      },
-      {
-        label: "📁 Categories",
-        value: "categories",
-        description: "Channel categories",
-        format: "📁 Categories: {count}",
       },
       {
         label: "🎭 Roles",
@@ -291,11 +291,11 @@ module.exports = class ServerStatsSetup extends Command {
           `👥 Members: ${ctx.guild.memberCount}\n` +
           `🤖 Bots: ${ctx.guild.members.cache.filter((m) => m.user.bot).size}\n` +
           `🚀 Boosts: ${ctx.guild.premiumSubscriptionCount || 0}\n` +
-          `😊 Emojis: ${ctx.guild.emojis.cache.size}\n` +
           `📝 Text Channels: ${ctx.guild.channels.cache.filter((c) => c.type === ChannelType.GuildText).size}\n` +
           `🔊 Voice Channels: ${ctx.guild.channels.cache.filter((c) => c.type === ChannelType.GuildVoice).size}\n` +
           `📁 Categories: ${ctx.guild.channels.cache.filter((c) => c.type === ChannelType.GuildCategory).size}\n` +
           `🎭 Roles: ${ctx.guild.roles.cache.size}\n\n` +
+          `😊 Emojis: ${ctx.guild.emojis.cache.size}\n` +
           `💡 **Tip:** You can select multiple statistics at once!`
       )
       .setFooter({
@@ -420,10 +420,21 @@ module.exports = class ServerStatsSetup extends Command {
             }
 
             const currentValue = await this.getStatValue(ctx.guild, statType);
-            const channelName = statOption.format.replace(
-              "{count}",
-              currentValue
-            );
+            let channelName;
+            switch (statType) {
+              case "members":
+                channelName = `All Members : ${currentValue}`;
+                break;
+              case "humans":
+                channelName = `Members : ${currentValue}`;
+                break;
+              case "boosts":
+                channelName = `Boosts : ${currentValue}`;
+                break;
+              default:
+                channelName = statOption.format.replace("{count}", currentValue);
+                break;
+            }
 
             const channel = await ctx.guild.channels.create({
               name: channelName,
@@ -438,10 +449,27 @@ module.exports = class ServerStatsSetup extends Command {
               reason: `Server Statistics Setup - ${statOption.label}`,
             });
 
+            // Persist the format used so future updates keep the same naming
+            let persistedFormat;
+            switch (statType) {
+              case "members":
+                persistedFormat = "All Members : {count}";
+                break;
+              case "humans":
+                persistedFormat = "Members : {count}";
+                break;
+              case "boosts":
+                persistedFormat = "Boosts : {count}";
+                break;
+              default:
+                persistedFormat = statOption.format;
+                break;
+            }
+
             createdChannels.push({
               channel,
               type: statType,
-              format: statOption.format,
+              format: persistedFormat,
             });
 
             processedCount++;

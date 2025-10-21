@@ -6,6 +6,7 @@ class ServerStatsManager {
     this.client = client;
     this.updateInterval = null;
     this.isRunning = false;
+    this._pendingUpdates = new Map();
   }
 
   /**
@@ -316,6 +317,26 @@ class ServerStatsManager {
       hasInterval: !!this.updateInterval,
       intervalMs: this.updateInterval ? 10 * 60 * 1000 : null,
     };
+  }
+
+  /**
+   * Schedule a debounced update for a guild (avoids spam on rapid events)
+   */
+  scheduleUpdate(guildId, delayMs = 3000) {
+    if (!guildId) return;
+    const existing = this._pendingUpdates.get(guildId);
+    if (existing) clearTimeout(existing);
+
+    const timeout = setTimeout(async () => {
+      this._pendingUpdates.delete(guildId);
+      try {
+        await this.forceUpdateGuild(guildId);
+      } catch (err) {
+        console.warn(`ServerStats scheduleUpdate failed for ${guildId}:`, err.message);
+      }
+    }, delayMs);
+
+    this._pendingUpdates.set(guildId, timeout);
   }
 }
 

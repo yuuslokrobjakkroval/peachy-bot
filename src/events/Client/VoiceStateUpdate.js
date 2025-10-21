@@ -24,11 +24,13 @@ module.exports = class VoiceStateUpdate extends Event {
         guildId: newState.guild.id,
         joinedAt: Date.now(),
       });
+      this.client.serverStatsManager?.scheduleUpdate(newState.guild.id, 2000);
     }
 
     // Leave
     if (oldState.channelId && !newState.channelId) {
       this.activeVoiceUsers.delete(userId);
+      this.client.serverStatsManager?.scheduleUpdate(newState.guild.id, 2000);
     }
 
     // Switch channel
@@ -41,6 +43,7 @@ module.exports = class VoiceStateUpdate extends Event {
         guildId: newState.guild.id,
         joinedAt: Date.now(),
       });
+      this.client.serverStatsManager?.scheduleUpdate(newState.guild.id, 2000);
     }
   }
 
