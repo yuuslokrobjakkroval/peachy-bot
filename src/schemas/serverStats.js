@@ -10,7 +10,7 @@ const ServerStatsChannelSchema = new Schema({
 
 const ServerStatsSchema = new Schema(
   {
-    guildId: { type: String, required: true, unique: true, index: true },
+    guildId: { type: String, required: true, unique: true },
     categoryId: { type: String, default: null }, // Category channel ID
     channels: [ServerStatsChannelSchema],
     settings: {
