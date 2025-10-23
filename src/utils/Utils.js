@@ -331,17 +331,26 @@ module.exports = class Utils {
 
           user.balance.coin += celebrationCoin;
 
-          const levelUp = new canvafy.LevelUp()
-            .setAvatar(
-              message.author.displayAvatarURL({ format: "png", size: 512 })
-            )
-            .setUsername(`${message.author.username}`, "#000000")
-            .setBorder("#8BD3DD")
-            .setBackground("image", gif.backgroundLevel)
-            .setLevels(user.profile.level - 1, user.profile.level)
-            .build();
+          const buildLevelImage = (bgType, bgValue) =>
+            new canvafy.LevelUp()
+              .setAvatar(
+                message.author.displayAvatarURL({ format: "png", size: 512 })
+              )
+              .setUsername(`${message.author.username}`, "#000000")
+              .setBorder("#8BD3DD")
+              .setBackground(bgType, bgValue)
+              .setLevels(user.profile.level - 1, user.profile.level)
+              .build();
 
-          levelUp
+          // Try with remote image first, then fallback to solid color if it fails
+          buildLevelImage("image", gif.backgroundLevel)
+            .catch((err) => {
+              console.warn(
+                "Level up background image failed, falling back to color:",
+                err?.message || err
+              );
+              return buildLevelImage("color", "#0C131A");
+            })
             .then((levelUpImage) => {
               const levelImage = {
                 attachment: levelUpImage,
@@ -419,16 +428,26 @@ module.exports = class Utils {
       const celebrationCoin = user.profile.voiceLevel * 15000;
       user.balance.coin += celebrationCoin;
 
-      // Generate level up image
-      const levelUp = new canvafy.LevelUp()
-        .setAvatar(member.user.displayAvatarURL({ format: "png", size: 512 }))
-        .setUsername(`${member.user.username}`, "#000000")
-        .setBorder("#8BD3DD")
-        .setBackground("image", gif.backgroundLevel)
-        .setLevels(user.profile.voiceLevel - 1, user.profile.voiceLevel)
-        .build();
+      // Generate level up image with background fallback
+      const buildVoiceLevelImage = (bgType, bgValue) =>
+        new canvafy.LevelUp()
+          .setAvatar(
+            member.user.displayAvatarURL({ format: "png", size: 512 })
+          )
+          .setUsername(`${member.user.username}`, "#000000")
+          .setBorder("#8BD3DD")
+          .setBackground(bgType, bgValue)
+          .setLevels(user.profile.voiceLevel - 1, user.profile.voiceLevel)
+          .build();
 
-      levelUp
+      buildVoiceLevelImage("image", gif.backgroundLevel)
+        .catch((err) => {
+          console.warn(
+            "Voice level background image failed, falling back to color:",
+            err?.message || err
+          );
+          return buildVoiceLevelImage("color", "#0C131A");
+        })
         .then((levelUpImage) => {
           const levelImage = {
             attachment: levelUpImage,
