@@ -423,13 +423,13 @@ module.exports = class ServerStatsSetup extends Command {
             let channelName;
             switch (statType) {
               case "members":
-                channelName = `All Members : ${currentValue}`;
+                channelName = `👥 All Members : ${currentValue}`;
                 break;
               case "humans":
-                channelName = `Members : ${currentValue}`;
+                channelName = `👤 Members : ${currentValue}`;
                 break;
               case "boosts":
-                channelName = `Boosts : ${currentValue}`;
+                channelName = `🚀 Boosts : ${currentValue}`;
                 break;
               default:
                 channelName = statOption.format.replace("{count}", currentValue);
@@ -456,10 +456,10 @@ module.exports = class ServerStatsSetup extends Command {
                 persistedFormat = "All Members : {count}";
                 break;
               case "humans":
-                persistedFormat = "Members : {count}";
+                persistedFormat = "👤 Members : {count}";
                 break;
               case "boosts":
-                persistedFormat = "Boosts : {count}";
+                persistedFormat = "🚀 Boosts : {count}";
                 break;
               default:
                 persistedFormat = statOption.format;
