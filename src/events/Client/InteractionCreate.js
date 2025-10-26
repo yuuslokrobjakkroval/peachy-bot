@@ -1068,7 +1068,7 @@ module.exports = class InteractionCreate extends Event {
 
               await users.findOneAndUpdate(
                 { userId },
-                { $inc: { "balance.coin": claimedCoins } }
+                { $inc: { "balance.coin": claimedCoins, "claim.streak": 1 } }
               );
 
               const row = new ActionRowBuilder().addComponents(
@@ -1086,7 +1086,7 @@ module.exports = class InteractionCreate extends Event {
                 .setDescription(
                   `Congratulations to <@${userId}> ! Claim successful! ${this.client.utils.formatNumber(
                     claimedCoins
-                  )} ${this.client.emoji.coin} added to your balance.`
+                  )} ${this.client.emoji.coin} added to your balance and your claim streak has increased to ${user.claim.streak}.`
                 );
 
               await interaction.update({ embeds: [embed], components: [row] });

@@ -182,6 +182,9 @@ const userSchema = new Schema(
       isMultiTransfer: { type: Boolean, default: false },
       isKlaKlouk: { type: Boolean, default: false },
     },
+    claim: {
+      streak: { type: Number, default: 0 },
+    },
     peachy: {
       streak: { type: Number, default: 0 },
     },
