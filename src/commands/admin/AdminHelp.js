@@ -38,9 +38,6 @@ module.exports = class AdminHelp extends Command {
   }
 
   async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale,
-    )?.generalMessages;
     const helpMessages = language.locales.get(language.defaultLocale)
       ?.informationMessages?.helpMessages;
     const categoriesMessages = language.locales.get(language.defaultLocale)
@@ -49,16 +46,16 @@ module.exports = class AdminHelp extends Command {
 
     // Enhanced admin categories with emojis
     const adminCategory = [
-      { name: "admin", emoji: "🛡️" },
-      { name: "company", emoji: "🏢" },
-      { name: "developer", emoji: "💻" },
+      // { name: "admin", emoji: "🛡️" },
+      // { name: "company", emoji: "🏢" },
+      // { name: "developer", emoji: "💻" },
       { name: "guild", emoji: "🏰" },
       { name: "owner", emoji: emoji.rank.owner || "👑" },
       { name: "staff", emoji: "👥" },
     ];
 
     const commands = client.commands.filter((cmd) =>
-      adminCategory.some((cat) => cat.name === cmd.category.toLowerCase()),
+      adminCategory.some((cat) => cat.name === cmd.category.toLowerCase())
     );
     let selectedCategories = [];
 
@@ -73,7 +70,7 @@ module.exports = class AdminHelp extends Command {
               `📋 Usage: \`${prefix}adminhelp [command]\`\n` +
               `💡 Example: \`${prefix}adminhelp ban\`\n\n` +
               `🔽 Select categories below to explore commands!\n` +
-              `✨ *You can select multiple categories at once*`,
+              `✨ *You can select multiple categories at once*`
           )
           .addFields([
             {
@@ -81,7 +78,7 @@ module.exports = class AdminHelp extends Command {
               value: adminCategory
                 .map(
                   (category) =>
-                    `${category.emoji} ${client.utils.formatCapitalize(categoriesMessages[category.name.toLowerCase()] || category.name)}`,
+                    `${category.emoji} ${client.utils.formatCapitalize(categoriesMessages[category.name.toLowerCase()] || category.name)}`
                 )
                 .join("\n"),
               inline: true,
@@ -133,7 +130,7 @@ module.exports = class AdminHelp extends Command {
       collector.on("collect", async (interaction) => {
         selectedCategories = interaction.values;
         const categoryCommands = commands.filter((cmd) =>
-          selectedCategories.includes(cmd.category.toLowerCase()),
+          selectedCategories.includes(cmd.category.toLowerCase())
         );
 
         let commandsDisplay = "";
@@ -142,12 +139,12 @@ module.exports = class AdminHelp extends Command {
         // Group commands by category for better display
         selectedCategories.forEach((selectedCategory) => {
           const catCommands = commands.filter(
-            (cmd) => cmd.category.toLowerCase() === selectedCategory,
+            (cmd) => cmd.category.toLowerCase() === selectedCategory
           );
 
           if (catCommands.size > 0) {
             const categoryInfo = adminCategory.find(
-              (cat) => cat.name === selectedCategory,
+              (cat) => cat.name === selectedCategory
             );
             commandsDisplay += `\n${categoryInfo.emoji} ${client.utils.formatCapitalize(categoriesMessages[selectedCategory] || selectedCategory)}\n`;
 
@@ -170,7 +167,7 @@ module.exports = class AdminHelp extends Command {
             `${emoji.mainLeft} Admin Commands Overview ${emoji.mainRight}\n\n` +
               `📊 Showing ${totalCommands} commands from your selection\n` +
               `💡 Usage: \`${prefix}adminhelp [command]\` for detailed info\n` +
-              `🔄 Change selection using the dropdown below`,
+              `🔄 Change selection using the dropdown below`
           )
           .addFields([
             {
@@ -200,7 +197,7 @@ module.exports = class AdminHelp extends Command {
         const categorySelectMenu = new StringSelectMenuBuilder()
           .setCustomId("category_select")
           .setPlaceholder(
-            `🎯 ${selectedCategories.length} selected • Choose more... ✨`,
+            `🎯 ${selectedCategories.length} selected • Choose more... ✨`
           )
           .setMinValues(1)
           .setMaxValues(adminCategory.length)
@@ -227,7 +224,7 @@ module.exports = class AdminHelp extends Command {
               .setColor(color.danger)
               .setTitle("❌ Command Not Found")
               .setDescription(
-                `🔍 Could not find command: \`${args[0]}\`\n\n💡 Tip: Use \`${prefix}adminhelp\` to see all available commands! 🌸`,
+                `🔍 Could not find command: \`${args[0]}\`\n\n💡 Tip: Use \`${prefix}adminhelp\` to see all available commands! 🌸`
               )
               .setFooter({
                 text: "Make sure you typed the command name correctly 💭",
@@ -239,7 +236,7 @@ module.exports = class AdminHelp extends Command {
 
       // Get category emoji
       const categoryInfo = adminCategory.find(
-        (cat) => cat.name === command.category.toLowerCase(),
+        (cat) => cat.name === command.category.toLowerCase()
       );
       const categoryEmoji = categoryInfo ? categoryInfo.emoji : "📁";
 
@@ -247,7 +244,7 @@ module.exports = class AdminHelp extends Command {
         .embed()
         .setColor(color.main)
         .setTitle(
-          `${categoryEmoji} ${client.utils.formatCapitalize(command.name)} Command`,
+          `${categoryEmoji} ${client.utils.formatCapitalize(command.name)} Command`
         )
         .setDescription(`✨ ${command.description.content}`)
         .addFields([
