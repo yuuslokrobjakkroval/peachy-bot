@@ -6,6 +6,7 @@ const {
 } = require("discord.js");
 const globalConfig = require("../../utils/Config");
 const Guild = require("../../schemas/guild");
+const GlobalConfig = require("../../utils/Config.js");
 
 module.exports = class GuildCreate extends Event {
   constructor(client, file) {
@@ -15,6 +16,15 @@ module.exports = class GuildCreate extends Event {
   }
 
   async run(guild) {
+    if (guild.id !== GlobalConfig.guildId) {
+      await guild
+        .leave()
+        .catch((err) =>
+          console.error(`Failed to leave guild ${guild.id}:`, err)
+        );
+      return;
+    }
+
     const logChannel = this.client.channels.cache.get(
       this.client.config.channel.log
     );
