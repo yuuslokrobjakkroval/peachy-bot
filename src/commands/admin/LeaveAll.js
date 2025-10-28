@@ -95,6 +95,27 @@ module.exports = class LeaveAll extends Command {
           // small pause to be a bit nicer with requests
           await client.utils.getSleep(350);
         } catch (err) {
+          // Discord returns 10004 (Unknown Guild) if the guild no longer exists or the bot
+          // has already been removed. Treat that as already-left and remove stale cache entry.
+          const isUnknownGuild =
+            err &&
+            (err.code === 10004 ||
+              err?.rawError?.code === 10004 ||
+              err?.status === 404);
+
+          if (isUnknownGuild) {
+            // Remove stale cache entry if present
+            try {
+              client.guilds.cache.delete(guild.id);
+            } catch (e) {
+              // ignore
+            }
+            left.push(
+              `${guild.name || "Unknown"} (${guild.id}) (already left)`
+            );
+            continue;
+          }
+
           console.error("Failed to leave guild:", guild.id, err);
           failed.push(`${guild.name} (${guild.id})`);
         }
