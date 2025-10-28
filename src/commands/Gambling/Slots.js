@@ -126,15 +126,6 @@ module.exports = class Slots extends Command {
       const rand = client.utils.getRandomNumber(1, 100);
       let win = 0;
 
-      // Add this before the win/lose logic
-      const luckyChannel = [
-        "1428529400579883122",
-        "1370318526199627808",
-        "1370318521401213008",
-        "1370318522907099187",
-      ];
-      const isLuckyChannel = luckyChannel.includes(ctx.channel?.id);
-
       if (user.verification.isBlacklist) {
         // Reduced win rates for blacklisted users (total: 12% win rate)
         if (rand <= 5) {
@@ -170,8 +161,8 @@ module.exports = class Slots extends Command {
           rslots = [SLOTS[slot1], SLOTS[slot2], SLOTS[slot3]];
         }
       } else {
-        // 63% winrate for luckyChannel, 60% for normal
-        const winRate = isLuckyChannel ? 63 : 60;
+        // 63% overall win rate
+        const winRate = 63;
         if (rand <= Math.floor(winRate * 0.4)) {
           // 40% of winRate for x1
           win = baseCoins;
