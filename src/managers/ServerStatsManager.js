@@ -112,13 +112,17 @@ class ServerStatsManager {
     // Ensure member cache is fresh for accurate counts
     try {
       const needsMembers = serverStat.channels?.some((c) =>
-        ["members", "humans", "bots", "voicemembers", "onlinemembers"].includes(c.type)
+        ["members", "humans", "bots", "voicemembers", "onlinemembers"].includes(
+          c.type
+        )
       );
       if (needsMembers) {
         await guild.members.fetch();
       }
     } catch (error) {
-      console.warn(`Could not fetch members for ${guild.name}: ${error.message}`);
+      console.warn(
+        `Could not fetch members for ${guild.name}: ${error.message}`
+      );
     }
 
     let updatedChannels = 0;
@@ -138,26 +142,10 @@ class ServerStatsManager {
 
         // Get current stat value
         const currentValue = await this.getStatValue(guild, channelStat.type);
-        // Ensure a valid format containing {count}; fallback to sensible defaults
-        let effectiveFormat = channelStat.format;
-        if (!effectiveFormat || !/\{count\}/.test(effectiveFormat)) {
-          switch (channelStat.type) {
-            case "members":
-              effectiveFormat = "All Members : {count}";
-              break;
-            case "humans":
-              effectiveFormat = "Members : {count}";
-              break;
-            case "boosts":
-              effectiveFormat = "Boosts : {count}";
-              break;
-            default:
-              // If no format present, keep current name prefix and append count
-              effectiveFormat = `${channel.name.replace(/\s*:\s*.*$/, "")} : {count}`;
-              break;
-          }
-        }
-        const newName = effectiveFormat.replace(/\{count\}/g, currentValue);
+
+        // Extract the current channel name prefix (everything before the last number)
+        const currentPrefix = channel.name.replace(/\s*\d+\s*$/, "").trim();
+        const newName = `${currentPrefix} ${currentValue}`;
 
         // Only update if name changed (to avoid rate limits)
         if (channel.name !== newName) {
