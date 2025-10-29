@@ -4,8 +4,8 @@ const {
   PermissionFlagsBits,
   AuditLogEvent, // ⬅️ add this
 } = require("discord.js");
-const globalConfig = require("../../utils/Config");
 const Guild = require("../../schemas/guild");
+const globalConfig = require("../../utils/Config");
 
 module.exports = class GuildCreate extends Event {
   constructor(client, file) {
@@ -15,6 +15,8 @@ module.exports = class GuildCreate extends Event {
   }
 
   async run(guild) {
+    let guildInfo = await Guild.findOne({ guildId: guild.id });
+    const inviter = await this.fetchInviterSafe(guild).catch(() => null);
     const isOwnerBotAdd = globalConfig.owners.includes(inviter.id);
     if (!isOwnerBotAdd) {
       await guild
@@ -28,45 +30,22 @@ module.exports = class GuildCreate extends Event {
         this.client.config.channel.log
       );
 
-      // --- helper: fetch inviter from audit logs (best-effort) ---
-      const inviter = await this.fetchInviterSafe(guild).catch(() => null);
-
-      // Check if guild ID matches the specific ID to auto-leave
-      if (guild.id === "1370047480460214323") {
-        if (logChannel) {
-          await logChannel
-            .send(
-              `Auto-leaving guild **${guild.name}** (ID: ${guild.id}) due to specific ID match.${
-                inviter ? ` Invited by **${inviter.tag}** (${inviter.id}).` : ""
-              }`
-            )
-            .catch(console.error);
-        }
-        await guild
-          .leave()
-          .catch((err) =>
-            console.error(`Failed to leave guild ${guild.id}:`, err)
-          );
-        return;
-      }
-
       // Fetch or update guild data in the database
-      let guildData = await Guild.findOne({ guildId: guild.id });
-      if (!guildData) {
-        guildData = new Guild({
+      if (!guildInfo) {
+        guildInfo = new Guild({
           guildId: guild.id,
           name: guild.name,
           ownerId: guild.ownerId,
           joinCount: 1, // Initialize with 1 for this join
         });
       } else {
-        guildData.joinCount = (guildData.joinCount || 0) + 1; // Increment joinCount
-        guildData.name = guild.name; // Sync name
+        guildInfo.joinCount = (guildInfo.joinCount || 0) + 1; // Increment joinCount
+        guildInfo.name = guild.name; // Sync name
       }
-      await guildData.save();
+      await guildInfo.save();
 
       // Check if guild is banned
-      if (guildData.isBanned) {
+      if (guildInfo.isBanned) {
         if (logChannel) {
           await logChannel
             .send(
@@ -85,11 +64,11 @@ module.exports = class GuildCreate extends Event {
       }
 
       // Check if joinCount exceeds 10
-      if (guildData.joinCount > 10) {
+      if (guildInfo.joinCount > 10) {
         if (logChannel) {
           await logChannel
             .send(
-              `Leaving guild **${guild.name}** (ID: ${guild.id}) due to excessive joins (${guildData.joinCount}).${
+              `Leaving guild **${guild.name}** (ID: ${guild.id}) due to excessive joins (${guildInfo.joinCount}).${
                 inviter ? ` Invited by **${inviter.tag}** (${inviter.id}).` : ""
               }`
             )
