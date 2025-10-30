@@ -134,6 +134,7 @@ class ServerStatsManager {
 
     let updatedChannels = 0;
     const channelsToRemove = [];
+    const debugRows = [];
 
     for (const channelStat of serverStat.channels) {
       if (!channelStat.isActive) continue;
@@ -154,11 +155,17 @@ class ServerStatsManager {
         const currentPrefix = channel.name.replace(/\s*\d+\s*$/, "").trim();
         const newName = `${currentPrefix} ${currentValue}`;
 
-        // Debug: show per-channel computed and current names to diagnose skipped updates
+        // Collect per-channel debug info (we'll print a table after processing)
         try {
-          console.log(
-            `ServerStats: guild=${guild.id} channel=${channel.id} type=${channelStat.type} currentName='${channel.name}' computedValue='${currentValue}' newName='${newName}' manageable=${channel.manageable}`
-          );
+          debugRows.push({
+            channelId: channel.id,
+            type: channelStat.type,
+            currentName: channel.name,
+            computedValue: currentValue,
+            newName,
+            manageable: !!channel.manageable,
+            willChange: channel.name !== newName,
+          });
         } catch (err) {
           // ignore any unexpected logging errors
         }
@@ -190,6 +197,29 @@ class ServerStatsManager {
           channelsToRemove.push(channelStat.channelId);
         }
       }
+    }
+
+    // Print a compact debug table for this update run (if any channels were checked)
+    try {
+      if (debugRows.length > 0) {
+        // Use console.table for a readable tabular view
+        console.log(
+          `ServerStats Debug Table for guild ${guild.id} (${guild.name}):`
+        );
+        console.table(
+          debugRows.map((r) => ({
+            channelId: r.channelId,
+            type: r.type,
+            currentName: r.currentName,
+            computedValue: r.computedValue,
+            newName: r.newName,
+            manageable: r.manageable,
+            willChange: r.willChange,
+          }))
+        );
+      }
+    } catch (err) {
+      // ignore logging errors
     }
 
     // Remove deleted channels from database
