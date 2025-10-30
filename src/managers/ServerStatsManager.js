@@ -98,6 +98,12 @@ class ServerStatsManager {
       throw new Error(`Unknown Guild: ${serverStat.guildId}`);
     }
 
+    console.log(
+      `ServerStats: beginning update for guild ${guild.id} (${guild.name}) with ${
+        serverStat.channels?.length || 0
+      } configured channels`
+    );
+
     // Fetch all members if not cached (for accurate counts)
     if (!guild.members.cache.has(guild.ownerId)) {
       try {
@@ -223,15 +229,26 @@ class ServerStatsManager {
    * Get the current value for a specific statistic type
    */
   async getStatValue(guild, statType) {
+    // Debug: log which stat we're computing
+    // Note: keep this lightweight to avoid spamming logs
+    // Uncomment below line for verbose logging when needed
+    // console.log(`ServerStats: computing '${statType}' for guild ${guild.id}`);
+
     switch (statType) {
       case "members":
-        return guild.memberCount.toString();
+        const membersCount = guild.memberCount;
+        // console.log(`ServerStats: members -> ${membersCount} for guild ${guild.id}`);
+        return membersCount.toString();
 
       case "bots":
-        return guild.members.cache.filter((m) => m.user.bot).size.toString();
+        const botCount = guild.members.cache.filter((m) => m.user.bot).size;
+        // console.log(`ServerStats: bots -> ${botCount} for guild ${guild.id}`);
+        return botCount.toString();
 
       case "humans":
-        return guild.members.cache.filter((m) => !m.user.bot).size.toString();
+        const humanCount = guild.members.cache.filter((m) => !m.user.bot).size;
+        // console.log(`ServerStats: humans -> ${humanCount} for guild ${guild.id}`);
+        return humanCount.toString();
 
       case "boosts":
         return (guild.premiumSubscriptionCount || 0).toString();
@@ -258,18 +275,19 @@ class ServerStatsManager {
         return (guild.roles.cache.size - 1).toString(); // Exclude @everyone role
 
       case "voicemembers":
-        return guild.members.cache
-          .filter((m) => m.voice.channel)
-          .size.toString();
+        const voiceCount = guild.members.cache.filter(
+          (m) => m.voice.channel
+        ).size;
+        // console.log(`ServerStats: voicemembers -> ${voiceCount} for guild ${guild.id}`);
+        return voiceCount.toString();
 
       case "onlinemembers":
-        return guild.members.cache
-          .filter(
-            (m) =>
-              m.presence &&
-              ["online", "idle", "dnd"].includes(m.presence.status)
-          )
-          .size.toString();
+        const onlineCount = guild.members.cache.filter(
+          (m) =>
+            m.presence && ["online", "idle", "dnd"].includes(m.presence.status)
+        ).size;
+        // console.log(`ServerStats: onlinemembers -> ${onlineCount} for guild ${guild.id}`);
+        return onlineCount.toString();
 
       case "threads":
         return guild.channels.cache.filter((c) => c.isThread()).size.toString();
