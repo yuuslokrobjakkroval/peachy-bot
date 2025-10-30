@@ -134,7 +134,6 @@ class ServerStatsManager {
 
     let updatedChannels = 0;
     const channelsToRemove = [];
-    const debugRows = [];
 
     for (const channelStat of serverStat.channels) {
       if (!channelStat.isActive) continue;
@@ -154,21 +153,6 @@ class ServerStatsManager {
         // Extract the current channel name prefix (everything before the last number)
         const currentPrefix = channel.name.replace(/\s*\d+\s*$/, "").trim();
         const newName = `${currentPrefix} ${currentValue}`;
-
-        // Collect per-channel debug info (we'll print a table after processing)
-        try {
-          debugRows.push({
-            channelId: channel.id,
-            type: channelStat.type,
-            currentName: channel.name,
-            computedValue: currentValue,
-            newName,
-            manageable: !!channel.manageable,
-            willChange: channel.name !== newName,
-          });
-        } catch (err) {
-          // ignore any unexpected logging errors
-        }
 
         // Only update if name changed (to avoid rate limits)
         if (channel.name === newName) {
@@ -197,29 +181,6 @@ class ServerStatsManager {
           channelsToRemove.push(channelStat.channelId);
         }
       }
-    }
-
-    // Print a compact debug table for this update run (if any channels were checked)
-    try {
-      if (debugRows.length > 0) {
-        // Use console.table for a readable tabular view
-        console.log(
-          `ServerStats Debug Table for guild ${guild.id} (${guild.name}):`
-        );
-        console.table(
-          debugRows.map((r) => ({
-            channelId: r.channelId,
-            type: r.type,
-            currentName: r.currentName,
-            computedValue: r.computedValue,
-            newName: r.newName,
-            manageable: r.manageable,
-            willChange: r.willChange,
-          }))
-        );
-      }
-    } catch (err) {
-      // ignore logging errors
     }
 
     // Remove deleted channels from database
@@ -420,8 +381,8 @@ class ServerStatsManager {
     const existing = this._pendingUpdates.get(guildId);
     if (existing) clearTimeout(existing);
 
-    // Throttle: ensure at least 5 seconds between successive updates per guild
-    const MIN_INTERVAL = 5 * 1000; // 5 seconds
+    // Throttle: ensure at least 10 seconds between successive updates per guild
+    const MIN_INTERVAL = 10 * 1000; // 10 seconds
     const last = this._lastUpdateAt.get(guildId) || 0;
     const since = Date.now() - last;
     // If the last update was recent, ensure we wait the remaining time (or the provided delay, whichever is larger)
