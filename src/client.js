@@ -136,7 +136,21 @@ client.on("guildMemberAdd", async (member) => {
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (oldMember.premiumSince === null && newMember.premiumSince !== null) {
     // Member has just boosted the server
-    await client.abilities.getBoosterMessage(client, newMember);
+    try {
+      // Schedule server stats update to reflect new boost count
+      try {
+        client.serverStatsManager?.scheduleUpdate(newMember.guild.id, 2000);
+      } catch (err) {
+        console.warn(
+          "Failed to schedule server stats update on member boost:",
+          err?.message || err
+        );
+      }
+
+      await client.abilities.getBoosterMessage(client, newMember);
+    } catch (error) {
+      console.error("Error in getBoosterMessage:", error);
+    }
   }
 });
 
