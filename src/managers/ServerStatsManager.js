@@ -149,6 +149,15 @@ class ServerStatsManager {
         // Get current stat value
         const currentValue = await this.getStatValue(guild, channelStat.type);
 
+        // Debug: show per-channel computed and current names to diagnose skipped updates
+        try {
+          console.log(
+            `ServerStats: guild=${guild.id} channel=${channel.id} type=${channelStat.type} currentName='${channel.name}' computedValue='${currentValue}' newName='${currentPrefix} ${currentValue}' manageable=${channel.manageable}`
+          );
+        } catch (err) {
+          // ignore any unexpected logging errors
+        }
+
         // Extract the current channel name prefix (everything before the last number)
         const currentPrefix = channel.name.replace(/\s*\d+\s*$/, "").trim();
         const newName = `${currentPrefix} ${currentValue}`;
