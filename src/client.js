@@ -115,10 +115,23 @@ client.once("clientReady", async () => {
   return await client.abilities.syncInvites(client);
 });
 
-client.on(
-  "guildMemberAdd",
-  async (member) => await client.abilities.getWelcomeMessage(client, member)
-);
+client.on("guildMemberAdd", async (member) => {
+  try {
+    // Ensure server stats are updated when a member joins
+    try {
+      client.serverStatsManager?.scheduleUpdate(member.guild.id, 2000);
+    } catch (err) {
+      console.warn(
+        "Failed to schedule server stats update on member add:",
+        err?.message || err
+      );
+    }
+
+    await client.abilities.getWelcomeMessage(client, member);
+  } catch (error) {
+    console.error("Error in getWelcomeMessage:", error);
+  }
+});
 
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (oldMember.premiumSince === null && newMember.premiumSince !== null) {
@@ -129,6 +142,16 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
 
 client.on("guildMemberRemove", async (member) => {
   try {
+    // Ensure server stats are updated when a member leaves or is kicked
+    try {
+      client.serverStatsManager?.scheduleUpdate(member.guild.id, 2000);
+    } catch (err) {
+      console.warn(
+        "Failed to schedule server stats update on member remove:",
+        err?.message || err
+      );
+    }
+
     await client.abilities.getGoodByeMessage(client, member);
   } catch (error) {
     console.error("Error in getGoodByeMessage:", error);
