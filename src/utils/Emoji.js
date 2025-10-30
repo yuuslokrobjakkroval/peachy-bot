@@ -48,7 +48,7 @@ module.exports = {
     actions: "🎭",
     animals: "🐾",
     bank: "🏦",
-    build: "⛏️",
+    building: "🏗️",
     economy: "💰",
     emotes: "😀",
     fun: "🎉",
