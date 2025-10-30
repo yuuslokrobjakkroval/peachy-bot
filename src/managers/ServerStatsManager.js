@@ -7,6 +7,7 @@ class ServerStatsManager {
     this.updateInterval = null;
     this.isRunning = false;
     this._pendingUpdates = new Map();
+    this._lastUpdateAt = new Map(); // guildId -> timestamp of last successful update
   }
 
   /**
@@ -354,6 +355,12 @@ class ServerStatsManager {
       }
 
       await this.updateGuildStats(serverStat);
+      // Record last update time to throttle frequent updates
+      try {
+        this._lastUpdateAt.set(guildId, Date.now());
+      } catch (err) {
+        // ignore
+      }
       return true;
     } catch (error) {
       // Reduce noise for non-configured guilds; otherwise log
@@ -383,6 +390,14 @@ class ServerStatsManager {
     const existing = this._pendingUpdates.get(guildId);
     if (existing) clearTimeout(existing);
 
+    // Throttle: ensure at least 1 minute between successive updates per guild
+    const MIN_INTERVAL = 60 * 1000; // 1 minute
+    const last = this._lastUpdateAt.get(guildId) || 0;
+    const since = Date.now() - last;
+    // If the last update was recent, ensure we wait the remaining time (or the provided delay, whichever is larger)
+    const effectiveDelay =
+      since < MIN_INTERVAL ? Math.max(delayMs, MIN_INTERVAL - since) : delayMs;
+
     const timeout = setTimeout(async () => {
       this._pendingUpdates.delete(guildId);
       try {
@@ -398,7 +413,7 @@ class ServerStatsManager {
           err.message
         );
       }
-    }, delayMs);
+    }, effectiveDelay);
 
     this._pendingUpdates.set(guildId, timeout);
   }
