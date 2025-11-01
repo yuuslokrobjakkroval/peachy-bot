@@ -382,7 +382,7 @@ class ServerStatsManager {
     if (existing) clearTimeout(existing);
 
     // Throttle: ensure at least 10 seconds between successive updates per guild
-    const MIN_INTERVAL = 10 * 1000; // 10 seconds
+    const MIN_INTERVAL = 30 * 1000; // 10 seconds
     const last = this._lastUpdateAt.get(guildId) || 0;
     const since = Date.now() - last;
     // If the last update was recent, ensure we wait the remaining time (or the provided delay, whichever is larger)

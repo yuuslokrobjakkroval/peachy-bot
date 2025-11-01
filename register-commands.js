@@ -9,7 +9,7 @@ async function registerSlashCommands() {
   console.log("🔧 Starting slash command registration...");
 
   try {
-    const rest = new REST({ version: "10" }).setToken(globalConfig.token);
+    let rest = new REST({ version: "10" }).setToken(globalConfig.token);
 
     // Load all commands
     const commands = [];
@@ -139,6 +139,10 @@ async function registerSlashCommands() {
 
       try {
         // Get existing commands and merge with ours
+        // Ensure rest is available here; re-create it if necessary
+        if (typeof rest === "undefined" || !rest) {
+          rest = new REST({ version: "10" }).setToken(globalConfig.token);
+        }
         const existingCommands = await rest.get(applicationCommands);
         const allCommands = [...existingCommands];
 

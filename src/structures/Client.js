@@ -163,7 +163,7 @@ module.exports = class PeachyClient extends Client {
             this.config.guildId ?? ""
           );
       try {
-        const rest = new REST({ version: "10" }).setToken(
+        let rest = new REST({ version: "10" }).setToken(
           this.config.token ?? ""
         );
 
@@ -217,6 +217,12 @@ module.exports = class PeachyClient extends Client {
           );
           try {
             // First, get existing commands again
+            // Ensure `rest` is available in this scope. If it isn't, create a new REST instance.
+            if (typeof rest === "undefined" || !rest) {
+              rest = new REST({ version: "10" }).setToken(
+                this.config.token ?? ""
+              );
+            }
             const existingCommands = await rest.get(applicationCommands);
 
             // Register only our bot commands, keeping all existing ones
