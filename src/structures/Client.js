@@ -142,7 +142,6 @@ module.exports = class PeachyClient extends Client {
                   : null,
             };
             this.body.push(data);
-            commandCounter++;
           }
         } catch (error) {
           this.logger.error(
@@ -153,106 +152,18 @@ module.exports = class PeachyClient extends Client {
       }
     }
 
-    this.logger.info(`Loaded a total of ${commandCounter} commands.`);
-
-    this.once("clientReady", async () => {
-      const applicationCommands = globalConfig.production
-        ? Routes.applicationCommands(this.config.clientId ?? "")
-        : Routes.applicationGuildCommands(
-            this.config.clientId ?? "",
-            this.config.guildId ?? ""
-          );
+    this.once("ready", async () => {
+      const applicationCommands = Routes.applicationCommands(
+        this.config.clientId ?? ""
+      );
       try {
         let rest = new REST({ version: "10" }).setToken(
           this.config.token ?? ""
         );
-
-        // Get existing commands to check for Entry Point commands
-        const existingCommands = await rest.get(applicationCommands);
-
-        // Filter Entry Point commands (these have integration_types_config)
-        const entryPointCommands = existingCommands.filter(
-          (cmd) =>
-            cmd.integration_types_config &&
-            cmd.integration_types_config !== null
-        );
-
-        // Start with our commands
-        const commandsToRegister = [...this.body];
-
-        // Always include existing Entry Point commands to avoid the error
-        entryPointCommands.forEach((entryCmd) => {
-          const existsInBody = this.body.find(
-            (cmd) => cmd.name === entryCmd.name
-          );
-          if (!existsInBody) {
-            // Preserve all Entry Point command properties
-            commandsToRegister.push({
-              name: entryCmd.name,
-              description: entryCmd.description,
-              type: entryCmd.type,
-              options: entryCmd.options || [],
-              integration_types_config: entryCmd.integration_types_config,
-              contexts: entryCmd.contexts,
-              default_member_permissions: entryCmd.default_member_permissions,
-              dm_permission: entryCmd.dm_permission,
-              nsfw: entryCmd.nsfw,
-            });
-          }
-        });
-
-        this.logger.info(
-          `Registering ${commandsToRegister.length} commands (${this.body.length} bot commands + ${entryPointCommands.length} entry point commands)`
-        );
-
-        await rest.put(applicationCommands, { body: commandsToRegister });
+        await rest.put(applicationCommands, { body: this.body });
         this.logger.info(`Successfully loaded slash commands!`);
       } catch (error) {
         this.logger.error("Error registering slash commands:", error);
-
-        // If we still get the Entry Point error, try a different approach
-        if (error.code === 50240) {
-          this.logger.warn(
-            "Entry Point command error detected, attempting alternative registration..."
-          );
-          try {
-            // First, get existing commands again
-            // Ensure `rest` is available in this scope. If it isn't, create a new REST instance.
-            if (typeof rest === "undefined" || !rest) {
-              rest = new REST({ version: "10" }).setToken(
-                this.config.token ?? ""
-              );
-            }
-            const existingCommands = await rest.get(applicationCommands);
-
-            // Register only our bot commands, keeping all existing ones
-            const allCommands = [...existingCommands];
-
-            // Update or add our commands
-            this.body.forEach((newCmd) => {
-              const existingIndex = allCommands.findIndex(
-                (cmd) => cmd.name === newCmd.name
-              );
-              if (existingIndex >= 0) {
-                // Update existing command
-                allCommands[existingIndex] = newCmd;
-              } else {
-                // Add new command
-                allCommands.push(newCmd);
-              }
-            });
-
-            await rest.put(applicationCommands, { body: allCommands });
-            this.logger.info(
-              `Successfully loaded slash commands using alternative method!`
-            );
-          } catch (secondError) {
-            this.logger.error(
-              "Alternative registration also failed:",
-              secondError
-            );
-          }
-        }
       }
 
       // Start Server Stats Manager after bot is ready
