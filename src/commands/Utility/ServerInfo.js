@@ -34,47 +34,51 @@ module.exports = class ServerInfo extends Command {
 
   async run(client, ctx, args, color, emoji, language) {
     const generalMessages = language.locales.get(
-      language.defaultLocale,
+      language.defaultLocale
     )?.generalMessages;
 
     if (ctx.isInteraction) {
       await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     } else {
       await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
+        generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     }
 
     const { guild } = ctx;
 
-    // Fetch all members of the guild
-    const members = await guild.members.fetch();
+    // Use approximation and cached data to avoid timeout issues
+    const approximateMemberCount =
+      guild.approximateMemberCount || guild.memberCount;
 
-    const onlineCount = members.filter(
-      (member) => member.presence?.status === "online",
+    // Get presence counts from cached members only (to avoid fetching all members)
+    const cachedMembers = guild.members.cache;
+    const onlineCount = cachedMembers.filter(
+      (member) => member.presence?.status === "online"
     ).size;
-    const idleCount = members.filter(
-      (member) => member.presence?.status === "idle",
+    const idleCount = cachedMembers.filter(
+      (member) => member.presence?.status === "idle"
     ).size;
-    const dndCount = members.filter(
-      (member) => member.presence?.status === "dnd",
+    const dndCount = cachedMembers.filter(
+      (member) => member.presence?.status === "dnd"
     ).size;
-    const offlineCount = members.filter(
-      (member) => !member.presence || member.presence?.status === "offline",
+    const offlineCount = cachedMembers.filter(
+      (member) => !member.presence || member.presence?.status === "offline"
     ).size;
 
+    // Calculate estimated offline counts based on cached data
     const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
     const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
 
-    // Count members offline for 7 days and 30 days
-    const offline7Days = members.filter(
-      (member) => !member.presence && member.joinedTimestamp < sevenDaysAgo,
+    // Count offline members from cached data only
+    const offline7Days = cachedMembers.filter(
+      (member) => !member.presence && member.joinedTimestamp < sevenDaysAgo
     ).size;
 
-    const offline30Days = members.filter(
-      (member) => !member.presence && member.joinedTimestamp < thirtyDaysAgo,
+    const offline30Days = cachedMembers.filter(
+      (member) => !member.presence && member.joinedTimestamp < thirtyDaysAgo
     ).size;
 
     // Get server icon and banner URLs
@@ -91,7 +95,7 @@ module.exports = class ServerInfo extends Command {
       client,
       ctx,
       guild,
-      members,
+      approximateMemberCount,
       onlineCount,
       idleCount,
       dndCount,
@@ -102,7 +106,7 @@ module.exports = class ServerInfo extends Command {
       emoji,
       generalMessages,
       globalEmoji,
-      bannerURL,
+      bannerURL
     );
 
     // Create buttons
@@ -116,7 +120,7 @@ module.exports = class ServerInfo extends Command {
         .setCustomId("banner")
         .setLabel("Banner")
         .setStyle(ButtonStyle.Secondary)
-        .setEmoji("🏞️"),
+        .setEmoji("🏞️")
     );
 
     // Send the initial message with buttons
@@ -159,7 +163,7 @@ module.exports = class ServerInfo extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName,
+                ctx.author.displayName
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
@@ -176,7 +180,7 @@ module.exports = class ServerInfo extends Command {
             .setCustomId("banner")
             .setLabel("Banner")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("🏞️"),
+            .setEmoji("🏞️")
         );
 
         await interaction.update({
@@ -194,7 +198,7 @@ module.exports = class ServerInfo extends Command {
             text:
               generalMessages.requestedBy.replace(
                 "%{username}",
-                ctx.author.displayName,
+                ctx.author.displayName
               ) || `Requested by ${ctx.author.displayName}`,
             iconURL: ctx.author.displayAvatarURL(),
           })
@@ -211,7 +215,7 @@ module.exports = class ServerInfo extends Command {
             .setCustomId("icon")
             .setLabel("Avatar")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji("🖼️"),
+            .setEmoji("🖼️")
         );
 
         await interaction.update({
@@ -238,7 +242,7 @@ module.exports = class ServerInfo extends Command {
           .setLabel("Banner")
           .setStyle(ButtonStyle.Secondary)
           .setEmoji("🏞️")
-          .setDisabled(true),
+          .setDisabled(true)
       );
 
       // Try to update the message with disabled buttons
@@ -259,7 +263,7 @@ module.exports = class ServerInfo extends Command {
     client,
     ctx,
     guild,
-    members,
+    approximateMemberCount,
     onlineCount,
     idleCount,
     dndCount,
@@ -270,7 +274,7 @@ module.exports = class ServerInfo extends Command {
     emoji,
     generalMessages,
     globalEmoji,
-    bannerURL,
+    bannerURL
   ) {
     return client
       .embed()
@@ -280,7 +284,7 @@ module.exports = class ServerInfo extends Command {
         generalMessages.title
           .replace("%{mainLeft}", emoji.mainLeft)
           .replace("%{title}", "SERVER INFO")
-          .replace("%{mainRight}", emoji.mainRight),
+          .replace("%{mainRight}", emoji.mainRight)
       )
       .addFields([
         {
@@ -317,12 +321,12 @@ module.exports = class ServerInfo extends Command {
           inline: false,
         },
         {
-          name: "🧍 Member Status",
+          name: "🧍 Member Status (Visible)",
           value: `Online ${globalEmoji.arrow} **${onlineCount}** members\nIdle ${globalEmoji.arrow} **${idleCount}** members\nDo Not Disturb ${globalEmoji.arrow} **${dndCount}** members\nOffline ${globalEmoji.arrow} **${offlineCount}** members`,
           inline: false,
         },
         {
-          name: "📅 Offline Members",
+          name: "📅 Offline Members (Cached)",
           value: `7 Days ${globalEmoji.arrow} **${offline7Days}** members\n30 Days ${globalEmoji.arrow} **${offline30Days}** members`,
           inline: false,
         },
@@ -340,7 +344,7 @@ module.exports = class ServerInfo extends Command {
         },
         {
           name: "👥 Total Members",
-          value: `${globalEmoji.arrow} **${guild.memberCount}** members`,
+          value: `${globalEmoji.arrow} **${approximateMemberCount}** members`,
           inline: false,
         },
         {
@@ -360,7 +364,7 @@ module.exports = class ServerInfo extends Command {
         text:
           generalMessages.requestedBy.replace(
             "%{username}",
-            ctx.author.displayName,
+            ctx.author.displayName
           ) || `Requested by ${ctx.author.displayName}`,
         iconURL: ctx.author.displayAvatarURL(),
       })
