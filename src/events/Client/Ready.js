@@ -5,7 +5,7 @@ const BotLog = require("../../utils/BotLog.js");
 module.exports = class Ready extends Event {
   constructor(client, file) {
     super(client, file, {
-      name: "clientReady",
+      name: "ready",
     });
   }
 
