@@ -1,6 +1,11 @@
 const { Command } = require("../../structures");
 const Users = require("../../schemas/user");
 const globalEmoji = require("../../utils/Emoji");
+const {
+  SeparatorSpacingSize,
+  ContainerBuilder,
+  MessageFlags,
+} = require("discord.js");
 
 const maxAmount = 300000;
 
@@ -207,32 +212,49 @@ module.exports = class Slots extends Command {
 
       const newBalance = coin + win - baseCoins;
 
-      const initialEmbed = client
-        .embed()
-        .setColor(color.main)
-        .setThumbnail(
-          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+      // Create initial display with spinning slots
+      const initialContainer = new ContainerBuilder()
+        .setAccentColor(color.main)
+        .addSectionComponents((section) =>
+          section
+            .addTextDisplayComponents(
+              (text) =>
+                text.setContent(
+                  `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**`
+                ),
+              (text) =>
+                text.setContent(
+                  `### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n## **「${emoji.slots.spin} ${emoji.slots.spin} ${emoji.slots.spin}」**\n### ╚═ •» ${globalEmoji.romdoul} «•« ══╝`
+                )
+            )
+            .setThumbnailAccessory((thumb) =>
+              thumb
+                .setURL(
+                  ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+                )
+                .setDescription(ctx.author.displayName)
+            )
         )
-        .setDescription(
-          `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
-            globalEmoji.romdoul
-          } «• ═╗\n ## **   「${emoji.slots.spin} ${emoji.slots.spin} ${
-            emoji.slots.spin
-          }」 **\n ### ╚═ •» ${
-            globalEmoji.romdoul
-          } «•« ══╝\n\n${slotMessages.bet
-            .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote}", emoji.coin)}\n`
+        .addSeparatorComponents((sep) =>
+          sep.setSpacing(SeparatorSpacingSize.Large)
         )
-        .setFooter({
-          text: `${generalMessages.gameInProgress.replace(
-            "%{user}",
-            ctx.author.displayName
-          )}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            slotMessages.bet
+              .replace("%{coin}", client.utils.formatNumber(baseCoins))
+              .replace("%{coinEmote}", emoji.coin)
+          )
+        )
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            `${generalMessages.gameInProgress.replace("%{user}", ctx.author.displayName)}`
+          )
+        );
 
-      const message = await ctx.sendMessage({ embeds: [initialEmbed] });
+      const message = await ctx.sendMessage({
+        components: [initialContainer],
+        flags: MessageFlags.IsComponentsV2,
+      });
 
       // Update balance after sending message
       await Users.updateOne(
@@ -240,105 +262,154 @@ module.exports = class Slots extends Command {
         { $set: { "balance.coin": newBalance, "balance.bank": bank } }
       );
 
-      const spinEmbed = client
-        .embed()
-        .setColor(color.main)
-        .setThumbnail(
-          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+      const spinContainer = new ContainerBuilder()
+        .setAccentColor(color.main)
+        .addSectionComponents((section) =>
+          section
+            .addTextDisplayComponents(
+              (text) =>
+                text.setContent(
+                  `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**`
+                ),
+              (text) =>
+                text.setContent(
+                  `### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n## **「${rslots[0]} ${emoji.slots.spin} ${emoji.slots.spin}」**\n### ╚═ •» ${globalEmoji.romdoul} «•« ══╝`
+                )
+            )
+            .setThumbnailAccessory((thumb) =>
+              thumb
+                .setURL(
+                  ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+                )
+                .setDescription(ctx.author.displayName)
+            )
         )
-        .setDescription(
-          `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
-            globalEmoji.romdoul
-          } «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${
-            emoji.slots.spin
-          }」 **\n ### ╚═ •» ${
-            globalEmoji.romdoul
-          } «•« ══╝\n\n${slotMessages.bet
-            .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote}", emoji.coin)}\n`
+        .addSeparatorComponents((sep) =>
+          sep.setSpacing(SeparatorSpacingSize.Large)
         )
-        .setFooter({
-          text: `${generalMessages.gameInProgress.replace(
-            "%{user}",
-            ctx.author.displayName
-          )}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            slotMessages.bet
+              .replace("%{coin}", client.utils.formatNumber(baseCoins))
+              .replace("%{coinEmote}", emoji.coin)
+          )
+        )
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            `${generalMessages.gameInProgress.replace("%{user}", ctx.author.displayName)}`
+          )
+        );
 
-      const spinSecondEmbed = client
-        .embed()
-        .setColor(color.main)
-        .setThumbnail(
-          ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+      const spinSecondContainer = new ContainerBuilder()
+        .setAccentColor(color.main)
+        .addSectionComponents((section) =>
+          section
+            .addTextDisplayComponents(
+              (text) =>
+                text.setContent(
+                  `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**`
+                ),
+              (text) =>
+                text.setContent(
+                  `### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n## **「${rslots[0]} ${emoji.slots.spin} ${rslots[2]}」**\n### ╚═ •» ${globalEmoji.romdoul} «•« ══╝`
+                )
+            )
+            .setThumbnailAccessory((thumb) =>
+              thumb
+                .setURL(
+                  ctx.author.displayAvatarURL({ dynamic: true, size: 1024 })
+                )
+                .setDescription(ctx.author.displayName)
+            )
         )
-        .setDescription(
-          `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
-            globalEmoji.romdoul
-          } «• ═╗\n ## **   「${rslots[0]} ${emoji.slots.spin} ${
-            rslots[2]
-          }」 **\n ### ╚═ •» ${
-            globalEmoji.romdoul
-          } «•« ══╝\n\n${slotMessages.bet
-            .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote}", emoji.coin)}\n`
+        .addSeparatorComponents((sep) =>
+          sep.setSpacing(SeparatorSpacingSize.Large)
         )
-        .setFooter({
-          text: `${generalMessages.gameInProgress.replace(
-            "%{user}",
-            ctx.author.displayName
-          )}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            slotMessages.bet
+              .replace("%{coin}", client.utils.formatNumber(baseCoins))
+              .replace("%{coinEmote}", emoji.coin)
+          )
+        )
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            `${generalMessages.gameInProgress.replace("%{user}", ctx.author.displayName)}`
+          )
+        );
 
-      const resultEmbed = client
-        .embed()
-        .setColor(color.main)
-        .setThumbnail(
-          win === 0
-            ? client.utils.emojiToImage(
-                emoji?.result
-                  ? client.utils.getRandomElement(emoji?.result?.lose)
-                  : globalEmoji.option.lose
-              )
-            : client.utils.emojiToImage(
-                emoji?.result
-                  ? client.utils.getRandomElement(emoji?.result?.win)
-                  : globalEmoji.option.win
-              )
+      // Create result display with win/lose information and interactive buttons
+      const resultThumbnailUrl =
+        win === 0
+          ? client.utils.emojiToImage(
+              emoji?.result
+                ? client.utils.getRandomElement(emoji?.result?.lose)
+                : globalEmoji.option.lose
+            )
+          : client.utils.emojiToImage(
+              emoji?.result
+                ? client.utils.getRandomElement(emoji?.result?.win)
+                : globalEmoji.option.win
+            );
+
+      const resultContainer = new ContainerBuilder()
+        .setAccentColor(color.main)
+        .addSectionComponents((section) =>
+          section
+            .addTextDisplayComponents(
+              (text) =>
+                text.setContent(
+                  `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**`
+                ),
+              (text) =>
+                text.setContent(
+                  `### ╔══ »•» ${globalEmoji.romdoul} «• ═╗\n## **「${rslots[0]} ${rslots[1]} ${rslots[2]}」**\n### ╚═ •» ${globalEmoji.romdoul} «•« ══╝`
+                )
+            )
+            .setThumbnailAccessory((thumb) =>
+              thumb.setURL(resultThumbnailUrl).setDescription("Result")
+            )
         )
-        .setDescription(
-          `# **${emoji.mainLeft} SLOTS ${emoji.mainRight}**\n ### ╔══ »•» ${
-            globalEmoji.romdoul
-          } «• ═╗\n ## **   「${rslots[0]} ${rslots[1]} ${
-            rslots[2]
-          }」 **\n ### ╚═ •» ${
-            globalEmoji.romdoul
-          } «•« ══╝\n\n${slotMessages.bet
-            .replace("%{coin}", client.utils.formatNumber(baseCoins))
-            .replace("%{coinEmote}", emoji.coin)}\n${
-            win === 0
-              ? `${slotMessages.lost
-                  .replace("%{coin}", client.utils.formatNumber(baseCoins))
-                  .replace("%{coinEmote}", emoji.coin)}`
-              : `${slotMessages.won
-                  .replace("%{coin}", client.utils.formatNumber(win))
-                  .replace("%{coinEmote}", emoji.coin)}`
-          }`
+        .addSeparatorComponents((sep) => sep)
+        .addTextDisplayComponents(
+          (text) =>
+            text.setContent(
+              slotMessages.bet
+                .replace("%{coin}", client.utils.formatNumber(baseCoins))
+                .replace("%{coinEmote}", emoji.coin)
+            ),
+          (text) =>
+            text.setContent(
+              win === 0
+                ? slotMessages.lost
+                    .replace("%{coin}", client.utils.formatNumber(baseCoins))
+                    .replace("%{coinEmote}", emoji.coin)
+                : slotMessages.won
+                    .replace("%{coin}", client.utils.formatNumber(win))
+                    .replace("%{coinEmote}", emoji.coin)
+            )
         )
-        .setFooter({
-          text: `${generalMessages.gameOver.replace(
-            "%{user}",
-            ctx.author.displayName
-          )}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            `${generalMessages.gameOver.replace("%{user}", ctx.author.displayName)}`
+          )
+        );
 
       setTimeout(async () => {
-        await message.edit({ embeds: [spinEmbed] });
+        await message.edit({
+          components: [spinContainer],
+          flags: MessageFlags.IsComponentsV2,
+        });
         setTimeout(async () => {
-          await message.edit({ embeds: [spinSecondEmbed] });
+          await message.edit({
+            components: [spinSecondContainer],
+            flags: MessageFlags.IsComponentsV2,
+          });
           setTimeout(async () => {
-            await message.edit({ embeds: [resultEmbed] });
+            await message.edit({
+              components: [resultContainer],
+              flags: MessageFlags.IsComponentsV2,
+            });
           }, 1000);
         }, 700);
       }, 1000);

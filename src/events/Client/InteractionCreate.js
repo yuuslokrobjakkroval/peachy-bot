@@ -5,10 +5,14 @@ const {
   InteractionType,
   PermissionFlagsBits,
   ButtonInteraction,
+  UserSelectMenuInteraction,
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   MessageFlags,
+  ContainerBuilder,
+  MediaGalleryBuilder,
+  UserSelectMenuBuilder,
 } = require("discord.js");
 const users = require("../../schemas/user");
 const GiveawaySchema = require("../../schemas/giveaway");
@@ -1107,6 +1111,326 @@ module.exports = class InteractionCreate extends Event {
 
           default: {
             break;
+          }
+        }
+      } else if (
+        interaction instanceof UserSelectMenuInteraction &&
+        interaction.type === InteractionType.MessageComponent
+      ) {
+        // Handle User Select Menu interactions
+        if (interaction.customId.startsWith("avatar_select_")) {
+          const requesterId = interaction.customId.split("_")[2];
+
+          // Check if the person using the select menu is the one who requested the command
+          if (interaction.user.id !== requesterId) {
+            return await interaction.reply({
+              content:
+                "❌ You cannot use this menu. Please run the command yourself.",
+              flags: MessageFlags.Ephemeral,
+            });
+          }
+
+          await interaction.deferUpdate();
+
+          const { color, emoji, language } =
+            await this.client.setColorBasedOnTheme(interaction.user.id);
+          const generalMessages = language.locales.get(
+            language.defaultLocale
+          )?.generalMessages;
+
+          const selectedUser = interaction.users.first();
+
+          if (!selectedUser) {
+            return await interaction.followUp({
+              content: "❌ Could not find the selected user.",
+              flags: MessageFlags.Ephemeral,
+            });
+          }
+
+          // Get avatar URLs in different formats
+          const avatarPNG = selectedUser.displayAvatarURL({
+            extension: "png",
+            size: 4096,
+          });
+          const avatarJPG = selectedUser.displayAvatarURL({
+            extension: "jpg",
+            size: 4096,
+          });
+          const avatarWEBP = selectedUser.displayAvatarURL({
+            extension: "webp",
+            size: 4096,
+          });
+          // Check if user has an animated avatar for GIF option
+          const isAnimated = selectedUser.avatar?.startsWith("a_");
+          const avatarGIF = isAnimated
+            ? selectedUser.displayAvatarURL({ extension: "gif", size: 4096 })
+            : null;
+
+          // Create updated avatar display with the selected user
+          const avatarContainer = new ContainerBuilder()
+            .setAccentColor(color.main)
+            .addTextDisplayComponents((text) =>
+              text.setContent(
+                `# **${emoji.mainLeft} AVATAR ${emoji.mainRight}**`
+              )
+            )
+            .addSeparatorComponents((sep) => sep)
+            .addMediaGalleryComponents((gallery) =>
+              gallery.addItems((item) =>
+                item
+                  .setURL(
+                    selectedUser.displayAvatarURL({
+                      dynamic: true,
+                      extension: "png",
+                      size: 1024,
+                    })
+                  )
+                  .setDescription(
+                    `${selectedUser.displayName || selectedUser.username}'s Full Avatar`
+                  )
+              )
+            )
+            .addSeparatorComponents((sep) => sep.setDivider(false))
+            .addSectionComponents((section) =>
+              section
+                .addTextDisplayComponents((text) =>
+                  text.setContent("**Download Avatar:**")
+                )
+                .setButtonAccessory((button) =>
+                  button
+                    .setLabel("🖼️ PNG")
+                    .setStyle(ButtonStyle.Link)
+                    .setURL(avatarPNG)
+                )
+            )
+            .addSectionComponents((section) =>
+              section
+                .addTextDisplayComponents((text) =>
+                  text.setContent("High quality JPG format")
+                )
+                .setButtonAccessory((button) =>
+                  button
+                    .setLabel("📸 JPG")
+                    .setStyle(ButtonStyle.Link)
+                    .setURL(avatarJPG)
+                )
+            );
+
+          // Add GIF button only if avatar is animated
+          if (avatarGIF) {
+            avatarContainer.addSectionComponents((section) =>
+              section
+                .addTextDisplayComponents((text) =>
+                  text.setContent("Animated GIF format")
+                )
+                .setButtonAccessory((button) =>
+                  button
+                    .setLabel("✨ GIF")
+                    .setStyle(ButtonStyle.Link)
+                    .setURL(avatarGIF)
+                )
+            );
+          }
+
+          avatarContainer
+            .addSectionComponents((section) =>
+              section
+                .addTextDisplayComponents((text) =>
+                  text.setContent("WebP format (smallest size)")
+                )
+                .setButtonAccessory((button) =>
+                  button
+                    .setLabel("📦 WEBP")
+                    .setStyle(ButtonStyle.Link)
+                    .setURL(avatarWEBP)
+                )
+            )
+            .addSeparatorComponents((sep) => sep.setDivider(false))
+            .addActionRowComponents((row) =>
+              row.setComponents(
+                new UserSelectMenuBuilder()
+                  .setCustomId(`avatar_select_${interaction.user.id}`)
+                  .setPlaceholder("🖼️ Select a user to view their avatar")
+                  .setMinValues(1)
+                  .setMaxValues(1)
+              )
+            )
+            .addTextDisplayComponents((text) =>
+              text.setContent(
+                `${generalMessages.requestedBy.replace("%{username}", interaction.user.displayName) || `Requested by ${interaction.user.displayName}`}`
+              )
+            );
+
+          await interaction.editReply({
+            components: [avatarContainer],
+            flags: MessageFlags.IsComponentsV2,
+          });
+        } else if (interaction.customId.startsWith("banner_select_")) {
+          const requesterId = interaction.customId.split("_")[2];
+
+          // Check if the person using the select menu is the one who requested the command
+          if (interaction.user.id !== requesterId) {
+            return await interaction.reply({
+              content:
+                "❌ You cannot use this menu. Please run the command yourself.",
+              flags: MessageFlags.Ephemeral,
+            });
+          }
+
+          await interaction.deferUpdate();
+
+          const { color, emoji, language } =
+            await this.client.setColorBasedOnTheme(interaction.user.id);
+          const generalMessages = language.locales.get(
+            language.defaultLocale
+          )?.generalMessages;
+          const bannerMessages = language.locales.get(language.defaultLocale)
+            ?.utilityMessages?.bannerMessages;
+
+          const selectedUser = interaction.users.first();
+
+          if (!selectedUser) {
+            return await interaction.followUp({
+              content: "❌ Could not find the selected user.",
+              flags: MessageFlags.Ephemeral,
+            });
+          }
+
+          try {
+            const fetchedUser = await selectedUser.fetch();
+            const bannerURL = fetchedUser.bannerURL({
+              dynamic: true,
+              size: 1024,
+            });
+
+            if (!bannerURL) {
+              return await interaction.followUp({
+                content:
+                  bannerMessages?.noBannerFound ||
+                  "❌ This user does not have a banner.",
+                flags: MessageFlags.Ephemeral,
+              });
+            }
+
+            // Get banner URLs in different formats
+            const bannerPNG = fetchedUser.bannerURL({
+              extension: "png",
+              size: 4096,
+            });
+            const bannerJPG = fetchedUser.bannerURL({
+              extension: "jpg",
+              size: 4096,
+            });
+            const bannerWEBP = fetchedUser.bannerURL({
+              extension: "webp",
+              size: 4096,
+            });
+            // Check if user has an animated banner for GIF option
+            const isAnimated = fetchedUser.banner?.startsWith("a_");
+            const bannerGIF = isAnimated
+              ? fetchedUser.bannerURL({ extension: "gif", size: 4096 })
+              : null;
+
+            // Create updated banner display with the selected user
+            const bannerContainer = new ContainerBuilder()
+              .setAccentColor(color.main)
+              .addTextDisplayComponents((text) =>
+                text.setContent(
+                  `# **${emoji.mainLeft} BANNER ${emoji.mainRight}**`
+                )
+              )
+              .addSeparatorComponents((sep) => sep)
+              .addMediaGalleryComponents((gallery) =>
+                gallery.addItems((item) =>
+                  item
+                    .setURL(bannerURL)
+                    .setDescription(
+                      `${selectedUser.displayName || selectedUser.username}'s Banner`
+                    )
+                )
+              )
+              .addSeparatorComponents((sep) => sep.setDivider(false))
+              .addSectionComponents((section) =>
+                section
+                  .addTextDisplayComponents((text) =>
+                    text.setContent("**Download Banner:**")
+                  )
+                  .setButtonAccessory((button) =>
+                    button
+                      .setLabel("🖼️ PNG")
+                      .setStyle(ButtonStyle.Link)
+                      .setURL(bannerPNG)
+                  )
+              )
+              .addSectionComponents((section) =>
+                section
+                  .addTextDisplayComponents((text) =>
+                    text.setContent("High quality JPG format")
+                  )
+                  .setButtonAccessory((button) =>
+                    button
+                      .setLabel("📸 JPG")
+                      .setStyle(ButtonStyle.Link)
+                      .setURL(bannerJPG)
+                  )
+              );
+
+            // Add GIF button only if banner is animated
+            if (bannerGIF) {
+              bannerContainer.addSectionComponents((section) =>
+                section
+                  .addTextDisplayComponents((text) =>
+                    text.setContent("Animated GIF format")
+                  )
+                  .setButtonAccessory((button) =>
+                    button
+                      .setLabel("✨ GIF")
+                      .setStyle(ButtonStyle.Link)
+                      .setURL(bannerGIF)
+                  )
+              );
+            }
+
+            bannerContainer
+              .addSectionComponents((section) =>
+                section
+                  .addTextDisplayComponents((text) =>
+                    text.setContent("WebP format (smallest size)")
+                  )
+                  .setButtonAccessory((button) =>
+                    button
+                      .setLabel("📦 WEBP")
+                      .setStyle(ButtonStyle.Link)
+                      .setURL(bannerWEBP)
+                  )
+              )
+              .addSeparatorComponents((sep) => sep.setDivider(false))
+              .addActionRowComponents((row) =>
+                row.setComponents(
+                  new UserSelectMenuBuilder()
+                    .setCustomId(`banner_select_${interaction.user.id}`)
+                    .setPlaceholder("🎨 Select a user to view their banner")
+                    .setMinValues(1)
+                    .setMaxValues(1)
+                )
+              )
+              .addTextDisplayComponents((text) =>
+                text.setContent(
+                  `${generalMessages.requestedBy.replace("%{username}", interaction.user.displayName) || `Requested by ${interaction.user.displayName}`}`
+                )
+              );
+
+            await interaction.editReply({
+              components: [bannerContainer],
+              flags: MessageFlags.IsComponentsV2,
+            });
+          } catch (err) {
+            return await interaction.followUp({
+              content:
+                bannerMessages?.error ||
+                "❌ An error occurred while fetching the banner.",
+              flags: MessageFlags.Ephemeral,
+            });
           }
         }
       }
