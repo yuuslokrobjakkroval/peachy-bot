@@ -1,5 +1,14 @@
 const { Command } = require("../../structures/index.js");
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ContainerBuilder,
+  SectionBuilder,
+  SeparatorBuilder,
+  MediaGalleryBuilder,
+  MessageFlags,
+} = require("discord.js");
 const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Kiss extends Command {
@@ -105,7 +114,7 @@ module.exports = class Kiss extends Command {
           client,
           ctx,
           errorMessages.noUser,
-          color,
+          color
         );
       }
 
@@ -114,39 +123,62 @@ module.exports = class Kiss extends Command {
           client,
           ctx,
           errorMessages.selfKiss,
-          color,
+          color
         );
       }
 
       // Get random emoji
       const randomEmoji = client.utils.getRandomElement(
         emoji.actions?.kisses ||
-          globalEmoji.actions.kisses || ["💋", "😘", "😚"],
+          globalEmoji.actions.kisses || ["💋", "😘", "😚"]
       );
 
-      // Create the embed message for kissing
-      const embed = client
-        .embed()
-        .setColor(color.main)
-        .setImage(client.utils.emojiToImage(randomEmoji))
-        .setDescription(
-          generalMessages.title
-            .replace("%{mainLeft}", emoji.mainLeft || "❤️")
-            .replace("%{title}", "KISS")
-            .replace("%{mainRight}", emoji.mainRight || "❤️") +
-            "\n\n" +
-            kissMessages.description
-              .replace("%{displayName}", `**${ctx.author.displayName}**`)
-              .replace("%{target}", `**${target.displayName}**`),
+      // Create the container with Components v2
+      const kissContainer = new ContainerBuilder()
+        .setAccentColor(color.main)
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            generalMessages.title
+              .replace("%{mainLeft}", emoji.mainLeft || "❤️")
+              .replace("%{title}", "KISS")
+              .replace("%{mainRight}", emoji.mainRight || "❤️")
+          )
         )
-        .setFooter({
-          text:
-            generalMessages.requestedBy.replace(
-              "%{username}",
-              ctx.author.displayName,
-            ) || `Requested by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
+        .addSeparatorComponents((sep) => sep)
+        .addSectionComponents((section) =>
+          section
+            .addTextDisplayComponents(
+              (text) =>
+                text.setContent(
+                  `**${ctx.author.displayName}** → **${target.displayName}**`
+                ),
+              (text) =>
+                text.setContent(
+                  kissMessages.description
+                    .replace("%{displayName}", `**${ctx.author.displayName}**`)
+                    .replace("%{target}", `**${target.displayName}**`)
+                )
+            )
+            .setThumbnailAccessory((thumb) =>
+              thumb
+                .setURL(target.displayAvatarURL({ dynamic: true, size: 256 }))
+                .setDescription(target.displayName)
+            )
+        )
+        .addSeparatorComponents((sep) => sep.setDivider(false))
+        .addMediaGalleryComponents((gallery) =>
+          gallery.addItems((item) =>
+            item
+              .setURL(client.utils.emojiToImage(randomEmoji))
+              .setDescription("Kiss animation")
+          )
+        )
+        .addSeparatorComponents((sep) => sep)
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            `*${generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`}*`
+          )
+        );
 
       // Create reaction buttons (only for the target to use)
       const kissBackButton = new ButtonBuilder()
@@ -163,13 +195,13 @@ module.exports = class Kiss extends Command {
 
       const row = new ActionRowBuilder().addComponents(
         kissBackButton,
-        runButton,
+        runButton
       );
 
-      // Send the message with buttons
+      // Send the message with Components v2 and buttons
       const message = await ctx.sendMessage({
-        embeds: [embed],
-        components: [row],
+        components: [kissContainer, row],
+        flags: MessageFlags.IsComponentsV2,
       });
 
       // Create collector for button interactions
@@ -191,48 +223,78 @@ module.exports = class Kiss extends Command {
       collector.on("collect", async (interaction) => {
         const [action, authorId, targetId] = interaction.customId.split("_");
 
-        // Create response embed based on action
-        const responseEmbed = client.embed().setColor(color.main);
+        // Create response container based on action
+        let responseText = "";
+        let responseEmoji = "";
 
         switch (action) {
           case "kiss":
-            responseEmbed
-              .setDescription(
-                kissMessages.kissBack
-                  .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`),
-              )
-              .setImage(
-                client.utils.emojiToImage(
-                  client.utils.getRandomElement(
-                    emoji.actions?.kisses ||
-                      globalEmoji.actions.kisses || ["💋", "😘", "😚"],
-                  ),
-                ),
-              );
+            responseText = kissMessages.kissBack
+              .replace("%{displayName}", `**${target.displayName}**`)
+              .replace("%{target}", `**${ctx.author.displayName}**`);
+            responseEmoji = client.utils.getRandomElement(
+              emoji.actions?.kisses ||
+                globalEmoji.actions.kisses || ["💋", "😘", "😚"]
+            );
             break;
 
           case "run":
-            responseEmbed
-              .setDescription(
-                kissMessages.runReaction
-                  .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`),
-              )
-              .setImage(client.utils.emojiToImage(emoji.run || "🏃"));
+            responseText = kissMessages.runReaction
+              .replace("%{displayName}", `**${target.displayName}**`)
+              .replace("%{target}", `**${ctx.author.displayName}**`);
+            responseEmoji = emoji.run || "🏃";
             break;
+        }
+
+        // Create response container with Components v2
+        const responseContainer = new ContainerBuilder()
+          .setAccentColor(
+            action === "run"
+              ? color.danger || color.main
+              : color.success || color.main
+          )
+          .addTextDisplayComponents((text) =>
+            text.setContent(
+              generalMessages.title
+                .replace("%{mainLeft}", emoji.mainLeft || "❤️")
+                .replace("%{title}", "REACTION")
+                .replace("%{mainRight}", emoji.mainRight || "❤️")
+            )
+          )
+          .addSeparatorComponents((sep) => sep)
+          .addSectionComponents((section) =>
+            section
+              .addTextDisplayComponents((text) => text.setContent(responseText))
+              .setThumbnailAccessory((thumb) =>
+                thumb
+                  .setURL(
+                    ctx.author.displayAvatarURL({ dynamic: true, size: 256 })
+                  )
+                  .setDescription(ctx.author.displayName)
+              )
+          )
+          .addSeparatorComponents((sep) => sep.setDivider(false));
+
+        // Only add media gallery if emoji is a custom Discord emoji
+        const emojiImageURL = client.utils.emojiToImage(responseEmoji);
+        if (emojiImageURL) {
+          responseContainer.addMediaGalleryComponents((gallery) =>
+            gallery.addItems((item) =>
+              item.setURL(emojiImageURL).setDescription("Reaction animation")
+            )
+          );
         }
 
         // Disable all buttons
         const disabledRow = new ActionRowBuilder().addComponents(
           ButtonBuilder.from(kissBackButton).setDisabled(true),
-          ButtonBuilder.from(runButton).setDisabled(true),
+          ButtonBuilder.from(runButton).setDisabled(true)
         );
 
         // Update the message with the response and disabled buttons
         await interaction.update({
-          embeds: [responseEmbed],
-          components: [disabledRow],
+          components: [responseContainer, disabledRow],
+          flags: MessageFlags.IsComponentsV2,
         });
 
         // Stop the collector since an action was taken
@@ -245,10 +307,13 @@ module.exports = class Kiss extends Command {
           try {
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(kissBackButton).setDisabled(true),
-              ButtonBuilder.from(runButton).setDisabled(true),
+              ButtonBuilder.from(runButton).setDisabled(true)
             );
 
-            await message.edit({ components: [disabledRow] });
+            await message.edit({
+              components: [kissContainer, disabledRow],
+              flags: MessageFlags.IsComponentsV2,
+            });
           } catch (error) {
             console.error("Error disabling buttons:", error);
           }
@@ -260,7 +325,7 @@ module.exports = class Kiss extends Command {
         client,
         ctx,
         "An error occurred while executing the command.",
-        color,
+        color
       );
     }
   }

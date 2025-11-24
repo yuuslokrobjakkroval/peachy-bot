@@ -431,9 +431,7 @@ module.exports = class Utils {
       // Generate level up image with background fallback
       const buildVoiceLevelImage = (bgType, bgValue) =>
         new canvafy.LevelUp()
-          .setAvatar(
-            member.user.displayAvatarURL({ format: "png", size: 512 })
-          )
+          .setAvatar(member.user.displayAvatarURL({ format: "png", size: 512 }))
           .setUsername(`${member.user.username}`, "#000000")
           .setBorder("#8BD3DD")
           .setBackground(bgType, bgValue)
@@ -1347,7 +1345,6 @@ module.exports = class Utils {
       const stickerId = match[1] || match[2];
       return `https://cdn.discordapp.com/stickers/${stickerId}.png`;
     } else {
-      // Fallback to null if no valid sticker ID is found
       return null;
     }
   }

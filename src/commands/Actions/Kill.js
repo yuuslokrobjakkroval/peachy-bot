@@ -1,5 +1,14 @@
 const { Command } = require("../../structures/index.js");
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ContainerBuilder,
+  SectionBuilder,
+  SeparatorBuilder,
+  MediaGalleryBuilder,
+  MessageFlags,
+} = require("discord.js");
 const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Kill extends Command {
@@ -107,7 +116,7 @@ module.exports = class Kill extends Command {
           client,
           ctx,
           errorMessages.noUser,
-          color,
+          color
         );
       }
 
@@ -116,38 +125,56 @@ module.exports = class Kill extends Command {
           client,
           ctx,
           errorMessages.selfKill,
-          color,
+          color
         );
       }
 
       // Get random emoji
       const randomEmoji = client.utils.getRandomElement(
-        emoji.actions?.kill || globalEmoji.actions?.kill || ["💀", "🔪", "⚰️"],
+        emoji.actions?.kill || globalEmoji.actions?.kill || ["💀", "🔪", "⚰️"]
       );
 
-      // Create the embed message for killing
-      const embed = client
-        .embed()
-        .setColor(color.main)
-        .setImage(client.utils.emojiToImage(randomEmoji))
-        .setDescription(
-          generalMessages.title
-            .replace("%{mainLeft}", emoji.mainLeft || "💀")
-            .replace("%{title}", "KILL")
-            .replace("%{mainRight}", emoji.mainRight || "💀") +
-            "\n\n" +
-            killMessages.description
-              .replace("%{displayName}", `**${ctx.author.displayName}**`)
-              .replace("%{target}", `**${target.displayName}**`),
+      // Create the container with Components v2
+      const killContainer = new ContainerBuilder()
+        .setAccentColor(color.main)
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            generalMessages.title
+              .replace("%{mainLeft}", emoji.mainLeft || "💀")
+              .replace("%{title}", "KILL")
+              .replace("%{mainRight}", emoji.mainRight || "💀")
+          )
         )
-        .setFooter({
-          text:
-            generalMessages.requestedBy.replace(
-              "%{username}",
-              ctx.author.displayName,
-            ) || `Requested by ${ctx.author.displayName}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
+        .addSeparatorComponents((sep) => sep)
+        .addSectionComponents((section) =>
+          section
+            .addTextDisplayComponents((text) =>
+              text.setContent(
+                killMessages.description
+                  .replace("%{displayName}", `**${ctx.author.displayName}**`)
+                  .replace("%{target}", `**${target.displayName}**`)
+              )
+            )
+            .setThumbnailAccessory((thumb) =>
+              thumb
+                .setURL(target.displayAvatarURL({ dynamic: true, size: 256 }))
+                .setDescription(target.displayName)
+            )
+        )
+        .addSeparatorComponents((sep) => sep.setDivider(false))
+        .addMediaGalleryComponents((gallery) =>
+          gallery.addItems((item) =>
+            item
+              .setURL(client.utils.emojiToImage(randomEmoji))
+              .setDescription("Kill animation")
+          )
+        )
+        .addSeparatorComponents((sep) => sep)
+        .addTextDisplayComponents((text) =>
+          text.setContent(
+            `*${generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`}*`
+          )
+        );
 
       // Create reaction buttons (only for the target to use)
       const reviveButton = new ButtonBuilder()
@@ -164,13 +191,13 @@ module.exports = class Kill extends Command {
 
       const row = new ActionRowBuilder().addComponents(
         reviveButton,
-        hauntButton,
+        hauntButton
       );
 
-      // Send the message with buttons
+      // Send the message with Components v2 and buttons
       const message = await ctx.sendMessage({
-        embeds: [embed],
-        components: [row],
+        components: [killContainer, row],
+        flags: MessageFlags.IsComponentsV2,
       });
 
       // Create collector for button interactions
@@ -192,41 +219,68 @@ module.exports = class Kill extends Command {
       collector.on("collect", async (interaction) => {
         const [action, authorId, targetId] = interaction.customId.split("_");
 
-        // Create response embed based on action
-        const responseEmbed = client.embed().setColor(color.main);
+        // Determine response details based on action
+        let responseDescription = "";
+        let responseEmoji = "";
+        let responseColor = color.main;
 
         switch (action) {
           case "revive":
-            responseEmbed
-              .setDescription(
-                killMessages.reviveReaction
-                  .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`),
-              )
-              .setImage(client.utils.emojiToImage(emoji.revive || "💖"));
+            responseDescription = killMessages.reviveReaction
+              .replace("%{displayName}", `**${target.displayName}**`)
+              .replace("%{target}", `**${ctx.author.displayName}**`);
+            responseEmoji = emoji.revive || "💖";
+            responseColor = color.success;
             break;
 
           case "haunt":
-            responseEmbed
-              .setDescription(
-                killMessages.hauntReaction
-                  .replace("%{displayName}", `**${target.displayName}**`)
-                  .replace("%{target}", `**${ctx.author.displayName}**`),
-              )
-              .setImage(client.utils.emojiToImage(emoji.ghost || "👻"));
+            responseDescription = killMessages.hauntReaction
+              .replace("%{displayName}", `**${target.displayName}**`)
+              .replace("%{target}", `**${ctx.author.displayName}**`);
+            responseEmoji = emoji.ghost || "👻";
+            responseColor = color.main;
             break;
         }
+
+        // Create response container with Components v2
+        const responseContainer = new ContainerBuilder()
+          .setAccentColor(responseColor)
+          .addSectionComponents((section) =>
+            section
+              .addTextDisplayComponents(
+                (text) =>
+                  text.setContent(
+                    `**${target.displayName}** → **${ctx.author.displayName}**`
+                  ),
+                (text) => text.setContent(responseDescription)
+              )
+              .setThumbnailAccessory((thumb) =>
+                thumb
+                  .setURL(
+                    ctx.author.displayAvatarURL({ dynamic: true, size: 256 })
+                  )
+                  .setDescription(ctx.author.displayName)
+              )
+          )
+          .addSeparatorComponents((sep) => sep.setDivider(false))
+          .addMediaGalleryComponents((gallery) =>
+            gallery.addItems((item) =>
+              item
+                .setURL(client.utils.emojiToImage(responseEmoji))
+                .setDescription("Response animation")
+            )
+          );
 
         // Disable all buttons
         const disabledRow = new ActionRowBuilder().addComponents(
           ButtonBuilder.from(reviveButton).setDisabled(true),
-          ButtonBuilder.from(hauntButton).setDisabled(true),
+          ButtonBuilder.from(hauntButton).setDisabled(true)
         );
 
         // Update the message with the response and disabled buttons
         await interaction.update({
-          embeds: [responseEmbed],
-          components: [disabledRow],
+          components: [responseContainer, disabledRow],
+          flags: MessageFlags.IsComponentsV2,
         });
 
         // Stop the collector since an action was taken
@@ -239,10 +293,13 @@ module.exports = class Kill extends Command {
           try {
             const disabledRow = new ActionRowBuilder().addComponents(
               ButtonBuilder.from(reviveButton).setDisabled(true),
-              ButtonBuilder.from(hauntButton).setDisabled(true),
+              ButtonBuilder.from(hauntButton).setDisabled(true)
             );
 
-            await message.edit({ components: [disabledRow] });
+            await message.edit({
+              components: [killContainer, disabledRow],
+              flags: MessageFlags.IsComponentsV2,
+            });
           } catch (error) {
             console.error("Error disabling buttons:", error);
           }
@@ -254,7 +311,7 @@ module.exports = class Kill extends Command {
         client,
         ctx,
         "An error occurred while executing the command.",
-        color,
+        color
       );
     }
   }

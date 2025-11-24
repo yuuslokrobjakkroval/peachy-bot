@@ -51,7 +51,7 @@ module.exports = class Banner extends Command {
     const bannerMessages = language.locales.get(language.defaultLocale)
       ?.utilityMessages?.bannerMessages;
     if (ctx.isInteraction) {
-      await ctx.interaction.deferReply(
+      await ctx.interaction.reply(
         generalMessages.search.replace("%{loading}", globalEmoji.searching)
       );
     } else {
