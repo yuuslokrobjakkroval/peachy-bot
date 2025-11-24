@@ -56,16 +56,17 @@ const themeEmojis = {
   ct002: require("../theme/PaoInh/emojis"),
 };
 
+const commands = [];
 const Logger = require("./Logger");
 const ServerStatsManager = require("../managers/ServerStatsManager");
 
 module.exports = class PeachyClient extends Client {
   constructor(options) {
     super(options);
+    this.config = globalConfig;
     this.commands = new Collection();
     this.aliases = new Collection();
     this.cooldown = new Collection();
-    this.config = globalConfig;
     this.prefix = globalConfig.prefix.toLowerCase();
     this.logger = new Logger();
     this.body = [];
@@ -102,7 +103,6 @@ module.exports = class PeachyClient extends Client {
   }
 
   async loadCommands() {
-    let commandCounter = 0;
     const commandsPath = path.join(__dirname, "../commands");
     const commandDirs = fs.readdirSync(commandsPath);
 
@@ -152,18 +152,24 @@ module.exports = class PeachyClient extends Client {
       }
     }
 
-    this.once("ready", async () => {
-      const applicationCommands = Routes.applicationCommands(
-        this.config.clientId ?? ""
-      );
+    this.once("clientReady", async () => {
+      const rest = new REST({ version: "10" }).setToken(this.config.token);
       try {
-        let rest = new REST({ version: "10" }).setToken(
-          this.config.token ?? ""
+        this.logger.info(
+          `Started refreshing ${this.body.length} application (/) commands.`
         );
-        await rest.put(applicationCommands, { body: this.body });
-        this.logger.info(`Successfully loaded slash commands!`);
+        const data = await rest.put(
+          Routes.applicationGuildCommands(
+            this.config.clientId,
+            this.config.guildId
+          ),
+          { body: this.body }
+        );
+        this.logger.info(
+          `Successfully reloaded ${data.length} application (/) commands.`
+        );
       } catch (error) {
-        this.logger.error("Error registering slash commands:", error);
+        this.logger.error("Failed to register slash commands:", error);
       }
 
       // Start Server Stats Manager after bot is ready

@@ -25,9 +25,9 @@ module.exports = class InteractionCreate extends Event {
   async run(interaction) {
     if (interaction.user.bot || interaction.channel.type === 1) return;
     if (globalConfig.env === "development") {
-      if (interaction.guild.id !== "1371280484046344242") return;
+      if (interaction.guild.id !== globalConfig.testGuildId) return;
     } else {
-      if (interaction.guild.id === "1371280484046344242") return;
+      if (interaction.guild.id === globalConfig.testGuildId) return;
     }
 
     try {
