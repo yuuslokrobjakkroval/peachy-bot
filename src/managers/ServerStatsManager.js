@@ -15,10 +15,7 @@ class ServerStatsManager {
    */
   start() {
     if (this.isRunning) return;
-
     this.isRunning = true;
-    console.log("🔄 Starting Server Stats Manager...");
-
     // Update immediately when starting
     this.updateAllServerStats();
 
@@ -29,8 +26,6 @@ class ServerStatsManager {
       },
       10 * 60 * 1000
     ); // 10 minutes
-
-    console.log("✅ Server Stats Manager started successfully!");
   }
 
   /**
@@ -58,8 +53,6 @@ class ServerStatsManager {
         "settings.isEnabled": true,
       });
 
-      console.log(`🔄 Updating stats for ${allServerStats.length} guilds...`);
-
       let successCount = 0;
       let errorCount = 0;
 
@@ -80,10 +73,6 @@ class ServerStatsManager {
           }
         }
       }
-
-      console.log(
-        `✅ Stats update complete: ${successCount} successful, ${errorCount} errors`
-      );
     } catch (error) {
       console.error("❌ Error in updateAllServerStats:", error);
     }
@@ -98,12 +87,6 @@ class ServerStatsManager {
     if (!guild) {
       throw new Error(`Unknown Guild: ${serverStat.guildId}`);
     }
-
-    console.log(
-      `ServerStats: beginning update for guild ${guild.id} (${guild.name}) with ${
-        serverStat.channels?.length || 0
-      } configured channels`
-    );
 
     // Fetch all members if not cached (for accurate counts)
     if (!guild.members.cache.has(guild.ownerId)) {

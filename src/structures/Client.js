@@ -175,7 +175,6 @@ module.exports = class PeachyClient extends Client {
       // Start Server Stats Manager after bot is ready
       if (this.serverStatsManager) {
         this.serverStatsManager.start();
-        this.logger.info("Server Stats Manager initialized!");
       }
     });
   }
