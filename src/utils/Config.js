@@ -52,9 +52,9 @@ const logChannelId = [
 module.exports = {
   env: process.env.NODE_ENV ?? "PRODUCTION",
   token: process.env.TOKEN,
-  prefix: process.env.PREFIX,
-  guildId: process.env.GUILD_ID,
-  testGuildId: process.env.TEST_GUILD_ID,
+  prefix: process.env.PREFIX ?? "P",
+  guildId: process.env.GUILD_ID ?? "1342317947573633077",
+  testGuildId: process.env.TEST_GUILD_ID ?? "1369956599720054847",
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   geminiApiKey: process.env.GEMINI_API_KEY,
