@@ -1,18 +1,18 @@
 const { Context, Event } = require("../../structures/index.js");
 const {
-  Collection,
-  CommandInteraction,
-  InteractionType,
-  PermissionFlagsBits,
-  ButtonInteraction,
-  UserSelectMenuInteraction,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  MessageFlags,
-  ContainerBuilder,
-  MediaGalleryBuilder,
-  UserSelectMenuBuilder,
+	Collection,
+	CommandInteraction,
+	InteractionType,
+	PermissionFlagsBits,
+	ButtonInteraction,
+	UserSelectMenuInteraction,
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonStyle,
+	MessageFlags,
+	ContainerBuilder,
+	MediaGalleryBuilder,
+	UserSelectMenuBuilder,
 } = require("discord.js");
 const users = require("../../schemas/user");
 const GiveawaySchema = require("../../schemas/giveaway");
@@ -22,1436 +22,1436 @@ const globalEmoji = require("../../utils/Emoji");
 const globalConfig = require("../../utils/Config");
 
 module.exports = class InteractionCreate extends Event {
-  constructor(client, file) {
-    super(client, file, { name: "interactionCreate" });
-  }
-
-  async run(interaction) {
-    if (interaction.user.bot || interaction.channel.type === 1) return;
-    if (globalConfig.env === "development") {
-      if (interaction.guild.id !== globalConfig.testGuildId) return;
-    } else {
-      if (interaction.guild.id === globalConfig.testGuildId) return;
-    }
-
-    try {
-      const { user, color, emoji, language } =
-        await this.client.setColorBasedOnTheme(interaction.user.id);
-      const prefix = this.client.config.prefix;
-
-      if (
-        interaction instanceof CommandInteraction &&
-        interaction.type === InteractionType.ApplicationCommand
-      ) {
-        const command = this.client.commands.get(interaction.commandName);
-        if (!command) {
-          console.error(`Command ${interaction.commandName} not found`);
-          return;
-        }
-
-        if (user?.verification?.isBanned) {
-          return;
-        }
-
-        const now = new Date();
-        if (user?.verification?.timeout?.expiresAt > now) {
-          const remainingTime = user.verification.timeout.expiresAt - now;
-          const hours = Math.floor(remainingTime / (1000 * 60 * 60));
-          const minutes = Math.floor(
-            (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
-          );
-          const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
-          let timeString = "";
-          if (hours > 0) timeString += `${hours} hr${hours > 1 ? "s" : ""}`;
-          if (minutes > 0)
-            timeString += timeString
-              ? ", "
-              : "" + `${minutes} min${minutes > 1 ? "s" : ""}`;
-          if (seconds > 0 || timeString === "")
-            timeString += timeString
-              ? ", "
-              : "" + `${seconds} sec${seconds > 1 ? "s" : ""}`;
-
-          return await interaction.reply({
-            embeds: [
-              this.client
-                .embed()
-                .setColor(color.danger)
-                .setDescription(
-                  `You are in timeout for: \`${
-                    user.verification.timeout.reason || "No reason provided"
-                  }\`.\nTimeout ends in **${timeString}**.`
-                ),
-            ],
-            flags: MessageFlags.Ephemeral,
-          });
-        }
-
-        const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
-        if (mention.test(interaction.content)) {
-          const embed = this.client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`Heyoo! ${interaction.user.displayName}`)
-            .setDescription(
-              `My Name is ${this.client.user.displayName}.\n` +
-                `My prefix for this server is **\`${prefix}\`**.\n\n` +
-                `Do you need help? please use **\`${prefix}help\`**!!!`
-            )
-            .setImage(globalGif.mentionBot)
-            .setFooter({
-              text: "Buy Me A Coffee | ABA: 500 057 310",
-              iconURL: this.client.utils.emojiToImage(globalEmoji.buyMeCafe),
-            });
-
-          const clickSuppButton = this.client.utils.linkButton(
-            "Click for support",
-            this.client.config.links.support
-          );
-          const row = this.client.utils.createButtonRow(clickSuppButton);
-          return interaction.reply({ embeds: [embed], components: [row] });
-        }
-
-        try {
-          const ctx = new Context(interaction, interaction.options.data);
-          ctx.setArgs(interaction.options.data);
-
-          if (!interaction.inGuild()) return;
-
-          if (
-            !interaction.channel
-              .permissionsFor(interaction.guild.members.me)
-              .has(PermissionFlagsBits.ViewChannel)
-          ) {
-            return;
-          }
-
-          if (
-            command.permissions.dev &&
-            !this.client.config.owners.includes(interaction.user.id)
-          ) {
-            return;
-          }
-
-          if (
-            !interaction.guild.members.me.permissions.has(
-              PermissionFlagsBits.SendMessages
-            )
-          ) {
-            return await interaction.member
-              .send({
-                content: `I don't have **\`SendMessages\`** permission in \`${interaction.guild.name}\`\nchannel: <#${interaction.channelId}>`,
-              })
-              .catch((err) =>
-                console.error(
-                  `Error sending DM to ${interaction.user.id}:`,
-                  err
-                )
-              );
-          }
-
-          if (
-            !interaction.guild.members.me.permissions.has(
-              PermissionFlagsBits.EmbedLinks
-            )
-          ) {
-            return await interaction.reply({
-              content: "I don't have **`EmbedLinks`** permission.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          if (command.permissions) {
-            if (command.permissions.client) {
-              if (
-                !interaction.guild.members.me.permissions.has(
-                  command.permissions.client
-                )
-              ) {
-                return await interaction.reply({
-                  content:
-                    "I don't have enough permissions to execute this command.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            if (command.permissions.user) {
-              if (
-                !interaction.member.permissions.has(command.permissions.user)
-              ) {
-                return await interaction.reply({
-                  content:
-                    "You don't have enough permissions to use this command.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-          }
-
-          if (!this.client.cooldown.has(interaction.commandName)) {
-            this.client.cooldown.set(interaction.commandName, new Collection());
-          }
-
-          const now = Date.now();
-          const timestamps = this.client.cooldown.get(interaction.commandName);
-          const cooldownAmount = Math.floor(command.cooldown || 5) * 1000;
-          if (timestamps.has(interaction.user.id)) {
-            const expirationTime =
-              timestamps.get(interaction.user.id) + cooldownAmount;
-            const timeLeft = (expirationTime - now) / 1000;
-            if (now < expirationTime && timeLeft > 0.9) {
-              return await interaction.reply({
-                content: `Please wait \`${timeLeft.toFixed(1)}\` more second(s) before reusing the **${interaction.commandName}** command.`,
-                flags: MessageFlags.Ephemeral,
-              });
-            }
-          }
-
-          await this.client.utils.getValidationUser(
-            this.client,
-            interaction,
-            user,
-            color,
-            emoji,
-            interaction.commandName
-          );
-
-          const balanceCommands = [
-            "balance",
-            "deposit",
-            "withdraw",
-            "multitransfer",
-            "transfer",
-          ];
-          const gamblingCommands = [
-            "slots",
-            "blackjack",
-            "coinflip",
-            "klaklouk",
-          ];
-          const gameCommands = ["guessnumber"];
-
-          let logChannelId;
-          if (
-            ["admin", "staff", "developer", "guild"].includes(
-              command.category.toLowerCase()
-            )
-          ) {
-            logChannelId = this.client.config.logChannelId[9];
-          } else if (
-            ["animals", "building"].includes(command.category.toLowerCase())
-          ) {
-            logChannelId = this.client.config.logChannelId[8];
-          } else if (["work"].includes(command.category.toLowerCase())) {
-            logChannelId = this.client.config.logChannelId[7];
-          } else if (["giveaways"].includes(command.category.toLowerCase())) {
-            logChannelId = this.client.config.logChannelId[6];
-          } else if (["utility"].includes(command.category.toLowerCase())) {
-            logChannelId = this.client.config.logChannelId[5];
-          } else if (["inventory"].includes(command.category.toLowerCase())) {
-            logChannelId = this.client.config.logChannelId[4];
-          } else if (balanceCommands.includes(command.name)) {
-            logChannelId = this.client.config.logChannelId[3];
-          } else if (gamblingCommands.includes(command.name)) {
-            logChannelId = this.client.config.logChannelId[2];
-          } else if (gameCommands.includes(command.name)) {
-            logChannelId = this.client.config.logChannelId[1];
-          } else {
-            logChannelId = this.client.config.logChannelId[0];
-          }
-
-          const channel = this.client.channels.cache.get(logChannelId);
-          if (channel && channel.isTextBased()) {
-            const embed = this.client
-              .embed()
-              .setColor(color.blue)
-              .setTitle(
-                `Command - ${this.client.utils.formatCapitalize(interaction.commandName)}`
-              )
-              .setThumbnail(interaction.guild.iconURL({ extension: "jpeg" }))
-              .addFields([
-                {
-                  name: "User Info",
-                  value: `**Name:** ${interaction.user.username}\n**Id:** ${interaction.user.id}\n**Channel:** ${interaction.channel.name}`,
-                  inline: true,
-                },
-                {
-                  name: "Extra Guild Info",
-                  value: `\`\`\`arm\n[+] Name: ${interaction.guild.name}\n[+] Id: ${interaction.guild.id}\n[+] Members: ${interaction.guild.memberCount.toString()}\n\`\`\``,
-                },
-              ])
-              .setFooter({
-                text: interaction.user.username,
-                iconURL: interaction.user.displayAvatarURL({
-                  extension: "jpeg",
-                }),
-              })
-              .setTimestamp();
-            await channel.send({ embeds: [embed] }).catch((err) => {
-              console.error(
-                `Error sending log to channel ${logChannelId}:`,
-                err
-              );
-            });
-          }
-
-          await command.run(this.client, ctx, ctx.args, color, emoji, language);
-        } catch (error) {
-          console.error(
-            `Error executing command ${interaction.commandName}:`,
-            error
-          );
-          if (!interaction.replied && !interaction.deferred) {
-            await interaction.reply({
-              content: "An error occurred while processing the command.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-        }
-      } else if (
-        interaction instanceof ButtonInteraction &&
-        interaction.type === InteractionType.MessageComponent
-      ) {
-        console.log(
-          `Handling button interaction ${interaction.customId} for user ${interaction.user.id} in guild ${interaction.guild.id}`
-        );
-
-        switch (interaction.customId) {
-          // --- Social Profile Buttons ---
-          case "social_setup": {
-            // Show the setup guide embed
-            const { color, emoji, language } =
-              await this.client.setColorBasedOnTheme(interaction.user.id);
-            const socialsCmd = this.client.commands.get("socials");
-            if (socialsCmd && socialsCmd.showSetupGuide) {
-              await socialsCmd.showSetupGuide(
-                this.client,
-                interaction,
-                color,
-                emoji,
-                language.locales.get(language.defaultLocale)?.socialMessages
-                  ?.smMessages
-              );
-              if (!interaction.replied && !interaction.deferred)
-                await interaction.deferUpdate().catch(() => {});
-            }
-            break;
-          }
-          case "view_socials": {
-            // Show the main socials embed
-            const { color, emoji, language } =
-              await this.client.setColorBasedOnTheme(interaction.user.id);
-            const socialsCmd = this.client.commands.get("socials");
-            if (socialsCmd && socialsCmd.run) {
-              await socialsCmd.run(
-                this.client,
-                interaction,
-                [],
-                color,
-                emoji,
-                language
-              );
-              if (!interaction.replied && !interaction.deferred)
-                await interaction.deferUpdate().catch(() => {});
-            }
-            break;
-          }
-          // Facebook
-          case "social_facebook":
-          case "facebook_set_name":
-          case "facebook_set_link":
-          case "facebook_clear": {
-            const { color, emoji, language } =
-              await this.client.setColorBasedOnTheme(interaction.user.id);
-            const fbCmd = this.client.commands.get("facebook");
-            if (fbCmd) {
-              if (interaction.customId === "facebook_set_name") {
-                await fbCmd.showHelpMessage(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.fbMessages
-                );
-              } else if (interaction.customId === "facebook_set_link") {
-                await fbCmd.showHelpMessage(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.fbMessages
-                );
-              } else if (interaction.customId === "facebook_clear") {
-                await fbCmd.clearFacebookProfile(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.fbMessages
-                );
-              } else {
-                await fbCmd.run(
-                  this.client,
-                  interaction,
-                  [],
-                  color,
-                  emoji,
-                  language
-                );
-              }
-              if (!interaction.replied && !interaction.deferred)
-                await interaction.deferUpdate().catch(() => {});
-            }
-            break;
-          }
-          // Instagram
-          case "social_instagram":
-          case "instagram_set_name":
-          case "instagram_set_link":
-          case "instagram_clear": {
-            const { color, emoji, language } =
-              await this.client.setColorBasedOnTheme(interaction.user.id);
-            const igCmd = this.client.commands.get("instagram");
-            if (igCmd) {
-              if (interaction.customId === "instagram_set_name") {
-                await igCmd.showHelpMessage(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.igMessages
-                );
-              } else if (interaction.customId === "instagram_set_link") {
-                await igCmd.showHelpMessage(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.igMessages
-                );
-              } else if (interaction.customId === "instagram_clear") {
-                await igCmd.clearInstagramProfile(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.igMessages
-                );
-              } else {
-                await igCmd.run(
-                  this.client,
-                  interaction,
-                  [],
-                  color,
-                  emoji,
-                  language
-                );
-              }
-              if (!interaction.replied && !interaction.deferred)
-                await interaction.deferUpdate().catch(() => {});
-            }
-            break;
-          }
-          // TikTok
-          case "social_tiktok":
-          case "tiktok_set_name":
-          case "tiktok_set_link":
-          case "tiktok_clear": {
-            const { color, emoji, language } =
-              await this.client.setColorBasedOnTheme(interaction.user.id);
-            const ttCmd = this.client.commands.get("tiktok");
-            if (ttCmd) {
-              if (interaction.customId === "tiktok_set_name") {
-                await ttCmd.showHelpMessage(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.ttMessages
-                );
-              } else if (interaction.customId === "tiktok_set_link") {
-                await ttCmd.showHelpMessage(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.ttMessages
-                );
-              } else if (interaction.customId === "tiktok_clear") {
-                await ttCmd.clearTikTokProfile(
-                  this.client,
-                  interaction,
-                  color,
-                  emoji,
-                  language.locales.get(language.defaultLocale)?.socialMessages
-                    ?.ttMessages
-                );
-              } else {
-                await ttCmd.run(
-                  this.client,
-                  interaction,
-                  [],
-                  color,
-                  emoji,
-                  language
-                );
-              }
-              if (!interaction.replied && !interaction.deferred)
-                await interaction.deferUpdate().catch(() => {});
-            }
-            break;
-          }
-          case "giveaway-join": {
-            try {
-              console.log(
-                `🔍 Querying GiveawaySchema with guildId: ${interaction.guild.id}, channelId: ${interaction.channel.id}, messageId: ${interaction.message.id}`
-              );
-              const data = await GiveawaySchema.findOne({
-                guildId: interaction.guild.id,
-                channelId: interaction.channel.id,
-                messageId: interaction.message.id,
-              });
-
-              if (!data) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.danger)
-                      .setDescription(
-                        "An error occurred: Giveaway data not found."
-                      ),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              if (data.endTime * 1000 < Date.now()) {
-                return await this.client.utils.endGiveaway(
-                  this.client,
-                  color,
-                  emoji,
-                  interaction.message
-                );
-              }
-
-              if (data.ended) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.danger)
-                      .setDescription("This giveaway has already ended."),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              if (data.paused) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.danger)
-                      .setDescription("This giveaway is currently paused."),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              if (data.entered.includes(interaction.user.id)) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.pink)
-                      .setDescription(
-                        "You are already entered in this giveaway. Would you like to leave?"
-                      ),
-                  ],
-                  components: [
-                    new ActionRowBuilder().addComponents(
-                      new ButtonBuilder()
-                        .setCustomId("leave-giveaway")
-                        .setLabel("Leave Giveaway")
-                        .setStyle(ButtonStyle.Danger)
-                    ),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              data.entered.push(interaction.user.id);
-              await data.save();
-
-              await interaction.reply({
-                embeds: [
-                  this.client
-                    .embed()
-                    .setAuthor({
-                      name: this.client.user.username,
-                      iconURL: this.client.user.displayAvatarURL(),
-                    })
-                    .setColor(color.main)
-                    .setDescription(
-                      "You have successfully joined the giveaway."
-                    ),
-                ],
-                flags: MessageFlags.Ephemeral,
-              });
-
-              const newLabel = data.entered.length;
-              await interaction.message.edit({
-                components: [
-                  new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                      .setCustomId("giveaway-join")
-                      .setLabel(`${newLabel}`)
-                      .setEmoji(emoji.main)
-                      .setStyle(3),
-                    new ButtonBuilder()
-                      .setCustomId("giveaway-participants")
-                      .setEmoji(globalEmoji.giveaway.participants)
-                      .setLabel("Participants")
-                      .setStyle(1)
-                  ),
-                ],
-              });
-            } catch (error) {
-              console.error(
-                `Error in giveaway-join handler for message ${interaction.message.id}:`,
-                error
-              );
-              if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({
-                  content: "An error occurred while processing your request.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            break;
-          }
-
-          case "leave-giveaway": {
-            try {
-              const data = await GiveawaySchema.findOne({
-                guildId: interaction.guild.id,
-                channelId: interaction.channel.id,
-                messageId: interaction.message.id,
-              });
-
-              if (!data) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.danger)
-                      .setDescription(
-                        "An error occurred: Giveaway data not found."
-                      ),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              if (!data.entered.includes(interaction.user.id)) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.danger)
-                      .setDescription("You are not entered in this giveaway."),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              data.entered = data.entered.filter(
-                (id) => id !== interaction.user.id
-              );
-              await data.save();
-
-              await interaction.reply({
-                embeds: [
-                  this.client
-                    .embed()
-                    .setAuthor({
-                      name: this.client.user.username,
-                      iconURL: this.client.user.displayAvatarURL(),
-                    })
-                    .setColor(color.main)
-                    .setDescription("You have successfully left the giveaway."),
-                ],
-                flags: MessageFlags.Ephemeral,
-              });
-
-              const newLabel = data.entered.length;
-              await interaction.message.edit({
-                components: [
-                  new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                      .setCustomId("giveaway-join")
-                      .setLabel(`${newLabel}`)
-                      .setEmoji(emoji.main)
-                      .setStyle(3),
-                    new ButtonBuilder()
-                      .setCustomId("giveaway-participants")
-                      .setEmoji(globalEmoji.giveaway.participants)
-                      .setLabel("Participants")
-                      .setStyle(1)
-                  ),
-                ],
-              });
-            } catch (error) {
-              console.error(
-                `Error in leave-giveaway handler for message ${interaction.message.id}:`,
-                error
-              );
-              if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({
-                  content: "An error occurred while processing your request.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            break;
-          }
-
-          case "giveaway-participants": {
-            try {
-              const data = await GiveawaySchema.findOne({
-                guildId: interaction.guild.id,
-                channelId: interaction.channel.id,
-                messageId: interaction.message.id,
-              });
-
-              if (!data?.entered.length) {
-                return interaction.reply({
-                  content: "No participants found.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              const participants = await Promise.all(
-                data.entered.map(async (id, index) => {
-                  try {
-                    const member =
-                      interaction.guild.members.cache.get(id) ||
-                      (await interaction.guild.members.fetch(id));
-                    return `${index + 1}. <@${id}> (**1** entry)`;
-                  } catch (err) {
-                    console.error(`Unable to fetch member ${id}:`, err);
-                    return null;
-                  }
-                })
-              );
-
-              const validParticipants = participants.filter((p) => p !== null);
-
-              const embed = this.client
-                .embed()
-                .setTitle("Giveaway Participants")
-                .setColor(color.main)
-                .setDescription(
-                  `These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
-                    data.prize
-                  )}**:\n\n${validParticipants.join("\n")}\n\nTotal Participants: **${validParticipants.length}**`
-                );
-
-              await interaction.reply({
-                embeds: [embed],
-                flags: MessageFlags.Ephemeral,
-              });
-            } catch (error) {
-              console.error(
-                `Error in giveaway-participants handler for message ${interaction.message.id}:`,
-                error
-              );
-              if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({
-                  content: "An error occurred while processing your request.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            break;
-          }
-
-          case "giveawayshopitem-join": {
-            try {
-              const data = await GiveawayShopItemSchema.findOne({
-                guildId: interaction.guild.id,
-                channelId: interaction.channel.id,
-                messageId: interaction.message.id,
-              });
-
-              if (!data) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.danger)
-                      .setDescription(
-                        "An error occurred: Giveaway data not found."
-                      ),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              if (data.endTime * 1000 < Date.now()) {
-                return this.client.utils.endGiveawayShopItem(
-                  this.client,
-                  color,
-                  emoji,
-                  interaction.message
-                );
-              }
-
-              if (data.ended) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.danger)
-                      .setDescription("This giveaway has already ended."),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              if (data.paused) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.danger)
-                      .setDescription("This giveaway is currently paused."),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              if (data.entered.includes(interaction.user.id)) {
-                return interaction.reply({
-                  embeds: [
-                    this.client
-                      .embed()
-                      .setAuthor({
-                        name: this.client.user.username,
-                        iconURL: this.client.user.displayAvatarURL(),
-                      })
-                      .setColor(color.pink)
-                      .setDescription(
-                        "You are already entered in this giveaway. Would you like to leave?"
-                      ),
-                  ],
-                  components: [
-                    new ActionRowBuilder().addComponents(
-                      new ButtonBuilder()
-                        .setCustomId("leave-giveaway")
-                        .setLabel("Leave Giveaway")
-                        .setStyle(ButtonStyle.Danger)
-                    ),
-                  ],
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              data.entered.push(interaction.user.id);
-              await data.save();
-
-              await interaction.reply({
-                embeds: [
-                  this.client
-                    .embed()
-                    .setAuthor({
-                      name: this.client.user.username,
-                      iconURL: this.client.user.displayAvatarURL(),
-                    })
-                    .setColor(color.main)
-                    .setDescription(
-                      "You have successfully joined the giveaway."
-                    ),
-                ],
-                flags: MessageFlags.Ephemeral,
-              });
-
-              const newLabel = data.entered.length;
-              await interaction.message.edit({
-                components: [
-                  new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                      .setCustomId("giveawayshopitem-join")
-                      .setLabel(`${newLabel}`)
-                      .setEmoji(emoji.main)
-                      .setStyle(3),
-                    new ButtonBuilder()
-                      .setCustomId("giveawayshopitem-participants")
-                      .setEmoji(globalEmoji.giveaway.participants)
-                      .setLabel("Participants")
-                      .setStyle(1)
-                  ),
-                ],
-              });
-            } catch (error) {
-              console.error(
-                `Error in giveawayshopitem-join handler for message ${interaction.message.id}:`,
-                error
-              );
-              if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({
-                  content: "An error occurred while processing your request.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            break;
-          }
-
-          case "giveawayshopitem-participants": {
-            try {
-              const data = await GiveawayShopItemSchema.findOne({
-                guildId: interaction.guild.id,
-                channelId: interaction.channel.id,
-                messageId: interaction.message.id,
-              });
-
-              if (!data?.entered.length) {
-                return interaction.reply({
-                  content: "No participants found.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              const participants = await Promise.all(
-                data.entered.map(async (id, index) => {
-                  try {
-                    const member =
-                      interaction.guild.members.cache.get(id) ||
-                      (await interaction.guild.members.fetch(id));
-                    return `${index + 1}. <@${id}> (**1** entry)`;
-                  } catch (err) {
-                    console.error(`Unable to fetch member ${id}:`, err);
-                    return null;
-                  }
-                })
-              );
-
-              const validParticipants = participants.filter((p) => p !== null);
-
-              const embed = this.client
-                .embed()
-                .setTitle("Giveaway Shop Item Participants")
-                .setColor(color.main)
-                .setDescription(
-                  `These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
-                    data.amount
-                  )}**:\n\n${validParticipants.join("\n")}\n\nTotal Participants: **${validParticipants.length}**`
-                );
-
-              await interaction.reply({
-                embeds: [embed],
-                flags: MessageFlags.Ephemeral,
-              });
-            } catch (error) {
-              console.error(
-                `Error in giveawayshopitem-participants handler for message ${interaction.message.id}:`,
-                error
-              );
-              if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({
-                  content: "An error occurred while processing your request.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            break;
-          }
-
-          case "giveaway-join-req": {
-            try {
-              const giveaway = await this.client.utils.getGiveaway(interaction);
-              if (!giveaway) {
-                return interaction.reply({
-                  content: "Giveaway not found.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              const meetsRequirements =
-                await this.client.utils.checkGiveawayRequirements(
-                  this.client,
-                  interaction.user,
-                  giveaway,
-                  interaction
-                );
-
-              if (!meetsRequirements) {
-                return interaction.reply({
-                  content:
-                    "You do not meet the requirements for this giveaway.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            } catch (error) {
-              console.error(
-                `Error in giveaway-join-req handler for message ${interaction.message.id}:`,
-                error
-              );
-              if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({
-                  content: "An error occurred while processing your request.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            break;
-          }
-
-          case "claim": {
-            try {
-              const userId = interaction.user.id;
-              const user = await users.findOne({ userId });
-
-              if (!user) {
-                return interaction.reply({
-                  content:
-                    "You do not have an account. Create one to claim rewards.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-
-              const claimedCoins =
-                Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
-
-              await users.findOneAndUpdate(
-                { userId },
-                { $inc: { "balance.coin": claimedCoins, "claim.streak": 1 } }
-              );
-
-              const row = new ActionRowBuilder().addComponents(
-                new ButtonBuilder()
-                  .setCustomId("claim")
-                  .setLabel("Claimed")
-                  .setEmoji("🕔")
-                  .setStyle(ButtonStyle.Primary)
-                  .setDisabled(true)
-              );
-
-              const embed = this.client
-                .embed()
-                .setColor(this.client.color.main)
-                .setDescription(
-                  `Congratulations to <@${userId}> ! Claim successful! ${this.client.utils.formatNumber(
-                    claimedCoins
-                  )} ${this.client.emoji.coin} added to your balance and your claim streak has increased to ${user.claim.streak}.`
-                );
-
-              await interaction.update({ embeds: [embed], components: [row] });
-            } catch (error) {
-              console.error(
-                `Error in claim handler for user ${interaction.user.id}:`,
-                error
-              );
-              if (!interaction.replied && !interaction.deferred) {
-                await interaction.reply({
-                  content: "An error occurred while processing your request.",
-                  flags: MessageFlags.Ephemeral,
-                });
-              }
-            }
-            break;
-          }
-
-          default: {
-            break;
-          }
-        }
-      } else if (
-        interaction instanceof UserSelectMenuInteraction &&
-        interaction.type === InteractionType.MessageComponent
-      ) {
-        // Handle User Select Menu interactions
-        if (interaction.customId.startsWith("avatar_select_")) {
-          const requesterId = interaction.customId.split("_")[2];
-
-          // Check if the person using the select menu is the one who requested the command
-          if (interaction.user.id !== requesterId) {
-            return await interaction.reply({
-              content:
-                "❌ You cannot use this menu. Please run the command yourself.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          await interaction.deferUpdate();
-
-          const { color, emoji, language } =
-            await this.client.setColorBasedOnTheme(interaction.user.id);
-          const generalMessages = language.locales.get(
-            language.defaultLocale
-          )?.generalMessages;
-
-          const selectedUser = interaction.users.first();
-
-          if (!selectedUser) {
-            return await interaction.followUp({
-              content: "❌ Could not find the selected user.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          // Get avatar URLs in different formats
-          const avatarPNG = selectedUser.displayAvatarURL({
-            extension: "png",
-            size: 4096,
-          });
-          const avatarJPG = selectedUser.displayAvatarURL({
-            extension: "jpg",
-            size: 4096,
-          });
-          const avatarWEBP = selectedUser.displayAvatarURL({
-            extension: "webp",
-            size: 4096,
-          });
-          // Check if user has an animated avatar for GIF option
-          const isAnimated = selectedUser.avatar?.startsWith("a_");
-          const avatarGIF = isAnimated
-            ? selectedUser.displayAvatarURL({ extension: "gif", size: 4096 })
-            : null;
-
-          // Create updated avatar display with the selected user
-          const avatarContainer = new ContainerBuilder()
-            .setAccentColor(color.main)
-            .addTextDisplayComponents((text) =>
-              text.setContent(
-                `# **${emoji.mainLeft} AVATAR ${emoji.mainRight}**`
-              )
-            )
-            .addSeparatorComponents((sep) => sep)
-            .addMediaGalleryComponents((gallery) =>
-              gallery.addItems((item) =>
-                item
-                  .setURL(
-                    selectedUser.displayAvatarURL({
-                      dynamic: true,
-                      extension: "png",
-                      size: 1024,
-                    })
-                  )
-                  .setDescription(
-                    `${selectedUser.displayName || selectedUser.username}'s Full Avatar`
-                  )
-              )
-            )
-            .addSeparatorComponents((sep) => sep.setDivider(false))
-            .addSectionComponents((section) =>
-              section
-                .addTextDisplayComponents((text) =>
-                  text.setContent("**Download Avatar:**")
-                )
-                .setButtonAccessory((button) =>
-                  button
-                    .setLabel("🖼️ PNG")
-                    .setStyle(ButtonStyle.Link)
-                    .setURL(avatarPNG)
-                )
-            )
-            .addSectionComponents((section) =>
-              section
-                .addTextDisplayComponents((text) =>
-                  text.setContent("High quality JPG format")
-                )
-                .setButtonAccessory((button) =>
-                  button
-                    .setLabel("📸 JPG")
-                    .setStyle(ButtonStyle.Link)
-                    .setURL(avatarJPG)
-                )
-            );
-
-          // Add GIF button only if avatar is animated
-          if (avatarGIF) {
-            avatarContainer.addSectionComponents((section) =>
-              section
-                .addTextDisplayComponents((text) =>
-                  text.setContent("Animated GIF format")
-                )
-                .setButtonAccessory((button) =>
-                  button
-                    .setLabel("✨ GIF")
-                    .setStyle(ButtonStyle.Link)
-                    .setURL(avatarGIF)
-                )
-            );
-          }
-
-          avatarContainer
-            .addSectionComponents((section) =>
-              section
-                .addTextDisplayComponents((text) =>
-                  text.setContent("WebP format (smallest size)")
-                )
-                .setButtonAccessory((button) =>
-                  button
-                    .setLabel("📦 WEBP")
-                    .setStyle(ButtonStyle.Link)
-                    .setURL(avatarWEBP)
-                )
-            )
-            .addSeparatorComponents((sep) => sep.setDivider(false))
-            .addActionRowComponents((row) =>
-              row.setComponents(
-                new UserSelectMenuBuilder()
-                  .setCustomId(`avatar_select_${interaction.user.id}`)
-                  .setPlaceholder("🖼️ Select a user to view their avatar")
-                  .setMinValues(1)
-                  .setMaxValues(1)
-              )
-            )
-            .addTextDisplayComponents((text) =>
-              text.setContent(
-                `${generalMessages.requestedBy.replace("%{username}", interaction.user.displayName) || `Requested by ${interaction.user.displayName}`}`
-              )
-            );
-
-          await interaction.editReply({
-            components: [avatarContainer],
-            flags: MessageFlags.IsComponentsV2,
-          });
-        } else if (interaction.customId.startsWith("banner_select_")) {
-          const requesterId = interaction.customId.split("_")[2];
-
-          // Check if the person using the select menu is the one who requested the command
-          if (interaction.user.id !== requesterId) {
-            return await interaction.reply({
-              content:
-                "❌ You cannot use this menu. Please run the command yourself.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          await interaction.deferUpdate();
-
-          const { color, emoji, language } =
-            await this.client.setColorBasedOnTheme(interaction.user.id);
-          const generalMessages = language.locales.get(
-            language.defaultLocale
-          )?.generalMessages;
-          const bannerMessages = language.locales.get(language.defaultLocale)
-            ?.utilityMessages?.bannerMessages;
-
-          const selectedUser = interaction.users.first();
-
-          if (!selectedUser) {
-            return await interaction.followUp({
-              content: "❌ Could not find the selected user.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-
-          try {
-            const fetchedUser = await selectedUser.fetch();
-            const bannerURL = fetchedUser.bannerURL({
-              dynamic: true,
-              size: 1024,
-            });
-
-            if (!bannerURL) {
-              return await interaction.followUp({
-                content:
-                  bannerMessages?.noBannerFound ||
-                  "❌ This user does not have a banner.",
-                flags: MessageFlags.Ephemeral,
-              });
-            }
-
-            // Get banner URLs in different formats
-            const bannerPNG = fetchedUser.bannerURL({
-              extension: "png",
-              size: 4096,
-            });
-            const bannerJPG = fetchedUser.bannerURL({
-              extension: "jpg",
-              size: 4096,
-            });
-            const bannerWEBP = fetchedUser.bannerURL({
-              extension: "webp",
-              size: 4096,
-            });
-            // Check if user has an animated banner for GIF option
-            const isAnimated = fetchedUser.banner?.startsWith("a_");
-            const bannerGIF = isAnimated
-              ? fetchedUser.bannerURL({ extension: "gif", size: 4096 })
-              : null;
-
-            // Create updated banner display with the selected user
-            const bannerContainer = new ContainerBuilder()
-              .setAccentColor(color.main)
-              .addTextDisplayComponents((text) =>
-                text.setContent(
-                  `# **${emoji.mainLeft} BANNER ${emoji.mainRight}**`
-                )
-              )
-              .addSeparatorComponents((sep) => sep)
-              .addMediaGalleryComponents((gallery) =>
-                gallery.addItems((item) =>
-                  item
-                    .setURL(bannerURL)
-                    .setDescription(
-                      `${selectedUser.displayName || selectedUser.username}'s Banner`
-                    )
-                )
-              )
-              .addSeparatorComponents((sep) => sep.setDivider(false))
-              .addSectionComponents((section) =>
-                section
-                  .addTextDisplayComponents((text) =>
-                    text.setContent("**Download Banner:**")
-                  )
-                  .setButtonAccessory((button) =>
-                    button
-                      .setLabel("🖼️ PNG")
-                      .setStyle(ButtonStyle.Link)
-                      .setURL(bannerPNG)
-                  )
-              )
-              .addSectionComponents((section) =>
-                section
-                  .addTextDisplayComponents((text) =>
-                    text.setContent("High quality JPG format")
-                  )
-                  .setButtonAccessory((button) =>
-                    button
-                      .setLabel("📸 JPG")
-                      .setStyle(ButtonStyle.Link)
-                      .setURL(bannerJPG)
-                  )
-              );
-
-            // Add GIF button only if banner is animated
-            if (bannerGIF) {
-              bannerContainer.addSectionComponents((section) =>
-                section
-                  .addTextDisplayComponents((text) =>
-                    text.setContent("Animated GIF format")
-                  )
-                  .setButtonAccessory((button) =>
-                    button
-                      .setLabel("✨ GIF")
-                      .setStyle(ButtonStyle.Link)
-                      .setURL(bannerGIF)
-                  )
-              );
-            }
-
-            bannerContainer
-              .addSectionComponents((section) =>
-                section
-                  .addTextDisplayComponents((text) =>
-                    text.setContent("WebP format (smallest size)")
-                  )
-                  .setButtonAccessory((button) =>
-                    button
-                      .setLabel("📦 WEBP")
-                      .setStyle(ButtonStyle.Link)
-                      .setURL(bannerWEBP)
-                  )
-              )
-              .addSeparatorComponents((sep) => sep.setDivider(false))
-              .addActionRowComponents((row) =>
-                row.setComponents(
-                  new UserSelectMenuBuilder()
-                    .setCustomId(`banner_select_${interaction.user.id}`)
-                    .setPlaceholder("🎨 Select a user to view their banner")
-                    .setMinValues(1)
-                    .setMaxValues(1)
-                )
-              )
-              .addTextDisplayComponents((text) =>
-                text.setContent(
-                  `${generalMessages.requestedBy.replace("%{username}", interaction.user.displayName) || `Requested by ${interaction.user.displayName}`}`
-                )
-              );
-
-            await interaction.editReply({
-              components: [bannerContainer],
-              flags: MessageFlags.IsComponentsV2,
-            });
-          } catch (err) {
-            return await interaction.followUp({
-              content:
-                bannerMessages?.error ||
-                "❌ An error occurred while fetching the banner.",
-              flags: MessageFlags.Ephemeral,
-            });
-          }
-        }
-      }
-    } catch (error) {
-      console.error(
-        `Error in interactionCreate for interaction ${interaction.id}:`,
-        error
-      );
-      if (!interaction.replied && !interaction.deferred) {
-        await interaction
-          .reply({
-            content: "An unexpected error occurred. Please try again later.",
-            flags: MessageFlags.Ephemeral,
-          })
-          .catch((err) =>
-            console.error(
-              `Error sending fallback reply for interaction ${interaction.id}:`,
-              err
-            )
-          );
-      }
-    }
-  }
+	constructor(client, file) {
+		super(client, file, { name: "interactionCreate" });
+	}
+
+	async run(interaction) {
+		if (interaction.user.bot || interaction.channel.type === 1) return;
+		if (globalConfig.env === "development") {
+			if (interaction.guild.id !== globalConfig.testGuildId) return;
+		} else {
+			if (interaction.guild.id === globalConfig.testGuildId) return;
+		}
+
+		try {
+			const { user, color, emoji, language } =
+				await this.client.setColorBasedOnTheme(interaction.user.id);
+			const prefix = this.client.config.prefix;
+
+			if (
+				interaction instanceof CommandInteraction &&
+				interaction.type === InteractionType.ApplicationCommand
+			) {
+				const command = this.client.commands.get(interaction.commandName);
+				if (!command) {
+					console.error(`Command ${interaction.commandName} not found`);
+					return;
+				}
+
+				if (user?.verification?.isBanned) {
+					return;
+				}
+
+				const now = new Date();
+				if (user?.verification?.timeout?.expiresAt > now) {
+					const remainingTime = user.verification.timeout.expiresAt - now;
+					const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+					const minutes = Math.floor(
+						(remainingTime % (1000 * 60 * 60)) / (1000 * 60),
+					);
+					const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+					let timeString = "";
+					if (hours > 0) timeString += `${hours} hr${hours > 1 ? "s" : ""}`;
+					if (minutes > 0)
+						timeString += timeString
+							? ", "
+							: "" + `${minutes} min${minutes > 1 ? "s" : ""}`;
+					if (seconds > 0 || timeString === "")
+						timeString += timeString
+							? ", "
+							: "" + `${seconds} sec${seconds > 1 ? "s" : ""}`;
+
+					return await interaction.reply({
+						embeds: [
+							this.client
+								.embed()
+								.setColor(color.danger)
+								.setDescription(
+									`You are in timeout for: \`${
+										user.verification.timeout.reason || "No reason provided"
+									}\`.\nTimeout ends in **${timeString}**.`,
+								),
+						],
+						flags: MessageFlags.Ephemeral,
+					});
+				}
+
+				const mention = new RegExp(`^<@!?${this.client.user.id}>( |)$`);
+				if (mention.test(interaction.content)) {
+					const embed = this.client
+						.embed()
+						.setColor(color.main)
+						.setTitle(`Heyoo! ${interaction.user.displayName}`)
+						.setDescription(
+							`My Name is ${this.client.user.displayName}.\n` +
+								`My prefix for this server is **\`${prefix}\`**.\n\n` +
+								`Do you need help? please use **\`${prefix}help\`**!!!`,
+						)
+						.setImage(globalGif.mentionBot)
+						.setFooter({
+							text: "Buy Me A Coffee | ABA: 500 057 310",
+							iconURL: this.client.utils.emojiToImage(globalEmoji.buyMeCafe),
+						});
+
+					const clickSuppButton = this.client.utils.linkButton(
+						"Click for support",
+						this.client.config.links.support,
+					);
+					const row = this.client.utils.createButtonRow(clickSuppButton);
+					return interaction.reply({ embeds: [embed], components: [row] });
+				}
+
+				try {
+					const ctx = new Context(interaction, interaction.options.data);
+					ctx.setArgs(interaction.options.data);
+
+					if (!interaction.inGuild()) return;
+
+					if (
+						!interaction.channel
+							.permissionsFor(interaction.guild.members.me)
+							.has(PermissionFlagsBits.ViewChannel)
+					) {
+						return;
+					}
+
+					if (
+						command.permissions.dev &&
+						!this.client.config.owners.includes(interaction.user.id)
+					) {
+						return;
+					}
+
+					if (
+						!interaction.guild.members.me.permissions.has(
+							PermissionFlagsBits.SendMessages,
+						)
+					) {
+						return await interaction.member
+							.send({
+								content: `I don't have **\`SendMessages\`** permission in \`${interaction.guild.name}\`\nchannel: <#${interaction.channelId}>`,
+							})
+							.catch((err) =>
+								console.error(
+									`Error sending DM to ${interaction.user.id}:`,
+									err,
+								),
+							);
+					}
+
+					if (
+						!interaction.guild.members.me.permissions.has(
+							PermissionFlagsBits.EmbedLinks,
+						)
+					) {
+						return await interaction.reply({
+							content: "I don't have **`EmbedLinks`** permission.",
+							flags: MessageFlags.Ephemeral,
+						});
+					}
+
+					if (command.permissions) {
+						if (command.permissions.client) {
+							if (
+								!interaction.guild.members.me.permissions.has(
+									command.permissions.client,
+								)
+							) {
+								return await interaction.reply({
+									content:
+										"I don't have enough permissions to execute this command.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+						if (command.permissions.user) {
+							if (
+								!interaction.member.permissions.has(command.permissions.user)
+							) {
+								return await interaction.reply({
+									content:
+										"You don't have enough permissions to use this command.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+					}
+
+					if (!this.client.cooldown.has(interaction.commandName)) {
+						this.client.cooldown.set(interaction.commandName, new Collection());
+					}
+
+					const now = Date.now();
+					const timestamps = this.client.cooldown.get(interaction.commandName);
+					const cooldownAmount = Math.floor(command.cooldown || 5) * 1000;
+					if (timestamps.has(interaction.user.id)) {
+						const expirationTime =
+							timestamps.get(interaction.user.id) + cooldownAmount;
+						const timeLeft = (expirationTime - now) / 1000;
+						if (now < expirationTime && timeLeft > 0.9) {
+							return await interaction.reply({
+								content: `Please wait \`${timeLeft.toFixed(1)}\` more second(s) before reusing the **${interaction.commandName}** command.`,
+								flags: MessageFlags.Ephemeral,
+							});
+						}
+					}
+
+					await this.client.utils.getValidationUser(
+						this.client,
+						interaction,
+						user,
+						color,
+						emoji,
+						interaction.commandName,
+					);
+
+					const balanceCommands = [
+						"balance",
+						"deposit",
+						"withdraw",
+						"multitransfer",
+						"transfer",
+					];
+					const gamblingCommands = [
+						"slots",
+						"blackjack",
+						"coinflip",
+						"klaklouk",
+					];
+					const gameCommands = ["guessnumber"];
+
+					let logChannelId;
+					if (
+						["admin", "staff", "developer", "guild"].includes(
+							command.category.toLowerCase(),
+						)
+					) {
+						logChannelId = this.client.config.logChannelId[9];
+					} else if (
+						["animals", "building"].includes(command.category.toLowerCase())
+					) {
+						logChannelId = this.client.config.logChannelId[8];
+					} else if (["work"].includes(command.category.toLowerCase())) {
+						logChannelId = this.client.config.logChannelId[7];
+					} else if (["giveaways"].includes(command.category.toLowerCase())) {
+						logChannelId = this.client.config.logChannelId[6];
+					} else if (["utility"].includes(command.category.toLowerCase())) {
+						logChannelId = this.client.config.logChannelId[5];
+					} else if (["inventory"].includes(command.category.toLowerCase())) {
+						logChannelId = this.client.config.logChannelId[4];
+					} else if (balanceCommands.includes(command.name)) {
+						logChannelId = this.client.config.logChannelId[3];
+					} else if (gamblingCommands.includes(command.name)) {
+						logChannelId = this.client.config.logChannelId[2];
+					} else if (gameCommands.includes(command.name)) {
+						logChannelId = this.client.config.logChannelId[1];
+					} else {
+						logChannelId = this.client.config.logChannelId[0];
+					}
+
+					const channel = this.client.channels.cache.get(logChannelId);
+					if (channel && channel.isTextBased()) {
+						const embed = this.client
+							.embed()
+							.setColor(color.blue)
+							.setTitle(
+								`Command - ${this.client.utils.formatCapitalize(interaction.commandName)}`,
+							)
+							.setThumbnail(interaction.guild.iconURL({ extension: "jpeg" }))
+							.addFields([
+								{
+									name: "User Info",
+									value: `**Name:** ${interaction.user.username}\n**Id:** ${interaction.user.id}\n**Channel:** ${interaction.channel.name}`,
+									inline: true,
+								},
+								{
+									name: "Extra Guild Info",
+									value: `\`\`\`arm\n[+] Name: ${interaction.guild.name}\n[+] Id: ${interaction.guild.id}\n[+] Members: ${interaction.guild.memberCount.toString()}\n\`\`\``,
+								},
+							])
+							.setFooter({
+								text: interaction.user.username,
+								iconURL: interaction.user.displayAvatarURL({
+									extension: "jpeg",
+								}),
+							})
+							.setTimestamp();
+						await channel.send({ embeds: [embed] }).catch((err) => {
+							console.error(
+								`Error sending log to channel ${logChannelId}:`,
+								err,
+							);
+						});
+					}
+
+					await command.run(this.client, ctx, ctx.args, color, emoji, language);
+				} catch (error) {
+					console.error(
+						`Error executing command ${interaction.commandName}:`,
+						error,
+					);
+					if (!interaction.replied && !interaction.deferred) {
+						await interaction.reply({
+							content: "An error occurred while processing the command.",
+							flags: MessageFlags.Ephemeral,
+						});
+					}
+				}
+			} else if (
+				interaction instanceof ButtonInteraction &&
+				interaction.type === InteractionType.MessageComponent
+			) {
+				console.log(
+					`Handling button interaction ${interaction.customId} for user ${interaction.user.id} in guild ${interaction.guild.id}`,
+				);
+
+				switch (interaction.customId) {
+					// --- Social Profile Buttons ---
+					case "social_setup": {
+						// Show the setup guide embed
+						const { color, emoji, language } =
+							await this.client.setColorBasedOnTheme(interaction.user.id);
+						const socialsCmd = this.client.commands.get("socials");
+						if (socialsCmd && socialsCmd.showSetupGuide) {
+							await socialsCmd.showSetupGuide(
+								this.client,
+								interaction,
+								color,
+								emoji,
+								language.locales.get(language.defaultLocale)?.socialMessages
+									?.smMessages,
+							);
+							if (!interaction.replied && !interaction.deferred)
+								await interaction.deferUpdate().catch(() => {});
+						}
+						break;
+					}
+					case "view_socials": {
+						// Show the main socials embed
+						const { color, emoji, language } =
+							await this.client.setColorBasedOnTheme(interaction.user.id);
+						const socialsCmd = this.client.commands.get("socials");
+						if (socialsCmd && socialsCmd.run) {
+							await socialsCmd.run(
+								this.client,
+								interaction,
+								[],
+								color,
+								emoji,
+								language,
+							);
+							if (!interaction.replied && !interaction.deferred)
+								await interaction.deferUpdate().catch(() => {});
+						}
+						break;
+					}
+					// Facebook
+					case "social_facebook":
+					case "facebook_set_name":
+					case "facebook_set_link":
+					case "facebook_clear": {
+						const { color, emoji, language } =
+							await this.client.setColorBasedOnTheme(interaction.user.id);
+						const fbCmd = this.client.commands.get("facebook");
+						if (fbCmd) {
+							if (interaction.customId === "facebook_set_name") {
+								await fbCmd.showHelpMessage(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.fbMessages,
+								);
+							} else if (interaction.customId === "facebook_set_link") {
+								await fbCmd.showHelpMessage(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.fbMessages,
+								);
+							} else if (interaction.customId === "facebook_clear") {
+								await fbCmd.clearFacebookProfile(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.fbMessages,
+								);
+							} else {
+								await fbCmd.run(
+									this.client,
+									interaction,
+									[],
+									color,
+									emoji,
+									language,
+								);
+							}
+							if (!interaction.replied && !interaction.deferred)
+								await interaction.deferUpdate().catch(() => {});
+						}
+						break;
+					}
+					// Instagram
+					case "social_instagram":
+					case "instagram_set_name":
+					case "instagram_set_link":
+					case "instagram_clear": {
+						const { color, emoji, language } =
+							await this.client.setColorBasedOnTheme(interaction.user.id);
+						const igCmd = this.client.commands.get("instagram");
+						if (igCmd) {
+							if (interaction.customId === "instagram_set_name") {
+								await igCmd.showHelpMessage(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.igMessages,
+								);
+							} else if (interaction.customId === "instagram_set_link") {
+								await igCmd.showHelpMessage(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.igMessages,
+								);
+							} else if (interaction.customId === "instagram_clear") {
+								await igCmd.clearInstagramProfile(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.igMessages,
+								);
+							} else {
+								await igCmd.run(
+									this.client,
+									interaction,
+									[],
+									color,
+									emoji,
+									language,
+								);
+							}
+							if (!interaction.replied && !interaction.deferred)
+								await interaction.deferUpdate().catch(() => {});
+						}
+						break;
+					}
+					// TikTok
+					case "social_tiktok":
+					case "tiktok_set_name":
+					case "tiktok_set_link":
+					case "tiktok_clear": {
+						const { color, emoji, language } =
+							await this.client.setColorBasedOnTheme(interaction.user.id);
+						const ttCmd = this.client.commands.get("tiktok");
+						if (ttCmd) {
+							if (interaction.customId === "tiktok_set_name") {
+								await ttCmd.showHelpMessage(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.ttMessages,
+								);
+							} else if (interaction.customId === "tiktok_set_link") {
+								await ttCmd.showHelpMessage(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.ttMessages,
+								);
+							} else if (interaction.customId === "tiktok_clear") {
+								await ttCmd.clearTikTokProfile(
+									this.client,
+									interaction,
+									color,
+									emoji,
+									language.locales.get(language.defaultLocale)?.socialMessages
+										?.ttMessages,
+								);
+							} else {
+								await ttCmd.run(
+									this.client,
+									interaction,
+									[],
+									color,
+									emoji,
+									language,
+								);
+							}
+							if (!interaction.replied && !interaction.deferred)
+								await interaction.deferUpdate().catch(() => {});
+						}
+						break;
+					}
+					case "giveaway-join": {
+						try {
+							console.log(
+								`🔍 Querying GiveawaySchema with guildId: ${interaction.guild.id}, channelId: ${interaction.channel.id}, messageId: ${interaction.message.id}`,
+							);
+							const data = await GiveawaySchema.findOne({
+								guildId: interaction.guild.id,
+								channelId: interaction.channel.id,
+								messageId: interaction.message.id,
+							});
+
+							if (!data) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.danger)
+											.setDescription(
+												"An error occurred: Giveaway data not found.",
+											),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							if (data.endTime * 1000 < Date.now()) {
+								return await this.client.utils.endGiveaway(
+									this.client,
+									color,
+									emoji,
+									interaction.message,
+								);
+							}
+
+							if (data.ended) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.danger)
+											.setDescription("This giveaway has already ended."),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							if (data.paused) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.danger)
+											.setDescription("This giveaway is currently paused."),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							if (data.entered.includes(interaction.user.id)) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.pink)
+											.setDescription(
+												"You are already entered in this giveaway. Would you like to leave?",
+											),
+									],
+									components: [
+										new ActionRowBuilder().addComponents(
+											new ButtonBuilder()
+												.setCustomId("leave-giveaway")
+												.setLabel("Leave Giveaway")
+												.setStyle(ButtonStyle.Danger),
+										),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							data.entered.push(interaction.user.id);
+							await data.save();
+
+							await interaction.reply({
+								embeds: [
+									this.client
+										.embed()
+										.setAuthor({
+											name: this.client.user.username,
+											iconURL: this.client.user.displayAvatarURL(),
+										})
+										.setColor(color.main)
+										.setDescription(
+											"You have successfully joined the giveaway.",
+										),
+								],
+								flags: MessageFlags.Ephemeral,
+							});
+
+							const newLabel = data.entered.length;
+							await interaction.message.edit({
+								components: [
+									new ActionRowBuilder().addComponents(
+										new ButtonBuilder()
+											.setCustomId("giveaway-join")
+											.setLabel(`${newLabel}`)
+											.setEmoji(emoji.main)
+											.setStyle(3),
+										new ButtonBuilder()
+											.setCustomId("giveaway-participants")
+											.setEmoji(globalEmoji.giveaway.participants)
+											.setLabel("Participants")
+											.setStyle(1),
+									),
+								],
+							});
+						} catch (error) {
+							console.error(
+								`Error in giveaway-join handler for message ${interaction.message.id}:`,
+								error,
+							);
+							if (!interaction.replied && !interaction.deferred) {
+								await interaction.reply({
+									content: "An error occurred while processing your request.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+						break;
+					}
+
+					case "leave-giveaway": {
+						try {
+							const data = await GiveawaySchema.findOne({
+								guildId: interaction.guild.id,
+								channelId: interaction.channel.id,
+								messageId: interaction.message.id,
+							});
+
+							if (!data) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.danger)
+											.setDescription(
+												"An error occurred: Giveaway data not found.",
+											),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							if (!data.entered.includes(interaction.user.id)) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.danger)
+											.setDescription("You are not entered in this giveaway."),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							data.entered = data.entered.filter(
+								(id) => id !== interaction.user.id,
+							);
+							await data.save();
+
+							await interaction.reply({
+								embeds: [
+									this.client
+										.embed()
+										.setAuthor({
+											name: this.client.user.username,
+											iconURL: this.client.user.displayAvatarURL(),
+										})
+										.setColor(color.main)
+										.setDescription("You have successfully left the giveaway."),
+								],
+								flags: MessageFlags.Ephemeral,
+							});
+
+							const newLabel = data.entered.length;
+							await interaction.message.edit({
+								components: [
+									new ActionRowBuilder().addComponents(
+										new ButtonBuilder()
+											.setCustomId("giveaway-join")
+											.setLabel(`${newLabel}`)
+											.setEmoji(emoji.main)
+											.setStyle(3),
+										new ButtonBuilder()
+											.setCustomId("giveaway-participants")
+											.setEmoji(globalEmoji.giveaway.participants)
+											.setLabel("Participants")
+											.setStyle(1),
+									),
+								],
+							});
+						} catch (error) {
+							console.error(
+								`Error in leave-giveaway handler for message ${interaction.message.id}:`,
+								error,
+							);
+							if (!interaction.replied && !interaction.deferred) {
+								await interaction.reply({
+									content: "An error occurred while processing your request.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+						break;
+					}
+
+					case "giveaway-participants": {
+						try {
+							const data = await GiveawaySchema.findOne({
+								guildId: interaction.guild.id,
+								channelId: interaction.channel.id,
+								messageId: interaction.message.id,
+							});
+
+							if (!data?.entered.length) {
+								return interaction.reply({
+									content: "No participants found.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							const participants = await Promise.all(
+								data.entered.map(async (id, index) => {
+									try {
+										const member =
+											interaction.guild.members.cache.get(id) ||
+											(await interaction.guild.members.fetch(id));
+										return `${index + 1}. <@${id}> (**1** entry)`;
+									} catch (err) {
+										console.error(`Unable to fetch member ${id}:`, err);
+										return null;
+									}
+								}),
+							);
+
+							const validParticipants = participants.filter((p) => p !== null);
+
+							const embed = this.client
+								.embed()
+								.setTitle("Giveaway Participants")
+								.setColor(color.main)
+								.setDescription(
+									`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
+										data.prize,
+									)}**:\n\n${validParticipants.join("\n")}\n\nTotal Participants: **${validParticipants.length}**`,
+								);
+
+							await interaction.reply({
+								embeds: [embed],
+								flags: MessageFlags.Ephemeral,
+							});
+						} catch (error) {
+							console.error(
+								`Error in giveaway-participants handler for message ${interaction.message.id}:`,
+								error,
+							);
+							if (!interaction.replied && !interaction.deferred) {
+								await interaction.reply({
+									content: "An error occurred while processing your request.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+						break;
+					}
+
+					case "giveawayshopitem-join": {
+						try {
+							const data = await GiveawayShopItemSchema.findOne({
+								guildId: interaction.guild.id,
+								channelId: interaction.channel.id,
+								messageId: interaction.message.id,
+							});
+
+							if (!data) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.danger)
+											.setDescription(
+												"An error occurred: Giveaway data not found.",
+											),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							if (data.endTime * 1000 < Date.now()) {
+								return this.client.utils.endGiveawayShopItem(
+									this.client,
+									color,
+									emoji,
+									interaction.message,
+								);
+							}
+
+							if (data.ended) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.danger)
+											.setDescription("This giveaway has already ended."),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							if (data.paused) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.danger)
+											.setDescription("This giveaway is currently paused."),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							if (data.entered.includes(interaction.user.id)) {
+								return interaction.reply({
+									embeds: [
+										this.client
+											.embed()
+											.setAuthor({
+												name: this.client.user.username,
+												iconURL: this.client.user.displayAvatarURL(),
+											})
+											.setColor(color.pink)
+											.setDescription(
+												"You are already entered in this giveaway. Would you like to leave?",
+											),
+									],
+									components: [
+										new ActionRowBuilder().addComponents(
+											new ButtonBuilder()
+												.setCustomId("leave-giveaway")
+												.setLabel("Leave Giveaway")
+												.setStyle(ButtonStyle.Danger),
+										),
+									],
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							data.entered.push(interaction.user.id);
+							await data.save();
+
+							await interaction.reply({
+								embeds: [
+									this.client
+										.embed()
+										.setAuthor({
+											name: this.client.user.username,
+											iconURL: this.client.user.displayAvatarURL(),
+										})
+										.setColor(color.main)
+										.setDescription(
+											"You have successfully joined the giveaway.",
+										),
+								],
+								flags: MessageFlags.Ephemeral,
+							});
+
+							const newLabel = data.entered.length;
+							await interaction.message.edit({
+								components: [
+									new ActionRowBuilder().addComponents(
+										new ButtonBuilder()
+											.setCustomId("giveawayshopitem-join")
+											.setLabel(`${newLabel}`)
+											.setEmoji(emoji.main)
+											.setStyle(3),
+										new ButtonBuilder()
+											.setCustomId("giveawayshopitem-participants")
+											.setEmoji(globalEmoji.giveaway.participants)
+											.setLabel("Participants")
+											.setStyle(1),
+									),
+								],
+							});
+						} catch (error) {
+							console.error(
+								`Error in giveawayshopitem-join handler for message ${interaction.message.id}:`,
+								error,
+							);
+							if (!interaction.replied && !interaction.deferred) {
+								await interaction.reply({
+									content: "An error occurred while processing your request.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+						break;
+					}
+
+					case "giveawayshopitem-participants": {
+						try {
+							const data = await GiveawayShopItemSchema.findOne({
+								guildId: interaction.guild.id,
+								channelId: interaction.channel.id,
+								messageId: interaction.message.id,
+							});
+
+							if (!data?.entered.length) {
+								return interaction.reply({
+									content: "No participants found.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							const participants = await Promise.all(
+								data.entered.map(async (id, index) => {
+									try {
+										const member =
+											interaction.guild.members.cache.get(id) ||
+											(await interaction.guild.members.fetch(id));
+										return `${index + 1}. <@${id}> (**1** entry)`;
+									} catch (err) {
+										console.error(`Unable to fetch member ${id}:`, err);
+										return null;
+									}
+								}),
+							);
+
+							const validParticipants = participants.filter((p) => p !== null);
+
+							const embed = this.client
+								.embed()
+								.setTitle("Giveaway Shop Item Participants")
+								.setColor(color.main)
+								.setDescription(
+									`These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
+										data.amount,
+									)}**:\n\n${validParticipants.join("\n")}\n\nTotal Participants: **${validParticipants.length}**`,
+								);
+
+							await interaction.reply({
+								embeds: [embed],
+								flags: MessageFlags.Ephemeral,
+							});
+						} catch (error) {
+							console.error(
+								`Error in giveawayshopitem-participants handler for message ${interaction.message.id}:`,
+								error,
+							);
+							if (!interaction.replied && !interaction.deferred) {
+								await interaction.reply({
+									content: "An error occurred while processing your request.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+						break;
+					}
+
+					case "giveaway-join-req": {
+						try {
+							const giveaway = await this.client.utils.getGiveaway(interaction);
+							if (!giveaway) {
+								return interaction.reply({
+									content: "Giveaway not found.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							const meetsRequirements =
+								await this.client.utils.checkGiveawayRequirements(
+									this.client,
+									interaction.user,
+									giveaway,
+									interaction,
+								);
+
+							if (!meetsRequirements) {
+								return interaction.reply({
+									content:
+										"You do not meet the requirements for this giveaway.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						} catch (error) {
+							console.error(
+								`Error in giveaway-join-req handler for message ${interaction.message.id}:`,
+								error,
+							);
+							if (!interaction.replied && !interaction.deferred) {
+								await interaction.reply({
+									content: "An error occurred while processing your request.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+						break;
+					}
+
+					case "claim": {
+						try {
+							const userId = interaction.user.id;
+							const user = await users.findOne({ userId });
+
+							if (!user) {
+								return interaction.reply({
+									content:
+										"You do not have an account. Create one to claim rewards.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+
+							const claimedCoins =
+								Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
+
+							await users.findOneAndUpdate(
+								{ userId },
+								{ $inc: { "balance.coin": claimedCoins, "claim.streak": 1 } },
+							);
+
+							const row = new ActionRowBuilder().addComponents(
+								new ButtonBuilder()
+									.setCustomId("claim")
+									.setLabel("Claimed")
+									.setEmoji("🕔")
+									.setStyle(ButtonStyle.Primary)
+									.setDisabled(true),
+							);
+
+							const embed = this.client
+								.embed()
+								.setColor(this.client.color.main)
+								.setDescription(
+									`Congratulations to <@${userId}> ! Claim successful! ${this.client.utils.formatNumber(
+										claimedCoins,
+									)} ${this.client.emoji.coin} added to your balance and your claim streak has increased to ${user.claim.streak}.`,
+								);
+
+							await interaction.update({ embeds: [embed], components: [row] });
+						} catch (error) {
+							console.error(
+								`Error in claim handler for user ${interaction.user.id}:`,
+								error,
+							);
+							if (!interaction.replied && !interaction.deferred) {
+								await interaction.reply({
+									content: "An error occurred while processing your request.",
+									flags: MessageFlags.Ephemeral,
+								});
+							}
+						}
+						break;
+					}
+
+					default: {
+						break;
+					}
+				}
+			} else if (
+				interaction instanceof UserSelectMenuInteraction &&
+				interaction.type === InteractionType.MessageComponent
+			) {
+				// Handle User Select Menu interactions
+				if (interaction.customId.startsWith("avatar_select_")) {
+					const requesterId = interaction.customId.split("_")[2];
+
+					// Check if the person using the select menu is the one who requested the command
+					if (interaction.user.id !== requesterId) {
+						return await interaction.reply({
+							content:
+								"❌ You cannot use this menu. Please run the command yourself.",
+							flags: MessageFlags.Ephemeral,
+						});
+					}
+
+					await interaction.deferUpdate();
+
+					const { color, emoji, language } =
+						await this.client.setColorBasedOnTheme(interaction.user.id);
+					const generalMessages = language.locales.get(
+						language.defaultLocale,
+					)?.generalMessages;
+
+					const selectedUser = interaction.users.first();
+
+					if (!selectedUser) {
+						return await interaction.followUp({
+							content: "❌ Could not find the selected user.",
+							flags: MessageFlags.Ephemeral,
+						});
+					}
+
+					// Get avatar URLs in different formats
+					const avatarPNG = selectedUser.displayAvatarURL({
+						extension: "png",
+						size: 4096,
+					});
+					const avatarJPG = selectedUser.displayAvatarURL({
+						extension: "jpg",
+						size: 4096,
+					});
+					const avatarWEBP = selectedUser.displayAvatarURL({
+						extension: "webp",
+						size: 4096,
+					});
+					// Check if user has an animated avatar for GIF option
+					const isAnimated = selectedUser.avatar?.startsWith("a_");
+					const avatarGIF = isAnimated
+						? selectedUser.displayAvatarURL({ extension: "gif", size: 4096 })
+						: null;
+
+					// Create updated avatar display with the selected user
+					const avatarContainer = new ContainerBuilder()
+						.setAccentColor(color.main)
+						.addTextDisplayComponents((text) =>
+							text.setContent(
+								`# **${emoji.mainLeft} AVATAR ${emoji.mainRight}**`,
+							),
+						)
+						.addSeparatorComponents((sep) => sep)
+						.addMediaGalleryComponents((gallery) =>
+							gallery.addItems((item) =>
+								item
+									.setURL(
+										selectedUser.displayAvatarURL({
+											dynamic: true,
+											extension: "png",
+											size: 1024,
+										}),
+									)
+									.setDescription(
+										`${selectedUser.displayName || selectedUser.username}'s Full Avatar`,
+									),
+							),
+						)
+						.addSeparatorComponents((sep) => sep.setDivider(false))
+						.addSectionComponents((section) =>
+							section
+								.addTextDisplayComponents((text) =>
+									text.setContent("**Download Avatar:**"),
+								)
+								.setButtonAccessory((button) =>
+									button
+										.setLabel("🖼️ PNG")
+										.setStyle(ButtonStyle.Link)
+										.setURL(avatarPNG),
+								),
+						)
+						.addSectionComponents((section) =>
+							section
+								.addTextDisplayComponents((text) =>
+									text.setContent("High quality JPG format"),
+								)
+								.setButtonAccessory((button) =>
+									button
+										.setLabel("📸 JPG")
+										.setStyle(ButtonStyle.Link)
+										.setURL(avatarJPG),
+								),
+						);
+
+					// Add GIF button only if avatar is animated
+					if (avatarGIF) {
+						avatarContainer.addSectionComponents((section) =>
+							section
+								.addTextDisplayComponents((text) =>
+									text.setContent("Animated GIF format"),
+								)
+								.setButtonAccessory((button) =>
+									button
+										.setLabel("✨ GIF")
+										.setStyle(ButtonStyle.Link)
+										.setURL(avatarGIF),
+								),
+						);
+					}
+
+					avatarContainer
+						.addSectionComponents((section) =>
+							section
+								.addTextDisplayComponents((text) =>
+									text.setContent("WebP format (smallest size)"),
+								)
+								.setButtonAccessory((button) =>
+									button
+										.setLabel("📦 WEBP")
+										.setStyle(ButtonStyle.Link)
+										.setURL(avatarWEBP),
+								),
+						)
+						.addSeparatorComponents((sep) => sep.setDivider(false))
+						.addActionRowComponents((row) =>
+							row.setComponents(
+								new UserSelectMenuBuilder()
+									.setCustomId(`avatar_select_${interaction.user.id}`)
+									.setPlaceholder("🖼️ Select a user to view their avatar")
+									.setMinValues(1)
+									.setMaxValues(1),
+							),
+						)
+						.addTextDisplayComponents((text) =>
+							text.setContent(
+								`${generalMessages.requestedBy.replace("%{username}", interaction.user.displayName) || `Requested by ${interaction.user.displayName}`}`,
+							),
+						);
+
+					await interaction.editReply({
+						components: [avatarContainer],
+						flags: MessageFlags.IsComponentsV2,
+					});
+				} else if (interaction.customId.startsWith("banner_select_")) {
+					const requesterId = interaction.customId.split("_")[2];
+
+					// Check if the person using the select menu is the one who requested the command
+					if (interaction.user.id !== requesterId) {
+						return await interaction.reply({
+							content:
+								"❌ You cannot use this menu. Please run the command yourself.",
+							flags: MessageFlags.Ephemeral,
+						});
+					}
+
+					await interaction.deferUpdate();
+
+					const { color, emoji, language } =
+						await this.client.setColorBasedOnTheme(interaction.user.id);
+					const generalMessages = language.locales.get(
+						language.defaultLocale,
+					)?.generalMessages;
+					const bannerMessages = language.locales.get(language.defaultLocale)
+						?.utilityMessages?.bannerMessages;
+
+					const selectedUser = interaction.users.first();
+
+					if (!selectedUser) {
+						return await interaction.followUp({
+							content: "❌ Could not find the selected user.",
+							flags: MessageFlags.Ephemeral,
+						});
+					}
+
+					try {
+						const fetchedUser = await selectedUser.fetch();
+						const bannerURL = fetchedUser.bannerURL({
+							dynamic: true,
+							size: 1024,
+						});
+
+						if (!bannerURL) {
+							return await interaction.followUp({
+								content:
+									bannerMessages?.noBannerFound ||
+									"❌ This user does not have a banner.",
+								flags: MessageFlags.Ephemeral,
+							});
+						}
+
+						// Get banner URLs in different formats
+						const bannerPNG = fetchedUser.bannerURL({
+							extension: "png",
+							size: 4096,
+						});
+						const bannerJPG = fetchedUser.bannerURL({
+							extension: "jpg",
+							size: 4096,
+						});
+						const bannerWEBP = fetchedUser.bannerURL({
+							extension: "webp",
+							size: 4096,
+						});
+						// Check if user has an animated banner for GIF option
+						const isAnimated = fetchedUser.banner?.startsWith("a_");
+						const bannerGIF = isAnimated
+							? fetchedUser.bannerURL({ extension: "gif", size: 4096 })
+							: null;
+
+						// Create updated banner display with the selected user
+						const bannerContainer = new ContainerBuilder()
+							.setAccentColor(color.main)
+							.addTextDisplayComponents((text) =>
+								text.setContent(
+									`# **${emoji.mainLeft} BANNER ${emoji.mainRight}**`,
+								),
+							)
+							.addSeparatorComponents((sep) => sep)
+							.addMediaGalleryComponents((gallery) =>
+								gallery.addItems((item) =>
+									item
+										.setURL(bannerURL)
+										.setDescription(
+											`${selectedUser.displayName || selectedUser.username}'s Banner`,
+										),
+								),
+							)
+							.addSeparatorComponents((sep) => sep.setDivider(false))
+							.addSectionComponents((section) =>
+								section
+									.addTextDisplayComponents((text) =>
+										text.setContent("**Download Banner:**"),
+									)
+									.setButtonAccessory((button) =>
+										button
+											.setLabel("🖼️ PNG")
+											.setStyle(ButtonStyle.Link)
+											.setURL(bannerPNG),
+									),
+							)
+							.addSectionComponents((section) =>
+								section
+									.addTextDisplayComponents((text) =>
+										text.setContent("High quality JPG format"),
+									)
+									.setButtonAccessory((button) =>
+										button
+											.setLabel("📸 JPG")
+											.setStyle(ButtonStyle.Link)
+											.setURL(bannerJPG),
+									),
+							);
+
+						// Add GIF button only if banner is animated
+						if (bannerGIF) {
+							bannerContainer.addSectionComponents((section) =>
+								section
+									.addTextDisplayComponents((text) =>
+										text.setContent("Animated GIF format"),
+									)
+									.setButtonAccessory((button) =>
+										button
+											.setLabel("✨ GIF")
+											.setStyle(ButtonStyle.Link)
+											.setURL(bannerGIF),
+									),
+							);
+						}
+
+						bannerContainer
+							.addSectionComponents((section) =>
+								section
+									.addTextDisplayComponents((text) =>
+										text.setContent("WebP format (smallest size)"),
+									)
+									.setButtonAccessory((button) =>
+										button
+											.setLabel("📦 WEBP")
+											.setStyle(ButtonStyle.Link)
+											.setURL(bannerWEBP),
+									),
+							)
+							.addSeparatorComponents((sep) => sep.setDivider(false))
+							.addActionRowComponents((row) =>
+								row.setComponents(
+									new UserSelectMenuBuilder()
+										.setCustomId(`banner_select_${interaction.user.id}`)
+										.setPlaceholder("🎨 Select a user to view their banner")
+										.setMinValues(1)
+										.setMaxValues(1),
+								),
+							)
+							.addTextDisplayComponents((text) =>
+								text.setContent(
+									`${generalMessages.requestedBy.replace("%{username}", interaction.user.displayName) || `Requested by ${interaction.user.displayName}`}`,
+								),
+							);
+
+						await interaction.editReply({
+							components: [bannerContainer],
+							flags: MessageFlags.IsComponentsV2,
+						});
+					} catch (err) {
+						return await interaction.followUp({
+							content:
+								bannerMessages?.error ||
+								"❌ An error occurred while fetching the banner.",
+							flags: MessageFlags.Ephemeral,
+						});
+					}
+				}
+			}
+		} catch (error) {
+			console.error(
+				`Error in interactionCreate for interaction ${interaction.id}:`,
+				error,
+			);
+			if (!interaction.replied && !interaction.deferred) {
+				await interaction
+					.reply({
+						content: "An unexpected error occurred. Please try again later.",
+						flags: MessageFlags.Ephemeral,
+					})
+					.catch((err) =>
+						console.error(
+							`Error sending fallback reply for interaction ${interaction.id}:`,
+							err,
+						),
+					);
+			}
+		}
+	}
 };

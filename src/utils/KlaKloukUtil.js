@@ -2,434 +2,434 @@ const { AttachmentBuilder } = require("discord.js");
 const { createCanvas, loadImage } = require("@napi-rs/canvas");
 
 const kkEmoji = {
-  lion: "<:LION:1342746164134674462>",
-  angpav: "<:ANGPAV:1342746180332814346>",
-  tiger: "<:KLA:1342746195331911721>",
-  cow: "<:COW:1342746208938098720>",
-  crab: "<:CRAB:1342746218144595979>",
-  trey: "<:FISH:1342746226608574525>",
-  clear: "<:CLEAR:1342748925341470811>",
-  cancel: "<:CANCEL:1342748932534702141>",
-  start: "<a:START:1342748948825243699>",
+	lion: "<:LION:1342746164134674462>",
+	angpav: "<:ANGPAV:1342746180332814346>",
+	tiger: "<:KLA:1342746195331911721>",
+	cow: "<:COW:1342746208938098720>",
+	crab: "<:CRAB:1342746218144595979>",
+	trey: "<:FISH:1342746226608574525>",
+	clear: "<:CLEAR:1342748925341470811>",
+	cancel: "<:CANCEL:1342748932534702141>",
+	start: "<a:START:1342748948825243699>",
 };
 
 const kkGif = {
-  kda: "https://i.imgur.com/9BYyire.png",
-  ball: "https://i.imgur.com/Es6GcJj.gif",
-  secondBall: "https://i.imgur.com/6uW6Qng.gif",
-  thirdBall: "https://i.imgur.com/IDI6x8f.gif",
-  klok: "https://i.imgur.com/4QHXX7H.gif",
+	kda: "https://i.imgur.com/9BYyire.png",
+	ball: "https://i.imgur.com/Es6GcJj.gif",
+	secondBall: "https://i.imgur.com/6uW6Qng.gif",
+	thirdBall: "https://i.imgur.com/IDI6x8f.gif",
+	klok: "https://i.imgur.com/4QHXX7H.gif",
 };
 
 const kkImage = {
-  lion: "https://i.imgur.com/fh16rxb.png", // tick
-  angpav: "https://i.imgur.com/h2eqBAU.png", // tick
-  tiger: "https://i.imgur.com/EaIw3tM.png", // tick
-  cow: "https://i.imgur.com/07gO3iy.png", // tick
-  crab: "https://i.imgur.com/Pi3Xjna.png", // tick
-  trey: "https://i.imgur.com/dGzUdmn.png", // tick
+	lion: "https://i.imgur.com/fh16rxb.png", // tick
+	angpav: "https://i.imgur.com/h2eqBAU.png", // tick
+	tiger: "https://i.imgur.com/EaIw3tM.png", // tick
+	cow: "https://i.imgur.com/07gO3iy.png", // tick
+	crab: "https://i.imgur.com/Pi3Xjna.png", // tick
+	trey: "https://i.imgur.com/dGzUdmn.png", // tick
 };
 
 exports.klakloukStarting = klakloukStarting;
 
 async function klakloukStarting(
-  client,
-  ctx,
-  color,
-  emoji,
-  user,
-  userCoin,
-  betCoin,
-  generalMessages,
-  klaKloukMessages,
+	client,
+	ctx,
+	color,
+	emoji,
+	user,
+	userCoin,
+	betCoin,
+	generalMessages,
+	klaKloukMessages,
 ) {
-  const startEmbed = client
-    .embed()
-    .setColor(color.main)
-    .setDescription(
-      generalMessages.title
-        .replace("%{mainLeft}", emoji.mainLeft)
-        .replace("%{title}", klaKloukMessages.title)
-        .replace("%{mainRight}", emoji.mainRight) +
-        klaKloukMessages.startGame
-          .replace("%{betCoin}", client.utils.formatNumber(betCoin))
-          .replace("%{coinEmote}", emoji.coin),
-    )
-    .setImage(kkGif.kda)
-    .setFooter({
-      text: generalMessages.gameStart.replace(
-        "%{user}",
-        ctx.author.displayName,
-      ),
-      iconURL: kkGif.ball,
-    });
+	const startEmbed = client
+		.embed()
+		.setColor(color.main)
+		.setDescription(
+			generalMessages.title
+				.replace("%{mainLeft}", emoji.mainLeft)
+				.replace("%{title}", klaKloukMessages.title)
+				.replace("%{mainRight}", emoji.mainRight) +
+				klaKloukMessages.startGame
+					.replace("%{betCoin}", client.utils.formatNumber(betCoin))
+					.replace("%{coinEmote}", emoji.coin),
+		)
+		.setImage(kkGif.kda)
+		.setFooter({
+			text: generalMessages.gameStart.replace(
+				"%{user}",
+				ctx.author.displayName,
+			),
+			iconURL: kkGif.ball,
+		});
 
-  // Creating the buttons with initial SECONDARY style
-  const b1 = client.utils.emojiButton("lion", kkEmoji.lion, 2);
-  const b2 = client.utils.emojiButton("angpav", kkEmoji.angpav, 2);
-  const b3 = client.utils.emojiButton("tiger", kkEmoji.tiger, 2);
-  const b4 = client.utils.emojiButton("clear", kkEmoji.clear, 2);
+	// Creating the buttons with initial SECONDARY style
+	const b1 = client.utils.emojiButton("lion", kkEmoji.lion, 2);
+	const b2 = client.utils.emojiButton("angpav", kkEmoji.angpav, 2);
+	const b3 = client.utils.emojiButton("tiger", kkEmoji.tiger, 2);
+	const b4 = client.utils.emojiButton("clear", kkEmoji.clear, 2);
 
-  const b5 = client.utils.emojiButton("cow", kkEmoji.cow, 2);
-  const b6 = client.utils.emojiButton("crab", kkEmoji.crab, 2);
-  const b7 = client.utils.emojiButton("trey", kkEmoji.trey, 2);
-  const b8 = client.utils.emojiButton("start", kkEmoji.start, 3);
-  const b9 = client.utils.emojiButton("cancel", kkEmoji.cancel, 4);
+	const b5 = client.utils.emojiButton("cow", kkEmoji.cow, 2);
+	const b6 = client.utils.emojiButton("crab", kkEmoji.crab, 2);
+	const b7 = client.utils.emojiButton("trey", kkEmoji.trey, 2);
+	const b8 = client.utils.emojiButton("start", kkEmoji.start, 3);
+	const b9 = client.utils.emojiButton("cancel", kkEmoji.cancel, 4);
 
-  const firstRow = client.utils.createButtonRow(b1, b2, b3, b4);
-  const secondRow = client.utils.createButtonRow(b5, b6, b7, b8, b9);
+	const firstRow = client.utils.createButtonRow(b1, b2, b3, b4);
+	const secondRow = client.utils.createButtonRow(b5, b6, b7, b8, b9);
 
-  const KK = client.utils.getRandomNumber(1, 6);
-  const KK2 = client.utils.getRandomNumber(1, 6);
-  const KK3 = client.utils.getRandomNumber(1, 6);
+	const KK = client.utils.getRandomNumber(1, 6);
+	const KK2 = client.utils.getRandomNumber(1, 6);
+	const KK3 = client.utils.getRandomNumber(1, 6);
 
-  let D1 = "";
-  let D2 = "";
-  let D3 = "";
+	let D1 = "";
+	let D2 = "";
+	let D3 = "";
 
-  let P1 = "";
-  let P2 = "";
-  let P3 = "";
+	let P1 = "";
+	let P2 = "";
+	let P3 = "";
 
-  let G1 = "";
-  let G2 = "";
-  let G3 = "";
+	let G1 = "";
+	let G2 = "";
+	let G3 = "";
 
-  if (KK === 1) {
-    D1 = kkImage.lion;
-    P1 = kkEmoji.lion;
-    G1 = "lion";
-  } else if (KK === 2) {
-    D1 = kkImage.angpav;
-    P1 = kkEmoji.angpav;
-    G1 = "angpav";
-  } else if (KK === 3) {
-    D1 = kkImage.tiger;
-    P1 = kkEmoji.tiger;
-    G1 = "tiger";
-  } else if (KK === 4) {
-    D1 = kkImage.cow;
-    P1 = kkEmoji.cow;
-    G1 = "cow";
-  } else if (KK === 5) {
-    D1 = kkImage.crab;
-    P1 = kkEmoji.crab;
-    G1 = "crab";
-  } else if (KK === 6) {
-    D1 = kkImage.trey;
-    P1 = kkEmoji.trey;
-    G1 = "trey";
-  }
+	if (KK === 1) {
+		D1 = kkImage.lion;
+		P1 = kkEmoji.lion;
+		G1 = "lion";
+	} else if (KK === 2) {
+		D1 = kkImage.angpav;
+		P1 = kkEmoji.angpav;
+		G1 = "angpav";
+	} else if (KK === 3) {
+		D1 = kkImage.tiger;
+		P1 = kkEmoji.tiger;
+		G1 = "tiger";
+	} else if (KK === 4) {
+		D1 = kkImage.cow;
+		P1 = kkEmoji.cow;
+		G1 = "cow";
+	} else if (KK === 5) {
+		D1 = kkImage.crab;
+		P1 = kkEmoji.crab;
+		G1 = "crab";
+	} else if (KK === 6) {
+		D1 = kkImage.trey;
+		P1 = kkEmoji.trey;
+		G1 = "trey";
+	}
 
-  if (KK2 === 1) {
-    D2 = kkImage.lion;
-    P2 = kkEmoji.lion;
-    G2 = "lion";
-  } else if (KK2 === 2) {
-    D2 = kkImage.angpav;
-    P2 = kkEmoji.angpav;
-    G2 = "angpav";
-  } else if (KK2 === 3) {
-    D2 = kkImage.tiger;
-    P2 = kkEmoji.tiger;
-    G2 = "tiger";
-  } else if (KK2 === 4) {
-    D2 = kkImage.cow;
-    P2 = kkEmoji.cow;
-    G2 = "cow";
-  } else if (KK2 === 5) {
-    D2 = kkImage.crab;
-    P2 = kkEmoji.crab;
-    G2 = "crab";
-  } else if (KK2 === 6) {
-    D2 = kkImage.trey;
-    P2 = kkEmoji.trey;
-    G2 = "trey";
-  }
+	if (KK2 === 1) {
+		D2 = kkImage.lion;
+		P2 = kkEmoji.lion;
+		G2 = "lion";
+	} else if (KK2 === 2) {
+		D2 = kkImage.angpav;
+		P2 = kkEmoji.angpav;
+		G2 = "angpav";
+	} else if (KK2 === 3) {
+		D2 = kkImage.tiger;
+		P2 = kkEmoji.tiger;
+		G2 = "tiger";
+	} else if (KK2 === 4) {
+		D2 = kkImage.cow;
+		P2 = kkEmoji.cow;
+		G2 = "cow";
+	} else if (KK2 === 5) {
+		D2 = kkImage.crab;
+		P2 = kkEmoji.crab;
+		G2 = "crab";
+	} else if (KK2 === 6) {
+		D2 = kkImage.trey;
+		P2 = kkEmoji.trey;
+		G2 = "trey";
+	}
 
-  if (KK3 === 1) {
-    D3 = kkImage.lion;
-    P3 = kkEmoji.lion;
-    G3 = "lion";
-  } else if (KK3 === 2) {
-    D3 = kkImage.angpav;
-    P3 = kkEmoji.angpav;
-    G3 = "angpav";
-  } else if (KK3 === 3) {
-    D3 = kkImage.tiger;
-    P3 = kkEmoji.tiger;
-    G3 = "tiger";
-  } else if (KK3 === 4) {
-    D3 = kkImage.cow;
-    P3 = kkEmoji.cow;
-    G3 = "cow";
-  } else if (KK3 === 5) {
-    D3 = kkImage.crab;
-    P3 = kkEmoji.crab;
-    G3 = "crab";
-  } else if (KK3 === 6) {
-    D3 = kkImage.trey;
-    P3 = kkEmoji.trey;
-    G3 = "trey";
-  }
+	if (KK3 === 1) {
+		D3 = kkImage.lion;
+		P3 = kkEmoji.lion;
+		G3 = "lion";
+	} else if (KK3 === 2) {
+		D3 = kkImage.angpav;
+		P3 = kkEmoji.angpav;
+		G3 = "angpav";
+	} else if (KK3 === 3) {
+		D3 = kkImage.tiger;
+		P3 = kkEmoji.tiger;
+		G3 = "tiger";
+	} else if (KK3 === 4) {
+		D3 = kkImage.cow;
+		P3 = kkEmoji.cow;
+		G3 = "cow";
+	} else if (KK3 === 5) {
+		D3 = kkImage.crab;
+		P3 = kkEmoji.crab;
+		G3 = "crab";
+	} else if (KK3 === 6) {
+		D3 = kkImage.trey;
+		P3 = kkEmoji.trey;
+		G3 = "trey";
+	}
 
-  const msg = await ctx.channel.send({
-    embeds: [startEmbed],
-    components: [firstRow, secondRow],
-  });
+	const msg = await ctx.channel.send({
+		embeds: [startEmbed],
+		components: [firstRow, secondRow],
+	});
 
-  const collector = msg.createMessageComponentCollector({
-    filter: async (int) => {
-      if (int.user.id === ctx.author.id) return true;
-      else {
-        await int.reply({
-          flags: 64,
-          content: `This button is controlled by **${ctx.author.displayName}**!`,
-        });
-        return false;
-      }
-    },
-    time: 60000,
-  });
+	const collector = msg.createMessageComponentCollector({
+		filter: async (int) => {
+			if (int.user.id === ctx.author.id) return true;
+			else {
+				await int.reply({
+					flags: 64,
+					content: `This button is controlled by **${ctx.author.displayName}**!`,
+				});
+				return false;
+			}
+		},
+		time: 60000,
+	});
 
-  let selectedButton = [];
-  collector.on("collect", async (int) => {
-    try {
-      const buttonCost = betCoin;
-      const totalBet = buttonCost * selectedButton.length;
-      const maxSelectable = Math.floor(userCoin / buttonCost);
-      if (
-        int.customId !== "cancel" &&
-        int.customId !== "clear" &&
-        int.customId !== "start"
-      ) {
-        const selected = [...firstRow.components, ...secondRow.components].find(
-          (b) => b.data.custom_id === int.customId,
-        );
-        if (!selectedButton.includes(int.customId)) {
-          if (selectedButton.length >= maxSelectable) {
-            return int.reply({
-              content: klaKloukMessages.notEnoughCoins
-                .replace("%{coin}", client.utils.formatNumber(userCoin))
-                .replace("%{coinEmote}", emoji.coin)
-                .replace(
-                  "%{needed}",
-                  client.utils.formatNumber(
-                    (selectedButton.length + 1) * buttonCost,
-                  ),
-                )
-                .replace("%{coinEmote}", emoji.coin),
-              flags: 64,
-            });
-          }
-          user.balance.coin -= buttonCost;
-          await user.save();
-          selectedButton.push(int.customId);
-          selected.setStyle(1);
-        } else {
-          selectedButton.splice(selectedButton.indexOf(int.customId), 1);
-          user.balance.coin += buttonCost;
-          await user.save();
-          selected.setStyle(2);
-        }
-        await int.deferUpdate();
-        msg.edit({ components: [firstRow, secondRow] });
-      } else if (int.customId === "cancel") {
-        selectedButton = [];
-        user.balance.coin += totalBet;
-        await user.save();
-        msg.delete();
-      } else if (int.customId === "clear") {
-        selectedButton = [];
-        [...firstRow.components, ...secondRow.components].forEach((button) => {
-          if (
-            button.data.custom_id !== "clear" &&
-            button.data.custom_id !== "cancel" &&
-            button.data.custom_id !== "start"
-          ) {
-            button.setStyle(2);
-          }
-        });
-        user.balance.coin += totalBet;
-        await user.save();
-        await int.deferUpdate();
-        msg.edit({ components: [firstRow, secondRow] });
-      } else if (int.customId === "start") {
-        if (selectedButton.length === 0) {
-          return int.reply({
-            content: klaKloukMessages.notSelected,
-            flags: 64,
-          });
-        } else {
-          const selectButtonEmojis = selectedButton
-            .map((id) => kkEmoji[id])
-            .join(" `|` ");
-          const totalCoin = betCoin * selectedButton.length;
+	let selectedButton = [];
+	collector.on("collect", async (int) => {
+		try {
+			const buttonCost = betCoin;
+			const totalBet = buttonCost * selectedButton.length;
+			const maxSelectable = Math.floor(userCoin / buttonCost);
+			if (
+				int.customId !== "cancel" &&
+				int.customId !== "clear" &&
+				int.customId !== "start"
+			) {
+				const selected = [...firstRow.components, ...secondRow.components].find(
+					(b) => b.data.custom_id === int.customId,
+				);
+				if (!selectedButton.includes(int.customId)) {
+					if (selectedButton.length >= maxSelectable) {
+						return int.reply({
+							content: klaKloukMessages.notEnoughCoins
+								.replace("%{coin}", client.utils.formatNumber(userCoin))
+								.replace("%{coinEmote}", emoji.coin)
+								.replace(
+									"%{needed}",
+									client.utils.formatNumber(
+										(selectedButton.length + 1) * buttonCost,
+									),
+								)
+								.replace("%{coinEmote}", emoji.coin),
+							flags: 64,
+						});
+					}
+					user.balance.coin -= buttonCost;
+					await user.save();
+					selectedButton.push(int.customId);
+					selected.setStyle(1);
+				} else {
+					selectedButton.splice(selectedButton.indexOf(int.customId), 1);
+					user.balance.coin += buttonCost;
+					await user.save();
+					selected.setStyle(2);
+				}
+				await int.deferUpdate();
+				msg.edit({ components: [firstRow, secondRow] });
+			} else if (int.customId === "cancel") {
+				selectedButton = [];
+				user.balance.coin += totalBet;
+				await user.save();
+				msg.delete();
+			} else if (int.customId === "clear") {
+				selectedButton = [];
+				[...firstRow.components, ...secondRow.components].forEach((button) => {
+					if (
+						button.data.custom_id !== "clear" &&
+						button.data.custom_id !== "cancel" &&
+						button.data.custom_id !== "start"
+					) {
+						button.setStyle(2);
+					}
+				});
+				user.balance.coin += totalBet;
+				await user.save();
+				await int.deferUpdate();
+				msg.edit({ components: [firstRow, secondRow] });
+			} else if (int.customId === "start") {
+				if (selectedButton.length === 0) {
+					return int.reply({
+						content: klaKloukMessages.notSelected,
+						flags: 64,
+					});
+				} else {
+					const selectButtonEmojis = selectedButton
+						.map((id) => kkEmoji[id])
+						.join(" `|` ");
+					const totalCoin = betCoin * selectedButton.length;
 
-          const progressEmbed = client
-            .embed()
-            .setColor(color.main)
-            .setDescription(
-              generalMessages.title
-                .replace("%{mainLeft}", emoji.mainLeft)
-                .replace("%{title}", klaKloukMessages.title)
-                .replace("%{mainRight}", emoji.mainRight) +
-                klaKloukMessages.selected
-                  .replace("%{selectedButton}", selectButtonEmojis)
-                  .replace("%{betCoin}", client.utils.formatNumber(betCoin))
-                  .replace("%{coinEmote}", emoji.coin)
-                  .replace("%{totalCoin}", client.utils.formatNumber(totalCoin))
-                  .replace("%{coinEmote}", emoji.coin),
-            )
-            .setImage(kkGif.klok)
-            .setFooter({
-              text: generalMessages.gameInProgress.replace(
-                "%{user}",
-                ctx.author.displayName,
-              ),
-              iconURL: kkGif.ball,
-            });
+					const progressEmbed = client
+						.embed()
+						.setColor(color.main)
+						.setDescription(
+							generalMessages.title
+								.replace("%{mainLeft}", emoji.mainLeft)
+								.replace("%{title}", klaKloukMessages.title)
+								.replace("%{mainRight}", emoji.mainRight) +
+								klaKloukMessages.selected
+									.replace("%{selectedButton}", selectButtonEmojis)
+									.replace("%{betCoin}", client.utils.formatNumber(betCoin))
+									.replace("%{coinEmote}", emoji.coin)
+									.replace("%{totalCoin}", client.utils.formatNumber(totalCoin))
+									.replace("%{coinEmote}", emoji.coin),
+						)
+						.setImage(kkGif.klok)
+						.setFooter({
+							text: generalMessages.gameInProgress.replace(
+								"%{user}",
+								ctx.author.displayName,
+							),
+							iconURL: kkGif.ball,
+						});
 
-          msg.edit({ embeds: [progressEmbed], components: [] });
+					msg.edit({ embeds: [progressEmbed], components: [] });
 
-          await client.utils.getSleep(3000);
-          const canvas = createCanvas(384, 128);
-          const ctxCanvas = canvas.getContext("2d");
-          const [img1, img2, img3] = await Promise.all([
-            loadImage(D1),
-            loadImage(D2),
-            loadImage(D3),
-          ]);
-          ctxCanvas.drawImage(img1, 0, 0, 128, 128);
-          ctxCanvas.drawImage(img2, 128, 0, 128, 128);
-          ctxCanvas.drawImage(img3, 256, 0, 128, 128);
+					await client.utils.getSleep(3000);
+					const canvas = createCanvas(384, 128);
+					const ctxCanvas = canvas.getContext("2d");
+					const [img1, img2, img3] = await Promise.all([
+						loadImage(D1),
+						loadImage(D2),
+						loadImage(D3),
+					]);
+					ctxCanvas.drawImage(img1, 0, 0, 128, 128);
+					ctxCanvas.drawImage(img2, 128, 0, 128, 128);
+					ctxCanvas.drawImage(img3, 256, 0, 128, 128);
 
-          const imageBuffer = canvas.toBuffer("image/png");
-          const attachment = new AttachmentBuilder(imageBuffer, {
-            name: "result.png",
-          });
+					const imageBuffer = canvas.toBuffer("image/png");
+					const attachment = new AttachmentBuilder(imageBuffer, {
+						name: "result.png",
+					});
 
-          let winKK = 0;
-          if (selectedButton.includes(G1)) winKK += 1;
-          if (selectedButton.includes(G2)) winKK += 1;
-          if (selectedButton.includes(G3)) winKK += 1;
+					let winKK = 0;
+					if (selectedButton.includes(G1)) winKK += 1;
+					if (selectedButton.includes(G2)) winKK += 1;
+					if (selectedButton.includes(G3)) winKK += 1;
 
-          let winCash = 0;
-          if (winKK > 0) {
-            // Fixed logic for calculating winnings
-            // Each correct guess pays 1x the bet per animal (1:1 payout)
-            winCash = betCoin * winKK;
+					let winCash = 0;
+					if (winKK > 0) {
+						// Fixed logic for calculating winnings
+						// Each correct guess pays 1x the bet per animal (1:1 payout)
+						winCash = betCoin * winKK;
 
-            // Add winnings to user's balance (totalBet was already deducted during betting)
-            user.balance.coin += winCash;
-            user.balance.klaklouk += winCash; // Track total winnings, not bets
-            user.validation.isKlaKlouk = false;
-            await user.save();
+						// Add winnings to user's balance (totalBet was already deducted during betting)
+						user.balance.coin += winCash;
+						user.balance.klaklouk += winCash; // Track total winnings, not bets
+						user.validation.isKlaKlouk = false;
+						await user.save();
 
-            const embed = client
-              .embed()
-              .setColor(color.success)
-              .setDescription(
-                generalMessages.title
-                  .replace("%{mainLeft}", emoji.mainLeft)
-                  .replace("%{title}", klaKloukMessages.title)
-                  .replace("%{mainRight}", emoji.mainRight) +
-                  `**Dealer Result**\n` +
-                  `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n` +
-                  `**${ctx.author.displayName} Choose**\n` +
-                  `## ${selectedButton
-                    .map((id) => kkEmoji[id])
-                    .join(" `|` ")}\n\n` +
-                  `**Bet:** ${client.utils.formatNumber(
-                    totalBet,
-                  )} ${emoji.coin}\n` +
-                  `**Won:** ${client.utils.formatNumber(
-                    winCash,
-                  )} ${emoji.coin}\n` +
-                  `**Matches:** ${winKK}/3`,
-              )
-              .setImage("attachment://result.png")
-              .setFooter({
-                text: `${generalMessages.gameOver.replace(
-                  "%{user}",
-                  ctx.author.displayName,
-                )}`,
-                iconURL: ctx.author.displayAvatarURL(),
-              });
-            await msg.edit({
-              embeds: [embed],
-              components: [],
-              files: [attachment],
-            });
-          } else {
-            // Handle Lose - don't track losses in klaklouk balance
-            user.validation.isKlaKlouk = false;
-            await user.save();
+						const embed = client
+							.embed()
+							.setColor(color.success)
+							.setDescription(
+								generalMessages.title
+									.replace("%{mainLeft}", emoji.mainLeft)
+									.replace("%{title}", klaKloukMessages.title)
+									.replace("%{mainRight}", emoji.mainRight) +
+									`**Dealer Result**\n` +
+									`## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n` +
+									`**${ctx.author.displayName} Choose**\n` +
+									`## ${selectedButton
+										.map((id) => kkEmoji[id])
+										.join(" `|` ")}\n\n` +
+									`**Bet:** ${client.utils.formatNumber(
+										totalBet,
+									)} ${emoji.coin}\n` +
+									`**Won:** ${client.utils.formatNumber(
+										winCash,
+									)} ${emoji.coin}\n` +
+									`**Matches:** ${winKK}/3`,
+							)
+							.setImage("attachment://result.png")
+							.setFooter({
+								text: `${generalMessages.gameOver.replace(
+									"%{user}",
+									ctx.author.displayName,
+								)}`,
+								iconURL: ctx.author.displayAvatarURL(),
+							});
+						await msg.edit({
+							embeds: [embed],
+							components: [],
+							files: [attachment],
+						});
+					} else {
+						// Handle Lose - don't track losses in klaklouk balance
+						user.validation.isKlaKlouk = false;
+						await user.save();
 
-            const embed = client
-              .embed()
-              .setColor(color.danger)
-              .setDescription(
-                generalMessages.title
-                  .replace("%{mainLeft}", emoji.mainLeft)
-                  .replace("%{title}", klaKloukMessages.title)
-                  .replace("%{mainRight}", emoji.mainRight) +
-                  `**Dealer Result**\n` +
-                  `## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n` +
-                  `**${ctx.author.displayName} Choose**\n` +
-                  `## ${selectedButton
-                    .map((id) => kkEmoji[id])
-                    .join(" `|` ")}\n\n` +
-                  `**Bet:** ${client.utils.formatNumber(
-                    totalBet,
-                  )} ${emoji.coin}\n` +
-                  `**Lost:** ${client.utils.formatNumber(
-                    totalBet,
-                  )} ${emoji.coin}\n` +
-                  `**Matches:** 0/3`,
-              )
-              .setImage("attachment://result.png")
-              .setFooter({
-                text: `${generalMessages.gameOver.replace(
-                  "%{user}",
-                  ctx.author.displayName,
-                )}`,
-                iconURL: ctx.author.displayAvatarURL(),
-              });
-            await msg.edit({
-              embeds: [embed],
-              components: [],
-              files: [attachment],
-            });
-          }
-        }
-      }
-    } catch (error) {
-      console.error("Error processing interaction:", error);
-    }
-  });
+						const embed = client
+							.embed()
+							.setColor(color.danger)
+							.setDescription(
+								generalMessages.title
+									.replace("%{mainLeft}", emoji.mainLeft)
+									.replace("%{title}", klaKloukMessages.title)
+									.replace("%{mainRight}", emoji.mainRight) +
+									`**Dealer Result**\n` +
+									`## ${P1} \`|\` ${P2} \`|\` ${P3}\n\n` +
+									`**${ctx.author.displayName} Choose**\n` +
+									`## ${selectedButton
+										.map((id) => kkEmoji[id])
+										.join(" `|` ")}\n\n` +
+									`**Bet:** ${client.utils.formatNumber(
+										totalBet,
+									)} ${emoji.coin}\n` +
+									`**Lost:** ${client.utils.formatNumber(
+										totalBet,
+									)} ${emoji.coin}\n` +
+									`**Matches:** 0/3`,
+							)
+							.setImage("attachment://result.png")
+							.setFooter({
+								text: `${generalMessages.gameOver.replace(
+									"%{user}",
+									ctx.author.displayName,
+								)}`,
+								iconURL: ctx.author.displayAvatarURL(),
+							});
+						await msg.edit({
+							embeds: [embed],
+							components: [],
+							files: [attachment],
+						});
+					}
+				}
+			}
+		} catch (error) {
+			console.error("Error processing interaction:", error);
+		}
+	});
 
-  collector.on("end", async (collected) => {
-    if (collected.size === 0) {
-      const embed = client
-        .embed()
-        .setColor(color.warning)
-        .setDescription(
-          generalMessages.title
-            .replace("%{mainLeft}", emoji.mainLeft)
-            .replace("%{title}", klaKloukMessages.title)
-            .replace("%{mainRight}", emoji.mainRight) +
-            `⏳ **Time is up!** You didn't click the start button in the game.`,
-        )
-        .setFooter({
-          text: `${generalMessages.pleaseStartAgain.replace(
-            "%{user}",
-            ctx.author.displayName,
-          )}`,
-          iconURL: ctx.author.displayAvatarURL(),
-        });
+	collector.on("end", async (collected) => {
+		if (collected.size === 0) {
+			const embed = client
+				.embed()
+				.setColor(color.warning)
+				.setDescription(
+					generalMessages.title
+						.replace("%{mainLeft}", emoji.mainLeft)
+						.replace("%{title}", klaKloukMessages.title)
+						.replace("%{mainRight}", emoji.mainRight) +
+						`⏳ **Time is up!** You didn't click the start button in the game.`,
+				)
+				.setFooter({
+					text: `${generalMessages.pleaseStartAgain.replace(
+						"%{user}",
+						ctx.author.displayName,
+					)}`,
+					iconURL: ctx.author.displayAvatarURL(),
+				});
 
-      msg.edit({ embeds: [embed], components: [] });
-    }
-  });
+			msg.edit({ embeds: [embed], components: [] });
+		}
+	});
 }

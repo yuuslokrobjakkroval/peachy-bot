@@ -10,14 +10,14 @@ const Wallpaper = require("./Shop/Wallpaper");
 const Cards = require("./Shop/Cards");
 
 module.exports = [
-  Tools,
-  Couple,
-  Color,
-  Decoration,
-  DutchMilk,
-  Milk,
-  Theme,
-  SpecialTheme,
-  Wallpaper,
-  Cards,
+	Tools,
+	Couple,
+	Color,
+	Decoration,
+	DutchMilk,
+	Milk,
+	Theme,
+	SpecialTheme,
+	Wallpaper,
+	Cards,
 ];

@@ -1,413 +1,413 @@
 const { Command } = require("../../structures/index.js");
 const {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ContainerBuilder,
-  SectionBuilder,
-  SeparatorBuilder,
-  MediaGalleryBuilder,
-  MessageFlags,
+	ActionRowBuilder,
+	ButtonBuilder,
+	ButtonStyle,
+	ContainerBuilder,
+	SectionBuilder,
+	SeparatorBuilder,
+	MediaGalleryBuilder,
+	MessageFlags,
 } = require("discord.js");
 const globalEmoji = require("../../utils/Emoji");
 const Users = require("../../schemas/user");
 
 module.exports = class Bite extends Command {
-  constructor(client) {
-    super(client, {
-      name: "bite",
-      description: {
-        content: "Playfully bites the mentioned user.",
-        examples: ["bite @User"],
-        usage: "bite @User",
-      },
-      category: "actions",
-      aliases: ["chomp", "nibble"],
-      cooldown: 3,
-      args: true,
-      permissions: {
-        dev: false,
-        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: [],
-      },
-      slashCommand: true,
-      options: [
-        {
-          name: "user",
-          description: "Mention the user you want to bite.",
-          type: 6, // USER type
-          required: true,
-        },
-        {
-          name: "intensity",
-          description: "How hard do you want to bite?",
-          type: 3, // STRING type
-          required: false,
-          choices: [
-            { name: "Gentle nibble", value: "gentle" },
-            { name: "Playful bite", value: "playful" },
-            { name: "Chomp!", value: "hard" },
-          ],
-        },
-      ],
-    });
-  }
+	constructor(client) {
+		super(client, {
+			name: "bite",
+			description: {
+				content: "Playfully bites the mentioned user.",
+				examples: ["bite @User"],
+				usage: "bite @User",
+			},
+			category: "actions",
+			aliases: ["chomp", "nibble"],
+			cooldown: 3,
+			args: true,
+			permissions: {
+				dev: false,
+				client: ["SendMessages", "ViewChannel", "EmbedLinks"],
+				user: [],
+			},
+			slashCommand: true,
+			options: [
+				{
+					name: "user",
+					description: "Mention the user you want to bite.",
+					type: 6, // USER type
+					required: true,
+				},
+				{
+					name: "intensity",
+					description: "How hard do you want to bite?",
+					type: 3, // STRING type
+					required: false,
+					choices: [
+						{ name: "Gentle nibble", value: "gentle" },
+						{ name: "Playful bite", value: "playful" },
+						{ name: "Chomp!", value: "hard" },
+					],
+				},
+			],
+		});
+	}
 
-  async run(client, ctx, args, color, emoji, language) {
-    try {
-      // Default messages for all required properties
-      const defaultMessages = {
-        generalMessages: {
-          title: "%{mainLeft} %{title} %{mainRight}",
-          requestedBy: "Requested by %{username}",
-        },
-        actionMessages: {
-          biteMessages: {
-            description: "%{displayName} bites %{target}!",
-            errors: {
-              noUser: "You need to mention a user to bite!",
-              selfBite: "You can't bite yourself!",
-            },
-            intensities: {
-              gentle: "%{displayName} gives %{target} a gentle nibble!",
-              playful: "%{displayName} playfully bites %{target}!",
-              hard: "%{displayName} chomps down on %{target}! Ouch!",
-            },
-            reactions: {
-              bite_back: "Bite back",
-              pat: "Pat them",
-              run: "Run away!",
-            },
-            biteBack: "%{displayName} bites %{target} back!",
-            patReaction:
-              "%{displayName} pats %{target} on the head instead of biting back.",
-            runReaction: "%{displayName} runs away from %{target}!",
-          },
-        },
-      };
+	async run(client, ctx, args, color, emoji, language) {
+		try {
+			// Default messages for all required properties
+			const defaultMessages = {
+				generalMessages: {
+					title: "%{mainLeft} %{title} %{mainRight}",
+					requestedBy: "Requested by %{username}",
+				},
+				actionMessages: {
+					biteMessages: {
+						description: "%{displayName} bites %{target}!",
+						errors: {
+							noUser: "You need to mention a user to bite!",
+							selfBite: "You can't bite yourself!",
+						},
+						intensities: {
+							gentle: "%{displayName} gives %{target} a gentle nibble!",
+							playful: "%{displayName} playfully bites %{target}!",
+							hard: "%{displayName} chomps down on %{target}! Ouch!",
+						},
+						reactions: {
+							bite_back: "Bite back",
+							pat: "Pat them",
+							run: "Run away!",
+						},
+						biteBack: "%{displayName} bites %{target} back!",
+						patReaction:
+							"%{displayName} pats %{target} on the head instead of biting back.",
+						runReaction: "%{displayName} runs away from %{target}!",
+					},
+				},
+			};
 
-      // Get messages from language file with fallbacks
-      const generalMessages =
-        language.locales.get(language.defaultLocale)?.generalMessages ||
-        defaultMessages.generalMessages;
+			// Get messages from language file with fallbacks
+			const generalMessages =
+				language.locales.get(language.defaultLocale)?.generalMessages ||
+				defaultMessages.generalMessages;
 
-      // Get bite messages with complete fallbacks
-      let biteMessages = language.locales.get(language.defaultLocale)
-        ?.actionMessages?.biteMessages;
+			// Get bite messages with complete fallbacks
+			let biteMessages = language.locales.get(language.defaultLocale)
+				?.actionMessages?.biteMessages;
 
-      // If biteMessages is completely undefined, use the default
-      if (!biteMessages) {
-        biteMessages = defaultMessages.actionMessages.biteMessages;
-      } else {
-        // Ensure all required properties exist
-        biteMessages.description =
-          biteMessages.description ||
-          defaultMessages.actionMessages.biteMessages.description;
-        biteMessages.errors =
-          biteMessages.errors ||
-          defaultMessages.actionMessages.biteMessages.errors;
-        biteMessages.biteBack =
-          biteMessages.biteBack ||
-          defaultMessages.actionMessages.biteMessages.biteBack;
-        biteMessages.patReaction =
-          biteMessages.patReaction ||
-          defaultMessages.actionMessages.biteMessages.patReaction;
-        biteMessages.runRe =
-          biteMessages.patReaction ||
-          defaultMessages.actionMessages.biteMessages.patReaction;
-        biteMessages.runReaction =
-          biteMessages.runReaction ||
-          defaultMessages.actionMessages.biteMessages.runReaction;
+			// If biteMessages is completely undefined, use the default
+			if (!biteMessages) {
+				biteMessages = defaultMessages.actionMessages.biteMessages;
+			} else {
+				// Ensure all required properties exist
+				biteMessages.description =
+					biteMessages.description ||
+					defaultMessages.actionMessages.biteMessages.description;
+				biteMessages.errors =
+					biteMessages.errors ||
+					defaultMessages.actionMessages.biteMessages.errors;
+				biteMessages.biteBack =
+					biteMessages.biteBack ||
+					defaultMessages.actionMessages.biteMessages.biteBack;
+				biteMessages.patReaction =
+					biteMessages.patReaction ||
+					defaultMessages.actionMessages.biteMessages.patReaction;
+				biteMessages.runRe =
+					biteMessages.patReaction ||
+					defaultMessages.actionMessages.biteMessages.patReaction;
+				biteMessages.runReaction =
+					biteMessages.runReaction ||
+					defaultMessages.actionMessages.biteMessages.runReaction;
 
-        // Ensure nested objects exist
-        if (!biteMessages.intensities) {
-          biteMessages.intensities =
-            defaultMessages.actionMessages.biteMessages.intensities;
-        }
+				// Ensure nested objects exist
+				if (!biteMessages.intensities) {
+					biteMessages.intensities =
+						defaultMessages.actionMessages.biteMessages.intensities;
+				}
 
-        if (!biteMessages.reactions) {
-          biteMessages.reactions =
-            defaultMessages.actionMessages.biteMessages.reactions;
-        }
-      }
+				if (!biteMessages.reactions) {
+					biteMessages.reactions =
+						defaultMessages.actionMessages.biteMessages.reactions;
+				}
+			}
 
-      const errorMessages = biteMessages.errors;
+			const errorMessages = biteMessages.errors;
 
-      // Get target user
-      const target = ctx.isInteraction
-        ? ctx.interaction.options.getUser("user")
-        : ctx.message.mentions.users.first() ||
-          (await client.users.fetch(args[0]).catch(() => null));
+			// Get target user
+			const target = ctx.isInteraction
+				? ctx.interaction.options.getUser("user")
+				: ctx.message.mentions.users.first() ||
+					(await client.users.fetch(args[0]).catch(() => null));
 
-      // Error handling if no user is mentioned or the user bites themselves
-      if (!target) {
-        return await client.utils.sendErrorMessage(
-          client,
-          ctx,
-          errorMessages.noUser,
-          color
-        );
-      }
+			// Error handling if no user is mentioned or the user bites themselves
+			if (!target) {
+				return await client.utils.sendErrorMessage(
+					client,
+					ctx,
+					errorMessages.noUser,
+					color,
+				);
+			}
 
-      if (target.id === ctx.author.id) {
-        return await client.utils.sendErrorMessage(
-          client,
-          ctx,
-          errorMessages.selfBite,
-          color
-        );
-      }
+			if (target.id === ctx.author.id) {
+				return await client.utils.sendErrorMessage(
+					client,
+					ctx,
+					errorMessages.selfBite,
+					color,
+				);
+			}
 
-      // Get bite intensity (default to playful)
-      const intensity = ctx.isInteraction
-        ? ctx.interaction.options.getString("intensity") || "playful"
-        : args[1] || "playful";
+			// Get bite intensity (default to playful)
+			const intensity = ctx.isInteraction
+				? ctx.interaction.options.getString("intensity") || "playful"
+				: args[1] || "playful";
 
-      // Get random emoji based on intensity
-      const biteEmojis = emoji.actions?.bites ||
-        globalEmoji.actions?.bites || ["😬", "🦷", "😁"];
-      const gentleEmojis =
-        biteEmojis.filter(
-          (e) => e.includes && (e.includes("gentle") || e.includes("nibble"))
-        ).length > 0
-          ? biteEmojis.filter(
-              (e) =>
-                e.includes && (e.includes("gentle") || e.includes("nibble"))
-            )
-          : biteEmojis;
-      const hardEmojis =
-        biteEmojis.filter(
-          (e) => e.includes && (e.includes("hard") || e.includes("chomp"))
-        ).length > 0
-          ? biteEmojis.filter(
-              (e) => e.includes && (e.includes("hard") || e.includes("chomp"))
-            )
-          : biteEmojis;
+			// Get random emoji based on intensity
+			const biteEmojis = emoji.actions?.bites ||
+				globalEmoji.actions?.bites || ["😬", "🦷", "😁"];
+			const gentleEmojis =
+				biteEmojis.filter(
+					(e) => e.includes && (e.includes("gentle") || e.includes("nibble")),
+				).length > 0
+					? biteEmojis.filter(
+							(e) =>
+								e.includes && (e.includes("gentle") || e.includes("nibble")),
+						)
+					: biteEmojis;
+			const hardEmojis =
+				biteEmojis.filter(
+					(e) => e.includes && (e.includes("hard") || e.includes("chomp")),
+				).length > 0
+					? biteEmojis.filter(
+							(e) => e.includes && (e.includes("hard") || e.includes("chomp")),
+						)
+					: biteEmojis;
 
-      let randomEmoji;
-      switch (intensity) {
-        case "gentle":
-          randomEmoji = client.utils.getRandomElement(gentleEmojis);
-          break;
-        case "hard":
-          randomEmoji = client.utils.getRandomElement(hardEmojis);
-          break;
-        default:
-          randomEmoji = client.utils.getRandomElement(biteEmojis);
-      }
+			let randomEmoji;
+			switch (intensity) {
+				case "gentle":
+					randomEmoji = client.utils.getRandomElement(gentleEmojis);
+					break;
+				case "hard":
+					randomEmoji = client.utils.getRandomElement(hardEmojis);
+					break;
+				default:
+					randomEmoji = client.utils.getRandomElement(biteEmojis);
+			}
 
-      // Get bite message based on intensity
-      const biteMessage =
-        biteMessages.intensities[intensity] || biteMessages.description;
+			// Get bite message based on intensity
+			const biteMessage =
+				biteMessages.intensities[intensity] || biteMessages.description;
 
-      // Create the container with Components v2
-      const biteContainer = new ContainerBuilder()
-        .setAccentColor(color.main)
-        .addTextDisplayComponents((text) =>
-          text.setContent(
-            generalMessages.title
-              .replace("%{mainLeft}", emoji.mainLeft || "🧡")
-              .replace("%{title}", "BITE")
-              .replace("%{mainRight}", emoji.mainRight || "🧡")
-          )
-        )
-        .addSeparatorComponents((sep) => sep)
-        .addSectionComponents((section) =>
-          section
-            .addTextDisplayComponents((text) =>
-              text.setContent(
-                biteMessage
-                  .replace("%{displayName}", `**${ctx.author.displayName}**`)
-                  .replace("%{target}", `**${target.displayName}**`)
-              )
-            )
-            .setThumbnailAccessory((thumb) =>
-              thumb
-                .setURL(target.displayAvatarURL({ dynamic: true, size: 256 }))
-                .setDescription(target.displayName)
-            )
-        )
-        .addSeparatorComponents((sep) => sep.setDivider(false))
-        .addMediaGalleryComponents((gallery) =>
-          gallery.addItems((item) =>
-            item
-              .setURL(client.utils.emojiToImage(randomEmoji))
-              .setDescription("Bite animation")
-          )
-        )
-        .addSeparatorComponents((sep) => sep)
-        .addTextDisplayComponents((text) =>
-          text.setContent(
-            `*${generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`}*`
-          )
-        );
+			// Create the container with Components v2
+			const biteContainer = new ContainerBuilder()
+				.setAccentColor(color.main)
+				.addTextDisplayComponents((text) =>
+					text.setContent(
+						generalMessages.title
+							.replace("%{mainLeft}", emoji.mainLeft || "🧡")
+							.replace("%{title}", "BITE")
+							.replace("%{mainRight}", emoji.mainRight || "🧡"),
+					),
+				)
+				.addSeparatorComponents((sep) => sep)
+				.addSectionComponents((section) =>
+					section
+						.addTextDisplayComponents((text) =>
+							text.setContent(
+								biteMessage
+									.replace("%{displayName}", `**${ctx.author.displayName}**`)
+									.replace("%{target}", `**${target.displayName}**`),
+							),
+						)
+						.setThumbnailAccessory((thumb) =>
+							thumb
+								.setURL(target.displayAvatarURL({ dynamic: true, size: 256 }))
+								.setDescription(target.displayName),
+						),
+				)
+				.addSeparatorComponents((sep) => sep.setDivider(false))
+				.addMediaGalleryComponents((gallery) =>
+					gallery.addItems((item) =>
+						item
+							.setURL(client.utils.emojiToImage(randomEmoji))
+							.setDescription("Bite animation"),
+					),
+				)
+				.addSeparatorComponents((sep) => sep)
+				.addTextDisplayComponents((text) =>
+					text.setContent(
+						`*${generalMessages.requestedBy.replace("%{username}", ctx.author.displayName) || `Requested by ${ctx.author.displayName}`}*`,
+					),
+				);
 
-      // Create reaction buttons (only for the target to use)
-      const biteBackButton = new ButtonBuilder()
-        .setCustomId(`bite_back_${ctx.author.id}_${target.id}`)
-        .setLabel(biteMessages.reactions.bite_back || "Bite back")
-        .setStyle(ButtonStyle.Danger)
-        .setEmoji("🦷");
+			// Create reaction buttons (only for the target to use)
+			const biteBackButton = new ButtonBuilder()
+				.setCustomId(`bite_back_${ctx.author.id}_${target.id}`)
+				.setLabel(biteMessages.reactions.bite_back || "Bite back")
+				.setStyle(ButtonStyle.Danger)
+				.setEmoji("🦷");
 
-      const patButton = new ButtonBuilder()
-        .setCustomId(`pat_${ctx.author.id}_${target.id}`)
-        .setLabel(biteMessages.reactions.pat || "Pat them")
-        .setStyle(ButtonStyle.Success)
-        .setEmoji("👋");
+			const patButton = new ButtonBuilder()
+				.setCustomId(`pat_${ctx.author.id}_${target.id}`)
+				.setLabel(biteMessages.reactions.pat || "Pat them")
+				.setStyle(ButtonStyle.Success)
+				.setEmoji("👋");
 
-      const runButton = new ButtonBuilder()
-        .setCustomId(`run_${ctx.author.id}_${target.id}`)
-        .setLabel(biteMessages.reactions.run || "Run away!")
-        .setStyle(ButtonStyle.Primary)
-        .setEmoji("🏃");
+			const runButton = new ButtonBuilder()
+				.setCustomId(`run_${ctx.author.id}_${target.id}`)
+				.setLabel(biteMessages.reactions.run || "Run away!")
+				.setStyle(ButtonStyle.Primary)
+				.setEmoji("🏃");
 
-      const row = new ActionRowBuilder().addComponents(
-        biteBackButton,
-        patButton,
-        runButton
-      );
+			const row = new ActionRowBuilder().addComponents(
+				biteBackButton,
+				patButton,
+				runButton,
+			);
 
-      // Send the message with Components v2 and buttons
-      const message = await ctx.sendMessage({
-        components: [biteContainer, row],
-        flags: MessageFlags.IsComponentsV2,
-      });
+			// Send the message with Components v2 and buttons
+			const message = await ctx.sendMessage({
+				components: [biteContainer, row],
+				flags: MessageFlags.IsComponentsV2,
+			});
 
-      // Create collector for button interactions
-      const collector = message.createMessageComponentCollector({
-        filter: (i) => {
-          // Only the target can interact with the buttons
-          if (i.user.id !== target.id) {
-            i.reply({
-              content: "Only the person who was bitten can use these buttons!",
-              flags: 64,
-            });
-            return false;
-          }
-          return true;
-        },
-        time: 60000, // 1 minute timeout
-      });
+			// Create collector for button interactions
+			const collector = message.createMessageComponentCollector({
+				filter: (i) => {
+					// Only the target can interact with the buttons
+					if (i.user.id !== target.id) {
+						i.reply({
+							content: "Only the person who was bitten can use these buttons!",
+							flags: 64,
+						});
+						return false;
+					}
+					return true;
+				},
+				time: 60000, // 1 minute timeout
+			});
 
-      collector.on("collect", async (interaction) => {
-        const [action, authorId, targetId] = interaction.customId.split("_");
+			collector.on("collect", async (interaction) => {
+				const [action, authorId, targetId] = interaction.customId.split("_");
 
-        // Create response container based on action
-        let responseText = "";
-        let responseEmoji = "";
+				// Create response container based on action
+				let responseText = "";
+				let responseEmoji = "";
 
-        switch (action) {
-          case "bite":
-            responseText = biteMessages.biteBack
-              .replace("%{displayName}", `**${target.displayName}**`)
-              .replace("%{target}", `**${ctx.author.displayName}**`);
-            responseEmoji = client.utils.getRandomElement(biteEmojis);
-            break;
+				switch (action) {
+					case "bite":
+						responseText = biteMessages.biteBack
+							.replace("%{displayName}", `**${target.displayName}**`)
+							.replace("%{target}", `**${ctx.author.displayName}**`);
+						responseEmoji = client.utils.getRandomElement(biteEmojis);
+						break;
 
-          case "pat":
-            responseText = biteMessages.patReaction
-              .replace("%{displayName}", `**${target.displayName}**`)
-              .replace("%{target}", `**${ctx.author.displayName}**`);
-            responseEmoji = emoji.pat || "👋";
-            break;
+					case "pat":
+						responseText = biteMessages.patReaction
+							.replace("%{displayName}", `**${target.displayName}**`)
+							.replace("%{target}", `**${ctx.author.displayName}**`);
+						responseEmoji = emoji.pat || "👋";
+						break;
 
-          case "run":
-            responseText = biteMessages.runReaction
-              .replace("%{displayName}", `**${target.displayName}**`)
-              .replace("%{target}", `**${ctx.author.displayName}**`);
-            responseEmoji = emoji.run || "🏃";
-            break;
-        }
+					case "run":
+						responseText = biteMessages.runReaction
+							.replace("%{displayName}", `**${target.displayName}**`)
+							.replace("%{target}", `**${ctx.author.displayName}**`);
+						responseEmoji = emoji.run || "🏃";
+						break;
+				}
 
-        // Create response container with Components v2
-        const responseContainer = new ContainerBuilder()
-          .setAccentColor(
-            action === "bite"
-              ? color.danger || color.main
-              : color.success || color.main
-          )
-          .addTextDisplayComponents((text) =>
-            text.setContent(
-              generalMessages.title
-                .replace("%{mainLeft}", emoji.mainLeft || "🧡")
-                .replace("%{title}", "REACTION")
-                .replace("%{mainRight}", emoji.mainRight || "🧡")
-            )
-          )
-          .addSeparatorComponents((sep) => sep)
-          .addSectionComponents((section) =>
-            section
-              .addTextDisplayComponents(
-                (text) =>
-                  text.setContent(
-                    `**${target.displayName}** → **${ctx.author.displayName}**`
-                  ),
-                (text) => text.setContent(responseText)
-              )
-              .setThumbnailAccessory((thumb) =>
-                thumb
-                  .setURL(
-                    ctx.author.displayAvatarURL({ dynamic: true, size: 256 })
-                  )
-                  .setDescription(ctx.author.displayName)
-              )
-          )
-          .addSeparatorComponents((sep) => sep.setDivider(false));
+				// Create response container with Components v2
+				const responseContainer = new ContainerBuilder()
+					.setAccentColor(
+						action === "bite"
+							? color.danger || color.main
+							: color.success || color.main,
+					)
+					.addTextDisplayComponents((text) =>
+						text.setContent(
+							generalMessages.title
+								.replace("%{mainLeft}", emoji.mainLeft || "🧡")
+								.replace("%{title}", "REACTION")
+								.replace("%{mainRight}", emoji.mainRight || "🧡"),
+						),
+					)
+					.addSeparatorComponents((sep) => sep)
+					.addSectionComponents((section) =>
+						section
+							.addTextDisplayComponents(
+								(text) =>
+									text.setContent(
+										`**${target.displayName}** → **${ctx.author.displayName}**`,
+									),
+								(text) => text.setContent(responseText),
+							)
+							.setThumbnailAccessory((thumb) =>
+								thumb
+									.setURL(
+										ctx.author.displayAvatarURL({ dynamic: true, size: 256 }),
+									)
+									.setDescription(ctx.author.displayName),
+							),
+					)
+					.addSeparatorComponents((sep) => sep.setDivider(false));
 
-        // Only add media gallery if emoji is a custom Discord emoji
-        const emojiImageURL = client.utils.emojiToImage(responseEmoji);
-        if (emojiImageURL) {
-          responseContainer.addMediaGalleryComponents((gallery) =>
-            gallery.addItems((item) =>
-              item.setURL(emojiImageURL).setDescription("Reaction animation")
-            )
-          );
-        }
+				// Only add media gallery if emoji is a custom Discord emoji
+				const emojiImageURL = client.utils.emojiToImage(responseEmoji);
+				if (emojiImageURL) {
+					responseContainer.addMediaGalleryComponents((gallery) =>
+						gallery.addItems((item) =>
+							item.setURL(emojiImageURL).setDescription("Reaction animation"),
+						),
+					);
+				}
 
-        // Disable all buttons
-        const disabledRow = new ActionRowBuilder().addComponents(
-          ButtonBuilder.from(biteBackButton).setDisabled(true),
-          ButtonBuilder.from(patButton).setDisabled(true),
-          ButtonBuilder.from(runButton).setDisabled(true)
-        );
+				// Disable all buttons
+				const disabledRow = new ActionRowBuilder().addComponents(
+					ButtonBuilder.from(biteBackButton).setDisabled(true),
+					ButtonBuilder.from(patButton).setDisabled(true),
+					ButtonBuilder.from(runButton).setDisabled(true),
+				);
 
-        // Update the message with the response and disabled buttons
-        await interaction.update({
-          components: [responseContainer, disabledRow],
-          flags: MessageFlags.IsComponentsV2,
-        });
+				// Update the message with the response and disabled buttons
+				await interaction.update({
+					components: [responseContainer, disabledRow],
+					flags: MessageFlags.IsComponentsV2,
+				});
 
-        // Stop the collector since an action was taken
-        collector.stop();
-      });
+				// Stop the collector since an action was taken
+				collector.stop();
+			});
 
-      collector.on("end", async (collected, reason) => {
-        if (reason === "time" && message.editable) {
-          // If no button was pressed, disable all buttons
-          try {
-            const disabledRow = new ActionRowBuilder().addComponents(
-              ButtonBuilder.from(biteBackButton).setDisabled(true),
-              ButtonBuilder.from(patButton).setDisabled(true),
-              ButtonBuilder.from(runButton).setDisabled(true)
-            );
+			collector.on("end", async (collected, reason) => {
+				if (reason === "time" && message.editable) {
+					// If no button was pressed, disable all buttons
+					try {
+						const disabledRow = new ActionRowBuilder().addComponents(
+							ButtonBuilder.from(biteBackButton).setDisabled(true),
+							ButtonBuilder.from(patButton).setDisabled(true),
+							ButtonBuilder.from(runButton).setDisabled(true),
+						);
 
-            await message.edit({
-              components: [biteContainer, disabledRow],
-              flags: MessageFlags.IsComponentsV2,
-            });
-          } catch (error) {
-            console.error("Error disabling buttons:", error);
-          }
-        }
-      });
-    } catch (error) {
-      console.error("Failed to send bite message:", error);
-      await client.utils.sendErrorMessage(
-        client,
-        ctx,
-        "An error occurred while executing the command.",
-        color
-      );
-    }
-  }
+						await message.edit({
+							components: [biteContainer, disabledRow],
+							flags: MessageFlags.IsComponentsV2,
+						});
+					} catch (error) {
+						console.error("Error disabling buttons:", error);
+					}
+				}
+			});
+		} catch (error) {
+			console.error("Failed to send bite message:", error);
+			await client.utils.sendErrorMessage(
+				client,
+				ctx,
+				"An error occurred while executing the command.",
+				color,
+			);
+		}
+	}
 };

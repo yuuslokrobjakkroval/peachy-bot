@@ -3,115 +3,115 @@ const Users = require("../../schemas/user");
 const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Stats extends Command {
-  constructor(client) {
-    super(client, {
-      name: "stats",
-      description: {
-        content: "Displays statistics about the bot.",
-        examples: ["stats"],
-        usage: "stats",
-      },
-      category: "info",
-      aliases: ["botstats", "statistics"],
-      cooldown: 5,
-      args: false,
-      permissions: {
-        dev: false,
-        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: [],
-      },
-      slashCommand: true,
-      options: [],
-    });
-  }
+	constructor(client) {
+		super(client, {
+			name: "stats",
+			description: {
+				content: "Displays statistics about the bot.",
+				examples: ["stats"],
+				usage: "stats",
+			},
+			category: "info",
+			aliases: ["botstats", "statistics"],
+			cooldown: 5,
+			args: false,
+			permissions: {
+				dev: false,
+				client: ["SendMessages", "ViewChannel", "EmbedLinks"],
+				user: [],
+			},
+			slashCommand: true,
+			options: [],
+		});
+	}
 
-  async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale,
-    )?.generalMessages;
-    const statsMessages = language.locales.get(language.defaultLocale)
-      ?.informationMessages?.statsMessages;
+	async run(client, ctx, args, color, emoji, language) {
+		const generalMessages = language.locales.get(
+			language.defaultLocale,
+		)?.generalMessages;
+		const statsMessages = language.locales.get(language.defaultLocale)
+			?.informationMessages?.statsMessages;
 
-    if (ctx.isInteraction) {
-      await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
-      );
-    } else {
-      await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
-      );
-    }
+		if (ctx.isInteraction) {
+			await ctx.interaction.reply(
+				generalMessages.search.replace("%{loading}", globalEmoji.searching),
+			);
+		} else {
+			await ctx.sendDeferMessage(
+				generalMessages.search.replace("%{loading}", globalEmoji.searching),
+			);
+		}
 
-    const guildCount = client.guilds.cache.size;
-    let userCount = client.users?.cache?.size || 0;
+		const guildCount = client.guilds.cache.size;
+		let userCount = client.users?.cache?.size || 0;
 
-    try {
-      userCount = await Users.estimatedDocumentCount();
-    } catch {
-      userCount = await Users.countDocuments({});
-    }
+		try {
+			userCount = await Users.estimatedDocumentCount();
+		} catch {
+			userCount = await Users.countDocuments({});
+		}
 
-    // Calculate uptime in days, hours, and minutes
-    const totalSeconds = Math.floor(client.uptime / 1000);
-    const days = Math.floor(totalSeconds / (3600 * 24));
-    const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
+		// Calculate uptime in days, hours, and minutes
+		const totalSeconds = Math.floor(client.uptime / 1000);
+		const days = Math.floor(totalSeconds / (3600 * 24));
+		const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+		const minutes = Math.floor((totalSeconds % 3600) / 60);
 
-    // Replace placeholders in the uptime string
-    const uptimeString = statsMessages.fields.uptime
-      .replace("{arrow}", globalEmoji.arrow)
-      .replace("{days}", String(days))
-      .replace("{hours}", String(hours))
-      .replace("{minutes}", String(minutes));
+		// Replace placeholders in the uptime string
+		const uptimeString = statsMessages.fields.uptime
+			.replace("{arrow}", globalEmoji.arrow)
+			.replace("{days}", String(days))
+			.replace("{hours}", String(hours))
+			.replace("{minutes}", String(minutes));
 
-    const embed = client
-      .embed()
-      .setColor(color.main)
-      .setDescription(
-        generalMessages.title
-          .replace("%{mainLeft}", emoji.mainLeft)
-          .replace("%{title}", statsMessages.title)
-          .replace("%{mainRight}", emoji.mainRight) + statsMessages.description,
-      )
-      .addFields([
-        {
-          name: statsMessages.fields.servers
-            .replace("{arrow}", globalEmoji.arrow)
-            .replace("{guildCount}", guildCount),
-          value: "\u200b",
-          inline: false,
-        },
-        {
-          name: statsMessages.fields.users
-            .replace("{arrow}", globalEmoji.arrow)
-            .replace("{userCount}", String(userCount)),
-          value: "\u200b",
-          inline: false,
-        },
-        { name: uptimeString, value: "\u200b", inline: false },
-      ])
-      .setFooter({ text: statsMessages.footer });
+		const embed = client
+			.embed()
+			.setColor(color.main)
+			.setDescription(
+				generalMessages.title
+					.replace("%{mainLeft}", emoji.mainLeft)
+					.replace("%{title}", statsMessages.title)
+					.replace("%{mainRight}", emoji.mainRight) + statsMessages.description,
+			)
+			.addFields([
+				{
+					name: statsMessages.fields.servers
+						.replace("{arrow}", globalEmoji.arrow)
+						.replace("{guildCount}", guildCount),
+					value: "\u200b",
+					inline: false,
+				},
+				{
+					name: statsMessages.fields.users
+						.replace("{arrow}", globalEmoji.arrow)
+						.replace("{userCount}", String(userCount)),
+					value: "\u200b",
+					inline: false,
+				},
+				{ name: uptimeString, value: "\u200b", inline: false },
+			])
+			.setFooter({ text: statsMessages.footer });
 
-    const supportButton = client.utils.linkButton(
-      generalMessages.supportButton,
-      client.config.links.support,
-    );
-    const inviteButton = client.utils.linkButton(
-      generalMessages.inviteButton,
-      client.config.links.invite,
-    );
-    const row = client.utils.createButtonRow(supportButton, inviteButton);
+		const supportButton = client.utils.linkButton(
+			generalMessages.supportButton,
+			client.config.links.support,
+		);
+		const inviteButton = client.utils.linkButton(
+			generalMessages.inviteButton,
+			client.config.links.invite,
+		);
+		const row = client.utils.createButtonRow(supportButton, inviteButton);
 
-    return ctx.isInteraction
-      ? await ctx.interaction.editReply({
-          content: "",
-          embeds: [embed],
-          components: [row],
-        })
-      : await ctx.editMessage({
-          content: "",
-          embeds: [embed],
-          components: [row],
-        });
-  }
+		return ctx.isInteraction
+			? await ctx.interaction.editReply({
+					content: "",
+					embeds: [embed],
+					components: [row],
+				})
+			: await ctx.editMessage({
+					content: "",
+					embeds: [embed],
+					components: [row],
+				});
+	}
 };

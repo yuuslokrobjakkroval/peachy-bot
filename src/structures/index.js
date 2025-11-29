@@ -4,8 +4,8 @@ const Event = require("./Event.js");
 const Client = require("./Client.js");
 
 module.exports = {
-  Command,
-  Context,
-  Event,
-  Client,
+	Command,
+	Context,
+	Event,
+	Client,
 };

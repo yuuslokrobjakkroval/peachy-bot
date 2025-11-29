@@ -2,100 +2,100 @@ const { Command } = require("../../structures/index.js");
 const globalEmoji = require("../../utils/Emoji");
 
 module.exports = class Info extends Command {
-  constructor(client) {
-    super(client, {
-      name: "info",
-      description: {
-        content: "Information about the bot and its features",
-        examples: ["info"],
-        usage: "info",
-      },
-      category: "info",
-      aliases: ["botinfo", "bi"],
-      cooldown: 3,
-      args: false,
-      player: {
-        voice: false,
-        dj: false,
-        active: false,
-        djPerm: null,
-      },
-      permissions: {
-        dev: false,
-        client: ["SendMessages", "ViewChannel", "EmbedLinks"],
-        user: [],
-      },
-      slashCommand: true,
-      options: [],
-    });
-  }
+	constructor(client) {
+		super(client, {
+			name: "info",
+			description: {
+				content: "Information about the bot and its features",
+				examples: ["info"],
+				usage: "info",
+			},
+			category: "info",
+			aliases: ["botinfo", "bi"],
+			cooldown: 3,
+			args: false,
+			player: {
+				voice: false,
+				dj: false,
+				active: false,
+				djPerm: null,
+			},
+			permissions: {
+				dev: false,
+				client: ["SendMessages", "ViewChannel", "EmbedLinks"],
+				user: [],
+			},
+			slashCommand: true,
+			options: [],
+		});
+	}
 
-  async run(client, ctx, args, color, emoji, language) {
-    const generalMessages = language.locales.get(
-      language.defaultLocale,
-    )?.generalMessages;
-    const infoMessages = language.locales.get(language.defaultLocale)
-      ?.informationMessages?.infoMessages;
+	async run(client, ctx, args, color, emoji, language) {
+		const generalMessages = language.locales.get(
+			language.defaultLocale,
+		)?.generalMessages;
+		const infoMessages = language.locales.get(language.defaultLocale)
+			?.informationMessages?.infoMessages;
 
-    if (ctx.isInteraction) {
-      await ctx.interaction.reply(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
-      );
-    } else {
-      await ctx.sendDeferMessage(
-        generalMessages.search.replace("%{loading}", globalEmoji.searching),
-      );
-    }
+		if (ctx.isInteraction) {
+			await ctx.interaction.reply(
+				generalMessages.search.replace("%{loading}", globalEmoji.searching),
+			);
+		} else {
+			await ctx.sendDeferMessage(
+				generalMessages.search.replace("%{loading}", globalEmoji.searching),
+			);
+		}
 
-    const embed = client
-      .embed()
-      .setColor(color.main)
-      .setDescription(
-        generalMessages.title
-          .replace("%{mainLeft}", emoji.mainLeft)
-          .replace("%{title}", infoMessages.title)
-          .replace("%{mainRight}", emoji.mainRight) +
-          `${client.user.username} ${infoMessages.description}`,
-      )
-      .addFields([
-        {
-          name: infoMessages.developer.title,
-          value: `[${infoMessages.developer.value}](${client.config.links.support})`,
-          inline: false,
-        },
-        {
-          name: infoMessages.dashboard.title,
-          value: `[PEACHY](${client.config.links.dashboard})`,
-          inline: false,
-        },
-        {
-          name: infoMessages.facebook.title,
-          value: `[PEACH AND GOMA](${client.config.links.facebook})`,
-          inline: false,
-        },
-      ])
-      .setFooter({ text: infoMessages.footer });
+		const embed = client
+			.embed()
+			.setColor(color.main)
+			.setDescription(
+				generalMessages.title
+					.replace("%{mainLeft}", emoji.mainLeft)
+					.replace("%{title}", infoMessages.title)
+					.replace("%{mainRight}", emoji.mainRight) +
+					`${client.user.username} ${infoMessages.description}`,
+			)
+			.addFields([
+				{
+					name: infoMessages.developer.title,
+					value: `[${infoMessages.developer.value}](${client.config.links.support})`,
+					inline: false,
+				},
+				{
+					name: infoMessages.dashboard.title,
+					value: `[PEACHY](${client.config.links.dashboard})`,
+					inline: false,
+				},
+				{
+					name: infoMessages.facebook.title,
+					value: `[PEACH AND GOMA](${client.config.links.facebook})`,
+					inline: false,
+				},
+			])
+			.setFooter({ text: infoMessages.footer });
 
-    const supportButton = client.utils.linkButton(
-      generalMessages.supportButton,
-      client.config.links.support,
-    );
-    const inviteButton = client.utils.linkButton(
-      generalMessages.inviteButton,
-      client.config.links.invite,
-    );
-    const row = client.utils.createButtonRow(supportButton, inviteButton);
+		const supportButton = client.utils.linkButton(
+			generalMessages.supportButton,
+			client.config.links.support,
+		);
+		const inviteButton = client.utils.linkButton(
+			generalMessages.inviteButton,
+			client.config.links.invite,
+		);
+		const row = client.utils.createButtonRow(supportButton, inviteButton);
 
-    return ctx.isInteraction
-      ? await ctx.interaction.editReply({
-          content: "",
-          embeds: [embed],
-          components: [row],
-        })
-      : await ctx.editMessage({
-          content: "",
-          embeds: [embed],
-          components: [row],
-        });
-  }
+		return ctx.isInteraction
+			? await ctx.interaction.editReply({
+					content: "",
+					embeds: [embed],
+					components: [row],
+				})
+			: await ctx.editMessage({
+					content: "",
+					embeds: [embed],
+					components: [row],
+				});
+	}
 };

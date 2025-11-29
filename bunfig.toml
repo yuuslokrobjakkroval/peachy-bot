@@ -1,0 +1,16 @@
+# Bun configuration file for Peachy Bot
+
+[install]
+# Use optional chaining for optional dependencies
+optional = true
+
+# Save lockfile format
+saveLockfile = true
+
+[build]
+# Build configuration (if needed in future)
+root = "src"
+
+[env]
+# Environment variables and their defaults
+NODE_ENV = "production"
