@@ -261,7 +261,7 @@ module.exports = class Giveaway extends Command {
 			);
 
 		// Add optional image and thumbnail
-		if (image) giveawayEmbed.setImage(image.url);
+		if (image) giveawayEmbed.setImage(image.url ? image.url : 'https://i.imgur.com/rhRvb7d.png');
 		if (thumbnail) giveawayEmbed.setThumbnail(thumbnail.url);
 
 		// Create buttons
