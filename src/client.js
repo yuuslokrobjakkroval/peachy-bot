@@ -95,6 +95,91 @@ client.once('clientReady', async () => {
     client.utils.cacheItems();
     client.logger.info('Item cache initialized!');
 
+    // Start giveaway check interval (only after MongoDB is connected)
+    setInterval(() => {
+        const now = Date.now();
+        GiveawaySchema.find({ endTime: { $lte: now }, ended: false })
+            .then((giveaways) => {
+                if (!giveaways || giveaways.length === 0) {
+                    return;
+                }
+                giveaways.forEach((giveaway) => {
+                    if (giveaway) {
+                        client.channels.cache
+                            .get(giveaway.channelId)
+                            ?.messages.fetch(giveaway.messageId)
+                            .then((giveawayMessage) => {
+                                if (giveawayMessage) {
+                                    client.utils
+                                        .endGiveaway(client, client.color, client.emoji, giveawayMessage, giveaway.autopay)
+                                        .then(() => {
+                                            giveaway.ended = true;
+                                            return giveaway.save();
+                                        })
+                                        .catch((err) => console.error('Error ending giveaway:', err));
+                                }
+                            })
+                            .catch((err) => {
+                                if (err.code === 10008) {
+                                    console.warn(`Message with ID ${giveaway.messageId} was not found.`);
+                                    giveaway.ended = true;
+                                    giveaway.save().catch(console.error);
+                                } else {
+                                    console.error('Error fetching message:', err);
+                                }
+                            });
+                    }
+                });
+            })
+            .catch((err) => {
+                console.error('Error finding giveaways:', err);
+            });
+    }, 10000);
+    client.logger.info('Giveaway check interval started');
+
+    setInterval(() => {
+        const now = Date.now();
+        GiveawayShopItemSchema.find({ endTime: { $lte: now }, ended: false })
+            .then((giveaways) => {
+                if (!giveaways || giveaways.length === 0) {
+                    return;
+                }
+
+                giveaways.forEach((giveaway) => {
+                    if (giveaway) {
+                        client.channels.cache
+                            .get(giveaway.channelId)
+                            ?.messages.fetch(giveaway.messageId)
+                            .then((giveawayMessage) => {
+                                if (giveawayMessage) {
+                                    client.utils
+                                        .endGiveawayShopItem(client, client.color, client.emoji, giveawayMessage, giveaway.autoAdd)
+                                        .then(() => {
+                                            giveaway.ended = true;
+                                            return giveaway.save();
+                                        })
+                                        .catch((err) => console.error('Error ending giveaway shop item:', err));
+                                }
+                            })
+                            .catch((err) => {
+                                if (err.code === 10008) {
+                                    console.warn(`Message with ID ${giveaway.messageId} was not found.`);
+                                    giveaway.ended = true;
+                                    giveaway.save().catch(console.error);
+                                } else {
+                                    console.error('Error fetching message:', err);
+                                }
+                            });
+                    }
+                });
+            })
+            .catch((err) => {
+                console.error('Error finding giveaway shop items:', err);
+            });
+    }, 10000);
+
+    client.logger.info('Giveaway shop item check interval started');
+
     cron.schedule(
         '01 18 * * *',
         () => {
@@ -389,87 +474,6 @@ setInterval(() => {
         })
         .catch((error) => console.error('Error fetching invites:', error));
 }, 60000);
-
-setInterval(() => {
-    const now = Date.now();
-    GiveawaySchema.find({ endTime: { $lte: now }, ended: false })
-        .then((giveaways) => {
-            if (!giveaways || giveaways.length === 0) {
-                return;
-            }
-            giveaways.forEach((giveaway) => {
-                if (giveaway) {
-                    client.channels.cache
-                        .get(giveaway.channelId)
-                        ?.messages.fetch(giveaway.messageId)
-                        .then((giveawayMessage) => {
-                            if (giveawayMessage) {
-                                client.utils
-                                    .endGiveaway(client, client.color, client.emoji, giveawayMessage, giveaway.autopay)
-                                    .then(() => {
-                                        giveaway.ended = true;
-                                        return giveaway.save();
-                                    })
-                                    .catch((err) => console.error('Error ending giveaway:', err));
-                            }
-                        })
-                        .catch((err) => {
-                            if (err.code === 10008) {
-                                console.warn(`Message with ID ${giveaway.messageId} was not found.`);
-                                giveaway.ended = true;
-                                giveaway.save().catch(console.error);
-                            } else {
-                                console.error('Error fetching message:', err);
-                            }
-                        });
-                }
-            });
-        })
-        .catch((err) => {
-            console.error('Error finding giveaways:', err);
-        });
-}, 10000);
-
-setInterval(() => {
-    const now = Date.now();
-    GiveawayShopItemSchema.find({ endTime: { $lte: now }, ended: false })
-        .then((giveaways) => {
-            if (!giveaways || giveaways.length === 0) {
-                return;
-            }
-
-            giveaways.forEach((giveaway) => {
-                if (giveaway) {
-                    client.channels.cache
-                        .get(giveaway.channelId)
-                        ?.messages.fetch(giveaway.messageId)
-                        .then((giveawayMessage) => {
-                            if (giveawayMessage) {
-                                client.utils
-                                    .endGiveawayShopItem(client, client.color, client.emoji, giveawayMessage, giveaway.autoAdd)
-                                    .then(() => {
-                                        giveaway.ended = true;
-                                        return giveaway.save();
-                                    })
-                                    .catch((err) => console.error('Error ending giveaway shop item:', err));
-                            }
-                        })
-                        .catch((err) => {
-                            if (err.code === 10008) {
-                                console.warn(`Message with ID ${giveaway.messageId} was not found.`);
-                                giveaway.ended = true;
-                                giveaway.save().catch(console.error);
-                            } else {
-                                console.error('Error fetching message:', err);
-                            }
-                        });
-                }
-            });
-        })
-        .catch((err) => {
-            console.error('Error finding giveaway shop items:', err);
-        });
-}, 10000);
 
 setTimeout(() => {
     client.utils
