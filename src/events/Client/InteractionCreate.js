@@ -36,7 +36,6 @@ module.exports = class InteractionCreate extends Event {
 
         try {
             const { user, color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
-            console.log({ emoji });
 
             const prefix = this.client.config.prefix;
 
