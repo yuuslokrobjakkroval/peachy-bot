@@ -20,7 +20,7 @@ module.exports = class MessageCreate extends Event {
         } else {
             if (message.guild.id === globalConfig.testGuildId) return;
         }
-        this.client.utils.setColorBasedOnTheme(message.author.id).then(async ({ user, color, emoji, language }) => {
+        this.client.setColorBasedOnTheme(message.author.id).then(async ({ user, color, emoji, language }) => {
             const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
             // Get user's custom prefix or fall back to global
