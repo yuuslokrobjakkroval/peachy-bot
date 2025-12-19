@@ -1504,13 +1504,17 @@ module.exports = class Utils {
 			winnerIdArray = data.entered;
 		}
 
-		const disableButton = ActionRowBuilder.from(
-			message.components[0],
-		).setComponents(
-			ButtonBuilder.from(message.components[0].components[0])
+		const disableButton = new ActionRowBuilder().addComponents(
+			new ButtonBuilder()
+				.setCustomId(message.components[0].components[0].customId)
+				.setStyle(message.components[0].components[0].style)
 				.setLabel(`${data.entered.length}`)
 				.setDisabled(true),
-			ButtonBuilder.from(message.components[0].components[1]).setDisabled(true),
+			new ButtonBuilder()
+				.setCustomId(message.components[0].components[1].customId)
+				.setStyle(message.components[0].components[1].style)
+				.setLabel(message.components[0].components[1].label)
+				.setDisabled(true),
 		);
 
 		const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
@@ -1623,13 +1627,17 @@ module.exports = class Utils {
 			winnerIdArray = data.entered;
 		}
 
-		const disableButton = ActionRowBuilder.from(
-			message.components[0],
-		).setComponents(
-			ButtonBuilder.from(message.components[0].components[0])
+		const disableButton = new ActionRowBuilder().addComponents(
+			new ButtonBuilder()
+				.setCustomId(message.components[0].components[0].customId)
+				.setStyle(message.components[0].components[0].style)
 				.setLabel(`${data.entered.length}`)
 				.setDisabled(true),
-			ButtonBuilder.from(message.components[0].components[1]).setDisabled(true),
+			new ButtonBuilder()
+				.setCustomId(message.components[0].components[1].customId)
+				.setStyle(message.components[0].components[1].style)
+				.setLabel(message.components[0].components[1].label)
+				.setDisabled(true),
 		);
 
 		const endGiveawayEmbed = EmbedBuilder.from(message.embeds[0])
