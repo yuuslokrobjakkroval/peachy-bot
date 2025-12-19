@@ -8,6 +8,7 @@ module.exports = {
     help: {
         category: '📚',
         actions: '<:KYACTIONS:1350691168157040651>',
+        building: '<:BUILDER:1355804991247351898>',
         animals: '<:EGG:1354825084598095952>',
         bank: '<:KYBANK:1350691180102287370>',
         economy: '<:KYECONOMY:1350691204563734551>',
