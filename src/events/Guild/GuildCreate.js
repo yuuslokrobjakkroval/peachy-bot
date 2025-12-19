@@ -2,9 +2,8 @@ const { Event } = require("../../structures/index.js");
 const {
 	ChannelType,
 	PermissionFlagsBits,
-	AuditLogEvent, // ⬅️ add this
+	AuditLogEvent,
 } = require("discord.js");
-const globalConfig = require("../../utils/Config");
 const Guild = require("../../schemas/guild");
 
 module.exports = class GuildCreate extends Event {
@@ -21,25 +20,6 @@ module.exports = class GuildCreate extends Event {
 
 		// --- helper: fetch inviter from audit logs (best-effort) ---
 		const inviter = await this.fetchInviterSafe(guild).catch(() => null);
-
-		// Check if guild ID matches the specific ID to auto-leave
-		if (guild.id === "1370047480460214323") {
-			if (logChannel) {
-				await logChannel
-					.send(
-						`Auto-leaving guild **${guild.name}** (ID: ${guild.id}) due to specific ID match.${
-							inviter ? ` Invited by **${inviter.tag}** (${inviter.id}).` : ""
-						}`,
-					)
-					.catch(console.error);
-			}
-			await guild
-				.leave()
-				.catch((err) =>
-					console.error(`Failed to leave guild ${guild.id}:`, err),
-				);
-			return;
-		}
 
 		// Fetch or update guild data in the database
 		let guildData = await Guild.findOne({ guildId: guild.id });
@@ -103,47 +83,6 @@ module.exports = class GuildCreate extends Event {
 				owner = { user: { tag: "Unknown#0000", id: guild.ownerId } };
 			}
 		}
-
-		const isOwnerBotAdd = globalConfig.owners.includes(inviter.id);
-
-		// Auto-leave if member count is less than 50, unless it's a dev/testing server
-		if (!isOwnerBotAdd && guild.memberCount < 50) {
-			const leaveMsg = `Leaving guild **${guild.name}** (ID: ${guild.id}) because it has less than 50 members (${guild.memberCount}).${
-				inviter ? ` Invited by **${inviter.tag}** (${inviter.id}).` : ""
-			}`;
-			if (logChannel) {
-				await logChannel.send(leaveMsg).catch(console.error);
-			}
-
-			// Try to DM the owner
-			let ownerUser = null;
-			try {
-				if (guild.ownerId) {
-					ownerUser = await this.client.users.fetch(guild.ownerId);
-				}
-			} catch {
-				ownerUser = null;
-			}
-			if (ownerUser) {
-				ownerUser.send(leaveMsg).catch(() => {});
-			}
-
-			// Optionally DM inviter as well (best-effort)
-			if (inviter) {
-				try {
-					const inviterUser = await this.client.users.fetch(inviter.id);
-					await inviterUser.send(leaveMsg).catch(() => {});
-				} catch {}
-			}
-
-			await guild
-				.leave()
-				.catch((err) =>
-					console.error(`Failed to leave guild ${guild.id}:`, err),
-				);
-			return; // Exit the event after leaving
-		}
-
 		// Send guild info to log channel (now includes inviter when available)
 		await this.sendGuildInfo(guild, owner, inviter);
 	}
