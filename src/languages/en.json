@@ -802,7 +802,7 @@
 		"qrMessages": {
 			"title": "QR Code for %{currency}",
 			"description": "Here is the QR code for %{currency}:",
-			"invalidOption": "Invalid option! Please use 'kh' or 'usd'."
+			"invalidOption": "Invalid option! Please use 'khr' or 'usd'."
 		},
 		"serverInfoMessages": {
 			"name": "Name",

@@ -54,7 +54,7 @@ module.exports = {
     token: process.env.TOKEN,
     prefix: process.env.PREFIX ?? 'P',
     guildId: process.env.GUILD_ID ?? '1342317947573633077',
-    testGuildId: process.env.TEST_GUILD_ID ?? '1439140668558672006',
+    testGuildId: process.env.TEST_GUILD_ID ?? '1447158253967638590',
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
     geminiApiKey: process.env.GEMINI_API_KEY,
