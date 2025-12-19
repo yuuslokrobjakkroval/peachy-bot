@@ -36,6 +36,8 @@ module.exports = class InteractionCreate extends Event {
 
         try {
             const { user, color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
+            console.log({ emoji });
+
             const prefix = this.client.config.prefix;
 
             if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
@@ -493,12 +495,12 @@ module.exports = class InteractionCreate extends Event {
                                     new ActionRowBuilder().addComponents(
                                         new ButtonBuilder()
                                             .setCustomId('giveaway-join')
-                                            .setLabel(`${newLabel}`)
                                             .setEmoji(emoji.main)
+                                            .setLabel(`${newLabel}`)
                                             .setStyle(3),
                                         new ButtonBuilder()
                                             .setCustomId('giveaway-participants')
-                                            .setEmoji(globalEmoji.giveaway.participants)
+                                            .setEmoji(globalEmoji.giveaway.gift)
                                             .setLabel('Participants')
                                             .setStyle(1)
                                     ),
@@ -577,14 +579,10 @@ module.exports = class InteractionCreate extends Event {
                             await interaction.message.edit({
                                 components: [
                                     new ActionRowBuilder().addComponents(
-                                        new ButtonBuilder()
-                                            .setCustomId('giveaway-join')
-                                            .setLabel(`${newLabel}`)
-                                            .setEmoji(emoji.main)
-                                            .setStyle(3),
+                                        new ButtonBuilder().setCustomId('giveaway-join').setLabel(`${newLabel}`).setStyle(3),
                                         new ButtonBuilder()
                                             .setCustomId('giveaway-participants')
-                                            .setEmoji(globalEmoji.giveaway.participants)
+                                            .setEmoji(globalEmoji.giveaway.gift)
                                             .setLabel('Participants')
                                             .setStyle(1)
                                     ),
@@ -761,14 +759,10 @@ module.exports = class InteractionCreate extends Event {
                             await interaction.message.edit({
                                 components: [
                                     new ActionRowBuilder().addComponents(
-                                        new ButtonBuilder()
-                                            .setCustomId('giveawayshopitem-join')
-                                            .setLabel(`${newLabel}`)
-                                            .setEmoji(emoji.main)
-                                            .setStyle(3),
+                                        new ButtonBuilder().setCustomId('giveawayshopitem-join').setLabel(`${newLabel}`).setStyle(3),
                                         new ButtonBuilder()
                                             .setCustomId('giveawayshopitem-participants')
-                                            .setEmoji(globalEmoji.giveaway.participants)
+                                            .setEmoji(globalEmoji.giveaway.gift)
                                             .setLabel('Participants')
                                             .setStyle(1)
                                     ),
