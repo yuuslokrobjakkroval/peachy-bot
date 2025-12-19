@@ -10,45 +10,12 @@ const globalConfig = require('../utils/Config');
 const { I18n } = require('@hammerhq/localization');
 const themeConfig = require('../config');
 
-// Emojis - Centralized in one object for easier management
 const emojis = require('../emojis');
 const themeEmojis = {
-    // Mapping theme ID to emojis - more maintainable
     peach: require('../theme/Peach/emojis'),
     goma: require('../theme/Goma/emojis'),
-    t01: require('../theme/OceanBreeze/emojis'),
-    t02: require('../theme/FrightFest/emojis'),
-    halloween: require('../theme/FrightFest/emojis'),
-    t03: require('../theme/BooBash/emojis'),
-    t04: require('../theme/Christmas/emojis'),
-    t05: require('../theme/FestiveFrost/emojis'),
-    t06: require('../theme/KingFrost/emojis'),
-    t07: require('../theme/QueenFrost/emojis'),
-    t08: require('../theme/Gangyu/emojis'),
-    st01: require('../theme/CelestialGrace/emojis'),
-    st02: require('../theme/SakuraSerenity/emojis'),
-    st03: require('../theme/BuzzingBliss/emojis'),
-    st04: require('../theme/Froggy/emojis'),
-    st05: require('../theme/ASleepyPeach/emojis'),
-    st06: require('../theme/MagicalForest/emojis'),
-    st07: require('../theme/Matchalatte/emojis'),
-    st09: require('../theme/SpringBear/emojis'),
-    st0705: require('../theme/PandaChef/emojis'),
-    st20: require('../theme/TangerineDepth/emojis'),
-    st21: require('../theme/DiaryCat/emojis'),
-    st99: require('../theme/QuirkyQuackers/emojis'),
-    st2707: require('../theme/KeoYuu/emojis'),
-    st168: require('../theme/GhastlyGrins/emojis'),
-    st272: require('../theme/LoveBunnie/emojis'),
-    st1111: require('../theme/EnchantedCatLake/emojis'),
-    st2601: require('../theme/Yuyuzu/emojis'),
-    st2002: require('../theme/Yara/emojis'),
-    st2025: require('../theme/CatAna/emojis'),
-    //
-    ct002: require('../theme/PaoInh/emojis'),
 };
 
-const commands = [];
 const Logger = require('./Logger');
 const ServerStatsManager = require('../managers/ServerStatsManager');
 
