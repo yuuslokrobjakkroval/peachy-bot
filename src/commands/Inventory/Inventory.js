@@ -54,31 +54,23 @@ module.exports = class Inventory extends Command {
                 );
             }
 
-            // Define category icons/emojis for better visual distinction
-            const categoryIcons = {
-                resources: '⛏️',
-                card: '💳',
-                milk: '🥤',
-                couple: '💑',
-                ring: '💍',
-                color: '🎨',
-                decoration: '🏠',
-                theme: '🎭',
-                specialTheme: '🎭',
-                wallpaper: '🖼️',
-            };
-
+            // Define category structure with icons/emojis
             const allCategories = [
-                'resources',
-                'card',
-                'milk',
-                'couple',
-                'ring',
-                'color',
-                'decoration',
-                'theme',
-                'specialTheme',
-                'wallpaper',
+                { label: 'tool', emoji: '🔧' },
+                { label: 'wood', emoji: '🪵' },
+                { label: 'mineral', emoji: '⛏️' },
+                { label: 'fish', emoji: '🎣' },
+                { label: 'slime', emoji: '🟢' },
+                { label: 'bug', emoji: '🐛' },
+                { label: 'card', emoji: '💳' },
+                { label: 'milk', emoji: '🥤' },
+                { label: 'couple', emoji: '💑' },
+                { label: 'ring', emoji: '💍' },
+                { label: 'color', emoji: '🎨' },
+                { label: 'decoration', emoji: '🏠' },
+                { label: 'theme', emoji: '🎭' },
+                { label: 'specialTheme', emoji: '🎭' },
+                { label: 'wallpaper', emoji: '🖼️' },
             ];
 
             const itemList = {};
@@ -93,11 +85,8 @@ module.exports = class Inventory extends Command {
                     );
 
                     if (itemInfo) {
-                        // Map specific types to "resources"
+                        // Use item type directly for separate categories
                         let type = itemInfo.type;
-                        if (['tool', 'wood', 'mineral', 'fish', 'slime', 'bug'].includes(type)) {
-                            type = 'resources';
-                        }
 
                         itemList[type] = itemList[type] || [];
 
@@ -133,14 +122,14 @@ module.exports = class Inventory extends Command {
 
             // Create category dropdown
             const categoryOptions = allCategories
-                .filter((cat) => itemList[cat] && itemList[cat].length > 0)
+                .filter((cat) => itemList[cat.label] && itemList[cat.label].length > 0)
                 .map((cat) => {
-                    const count = itemList[cat]?.length || 0;
+                    const count = itemList[cat.label]?.length || 0;
                     return {
-                        emoji: categoryIcons[cat] || '📦',
-                        label: client.utils.formatCapitalize(cat),
+                        emoji: cat.emoji,
+                        label: client.utils.formatCapitalize(cat.label),
                         description: `${count} items`,
-                        value: cat,
+                        value: cat.label,
                     };
                 });
 
@@ -162,10 +151,10 @@ module.exports = class Inventory extends Command {
             // Create overview embed
             const generateOverviewEmbed = () => {
                 const categoryList = allCategories
-                    .filter((cat) => itemList[cat] && itemList[cat].length > 0)
+                    .filter((cat) => itemList[cat.label] && itemList[cat.label].length > 0)
                     .map((cat) => {
-                        const count = itemList[cat]?.length || 0;
-                        return `${categoryIcons[cat]} **${client.utils.formatCapitalize(cat)}** - \`${count}\``;
+                        const count = itemList[cat.label]?.length || 0;
+                        return `${cat.emoji} **${client.utils.formatCapitalize(cat.label)}** - \`${count}\``;
                     })
                     .join('\n');
 
@@ -229,12 +218,13 @@ module.exports = class Inventory extends Command {
                 const pageContent = pages[currentPageIndex]?.join('').trim() || 'No items';
                 const totalPages = pages.length || 1;
 
+                const categoryObj = allCategories.find((cat) => cat.label === category);
                 return {
                     embed: client
                         .embed()
                         .setColor(color.main)
                         .setDescription(
-                            `# ${categoryIcons[category]} **${client.utils.formatCapitalize(category).toUpperCase()}**\n\n` +
+                            `# ${categoryObj?.emoji} **${client.utils.formatCapitalize(category).toUpperCase()}**\n\n` +
                                 `**Items:** **${items.length}**\n` +
                                 `**Worth:** **${client.utils.formatNumber(categoryWorth)}** ${emoji.coin}`
                         )
