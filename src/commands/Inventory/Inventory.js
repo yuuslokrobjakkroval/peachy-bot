@@ -5,7 +5,6 @@ const ShopItems = require('../../assets/inventory/ShopItems.js');
 const Woods = require('../../assets/inventory/Woods');
 const Minerals = require('../../assets/inventory/Minerals');
 const Fish = require('../../assets/inventory/Fish');
-const CraftedItems = require('../../assets/inventory/CraftedItems');
 const SlimeCategory = require('../../assets/inventory/SlimeCatalog');
 const Tools = require('../../assets/inventory/Tools');
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
@@ -52,7 +51,6 @@ module.exports = class Inventory extends Command {
             // Define category icons/emojis for better visual distinction
             const categoryIcons = {
                 resources: '⛏️',
-                mineral: '💎',
                 card: '💳',
                 milk: '🥤',
                 couple: '💑',
@@ -66,7 +64,6 @@ module.exports = class Inventory extends Command {
 
             const allCategories = [
                 'resources',
-                'mineral',
                 'card',
                 'milk',
                 'couple',
@@ -85,14 +82,14 @@ module.exports = class Inventory extends Command {
             // Process inventory items
             user.inventory.forEach((item) => {
                 if (item.quantity > 0) {
-                    const itemInfo = Items.concat(ImportantItems, Woods, Minerals, Fish, CraftedItems, SlimeCategory, Tools).find(
+                    const itemInfo = Items.concat(ImportantItems, Woods, Minerals, Fish, SlimeCategory, Tools).find(
                         ({ id }) => id.toLowerCase() === item.id.toLowerCase()
                     );
 
                     if (itemInfo) {
                         // Map specific types to "resources"
                         let type = itemInfo.type;
-                        if (['tool'].includes(type)) {
+                        if (['tool', 'wood', 'mineral', 'fish', 'slimes'].includes(type)) {
                             type = 'resources';
                         }
 
@@ -188,7 +185,7 @@ module.exports = class Inventory extends Command {
                 const categoryWorth = items.reduce((sum, item) => sum + item.worth, 0);
 
                 // Create a source map for sorting by original index
-                const allSources = Items.concat(ImportantItems, Woods, Minerals, Fish, CraftedItems, SlimeCategory, Tools);
+                const allSources = Items.concat(ImportantItems, Woods, Minerals, Fish, SlimeCategory, Tools);
 
                 const itemsList = items
                     .sort((a, b) => {

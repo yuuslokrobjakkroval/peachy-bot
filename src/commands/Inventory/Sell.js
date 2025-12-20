@@ -6,12 +6,11 @@ const ShopItems = require('../../assets/inventory/ShopItems.js');
 const Woods = require('../../assets/inventory/Woods');
 const Minerals = require('../../assets/inventory/Minerals');
 const Fish = require('../../assets/inventory/Fish');
-const CraftedItems = require('../../assets/inventory/CraftedItems');
 const SlimeCategory = require('../../assets/inventory/SlimeCatalog');
 const Tools = require('../../assets/inventory/SlimeTools');
 const MoreItems = ShopItems.flatMap((shop) => shop.inventory);
 
-const AllItems = [...ImportantItems, ...MoreItems, ...Woods, ...Minerals, ...Fish, ...CraftedItems, ...SlimeCategory, ...Tools].filter(
+const AllItems = [...ImportantItems, ...MoreItems, ...Woods, ...Minerals, ...Fish, ...SlimeCategory, ...Tools].filter(
     (item) => item.price.sell !== 0
 );
 

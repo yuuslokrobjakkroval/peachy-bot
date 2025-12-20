@@ -155,11 +155,6 @@ const RelationshipSchema = new Schema({
 	],
 });
 
-const AchievementsSchema = new Schema({
-	name: { type: String, required: true },
-	dateEarned: { type: Date, default: Date.now },
-});
-
 // User Schema
 const userSchema = new Schema(
 	{
