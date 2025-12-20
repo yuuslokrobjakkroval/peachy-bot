@@ -618,16 +618,31 @@ module.exports = class Utils {
                 if (user) {
                     const cooldownIndex = user.cooldowns.findIndex((c) => c.name === command);
                     if (cooldownIndex > -1) {
-                        user.cooldowns[cooldownIndex].timestamp = now;
-                        user.cooldowns[cooldownIndex].duration = duration;
+                        // Use atomic update to avoid version conflicts
+                        return Users.updateOne(
+                            { userId: userId, 'cooldowns._id': user.cooldowns[cooldownIndex]._id },
+                            {
+                                $set: {
+                                    'cooldowns.$.timestamp': now,
+                                    'cooldowns.$.duration': duration,
+                                },
+                            }
+                        );
                     } else {
-                        user.cooldowns.push({
-                            name: command,
-                            timestamp: now,
-                            duration: duration,
-                        });
+                        // Add new cooldown using atomic operation
+                        return Users.updateOne(
+                            { userId: userId },
+                            {
+                                $push: {
+                                    cooldowns: {
+                                        name: command,
+                                        timestamp: now,
+                                        duration: duration,
+                                    },
+                                },
+                            }
+                        );
                     }
-                    return user.save();
                 }
             })
             .catch((error) => {

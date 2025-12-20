@@ -72,9 +72,9 @@ module.exports = class Sell extends Command {
             const validCategories = ['card', 'milk', 'couple', 'ring', 'color', 'theme', 'special theme', 'wallpaper', 'resources'];
 
             // Handle "all" command to sell everything
-            // if (input === 'all') {
-            //     return await this.sellAllItems(client, ctx, user, color, emoji, generalMessages, sellMessages);
-            // }
+            if (input === 'all') {
+                return await this.sellAllItems(client, ctx, user, color, emoji, generalMessages, sellMessages);
+            }
 
             // Handle category selling
             if (validCategories.includes(input)) {
@@ -137,26 +137,63 @@ module.exports = class Sell extends Command {
         // Calculate sale price
         const salePrice = itemInfo.price.sell * quantity;
 
-        // Create the initial embed
-        const embed = client
-            .embed()
-            .setColor(color.main)
-            .setTitle(`${itemInfo.emoji || '📦'} ${itemInfo.name || client.utils.formatCapitalize(itemInfo.id)}`)
-            .setDescription(
-                `**${sellMessages.quantity.replace('{quantity}', quantity)}**\n` +
-                    `**${sellMessages.totalValue
-                        .replace('{coinEmoji}', emoji.coin)
-                        .replace('{value}', client.utils.formatNumber(salePrice))}**\n\n` +
-                    (itemInfo.description ? `*${itemInfo.description}*\n\n` : '') +
-                    `${sellMessages.remainingBalance
-                        .replace('{coinEmoji}', emoji.coin)
-                        .replace('{balance}', client.utils.formatNumber(user.balance.coin))}`
-            )
-            .setThumbnail(client.utils.emojiToImage(itemInfo.emoji || '📦'))
-            .setFooter({
-                text: (generalMessages?.requestedBy || 'Requested by %{username}').replace('%{username}', ctx.author.displayName),
-                iconURL: ctx.author.displayAvatarURL(),
-            });
+        const createEmbed = (qty) => {
+            const price = itemInfo.price.sell * qty;
+            return client
+                .embed()
+                .setColor(color.main)
+                .setTitle(`${itemInfo.emoji || '📦'} ${itemInfo.name || client.utils.formatCapitalize(itemInfo.id)}`)
+                .setDescription(
+                    `**━━━━━━━━━━━━━━━━━━━━**\n` +
+                        `**${sellMessages.quantity.replace('{quantity}', qty)}** | Available: **${hasItems.quantity}**\n` +
+                        `**${sellMessages.totalValue
+                            .replace('{coinEmoji}', emoji.coin)
+                            .replace('{value}', client.utils.formatNumber(price))}**\n` +
+                        `**━━━━━━━━━━━━━━━━━━━━**\n\n` +
+                        (itemInfo.description ? `*${itemInfo.description}*\n\n` : '') +
+                        `**Your Balance:** ${emoji.coin} ${client.utils.formatNumber(user.balance.coin)}\n` +
+                        `**After Sale:** ${emoji.coin} ${client.utils.formatNumber(user.balance.coin + price)}`
+                )
+                .setThumbnail(client.utils.emojiToImage(itemInfo.emoji || '📦'))
+                .setFooter({
+                    text: (generalMessages?.requestedBy || 'Requested by %{username}').replace('%{username}', ctx.author.displayName),
+                    iconURL: ctx.author.displayAvatarURL(),
+                });
+        };
+
+        const createActionRow = (qty) => {
+            const decrementBtn = new ButtonBuilder()
+                .setCustomId('decrement_qty')
+                .setLabel('-')
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(qty <= 1);
+
+            const minusHalfBtn = new ButtonBuilder()
+                .setCustomId('minus_half')
+                .setLabel('−50%')
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(qty <= 1);
+
+            const quantityBtn = new ButtonBuilder()
+                .setCustomId('qty_info')
+                .setLabel(`Qty: ${qty}/${hasItems.quantity}`)
+                .setStyle(ButtonStyle.Primary)
+                .setDisabled(true);
+
+            const plusHalfBtn = new ButtonBuilder()
+                .setCustomId('plus_half')
+                .setLabel('+50%')
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(qty >= hasItems.quantity);
+
+            const incrementBtn = new ButtonBuilder()
+                .setCustomId('increment_qty')
+                .setLabel('+')
+                .setStyle(ButtonStyle.Secondary)
+                .setDisabled(qty >= hasItems.quantity);
+
+            return new ActionRowBuilder().addComponents(decrementBtn, minusHalfBtn, quantityBtn, plusHalfBtn, incrementBtn);
+        };
 
         const confirmButton = new ButtonBuilder()
             .setCustomId('confirm_sell')
@@ -164,19 +201,20 @@ module.exports = class Sell extends Command {
             .setStyle(ButtonStyle.Success)
             .setEmoji('✅');
 
+        const maxButton = new ButtonBuilder().setCustomId('max_qty').setLabel('Max').setStyle(ButtonStyle.Secondary).setEmoji('⬆️');
+
         const cancelButton = new ButtonBuilder()
             .setCustomId('cancel_sell')
             .setLabel(sellMessages.cancel)
             .setStyle(ButtonStyle.Danger)
             .setEmoji('❌');
 
-        // Create rows
-        const actionRow = new ActionRowBuilder().addComponents(confirmButton, cancelButton);
+        const actionRowBottom = new ActionRowBuilder().addComponents(confirmButton, maxButton, cancelButton);
 
         // Send the message
         const message = await ctx.sendMessage({
-            embeds: [embed],
-            components: [actionRow],
+            embeds: [createEmbed(quantity)],
+            components: [createActionRow(quantity), actionRowBottom],
         });
 
         // Create collector
@@ -191,6 +229,26 @@ module.exports = class Sell extends Command {
         collector.on('collect', async (interaction) => {
             try {
                 switch (interaction.customId) {
+                    case 'increment_qty':
+                        currentQuantity = Math.min(currentQuantity + 1, hasItems.quantity);
+                        break;
+
+                    case 'decrement_qty':
+                        currentQuantity = Math.max(currentQuantity - 1, 1);
+                        break;
+
+                    case 'plus_half':
+                        currentQuantity = Math.min(currentQuantity + Math.ceil(hasItems.quantity / 2), hasItems.quantity);
+                        break;
+
+                    case 'minus_half':
+                        currentQuantity = Math.max(currentQuantity - Math.ceil(hasItems.quantity / 2), 1);
+                        break;
+
+                    case 'max_qty':
+                        currentQuantity = hasItems.quantity;
+                        break;
+
                     case 'confirm_sell':
                         // Process the sale
                         await this.processSale(
@@ -217,34 +275,10 @@ module.exports = class Sell extends Command {
                         return;
                 }
 
-                // Update the sale price
-                const newSalePrice = itemInfo.price.sell * currentQuantity;
-
-                // Update the embed
-                const updatedEmbed = client
-                    .embed()
-                    .setColor(color.main)
-                    .setTitle(`${itemInfo.emoji || '📦'} ${itemInfo.name || client.utils.formatCapitalize(itemInfo.id)}`)
-                    .setDescription(
-                        `**${sellMessages.quantity.replace('{quantity}', currentQuantity)}**\n` +
-                            `**${sellMessages.totalValue
-                                .replace('{coinEmoji}', emoji.coin)
-                                .replace('{value}', client.utils.formatNumber(newSalePrice))}**\n\n` +
-                            (itemInfo.description ? `*${itemInfo.description}*\n\n` : '') +
-                            `${sellMessages.remainingBalance
-                                .replace('{coinEmoji}', emoji.coin)
-                                .replace('{balance}', client.utils.formatNumber(user.balance.coin))}`
-                    )
-                    .setThumbnail(client.utils.emojiToImage(itemInfo.emoji || '📦'))
-                    .setFooter({
-                        text: (generalMessages?.requestedBy || 'Requested by %{username}').replace('%{username}', ctx.author.displayName),
-                        iconURL: ctx.author.displayAvatarURL(),
-                    });
-
-                // Update the message
+                // Update the message with new quantity
                 await interaction.update({
-                    embeds: [updatedEmbed],
-                    components: [actionRow],
+                    embeds: [createEmbed(currentQuantity)],
+                    components: [createActionRow(currentQuantity), actionRowBottom],
                 });
             } catch (error) {
                 console.error('Error in sell interaction:', error);
@@ -345,183 +379,256 @@ module.exports = class Sell extends Command {
         }
     }
 
-    // async sellAllItems(client, ctx, user, color, emoji, generalMessages, sellMessages) {
-    //     try {
-    //         // Get all sellable items from the user's inventory
-    //         const sellableItems = user.inventory.filter((item) => {
-    //             const itemInfo = AllItems.find((i) => i.id === item.id);
-    //             return itemInfo && itemInfo.price.sell > 0;
-    //         });
+    async sellAllItems(client, ctx, user, color, emoji, generalMessages, sellMessages) {
+        try {
+            // Get all sellable items from the user's inventory
+            const sellableItems = user.inventory.filter((item) => {
+                const itemInfo = AllItems.find((i) => i.id === item.id);
+                return itemInfo && itemInfo.price.sell > 0;
+            });
 
-    //         if (sellableItems.length === 0) {
-    //             return await client.utils.sendErrorMessage(client, ctx, sellMessages.noSellableItems, color);
-    //         }
+            if (sellableItems.length === 0) {
+                return await client.utils.sendErrorMessage(client, ctx, sellMessages.noSellableItems, color);
+            }
 
-    //         // Calculate total value
-    //         let totalValue = 0;
-    //         const itemsToSell = [];
+            // Calculate total value
+            let totalValue = 0;
+            const itemsToSell = [];
 
-    //         for (const item of sellableItems) {
-    //             const itemInfo = AllItems.find((i) => i.id === item.id);
-    //             if (itemInfo) {
-    //                 const value = itemInfo.price.sell * item.quantity;
-    //                 totalValue += value;
-    //                 itemsToSell.push({
-    //                     id: itemInfo.id,
-    //                     name: itemInfo.name || client.utils.formatCapitalize(itemInfo.id),
-    //                     emoji: itemInfo.emoji || '📦',
-    //                     quantity: item.quantity,
-    //                     value: value,
-    //                 });
-    //             }
-    //         }
+            for (const item of sellableItems) {
+                const itemInfo = AllItems.find((i) => i.id === item.id);
+                if (itemInfo) {
+                    const value = itemInfo.price.sell * item.quantity;
+                    totalValue += value;
+                    itemsToSell.push({
+                        id: itemInfo.id,
+                        name: itemInfo.name || client.utils.formatCapitalize(itemInfo.id),
+                        emoji: itemInfo.emoji || '📦',
+                        quantity: item.quantity,
+                        value: value,
+                    });
+                }
+            }
 
-    //         // Create confirmation embed
-    //         const embed = client
-    //             .embed()
-    //             .setColor(color.warning)
-    //             .setTitle(sellMessages.sellConfirmation || 'Sell Confirmation')
-    //             .setDescription(
-    //                 sellMessages.sellAll.replace('{coinEmoji}', emoji.coin).replace('{price}', client.utils.formatNumber(totalValue))
-    //             )
-    //             .addFields({
-    //                 name: sellMessages.sellableItems,
-    //                 value: itemsToSell
-    //                     .map((item) => `${item.emoji} ${item.quantity}x \`${item.id}\` -  **${client.utils.formatNumber(item.value)}**`)
-    //                     .join('\n')
-    //                     .substring(0, 1024),
-    //             })
-    //             .setFooter({
-    //                 text: (generalMessages?.requestedBy || 'Requested by %{username}').replace('%{username}', ctx.author.displayName),
-    //                 iconURL: ctx.author.displayAvatarURL(),
-    //             });
+            // Sort items by value (highest first)
+            itemsToSell.sort((a, b) => b.value - a.value);
 
-    //         // Create confirmation buttons
-    //         const confirmButton = new ButtonBuilder()
-    //             .setCustomId('confirm_sell_all')
-    //             .setLabel(sellMessages.confirm)
-    //             .setStyle(ButtonStyle.Success)
-    //             .setEmoji('✅');
+            // Split items into chunks for pagination if needed
+            const itemsPerPage = 10;
+            const pages = [];
+            for (let i = 0; i < itemsToSell.length; i += itemsPerPage) {
+                pages.push(itemsToSell.slice(i, i + itemsPerPage));
+            }
 
-    //         const cancelButton = new ButtonBuilder()
-    //             .setCustomId('cancel_sell_all')
-    //             .setLabel(sellMessages.cancel)
-    //             .setStyle(ButtonStyle.Secondary)
-    //             .setEmoji('❌');
+            // Create confirmation embed for the first page
+            const createPageEmbed = (pageIndex = 0) => {
+                const page = pages[pageIndex];
+                const itemsList = page
+                    .map(
+                        (item) =>
+                            `${item.emoji} **${item.quantity}x** ${item.name} → ${emoji.coin} ${client.utils.formatNumber(item.value)}`
+                    )
+                    .join('\n');
 
-    //         const actionRow = new ActionRowBuilder().addComponents(confirmButton, cancelButton);
+                const embed = client
+                    .embed()
+                    .setColor(color.warning)
+                    .setTitle('🏪 Sell All Items')
+                    .setDescription(
+                        `**━━━━━━━━━━━━━━━━━━━━**\n` +
+                            `Total Items to Sell: **${itemsToSell.length}**\n` +
+                            `Total Value: ${emoji.coin} **${client.utils.formatNumber(totalValue)}**\n` +
+                            `**━━━━━━━━━━━━━━━━━━━━**\n\n` +
+                            itemsList
+                    )
+                    .setFooter({
+                        text: (generalMessages?.requestedBy || 'Requested by %{username}')
+                            .replace('%{username}', ctx.author.displayName)
+                            .concat(pages.length > 1 ? ` • Page ${pageIndex + 1}/${pages.length}` : ''),
+                        iconURL: ctx.author.displayAvatarURL(),
+                    });
 
-    //         // Send confirmation message
-    //         const message = await ctx.sendMessage({
-    //             embeds: [embed],
-    //             components: [actionRow],
-    //         });
+                return embed;
+            };
 
-    //         // Create collector
-    //         const collector = message.createMessageComponentCollector({
-    //             filter: (i) => i.user.id === ctx.author.id,
-    //             time: 60000, // 1 minute timeout
-    //         });
+            // Create navigation and action buttons
+            const createActionRow = (pageIndex = 0, isConfirming = false) => {
+                if (isConfirming) {
+                    const confirmBtn = new ButtonBuilder()
+                        .setCustomId('confirm_sell_all')
+                        .setLabel('✅ Confirm')
+                        .setStyle(ButtonStyle.Success);
 
-    //         collector.on('collect', async (interaction) => {
-    //             try {
-    //                 if (interaction.customId === 'confirm_sell_all') {
-    //                     // Process the sale of all items
-    //                     let totalSold = 0;
+                    const cancelBtn = new ButtonBuilder().setCustomId('cancel_sell_all').setLabel('❌ Cancel').setStyle(ButtonStyle.Danger);
 
-    //                     // Update user's balance
-    //                     await Users.updateOne({ userId: ctx.author.id }, { $inc: { 'balance.coin': totalValue } });
+                    return [new ActionRowBuilder().addComponents(confirmBtn, cancelBtn)];
+                }
 
-    //                     // Remove all sold items from inventory
-    //                     for (const item of itemsToSell) {
-    //                         await Users.updateOne(
-    //                             { userId: ctx.author.id },
-    //                             {
-    //                                 $pull: {
-    //                                     inventory: { id: item.id },
-    //                                     equip: { id: item.id },
-    //                                 },
-    //                             }
-    //                         );
-    //                         totalSold += item.quantity;
-    //                     }
+                const prevBtn = new ButtonBuilder()
+                    .setCustomId('prev_page')
+                    .setLabel('◀️ Previous')
+                    .setStyle(ButtonStyle.Secondary)
+                    .setDisabled(pageIndex === 0);
 
-    //                     // Get updated user data
-    //                     const updatedUser = await Users.findOne({ userId: ctx.author.id });
+                const nextBtn = new ButtonBuilder()
+                    .setCustomId('next_page')
+                    .setLabel('Next ▶️')
+                    .setStyle(ButtonStyle.Secondary)
+                    .setDisabled(pageIndex === pages.length - 1);
 
-    //                     // Send success message
-    //                     await interaction.update({
-    //                         embeds: [
-    //                             client
-    //                                 .embed()
-    //                                 .setColor(color.success)
-    //                                 .setDescription(
-    //                                     sellMessages.sellAllSuccess
-    //                                         .replace('{count}', itemsToSell.length)
-    //                                         .replace('{coinEmoji}', emoji.coin)
-    //                                         .replace('{price}', client.utils.formatNumber(totalValue))
-    //                                 )
-    //                                 .setFooter({
-    //                                     text: (generalMessages?.requestedBy || 'Requested by %{username}').replace(
-    //                                         '%{username}',
-    //                                         ctx.author.displayName
-    //                                     ),
-    //                                     iconURL: ctx.author.displayAvatarURL(),
-    //                                 }),
-    //                         ],
-    //                         components: [],
-    //                     });
-    //                 } else if (interaction.customId === 'cancel_sell_all') {
-    //                     await interaction.update({
-    //                         embeds: [client.embed().setColor(color.danger).setDescription(sellMessages.sellCancelled)],
-    //                         components: [],
-    //                     });
-    //                 }
+                const confirmBtn = new ButtonBuilder()
+                    .setCustomId('review_sell_all')
+                    .setLabel('✅ Proceed to Sell')
+                    .setStyle(ButtonStyle.Success);
 
-    //                 collector.stop();
-    //             } catch (error) {
-    //                 console.error('Error in sell all interaction:', error);
-    //                 await interaction.update({
-    //                     embeds: [client.embed().setColor(color.danger).setDescription(sellMessages.sellError)],
-    //                     components: [],
-    //                 });
-    //                 collector.stop();
-    //             }
-    //         });
+                const cancelBtn = new ButtonBuilder().setCustomId('cancel_sell_all').setLabel('❌ Cancel').setStyle(ButtonStyle.Danger);
 
-    //         collector.on('end', async (collected, reason) => {
-    //             if (reason === 'time') {
-    //                 try {
-    //                     // Disable all buttons
-    //                     const disabledRow = new ActionRowBuilder().addComponents(
-    //                         ButtonBuilder.from(confirmButton).setDisabled(true),
-    //                         ButtonBuilder.from(cancelButton).setDisabled(true)
-    //                     );
+                return [
+                    pages.length > 1 ? new ActionRowBuilder().addComponents(prevBtn, nextBtn) : null,
+                    new ActionRowBuilder().addComponents(confirmBtn, cancelBtn),
+                ].filter(Boolean);
+            };
 
-    //                     await message.edit({ components: [disabledRow] });
-    //                 } catch (error) {
-    //                     console.error('Error disabling buttons:', error);
-    //                 }
-    //             }
-    //         });
+            // Send initial message
+            const message = await ctx.sendMessage({
+                embeds: [createPageEmbed(0)],
+                components: createActionRow(0),
+            });
 
-    //         return message;
-    //     } catch (error) {
-    //         console.error('Error in sellAllItems:', error);
-    //         return await client.utils.sendErrorMessage(client, ctx, sellMessages.sellError, color);
-    //     }
-    // }
+            // Create collector
+            const collector = message.createMessageComponentCollector({
+                filter: (i) => i.user.id === ctx.author.id,
+                time: 120000, // 2 minute timeout for sell all
+            });
+
+            let currentPage = 0;
+            let isConfirming = false;
+
+            collector.on('collect', async (interaction) => {
+                try {
+                    if (interaction.customId === 'prev_page') {
+                        currentPage = Math.max(currentPage - 1, 0);
+                        await interaction.update({
+                            embeds: [createPageEmbed(currentPage)],
+                            components: createActionRow(currentPage, isConfirming),
+                        });
+                    } else if (interaction.customId === 'next_page') {
+                        currentPage = Math.min(currentPage + 1, pages.length - 1);
+                        await interaction.update({
+                            embeds: [createPageEmbed(currentPage)],
+                            components: createActionRow(currentPage, isConfirming),
+                        });
+                    } else if (interaction.customId === 'review_sell_all') {
+                        isConfirming = true;
+                        const confirmEmbed = client
+                            .embed()
+                            .setColor(color.success)
+                            .setTitle('🎉 Confirm Sell All?')
+                            .setDescription(
+                                `**━━━━━━━━━━━━━━━━━━━━**\n` +
+                                    `You are about to sell **${itemsToSell.length}** items!\n` +
+                                    `You will receive: ${emoji.coin} **${client.utils.formatNumber(totalValue)}**\n` +
+                                    `**━━━━━━━━━━━━━━━━━━━━**\n\n` +
+                                    `**Your current balance:** ${emoji.coin} ${client.utils.formatNumber(user.balance.coin)}\n` +
+                                    `**Balance after:** ${emoji.coin} ${client.utils.formatNumber(user.balance.coin + totalValue)}`
+                            );
+
+                        await interaction.update({
+                            embeds: [confirmEmbed],
+                            components: createActionRow(0, true),
+                        });
+                    } else if (interaction.customId === 'confirm_sell_all') {
+                        // Update user's balance
+                        await Users.updateOne({ userId: ctx.author.id }, { $inc: { 'balance.coin': totalValue } });
+
+                        // Remove all sold items from inventory
+                        for (const item of itemsToSell) {
+                            await Users.updateOne(
+                                { userId: ctx.author.id },
+                                {
+                                    $pull: {
+                                        inventory: { id: item.id },
+                                        equip: { id: item.id },
+                                    },
+                                }
+                            );
+                        }
+
+                        // Send success message
+                        await interaction.update({
+                            embeds: [
+                                client
+                                    .embed()
+                                    .setColor(color.success)
+                                    .setTitle('✅ Successfully Sold All Items!')
+                                    .setDescription(
+                                        `**━━━━━━━━━━━━━━━━━━━━**\n` +
+                                            `Items Sold: **${itemsToSell.length}**\n` +
+                                            `Total Earnings: ${emoji.coin} **${client.utils.formatNumber(totalValue)}**\n` +
+                                            `**━━━━━━━━━━━━━━━━━━━━**`
+                                    )
+                                    .setFooter({
+                                        text: (generalMessages?.requestedBy || 'Requested by %{username}').replace(
+                                            '%{username}',
+                                            ctx.author.displayName
+                                        ),
+                                        iconURL: ctx.author.displayAvatarURL(),
+                                    }),
+                            ],
+                            components: [],
+                        });
+                        collector.stop();
+                    } else if (interaction.customId === 'cancel_sell_all') {
+                        await interaction.update({
+                            embeds: [client.embed().setColor(color.danger).setDescription('❌ Sell cancelled.')],
+                            components: [],
+                        });
+                        collector.stop();
+                    }
+                } catch (error) {
+                    console.error('Error in sell all interaction:', error);
+                    try {
+                        await interaction.update({
+                            embeds: [client.embed().setColor(color.danger).setDescription(sellMessages.sellError)],
+                            components: [],
+                        });
+                    } catch (replyError) {
+                        console.error('Error replying to interaction:', replyError);
+                    }
+                    collector.stop();
+                }
+            });
+
+            collector.on('end', async (collected, reason) => {
+                if (reason === 'time') {
+                    try {
+                        // Disable all buttons
+                        const disabledComponents = message.components.map((row) => {
+                            const newRow = new ActionRowBuilder();
+                            row.components.forEach((component) => {
+                                newRow.addComponents(ButtonBuilder.from(component).setDisabled(true));
+                            });
+                            return newRow;
+                        });
+
+                        await message.edit({ components: disabledComponents });
+                    } catch (error) {
+                        console.error('Error disabling buttons:', error);
+                    }
+                }
+            });
+
+            return message;
+        } catch (error) {
+            console.error('Error in sellAllItems:', error);
+            return await client.utils.sendErrorMessage(client, ctx, sellMessages.sellError, color);
+        }
+    }
 
     async sellSpecificCategory(client, ctx, user, category, color, emoji, generalMessages, sellMessages) {
         try {
             // Map category to item types (for resources, include woods, minerals, fish, slime, tools)
-            const categoryTypes =
-                category === 'resources'
-                    ? ['woods', 'minerals', 'fish', 'slime', 'tools']
-                    : category === 'crafted'
-                      ? ['weapon', 'armor', 'tool', 'jewelry', 'food']
-                      : [category];
-
+            const categoryTypes = category === 'resources' ? ['wood', 'mineral', 'fish', 'slime', 'bug', 'tools'] : [category];
             // Get sellable items from the specified category
             const sellableItems = user.inventory.filter((item) => {
                 const itemInfo = AllItems.find((i) => i.id === item.id);
@@ -556,26 +663,31 @@ module.exports = class Sell extends Command {
                 }
             }
 
+            // Sort by value (highest first)
+            itemsToSell.sort((a, b) => b.value - a.value);
+
             // Create confirmation embed
             const embed = client
                 .embed()
                 .setColor(color.warning)
-                .setTitle(sellMessages.sellConfirmation || 'Sell Confirmation')
+                .setTitle(`📦 Sell ${client.utils.formatCapitalize(category)}`)
                 .setDescription(
-                    sellMessages.sellCategory
-                        .replace('{category}', client.utils.formatCapitalize(category))
-                        .replace('{coinEmoji}', emoji.coin)
-                        .replace('{price}', client.utils.formatNumber(totalValue))
+                    `**━━━━━━━━━━━━━━━━━━━━**\n` +
+                        `Items to Sell: **${itemsToSell.length}**\n` +
+                        `Total Value: ${emoji.coin} **${client.utils.formatNumber(totalValue)}**\n` +
+                        `**━━━━━━━━━━━━━━━━━━━━**\n\n` +
+                        itemsToSell
+                            .map(
+                                (item) =>
+                                    `${item.emoji} **${item.quantity}x** ${item.name}\n ↳ ${emoji.coin} ${client.utils.formatNumber(item.value)}`
+                            )
+                            .join('\n\n')
+                            .substring(0, 1024)
                 )
                 .addFields({
-                    name: sellMessages.sellableItems,
-                    value: itemsToSell
-                        .map(
-                            (item) =>
-                                `${item.emoji} ${item.quantity}x ${item.name} - ${emoji.coin} ${client.utils.formatNumber(item.value)}`
-                        )
-                        .join('\n')
-                        .substring(0, 1024),
+                    name: '💰 Your Balance',
+                    value: `**Before:** ${emoji.coin} ${client.utils.formatNumber(user.balance.coin)}\n**After:** ${emoji.coin} ${client.utils.formatNumber(user.balance.coin + totalValue)}`,
+                    inline: false,
                 })
                 .setFooter({
                     text: (generalMessages?.requestedBy || 'Requested by %{username}').replace('%{username}', ctx.author.displayName),
@@ -585,15 +697,10 @@ module.exports = class Sell extends Command {
             // Create confirmation buttons
             const confirmButton = new ButtonBuilder()
                 .setCustomId('confirm_sell_category')
-                .setLabel(sellMessages.confirm)
-                .setStyle(ButtonStyle.Success)
-                .setEmoji('✅');
+                .setLabel('✅ Confirm')
+                .setStyle(ButtonStyle.Success);
 
-            const cancelButton = new ButtonBuilder()
-                .setCustomId('cancel_sell_category')
-                .setLabel(sellMessages.cancel)
-                .setStyle(ButtonStyle.Danger)
-                .setEmoji('❌');
+            const cancelButton = new ButtonBuilder().setCustomId('cancel_sell_category').setLabel('❌ Cancel').setStyle(ButtonStyle.Danger);
 
             const actionRow = new ActionRowBuilder().addComponents(confirmButton, cancelButton);
 
@@ -613,8 +720,6 @@ module.exports = class Sell extends Command {
                 try {
                     if (interaction.customId === 'confirm_sell_category') {
                         // Process the sale of all items in the category
-                        let totalSold = 0;
-
                         // Update user's balance
                         await Users.updateOne({ userId: ctx.author.id }, { $inc: { 'balance.coin': totalValue } });
 
@@ -629,11 +734,7 @@ module.exports = class Sell extends Command {
                                     },
                                 }
                             );
-                            totalSold += item.quantity;
                         }
-
-                        // Get updated user data
-                        const updatedUser = await Users.findOne({ userId: ctx.author.id });
 
                         // Send success message
                         await interaction.update({
@@ -641,12 +742,13 @@ module.exports = class Sell extends Command {
                                 client
                                     .embed()
                                     .setColor(color.success)
+                                    .setTitle('✅ Successfully Sold Category!')
                                     .setDescription(
-                                        sellMessages.sellCategorySuccess
-                                            .replace('{category}', client.utils.formatCapitalize(category))
-                                            .replace('{count}', itemsToSell.length)
-                                            .replace('{coinEmoji}', emoji.coin)
-                                            .replace('{price}', client.utils.formatNumber(totalValue))
+                                        `**━━━━━━━━━━━━━━━━━━━━**\n` +
+                                            `Category: **${client.utils.formatCapitalize(category)}**\n` +
+                                            `Items Sold: **${itemsToSell.length}**\n` +
+                                            `Total Earnings: ${emoji.coin} **${client.utils.formatNumber(totalValue)}**\n` +
+                                            `**━━━━━━━━━━━━━━━━━━━━**`
                                     )
                                     .setFooter({
                                         text: (generalMessages?.requestedBy || 'Requested by %{username}').replace(
@@ -660,7 +762,7 @@ module.exports = class Sell extends Command {
                         });
                     } else if (interaction.customId === 'cancel_sell_category') {
                         await interaction.update({
-                            embeds: [client.embed().setColor(color.danger).setDescription(sellMessages.sellCancelled)],
+                            embeds: [client.embed().setColor(color.danger).setDescription('❌ Sell cancelled.')],
                             components: [],
                         });
                     }
@@ -668,10 +770,14 @@ module.exports = class Sell extends Command {
                     collector.stop();
                 } catch (error) {
                     console.error('Error in sell category interaction:', error);
-                    await interaction.update({
-                        embeds: [client.embed().setColor(color.danger).setDescription(sellMessages.sellError)],
-                        components: [],
-                    });
+                    try {
+                        await interaction.update({
+                            embeds: [client.embed().setColor(color.danger).setDescription(sellMessages.sellError)],
+                            components: [],
+                        });
+                    } catch (replyError) {
+                        console.error('Error replying to interaction:', replyError);
+                    }
                     collector.stop();
                 }
             });
