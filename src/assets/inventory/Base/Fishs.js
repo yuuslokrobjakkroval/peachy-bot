@@ -149,8 +149,8 @@ module.exports = [
         name: 'Stringfish',
         description: 'A prized fish that swims upstream to spawn.',
         type: 'fish',
-        rarity: 'rare',
-        emoji: emote.rare.stringfish,
+        rarity: 'legendary',
+        emoji: emote.legendary.stringfish,
         price: { sell: 15000 },
     },
     {
