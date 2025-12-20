@@ -89,10 +89,10 @@ module.exports = class Utils {
             const allItems = [
                 ...require('../assets/inventory/ImportantItems'),
                 ...require('../assets/inventory/ShopItems').flatMap((shop) => shop.inventory),
-                ...require('../assets/inventory/SlimeCatalog'),
-                ...require('../assets/inventory/Woods'),
-                ...require('../assets/inventory/Minerals'),
-                ...require('../assets/inventory/Fish'),
+                ...require('../assets/inventory/Base/Slime'),
+                ...require('../assets/inventory/Base/Woods'),
+                ...require('../assets/inventory/Base/Minerals'),
+                ...require('../assets/inventory/Base/Fishs'),
             ];
             Utils.cache.items = allItems;
         }

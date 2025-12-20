@@ -1,20 +1,20 @@
 const emote = {
-    fishingpole: '<:FISHINGPOLE:1355805017977917562>',
+    net: '<:NET:1355805034893541376>',
 };
 
 module.exports = [
     {
-        id: 'pole',
-        name: 'Fishing Pole',
-        description: 'A basic fishing rod for catching fish.',
+        id: 'net',
+        name: 'Net',
+        description: 'A tool for catching slime.',
         type: 'tool',
         able: {
             use: true,
             gift: false,
             multiple: false,
         },
-        quantity: 15,
-        emoji: emote.fishingpole,
+        quantity: 12,
+        emoji: emote.net,
         available: ['use'],
         price: { buy: 10000, sell: 0 },
     },

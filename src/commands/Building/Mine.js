@@ -1,6 +1,6 @@
 const { Command } = require('../../structures/index.js');
-const MineTools = require('../../assets/inventory/MineTools.js');
-const Minerals = require('../../assets/inventory/Minerals.js');
+const MineTools = require('../../assets/inventory/Tools/Mine.js');
+const Minerals = require('../../assets/inventory/Base/Minerals.js');
 
 module.exports = class Mine extends Command {
     constructor(client) {

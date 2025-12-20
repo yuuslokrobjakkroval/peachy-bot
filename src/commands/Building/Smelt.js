@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const Minerals = require('../../assets/inventory/Minerals.js');
+const Minerals = require('../../assets/inventory/Base/Minerals.js');
 
 module.exports = class Smelt extends Command {
     constructor(client) {

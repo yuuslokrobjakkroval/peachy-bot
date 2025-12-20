@@ -2,7 +2,10 @@ const emote = {
     axe: '<:AXE:1355804959131832441>',
     sxe: '<:STONEAXE:1355805092607037450>',
     net: '<:NET:1355805034893541376>',
-    fishingpole: '<:FISHINGPOLE:1355805017977917562>',
+    fishingPole: '<:fishingPole:1355805017977917562>',
+    fishingRod: '<:fishingRod:1451841965682589759>',
+    goldenNet: '<:goldennet:1451883732196786226>',
+    starNetPink: '<:starnetpink:1451883762718871572>',
 };
 
 module.exports = {
@@ -10,6 +13,7 @@ module.exports = {
     description: `Tools an item for earn coins!\n**・** \`pbuy {id}\` to buy an item`,
     type: 'tool',
     inventory: [
+        // Chop Tools
         {
             id: 'axe',
             name: 'Axe',
@@ -25,6 +29,7 @@ module.exports = {
             available: ['use'],
             price: { buy: 10000, sell: 0 },
         },
+        // Mining Tools
         {
             id: 'sxe',
             name: 'Stone Axe',
@@ -40,7 +45,38 @@ module.exports = {
             available: ['use'],
             price: { buy: 10000, sell: 0 },
         },
-
+        // Fishing Tools
+        {
+            id: 'pole',
+            name: 'Fishing Pole',
+            description: 'A basic tool for catching fish.',
+            type: 'tool',
+            able: {
+                use: true,
+                gift: false,
+                multiple: false,
+            },
+            quantity: 12,
+            emoji: emote.fishingPole,
+            available: ['use'],
+            price: { buy: 10000, sell: 0 },
+        },
+        {
+            id: 'rod',
+            name: 'Fishing Rod',
+            description: 'A basic tool for catching fish.',
+            type: 'tool',
+            able: {
+                use: true,
+                gift: false,
+                multiple: false,
+            },
+            quantity: 12,
+            emoji: emote.fishingRod,
+            available: ['use'],
+            price: { buy: 10000, sell: 0 },
+        },
+        // Slime Tools
         {
             id: 'net',
             name: 'Net',
@@ -56,19 +92,34 @@ module.exports = {
             available: ['use'],
             price: { buy: 10000, sell: 0 },
         },
-
+        // Bug Tools
         {
-            id: 'pole',
-            name: 'Fishing Pole',
-            description: 'A basic fishing rod for catching fish.',
+            id: 'goldennet',
+            name: 'Golden Net',
+            description: 'A basic tool for catching bug.',
             type: 'tool',
             able: {
                 use: true,
                 gift: false,
                 multiple: false,
             },
-            quantity: 15,
-            emoji: emote.fishingpole,
+            quantity: 12,
+            emoji: emote.goldenNet,
+            available: ['use'],
+            price: { buy: 10000, sell: 0 },
+        },
+        {
+            id: 'starnetpink',
+            name: 'Star Net Pink',
+            description: 'A basic tool for catching bugs.',
+            type: 'tool',
+            able: {
+                use: true,
+                gift: false,
+                multiple: false,
+            },
+            quantity: 12,
+            emoji: emote.starNetPink,
             available: ['use'],
             price: { buy: 10000, sell: 0 },
         },

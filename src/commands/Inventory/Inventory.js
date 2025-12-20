@@ -2,11 +2,17 @@ const { Command } = require('../../structures/index.js');
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
-const Woods = require('../../assets/inventory/Woods');
-const Minerals = require('../../assets/inventory/Minerals');
-const Fish = require('../../assets/inventory/Fish');
-const SlimeCategory = require('../../assets/inventory/SlimeCatalog');
-const Tools = require('../../assets/inventory/Tools');
+const Woods = require('../../assets/inventory/Base/Woods.js');
+const Minerals = require('../../assets/inventory/Base/Minerals.js');
+const Fishs = require('../../assets/inventory/Base/Fishs.js');
+const Slimes = require('../../assets/inventory/Base/Slime.js');
+const Bugs = require('../../assets/inventory/Base/Bugs.js');
+const ChopTools = require('../../assets/inventory/Tools/Chop.js');
+const MineTools = require('../../assets/inventory/Tools/Mine.js');
+const FishTools = require('../../assets/inventory/Tools/Fishing.js');
+const SlimeTools = require('../../assets/inventory/Tools/Slime.js');
+const BugTools = require('../../assets/inventory/Tools/Bug.js');
+const Tools = [...ChopTools, ...MineTools, ...FishTools, ...SlimeTools, ...BugTools];
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = Inventory.filter((value) => value.price.buy !== 0).sort((a, b) => a.price.buy - b.price.buy);
 
@@ -82,14 +88,14 @@ module.exports = class Inventory extends Command {
             // Process inventory items
             user.inventory.forEach((item) => {
                 if (item.quantity > 0) {
-                    const itemInfo = Items.concat(ImportantItems, Woods, Minerals, Fish, SlimeCategory, Tools).find(
+                    const itemInfo = Items.concat(ImportantItems, Woods, Minerals, Fishs, Slimes, Bugs, Tools).find(
                         ({ id }) => id.toLowerCase() === item.id.toLowerCase()
                     );
 
                     if (itemInfo) {
                         // Map specific types to "resources"
                         let type = itemInfo.type;
-                        if (['tool', 'wood', 'mineral', 'fish', 'slimes'].includes(type)) {
+                        if (['tool', 'wood', 'mineral', 'fish', 'slime', 'bug'].includes(type)) {
                             type = 'resources';
                         }
 

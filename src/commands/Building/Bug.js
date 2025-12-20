@@ -1,18 +1,18 @@
 const { Command } = require('../../structures/index.js');
-const FishingTools = require('../../assets/inventory/Tools/Fishing.js');
-const Fishs = require('../../assets/inventory/Base/Fishs.js');
+const BugTools = require('../../assets/inventory/Tools/Bug.js');
+const Bugs = require('../../assets/inventory/Base/Bugs.js');
 
-module.exports = class Fish extends Command {
+module.exports = class Bug extends Command {
     constructor(client) {
         super(client, {
-            name: 'fish',
+            name: 'bug',
             description: {
-                content: 'Go fishing with logic puzzles and mini-games!',
-                examples: ['fish'],
-                usage: 'fish',
+                content: 'Catch insects using nets and mini-games!',
+                examples: ['bug'],
+                usage: 'bug',
             },
             category: 'inventory',
-            aliases: ['f'],
+            aliases: ['b'],
             cooldown: 3,
             args: false,
             permissions: {
@@ -26,6 +26,6 @@ module.exports = class Fish extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
-        return await client.resourceManager.gatherResource(ctx, 'Fish', FishingTools, Fishs, emoji, color, language);
+        return await client.resourceManager.gatherResource(ctx, 'Bug', BugTools, Bugs, emoji, color, language);
     }
 };

@@ -3,14 +3,20 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const Users = require('../../schemas/user');
 const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems.js');
-const Woods = require('../../assets/inventory/Woods');
-const Minerals = require('../../assets/inventory/Minerals');
-const Fish = require('../../assets/inventory/Fish');
-const SlimeCategory = require('../../assets/inventory/SlimeCatalog');
-const Tools = require('../../assets/inventory/SlimeTools');
+const Woods = require('../../assets/inventory/Base/Woods.js');
+const Minerals = require('../../assets/inventory/Base/Minerals.js');
+const Fishs = require('../../assets/inventory/Base/Fishs.js');
+const Slimes = require('../../assets/inventory/Base/Slime.js');
+const Bugs = require('../../assets/inventory/Base/Bugs.js');
+const ChopTools = require('../../assets/inventory/Tools/Chop.js');
+const MineTools = require('../../assets/inventory/Tools/Mine.js');
+const FishTools = require('../../assets/inventory/Tools/Fishing.js');
+const SlimeTools = require('../../assets/inventory/Tools/Slime.js');
+const BugTools = require('../../assets/inventory/Tools/Bug.js');
+const Tools = [...ChopTools, ...MineTools, ...FishTools, ...SlimeTools, ...BugTools];
 const MoreItems = ShopItems.flatMap((shop) => shop.inventory);
 
-const AllItems = [...ImportantItems, ...MoreItems, ...Woods, ...Minerals, ...Fish, ...SlimeCategory, ...Tools].filter(
+const AllItems = [...ImportantItems, ...MoreItems, ...Woods, ...Minerals, ...Fishs, ...Slimes, ...Bugs, ...Tools].filter(
     (item) => item.price.sell !== 0
 );
 
