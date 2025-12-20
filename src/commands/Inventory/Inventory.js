@@ -191,7 +191,7 @@ module.exports = class Inventory extends Command {
                 const categoryWorth = items.reduce((sum, item) => sum + item.worth, 0);
 
                 // Create a source map for sorting by original index
-                const allSources = Items.concat(ImportantItems, Woods, Minerals, Fish, SlimeCategory, Tools);
+                const allSources = Items.concat(ImportantItems, Woods, Minerals, Fishs, Slimes, Bugs, Tools);
 
                 const itemsList = items
                     .sort((a, b) => {
