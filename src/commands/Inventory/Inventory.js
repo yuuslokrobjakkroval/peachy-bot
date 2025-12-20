@@ -185,47 +185,78 @@ module.exports = class Inventory extends Command {
                     });
             };
 
-            // Create category embed
-            const generateCategoryEmbed = (category) => {
+            // Create category embed with pagination
+            const generateCategoryEmbed = (category, page = 1) => {
                 const items = itemList[category] || [];
                 const categoryWorth = items.reduce((sum, item) => sum + item.worth, 0);
 
                 // Create a source map for sorting by original index
                 const allSources = Items.concat(ImportantItems, Woods, Minerals, Fishs, Slimes, Bugs, Tools);
 
-                const itemsList = items
-                    .sort((a, b) => {
-                        const indexA = allSources.findIndex((item) => item.id.toLowerCase() === a.id.toLowerCase());
-                        const indexB = allSources.findIndex((item) => item.id.toLowerCase() === b.id.toLowerCase());
-                        return indexA - indexB;
-                    })
-                    .map((item) => {
-                        return `\`${item.id}\` ${item.emoji} **${item.name}** x**${item.quantity}**`;
-                    })
-                    .join('\n');
+                const sortedItems = items.sort((a, b) => {
+                    const indexA = allSources.findIndex((item) => item.id.toLowerCase() === a.id.toLowerCase());
+                    const indexB = allSources.findIndex((item) => item.id.toLowerCase() === b.id.toLowerCase());
+                    return indexA - indexB;
+                });
 
-                return client
-                    .embed()
-                    .setColor(color.main)
-                    .setDescription(
-                        `# ${categoryIcons[category]} **${client.utils.formatCapitalize(category).toUpperCase()}**\n\n` +
-                            `**Items:** **${items.length}**\n` +
-                            `**Worth:** **${client.utils.formatNumber(categoryWorth)}** ${emoji.coin}`
-                    )
-                    .addFields({
-                        name: 'Items',
-                        value: itemsList || 'No items',
-                        inline: false,
-                    })
-                    .setThumbnail(client.utils.emojiToImage(emoji.inventory || emoji.main))
-                    .setFooter({
-                        text: `Select another category • Requested by ${ctx.author.displayName}`,
-                        iconURL: ctx.author.displayAvatarURL(),
-                    });
+                // Paginate items - split into chunks that don't exceed 1024 characters
+                const pages = [];
+                let currentPage = [];
+                let currentLength = 0;
+
+                sortedItems.forEach((item) => {
+                    const itemLine = `\`${item.id}\` ${item.emoji} **${item.name}** x**${item.quantity}**\n`;
+                    const lineLength = itemLine.length;
+
+                    if (currentLength + lineLength > 1024) {
+                        if (currentPage.length > 0) {
+                            pages.push(currentPage);
+                            currentPage = [];
+                            currentLength = 0;
+                        }
+                    }
+
+                    currentPage.push(itemLine);
+                    currentLength += lineLength;
+                });
+
+                if (currentPage.length > 0) {
+                    pages.push(currentPage);
+                }
+
+                // Get current page (1-indexed)
+                const currentPageIndex = Math.max(1, Math.min(page, pages.length)) - 1;
+                const pageContent = pages[currentPageIndex]?.join('').trim() || 'No items';
+                const totalPages = pages.length || 1;
+
+                return {
+                    embed: client
+                        .embed()
+                        .setColor(color.main)
+                        .setDescription(
+                            `# ${categoryIcons[category]} **${client.utils.formatCapitalize(category).toUpperCase()}**\n\n` +
+                                `**Items:** **${items.length}**\n` +
+                                `**Worth:** **${client.utils.formatNumber(categoryWorth)}** ${emoji.coin}`
+                        )
+                        .addFields({
+                            name: 'Items',
+                            value: pageContent,
+                            inline: false,
+                        })
+                        .setThumbnail(client.utils.emojiToImage(emoji.inventory || emoji.main))
+                        .setFooter({
+                            text: `Page ${currentPageIndex + 1}/${totalPages} • Select another category • Requested by ${ctx.author.displayName}`,
+                            iconURL: ctx.author.displayAvatarURL(),
+                        }),
+                    totalPages: totalPages,
+                    currentPage: currentPageIndex + 1,
+                };
             };
 
             // Initial view is overview
             let currentView = 'overview';
+            let currentPage = 1;
+            let currentCategory = null;
 
             // Create dropdown menu
             const categorySelectMenu = new StringSelectMenuBuilder()
@@ -251,23 +282,95 @@ module.exports = class Inventory extends Command {
                 if (interaction.customId === 'category_select') {
                     const selectedCategory = interaction.values[0];
                     currentView = selectedCategory;
+                    currentCategory = selectedCategory;
+                    currentPage = 1;
+
+                    const categoryData = generateCategoryEmbed(selectedCategory, currentPage);
 
                     const backButton = new ButtonBuilder()
                         .setCustomId('back_to_overview')
                         .setLabel('← Back')
                         .setStyle(ButtonStyle.Secondary);
 
-                    const buttonRow = new ActionRowBuilder().addComponents(backButton);
+                    const prevButton = new ButtonBuilder()
+                        .setCustomId('prev_page')
+                        .setLabel('⬅️ Previous')
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(categoryData.currentPage === 1);
+
+                    const nextButton = new ButtonBuilder()
+                        .setCustomId('next_page')
+                        .setLabel('Next ➡️')
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(categoryData.currentPage >= categoryData.totalPages);
+
+                    const buttonRow = new ActionRowBuilder().addComponents(backButton, prevButton, nextButton);
 
                     await interaction.update({
-                        embeds: [generateCategoryEmbed(selectedCategory)],
+                        embeds: [categoryData.embed],
                         components: [selectRow, buttonRow],
                     });
                 } else if (interaction.customId === 'back_to_overview') {
                     currentView = 'overview';
+                    currentPage = 1;
+                    currentCategory = null;
                     await interaction.update({
                         embeds: [generateOverviewEmbed()],
                         components: [selectRow],
+                    });
+                } else if (interaction.customId === 'prev_page') {
+                    currentPage = Math.max(1, currentPage - 1);
+                    const categoryData = generateCategoryEmbed(currentCategory, currentPage);
+
+                    const backButton = new ButtonBuilder()
+                        .setCustomId('back_to_overview')
+                        .setLabel('← Back')
+                        .setStyle(ButtonStyle.Secondary);
+
+                    const prevButton = new ButtonBuilder()
+                        .setCustomId('prev_page')
+                        .setLabel('⬅️ Previous')
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(categoryData.currentPage === 1);
+
+                    const nextButton = new ButtonBuilder()
+                        .setCustomId('next_page')
+                        .setLabel('Next ➡️')
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(categoryData.currentPage >= categoryData.totalPages);
+
+                    const buttonRow = new ActionRowBuilder().addComponents(backButton, prevButton, nextButton);
+
+                    await interaction.update({
+                        embeds: [categoryData.embed],
+                        components: [selectRow, buttonRow],
+                    });
+                } else if (interaction.customId === 'next_page') {
+                    const categoryData = generateCategoryEmbed(currentCategory, currentPage + 1);
+                    currentPage = categoryData.currentPage;
+
+                    const backButton = new ButtonBuilder()
+                        .setCustomId('back_to_overview')
+                        .setLabel('← Back')
+                        .setStyle(ButtonStyle.Secondary);
+
+                    const prevButton = new ButtonBuilder()
+                        .setCustomId('prev_page')
+                        .setLabel('⬅️ Previous')
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(categoryData.currentPage === 1);
+
+                    const nextButton = new ButtonBuilder()
+                        .setCustomId('next_page')
+                        .setLabel('Next ➡️')
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(categoryData.currentPage >= categoryData.totalPages);
+
+                    const buttonRow = new ActionRowBuilder().addComponents(backButton, prevButton, nextButton);
+
+                    await interaction.update({
+                        embeds: [categoryData.embed],
+                        components: [selectRow, buttonRow],
                     });
                 }
             });
