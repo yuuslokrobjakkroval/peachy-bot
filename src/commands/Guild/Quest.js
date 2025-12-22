@@ -93,13 +93,18 @@ module.exports = class Quest extends Command {
     }
 
     async handleSetup(client, ctx, color, emoji, questMessages, generalMessages) {
-        const channel = ctx.options.getChannel('channel');
-        const role = ctx.options.getRole('mention_role');
-        const guildId = ctx.guild.id;
-
-        await ctx.deferReply({ ephemeral: true });
-
         try {
+            const channel = ctx.options.getChannel('channel');
+            const role = ctx.options.getRole('mention_role');
+            const guildId = ctx.guild.id;
+
+            if (!channel) {
+                await ctx.interaction.reply({ content: '❌ Channel not found!', ephemeral: true });
+                return;
+            }
+
+            await ctx.interaction.deferReply({ ephemeral: true });
+
             await QuestConfig.findOneAndUpdate(
                 { guildId },
                 {
@@ -122,19 +127,23 @@ module.exports = class Quest extends Command {
                 .setColor(color.success || 0x00ff00)
                 .setDescription(message);
 
-            return ctx.editReply({ embeds: [successEmbed] });
+            return ctx.interaction.editReply({ embeds: [successEmbed] });
         } catch (error) {
             client.logger.error('[Quest] Setup error:', error);
             const errorEmbed = client
                 .embed()
                 .setColor(color.danger || 0xff0000)
-                .setDescription('❌ An error occurred while setting up the quest notifier.');
-            return ctx.editReply({ embeds: [errorEmbed] });
+                .setDescription('❌ An error occurred while setting up the quest notifier.\n```' + error.message + '```');
+
+            try {
+                return ctx.interaction.editReply({ embeds: [errorEmbed] });
+            } catch (e) {
+                return ctx.interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+            }
         }
     }
 
     async handleSetupPrefix(client, ctx, args, color, emoji, questMessages, generalMessages) {
-        // Ensure we have a guild context
         if (!ctx.guild) {
             const errorEmbed = client.embed().setColor(color.danger).setDescription('❌ This command can only be used in a server.');
             return ctx.channel.send({ embeds: [errorEmbed] });
@@ -207,8 +216,8 @@ module.exports = class Quest extends Command {
         const guildId = ctx.guild.id;
 
         // Only defer if it's a slash command (Interaction), not a prefix command (Message)
-        if (ctx.deferReply) {
-            await ctx.deferReply({ ephemeral: true });
+        if (ctx.interaction) {
+            await ctx.interaction.deferReply({ ephemeral: true });
         }
 
         try {
@@ -219,7 +228,12 @@ module.exports = class Quest extends Command {
                     .embed()
                     .setColor(color.warning || 0xffa500)
                     .setDescription(notSetupMessage);
-                return ctx.editReply ? ctx.editReply({ embeds: [embed] }) : ctx.channel.send({ embeds: [embed] });
+
+                if (ctx.interaction) {
+                    return ctx.interaction.editReply({ embeds: [embed] });
+                } else {
+                    return ctx.channel.send({ embeds: [embed] });
+                }
             }
 
             await QuestConfig.deleteOne({ guildId });
@@ -232,14 +246,23 @@ module.exports = class Quest extends Command {
                 .setColor(color.danger || 0xff0000)
                 .setDescription(successMessage);
 
-            return ctx.editReply ? ctx.editReply({ embeds: [embed] }) : ctx.channel.send({ embeds: [embed] });
+            if (ctx.interaction) {
+                return ctx.interaction.editReply({ embeds: [embed] });
+            } else {
+                return ctx.channel.send({ embeds: [embed] });
+            }
         } catch (error) {
             client.logger.error('[Quest] Remove error:', error);
             const errorEmbed = client
                 .embed()
                 .setColor(color.danger || 0xff0000)
-                .setDescription('❌ An error occurred while removing the quest notifier.');
-            return ctx.editReply ? ctx.editReply({ embeds: [errorEmbed] }) : ctx.channel.send({ embeds: [errorEmbed] });
+                .setDescription('❌ An error occurred while removing the quest notifier.\n```' + error.message + '```');
+
+            if (ctx.interaction) {
+                return ctx.interaction.editReply({ embeds: [errorEmbed] });
+            } else {
+                return ctx.channel.send({ embeds: [errorEmbed] });
+            }
         }
     }
 };
