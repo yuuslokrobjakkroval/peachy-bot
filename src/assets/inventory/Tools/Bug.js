@@ -1,13 +1,12 @@
 const emote = {
-    goldennet: '<:goldennet:1451883732196786226>',
-    starnetpink: '<:starnetpink:1451883762718871572>',
+    net: '<:NET:1452699752323088394>',
 };
 
 module.exports = [
     {
-        id: 'goldennet',
-        name: 'Golden Net',
-        description: 'A basic tool for catching bug.',
+        id: 'net',
+        name: 'Net',
+        description: 'A tool for catching bugs.',
         type: 'tool',
         able: {
             use: true,
@@ -15,22 +14,7 @@ module.exports = [
             multiple: false,
         },
         quantity: 12,
-        emoji: emote.goldennet,
-        available: ['use'],
-        price: { buy: 10000, sell: 0 },
-    },
-    {
-        id: 'starnetpink',
-        name: 'Star Net Pink',
-        description: 'A basic tool for catching bugs.',
-        type: 'tool',
-        able: {
-            use: true,
-            gift: false,
-            multiple: false,
-        },
-        quantity: 12,
-        emoji: emote.starnetpink,
+        emoji: emote.net,
         available: ['use'],
         price: { buy: 10000, sell: 0 },
     },

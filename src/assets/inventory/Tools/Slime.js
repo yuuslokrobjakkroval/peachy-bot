@@ -1,12 +1,12 @@
 const emote = {
-    net: '<:NET:1355805034893541376>',
+    sword: '<:SWORD:1452699680449232916>',
 };
 
 module.exports = [
     {
-        id: 'net',
-        name: 'Net',
-        description: 'A tool for catching slime.',
+        id: 'sword',
+        name: 'Sword',
+        description: 'A tool for catching slimes.',
         type: 'tool',
         able: {
             use: true,
@@ -14,7 +14,7 @@ module.exports = [
             multiple: false,
         },
         quantity: 12,
-        emoji: emote.net,
+        emoji: emote.sword,
         available: ['use'],
         price: { buy: 10000, sell: 0 },
     },

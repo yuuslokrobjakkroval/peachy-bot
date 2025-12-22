@@ -1,11 +1,9 @@
 const emote = {
-    axe: '<:AXE:1355804959131832441>',
-    sxe: '<:STONEAXE:1355805092607037450>',
-    net: '<:NET:1355805034893541376>',
-    fishingPole: '<:fishingPole:1355805017977917562>',
-    fishingRod: '<:fishingRod:1451841965682589759>',
-    goldenNet: '<:goldennet:1451883732196786226>',
-    starNetPink: '<:starnetpink:1451883762718871572>',
+    axe: '<:AXE:1452699633305255986>',
+    sxe: '<:PICKAXE:1452699657019855111>',
+    net: '<:NET:1452699752323088394>',
+    fishingRod: '<:FISHINGROD:1452699761353298011>',
+    sword: '<:SWORD:1452699680449232916>',
 };
 
 module.exports = {
@@ -47,21 +45,6 @@ module.exports = {
         },
         // Fishing Tools
         {
-            id: 'pole',
-            name: 'Fishing Pole',
-            description: 'A basic tool for catching fish.',
-            type: 'tool',
-            able: {
-                use: true,
-                gift: false,
-                multiple: false,
-            },
-            quantity: 12,
-            emoji: emote.fishingPole,
-            available: ['use'],
-            price: { buy: 10000, sell: 0 },
-        },
-        {
             id: 'rod',
             name: 'Fishing Rod',
             description: 'A basic tool for catching fish.',
@@ -78,9 +61,25 @@ module.exports = {
         },
         // Slime Tools
         {
+            id: 'sword',
+            name: 'Sword',
+            description: 'A tool for catching slimes.',
+            type: 'tool',
+            able: {
+                use: true,
+                gift: false,
+                multiple: false,
+            },
+            quantity: 12,
+            emoji: emote.sword,
+            available: ['use'],
+            price: { buy: 10000, sell: 0 },
+        },
+        // Bug Tools
+        {
             id: 'net',
             name: 'Net',
-            description: 'A tool for catch slime.',
+            description: 'A tool for catching bugs.',
             type: 'tool',
             able: {
                 use: true,
@@ -89,37 +88,6 @@ module.exports = {
             },
             quantity: 12,
             emoji: emote.net,
-            available: ['use'],
-            price: { buy: 10000, sell: 0 },
-        },
-        // Bug Tools
-        {
-            id: 'goldennet',
-            name: 'Golden Net',
-            description: 'A basic tool for catching bug.',
-            type: 'tool',
-            able: {
-                use: true,
-                gift: false,
-                multiple: false,
-            },
-            quantity: 12,
-            emoji: emote.goldenNet,
-            available: ['use'],
-            price: { buy: 10000, sell: 0 },
-        },
-        {
-            id: 'starnetpink',
-            name: 'Star Net Pink',
-            description: 'A basic tool for catching bugs.',
-            type: 'tool',
-            able: {
-                use: true,
-                gift: false,
-                multiple: false,
-            },
-            quantity: 12,
-            emoji: emote.starNetPink,
             available: ['use'],
             price: { buy: 10000, sell: 0 },
         },

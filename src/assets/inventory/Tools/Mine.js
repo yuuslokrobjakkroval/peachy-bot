@@ -1,5 +1,5 @@
 const emote = {
-    pickaxe: '<:STONEAXE:1355805092607037450>',
+    pickaxe: '<:PICKAXE:1452699657019855111>',
 };
 
 module.exports = [

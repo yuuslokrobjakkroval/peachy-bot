@@ -1,5 +1,5 @@
 const emote = {
-    axe: '<:AXE:1355804959131832441>',
+    axe: '<:AXE:1452699633305255986>',
 };
 
 module.exports = [
