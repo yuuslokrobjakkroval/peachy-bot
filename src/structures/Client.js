@@ -18,6 +18,7 @@ const themeEmojis = {
 
 const Logger = require('./Logger');
 const ServerStatsManager = require('../managers/ServerStatsManager');
+const SlashCommandManager = require('../utils/SlashCommandManager');
 
 module.exports = class PeachyClient extends Client {
     constructor(options) {
@@ -37,6 +38,7 @@ module.exports = class PeachyClient extends Client {
         this.moment = moment;
         this.i18n = new I18n(globalConfig.language);
         this.serverStatsManager = new ServerStatsManager(this);
+        this.slashCommandManager = new SlashCommandManager(this);
     }
 
     embed() {
@@ -46,19 +48,56 @@ module.exports = class PeachyClient extends Client {
     async start(token) {
         await this.loadCommands();
         this.logger.info('Successfully loaded commands!');
+
+        // Auto-register slash commands with Discord
+        if (this.body && this.body.length > 0) {
+            try {
+                await this.slashCommandManager.syncCommands(this.body);
+            } catch (error) {
+                this.logger.error('Failed to sync slash commands:', error);
+                // Continue startup even if sync fails
+            }
+        }
+
         await this.loadEvents();
         this.logger.info('Successfully loaded events!');
-        await this.connectMongodb().catch((error) => {
-            console.error('Failed to connect to MongoDB:', error.message);
-        });
-        this.logger.info('Successfully connected to MongoDB.');
+
+        try {
+            await this.connectMongodb();
+            this.logger.info('✅ Successfully connected to MongoDB.');
+        } catch (error) {
+            this.logger.error('❌ Failed to connect to MongoDB:', error.message);
+            this.logger.error('❌ Bot cannot proceed without database connection. Exiting...');
+            process.exit(1);
+        }
+
         loadPlugins(this);
         await this.login(token);
     }
 
     async connectMongodb() {
-        if ([1, 2, 99].includes(connection.readyState)) return;
-        await connect(globalConfig.database);
+        if ([1, 2, 99].includes(connection.readyState)) {
+            this.logger.info('MongoDB connection already established (state: ' + connection.readyState + ')');
+            return;
+        }
+
+        this.logger.info('📡 Connecting to MongoDB...');
+
+        try {
+            await connect(globalConfig.database, {
+                serverSelectionTimeoutMS: 15000,
+                socketTimeoutMS: 45000,
+                family: 4,
+                retryWrites: true,
+                maxPoolSize: 10,
+                minPoolSize: 2,
+            });
+
+            this.logger.info('✅ MongoDB connection established');
+        } catch (error) {
+            this.logger.error('❌ MongoDB connection failed:', error.message);
+            throw error;
+        }
     }
 
     async loadCommands() {
@@ -103,20 +142,20 @@ module.exports = class PeachyClient extends Client {
 
         // Register slash commands when bot is ready
         this.once('clientReady', async () => {
-            const rest = new REST({ version: '10' }).setToken(this.config.token);
-            try {
-                this.logger.info('Clearing existing slash commands...');
-                await rest.put(Routes.applicationGuildCommands(this.config.clientId, this.config.guildId), { body: [] });
-                this.logger.info('All existing slash commands cleared!');
+            // const rest = new REST({ version: '10' }).setToken(this.config.token);
+            // try {
+            //     this.logger.info('Clearing existing slash commands...');
+            //     await rest.put(Routes.applicationGuildCommands(this.config.clientId, this.config.guildId), { body: [] });
+            //     this.logger.info('All existing slash commands cleared!');
 
-                this.logger.info(`Started refreshing ${this.body.length} application (/) commands.`);
-                const data = await rest.put(Routes.applicationGuildCommands(this.config.clientId, this.config.guildId), {
-                    body: this.body,
-                });
-                this.logger.info(`Successfully reloaded ${data.length} application (/) commands.`);
-            } catch (error) {
-                this.logger.error('Failed to register slash commands:', error);
-            }
+            //     this.logger.info(`Started refreshing ${this.body.length} application (/) commands.`);
+            //     const data = await rest.put(Routes.applicationGuildCommands(this.config.clientId, this.config.guildId), {
+            //         body: this.body,
+            //     });
+            //     this.logger.info(`Successfully reloaded ${data.length} application (/) commands.`);
+            // } catch (error) {
+            //     this.logger.error('Failed to register slash commands:', error);
+            // }
 
             // Start Server Stats Manager after bot is ready
             if (this.serverStatsManager) {

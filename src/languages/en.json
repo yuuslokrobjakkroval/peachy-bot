@@ -943,5 +943,16 @@
             "failure": "អ្នកមិនបានរកឃើញអ្វីទេនៅពេលនេះ!",
             "success": "អ្នកបានជីកយក %{quantity} %{resource}!"
         }
+    },
+    "questnotifier": {
+        "setup": {
+            "success": "✅ **Quest Notifier Enabled!**\nNew Discord Quests will be posted in <#{channel}>.\nRole to mention: {role}",
+            "no_role": "None"
+        },
+        "unset": {
+            "not_setup": "ℹ️ Quest Notifier system has not been set up yet.",
+            "success": "🗑️ **Quest Notifier Disabled.** You will no longer receive notifications."
+        },
+        "trigger": {}
     }
 }
