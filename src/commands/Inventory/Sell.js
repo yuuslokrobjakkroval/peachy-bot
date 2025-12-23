@@ -8,15 +8,17 @@ const Minerals = require('../../assets/inventory/Base/Minerals.js');
 const Fishs = require('../../assets/inventory/Base/Fishs.js');
 const Slimes = require('../../assets/inventory/Base/Slime.js');
 const Bugs = require('../../assets/inventory/Base/Bugs.js');
+const Crops = require('../../assets/inventory/Base/Crops.js');
 const ChopTools = require('../../assets/inventory/Tools/Chop.js');
 const MineTools = require('../../assets/inventory/Tools/Mine.js');
 const FishTools = require('../../assets/inventory/Tools/Fishing.js');
 const SlimeTools = require('../../assets/inventory/Tools/Slime.js');
 const BugTools = require('../../assets/inventory/Tools/Bug.js');
-const Tools = [...ChopTools, ...MineTools, ...FishTools, ...SlimeTools, ...BugTools];
+const FarmTools = require('../../assets/inventory/Tools/Farm.js');
+const Tools = [...ChopTools, ...MineTools, ...FishTools, ...SlimeTools, ...BugTools, ...FarmTools];
 const MoreItems = ShopItems.flatMap((shop) => shop.inventory);
 
-const AllItems = [...ImportantItems, ...MoreItems, ...Woods, ...Minerals, ...Fishs, ...Slimes, ...Bugs, ...Tools].filter(
+const AllItems = [...ImportantItems, ...MoreItems, ...Woods, ...Minerals, ...Fishs, ...Slimes, ...Bugs, ...Crops, ...Tools].filter(
     (item) => item.price.sell !== 0
 );
 

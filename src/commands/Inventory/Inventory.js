@@ -7,14 +7,17 @@ const Minerals = require('../../assets/inventory/Base/Minerals.js');
 const Fishs = require('../../assets/inventory/Base/Fishs.js');
 const Slimes = require('../../assets/inventory/Base/Slime.js');
 const Bugs = require('../../assets/inventory/Base/Bugs.js');
+const Crops = require('../../assets/inventory/Base/Crops.js');
 const ChopTools = require('../../assets/inventory/Tools/Chop.js');
 const MineTools = require('../../assets/inventory/Tools/Mine.js');
 const FishTools = require('../../assets/inventory/Tools/Fishing.js');
 const SlimeTools = require('../../assets/inventory/Tools/Slime.js');
 const BugTools = require('../../assets/inventory/Tools/Bug.js');
-const Tools = [...ChopTools, ...MineTools, ...FishTools, ...SlimeTools, ...BugTools];
+const FarmTools = require('../../assets/inventory/Tools/Farm.js');
+const Tools = [...ChopTools, ...MineTools, ...FishTools, ...SlimeTools, ...BugTools, ...FarmTools];
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Items = Inventory.filter((value) => value.price.buy !== 0).sort((a, b) => a.price.buy - b.price.buy);
+const allSources = Items.concat(ImportantItems, Woods, Minerals, Fishs, Slimes, Bugs, Crops, Tools);
 
 module.exports = class Inventory extends Command {
     constructor(client) {
@@ -62,6 +65,7 @@ module.exports = class Inventory extends Command {
                 { label: 'fish', emoji: '🎣' },
                 { label: 'slime', emoji: '🟢' },
                 { label: 'bug', emoji: '🐛' },
+                { label: 'crop', emoji: '🌾' },
                 { label: 'card', emoji: '💳' },
                 { label: 'milk', emoji: '🥤' },
                 { label: 'couple', emoji: '💑' },
@@ -80,9 +84,7 @@ module.exports = class Inventory extends Command {
             // Process inventory items
             user.inventory.forEach((item) => {
                 if (item.quantity > 0) {
-                    const itemInfo = Items.concat(ImportantItems, Woods, Minerals, Fishs, Slimes, Bugs, Tools).find(
-                        ({ id }) => id.toLowerCase() === item.id.toLowerCase()
-                    );
+                    const itemInfo = allSources.find(({ id }) => id.toLowerCase() === item.id.toLowerCase());
 
                     if (itemInfo) {
                         // Use item type directly for separate categories
@@ -180,7 +182,6 @@ module.exports = class Inventory extends Command {
                 const categoryWorth = items.reduce((sum, item) => sum + item.worth, 0);
 
                 // Create a source map for sorting by original index
-                const allSources = Items.concat(ImportantItems, Woods, Minerals, Fishs, Slimes, Bugs, Tools);
 
                 const sortedItems = items.sort((a, b) => {
                     const indexA = allSources.findIndex((item) => item.id.toLowerCase() === a.id.toLowerCase());
