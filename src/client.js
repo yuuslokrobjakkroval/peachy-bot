@@ -204,7 +204,7 @@ client.once('clientReady', async () => {
     );
 
     cron.schedule(
-        '*/1 * * * *', // Every 1 minute
+        '*/30 * * * *', // Every 30 minutes
         () => {
             client.utils
                 .checkDiscordQuest(client)
