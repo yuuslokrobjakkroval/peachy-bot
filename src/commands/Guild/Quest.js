@@ -62,9 +62,9 @@ module.exports = class Quest extends Command {
         const questMessages = language.locales.get(language.defaultLocale)?.questnotifier || {};
 
         // Check if this is a slash command or prefix command
-        if (ctx.isCommand?.()) {
+        if (ctx.isInteraction) {
             // Slash command
-            const subcommand = ctx.options.getSubcommand();
+            const subcommand = ctx.interaction.options.getSubcommand();
             if (subcommand === 'setup') {
                 return this.handleSetup(client, ctx, color, emoji, questMessages, generalMessages);
             } else if (subcommand === 'remove') {
@@ -94,13 +94,16 @@ module.exports = class Quest extends Command {
 
     async handleSetup(client, ctx, color, emoji, questMessages, generalMessages) {
         try {
-            const channel = ctx.options.getChannel('channel');
-            const role = ctx.options.getRole('mention_role');
+            const channel = ctx.interaction.options.getChannel('channel');
+            const role = ctx.interaction.options.getRole('mention_role');
             const guildId = ctx.guild.id;
 
             if (!channel) {
-                await ctx.interaction.reply({ content: '❌ Channel not found!', ephemeral: true });
-                return;
+                const errorEmbed = client
+                    .embed()
+                    .setColor(color.danger || 0xff0000)
+                    .setDescription('❌ Channel not found!');
+                return client.utils.sendErrorMessage(client, ctx, errorEmbed, color);
             }
 
             await ctx.interaction.deferReply({ ephemeral: true });
@@ -216,7 +219,7 @@ module.exports = class Quest extends Command {
         const guildId = ctx.guild.id;
 
         // Only defer if it's a slash command (Interaction), not a prefix command (Message)
-        if (ctx.interaction) {
+        if (ctx.isInteraction) {
             await ctx.interaction.deferReply({ ephemeral: true });
         }
 
@@ -229,7 +232,7 @@ module.exports = class Quest extends Command {
                     .setColor(color.warning || 0xffa500)
                     .setDescription(notSetupMessage);
 
-                if (ctx.interaction) {
+                if (ctx.isInteraction) {
                     return ctx.interaction.editReply({ embeds: [embed] });
                 } else {
                     return ctx.channel.send({ embeds: [embed] });
@@ -246,7 +249,7 @@ module.exports = class Quest extends Command {
                 .setColor(color.danger || 0xff0000)
                 .setDescription(successMessage);
 
-            if (ctx.interaction) {
+            if (ctx.isInteraction) {
                 return ctx.interaction.editReply({ embeds: [embed] });
             } else {
                 return ctx.channel.send({ embeds: [embed] });
@@ -258,7 +261,7 @@ module.exports = class Quest extends Command {
                 .setColor(color.danger || 0xff0000)
                 .setDescription('❌ An error occurred while removing the quest notifier.\n```' + error.message + '```');
 
-            if (ctx.interaction) {
+            if (ctx.isInteraction) {
                 return ctx.interaction.editReply({ embeds: [errorEmbed] });
             } else {
                 return ctx.channel.send({ embeds: [errorEmbed] });

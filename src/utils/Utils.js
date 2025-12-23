@@ -1,9 +1,28 @@
-const { ActionRowBuilder, ButtonBuilder, ComponentType, CommandInteraction, EmbedBuilder, PermissionsBitField } = require('discord.js');
+const {
+    ContainerBuilder,
+    TextDisplayBuilder,
+    MediaGalleryBuilder,
+    MediaGalleryItemBuilder,
+    ActionRowBuilder,
+    ComponentType,
+    CommandInteraction,
+    ButtonBuilder,
+    ButtonStyle,
+    SeparatorBuilder,
+    SeparatorSpacingSize,
+    MessageFlags,
+    SectionBuilder,
+    ThumbnailBuilder,
+    EmbedBuilder,
+    PermissionsBitField,
+} = require('discord.js');
 const ms = require('ms');
 const Users = require('../schemas/user');
 const GiveawaySchema = require('../schemas/giveaway');
 const GiveawayShopItemSchema = require('../schemas/giveawayShopItem');
 const GiveawayScheduleSchema = require('../schemas/giveawaySchedule');
+const QuestConfig = require('../schemas/questConfig');
+const QuestGuildLog = require('../schemas/questGuildLog');
 const importantItems = require('../assets/inventory/ImportantItems');
 const shopItems = require('../assets/inventory/ShopItems');
 const inventory = shopItems.flatMap((shop) => shop.inventory);
@@ -13,6 +32,13 @@ const gif = require('./Gif');
 const globalEmoji = require('./Emoji');
 const { getLevelingMessage } = require('./Abilities');
 const { default: axios } = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const DISCORD_QUEST_CONFIG = process.env.DISCORD_QUEST_API_URLS;
+const DISCORD_ASSET_URL = 'https://cdn.discordapp.com/';
+const ORB_URL =
+    'https://cdn.discordapp.com/assets/content/fb761d9c206f93cd8c4e7301798abe3f623039a4054f2e7accd019e1bb059fc8.webm?format=webp';
 
 module.exports = class Utils {
     // Standardized updateUserWithRetry function
@@ -2126,5 +2152,248 @@ module.exports = class Utils {
             : `Primary URL failed: ${primaryUrl}`;
 
         return { image: null, usedFallback: true, error: errorMsg };
+    }
+
+    static async fetchQuestsFromAny(urls, logger) {
+        const TIMEOUT_MS = 5000;
+
+        for (const url of urls) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => {
+                logger.warn(`⏰ [QuestNotifier] API timeout (5s) for ${url}. Aborting...`);
+                controller.abort();
+            }, TIMEOUT_MS);
+
+            try {
+                logger.info(`⏰ [QuestNotifier] Trying quest API: ${url}`);
+
+                const response = await fetch(url, {
+                    signal: controller.signal,
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    logger.warn(`⏰ [QuestNotifier] API fetch failed with status ${response.status} for ${url}`);
+                    continue;
+                }
+
+                const apiQuests = await response.json();
+                logger.info(`⏰ [QuestNotifier] Got quest data from: ${url}`);
+                return apiQuests;
+            } catch (e) {
+                clearTimeout(timeoutId);
+
+                if (e.name === 'AbortError') {
+                } else {
+                    logger.warn(`⏰ [QuestNotifier] Error fetching from ${url}: ${e.message}`);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    static async buildQuestNotification(container, quest, role) {
+        const { kythiaConfig, helpers, t } = container;
+        const { convertColor } = helpers.color;
+
+        const { config } = quest;
+        const accentColor = convertColor(kythiaConfig.bot.color, {
+            from: 'hex',
+            to: 'decimal',
+        });
+        const fakeInteraction = { client: container.client };
+
+        const title = `## \`🎁\` ${config.messages.quest_name}`;
+        const gameTitle = config.messages.game_title;
+        const gamePublisher = config.messages.game_publisher;
+
+        const bannerUrl = `${DISCORD_ASSET_URL}${config.assets.hero}`;
+
+        const reward = config.rewards_config.rewards[0];
+        const rewardName = reward.messages.name;
+        let rewardAssetUrl = null;
+
+        if (reward.orb_quantity && reward.orb_quantity > 0) {
+            rewardAssetUrl = ORB_URL;
+        } else if (reward.asset && !reward.asset.endsWith('.mp4')) {
+            rewardAssetUrl = `${DISCORD_ASSET_URL}${reward.asset}`;
+        }
+        const ctaLink = `https://discord.com/quests/${config.id}`;
+
+        const expiresTimestamp = Math.floor(new Date(config.expires_at).getTime() / 1000);
+
+        function formatDuration(seconds) {
+            if (seconds === 0) return '0 sec';
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            if (mins > 0 && secs > 0) {
+                return `${mins} min ${secs} sec`;
+            }
+            if (mins > 0) {
+                return `${mins} min`;
+            }
+            return `${secs} sec`;
+        }
+        const tasks = Object.values(config.task_config_v2.tasks);
+
+        const taskList = tasks
+            .map((task) => {
+                let platform = task.type.replace(/_/g, ' ').toLowerCase();
+                platform = platform.charAt(0).toUpperCase() + platform.slice(1);
+
+                const durationStr = formatDuration(task.target);
+
+                return `- ${platform} for ${durationStr}`;
+            })
+            .join(`\n`);
+
+        const containerBuilder = new ContainerBuilder().setAccentColor(accentColor);
+
+        containerBuilder.addTextDisplayComponents(new TextDisplayBuilder().setContent(title));
+
+        containerBuilder.addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true));
+
+        containerBuilder.addMediaGalleryComponents(new MediaGalleryBuilder().addItems([new MediaGalleryItemBuilder().setURL(bannerUrl)]));
+
+        containerBuilder.addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true));
+
+        containerBuilder.addSectionComponents(
+            new SectionBuilder()
+                .addTextDisplayComponents(
+                    new TextDisplayBuilder().setContent(
+                        `### Reward: \n${rewardName}\n` +
+                            `### Tasks: \n${taskList}\n` +
+                            `### Game: \n${gameTitle}\n` +
+                            `### Publisher: \n${gamePublisher}\n` +
+                            `### Expires: \n<t:${expiresTimestamp}:f> (<t:${expiresTimestamp}:R>)\n` +
+                            `${role ? `### Notify: \n${role}\n` : ''}`
+                    )
+                )
+                .setThumbnailAccessory(
+                    rewardAssetUrl
+                        ? new ThumbnailBuilder().setURL(rewardAssetUrl).setDescription(rewardName)
+                        : new ThumbnailBuilder()
+                              .setURL(`https://i.imgur.com/qFmcbT0_d.webp?maxwidth=760&fidelity=grand`)
+                              .setDescription(rewardName)
+                )
+        );
+
+        containerBuilder.addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true));
+
+        if (ctaLink) {
+            containerBuilder.addActionRowComponents(
+                new ActionRowBuilder().addComponents(
+                    new ButtonBuilder().setLabel('View Quest').setStyle(ButtonStyle.Link).setURL(ctaLink).setEmoji('🌸')
+                )
+            );
+        }
+
+        containerBuilder.addSeparatorComponents(new SeparatorBuilder().setSpacing(SeparatorSpacingSize.Small).setDivider(true));
+
+        containerBuilder.addTextDisplayComponents(
+            new TextDisplayBuilder().setContent(
+                await t(fakeInteraction, 'common.container.footer', {
+                    username: kythiaConfig.bot.name,
+                })
+            )
+        );
+
+        return {
+            components: [containerBuilder],
+            flags: MessageFlags.IsComponentsV2,
+        };
+    }
+
+    static async checkDiscordQuest(client) {
+        console.log('⏰ Check Discord Quest Start');
+        const logger = client.logger;
+        try {
+            const apiUrls = DISCORD_QUEST_CONFIG.split(',')
+                .map((v) => v.trim())
+                .filter((v) => v.length > 0);
+
+            if (apiUrls.length === 0) {
+                logger.error('⏰ [QuestNotifier] No API URLs configured!');
+                return;
+            }
+
+            const apiQuests = await this.fetchQuestsFromAny(apiUrls, logger);
+            if (!apiQuests) {
+                logger.error('⏰ [QuestNotifier] All API quest endpoints failed. No quests retrieved.');
+                return;
+            }
+
+            const now = new Date();
+            const TwodayAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000);
+
+            const validQuests = apiQuests.filter((quest) => {
+                const startsAt = new Date(quest.config.starts_at);
+                const expiresAt = new Date(quest.config.expires_at);
+
+                const isExpired = expiresAt < now;
+                const isTooOld = startsAt < TwodayAgo;
+
+                return !isExpired && !isTooOld;
+            });
+
+            if (validQuests.length === 0) {
+                logger.info('⏰ [QuestNotifier] No new quests found.');
+                return;
+            }
+
+            const allGuildConfigs = await QuestConfig.getAllCache();
+            if (allGuildConfigs.length === 0) {
+                logger.info('⏰ [QuestNotifier] No guilds have set up the notifier.');
+                return;
+            }
+
+            const validQuestIds = validQuests.map((q) => q.id);
+
+            for (const config of allGuildConfigs) {
+                try {
+                    const channel = await client.channels.fetch(config.channelId, { force: true }).catch(() => null);
+                    if (!channel) {
+                        logger.warn(`⏰ [QuestNotifier] Channel ${config.channelId} not found for guild ${config.guildId}. Skipping.`);
+                        continue;
+                    }
+
+                    const sentLogs = await QuestGuildLog.getAllCache({
+                        where: {
+                            guildId: config.guildId,
+                            questId: { [Op.in]: validQuestIds },
+                        },
+                        attributes: ['questId'],
+                    });
+
+                    const sentQuestIds = new Set(sentLogs.map((log) => log.questId));
+
+                    const questsToSend = validQuests.filter((quest) => !sentQuestIds.has(quest.id));
+
+                    if (questsToSend.length === 0) continue;
+
+                    logger.info(`⏰ [QuestNotifier] Sending ${questsToSend.length} new quest(s) to guild ${config.guildId}...`);
+
+                    for (const quest of questsToSend) {
+                        const container = {};
+                        const role = config.roleId ? `<@&${config.roleId}>` : null;
+                        const { components, flags } = await this.buildQuestNotification(container, quest, role);
+
+                        await channel.send({ components, flags });
+
+                        await QuestGuildLog.create({
+                            guildId: config.guildId,
+                            questId: quest.id,
+                        });
+                    } // Fetch guild
+                } catch (guildError) {
+                    logger.error(`⏰ [QuestNotifier] Failed to process guild ${config.guildId}: ${guildError.message}`);
+                }
+            }
+            logger.info('⏰ [QuestNotifier] Cron job finished.');
+        } catch (err) {
+            logger.error(`⏰ [QuestNotifier] CRON JOB FAILED: ${err.message}`);
+        }
     }
 };

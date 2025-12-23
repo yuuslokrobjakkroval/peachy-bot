@@ -21,7 +21,7 @@ module.exports = {
     },
 
     decoration: {
-        main: '<a:Star:1406648660779077754>',
+        main: '<a:STAR:1453068872457654362>',
     },
 
     rarity: {

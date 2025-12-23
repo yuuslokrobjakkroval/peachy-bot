@@ -1,5 +1,5 @@
-const PeachyClient = require("../../structures/Client");
-const globalConfig = require("../../utils/Config");
+const PeachyClient = require("../structures/Client");
+const globalConfig = require("../utils/Config");
 const KeepAlive = {
 	name: "keep-alive",
 	version: "1.0.0",

@@ -93,9 +93,7 @@ client.setMaxListeners(30);
 
 client.once('clientReady', async () => {
     client.utils.cacheItems();
-    client.logger.info('Item cache initialized!');
 
-    // Start giveaway check interval (only after MongoDB is connected)
     setInterval(() => {
         const now = Date.now();
         GiveawaySchema.find({ endTime: { $lte: now }, ended: false })
@@ -135,7 +133,6 @@ client.once('clientReady', async () => {
                 console.error('Error finding giveaways:', err);
             });
     }, 10000);
-    client.logger.info('Giveaway check interval started');
 
     setInterval(() => {
         const now = Date.now();
@@ -178,8 +175,6 @@ client.once('clientReady', async () => {
             });
     }, 10000);
 
-    client.logger.info('Giveaway shop item check interval started');
-
     cron.schedule(
         '01 18 * * *',
         () => {
@@ -193,7 +188,6 @@ client.once('clientReady', async () => {
             timezone: 'Asia/Bangkok',
         }
     );
-    client.logger.info('Giveaway check scheduled at 6PM Asia/Bangkok');
 
     cron.schedule(
         '01 19 * * *',
@@ -208,20 +202,31 @@ client.once('clientReady', async () => {
             timezone: 'Asia/Bangkok',
         }
     );
-    client.logger.info('Booster/Sponsor check scheduled at 7PM Asia/Bangkok');
+
+    cron.schedule(
+        '*/1 * * * *', // Every 1 minute
+        () => {
+            client.utils
+                .checkDiscordQuest(client)
+                .then(() => console.log('Discord Quest check completed.'))
+                .catch((err) => console.error('Error in Discord Quest function:', err));
+        },
+        {
+            scheduled: true,
+            timezone: 'Asia/Bangkok',
+        }
+    );
 
     return await client.abilities.syncInvites(client);
 });
 
 client.on('guildMemberAdd', async (member) => {
     try {
-        // Ensure server stats are updated when a member joins
         try {
             client.serverStatsManager?.scheduleUpdate(member.guild.id, 2000);
         } catch (err) {
             console.warn('Failed to schedule server stats update on member add:', err?.message || err);
         }
-
         await client.abilities.getWelcomeMessage(client, member);
     } catch (error) {
         console.error('Error in getWelcomeMessage:', error);
@@ -230,15 +235,12 @@ client.on('guildMemberAdd', async (member) => {
 
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
     if (oldMember.premiumSince === null && newMember.premiumSince !== null) {
-        // Member has just boosted the server
         try {
-            // Schedule server stats update to reflect new boost count
             try {
                 client.serverStatsManager?.scheduleUpdate(newMember.guild.id, 2000);
             } catch (err) {
                 console.warn('Failed to schedule server stats update on member boost:', err?.message || err);
             }
-
             await client.abilities.getBoosterMessage(client, newMember);
         } catch (error) {
             console.error('Error in getBoosterMessage:', error);
