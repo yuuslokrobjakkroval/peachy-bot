@@ -544,4 +544,7 @@ module.exports = {
         notforSale: '<:wumpussale:1451894149102960720>',
         outOfStock: '<:emptybox:1451894102315634799>',
     },
+    smelt: {
+        fire: '<a:pinkflameflicker:1453545853502619871>',
+    },
 };

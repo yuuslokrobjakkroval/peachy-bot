@@ -1,6 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const MineTools = require('../../assets/inventory/Tools/Mine.js');
-const Minerals = require('../../assets/inventory/Base/Minerals.js');
+const AllMinerals = require('../../assets/inventory/Base/Minerals.js');
 
 module.exports = class Mine extends Command {
     constructor(client) {
@@ -26,6 +26,10 @@ module.exports = class Mine extends Command {
     }
 
     async run(client, ctx, args, color, emoji, language) {
+        // Filter to only include ores, minerals, and coal (no artifacts or bars)
+        const Minerals = AllMinerals.filter(
+            (item) => item.type === 'mineral' && !item.id.includes('bar') && !item.type.includes('artifact')
+        );
         return await client.resourceManager.gatherResource(ctx, 'Mine', MineTools, Minerals, emoji, color, language);
     }
 };

@@ -1,5 +1,6 @@
 const { Command } = require('../../structures/index.js');
 const Minerals = require('../../assets/inventory/Base/Minerals.js');
+const globalEmoji = require('../../utils/Emoji');
 
 module.exports = class Smelt extends Command {
     constructor(client) {
@@ -27,10 +28,10 @@ module.exports = class Smelt extends Command {
                     type: 3,
                     required: true,
                     choices: [
-                        { name: 'Bronze Ore', value: 'bronze' },
-                        { name: 'Silver Ore', value: 'silver' },
-                        { name: 'Gold Ore', value: 'gold' },
-                        { name: 'Osmium Ore', value: 'osmium' },
+                        { name: 'Bronze Ore', value: 'bronzeore' },
+                        { name: 'Silver Ore', value: 'silverore' },
+                        { name: 'Gold Ore', value: 'goldore' },
+                        { name: 'Osmium Ore', value: 'osmiumore' },
                     ],
                 },
                 {
@@ -41,6 +42,15 @@ module.exports = class Smelt extends Command {
                 },
             ],
         });
+    }
+
+    createProgressBar(current, total, length = 20) {
+        const percentage = Math.round((current / total) * 100);
+        const filledLength = Math.round((length * current) / total);
+        const emptyLength = length - filledLength;
+
+        const bar = '█'.repeat(filledLength) + '░'.repeat(emptyLength);
+        return `\`[${bar}]\` **${current}/${total}** (${percentage}%)`;
     }
 
     async run(client, ctx, args, color, emoji, language) {
@@ -59,12 +69,12 @@ module.exports = class Smelt extends Command {
             return await client.utils.sendErrorMessage(
                 client,
                 ctx,
-                'Please specify an ore type! Available: `bronze`, `silver`, `gold`, `osmium`',
+                'Please specify an ore type! Available: `bronzeore`, `silverore`, `goldore`, `osmiumore`',
                 color
             );
         }
 
-        // Normalize ore type names
+        // Normalize ore type names - support both short and long forms
         const oreMap = {
             bronze: 'bronzeore',
             silver: 'silverore',
@@ -106,8 +116,13 @@ module.exports = class Smelt extends Command {
 
         // Check user's ore inventory
         const userOre = user.inventory.find((item) => item.id === normalizedOre);
-        if (!userOre || userOre.quantity <= 0) {
-            return await client.utils.sendErrorMessage(client, ctx, `You don't have any ${oreData.name} to smelt!`, color);
+        if (!userOre || userOre.quantity < 1) {
+            return await client.utils.sendErrorMessage(client, ctx, `❌ You don't have any **${oreData.name}** to smelt!`, color);
+        }
+
+        // Double-check ore quantity
+        if (!userOre || userOre.quantity <= 1) {
+            return await client.utils.sendErrorMessage(client, ctx, `❌ You need at least 1 **${oreData.name}** to smelt!`, color);
         }
 
         // Calculate quantity to smelt
@@ -116,11 +131,12 @@ module.exports = class Smelt extends Command {
             smeltAmount = userOre.quantity;
         } else {
             smeltAmount = parseInt(quantity);
-            if (isNaN(smeltAmount) || smeltAmount <= 0) {
-                return await client.utils.sendErrorMessage(client, ctx, "Invalid quantity! Use a positive number or 'all'.", color);
-            }
             if (smeltAmount > userOre.quantity) {
-                smeltAmount = userOre.quantity;
+                return await client.utils.sendErrorMessage(client, ctx, "You don't have enough ore to smelt that quantity!", color);
+            } else {
+                if (isNaN(smeltAmount) || smeltAmount <= 0) {
+                    return await client.utils.sendErrorMessage(client, ctx, "Invalid quantity! Use a positive number or 'all'.", color);
+                }
             }
         }
 
@@ -162,17 +178,71 @@ module.exports = class Smelt extends Command {
                 legendary: 0.65,
             }[oreData.rarity] || 0.95;
 
+        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
+
+        // Initialize animation variables
         let successfulSmelts = 0;
-        let totalWorth = 0;
+        let failedSmelts = 0;
+        const smeltDelay = 1000; // 1 second per ore animation
 
-        // Process each ore individually for success/failure
-        for (let i = 0; i < smeltAmount; i++) {
-            if (Math.random() < successRate) {
-                successfulSmelts++;
-                totalWorth += barData.price.sell;
+        // Create initial embed
+        const initialEmbed = client
+            .embed()
+            .setColor(color.main)
+            .setTitle(`${author.displayName}'s Furnace`)
+            .setDescription(
+                `\n『  ${oreData.emoji}${this.client.utils.toSmall(smeltAmount.toString())} 』\n` +
+                    `『  ${globalEmoji.smelt.fire}${this.client.utils.toSmall(coalNeeded.toString())} 』\n` +
+                    `『  ${barData.emoji}${this.client.utils.toSmall('0')} 』`
+            );
+
+        const startMsg = await ctx.sendMessage({ embeds: [initialEmbed] });
+
+        // Recursive smelting animation
+        const animateSmelting = async (remainingOre, coalNeeded, completedBars) => {
+            if (remainingOre <= 0) {
+                // Animation complete
+                return;
             }
-        }
 
+            const isSuccess = Math.random() < successRate;
+            let newCompletedBars = completedBars;
+
+            if (isSuccess) {
+                successfulSmelts++;
+                newCompletedBars += 1;
+            } else {
+                failedSmelts++;
+            }
+
+            const remainingNext = remainingOre - 1;
+            const remainingCoal = coalNeeded - 1;
+            // Create animated embed
+            const animEmbed = client
+                .embed()
+                .setColor(color.main)
+                .setTitle(`${author.displayName}'s Furnace`)
+                .setDescription(
+                    `\n『  ${oreData.emoji}${this.client.utils.toSmall(remainingNext.toString())} 』\n` +
+                        `『  ${globalEmoji.smelt.fire}${coalNeeded > 0 ? this.client.utils.toSmall(coalNeeded.toString()) : ''} 』\n` +
+                        `『  ${barData.emoji}${this.client.utils.toSmall(newCompletedBars.toString())} 』`
+                );
+
+            try {
+                await startMsg.edit({ embeds: [animEmbed] });
+            } catch (e) {
+                // Message already deleted or edit failed, continue
+            }
+
+            // Delay before next iteration
+            await new Promise((resolve) => setTimeout(resolve, smeltDelay));
+
+            // Recursive call for next ore
+            await animateSmelting(remainingNext, remainingCoal, newCompletedBars);
+        };
+
+        // Start the animation
+        await animateSmelting(smeltAmount, coalNeeded, 0);
         // Update user inventory
         await client.utils.updateUserWithRetry(author.id, async (user) => {
             // Remove ore and coal
@@ -211,55 +281,31 @@ module.exports = class Smelt extends Command {
             }
         });
 
-        // Create result embed
-        const failedSmelts = smeltAmount - successfulSmelts;
-        const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
-
         let resultText = '';
         if (successfulSmelts > 0) {
+            resultText += `**Received:**\n`;
             resultText += `${barData.emoji} **+${successfulSmelts}** ${barData.name}\n`;
         }
         if (failedSmelts > 0) {
             resultText += `💨 **${failedSmelts}** ore(s) failed to smelt\n`;
         }
-
-        resultText += `\n**Resources Used:**\n`;
+        resultText += `**Resources Used:**\n`;
         resultText += `${oreData.emoji} **-${smeltAmount}** ${oreData.name}\n`;
         resultText += `${coalInfo.emoji || '⛽'} **-${coalNeeded}** Coal`;
 
-        const embed = client
+        const finalEmbed = client
             .embed()
             .setColor(color.main)
-            .setDescription(
-                generalMessages?.title
-                    ?.replace('%{mainLeft}', emoji.mainLeft)
-                    ?.replace('%{title}', 'SMELTING FURNACE')
-                    ?.replace('%{mainRight}', emoji.mainRight) || `${emoji.mainLeft} **SMELTING FURNACE** ${emoji.mainRight}`
-            )
-            .addFields(
-                {
-                    name: 'Smelting Results',
-                    value: resultText,
-                    inline: false,
-                },
-                {
-                    name: 'Total Worth',
-                    value: `**${client.utils.formatNumber(totalWorth)}** ${emoji.coin}`,
-                    inline: true,
-                },
-                {
-                    name: 'Success Rate',
-                    value: `**${Math.round(successRate * 100)}%**`,
-                    inline: true,
-                }
-            )
+            .setTitle(`${author.displayName}'s Furnace - Complete!`)
+            .setDescription(`${resultText}`)
             .setFooter({
                 text:
                     generalMessages?.requestedBy?.replace('%{username}', ctx.author.displayName) ||
                     `Requested by ${ctx.author.displayName}`,
                 iconURL: ctx.author.displayAvatarURL(),
             });
+        this.getHeatLevel;
 
-        return await ctx.sendMessage({ embeds: [embed] });
+        return await startMsg.edit({ embeds: [finalEmbed] });
     }
 };

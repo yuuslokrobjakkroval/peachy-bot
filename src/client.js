@@ -409,8 +409,15 @@ setInterval(
 );
 
 setInterval(async () => {
-    return await client.abilities.getSendMessage(client);
-}, 20000);
+    try {
+        const { connection } = require('mongoose');
+        if ([1, 2, 99].includes(connection.readyState)) {
+            return await client.abilities.getSendMessage(client);
+        }
+    } catch (error) {
+        console.error('Error in getSendMessage interval:', error.message);
+    }
+}, 30000);
 
 setInterval(() => {
     const guild = client.guilds.cache.get(client.config.guildId);

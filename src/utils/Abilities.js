@@ -467,7 +467,23 @@ module.exports = class Ability {
 
     static async getSendMessage(client) {
         try {
-            const sendMessage = await SendMessageSchema.findOneAndUpdate({ isActive: true }, { $set: { isActive: false } }, { new: true });
+            // Check database connection status
+            const { connection } = require('mongoose');
+            if (![1, 2, 99].includes(connection.readyState)) {
+                console.warn('[getSendMessage] Database connection not ready. Retrying on next interval.');
+                return;
+            }
+
+            // Add timeout wrapper for the database operation
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Database operation timeout after 5000ms')), 5000)
+            );
+
+            const sendMessage = await Promise.race([
+                SendMessageSchema.findOneAndUpdate({ isActive: true }, { $set: { isActive: false } }, { new: true }),
+                timeoutPromise,
+            ]);
+
             if (!sendMessage) {
                 return;
             }
@@ -487,7 +503,7 @@ module.exports = class Ability {
 
             await Ability.SendMessage(client, member, feature);
         } catch (error) {
-            console.error('Error processing send message:', error);
+            console.error('Error processing send message:', error.message);
         }
     }
 

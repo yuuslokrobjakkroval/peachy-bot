@@ -5,6 +5,7 @@ const emote = {
     fishingRod: '<:FISHINGROD:1452699761353298011>',
     sword: '<:SWORD:1452699680449232916>',
     hoe: '<:HOE:1453079485581758615>',
+    bow: '<:BOW:1453536252581249087>',
 };
 
 module.exports = {
@@ -26,7 +27,7 @@ module.exports = {
             quantity: 12,
             emoji: emote.axe,
             available: ['use'],
-            price: { buy: 10000, sell: 0 },
+            price: { buy: 15000, sell: 0 },
         },
         // Mining Tools
         {
@@ -42,7 +43,7 @@ module.exports = {
             quantity: 12,
             emoji: emote.sxe,
             available: ['use'],
-            price: { buy: 10000, sell: 0 },
+            price: { buy: 15000, sell: 0 },
         },
         // Fishing Tools
         {
@@ -58,7 +59,7 @@ module.exports = {
             quantity: 12,
             emoji: emote.fishingRod,
             available: ['use'],
-            price: { buy: 10000, sell: 0 },
+            price: { buy: 15000, sell: 0 },
         },
         // Slime Tools
         {
@@ -74,7 +75,7 @@ module.exports = {
             quantity: 12,
             emoji: emote.sword,
             available: ['use'],
-            price: { buy: 10000, sell: 0 },
+            price: { buy: 15000, sell: 0 },
         },
         // Bug Tools
         {
@@ -90,7 +91,7 @@ module.exports = {
             quantity: 12,
             emoji: emote.net,
             available: ['use'],
-            price: { buy: 10000, sell: 0 },
+            price: { buy: 15000, sell: 0 },
         },
         // Farming Tools
         {
@@ -103,10 +104,26 @@ module.exports = {
                 gift: false,
                 multiple: false,
             },
-            quantity: 15,
+            quantity: 12,
             emoji: emote.hoe,
             available: ['use'],
-            price: { buy: 12000, sell: 0 },
+            price: { buy: 15000, sell: 0 },
+        },
+        // Hunting Tools
+        {
+            id: 'bow',
+            name: 'Wooden Bow',
+            description: 'A basic tool for hunting animals.',
+            type: 'tool',
+            able: {
+                use: true,
+                gift: false,
+                multiple: false,
+            },
+            quantity: 12,
+            emoji: emote.bow,
+            available: ['use'],
+            price: { buy: 15000, sell: 0 },
         },
     ],
 };
