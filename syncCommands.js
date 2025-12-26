@@ -11,7 +11,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ debug: false });
 
 const { REST, Routes } = require('discord.js');
 

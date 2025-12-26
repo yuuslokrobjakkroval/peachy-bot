@@ -4,7 +4,7 @@ const globalConfig = require("./utils/Config");
 const Logger = require("./structures/Logger.js");
 const dotenv = require("dotenv");
 
-dotenv.config();
+dotenv.config({ debug: false });
 
 const logger = new Logger();
 

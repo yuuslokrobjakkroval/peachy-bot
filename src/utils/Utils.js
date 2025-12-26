@@ -32,8 +32,6 @@ const gif = require('./Gif');
 const globalEmoji = require('./Emoji');
 const { getLevelingMessage } = require('./Abilities');
 const { default: axios } = require('axios');
-const dotenv = require('dotenv');
-dotenv.config();
 
 const DISCORD_QUEST_CONFIG = process.env.DISCORD_QUEST_API_URLS;
 const DISCORD_ASSET_URL = 'https://cdn.discordapp.com/';

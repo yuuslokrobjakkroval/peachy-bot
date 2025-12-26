@@ -1,7 +1,7 @@
-const dotenv = require('dotenv');
-dotenv.config();
-
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({ debug: false });
 
 const channel = {
     // PEACH AND GOMA CATEGORIES

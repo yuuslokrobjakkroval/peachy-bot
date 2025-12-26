@@ -40,9 +40,7 @@ module.exports = class QRCode extends Command {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const qrMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.qrMessages; // Access qrMessages
 
-        if (ctx.isInteraction) {
-            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
-        } else {
+        if (!ctx.isInteraction) {
             await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         }
 

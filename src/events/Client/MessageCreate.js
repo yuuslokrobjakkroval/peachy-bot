@@ -2,6 +2,7 @@ const { Collection } = require('discord.js');
 const { Context, Event } = require('../../structures/index.js');
 const BotLog = require('../../utils/BotLog.js');
 const Users = require('../../schemas/user');
+const GuildMessagesUtil = require('../../utils/GuildMessagesUtil');
 const globalConfig = require('../../utils/Config');
 const globalGif = require('../../utils/Gif');
 const globalEmoji = require('../../utils/Emoji');
@@ -14,17 +15,20 @@ module.exports = class MessageCreate extends Event {
     }
 
     async run(message) {
+        const guildId = message.guild.id;
+        const channelId = message.channel.id;
+        const userId = message.author.id;
         if (message.author.bot || message.channel.type === 1) return;
         if (globalConfig.env === 'development') {
-            if (message.guild.id !== globalConfig.testGuildId) return;
+            if (guildId !== globalConfig.testGuildId) return;
         } else {
-            if (message.guild.id === globalConfig.testGuildId) return;
+            if (guildId === globalConfig.testGuildId) return;
         }
         this.client.setColorBasedOnTheme(message.author.id).then(async ({ user, color, emoji, language }) => {
             const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
             // Get user's custom prefix or fall back to global
-            const userPrefix = await this.client.prefixManager.getUserPrefix(message.author.id);
+            const userPrefix = await this.client.prefixManager.getUserPrefix(userId);
             const prefix = userPrefix;
 
             this.client.utils.getCheckingUser(this.client, message, user, color, emoji, prefix);
@@ -32,6 +36,8 @@ module.exports = class MessageCreate extends Event {
             if (user?.verification?.isBanned) {
                 return;
             }
+
+            await GuildMessagesUtil.trackMessage(guildId, channelId, userId);
 
             const now = new Date();
             if (user?.verification?.timeout?.expiresAt > now) {
@@ -97,7 +103,7 @@ module.exports = class MessageCreate extends Event {
             }
 
             // Check for custom prefix or global prefix
-            const prefixCheck = await this.client.prefixManager.checkPrefix(message.content, message.author.id);
+            const prefixCheck = await this.client.prefixManager.checkPrefix(message.content, userId);
 
             if (prefixCheck.hasPrefix) {
                 const args = prefixCheck.command.split(/ +/);

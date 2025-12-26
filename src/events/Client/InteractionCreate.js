@@ -35,16 +35,19 @@ module.exports = class InteractionCreate extends Event {
         }
 
         try {
-            const { user, color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
-
-            const prefix = this.client.config.prefix;
-
             if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
                 const command = this.client.commands.get(interaction.commandName);
                 if (!command) {
                     console.error(`Command ${interaction.commandName} not found`);
                     return;
                 }
+
+                // Defer the interaction FIRST before any async operations
+                await interaction.deferReply({ ephemeral: false }).catch(() => {});
+
+                const { user, color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
+
+                const prefix = this.client.config.prefix;
 
                 if (user?.verification?.isBanned) {
                     return;
