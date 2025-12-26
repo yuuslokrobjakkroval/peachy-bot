@@ -191,9 +191,9 @@ module.exports = class Smelt extends Command {
             .setColor(color.main)
             .setTitle(`${author.displayName}'s Furnace`)
             .setDescription(
-                `\n『  ${oreData.emoji}${this.client.utils.toSmall(smeltAmount.toString())} 』\n` +
-                    `『  ${globalEmoji.smelt.fire}${this.client.utils.toSmall(coalNeeded.toString())} 』\n` +
-                    `『  ${barData.emoji}${this.client.utils.toSmall('0')} 』`
+                `\n # 『  ${oreData.emoji}${this.client.utils.toSmall(smeltAmount.toString())} 』\n` +
+                    `# 『  ${globalEmoji.smelt.fire}${this.client.utils.toSmall(coalNeeded.toString())} 』\n` +
+                    `# 『  ${barData.emoji}${this.client.utils.toSmall('0')} 』`
             );
 
         const startMsg = await ctx.sendMessage({ embeds: [initialEmbed] });
@@ -223,9 +223,9 @@ module.exports = class Smelt extends Command {
                 .setColor(color.main)
                 .setTitle(`${author.displayName}'s Furnace`)
                 .setDescription(
-                    `\n『  ${oreData.emoji}${this.client.utils.toSmall(remainingNext.toString())} 』\n` +
-                        `『  ${globalEmoji.smelt.fire}${coalNeeded > 0 ? this.client.utils.toSmall(coalNeeded.toString()) : ''} 』\n` +
-                        `『  ${barData.emoji}${this.client.utils.toSmall(newCompletedBars.toString())} 』`
+                    `\n # 『  ${oreData.emoji}${this.client.utils.toSmall(remainingNext.toString())} 』\n` +
+                        `# 『  ${globalEmoji.smelt.fire}${coalNeeded > 0 ? this.client.utils.toSmall(coalNeeded.toString()) : ''} 』\n` +
+                        `# 『  ${barData.emoji}${this.client.utils.toSmall(newCompletedBars.toString())} 』`
                 );
 
             try {
