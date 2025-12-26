@@ -37,7 +37,9 @@ module.exports = class MessageCreate extends Event {
                 return;
             }
 
-            await GuildMessagesUtil.trackMessage(guildId, channelId, userId);
+            if (message.content.startsWith(prefix) || message.content.startsWith(prefix.toLowerCase())) {
+                await GuildMessagesUtil.trackMessage(guildId, channelId, userId);
+            }
 
             const now = new Date();
             if (user?.verification?.timeout?.expiresAt > now) {
