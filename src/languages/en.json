@@ -578,7 +578,7 @@
             "sellHalf": "Sell Half",
             "sellAllButtonLabel": "Sell All",
             "back": "Back",
-            "quantity": "Quantity: {quantity}",
+            "quantity": "Quantity: {quantity} | Available: {available}",
             "totalValue": "Total Value: **{value}** {coinEmoji}",
             "sellCancelled": "Sell canceled.",
             "noSellableItemsInCategory": "No sellable items found in {category}.",

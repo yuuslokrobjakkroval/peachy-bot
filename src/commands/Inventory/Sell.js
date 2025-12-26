@@ -147,14 +147,14 @@ module.exports = class Sell extends Command {
                 .setTitle(`${itemInfo.emoji || '📦'} ${itemInfo.name || client.utils.formatCapitalize(itemInfo.id)}`)
                 .setDescription(
                     `**━━━━━━━━━━━━━━━━━━━━**\n` +
-                        `**${sellMessages.quantity.replace('{quantity}', qty)}** | Available: **${hasItems.quantity}**\n` +
+                        `**${sellMessages.quantity.replace('{quantity}', qty).replace('{available}', hasItems.quantity)}**\n` +
                         `**${sellMessages.totalValue
                             .replace('{coinEmoji}', emoji.coin)
                             .replace('{value}', client.utils.formatNumber(price))}**\n` +
                         `**━━━━━━━━━━━━━━━━━━━━**\n\n` +
                         (itemInfo.description ? `*${itemInfo.description}*\n\n` : '') +
-                        `**Your Balance:** ${emoji.coin} ${client.utils.formatNumber(user.balance.coin)}\n` +
-                        `**After Sale:** ${emoji.coin} ${client.utils.formatNumber(user.balance.coin + price)}`
+                        `**Your Balance:** **${client.utils.formatNumber(user.balance.coin)}** ${emoji.coin}\n` +
+                        `**After Sale:** **${client.utils.formatNumber(user.balance.coin + price)}** ${emoji.coin}`
                 )
                 .setThumbnail(client.utils.emojiToImage(itemInfo.emoji || '📦'))
                 .setFooter({
@@ -170,23 +170,11 @@ module.exports = class Sell extends Command {
                 .setStyle(ButtonStyle.Secondary)
                 .setDisabled(qty <= 1);
 
-            const minusHalfBtn = new ButtonBuilder()
-                .setCustomId('minus_half')
-                .setLabel('−50%')
-                .setStyle(ButtonStyle.Secondary)
-                .setDisabled(qty <= 1);
-
             const quantityBtn = new ButtonBuilder()
                 .setCustomId('qty_info')
                 .setLabel(`Qty: ${qty}/${hasItems.quantity}`)
                 .setStyle(ButtonStyle.Primary)
                 .setDisabled(true);
-
-            const plusHalfBtn = new ButtonBuilder()
-                .setCustomId('plus_half')
-                .setLabel('+50%')
-                .setStyle(ButtonStyle.Secondary)
-                .setDisabled(qty >= hasItems.quantity);
 
             const incrementBtn = new ButtonBuilder()
                 .setCustomId('increment_qty')
@@ -194,7 +182,7 @@ module.exports = class Sell extends Command {
                 .setStyle(ButtonStyle.Secondary)
                 .setDisabled(qty >= hasItems.quantity);
 
-            return new ActionRowBuilder().addComponents(decrementBtn, minusHalfBtn, quantityBtn, plusHalfBtn, incrementBtn);
+            return new ActionRowBuilder().addComponents(decrementBtn, quantityBtn, incrementBtn);
         };
 
         const confirmButton = new ButtonBuilder()
@@ -203,15 +191,13 @@ module.exports = class Sell extends Command {
             .setStyle(ButtonStyle.Success)
             .setEmoji('✅');
 
-        const maxButton = new ButtonBuilder().setCustomId('max_qty').setLabel('Max').setStyle(ButtonStyle.Secondary).setEmoji('⬆️');
-
         const cancelButton = new ButtonBuilder()
             .setCustomId('cancel_sell')
             .setLabel(sellMessages.cancel)
             .setStyle(ButtonStyle.Danger)
             .setEmoji('❌');
 
-        const actionRowBottom = new ActionRowBuilder().addComponents(confirmButton, maxButton, cancelButton);
+        const actionRowBottom = new ActionRowBuilder().addComponents(confirmButton, cancelButton);
 
         // Send the message
         const message = await ctx.sendMessage({

@@ -2,10 +2,13 @@ const { Command } = require('../../structures/index.js');
 const Users = require('../../schemas/user');
 const ImportantItems = require('../../assets/inventory/ImportantItems.js');
 const ShopItems = require('../../assets/inventory/ShopItems');
+const { openLootbox } = require('../../assets/inventory/Base/Lootboxes.js');
 const Inventory = ShopItems.flatMap((shop) => shop.inventory);
 const Themes = Inventory.filter((value) => value.type === 'theme' || value.type === 'special theme').sort(
     (a, b) => a.price.buy - b.price.buy
 );
+
+const Lootboxes = Inventory.filter((value) => value.type === 'box');
 const Decoration = Inventory.filter((value) => value.type === 'decoration');
 const Wallpapers = Inventory.filter((value) => value.type === 'wallpaper');
 const Colors = Inventory.filter((value) => value.type === 'color');
@@ -54,6 +57,7 @@ module.exports = class Use extends Command {
                 Themes,
                 Tools,
                 Wallpapers,
+                Lootboxes,
                 Inventory.filter((value) => value.type === 'potion')
             ).find((item) => item.id === itemId);
             const inventoryItem = user.inventory.find((item) => item.id === itemId);
@@ -433,6 +437,79 @@ module.exports = class Use extends Command {
                         ]);
                         return ctx.sendMessage({ embeds: [embed] });
                     }
+                }
+            } else if (itemInfo.type === 'box') {
+                // Lootbox opening handler
+                const inventoryItem = user.inventory.find((inv) => inv.id === itemId);
+
+                if (!inventoryItem || inventoryItem.quantity <= 0) {
+                    return await client.utils.sendErrorMessage(
+                        client,
+                        ctx,
+                        `You don't have ${itemInfo.emoji} **${itemInfo.name}** in your inventory.`,
+                        color
+                    );
+                }
+
+                try {
+                    // Open the lootbox and get random rewards
+                    const rewards = openLootbox(itemId);
+
+                    if (!rewards || rewards.length === 0) {
+                        return await client.utils.sendErrorMessage(client, ctx, 'Failed to open the lootbox. Please try again.', color);
+                    }
+
+                    // Add rewards to user inventory
+                    for (const reward of rewards) {
+                        const existingItem = user.inventory.find((inv) => inv.id === reward.id);
+                        if (existingItem) {
+                            existingItem.quantity += reward.quantity;
+                        } else {
+                            user.inventory.push({
+                                id: reward.id,
+                                quantity: reward.quantity,
+                            });
+                        }
+                    }
+
+                    // Remove lootbox from inventory
+                    const boxIndex = user.inventory.findIndex((inv) => inv.id === itemId);
+                    if (boxIndex > -1) {
+                        if (user.inventory[boxIndex].quantity > 1) {
+                            user.inventory[boxIndex].quantity -= 1;
+                        } else {
+                            user.inventory.splice(boxIndex, 1);
+                        }
+                    }
+
+                    // Update database
+                    await Users.updateOne({ userId }, { $set: { inventory: user.inventory } });
+
+                    // Build rewards description
+                    const rewardLines = rewards
+                        .map((reward) => {
+                            const rewardItem = Inventory.find((item) => item.id === reward.id);
+                            return `\`${rewardItem?.id}\` ${rewardItem?.emoji || '📦'} **${rewardItem?.name || reward.id}** × ${reward.quantity}`;
+                        })
+                        .join('\n');
+
+                    // Send success message with rewards
+                    const embed = client
+                        .embed()
+                        .setColor(color.main)
+                        .setTitle(`${itemInfo.emoji} ${itemInfo.name} Opened!`)
+                        .setDescription(`You received the following items:\n\n${rewardLines}`)
+                        .setFooter({ text: `Thank you for opening the ${itemInfo.name}!` });
+
+                    return await ctx.sendMessage({ embeds: [embed] });
+                } catch (error) {
+                    console.error('Error opening lootbox:', error);
+                    return await client.utils.sendErrorMessage(
+                        client,
+                        ctx,
+                        'An error occurred while opening the lootbox. Please try again.',
+                        color
+                    );
                 }
             } else {
                 return await client.utils.sendErrorMessage(client, ctx, useMessages?.invalidItem.replace('%{itemId}', itemId), color);

@@ -1,3 +1,4 @@
+const Lootboxes = require('./Shop/Lootbox');
 const Tools = require('./Shop/Tool');
 const Couple = require('./Shop/Couple');
 const Color = require('./Shop/Color');
@@ -10,6 +11,7 @@ const Wallpaper = require('./Shop/Wallpaper');
 const Cards = require('./Shop/Cards');
 
 module.exports = [
+    Lootboxes,
     Tools,
     Couple,
     Color,

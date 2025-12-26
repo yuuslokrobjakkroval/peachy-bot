@@ -4,7 +4,7 @@ module.exports = {
     discordApp: '<a:DISCORDICON:1350663962022121493>',
     romdoul: '<:ROMDOUL:1350655957293596692>',
 
-    searching: '<a:SEARCHING:1350655304072826890>',
+    searching: '<:SCANNING:1417678216617005158>',
     loading: '<a:LOADING:1350655786837348453>',
 
     main: {

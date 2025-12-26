@@ -60,6 +60,7 @@ module.exports = class Inventory extends Command {
             // Define category structure with icons/emojis
             const allCategories = [
                 { label: 'credit card', emoji: '💳' },
+                { label: 'box', emoji: '📦' },
                 { label: 'tool', emoji: '🔧' },
                 { label: 'wood', emoji: '🪵' },
                 { label: 'mineral', emoji: '⛏️' },
