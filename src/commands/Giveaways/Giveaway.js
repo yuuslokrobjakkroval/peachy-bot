@@ -70,8 +70,8 @@ module.exports = class Giveaway extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
-        if (!ctx.isInteraction) {
-            await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
+        if (ctx.isInteraction && !ctx.interaction.replied && !ctx.interaction.deferred) {
+            await ctx.interaction.deferReply();
         }
 
         // Parse command arguments
