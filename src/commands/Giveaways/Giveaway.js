@@ -70,16 +70,8 @@ module.exports = class Giveaway extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
-        // Defer reply
-        try {
-            if (ctx.isInteraction) {
-                await ctx.interaction.deferReply();
-            } else {
-                await ctx.sendDeferMessage(`${client.user.username} is thinking...`);
-            }
-        } catch (error) {
-            console.error('Error deferring reply:', error);
-            return;
+        if (ctx.isInteraction && !ctx.interaction.replied && !ctx.interaction.deferred) {
+            await ctx.interaction.deferReply();
         }
 
         // Parse command arguments
@@ -209,7 +201,7 @@ module.exports = class Giveaway extends Command {
         if (thumbnail) giveawayEmbed.setThumbnail(thumbnail.url);
 
         // Create buttons
-        const joinButton = client.utils.fullOptionButton('giveaway-join', emoji.main, '0', 1, false);
+        const joinButton = client.utils.fullOptionButton('giveaway-join', emoji, '0', 1, false);
         const participantsButton = client.utils.fullOptionButton('giveaway-participants', '', 'Participants', 2, false);
         const buttonRow = client.utils.createButtonRow(joinButton, participantsButton);
 
