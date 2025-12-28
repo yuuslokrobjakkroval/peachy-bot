@@ -11,6 +11,7 @@ const {
     ButtonStyle,
     MessageFlags,
     ContainerBuilder,
+    MediaGalleryBuilder,
     UserSelectMenuBuilder,
 } = require('discord.js');
 const users = require('../../schemas/user');
@@ -34,19 +35,16 @@ module.exports = class InteractionCreate extends Event {
         }
 
         try {
+            const { user, color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
+
+            const prefix = this.client.config.prefix;
+
             if (interaction instanceof CommandInteraction && interaction.type === InteractionType.ApplicationCommand) {
                 const command = this.client.commands.get(interaction.commandName);
                 if (!command) {
                     console.error(`Command ${interaction.commandName} not found`);
                     return;
                 }
-
-                // Defer the interaction FIRST before any async operations
-                await interaction.deferReply({ ephemeral: false }).catch(() => {});
-
-                const { user, color, emoji, language } = await this.client.setColorBasedOnTheme(interaction.user.id);
-
-                const prefix = this.client.config.prefix;
 
                 if (user?.verification?.isBanned) {
                     return;
@@ -68,7 +66,7 @@ module.exports = class InteractionCreate extends Event {
                         embeds: [
                             this.client
                                 .embed()
-                                .setColor(globalConfig.color.danger)
+                                .setColor(color.danger)
                                 .setDescription(
                                     `You are in timeout for: \`${
                                         user.verification.timeout.reason || 'No reason provided'
@@ -83,7 +81,7 @@ module.exports = class InteractionCreate extends Event {
                 if (mention.test(interaction.content)) {
                     const embed = this.client
                         .embed()
-                        .setColor(globalConfig.color.main)
+                        .setColor(color.main)
                         .setTitle(`Heyoo! ${interaction.user.displayName}`)
                         .setDescription(
                             `My Name is ${this.client.user.displayName}.\n` +
@@ -200,7 +198,7 @@ module.exports = class InteractionCreate extends Event {
                     if (channel && channel.isTextBased()) {
                         const embed = this.client
                             .embed()
-                            .setColor(globalConfig.color.blue)
+                            .setColor(color.blue)
                             .setTitle(`Command - ${this.client.utils.formatCapitalize(interaction.commandName)}`)
                             .setThumbnail(interaction.guild.iconURL({ extension: 'jpeg' }))
                             .addFields([
@@ -406,7 +404,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.danger)
+                                            .setColor(color.danger)
                                             .setDescription('An error occurred: Giveaway data not found.'),
                                     ],
                                     flags: MessageFlags.Ephemeral,
@@ -426,7 +424,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.danger)
+                                            .setColor(color.danger)
                                             .setDescription('This giveaway has already ended.'),
                                     ],
                                     flags: MessageFlags.Ephemeral,
@@ -442,7 +440,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.danger)
+                                            .setColor(color.danger)
                                             .setDescription('This giveaway is currently paused.'),
                                     ],
                                     flags: MessageFlags.Ephemeral,
@@ -458,7 +456,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.main)
+                                            .setColor(color.pink)
                                             .setDescription('You are already entered in this giveaway. Would you like to leave?'),
                                     ],
                                     components: [
@@ -484,7 +482,7 @@ module.exports = class InteractionCreate extends Event {
                                             name: this.client.user.username,
                                             iconURL: this.client.user.displayAvatarURL(),
                                         })
-                                        .setColor(globalConfig.color.main)
+                                        .setColor(color.main)
                                         .setDescription('You have successfully joined the giveaway.'),
                                 ],
                                 flags: MessageFlags.Ephemeral,
@@ -536,7 +534,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.danger)
+                                            .setColor(color.danger)
                                             .setDescription('An error occurred: Giveaway data not found.'),
                                     ],
                                     flags: MessageFlags.Ephemeral,
@@ -552,7 +550,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.danger)
+                                            .setColor(color.danger)
                                             .setDescription('You are not entered in this giveaway.'),
                                     ],
                                     flags: MessageFlags.Ephemeral,
@@ -570,7 +568,7 @@ module.exports = class InteractionCreate extends Event {
                                             name: this.client.user.username,
                                             iconURL: this.client.user.displayAvatarURL(),
                                         })
-                                        .setColor(globalConfig.color.main)
+                                        .setColor(color.main)
                                         .setDescription('You have successfully left the giveaway.'),
                                 ],
                                 flags: MessageFlags.Ephemeral,
@@ -632,7 +630,7 @@ module.exports = class InteractionCreate extends Event {
                             const embed = this.client
                                 .embed()
                                 .setTitle('Giveaway Participants')
-                                .setColor(globalConfig.color.main)
+                                .setColor(color.main)
                                 .setDescription(
                                     `These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
                                         data.prize
@@ -672,7 +670,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.danger)
+                                            .setColor(color.danger)
                                             .setDescription('An error occurred: Giveaway data not found.'),
                                     ],
                                     flags: MessageFlags.Ephemeral,
@@ -692,7 +690,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.danger)
+                                            .setColor(color.danger)
                                             .setDescription('This giveaway has already ended.'),
                                     ],
                                     flags: MessageFlags.Ephemeral,
@@ -708,7 +706,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.danger)
+                                            .setColor(color.danger)
                                             .setDescription('This giveaway is currently paused.'),
                                     ],
                                     flags: MessageFlags.Ephemeral,
@@ -724,7 +722,7 @@ module.exports = class InteractionCreate extends Event {
                                                 name: this.client.user.username,
                                                 iconURL: this.client.user.displayAvatarURL(),
                                             })
-                                            .setColor(globalConfig.color.pink)
+                                            .setColor(color.pink)
                                             .setDescription('You are already entered in this giveaway. Would you like to leave?'),
                                     ],
                                     components: [
@@ -750,7 +748,7 @@ module.exports = class InteractionCreate extends Event {
                                             name: this.client.user.username,
                                             iconURL: this.client.user.displayAvatarURL(),
                                         })
-                                        .setColor(globalConfig.color.main)
+                                        .setColor(color.main)
                                         .setDescription('You have successfully joined the giveaway.'),
                                 ],
                                 flags: MessageFlags.Ephemeral,
@@ -814,7 +812,7 @@ module.exports = class InteractionCreate extends Event {
                             const embed = this.client
                                 .embed()
                                 .setTitle('Giveaway Shop Item Participants')
-                                .setColor(globalConfig.color.main)
+                                .setColor(color.main)
                                 .setDescription(
                                     `These are the members who participated in the giveaway of **${this.client.utils.formatNumber(
                                         data.amount
@@ -899,7 +897,7 @@ module.exports = class InteractionCreate extends Event {
 
                             const embed = this.client
                                 .embed()
-                                .setColor(globalConfig.color.main)
+                                .setColor(this.client.color.main)
                                 .setDescription(
                                     `Congratulations to <@${userId}> ! Claim successful! ${this.client.utils.formatNumber(
                                         claimedCoins
@@ -969,7 +967,7 @@ module.exports = class InteractionCreate extends Event {
 
                     // Create updated avatar display with the selected user
                     const avatarContainer = new ContainerBuilder()
-                        .setAccentColor(globalConfig.color.main)
+                        .setAccentColor(color.main)
                         .addTextDisplayComponents((text) => text.setContent(`# **${emoji.mainLeft} AVATAR ${emoji.mainRight}**`))
                         .addSeparatorComponents((sep) => sep)
                         .addMediaGalleryComponents((gallery) =>
@@ -1091,7 +1089,7 @@ module.exports = class InteractionCreate extends Event {
 
                         // Create updated banner display with the selected user
                         const bannerContainer = new ContainerBuilder()
-                            .setAccentColor(globalConfig.color.main)
+                            .setAccentColor(color.main)
                             .addTextDisplayComponents((text) => text.setContent(`# **${emoji.mainLeft} BANNER ${emoji.mainRight}**`))
                             .addSeparatorComponents((sep) => sep)
                             .addMediaGalleryComponents((gallery) =>

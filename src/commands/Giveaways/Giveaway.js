@@ -201,7 +201,7 @@ module.exports = class Giveaway extends Command {
         if (thumbnail) giveawayEmbed.setThumbnail(thumbnail.url);
 
         // Create buttons
-        const joinButton = client.utils.fullOptionButton('giveaway-join', emoji, '0', 1, false);
+        const joinButton = client.utils.fullOptionButton('giveaway-join', emoji.main, '0', 1, false);
         const participantsButton = client.utils.fullOptionButton('giveaway-participants', '', 'Participants', 2, false);
         const buttonRow = client.utils.createButtonRow(joinButton, participantsButton);
 
