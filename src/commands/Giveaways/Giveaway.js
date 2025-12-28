@@ -70,8 +70,16 @@ module.exports = class Giveaway extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
-        if (ctx.isInteraction && !ctx.interaction.replied && !ctx.interaction.deferred) {
-            await ctx.interaction.deferReply();
+        // Defer reply
+        try {
+            if (ctx.isInteraction) {
+                await ctx.interaction.deferReply();
+            } else {
+                await ctx.sendDeferMessage(`${client.user.username} is thinking...`);
+            }
+        } catch (error) {
+            console.error('Error deferring reply:', error);
+            return;
         }
 
         // Parse command arguments
