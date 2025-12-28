@@ -35,7 +35,9 @@ module.exports = class UserInfo extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
 
-        if (!ctx.isInteraction) {
+        if (ctx.isInteraction) {
+            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
+        } else {
             await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         }
 

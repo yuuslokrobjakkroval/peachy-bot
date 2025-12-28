@@ -47,7 +47,9 @@ module.exports = class Banner extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const bannerMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.bannerMessages;
-        if (!ctx.isInteraction) {
+        if (ctx.isInteraction) {
+            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
+        } else {
             await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         }
 

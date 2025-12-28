@@ -53,8 +53,9 @@ module.exports = class Avatar extends Command {
     async run(client, ctx, args, color, emoji, language) {
         const generalMessages = language.locales.get(language.defaultLocale)?.generalMessages;
         const avatarMessages = language.locales.get(language.defaultLocale)?.utilityMessages?.avatarMessages;
-
-        if (!ctx.isInteraction) {
+        if (ctx.isInteraction) {
+            await ctx.interaction.reply(generalMessages.search.replace('%{loading}', globalEmoji.searching));
+        } else {
             await ctx.sendDeferMessage(generalMessages.search.replace('%{loading}', globalEmoji.searching));
         }
 
