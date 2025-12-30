@@ -22,7 +22,7 @@ module.exports = {
             quantity: 1,
             emoji: emote.cyberwave,
             available: ['use'],
-            price: { buy: 15000000, sell: 0 },
+            price: { buy: 10000000, sell: 0 },
         },
         {
             id: 'box02',
@@ -37,7 +37,7 @@ module.exports = {
             quantity: 1,
             emoji: emote.nebula,
             available: ['use'],
-            price: { buy: 30000000, sell: 0 },
+            price: { buy: 20000000, sell: 0 },
         },
         {
             id: 'box03',
@@ -52,7 +52,7 @@ module.exports = {
             quantity: 1,
             emoji: emote.kayukio,
             available: ['use'],
-            price: { buy: 50000000, sell: 0 },
+            price: { buy: 30000000, sell: 0 },
         },
     ],
 };
