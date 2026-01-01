@@ -840,13 +840,13 @@ module.exports = class Ability {
     }
 
     static async getBackgroundNormal(client, member, data) {
-        return data.backgroundImage || 'https://i.imgur.com/fFqwcK2.gif';
+        return data.backgroundImage || 'https://ik.imagekit.io/yuuslokrobjakkroval/PEACHY%20BOT/Banner.gif';
     }
 
     static async getBackgroundCustom(client, member, data) {
         const width = 800;
         const height = 450;
-        const defaultBackgroundUrl = 'https://i.imgur.com/fFqwcK2.gif';
+        const defaultBackgroundUrl = 'https://ik.imagekit.io/yuuslokrobjakkroval/PEACHY%20BOT/Banner.gif';
         const fallbackBackgroundColor = '#DFF2EB';
 
         const canvas = createCanvas(width, height);
