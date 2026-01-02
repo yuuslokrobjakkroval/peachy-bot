@@ -1,5 +1,5 @@
 const { Command } = require('../../structures/index.js');
-const SlimeTools = require('../../assets/inventory/Base/Slime.js');
+const SlimeTools = require('../../assets/inventory/Tools/Slime.js');
 const Slimes = require('../../assets/inventory/Base/Slime.js');
 
 module.exports = class Catch extends Command {

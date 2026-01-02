@@ -182,6 +182,13 @@ class ResourceManager {
                 rare: 0.11,
                 legendary: 0.04,
             },
+            sword: {
+                amount: Chance.integer({ min: 1, max: 2 }),
+                common: 0.51,
+                uncommon: 0.32,
+                rare: 0.11,
+                legendary: 0.04,
+            },
         };
 
         const probabilities = toolProbabilities[tool?.id] || toolProbabilities.hand;
