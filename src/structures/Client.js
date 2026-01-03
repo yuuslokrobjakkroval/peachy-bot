@@ -77,12 +77,8 @@ module.exports = class PeachyClient extends Client {
 
     async connectMongodb() {
         if ([1, 2, 99].includes(connection.readyState)) {
-            this.logger.info('MongoDB connection already established (state: ' + connection.readyState + ')');
             return;
         }
-
-        this.logger.info('📡 Connecting to MongoDB...');
-
         try {
             await connect(globalConfig.database, {
                 serverSelectionTimeoutMS: 15000,
@@ -92,8 +88,6 @@ module.exports = class PeachyClient extends Client {
                 maxPoolSize: 10,
                 minPoolSize: 2,
             });
-
-            this.logger.info('✅ MongoDB connection established');
         } catch (error) {
             this.logger.error('❌ MongoDB connection failed:', error.message);
             throw error;
@@ -140,24 +134,7 @@ module.exports = class PeachyClient extends Client {
             }
         }
 
-        // Register slash commands when bot is ready
         this.once('clientReady', async () => {
-            // const rest = new REST({ version: '10' }).setToken(this.config.token);
-            // try {
-            //     this.logger.info('Clearing existing slash commands...');
-            //     await rest.put(Routes.applicationGuildCommands(this.config.clientId, this.config.guildId), { body: [] });
-            //     this.logger.info('All existing slash commands cleared!');
-
-            //     this.logger.info(`Started refreshing ${this.body.length} application (/) commands.`);
-            //     const data = await rest.put(Routes.applicationGuildCommands(this.config.clientId, this.config.guildId), {
-            //         body: this.body,
-            //     });
-            //     this.logger.info(`Successfully reloaded ${data.length} application (/) commands.`);
-            // } catch (error) {
-            //     this.logger.error('Failed to register slash commands:', error);
-            // }
-
-            // Start Server Stats Manager after bot is ready
             if (this.serverStatsManager) {
                 this.serverStatsManager.start();
             }

@@ -15,7 +15,6 @@ const AntiLinkSchema = require('./schemas/antiLink');
 const GiveawaySchema = require('./schemas/giveaway');
 const GiveawayShopItemSchema = require('./schemas/giveawayShopItem');
 const ConversationSchema = require('./schemas/conversation');
-const InviteSchema = require('./schemas/inviteTracker');
 const globalConfig = require('./utils/Config');
 const PeachyClient = require('./structures/Client.js');
 const EconomyManager = require('./managers/EconomyManager');
@@ -397,17 +396,6 @@ client.on('messageCreate', async (message) => {
 
 client.on('inviteCreate', async (invite) => await client.abilities.getInviteCreate(invite));
 
-setInterval(
-    async () => {
-        try {
-            await client.utils.getResetThief(client);
-        } catch (error) {
-            console.error('Error resetting rob status:', error);
-        }
-    },
-    3 * 60 * 1000
-);
-
 setInterval(async () => {
     try {
         const { connection } = require('mongoose');
@@ -418,88 +406,5 @@ setInterval(async () => {
         console.error('Error in getSendMessage interval:', error.message);
     }
 }, 30000);
-
-setInterval(() => {
-    const guild = client.guilds.cache.get(client.config.guildId);
-    if (!guild) {
-        console.error('Guild not found');
-        return;
-    }
-
-    guild.invites
-        .fetch()
-        .then((invites) => {
-            if (!invites || invites.length === 0) {
-                return;
-            }
-            const inviteCodes = invites.map((invite) => invite.code);
-
-            InviteSchema.find({ guildId: guild.id })
-                .then((dbInvites) => {
-                    dbInvites.forEach((dbInvite) => {
-                        if (!inviteCodes.includes(dbInvite.inviteCode)) {
-                            dbInvite.deleteOne().catch((error) => console.error('Error deleting invite from DB:', error));
-                        }
-                    });
-
-                    // Iterate over current invites and update the database
-                    const invitePromises = invites.map((invite) => {
-                        return InviteSchema.findOne({ inviteCode: invite.code })
-                            .then((existingInvite) => {
-                                if (!existingInvite) {
-                                    // If there is no inviter (e.g., system/vanity), skip creating a record
-                                    if (!invite.inviter) {
-                                        return Promise.resolve();
-                                    }
-
-                                    // Build inviter tag compatible with Discord.js v14
-                                    const inviterId = invite.inviter?.id || 'unknown';
-                                    const discriminator = invite.inviter?.discriminator;
-                                    const username = invite.inviter?.username || 'unknown';
-                                    const inviterTag =
-                                        discriminator && discriminator !== '0' ? `${username}#${discriminator}` : `${username}`;
-
-                                    // Save a new invite record if it doesn't exist
-                                    const newInvite = new InviteSchema({
-                                        guildId: guild.id,
-                                        inviteCode: invite.code,
-                                        uses: invite.uses,
-                                        userId: [],
-                                        inviterId,
-                                        inviterTag,
-                                    });
-                                    return newInvite.save().catch((error) => console.error('Error saving new invite:', error));
-                                } else {
-                                    existingInvite.uses = invite.uses;
-                                    return existingInvite.save().catch((error) => console.error('Error updating existing invite:', error));
-                                }
-                            })
-                            .catch((error) => console.error('Error finding invite in DB:', error));
-                    });
-
-                    return Promise.all(invitePromises);
-                })
-                .catch((error) => console.error('Error processing invites from DB:', error));
-        })
-        .catch((error) => console.error('Error fetching invites:', error));
-}, 60000);
-
-setTimeout(() => {
-    client.utils
-        .checkBirthdays(client)
-        .then(() => console.log('Birthday check completed.'))
-        .catch((err) => console.error('Error in checkBirthdays function:', err));
-
-    // Repeat every 24 hours after the initial execution
-    setInterval(
-        () => {
-            client.utils
-                .checkBirthdays(client)
-                .then(() => console.log('Birthday check completed.'))
-                .catch((err) => console.error('Error in checkBirthdays function:', err));
-        },
-        24 * 60 * 60 * 1000
-    ); // 24 hours
-}, client.utils.getDelayUntil7PM());
 
 client.start(globalConfig.token);
