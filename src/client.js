@@ -202,20 +202,6 @@ client.once('clientReady', async () => {
         }
     );
 
-    cron.schedule(
-        '*/30 * * * *', // Every 30 minutes
-        () => {
-            client.utils
-                .checkDiscordQuest(client)
-                .then(() => console.log('Discord Quest check completed.'))
-                .catch((err) => console.error('Error in Discord Quest function:', err));
-        },
-        {
-            scheduled: true,
-            timezone: 'Asia/Bangkok',
-        }
-    );
-
     return await client.abilities.syncInvites(client);
 });
 
