@@ -43,7 +43,7 @@ module.exports = class Help extends Command {
         const prefix = client.config.prefix;
         const adminCategory = ['admin', 'company', 'dev', 'developer', 'guild', 'owner', 'staff'];
 
-        const categories = [
+        let categories = [
             {
                 name: 'actions',
                 emoji: emoji.help.actions ? emoji.help.actions : globalEmoji.help.actions || '⚡',
@@ -121,7 +121,25 @@ module.exports = class Help extends Command {
             },
         ];
 
-        const commands = client.commands.filter((cmd) => !adminCategory.includes(cmd.category));
+        if (ctx.guild && ctx.guild.ownerId === ctx.author.id) {
+            categories.push({
+                name: 'template',
+                emoji: emoji.help.template ? emoji.help.template : '🎨',
+                description: 'Server template and backup management',
+            });
+        }
+
+        const commands = client.commands.filter((cmd) => {
+            // Exclude admin categories for everyone
+            if (adminCategory.includes(cmd.category)) return false;
+
+            // Only show template commands to guild owners
+            if (cmd.category === 'template' && (!ctx.guild || ctx.guild.ownerId !== ctx.author.id)) {
+                return false;
+            }
+
+            return true;
+        });
 
         // If specific command requested
         if (args[0]) {
