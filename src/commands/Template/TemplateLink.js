@@ -188,17 +188,17 @@ module.exports = class TemplateLink extends Command {
                             {
                                 name: '📊 Status',
                                 value: template.isPublished ? '🌐 Public (Visible to everyone)' : '🔒 Private (Owner only)',
-                                inline: true,
+                                inline: false,
                             },
                             {
                                 name: '📈 Current Uses',
                                 value: `${template.uses}`,
-                                inline: true,
+                                inline: false,
                             },
                             {
                                 name: '❤️ Upvotes',
                                 value: `${template.upvotes}`,
-                                inline: true,
+                                inline: false,
                             }
                         )
                         .setFooter({

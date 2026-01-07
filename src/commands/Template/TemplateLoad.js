@@ -198,12 +198,12 @@ module.exports = class TemplateLoad extends Command {
                             {
                                 name: 'Channels Created',
                                 value: `${loadWhat === 'all' || loadWhat === 'channels' ? template.channels : 0}`,
-                                inline: true,
+                                inline: false,
                             },
                             {
                                 name: 'Roles Created',
                                 value: `${loadWhat === 'all' || loadWhat === 'roles' ? template.roles : 0}`,
-                                inline: true,
+                                inline: false,
                             }
                         )
                         .setTimestamp();

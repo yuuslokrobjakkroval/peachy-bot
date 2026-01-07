@@ -148,32 +148,32 @@ module.exports = class TemplateBackup extends Command {
                     {
                         name: 'Template Name',
                         value: templateName,
-                        inline: true,
+                        inline: false,
                     },
                     {
                         name: 'Template ID',
                         value: `\`${templateId}\``,
-                        inline: true,
+                        inline: false,
                     },
                     {
                         name: 'Channels Backed Up',
                         value: `${channelTemplates.length}`,
-                        inline: true,
+                        inline: false,
                     },
                     {
                         name: 'Roles Backed Up',
                         value: `${roles.length}`,
-                        inline: true,
+                        inline: false,
                     },
                     {
                         name: 'Creator',
                         value: ctx.author.username,
-                        inline: true,
+                        inline: false,
                     },
                     {
                         name: 'Status',
                         value: 'Private (Owner only)',
-                        inline: true,
+                        inline: false,
                     }
                 )
                 .setTimestamp();
