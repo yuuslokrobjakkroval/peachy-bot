@@ -121,7 +121,7 @@ module.exports = class Smelt extends Command {
         }
 
         // Double-check ore quantity
-        if (!userOre || userOre.quantity <= 1) {
+        if (!userOre || userOre.quantity < 1) {
             return await client.utils.sendErrorMessage(client, ctx, `❌ You need at least 1 **${oreData.name}** to smelt!`, color);
         }
 
