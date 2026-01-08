@@ -1,6 +1,7 @@
 module.exports = {
     // balance: '../data/images/Global/MITAOSWEET.png',
 
+    // Note: If this image fails to load, the bot will fall back to a solid color (#0C131A)
     backgroundLevel: 'https://i.imgur.com/eIiaG96.png',
 
     banner: {

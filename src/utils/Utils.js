@@ -317,7 +317,8 @@ module.exports = class Utils {
                             .build();
 
                     // Try with remote image first, then fallback to solid color if it fails
-                    buildLevelImage('image', gif.backgroundLevel)
+                    Promise.resolve()
+                        .then(() => buildLevelImage('image', gif.backgroundLevel))
                         .catch((err) => {
                             console.warn('Level up background image failed, falling back to color:', err?.message || err);
                             return buildLevelImage('color', '#0C131A');
@@ -346,7 +347,25 @@ module.exports = class Utils {
                                     files: [levelImage],
                                 })
                                 .catch((error) => {
-                                    console.error('Error sending level up message:', error);
+                                    // If missing permissions for file attachments, try sending without image
+                                    if (error.code === 50013) {
+                                        console.warn(
+                                            `Missing permissions to send level-up image in channel ${message.channelId}. Attempting to send embed only.`
+                                        );
+                                        const embedOnly = client
+                                            .embed()
+                                            .setColor(color.main)
+                                            .setTitle(`${message.author.displayName} - LEVEL UP !`)
+                                            .setDescription(
+                                                `Congratulations ${globalEmoji.congratulation} !!!\nYou leveled up to level ${user.profile.level}!\nYou have been awarded ${client.utils.formatNumber(celebrationCoin)} ${emoji.coin}.`
+                                            )
+                                            .setThumbnail(message.author.displayAvatarURL({ format: 'png', size: 512 }));
+                                        message.channel.send({ embeds: [embedOnly] }).catch((retryError) => {
+                                            console.error('Failed to send level-up message (even without image):', retryError.message);
+                                        });
+                                    } else {
+                                        console.error('Error sending level up message:', error.message || error);
+                                    }
                                 });
                         })
                         .catch((error) => {
@@ -395,7 +414,8 @@ module.exports = class Utils {
                     .setLevels(user.profile.voiceLevel - 1, user.profile.voiceLevel)
                     .build();
 
-            buildVoiceLevelImage('image', gif.backgroundLevel)
+            Promise.resolve()
+                .then(() => buildVoiceLevelImage('image', gif.backgroundLevel))
                 .catch((err) => {
                     console.warn('Voice level background image failed, falling back to color:', err?.message || err);
                     return buildVoiceLevelImage('color', '#0C131A');
@@ -419,7 +439,27 @@ module.exports = class Utils {
 
                     const sendChannel = member.guild.channels.cache.get(member.voice.channelId);
                     if (sendChannel) {
-                        sendChannel.send({ embeds: [embed], files: [levelImage] }).catch(console.error);
+                        sendChannel.send({ embeds: [embed], files: [levelImage] }).catch((error) => {
+                            // If missing permissions for file attachments, try sending without image
+                            if (error.code === 50013) {
+                                console.warn(
+                                    `Missing permissions to send voice level-up image in channel ${member.voice.channelId}. Attempting to send embed only.`
+                                );
+                                const embedOnly = client
+                                    .embed()
+                                    .setColor(color.main)
+                                    .setTitle(`${member.displayName} - VOICE LEVEL UP !`)
+                                    .setDescription(
+                                        `You've leveled up to voice level **${user.profile.voiceLevel}**!\nYou received ${client.utils.formatNumber(celebrationCoin)} ${emoji.coin} 🎙️`
+                                    )
+                                    .setThumbnail(member.user.displayAvatarURL({ format: 'png', size: 512 }));
+                                sendChannel.send({ embeds: [embedOnly] }).catch((retryError) => {
+                                    console.error('Failed to send voice level-up message (even without image):', retryError.message);
+                                });
+                            } else {
+                                console.error('Error sending voice level-up message:', error.message || error);
+                            }
+                        });
                     } else {
                         console.warn(`[Voice XP] No valid text channel to send level-up message in guild ${member.guild.name}`);
                     }
