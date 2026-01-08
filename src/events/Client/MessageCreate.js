@@ -15,6 +15,7 @@ module.exports = class MessageCreate extends Event {
     }
 
     async run(message) {
+        if (!message.guild) return; // Ignore messages from DMs or unavailable guilds
         const guildId = message.guild.id;
         const channelId = message.channel.id;
         const userId = message.author.id;
