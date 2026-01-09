@@ -5,35 +5,35 @@ dotenv.config({ debug: false });
 
 const channel = {
     // PEACH AND GOMA CATEGORIES
-    welcome: '1299416615275987025',
-    announcement: '1272595713125126176',
-    rule: '1271685845165936722',
-    role: '1271685845165936723',
-    booster: '1306787159088562238',
-    inviteTracker: '1299416717293781124',
-    goodbye: '1299416504575459380',
+    welcome: '1459236704060838023',
+    announcement: '1459244590128169144',
+    rule: '1459236704060838026',
+    role: '1459236704060838027',
+    booster: '13067871590814592367040608380288562238',
+    inviteTracker: '1459236704060838029',
+    goodbye: '1459236704060838030',
 
     // PUBLIC CATEGORIES
-    chat: '1370318453046775812',
+    chat: '1459236704060838032',
 
     // BIRTHDAY AND VOTE
-    reward: '1374630700464210010',
+    reward: '1459236704975192269',
 
     // DONATION CATEGORIES
-    giveaways: '1370318454653063198',
+    giveaways: '1459236704975192272',
 
     // LOGGER CATEGORIES
-    log: '1380944246609018880',
-    logAll: '1380944297792372887',
-    logAdmin: '1380944363370057788',
-    logBalance: '1380944407808839740',
-    logGame: '1380944566840197322',
-    logGiveaways: '1380944604907569162',
-    logGambling: '1380945140440502272',
-    logShop: '1380944650101067787',
-    logUtility: '1380944712625557604',
-    logWork: '1380944753260232775',
-    logAnimal: '1380944799623938149',
+    log: '1459236708473241630',
+    logAll: '1459236708473241631',
+    logAdmin: '1459236708473241632',
+    logBalance: '1459236708473241633',
+    logGame: '1459236708473241634',
+    logGiveaways: '1459236708473241635',
+    logGambling: '1459236708473241636',
+    logShop: '1459236708473241637',
+    logUtility: '1459236708473241638',
+    logWork: '1459236708473241639',
+    logAnimal: '1459236708770910350',
 };
 
 const logChannelId = [
@@ -53,7 +53,7 @@ module.exports = {
     env: process.env.NODE_ENV ?? 'PRODUCTION',
     token: process.env.TOKEN,
     prefix: process.env.PREFIX ?? 'P',
-    guildId: process.env.GUILD_ID ?? '1342317947573633077',
+    guildId: process.env.GUILD_ID ?? '1459236701904834628',
     testGuildId: process.env.TEST_GUILD_ID ?? '1447158253967638590',
     clientId: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
