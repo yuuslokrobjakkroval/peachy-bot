@@ -307,14 +307,19 @@ module.exports = class Utils {
 
                     user.balance.coin += celebrationCoin;
 
-                    const buildLevelImage = (bgType, bgValue) =>
-                        new canvafy.LevelUp()
-                            .setAvatar(message.author.displayAvatarURL({ format: 'png', size: 512 }))
+                    const buildLevelImage = (bgType, bgValue) => {
+                        const avatarUrl = message.author.displayAvatarURL({ format: 'png', size: 512 });
+                        if (!avatarUrl) {
+                            throw new Error('Avatar URL is invalid or unavailable');
+                        }
+                        return new canvafy.LevelUp()
+                            .setAvatar(avatarUrl)
                             .setUsername(`${message.author.username}`, '#000000')
                             .setBorder('#8BD3DD')
                             .setBackground(bgType, bgValue)
                             .setLevels(user.profile.level - 1, user.profile.level)
                             .build();
+                    };
 
                     // Try with remote image first, then fallback to solid color if it fails
                     Promise.resolve()
@@ -405,14 +410,19 @@ module.exports = class Utils {
             user.balance.coin += celebrationCoin;
 
             // Generate level up image with background fallback
-            const buildVoiceLevelImage = (bgType, bgValue) =>
-                new canvafy.LevelUp()
-                    .setAvatar(member.user.displayAvatarURL({ format: 'png', size: 512 }))
+            const buildVoiceLevelImage = (bgType, bgValue) => {
+                const avatarUrl = member.user.displayAvatarURL({ format: 'png', size: 512 });
+                if (!avatarUrl) {
+                    throw new Error('Avatar URL is invalid or unavailable');
+                }
+                return new canvafy.LevelUp()
+                    .setAvatar(avatarUrl)
                     .setUsername(`${member.user.username}`, '#000000')
                     .setBorder('#8BD3DD')
                     .setBackground(bgType, bgValue)
                     .setLevels(user.profile.voiceLevel - 1, user.profile.voiceLevel)
                     .build();
+            };
 
             Promise.resolve()
                 .then(() => buildVoiceLevelImage('image', gif.backgroundLevel))
