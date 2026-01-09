@@ -1,20 +1,30 @@
 const { Context, Event } = require('../../structures/index.js');
 const {
-    Collection,
-    CommandInteraction,
-    InteractionType,
-    PermissionFlagsBits,
-    ButtonInteraction,
-    UserSelectMenuInteraction,
     ActionRowBuilder,
     ButtonBuilder,
+    ButtonInteraction,
     ButtonStyle,
-    MessageFlags,
+    ChannelSelectMenuBuilder,
+    Collection,
+    CommandInteraction,
     ContainerBuilder,
-    MediaGalleryBuilder,
+    EmbedBuilder,
+    FileUploadBuilder,
+    InteractionType,
+    LabelBuilder,
+    MessageFlags,
+    ModalBuilder,
+    PermissionFlagsBits,
+    RoleSelectMenuBuilder,
+    StringSelectMenuBuilder,
+    StringSelectMenuOptionBuilder,
+    TextInputBuilder,
+    TextInputStyle,
     UserSelectMenuBuilder,
+    UserSelectMenuInteraction,
 } = require('discord.js');
 const users = require('../../schemas/user');
+const ReactionRole = require('../../schemas/reactionRole');
 const GiveawaySchema = require('../../schemas/giveaway');
 const GiveawayShopItemSchema = require('../../schemas/giveawayShopItem');
 const globalGif = require('../../utils/Gif');
@@ -1153,6 +1163,288 @@ module.exports = class InteractionCreate extends Event {
                         });
                     }
                 }
+            } else if (interaction.isButton() && interaction.customId === 'rr-edit-menu') {
+                const modal = new ModalBuilder()
+                    .setTitle('Edit Reaction Role Embed')
+                    .setCustomId(`rr-edit-embed-modal`)
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Set Embed Title')
+                            .setTextInputComponent(
+                                new TextInputBuilder().setCustomId('embed__title').setStyle(TextInputStyle.Short).setRequired(false)
+                            )
+                    )
+
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Set Embed Description')
+                            .setTextInputComponent(
+                                new TextInputBuilder()
+                                    .setCustomId('embed__description')
+                                    .setStyle(TextInputStyle.Paragraph)
+                                    .setRequired(false)
+                            )
+                    )
+
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Set Embed Color')
+                            .setStringSelectMenuComponent(
+                                new StringSelectMenuBuilder()
+                                    .setCustomId('embed__color')
+                                    .setRequired(false)
+                                    .addOptions(
+                                        new StringSelectMenuOptionBuilder().setLabel('Blue').setValue('#0099ff'),
+                                        new StringSelectMenuOptionBuilder().setLabel('Green').setValue('#00ff00'),
+                                        new StringSelectMenuOptionBuilder().setLabel('Red').setValue('#ff0000'),
+                                        new StringSelectMenuOptionBuilder().setLabel('Yellow').setValue('#ffff00'),
+                                        new StringSelectMenuOptionBuilder().setLabel('Purple').setValue('#800080'),
+                                        new StringSelectMenuOptionBuilder().setLabel('Orange').setValue('#ffa500')
+                                    )
+                            )
+                    )
+
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Set Embed Image')
+                            .setFileUploadComponent(new FileUploadBuilder().setCustomId('embed__image').setRequired(false))
+                    )
+
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Set Thumbnail Image')
+                            .setFileUploadComponent(new FileUploadBuilder().setCustomId('embed__thumbnail').setRequired(false))
+                    );
+
+                return interaction.showModal(modal);
+            } else if (interaction.isModalSubmit() && interaction.customId === 'rr-edit-embed-modal') {
+                const title = interaction.fields.getTextInputValue('embed__title');
+                const description = interaction.fields.getTextInputValue('embed__description');
+                const colorValue = interaction.fields.getSelectMenuValues('embed__color')[0];
+                const imageFiles = interaction.fields.getUploadFiles('embed__image');
+                const thumbnailFiles = interaction.fields.getUploadFiles('embed__thumbnail');
+
+                const embed = new EmbedBuilder.from(interaction.message.embeds[0] ?? {});
+
+                if (title) embed.setTitle(title);
+                if (description) embed.setDescription(description);
+                if (colorValue) embed.setColor(colorValue);
+                if (imageFiles) {
+                    if (imageFiles.size > 0) {
+                        const image = imageFiles.first();
+                        embed.setImage(image.url);
+                    }
+                }
+                if (thumbnailFiles) {
+                    if (thumbnailFiles.size > 0) {
+                        const thumbnail = thumbnailFiles.first();
+                        embed.setThumbnail(thumbnail.url);
+                    }
+                }
+
+                return interaction.update({ embeds: [embed], components: interaction.message.components });
+            } else if (interaction.isStringSelectMenu() && interaction.customId === 'rr-builder-menu') {
+                if (interaction.values[0] !== '__add__') return;
+                const modal = new ModalBuilder()
+                    .setCustomId(`rr-add-modal`)
+                    .setTitle('Add Reaction Role')
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Emoji / Emoji ID')
+                            .setTextInputComponent(
+                                new TextInputBuilder().setCustomId('emoji').setStyle(TextInputStyle.Short).setRequired(true)
+                            )
+                    )
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Role Label')
+                            .setTextInputComponent(
+                                new TextInputBuilder().setCustomId('label').setStyle(TextInputStyle.Short).setRequired(true)
+                            )
+                    )
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Select Role')
+                            .setRoleSelectMenuComponent(new RoleSelectMenuBuilder().setCustomId('role').setRequired(true))
+                    );
+
+                return interaction.showModal(modal);
+            } else if (interaction.isModalSubmit() && interaction.customId === 'rr-add-modal') {
+                const emojiInput = interaction.fields.getTextInputValue('emoji');
+                const label = interaction.fields.getTextInputValue('label');
+                const role = interaction.fields.getSelectedRoles('role').first();
+                const roleId = role.id;
+
+                const emoji = this.client.utils.parseEmoji(emojiInput, interaction.guild);
+                if (!emoji) {
+                    return interaction.reply({
+                        content: '❌ Emoji not found. Make sure the emoji exists in the server or is a valid Unicode emoji.',
+                        flags: MessageFlags.Ephemeral,
+                    });
+                }
+
+                const data = await ReactionRole.findOne({ guildId: interaction.guild.id, userId: interaction.user.id });
+
+                if (!data) return;
+
+                if (data.options.some((o) => o.roleId === roleId)) {
+                    return interaction.reply({
+                        content: '❌ This role has already been added.',
+                        flags: MessageFlags.Ephemeral,
+                    });
+                }
+
+                data.options.push({
+                    label,
+                    roleId,
+                    emoji: {
+                        id: emoji.id ?? null,
+                        name: emoji.name,
+                        animated: emoji.animated ?? false,
+                    },
+                });
+
+                await data.save();
+
+                // Build Menu Update
+                const menu = new StringSelectMenuBuilder().setCustomId(`rr-builder-menu`).setPlaceholder('Reaction role Options');
+
+                for (const opt of data.options) {
+                    const option = new StringSelectMenuOptionBuilder().setLabel(opt.label).setValue(`role_${opt.roleId}`);
+
+                    if (opt.emoji.id) {
+                        option.setEmoji({ id: opt.emoji.id, name: opt.emoji.name, animated: opt.emoji.animated });
+                    } else if (opt.emoji?.name) {
+                        option.setEmoji({ name: opt.emoji.name });
+                    }
+
+                    menu.addOptions(option);
+                }
+
+                menu.addOptions(new StringSelectMenuOptionBuilder().setLabel('Add React Role').setValue('__add__'));
+
+                return interaction.update({
+                    components: [new ActionRowBuilder().addComponents(menu), interaction.message.components[1]],
+                });
+            } else if (interaction.isButton() && interaction.customId === 'rr-send') {
+                const modal = new ModalBuilder()
+                    .setCustomId(`rr-send-modal`)
+                    .setTitle('Send Reaction Role')
+                    .addLabelComponents(
+                        new LabelBuilder()
+                            .setLabel('Select Channel ')
+                            .setChannelSelectMenuComponent(
+                                new ChannelSelectMenuBuilder()
+                                    .setCustomId('rr-channel')
+                                    .setRequired(true)
+                                    .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
+                            )
+                    );
+
+                return interaction.showModal(modal);
+            } else if (interaction.isModalSubmit() && interaction.customId === 'rr-send-modal') {
+                const channel = interaction.fields.getSelectedChannels('rr-channel');
+                const channelId = channel.id;
+                const channelToSend = interaction.guild.channels.cache.get(channelId);
+
+                const data = await ReactionRole.findOne({ guildId: interaction.guild.id, userId: interaction.user.id });
+
+                if (!data || !data.options.length) {
+                    return interaction.reply({
+                        content: '❌ No reaction roles added.',
+                        flags: MessageFlags.Ephemeral,
+                    });
+                }
+
+                const finalMenu = new StringSelectMenuBuilder().setCustomId('rr-final').setPlaceholder('Select your');
+
+                for (const opt of data.options) {
+                    const option = new StringSelectMenuOptionBuilder().setLabel(opt.label).setValue(`role_${opt.roleId}`);
+
+                    if (opt.emoji?.id) {
+                        option.setEmoji({ id: opt.emoji.id, name: opt.emoji.name, animated: opt.emoji.animated });
+                    } else {
+                        option.setEmoji(opt.emoji.name);
+                    }
+
+                    finalMenu.addOptions(option);
+                }
+
+                const embed = new EmbedBuilder()
+                    .setTitle(data.embed.title || 'React to get a role!')
+                    .setDescription(data.embed.description || 'Choose a reaction to receive the corresponding role.')
+                    .setColor(data.embed.color || '#0099ff');
+
+                if (interaction.message) {
+                    await interaction.message.delete().catch(() => null);
+                }
+
+                await channelToSend.send({
+                    embeds: [embed],
+                    components: [new ActionRowBuilder().addComponents(finalMenu)],
+                });
+
+                return interaction.reply({
+                    content: `✅ Reaction role message sent in <#${channelId}> successfully.`,
+                    flags: MessageFlags.Ephemeral,
+                });
+            } else if (interaction.isStringSelectMenu() && interaction.customId === 'rr-final') {
+                const value = interaction.values[0];
+                if (!value.startsWith('role_')) return;
+                const roleId = value.replace('role_', '');
+                const member = interaction.member;
+                const role = interaction.guild.roles.cache.get(roleId);
+
+                let addedRole = [];
+                let removedRole = [];
+
+                if (member.roles.cache.has(roleId)) {
+                    await member.roles.remove(roleId);
+                    removedRole.push(role.name);
+                } else {
+                    await member.roles.add(roleId);
+                    addedRole.push(role);
+                }
+
+                const embed = new EmbedBuilder()
+                    .setTitle('Reaction Role Updated')
+                    .setColor('#0099ff')
+                    .addFields(
+                        { name: 'Added', value: addedRole.length ? addedRole.map((r) => `<@&${r.id}>`).join('\n') : '/', inline: false },
+                        {
+                            name: 'Removed',
+                            value: removedRole.length ? removedRole.map((r) => `<@&${r.id}>`).join('\n') : '/',
+                            inline: false,
+                        }
+                    )
+                    .setFooter({ text: `Requested by ${interaction.user.displayName}`, iconURL: interaction.user.displayAvatarURL() })
+                    .setTimestamp();
+
+                const oldMenu = interaction.message.components[0].components[0];
+                const finalMenu = new StringSelectMenuBuilder().setCustomId('Select your role').addOptions(
+                    oldMenu.options.map((opt) => ({
+                        label: opt.label,
+                        value: opt.value,
+                        emoji: opt.emoji,
+                    }))
+                );
+
+                const componentRows = new ActionRowBuilder().addComponents(finalMenu);
+
+                if (interaction.message.components[1]) {
+                    componentRows.push(interaction.message.components[1]);
+                }
+
+                return interaction
+                    .update({
+                        components: componentRows,
+                    })
+                    .then(() => {
+                        interaction.followUp({
+                            embeds: [embed],
+                            flags: MessageFlags.Ephemeral,
+                        });
+                    });
             }
         } catch (error) {
             console.error(`Error in interactionCreate for interaction ${interaction.id}:`, error);
