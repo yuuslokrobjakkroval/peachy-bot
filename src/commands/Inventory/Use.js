@@ -390,13 +390,27 @@ module.exports = class Use extends Command {
                                 });
                             }
                         } else if (int.customId === 'cancel') {
-                            await Promise.all([ctx.message.delete(), msg.delete()]);
+                            await Promise.all([
+                                ctx.message.delete().catch((err) => {
+                                    if (err.code !== 10008) throw err;
+                                }),
+                                msg.delete().catch((err) => {
+                                    if (err.code !== 10008) throw err;
+                                }),
+                            ]);
                         }
                     });
 
                     collector.on('end', async () => {
                         if (!msg) return;
-                        await Promise.all([ctx.message.delete(), msg.delete()]);
+                        await Promise.all([
+                            ctx.message.delete().catch((err) => {
+                                if (err.code !== 10008) throw err;
+                            }),
+                            msg.delete().catch((err) => {
+                                if (err.code !== 10008) throw err;
+                            }),
+                        ]);
                     });
                 } else {
                     const hasItems = user.inventory.find((inv) => inv.id.toLowerCase() === itemId);
