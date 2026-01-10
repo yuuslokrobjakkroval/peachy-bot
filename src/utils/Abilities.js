@@ -723,9 +723,7 @@ module.exports = class Ability {
     }
 
     static getReplacementData(member, guild, invite, inviter, user, level) {
-        const accountCreationDate = member.user?.createdAt
-            ? moment(member.user.createdAt).locale('km').format('DD MMMM YYYY').fromNow()
-            : 'Unknown';
+        const accountCreationDate = member.user?.createdAt ? moment(member.user.createdAt).locale('km').fromNow() : 'Unknown';
         const guildTotalBoosts = guild?.premiumSubscriptionCount || 0;
         const guildBoostLevel = guild?.premiumTier > 0 ? guild?.premiumTier : 'មិនទាន់មាន Level';
         const boostsMissingForNext = [2, 7, 14][guildBoostLevel] - guildTotalBoosts || 0;
