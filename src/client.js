@@ -368,9 +368,19 @@ client.on('messageCreate', async (message) => {
                     const sentMessage = await message.channel.send({
                         content: `${message.author}, you can't send links here`,
                     });
-                    setTimeout(() => sentMessage.delete(), 3000);
+                    setTimeout(
+                        () =>
+                            sentMessage.delete().catch((err) => {
+                                if (err.code !== 10008) console.error('Error deleting auto-delete message:', err);
+                            }),
+                        3000
+                    );
                     await message.delete();
                 } catch (error) {
+                    if (error.code === 10008) {
+                        // Message already deleted, ignore
+                        return;
+                    }
                     console.error('Error handling anti-link message:', error);
                 }
             }
