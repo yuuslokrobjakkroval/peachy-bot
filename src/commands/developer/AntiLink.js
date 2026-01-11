@@ -225,12 +225,24 @@ module.exports = class AntiLink extends Command {
 
 	async reply(ctx, content, options = {}) {
 		if (ctx.isInteraction) {
-			await ctx.interaction.editReply({
-				content,
-				...(options.ephemeral ? { flags: 64 } : {}),
-			});
+			// If content is an object (e.g., { embeds: [...] }), spread it directly
+			if (typeof content === "object" && content !== null) {
+				await ctx.interaction.editReply({
+					...content,
+					...(options.flags ? { flags: options.flags } : {}),
+				});
+			} else {
+				await ctx.interaction.editReply({
+					content,
+					...(options.flags ? { flags: options.flags } : {}),
+				});
+			}
 		} else {
-			await ctx.editMessage({ content, ...options });
+			if (typeof content === "object" && content !== null) {
+				await ctx.editMessage({ ...content, ...options });
+			} else {
+				await ctx.editMessage({ content, ...options });
+			}
 		}
 	}
 };
