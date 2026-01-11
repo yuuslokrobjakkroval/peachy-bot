@@ -106,7 +106,7 @@ module.exports = class Rob extends Command {
             const maxSteal = Math.min(Math.floor(target.balance.coin * 0.3), 5000000);
             const stolenAmount = chance.integer({
                 min: Math.min(minSteal, maxSteal),
-                max: Math.max(minSteal, maxSteal),
+                max: maxSteal,
             });
 
             const penaltyAmount = chance.integer({ min: 500, max: 2000 });
