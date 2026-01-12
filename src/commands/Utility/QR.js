@@ -38,6 +38,6 @@ module.exports = class QRCode extends Command {
                 iconURL: ctx.author.displayAvatarURL(),
             });
 
-        return ctx.isInteraction ? await ctx.interaction.reply({ embeds: [embed], flags: 0 }) : await ctx.reply({ embeds: [embed] });
+        return ctx.isInteraction ? await ctx.interaction.reply({ embeds: [embed] }) : await ctx.sendMessage({ embeds: [embed] });
     }
 };
