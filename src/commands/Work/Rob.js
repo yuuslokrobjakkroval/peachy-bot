@@ -101,9 +101,12 @@ module.exports = class Rob extends Command {
             const successChance = chance.integer({ min: 1, max: 100 });
             const isSuccess = successChance <= 60;
 
+            // Calculate stolen amount with safety check
+            const minSteal = Math.floor(target.balance.coin * 0.1);
+            const maxSteal = Math.min(Math.floor(target.balance.coin * 0.3), 5000000);
             const stolenAmount = chance.integer({
-                min: Math.floor(target.balance.coin * 0.1),
-                max: Math.min(Math.floor(target.balance.coin * 0.3), 5000000),
+                min: Math.min(minSteal, maxSteal),
+                max: maxSteal,
             });
 
             const penaltyAmount = chance.integer({ min: 500, max: 2000 });
