@@ -805,9 +805,8 @@
             "requestedBy": "Requested by %{username}"
         },
         "qrMessages": {
-            "title": "QR Code for %{currency}",
-            "description": "Here is the QR code for %{currency}:",
-            "invalidOption": "Invalid option! Please use 'khr' or 'usd'."
+            "title": "QR Code",
+            "description": "Select a currency to view the QR code:"
         },
         "serverInfoMessages": {
             "name": "Name",

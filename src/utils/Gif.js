@@ -50,6 +50,7 @@ module.exports = {
     drinkShop: 'https://i.imgur.com/cGlVN9t.jpg',
 
     // QR CODE
+    qr: 'https://i.imgur.com/Bmy0sLN.jpg',
     qrKH: 'https://i.imgur.com/D1pGSlN.jpg',
     qrUSD: 'https://i.imgur.com/Sg7xVkl.jpg',
 
