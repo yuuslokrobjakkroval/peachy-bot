@@ -36,6 +36,7 @@ const LOOTBOX_POOLS = {
             { items: decorationItems.slice(3, 5), weight: 10, rarity: 'rare' },
         ],
         quantity: () => getRandomInt(1, 2), // 1-2 items per box
+        quantityRange: [1, 2],
     },
     box02: {
         // Nebula - Mid-tier lootbox (100,000 coins)
@@ -53,6 +54,7 @@ const LOOTBOX_POOLS = {
             { items: dutchMilkItems.slice(0, 2), weight: 5, rarity: 'rare' },
         ],
         quantity: () => getRandomInt(2, 3), // 2-3 items per box
+        quantityRange: [2, 3],
     },
     box03: {
         // Kayukio - Premium lootbox (150,000 coins)
@@ -70,6 +72,7 @@ const LOOTBOX_POOLS = {
             { items: decorationItems, weight: 10, rarity: 'rare' },
         ],
         quantity: () => getRandomInt(3, 4), // 3-4 items per box
+        quantityRange: [3, 4],
     },
 };
 
@@ -100,6 +103,36 @@ function selectWeightedReward(rewards) {
     }
 
     return rewards[rewards.length - 1]; // Fallback to last reward
+}
+
+/**
+ * Calculate expected value (EV) of a lootbox in coins using item sell prices.
+ * This estimates average coin value a user would receive when opening the box.
+ * @param {string} boxId
+ * @returns {number|null} expected value in coins or null if unknown
+ */
+function calculateExpectedValue(boxId) {
+    const pool = LOOTBOX_POOLS[boxId];
+    if (!pool) return null;
+
+    // expected draws (average of range)
+    const [minQ, maxQ] = pool.quantityRange || [1, 1];
+    const expectedCount = (minQ + maxQ) / 2;
+
+    const totalWeight = pool.rewards.reduce((s, r) => s + r.weight, 0);
+
+    // expected value per single reward draw
+    let evPerDraw = 0;
+    for (const reward of pool.rewards) {
+        const prob = reward.weight / totalWeight;
+        if (!reward.items || reward.items.length === 0) continue;
+
+        // average sell price of items in this reward bucket
+        const avgSell = reward.items.reduce((s, it) => s + (it.price?.sell || it.price?.buy || 0), 0) / reward.items.length;
+        evPerDraw += prob * avgSell;
+    }
+
+    return evPerDraw * expectedCount;
 }
 
 /**
@@ -141,4 +174,5 @@ module.exports = {
     openLootbox,
     getRandomInt,
     selectWeightedReward,
+    calculateExpectedValue,
 };

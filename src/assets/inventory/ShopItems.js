@@ -11,7 +11,7 @@ const Wallpaper = require('./Shop/Wallpaper');
 const Cards = require('./Shop/Cards');
 
 module.exports = [
-    Lootboxes,
+    // Lootboxes,
     Tools,
     Couple,
     Color,
