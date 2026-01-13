@@ -175,10 +175,10 @@ If you discover a security vulnerability, please follow our [Security Policy](./
 
 ## 😎 OWNER
 
-- [𝐏𝐄𝐀𝐂𝐇𝐘](https://discord.gg/peachygang) - Join us now
+- [𝐏𝐄𝐀𝐂𝐇𝐘](https://discord.gg/wMKMKbf4g3) - Join us now
   <br>
 
-Peachy is a Discord bot made by [𝐊𝐘𝐔𝐔 🐣💞](https://discord.gg/CmsxPWNEjf)
+Peachy is a Discord bot made by [𝐘𝐔𝐔 🐣💞](https://discord.com/users/966688007493140591)
 
 <br />
 
