@@ -5,7 +5,9 @@
 </h1>
 
 <p align="center">
-  <img src="https://img.shields.io/discord/1459236701904834628?label=Discord&logo=discord&style=for-the-badge" alt="Discord">
+  <a href="https://discord.gg/wMKMKbf4g3">
+    <img src="https://img.shields.io/discord/1459236701904834628?label=Discord%20Members&logo=discord&style=for-the-badge">
+  </a>
 </p>
 
 <p align="center"><b>Peachy Bot</b> is a powerful, feature-rich Discord bot for server management, fun, games, economy, moderation, and more. Built with Discord.js v14, it offers a modern dashboard, hybrid command handling, and a highly customizable experience for your community.</p>
