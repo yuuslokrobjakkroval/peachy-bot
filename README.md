@@ -1,16 +1,33 @@
 <h1 align="center">
-  <a href="https://github.com/yuuslokrobjakkroval"><img src="./public/images/banner/main.gif" height="380" alt="Peachy Bot Banner"></a>
+  <a href="https://github.com/yuuslokrobjakkroval">
+    <img src="./public/images/banner/main.gif" height="380" alt="Peachy Bot Banner">
+  </a>
   <br />
   <span style="color:#F582AE;font-size:2.5rem;">PEACHY BOT</span>
 </h1>
 
 <p align="center">
-  <img src="https://img.shields.io/discord/1369956599720054847?label=Discord&logo=discord&style=for-the-badge" alt="Discord">
+  <a href="https://discord.gg/wMKMKbf4g3">
+    <img src="https://img.shields.io/discord/1459236701904834628?label=Discord&logo=discord&style=for-the-badge" alt="Discord">
+  </a>
+  <a href="https://github.com/yuuslokrobjakkroval/peachy-bot">
+    <img src="https://img.shields.io/github/stars/yuuslokrobjakkroval/peachy-bot?style=for-the-badge&logo=github&label=Stars" alt="Stars">
+  </a>
+  <a href="https://github.com/yuuslokrobjakkroval/peachy-bot/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-PEACHY-ffb3c6?style=for-the-badge" alt="License">
+  </a>
+  <!-- <a href="https://github.com/yuuslokrobjakkroval/peachy-bot/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/yuuslokrobjakkroval/peachy-bot/ci.yml?style=for-the-badge&label=Build" alt="Build">
+  </a> -->
 </p>
 
-<p align="center"><b>Peachy Bot</b> is a powerful, feature-rich Discord bot for server management, fun, games, economy, moderation, and more. Built with Discord.js v14, it offers a modern dashboard, hybrid command handling, and a highly customizable experience for your community.</p>
+<p align="center">
+  <b>Peachy Bot</b> is a feature-rich Discord bot for server management, fun, games,
+  economy, moderation, and more. Built with Discord.js v14, it ships with a modern
+  dashboard, hybrid command handling, and deep customization for your community.
+</p>
 
-<p align="center">Actions, Bank, Rank, Economy, Inventory, Fun, Games, Gambling, Giveaways, Profile, Social, Utility, Information, and More...</p>
+<p align="center">Actions, Bank, Rank, Economy, Inventory, Fun, Games, Gambling, Giveaways, Profile, Social, Utility, Information, and more.</p>
 
 <p align="center">
   <a href="#-resource-links">Resource Links</a>
@@ -21,11 +38,11 @@
   •
   <a href="#-unique-features">Unique Features</a>
   •
-  <a href="#--features--">Features</a>
+  <a href="#-features">Features</a>
   •
-  <a href="#--contributing--">Contributing</a>
+  <a href="#-contributing">Contributing</a>
   •
-  <a href="#--support-server--">Support</a>
+  <a href="#-support-server">Support</a>
 </p>
 
 <br>
@@ -46,141 +63,107 @@
 
 ## 🚀 Getting Started
 
-- Open the terminal and run the following commands
+- Open a terminal and run:
 
-```
+```bash
 git clone https://github.com/yuuslokrobjakkroval/peachy-bot.git
 cd peachy-bot
 npm install
 ```
 
-- Wait for all the dependencies to be installed
-- Rename `.env.example` to `.env` and fill the values
-- Optionally edit `util/Config.js for Global Config` and `config.js for config color base on theme`
-- Type `npm run start` to start the bot
+- Rename `.env.example` to `.env` and fill the values.
+- Optionally edit `util/Config.js` for global config and `config.js` for theme colors.
+- Start the bot with `npm run start`.
 
-If you need any additional help, make sure to join our support server [here](https://discord.gg/BJT4h55hbg)
+Need help? Join our support server [here](https://discord.gg/BJT4h55hbg).
 
 <br>
 
 ## 🔥 Unique Features
 
-- Developed Discord.js v14
-- Hybrid Command Handling (Slash and Normal Commands)
-- Highly Configurable
-- User-friendly and Easy to Use
+- Built with Discord.js v14
+- Hybrid command handling (slash + prefix)
+- Highly configurable
+- User-friendly and easy to run
 
 <h1 align="center"> ✨ Features ✨ </h1>
 
-### 📡 **_*Advanced Dashboard*_**
+### 📡 **Advanced Dashboard**
 
-- Manage your servers and make your server-specific settings!
-- Make custom adjustments easy!
+- Manage server settings and configurations.
+- Create custom adjustments quickly.
 
-### 🛑 **_*Powerful Moderation:*_**
+### 🛑 **Powerful Moderation**
 
-- **_*Moderation Commands.*_** <br /> _Commands:_ `announce`, `ban`, `unban`, `timeout`, `blacklist`, ...
-- **_*Multi-Function Commands.*_** <br /> _Commands:_ `addmoney`, `removemoney`, `additem`, `removeitem`, ...
+- Moderation commands: `announce`, `ban`, `unban`, `timeout`, `blacklist`, ...
+- Multi-function commands: `addmoney`, `removemoney`, `additem`, `removeitem`, ...
 
-[//]: # '### 🤖 **Auto Moderation:**'
-[//]: #
-[//]: # '- **Anti system** <br /> _Commands:_ `anti ghostping`, `anti spam`, `anti massmention`, ...'
-[//]: # '- **Auto Delete system** <br /> _Commands:_ `autodelete attachments`, `autodelete invites`, `autodelete links`, `autodelete maxlines`, ...'
-[//]: # '- **AutoMod system** <br /> _Commands:_ `automod status`, `automod strikes`, `automod action`, `automod debug`, `automod whitelist`, ...'
-[//]: # '### ⚙️ **Admin Configuration:**'
-[//]: #
-[//]: # "- **Let a bot be the server's assistant!** <br /> _Commands:_ `autorole`, `farewell`, `welcome`, `counters`, `flag translation`, `reaction roles`, ..."
-[//]: # '- **Make custom settings for your own server.** <br /> _Commands:_ `setprefix`, `maxwarns`, `modlog`...'
+### 💁 **Information Gathering**
 
-### 💁 **_*Information Gathering:*_**
+- User context interactions
+- Detailed information on users, channels, roles, and more
 
-- **_*User Context Interactions*_**
-- **_*Advanced Information*_** Get deep information about a user, channel, role, etc.
+### 🎉 **Giveaways**
 
-[//]: # '### 🎵 **Music:**'
-[//]: #
-[//]: # '- **LossLess Music!** Enjoy high quality lossless music'
-[//]: # '- **Multi-Platform** Play music from YouTube, SoundCloud, Spotify, and more'
-[//]: # '- **Filters** Apply filters to your music and spice it up'
+- Easy to create
+- Role-specific giveaways
+- Customizable rewards and rules
+- Unlimited giveaways
 
-### 🎉 **_*Giveaways:*_**
+### 🫂 **Social Content**
 
-- **_*Easy to use*_** Create giveaways with ease
-- **_*Role Specific*_** giveaways
-- **_*Customizable*_** Customize the giveaway to your liking
-- **_*Limitless*_** Create unlimited giveaways
+- Server-specific profile commands: `facebook`, `instagram`, `tik tok`, ...
+- Relationship and profile helpers: `fb name`, `fb link`, `ig name`, `ig link`, ...
 
-### 🫂 **_*Social Content:*_**
+### 📉 **Stats Tracking**
 
-- **_*You Have A CV In Each Server-Specific Bot!*_** <br /> _Commands:_ `facebook`, `instagram`, `tik tok`,...
-- **_*Do You Love Someone?*_** <br /> _Commands:_ `fb name`, `fb link`, `ig name`, `ig link`, ...
+- Levelling system
+- Activity leaderboards
+- Customizable rank cards and level-up messages
 
-[//]: # '### 🎟 **Ticket System:**'
-[//]: #
-[//]: # '- **Make Supporting Members A Breeze With Tickets!** <br/> Highly customizable ticket system with staff roles'
-[//]: # "- **Multiple Categories** <br/> Don't Want The Tickets To Be Everywhere? Categorize them using select menus"
+### ⚒️ **Utility Commands**
 
-### 📉 **_*Stats Tracking:*_**
+- Helpful tools: `avatar`, `steal emoji`, `steal stickr`, `serverinfo`, `userinfo`, `language`, ...
+- Common helpers: `help`, `invite`, `rules`, `privacypolicy`, `ping`, ...
 
-- **_*Levelling*_** Track your server's activity with a level system
-- **_*Leaderboards*_** See who is the most active user in your server
-- **_*Customizable System*_** Configure the levelup message, rank cards to your liking
+### ⭐ **Anime Content**
 
-[//]: # '### 🙋‍♂️ **Suggestions:**'
-[//]: #
-[//]: # '- **Get Suggestions From Server Members To Help Your Server Become The Best!** <br /> _Commands:_ `suggest`, `suggestion`...'
-[//]: # '- **Accept Or Decline The Suggestions And Customize Them To The Max!** <br /> _Commands:_ `suggestion status`, `suggestion channel`, `suggestion appch`, `suggestion rejch`, `suggestion approve`, `suggestion staffadd`, `suggestion staffremove`...'
+- Reaction commands: `bite`, `hug`, `kiss`, `kill`, `slap`, `punch`, ...
 
-### ⚒️ **_*Utility Commands:*_**
+### 🪙 **Economy System**
 
-- **_*Need Some Help With Something? Use The Utility Commands To Find Out The Answer To It*_** <br /> _Commands:_ `avatar`, `steal emoji`, `steal stickr`, `serverinfo`, `userinfo`, `language`...
-- **_*Need Help With Some More Stuff?*_** <br /> _Commands:_ `help`, `invite`, `rules`, `privacypolicy`, `ping`...
+- Earn and grow wealth: `peach`, `goma`, `daily`, `weekly`, ...
+- Balance tools: `balance`, `deposit`, `withdraw`, `transfer`, ...
+- Shop system: `shop`, `shopinfo`, `buy`, `sell`, `inventory`, `use`, ...
 
-### ⭐ **_*Anime Content:*_**
+### 😁 **Emotes Commands**
 
-- **_*Love Anime? Express You Love To Someone Using The React Commands*_** <br /> _Commands:_ `bite`, `hug`, `kiss`, `kill`, `slap`, `punch`...
+- Fun reactions: `angry`, `cry`, `cute`, `happy`, `roar`, `shy`, `scare`, ...
 
-### 🪙 **_*Economy System:*_**
+### 📨 **Invite Tracking**
 
-- **_*Want To Become Richest? Use The Economy Commands!*_** <br /> _Commands:_ `peach`, `goma`, `daily`, `weekly`...
-- **_*Give People Money, Check Your Balance, Or Just Flex!*_** <br /> _Commands:_ `balance`, `deposit`, `withdraw`, `transfer`...
-- **_*Browse The Shop And Get Detailed Item Information!*_** <br /> _Commands:_ `shop`, `shopinfo`, `buy`, `sell`, `inventory`, `use`...
-
-### 😁 **_*Emotes Commands:*_**
-
-- **_*Have Some Feeling to show In Your Server!*_** <br /> _Commands:_ `angry`, `cry`, `cute`, `happy`, `roar`, `shy`, `scare`...
-
-[//]: # '- **Play Games And Enjoy Yourself** <br /> _Commands:_ `snake`, `together`, `flip coin`, `flip text`, ...'
-
-### 📨 **_*Invite Tracking:*_**
-
-- **_*Track who has been inviting people to your server!*_**
-- **_*Invite Ranks!*_** Inviter can get awesome rewards and be recognised
-- **_*Configure these settings and customize them to your liking!*_** <br /> _Commands:_ `inviters`...
-
-[//]: # '### 📷 **Image Manipulation:**'
-[//]: #
-[//]: # '- **Customize other peoples avatars** <br /> _Commands:_ `blur`, `greyscale`, `invert`, `pixelate`, `blur`, `sepia`, `sharpen`, `ad`, `affect`, `beautiful`, `color`...'
-[//]: # '- **Make some images by yourself or make some art** <br /> _Commands:_ `bobross`, `confusedstonk`, `delete`, `facepalm`, ` hitler`, `jail`, `jokeoverhead`, `karaba`, `mms`, `notstonk`, `poutine`, `rainbow`, `rip`, ` shit`, `stonk`, `tatoo`, `thomas`, `trash`, `wanted`, `wasted`, ...'
+- Track invites per user
+- Invite ranks and rewards
+- Configurable invite settings: `inviters`, ...
 
 <h1 align="center"> 🤝 Contributing 🤝 </h1>
 
-- Thanks to everyone have enjoy with our bot.
-- Feel free to [Fork](https://github.com/yuuslokrobjakkroval/peachy-bot/fork) this repository, create a feature branch and submit a pull request
-- You can keep track of all the planned features [here](https://github.com/yuuslokrobjakkroval/peachy-bot/projects) or make a request for one at our discord
+- Thanks to everyone who enjoys the bot.
+- Feel free to [Fork](https://github.com/yuuslokrobjakkroval/peachy-bot/fork) the repository, create a feature branch, and submit a pull request.
+- Track planned features [here](https://github.com/yuuslokrobjakkroval/peachy-bot/projects) or make a request in our Discord.
 
 <h1 align="center"> 💌 Support Server </h1>
 
 ## 🔒 Security
 
-If you discover a security vulnerability, please follow our [Security Policy](./SECURITY.md) for responsible disclosure and reporting instructions.
+If you discover a security vulnerability, follow our [Security Policy](./SECURITY.md) for responsible disclosure and reporting instructions.
 
 ## 😎 OWNER
 
-- [𝐏𝐄𝐀𝐂𝐇𝐘](https://discord.gg/wMKMKbf4g3) - Join us now
+- [PEACHY](https://discord.gg/wMKMKbf4g3) - Join us now
   <br>
 
-Peachy is a Discord bot made by [𝐘𝐔𝐔 🐣💞](https://discord.com/users/966688007493140591)
+Peachy is a Discord bot made by [YUU 🐣💞](https://discord.com/users/966688007493140591).
 
 <br />
 
