@@ -30,6 +30,8 @@
 
 <br>
 
+![Alt](https://repobeats.axiom.co/api/embed/04c481b937250ef4be318e01bd7d675191a98e6b.svg 'Repobeats analytics image')
+
 ## 🔗 Resource Links
 
 - 📂 Peachy Dashboard: [Visit Here](https://peachy-dashboard.vercel.app)
@@ -80,26 +82,26 @@ If you need any additional help, make sure to join our support server [here](htt
 - **_*Moderation Commands.*_** <br /> _Commands:_ `announce`, `ban`, `unban`, `timeout`, `blacklist`, ...
 - **_*Multi-Function Commands.*_** <br /> _Commands:_ `addmoney`, `removemoney`, `additem`, `removeitem`, ...
 
-[//]: # "### 🤖 **Auto Moderation:**"
+[//]: # '### 🤖 **Auto Moderation:**'
 [//]: #
-[//]: # "- **Anti system** <br /> _Commands:_ `anti ghostping`, `anti spam`, `anti massmention`, ..."
-[//]: # "- **Auto Delete system** <br /> _Commands:_ `autodelete attachments`, `autodelete invites`, `autodelete links`, `autodelete maxlines`, ..."
-[//]: # "- **AutoMod system** <br /> _Commands:_ `automod status`, `automod strikes`, `automod action`, `automod debug`, `automod whitelist`, ..."
-[//]: # "### ⚙️ **Admin Configuration:**"
+[//]: # '- **Anti system** <br /> _Commands:_ `anti ghostping`, `anti spam`, `anti massmention`, ...'
+[//]: # '- **Auto Delete system** <br /> _Commands:_ `autodelete attachments`, `autodelete invites`, `autodelete links`, `autodelete maxlines`, ...'
+[//]: # '- **AutoMod system** <br /> _Commands:_ `automod status`, `automod strikes`, `automod action`, `automod debug`, `automod whitelist`, ...'
+[//]: # '### ⚙️ **Admin Configuration:**'
 [//]: #
 [//]: # "- **Let a bot be the server's assistant!** <br /> _Commands:_ `autorole`, `farewell`, `welcome`, `counters`, `flag translation`, `reaction roles`, ..."
-[//]: # "- **Make custom settings for your own server.** <br /> _Commands:_ `setprefix`, `maxwarns`, `modlog`..."
+[//]: # '- **Make custom settings for your own server.** <br /> _Commands:_ `setprefix`, `maxwarns`, `modlog`...'
 
 ### 💁 **_*Information Gathering:*_**
 
 - **_*User Context Interactions*_**
 - **_*Advanced Information*_** Get deep information about a user, channel, role, etc.
 
-[//]: # "### 🎵 **Music:**"
+[//]: # '### 🎵 **Music:**'
 [//]: #
-[//]: # "- **LossLess Music!** Enjoy high quality lossless music"
-[//]: # "- **Multi-Platform** Play music from YouTube, SoundCloud, Spotify, and more"
-[//]: # "- **Filters** Apply filters to your music and spice it up"
+[//]: # '- **LossLess Music!** Enjoy high quality lossless music'
+[//]: # '- **Multi-Platform** Play music from YouTube, SoundCloud, Spotify, and more'
+[//]: # '- **Filters** Apply filters to your music and spice it up'
 
 ### 🎉 **_*Giveaways:*_**
 
@@ -113,9 +115,9 @@ If you need any additional help, make sure to join our support server [here](htt
 - **_*You Have A CV In Each Server-Specific Bot!*_** <br /> _Commands:_ `facebook`, `instagram`, `tik tok`,...
 - **_*Do You Love Someone?*_** <br /> _Commands:_ `fb name`, `fb link`, `ig name`, `ig link`, ...
 
-[//]: # "### 🎟 **Ticket System:**"
+[//]: # '### 🎟 **Ticket System:**'
 [//]: #
-[//]: # "- **Make Supporting Members A Breeze With Tickets!** <br/> Highly customizable ticket system with staff roles"
+[//]: # '- **Make Supporting Members A Breeze With Tickets!** <br/> Highly customizable ticket system with staff roles'
 [//]: # "- **Multiple Categories** <br/> Don't Want The Tickets To Be Everywhere? Categorize them using select menus"
 
 ### 📉 **_*Stats Tracking:*_**
@@ -124,10 +126,10 @@ If you need any additional help, make sure to join our support server [here](htt
 - **_*Leaderboards*_** See who is the most active user in your server
 - **_*Customizable System*_** Configure the levelup message, rank cards to your liking
 
-[//]: # "### 🙋‍♂️ **Suggestions:**"
+[//]: # '### 🙋‍♂️ **Suggestions:**'
 [//]: #
-[//]: # "- **Get Suggestions From Server Members To Help Your Server Become The Best!** <br /> _Commands:_ `suggest`, `suggestion`..."
-[//]: # "- **Accept Or Decline The Suggestions And Customize Them To The Max!** <br /> _Commands:_ `suggestion status`, `suggestion channel`, `suggestion appch`, `suggestion rejch`, `suggestion approve`, `suggestion staffadd`, `suggestion staffremove`..."
+[//]: # '- **Get Suggestions From Server Members To Help Your Server Become The Best!** <br /> _Commands:_ `suggest`, `suggestion`...'
+[//]: # '- **Accept Or Decline The Suggestions And Customize Them To The Max!** <br /> _Commands:_ `suggestion status`, `suggestion channel`, `suggestion appch`, `suggestion rejch`, `suggestion approve`, `suggestion staffadd`, `suggestion staffremove`...'
 
 ### ⚒️ **_*Utility Commands:*_**
 
@@ -148,7 +150,7 @@ If you need any additional help, make sure to join our support server [here](htt
 
 - **_*Have Some Feeling to show In Your Server!*_** <br /> _Commands:_ `angry`, `cry`, `cute`, `happy`, `roar`, `shy`, `scare`...
 
-[//]: # "- **Play Games And Enjoy Yourself** <br /> _Commands:_ `snake`, `together`, `flip coin`, `flip text`, ..."
+[//]: # '- **Play Games And Enjoy Yourself** <br /> _Commands:_ `snake`, `together`, `flip coin`, `flip text`, ...'
 
 ### 📨 **_*Invite Tracking:*_**
 
@@ -156,10 +158,10 @@ If you need any additional help, make sure to join our support server [here](htt
 - **_*Invite Ranks!*_** Inviter can get awesome rewards and be recognised
 - **_*Configure these settings and customize them to your liking!*_** <br /> _Commands:_ `inviters`...
 
-[//]: # "### 📷 **Image Manipulation:**"
+[//]: # '### 📷 **Image Manipulation:**'
 [//]: #
-[//]: # "- **Customize other peoples avatars** <br /> _Commands:_ `blur`, `greyscale`, `invert`, `pixelate`, `blur`, `sepia`, `sharpen`, `ad`, `affect`, `beautiful`, `color`..."
-[//]: # "- **Make some images by yourself or make some art** <br /> _Commands:_ `bobross`, `confusedstonk`, `delete`, `facepalm`, ` hitler`, `jail`, `jokeoverhead`, `karaba`, `mms`, `notstonk`, `poutine`, `rainbow`, `rip`, ` shit`, `stonk`, `tatoo`, `thomas`, `trash`, `wanted`, `wasted`, ..."
+[//]: # '- **Customize other peoples avatars** <br /> _Commands:_ `blur`, `greyscale`, `invert`, `pixelate`, `blur`, `sepia`, `sharpen`, `ad`, `affect`, `beautiful`, `color`...'
+[//]: # '- **Make some images by yourself or make some art** <br /> _Commands:_ `bobross`, `confusedstonk`, `delete`, `facepalm`, ` hitler`, `jail`, `jokeoverhead`, `karaba`, `mms`, `notstonk`, `poutine`, `rainbow`, `rip`, ` shit`, `stonk`, `tatoo`, `thomas`, `trash`, `wanted`, `wasted`, ...'
 
 <h1 align="center"> 🤝 Contributing 🤝 </h1>
 
